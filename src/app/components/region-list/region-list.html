@@ -1,0 +1,54 @@
+<div class="container mx-auto px-4 py-8">
+  @if (loading$ | async) {
+    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
+      <div class="w-full max-w-md px-8 text-center">
+        <p hlmMuted class="mb-4">Обработка на данните...</p>
+        <div class="h-2 w-full overflow-hidden rounded-full bg-secondary">
+          <div class="h-full w-full origin-left animate-progress bg-primary"></div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+    <div>
+      <h1 hlmH2 class="border-b-0 pb-0 text-primary dark:text-secondary">Избор на район</h1>
+      <p hlmLead class="text-primary/80 dark:text-secondary/80">Изберете многомандатен изборен район (МИР) за {{ date }}</p>
+    </div>
+    <div class="flex gap-2">
+      <a routerLink="/" hlmBtn variant="default" class="bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-secondary dark:text-secondary-foreground dark:hover:bg-secondary/90">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        Назад към изборите
+      </a>
+    </div>
+  </div>
+
+  <div class="mb-8 max-w-md">
+    <div class="relative">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-primary/50 dark:text-secondary/50"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input hlmInput placeholder="Търсене на район..." [(ngModel)]="searchTerm" (ngModelChange)="applyFilter()" class="pl-10 border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full" />
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    @for (region of filteredRegions; track region.id) {
+      <div hlmCard class="flex flex-col h-full transition-all hover:shadow-xl border-primary/20 hover:border-primary/50 group">
+        <div hlmCardHeader>
+          <h3 hlmCardTitle class="text-primary dark:text-secondary group-hover:text-primary dark:group-hover:text-secondary transition-colors">{{ formatRegionName(region.name) }}</h3>
+          <p hlmCardDescription class="text-primary/60 dark:text-secondary/60">МИР {{ region.id }}</p>
+        </div>
+        <div class="flex-grow"></div>
+        <div hlmCardContent class="pt-0">
+          <a [routerLink]="['/election', date, 'region', region.id]" hlmBtn variant="outline" class="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+            Виж резултати
+          </a>
+        </div>
+      </div>
+    }
+    @if (filteredRegions.length === 0 && ! (loading$ | async)) {
+      <div class="col-span-full py-20 text-center">
+        <p hlmMuted>Няма намерени райони, съвпадащи с търсенето.</p>
+      </div>
+    }
+  </div>
+</div>

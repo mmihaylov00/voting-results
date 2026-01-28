@@ -1,1 +1,71 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 211 100% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 211 100% 12%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 211 100% 12%;
+  --primary: 211 100% 12%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 211 100% 30%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 211 10% 95%;
+  --muted-foreground: 211 100% 12%;
+  --accent: 50 100% 50%;
+  --accent-foreground: 211 100% 12%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 211 100% 12%;
+  --input: 211 100% 12%;
+  --ring: 211 100% 12%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 211 100% 12%;
+  --foreground: 0 0% 100%;
+  --card: 211 100% 12%;
+  --card-foreground: 0 0% 100%;
+  --popover: 211 100% 12%;
+  --popover-foreground: 0 0% 100%;
+  --primary: 50 100% 50%;
+  --primary-foreground: 211 100% 12%;
+  --secondary: 211 100% 80%;
+  --secondary-foreground: 211 100% 12%;
+  --muted: 211 100% 15%;
+  --muted-foreground: 211 100% 80%;
+  --accent: 50 100% 50%;
+  --accent-foreground: 211 100% 12%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 50 100% 50%;
+  --input: 50 100% 50%;
+  --ring: 50 100% 50%;
+}
+
+.text-ppdb {
+  color: hsl(var(--primary));
+}
+
+.dark .text-ppdb {
+  color: hsl(var(--secondary));
+}
+
+body {
+  @apply bg-background text-foreground;
+  font-family: 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@keyframes progress-animation {
+  0% { transform: translateX(-100%) scaleX(0.2); }
+  50% { transform: translateX(0%) scaleX(0.5); }
+  100% { transform: translateX(100%) scaleX(0.2); }
+}
+
+.animate-progress {
+  animation: progress-animation 2s infinite linear;
+}

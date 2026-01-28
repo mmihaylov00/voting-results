@@ -1,0 +1,224 @@
+<div class="container mx-auto px-4 py-8">
+    @if (loading$ | async) {
+        <div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
+            <div class="w-full max-w-md px-8 text-center">
+                <p hlmMuted class="mb-4">Обработка на данните...</p>
+                <div class="h-2 w-full overflow-hidden rounded-full bg-secondary">
+                    <div class="h-full w-full origin-left animate-progress bg-primary"></div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+        <div>
+            <h1 hlmH2 class="border-b-0 pb-0 text-primary dark:text-secondary">Резултати за {{ dateName }}</h1>
+            <p hlmLead class="text-primary/80 dark:text-secondary/80">{{ regionName }} (МИР {{ regionId }})</p>
+        </div>
+        <div class="flex gap-2">
+            <button hlmBtn variant="outline" (click)="downloadCsv()" class="border-primary text-primary hover:bg-primary hover:text-primary-foreground dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Експорт CSV
+            </button>
+            <a [routerLink]="['/election', date]" hlmBtn variant="default" class="bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-secondary dark:text-secondary-foreground dark:hover:bg-secondary/90">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                Назад към районите
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-12">
+            <div hlmCard class="p-6 border-primary/20">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                    <h3 hlmH4 class="text-primary dark:text-secondary">Секции</h3>
+                    <div class="w-full md:w-64">
+                        <input hlmInput placeholder="Търсене..." [(ngModel)]="searchTerm" (ngModelChange)="applyFilter()" class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary" />
+                    </div>
+                </div>
+
+                <div class="overflow-auto max-h-[70vh]">
+                    <table hlmTable>
+                        <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
+                            <tr hlmTableRow class="hover:bg-transparent">
+                                <th hlmTableHead (click)="sortSections('sectionId')" class="cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                    Секция
+                                    <span class="ml-1">
+                                        @if (sectionSortColumn === 'sectionId') {
+                                            {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
+                                        }
+                                    </span>
+                                </th>
+                                <th hlmTableHead (click)="sortSections('cityName')" class="cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                    Град
+                                    <span class="ml-1">
+                                        @if (sectionSortColumn === 'cityName') {
+                                            {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
+                                        }
+                                    </span>
+                                </th>
+                                <th hlmTableHead (click)="sortSections('sectionName')" class="cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                    Име на секция
+                                    <span class="ml-1">
+                                        @if (sectionSortColumn === 'sectionName') {
+                                            {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
+                                        }
+                                    </span>
+                                </th>
+                                <th hlmTableHead (click)="sortSections('total')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                    Избиратели
+                                    <span class="ml-1">
+                                        @if (sectionSortColumn === 'total') {
+                                            {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
+                                        }
+                                    </span>
+                                </th>
+                                <th hlmTableHead (click)="sortSections('voted')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                    Гласували
+                                    <span class="ml-1">
+                                        @if (sectionSortColumn === 'voted') {
+                                            {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
+                                        }
+                                    </span>
+                                </th>
+                              <th hlmTableHead (click)="sortSections('activityPercent')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                Активност
+                                <span class="ml-1">
+                                        @if (sectionSortColumn === 'activityPercent') {
+                                          {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
+                                        }
+                                    </span>
+                              </th>
+                                <th hlmTableHead (click)="sortSections('discardedVotes')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                    Невалидни
+                                    <span class="ml-1">
+                                        @if (sectionSortColumn === 'discardedVotes') {
+                                            {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
+                                        }
+                                    </span>
+                                </th>
+                                <th hlmTableHead (click)="sortSections('noVotes')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                    Не подкрепя никого
+                                    <span class="ml-1">
+                                        @if (sectionSortColumn === 'noVotes') {
+                                            {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
+                                        }
+                                    </span>
+                                </th>
+                                <th hlmTableHead class="min-w-[200px] text-primary dark:text-secondary">
+                                    Топ 3 партии
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody hlmTableBody>
+                            @for (section of filteredSections; track section.sectionId) {
+                                <tr hlmTableRow
+                                    class="cursor-pointer"
+                                    [class.bg-muted]="selectedSection?.sectionId === section.sectionId"
+                                    (click)="loadSectionDetails(section.sectionId)">
+                                    <td hlmTableCell class="font-medium">{{ section.sectionId }}</td>
+                                    <td hlmTableCell>{{ section.cityName }}</td>
+                                    <td hlmTableCell>{{ section.sectionName }}</td>
+                                    <td hlmTableCell class="text-right">{{ section.total }}</td>
+                                    <td hlmTableCell class="text-right">{{ section.voted }}</td>
+                                  <td hlmTableCell class="text-right">{{ (section.activityPercent * 100).toFixed(2) }}%</td>
+                                    <td hlmTableCell class="text-right">{{ section.discardedVotes }}</td>
+                                    <td hlmTableCell class="text-right">{{ section.noVotes }}</td>
+                                    <td hlmTableCell>
+                                        <div class="flex flex-col text-xs">
+                                            @for (tp of section.topParties; track tp.name) {
+                                                <div class="truncate" [class.font-bold]="tp.name.includes('ПП-ДБ')" [class.text-ppdb]="tp.name.includes('ПП-ДБ')" [title]="tp.name + ': ' + tp.total + ' (' + (tp.percent * 100).toFixed(2) + '%)'">
+                                                    {{ tp.name }}: <strong>{{ tp.total }}</strong> ({{ (tp.percent * 100).toFixed(2) }}%)
+                                                </div>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (isModalOpen && selectedSection) {
+        <div class="fixed inset-0 z-[110] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4" (click)="closeModal()">
+            <div hlmCard class="w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl border-primary/20" (click)="$event.stopPropagation()">
+                <div class="flex justify-between items-center p-6 border-b border-primary/20">
+                    <h3 hlmH4 class="m-0 text-primary dark:text-secondary">Детайлни резултати за секция {{ selectedSection.sectionId }}</h3>
+                    <div class="flex items-center gap-2">
+                        <div class="relative">
+                            <button hlmBtn variant="outline" size="sm" (click)="togglePartyFilter($event)" class="border-primary text-primary hover:bg-primary hover:text-primary-foreground dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                                <span class="ml-2">Филтър партии</span>
+                            </button>
+                            @if (showPartyFilter) {
+                                <div class="absolute right-0 mt-2 w-64 max-h-96 overflow-auto bg-popover text-popover-foreground border border-primary/20 rounded-md shadow-md z-[120] p-2" (click)="$event.stopPropagation()">
+                                    @for (party of allParties; track party.id) {
+                                        <div class="flex items-center gap-2 p-1 hover:bg-muted rounded cursor-pointer" (click)="togglePartySelection(party.id)">
+                                            <input type="checkbox" [checked]="selectedPartyIds.has(party.id)" class="cursor-pointer" (click)="$event.stopPropagation(); togglePartySelection(party.id)" />
+                                            <span class="text-sm truncate">{{ party.name }}</span>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                        <button hlmBtn variant="ghost" size="icon" (click)="closeModal()" class="text-primary dark:text-secondary hover:bg-primary/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="overflow-auto p-6">
+                    <table hlmTable>
+                        <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
+                            <tr hlmTableRow class="hover:bg-transparent">
+                                <th hlmTableHead (click)="sortParties('partyName')" class="cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                    Партия
+                                    <span class="ml-1">
+                                        @if (partySortColumn === 'partyName') {
+                                            {{ partySortDir === 'asc' ? '↑' : '↓' }}
+                                        }
+                                    </span>
+                                </th>
+                                <th hlmTableHead (click)="sortParties('total')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                    Гласове
+                                    <span class="ml-1">
+                                        @if (partySortColumn === 'total') {
+                                            {{ partySortDir === 'asc' ? '↑' : '↓' }}
+                                        }
+                                    </span>
+                                </th>
+                                <th hlmTableHead (click)="sortParties('percent')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                    %
+                                    <span class="ml-1">
+                                        @if (partySortColumn === 'percent') {
+                                            {{ partySortDir === 'asc' ? '↑' : '↓' }}
+                                        }
+                                    </span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody hlmTableBody>
+                            @for (res of filteredPartyResults; track res.partyId) {
+                                <tr hlmTableRow [class.font-bold]="res.partyName.includes('ПРОДЪЛЖАВАМЕ')" [class.text-ppdb]="res.partyName.includes('ПРОДЪЛЖАВАМЕ')">
+                                    <td hlmTableCell>{{ res.partyName }}</td>
+                                    <td hlmTableCell class="text-right">{{ res.total }}</td>
+                                    <td hlmTableCell class="text-right">{{ (res.percent * 100).toFixed(2) }}%</td>
+                                </tr>
+                            }
+                            @if (othersResult) {
+                                <tr hlmTableRow>
+                                    <td hlmTableCell>{{ othersResult.partyName }}</td>
+                                    <td hlmTableCell class="text-right">{{ othersResult.total }}</td>
+                                    <td hlmTableCell class="text-right">{{ (othersResult.percent * 100).toFixed(2) }}%</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
