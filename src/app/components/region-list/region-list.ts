@@ -30,6 +30,7 @@ import { HlmTypographyDirective } from '../ui/typography-helm/src/lib/hlm-typogr
 })
 export class RegionListComponent implements OnInit {
   date: string = '';
+  dateName: string = '';
   regions: Region[] = [];
   filteredRegions: Region[] = [];
   searchTerm: string = '';
@@ -45,6 +46,7 @@ export class RegionListComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.date = params['date'];
+      this.dateName = this.electionService.getDates().find(d => d.date === this.date)?.name ?? this.date;
       if (this.date) {
         this.loadRegions();
       }
