@@ -287,6 +287,13 @@ export class ElectionDetailComponent implements OnInit {
       });
     }
 
+    if (this.totalNoVotes > 0) {
+      chartData.push({
+        name: 'Не подкрепя никого',
+        y: this.totalNoVotes
+      });
+    }
+
     // Sort chart data to show bigger slices first
     chartData.sort((a, b) => b.y - a.y);
 
@@ -425,6 +432,25 @@ export class ElectionDetailComponent implements OnInit {
         });
       }
     }
+
+    if (this.currentSectionData) {
+      const nonVoters = Math.max(0, this.currentSectionData.total - this.currentSectionData.voted);
+      if (nonVoters > 0) {
+        data.push({
+          name: 'Негласували',
+          y: nonVoters
+        });
+      }
+      if (this.currentSectionData.noVotes > 0) {
+        data.push({
+          name: 'Не подкрепя никого',
+          y: this.currentSectionData.noVotes
+        });
+      }
+    }
+
+    // Sort data to show bigger slices first
+    data.sort((a, b) => b.y - a.y);
 
     this.chartOptions = {
       chart: {
