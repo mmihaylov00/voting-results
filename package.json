@@ -32,6 +32,8 @@
     "@spartan-ng/brain": "^0.0.1-alpha.612",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "highcharts": "^12.5.0",
+    "highcharts-angular": "^5.4.0",
     "lucide-angular": "^0.563.0",
     "rxjs": "~7.8.0",
     "tailwind-merge": "^3.4.0",

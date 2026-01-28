@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ElectionService } from '../../services/election';
-import {PartyResult, Section, SectionDetails} from '../../models/election.models';
+import { PartyResult, Section, SectionDetails } from '../../models/election.models';
+import * as Highcharts from 'highcharts';
+import { HighchartsChartComponent } from 'highcharts-angular';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmTableBodyDirective,
@@ -14,7 +16,13 @@ import {
   HlmTableRowDirective,
 } from '../ui/table-helm/src/lib/hlm-table.directives';
 import { HlmTypographyDirective } from '../ui/typography-helm/src/lib/hlm-typography.directive';
-import { HlmCardDirective } from '../ui/card-helm/src/lib/hlm-card.directives';
+import {
+  HlmCardContentDirective,
+  HlmCardDescriptionDirective,
+  HlmCardDirective,
+  HlmCardHeaderDirective,
+  HlmCardTitleDirective
+} from '../ui/card-helm/src/lib/hlm-card.directives';
 import { HlmInputDirective } from '../ui/input-helm/src/lib/hlm-input.directive';
 import { FormsModule } from '@angular/forms';
 
@@ -38,6 +46,11 @@ import { FormsModule } from '@angular/forms';
     HlmTypographyDirective,
     HlmCardDirective,
     HlmInputDirective,
+    HighchartsChartComponent,
+    HlmCardHeaderDirective,
+    HlmCardTitleDirective,
+    HlmCardContentDirective,
+    HlmCardDescriptionDirective,
   ],
   templateUrl: './election-detail.html',
   styleUrl: './election-detail.scss',
@@ -52,6 +65,14 @@ export class ElectionDetailComponent implements OnInit {
   filteredSections: Section[] = [];
   selectedSection: SectionDetails | null = null;
   searchTerm: string = '';
+  showRiskyOnly: boolean = false;
+  lowActivityThreshold: number | null = 100;
+  avgRegionActivity: number = 0;
+  totalElectors: number = 0;
+  totalVoted: number = 0;
+  totalInvalid: number = 0;
+  totalNoVotes: number = 0;
+  totalTop3Votes: number = 0;
 
   sectionSortColumn: keyof Section = 'sectionId';
   sectionSortDir: 'asc' | 'desc' = 'asc';
@@ -63,6 +84,10 @@ export class ElectionDetailComponent implements OnInit {
   allParties: { id: string, name: string }[] = [];
   showPartyFilter: boolean = false;
   isModalOpen: boolean = false;
+  currentSectionData?: Section;
+  Highcharts: typeof Highcharts = Highcharts;
+  chartOptions: Highcharts.Options = {};
+  regionalChartOptions: Highcharts.Options = {};
 
   private readonly DEFAULT_KEYWORDS = ["ГЕРБ", "ПРОДЪЛЖАВАМЕ", "ВЪЗРАЖДАНЕ", "ДПС", "БСП", "ТАКЪВ НАРОД", "МЕЧ", "ВЕЛИЧИЕ"];
 
@@ -138,7 +163,9 @@ export class ElectionDetailComponent implements OnInit {
       this.electionService.getSections(this.date, this.regionId).subscribe(sections => {
         this.sections = sections;
         if (sections.length > 0) {
-          this.regionName = (sections[0] as any).regionName;
+          this.regionName = this.formatRegionName((sections[0] as any).regionName);
+          this.calculateAvgActivity();
+          this.calculateRegionalStats();
         }
         this.applyFilter();
         this.sortSections(this.sectionSortColumn, true);
@@ -171,17 +198,133 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   applyFilter(): void {
-    if (!this.searchTerm) {
-      this.filteredSections = [...this.sections];
-    } else {
+    let result = [...this.sections];
+
+    if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
-      this.filteredSections = this.sections.filter(s =>
+      result = result.filter(s =>
         s.sectionId.toLowerCase().includes(term) ||
         s.cityName.toLowerCase().includes(term) ||
         s.sectionName.toLowerCase().includes(term)
       );
     }
+
+    if (this.showRiskyOnly) {
+      result = result.filter(s => {
+        // "ПП-ДБ" is not in top 3
+        return !s.topParties.some(tp => tp.name.includes('ПП-ДБ'));
+      });
+    }
+
+    if (this.lowActivityThreshold !== null) {
+      result = result.filter(s => (s.activityPercent * 100) < (this.lowActivityThreshold as number));
+    }
+
+    this.filteredSections = result;
     this.sortSections(this.sectionSortColumn, true);
+  }
+
+  toggleRiskyFilter(): void {
+    this.showRiskyOnly = !this.showRiskyOnly;
+    this.applyFilter();
+  }
+
+  private calculateAvgActivity(): void {
+    if (this.sections.length === 0) {
+      this.avgRegionActivity = 0;
+      return;
+    }
+    const totalVoted = this.sections.reduce((sum, s) => sum + s.voted, 0);
+    const totalElectors = this.sections.reduce((sum, s) => sum + s.total, 0);
+    this.avgRegionActivity = totalElectors > 0 ? totalVoted / totalElectors : 0;
+  }
+
+  private calculateRegionalStats(): void {
+    if (this.sections.length === 0) return;
+
+    this.totalElectors = this.sections.reduce((sum, s) => sum + s.total, 0);
+    this.totalVoted = this.sections.reduce((sum, s) => sum + s.voted, 0);
+    this.totalInvalid = this.sections.reduce((sum, s) => sum + s.discardedVotes, 0);
+    this.totalNoVotes = this.sections.reduce((sum, s) => sum + s.noVotes, 0);
+
+    const regionalPartyVotes: { [partyId: string]: number } = {};
+    this.sections.forEach(s => {
+      Object.entries(s.partyVotes).forEach(([partyId, votes]) => {
+        regionalPartyVotes[partyId] = (regionalPartyVotes[partyId] || 0) + votes.total;
+      });
+    });
+
+    this.electionService.getParties(this.date).subscribe(partiesMap => {
+      const partyData = Object.entries(regionalPartyVotes)
+        .map(([id, total]) => ({
+          id,
+          name: partiesMap[id] || id,
+          total
+        }))
+        .sort((a, b) => b.total - a.total);
+
+      this.totalTop3Votes = partyData.slice(0, 3).reduce((sum, p) => sum + p.total, 0);
+
+      this.updateRegionalChartOptions(partyData);
+    });
+  }
+
+  private updateRegionalChartOptions(partyData: { id: string, name: string, total: number }[]): void {
+    const isDark = document.documentElement.classList.contains('dark');
+    const textColor = isDark ? '#f8fafc' : '#020817';
+
+    const nonVoters = Math.max(0, this.totalElectors - this.totalVoted);
+
+    const chartData = partyData.map(p => ({
+      name: p.name,
+      y: p.total
+    }));
+
+    if (nonVoters > 0) {
+      chartData.push({
+        name: 'Негласували',
+        y: nonVoters
+      });
+    }
+
+    // Sort chart data to show bigger slices first
+    chartData.sort((a, b) => b.y - a.y);
+
+    this.regionalChartOptions = {
+      chart: {
+        type: 'pie',
+        backgroundColor: 'transparent',
+      },
+      title: {
+        text: 'Разпределение на вота (вкл. негласували)',
+        style: { color: textColor }
+      },
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.y}</b> ({point.percentage:.1f}%)'
+      },
+      accessibility: {
+        point: {
+          valueSuffix: '%'
+        }
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: true,
+            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+            style: { color: textColor }
+          }
+        }
+      },
+      series: [{
+        name: 'Гласове',
+        colorByPoint: true,
+        data: chartData
+      }] as any,
+      credits: { enabled: false }
+    };
   }
 
   sortSections(column: keyof Section, preserveDir: boolean = false): void {
@@ -238,12 +381,88 @@ export class ElectionDetailComponent implements OnInit {
     });
   }
 
-  loadSectionDetails(sectionId: string): void {
-    this.electionService.getSectionDetails(this.date, sectionId).subscribe(details => {
+  formatRegionName(name: string): string {
+    const parts = name.split('.');
+    if (parts.length > 1) {
+      return parts[1].trim().toUpperCase();
+    }
+    return name.toUpperCase();
+  }
+
+  loadSectionDetails(section: Section): void {
+    this.electionService.getSectionDetails(this.date, section.sectionId).subscribe(details => {
       this.selectedSection = details;
+      this.currentSectionData = section;
       this.sortParties(this.partySortColumn, true);
+      this.updateChartOptions();
       this.isModalOpen = true;
     });
+  }
+
+  private updateChartOptions(): void {
+    if (!this.selectedSection) return;
+
+    const topResults = [...this.selectedSection.partyResults]
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 10);
+
+    const data = topResults.map(r => ({
+      name: r.partyName,
+      y: r.total
+    }));
+
+    // Add "Others" to the chart if there are more than 10 parties
+    if (this.selectedSection.partyResults.length > 10) {
+      const othersTotal = this.selectedSection.partyResults
+        .sort((a, b) => b.total - a.total)
+        .slice(10)
+        .reduce((sum, r) => sum + r.total, 0);
+
+      if (othersTotal > 0) {
+        data.push({
+          name: 'Други',
+          y: othersTotal
+        });
+      }
+    }
+
+    this.chartOptions = {
+      chart: {
+        type: 'pie',
+        backgroundColor: 'transparent'
+      },
+      title: {
+        text: 'Разпределение на гласовете',
+        style: { color: 'var(--primary)' }
+      },
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
+      },
+      accessibility: {
+        point: {
+          valueSuffix: '%'
+        }
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: true,
+            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+            style: { color: 'var(--foreground)' }
+          }
+        }
+      },
+      series: [{
+        name: 'Гласове',
+        type: 'pie',
+        data: data
+      }],
+      credits: {
+        enabled: false
+      }
+    };
   }
 
   closeModal(): void {

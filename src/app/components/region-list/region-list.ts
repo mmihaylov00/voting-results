@@ -55,7 +55,14 @@ export class RegionListComponent implements OnInit {
 
   loadRegions() {
     this.electionService.getRegions(this.date).subscribe(regions => {
-      this.regions = regions;
+      this.regions = regions.sort((a, b) => {
+        const idA = parseInt(a.id, 10);
+        const idB = parseInt(b.id, 10);
+        if (!isNaN(idA) && !isNaN(idB)) {
+          return idA - idB;
+        }
+        return a.id.localeCompare(b.id);
+      });
       this.applyFilter();
     });
   }
@@ -72,7 +79,6 @@ export class RegionListComponent implements OnInit {
   }
 
   formatRegionName(name: string): string {
-    // Expected format: "01. БЛАГОЕВГРАД"
     const parts = name.split('.');
     if (parts.length > 1) {
       return parts[1].trim().toUpperCase();

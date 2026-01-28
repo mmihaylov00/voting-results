@@ -209,17 +209,6 @@ export class ElectionService {
       let discarded = 0;
       let noVote = 0;
 
-      if (formType === '24' || formType === '28') {
-        // Form 24 & 28 indices:
-        // 7: Voters in list (1.), 8: Added voters (2.)
-        // 9: Voted (signatures) (3.)
-        // 14: Invalid votes (6.)
-        // 15: "I don't support anyone" (7.)
-        total = this.parseLongSafe(parts[7]) + this.parseLongSafe(parts[8]);
-        voted = this.parseLongSafe(parts[9]);
-        discarded = this.parseLongSafe(parts[14]);
-        noVote = this.parseLongSafe(parts[15]);
-      } else if (formType === '26' || formType === '30') {
         // Form 26 & 30 indices:
         // 7: Voters in list (1.), 8: Added voters (2.)
         // 9: Voted (signatures) (3.)
@@ -229,8 +218,9 @@ export class ElectionService {
         total = this.parseLongSafe(parts[7]) + this.parseLongSafe(parts[8]);
         voted = this.parseLongSafe(parts[9]);
         discarded = this.parseLongSafe(parts[13]);
+        console.log(parts[1],parts)
         noVote = this.parseLongSafe(parts[14]) + this.parseLongSafe(parts[17]);
-      }
+
 
       section.total += total;
       section.voted += voted;
