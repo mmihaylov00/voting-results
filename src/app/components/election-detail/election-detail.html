@@ -12,8 +12,8 @@
 
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-            <h1 hlmH2 class="border-b-0 pb-0 text-primary dark:text-secondary">Резултати за {{ dateName }}</h1>
-            <p hlmLead class="text-primary/80 dark:text-secondary/80">{{ regionName }} (МИР {{ regionId }})</p>
+            <h1 hlmH2 class="border-b-0 pb-0 text-secondary dark:text-secondary">Резултати за {{ dateName }}</h1>
+            <p hlmLead class="text-secondary/80 dark:text-secondary/80">{{ regionName }} (МИР {{ regionId }})</p>
         </div>
         <div class="flex gap-2">
             <button hlmBtn variant="outline" (click)="downloadCsv()" class="border-primary text-primary hover:bg-primary hover:text-primary-foreground dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
@@ -31,7 +31,7 @@
         <div class="lg:col-span-12">
             <div hlmCard class="p-6 border-primary/20">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-                    <h3 hlmH4 class="text-primary dark:text-secondary">Секции</h3>
+                    <h3 hlmH4 class="text-secondary dark:text-secondary">Секции</h3>
                     <div class="w-full md:w-64">
                         <input hlmInput placeholder="Търсене..." [(ngModel)]="searchTerm" (ngModelChange)="applyFilter()" class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary" />
                     </div>
@@ -41,7 +41,7 @@
                     <table hlmTable>
                         <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
                             <tr hlmTableRow class="hover:bg-transparent">
-                                <th hlmTableHead (click)="sortSections('sectionId')" class="cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                <th hlmTableHead (click)="sortSections('sectionId')" class="cursor-pointer hover:bg-primary/10 transition-colors text-secondary dark:text-secondary">
                                     Секция
                                     <span class="ml-1">
                                         @if (sectionSortColumn === 'sectionId') {
@@ -49,7 +49,7 @@
                                         }
                                     </span>
                                 </th>
-                                <th hlmTableHead (click)="sortSections('cityName')" class="cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                <th hlmTableHead (click)="sortSections('cityName')" class="cursor-pointer hover:bg-primary/10 transition-colors text-secondary dark:text-secondary">
                                     Град
                                     <span class="ml-1">
                                         @if (sectionSortColumn === 'cityName') {
@@ -57,7 +57,7 @@
                                         }
                                     </span>
                                 </th>
-                                <th hlmTableHead (click)="sortSections('sectionName')" class="cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                <th hlmTableHead (click)="sortSections('sectionName')" class="cursor-pointer hover:bg-primary/10 transition-colors text-secondary dark:text-secondary">
                                     Име на секция
                                     <span class="ml-1">
                                         @if (sectionSortColumn === 'sectionName') {
@@ -65,7 +65,7 @@
                                         }
                                     </span>
                                 </th>
-                                <th hlmTableHead (click)="sortSections('total')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                <th hlmTableHead (click)="sortSections('total')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-secondary dark:text-secondary">
                                     Избиратели
                                     <span class="ml-1">
                                         @if (sectionSortColumn === 'total') {
@@ -73,7 +73,7 @@
                                         }
                                     </span>
                                 </th>
-                                <th hlmTableHead (click)="sortSections('voted')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                <th hlmTableHead (click)="sortSections('voted')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-secondary dark:text-secondary">
                                     Гласували
                                     <span class="ml-1">
                                         @if (sectionSortColumn === 'voted') {
@@ -81,15 +81,15 @@
                                         }
                                     </span>
                                 </th>
-                              <th hlmTableHead (click)="sortSections('activityPercent')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                <th hlmTableHead (click)="sortSections('activityPercent')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-secondary dark:text-secondary">
                                 Активност
                                 <span class="ml-1">
                                         @if (sectionSortColumn === 'activityPercent') {
                                           {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
                                         }
                                     </span>
-                              </th>
-                                <th hlmTableHead (click)="sortSections('discardedVotes')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                </th>
+                                <th hlmTableHead (click)="sortSections('discardedVotes')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-secondary dark:text-secondary">
                                     Невалидни
                                     <span class="ml-1">
                                         @if (sectionSortColumn === 'discardedVotes') {
@@ -97,7 +97,7 @@
                                         }
                                     </span>
                                 </th>
-                                <th hlmTableHead (click)="sortSections('noVotes')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                <th hlmTableHead (click)="sortSections('noVotes')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-secondary dark:text-secondary">
                                     Не подкрепя никого
                                     <span class="ml-1">
                                         @if (sectionSortColumn === 'noVotes') {
@@ -105,7 +105,7 @@
                                         }
                                     </span>
                                 </th>
-                                <th hlmTableHead class="min-w-[200px] text-primary dark:text-secondary">
+                                <th hlmTableHead class="min-w-[200px] text-secondary dark:text-secondary">
                                     Топ 3 партии
                                 </th>
                             </tr>
@@ -146,7 +146,7 @@
         <div class="fixed inset-0 z-[110] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4" (click)="closeModal()">
             <div hlmCard class="w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl border-primary/20" (click)="$event.stopPropagation()">
                 <div class="flex justify-between items-center p-6 border-b border-primary/20">
-                    <h3 hlmH4 class="m-0 text-primary dark:text-secondary">Детайлни резултати за секция {{ selectedSection.sectionId }}</h3>
+                    <h3 hlmH4 class="m-0 text-secondary dark:text-secondary">Детайлни резултати за секция {{ selectedSection.sectionId }}</h3>
                     <div class="flex items-center gap-2">
                         <div class="relative">
                             <button hlmBtn variant="outline" size="sm" (click)="togglePartyFilter($event)" class="border-primary text-primary hover:bg-primary hover:text-primary-foreground dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
@@ -164,7 +164,7 @@
                                 </div>
                             }
                         </div>
-                        <button hlmBtn variant="ghost" size="icon" (click)="closeModal()" class="text-primary dark:text-secondary hover:bg-primary/20">
+                        <button hlmBtn variant="ghost" size="icon" (click)="closeModal()" class="text-secondary dark:text-secondary hover:bg-primary/20">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                         </button>
                     </div>
@@ -174,7 +174,7 @@
                     <table hlmTable>
                         <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
                             <tr hlmTableRow class="hover:bg-transparent">
-                                <th hlmTableHead (click)="sortParties('partyName')" class="cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                <th hlmTableHead (click)="sortParties('partyName')" class="cursor-pointer hover:bg-primary/10 transition-colors text-secondary dark:text-secondary">
                                     Партия
                                     <span class="ml-1">
                                         @if (partySortColumn === 'partyName') {
@@ -182,7 +182,7 @@
                                         }
                                     </span>
                                 </th>
-                                <th hlmTableHead (click)="sortParties('total')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                <th hlmTableHead (click)="sortParties('total')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-secondary dark:text-secondary">
                                     Гласове
                                     <span class="ml-1">
                                         @if (partySortColumn === 'total') {
@@ -190,7 +190,7 @@
                                         }
                                     </span>
                                 </th>
-                                <th hlmTableHead (click)="sortParties('percent')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-primary dark:text-secondary">
+                                <th hlmTableHead (click)="sortParties('percent')" class="text-right cursor-pointer hover:bg-primary/10 transition-colors text-secondary dark:text-secondary">
                                     %
                                     <span class="ml-1">
                                         @if (partySortColumn === 'percent') {

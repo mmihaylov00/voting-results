@@ -12,8 +12,8 @@
 
   <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
     <div>
-      <h1 hlmH2 class="border-b-0 pb-0 text-primary dark:text-secondary">Избор на район</h1>
-      <p hlmLead class="text-primary/80 dark:text-secondary/80">Изберете многомандатен изборен район (МИР) за {{ date }}</p>
+      <h1 hlmH2 class="border-b-0 pb-0 text-secondary dark:text-secondary">Избор на район</h1>
+      <p hlmLead class="text-secondary/80 dark:text-secondary/80">Изберете многомандатен изборен район (МИР) за {{ date }}</p>
     </div>
     <div class="flex gap-2">
       <a routerLink="/" hlmBtn variant="default" class="bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-secondary dark:text-secondary-foreground dark:hover:bg-secondary/90">
@@ -25,7 +25,7 @@
 
   <div class="mb-8 max-w-md">
     <div class="relative">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-primary/50 dark:text-secondary/50"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-secondary/50 dark:text-secondary/50"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
       <input hlmInput placeholder="Търсене на район..." [(ngModel)]="searchTerm" (ngModelChange)="applyFilter()" class="pl-10 border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full" />
     </div>
   </div>
@@ -34,8 +34,8 @@
     @for (region of filteredRegions; track region.id) {
       <div hlmCard class="flex flex-col h-full transition-all hover:shadow-xl border-primary/20 hover:border-primary/50 group">
         <div hlmCardHeader>
-          <h3 hlmCardTitle class="text-primary dark:text-secondary group-hover:text-primary dark:group-hover:text-secondary transition-colors">{{ formatRegionName(region.name) }}</h3>
-          <p hlmCardDescription class="text-primary/60 dark:text-secondary/60">МИР {{ region.id }}</p>
+          <h3 hlmCardTitle class="text-secondary dark:text-secondary group-hover:text-secondary dark:group-hover:text-secondary transition-colors">{{ formatRegionName(region.name) }}</h3>
+          <p hlmCardDescription class="text-secondary/60 dark:text-secondary/60">МИР {{ region.id }}</p>
         </div>
         <div class="flex-grow"></div>
         <div hlmCardContent class="pt-0">

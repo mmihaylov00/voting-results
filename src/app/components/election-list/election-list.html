@@ -1,7 +1,7 @@
 <div class="container mx-auto py-12 px-4">
   <div class="text-center mb-12">
-    <h1 hlmH1 class="text-primary dark:text-secondary">Изборни резултати</h1>
-    <p hlmLead class="mt-4 text-primary/80 dark:text-secondary/80">Изберете дата на избори, за да прегледате детайлна статистика</p>
+    <h1 hlmH1 class="text-secondary dark:text-secondary">Изборни резултати</h1>
+    <p hlmLead class="mt-4 text-secondary/80 dark:text-secondary/80">Изберете дата на избори, за да прегледате детайлна статистика</p>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
@@ -10,10 +10,10 @@
         <div hlmCardHeader class="text-center">
           <div class="flex justify-center mb-4">
             <div class="p-3 bg-primary/20 dark:bg-primary/20 rounded-full">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary dark:text-primary"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary dark:text-primary"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             </div>
           </div>
-          <h3 hlmCardTitle class="text-primary dark:text-secondary">{{ date.name }}</h3>
+          <h3 hlmCardTitle class="text-secondary dark:text-secondary">{{ date.name }}</h3>
         </div>
         <div hlmCardContent class="text-center">
           <a [routerLink]="['/election', date.date]" hlmBtn variant="outline" class="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
