@@ -8,7 +8,7 @@ import { DecimalPipe } from '@angular/common';
   providers: [DecimalPipe]
 })
 export class HlmTooltipDirective implements OnDestroy {
-  @Input('hlmTooltip') comparisons: ComparativeValue[] | undefined;
+  @Input('hlmTooltip') comparisons: ComparativeValue[] | string | undefined;
   @Input() currentValue: number | undefined;
   @Input() isPercent: boolean = false;
 
@@ -22,7 +22,7 @@ export class HlmTooltipDirective implements OnDestroy {
 
   @HostListener('mouseenter')
   onMouseEnter() {
-    if (!this.comparisons || this.comparisons.length === 0) return;
+    if (!this.comparisons) return;
     this.showTooltip();
   }
 
@@ -34,8 +34,12 @@ export class HlmTooltipDirective implements OnDestroy {
   private showTooltip() {
     this.tooltipElement = this.renderer.createElement('div');
 
-    let content = '<div class="flex flex-col gap-1">';
-    this.comparisons?.forEach(c => {
+    let content = '';
+    if (typeof this.comparisons === 'string') {
+      content = `<span>${this.comparisons}</span>`;
+    } else if (Array.isArray(this.comparisons)) {
+      content = '<div class="flex flex-col gap-1">';
+      this.comparisons.forEach(c => {
       const formattedValue = this.isPercent
         ? (c.value * 100).toFixed(2) + '%'
         : this.decimalPipe.transform(c.value, '1.0-0');
@@ -57,6 +61,7 @@ export class HlmTooltipDirective implements OnDestroy {
       `;
     });
     content += '</div>';
+    }
 
     this.renderer.setProperty(this.tooltipElement, 'innerHTML', content);
     this.renderer.addClass(this.tooltipElement, 'fixed');

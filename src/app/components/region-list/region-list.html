@@ -16,6 +16,12 @@
       <p hlmLead class="text-secondary/80 dark:text-foreground/80">Изберете многомандатен изборен район (МИР) за {{ dateName }}</p>
     </div>
     <div class="flex gap-2">
+      @if (getCikUrl()) {
+        <a [href]="getCikUrl()" target="_blank" hlmBtn variant="outline" hlmTooltip="Отвори официалните резултати в сайта на ЦИК">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Резултати в ЦИК
+        </a>
+      }
       <a routerLink="/" hlmBtn variant="default">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
         Назад към изборите

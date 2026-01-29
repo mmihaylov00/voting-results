@@ -50,6 +50,7 @@ export class SectionDetailModalComponent {
   @Input({ required: true }) section!: SectionDetails;
   @Input() currentSectionData?: Section;
   @Input() allParties: { id: string, name: string }[] = [];
+  @Input() date: string = '';
   @Output() close = new EventEmitter<void>();
 
   partySortColumn: keyof PartyResult = 'total';
@@ -58,6 +59,13 @@ export class SectionDetailModalComponent {
   showPartyFilter: boolean = false;
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
+
+  getCikUrl(): string {
+    if (this.date.startsWith('2023.04')) return 'https://results.cik.bg/ns2023/search/index.html#';
+    if (this.date.startsWith('2024.06')) return 'https://results.cik.bg/europe2024/search/index.html';
+    if (this.date.startsWith('2024.10')) return 'https://results.cik.bg/pe202410/opendata/index.html';
+    return '';
+  }
 
   constructor(public themeService: ThemeService) {
     effect(() => {
@@ -151,6 +159,16 @@ export class SectionDetailModalComponent {
         ? (valA as number) - (valB as number)
         : (valB as number) - (valA as number);
     });
+  }
+
+  get filteredAllParties(): { id: string, name: string, votes: number }[] {
+    const partyVotesMap = new Map<string, number>();
+    this.section.partyResults.forEach(r => partyVotesMap.set(r.partyId, r.total));
+
+    return this.allParties.map(p => ({
+      ...p,
+      votes: partyVotesMap.get(p.id) || 0
+    }));
   }
 
   get othersResult(): PartyResult | null {
