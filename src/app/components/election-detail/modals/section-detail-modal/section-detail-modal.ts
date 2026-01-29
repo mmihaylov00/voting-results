@@ -61,7 +61,8 @@ export class SectionDetailModalComponent {
   chartOptions: Highcharts.Options = {};
 
   getGoogleMapsUrl(cityName: string, sectionName: string): string {
-    const query = encodeURIComponent(`${cityName} ${sectionName}`);
+    const isCity = this.section.sectionName.startsWith('Общо за');
+    const query = encodeURIComponent(isCity ? cityName : `${cityName} ${sectionName}`);
     return `https://www.google.com/maps/search/?api=1&query=${query}`;
   }
 
@@ -252,8 +253,7 @@ export class SectionDetailModalComponent {
     const paperData = results.map(r => r.paper);
     const machineData = results.map(r => r.machine);
 
-    const totalVoted = this.currentSectionData?.voted || 0;
-    const activity = this.currentSectionData?.activityPercent || 0;
+    const isCity = this.section.sectionName.startsWith('Общо за');
 
     this.chartOptions = {
       chart: {
@@ -261,7 +261,7 @@ export class SectionDetailModalComponent {
         backgroundColor: 'transparent',
       },
       title: {
-        text: 'Топ 10 партии в секцията',
+        text: isCity ? `Топ 10 партии в ${this.section.cityName}` : 'Топ 10 партии в секцията',
         style: { color: textColor }
       },
       xAxis: {

@@ -253,8 +253,7 @@
                             <tbody hlmTableBody>
                                 @for (section of filteredSections; track section.sectionId) {
                                     <tr hlmTableRow
-                                        [class.cursor-pointer]="!groupByCity()"
-                                        [class.cursor-default]="groupByCity()"
+                                        class="cursor-pointer"
                                         [class.bg-muted]="selectedSection?.sectionId === section.sectionId"
                                         (click)="loadSectionDetails(section)">
                                         @if (visibleColumns().has('sectionId')) {

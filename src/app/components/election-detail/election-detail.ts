@@ -330,7 +330,7 @@ export class ElectionDetailComponent implements OnInit {
           sectionId: `${g.sections.length} секции`,
           sectionName: '',
           riskScore: g.riskySectionsCount,
-          risks: g.riskySectionsList.length > 0 ? [`Секции с риск:`, ...g.riskySectionsList] : [],
+          risks: g.riskySectionsList.length > 0 ? g.riskySectionsList : [],
           activityPercent: g.total > 0 ? g.voted / g.total : 0,
           topParties
         };
@@ -673,7 +673,115 @@ export class ElectionDetailComponent implements OnInit {
 
   loadSectionDetails(section: Section): void {
     if (this.groupByCity()) {
-      // In grouped mode, we don't open details modal (for now)
+      const g = section as any;
+      const partiesMap: { [id: string]: string } = {};
+
+      // Build a local parties map from all sections in the group
+      g.sections.forEach((s: Section) => {
+        s.topParties.forEach(tp => {
+          partiesMap[tp.partyId] = tp.name;
+        });
+      });
+
+      const partyResults: PartyResult[] = Object.entries(g.partyVotes as { [pid: string]: number }).map(([partyId, total]) => {
+        // Find paper and machine votes by summing them from all sections in the group
+        let paper = 0;
+        let machine = 0;
+        g.sections.forEach((s: Section) => {
+          const v = s.partyVotes[partyId];
+          if (v) {
+            paper += v.paper;
+            machine += v.machine;
+          }
+        });
+
+        return {
+          partyId,
+          partyName: partiesMap[partyId] || partyId,
+          total,
+          paper,
+          machine,
+          percent: g.voted > 0 ? total / g.voted : 0
+        };
+      }).sort((a, b) => b.total - a.total);
+
+      if (g.noVotes > 0) {
+        partyResults.push({
+          partyId: 'no_votes',
+          partyName: 'Не подкрепя никого',
+          total: g.noVotes,
+          paper: g.totalPaper - partyResults.reduce((sum, r) => sum + r.paper, 0) - g.discardedVotes, // This might be wrong, better sum it
+          machine: g.totalMachine - partyResults.reduce((sum, r) => sum + r.machine, 0), // Also potentially wrong
+          percent: g.voted > 0 ? g.noVotes / g.voted : 0
+        });
+        // Actually, let's just sum paper/machine for noVotes too
+        let noVotesPaper = 0;
+        let noVotesMachine = 0;
+        g.sections.forEach((s: Section) => {
+          noVotesPaper += (s.noVotesPaper || 0);
+          noVotesMachine += (s.noVotesMachine || 0);
+        });
+        const noVotesRes = partyResults.find(r => r.partyId === 'no_votes');
+        if (noVotesRes) {
+          noVotesRes.paper = noVotesPaper;
+          noVotesRes.machine = noVotesMachine;
+        }
+      }
+
+      const details: SectionDetails = {
+        sectionId: g.cityName,
+        cityName: g.cityName,
+        sectionName: `Общо за ${g.sections.length} секции`,
+        partyResults
+      };
+
+      // Create a virtual Section object for comparisons
+      const currentSectionData: Section = {
+        ...section,
+        comparisons: {}
+      };
+
+      // Aggregate comparisons
+      const comparisonKeys = ['total', 'voted', 'discardedVotes', 'noVotes', 'totalPaper', 'totalMachine', 'activityPercent'];
+      comparisonKeys.forEach(key => {
+        const aggregated: { [date: string]: { value: number, dateName: string } } = {};
+        g.sections.forEach((s: Section) => {
+          s.comparisons?.[key]?.forEach((c: any) => {
+            if (!aggregated[c.date]) {
+              aggregated[c.date] = { value: 0, dateName: c.dateName };
+            }
+            if (key === 'activityPercent') {
+              // Activity percent needs to be handled carefully, we'll calculate it later
+            } else {
+              aggregated[c.date].value += c.value;
+            }
+          });
+        });
+
+        if (key === 'activityPercent') {
+          const electorsAggr: { [date: string]: number } = {};
+          const votedAggr: { [date: string]: number } = {};
+          g.sections.forEach((s: Section) => {
+            s.comparisons?.['total']?.forEach((c: any) => electorsAggr[c.date] = (electorsAggr[c.date] || 0) + c.value);
+            s.comparisons?.['voted']?.forEach((c: any) => votedAggr[c.date] = (votedAggr[c.date] || 0) + c.value);
+          });
+          currentSectionData.comparisons![key] = Object.keys(electorsAggr).map(date => ({
+            date,
+            dateName: aggregated[date]?.dateName || date,
+            value: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
+          }));
+        } else {
+          currentSectionData.comparisons![key] = Object.entries(aggregated).map(([date, data]) => ({
+            date,
+            dateName: data.dateName,
+            value: data.value
+          }));
+        }
+      });
+
+      this.selectedSection = details;
+      this.currentSectionData = currentSectionData;
+      this.isModalOpen.set(true);
       return;
     }
     this.electionService.getSectionDetails(this.date, section.sectionId).subscribe(details => {
