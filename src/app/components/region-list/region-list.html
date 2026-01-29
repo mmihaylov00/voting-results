@@ -146,37 +146,43 @@
           Резултати за партия
         </button>
       </div>
+      @if (activeChart() === 'party') {
+        <div class="relative">
+          <button hlmBtn variant="outline" size="sm" (click)="togglePartyFilter($event)" class="border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            <span class="ml-2">Филтър партии</span>
+          </button>
+          @if (showPartyFilter) {
+            <div class="absolute right-0 mt-2 w-64 max-h-96 overflow-auto bg-popover text-popover-foreground border border-primary/20 rounded-md shadow-md z-[120] p-2" (click)="$event.stopPropagation()">
+              @for (party of filteredAllParties; track party.id) {
+                @if (party.id !== '0') {
+                  <div class="flex items-center gap-2 p-1 hover:bg-muted rounded cursor-pointer" (click)="togglePartySelection(party.id)">
+                    <input type="checkbox" [checked]="selectedPartyIds().has(party.id)" class="cursor-pointer" (click)="$event.stopPropagation(); togglePartySelection(party.id)" />
+                    <span class="text-sm truncate">({{ party.votes | number }}) {{ party.name }}</span>
+                  </div>
+                }
+              }
+            </div>
+          }
+        </div>
+      }
     </div>
 
     <div class="w-full">
-      @if (activeChart() === 'party') {
-        <div class="flex items-center justify-between gap-2">
-          <span class="text-xs font-semibold text-muted-foreground uppercase">Избери партия:</span>
-          <select
-            [ngModel]="selectedPartyId()"
-            (ngModelChange)="selectedPartyId.set($event)"
-            class="text-xs bg-background border border-primary/20 rounded px-2 py-1 focus:outline-none focus:border-primary min-w-[150px]"
-          >
-            @for (party of allParties; track party.id) {
-              <option [value]="party.id">{{ party.name }}</option>
-            }
-          </select>
-        </div>
-      }
       @switch (activeChart()) {
         @case ('activity') {
           @if (activityChartOptions.series) {
             <highcharts-chart [options]="activityChartOptions" style="width: 100%; height: 300px; display: block;"></highcharts-chart>
           }
         }
-        @case ('party') {
-          @if (partyChartOptions.series) {
-            <highcharts-chart [options]="partyChartOptions" style="width: 100%; height: 300px; display: block;"></highcharts-chart>
-          }
-        }
         @case ('notVoted') {
           @if (notVotedChartOptions.series) {
             <highcharts-chart [options]="notVotedChartOptions" style="width: 100%; height: 300px; display: block;"></highcharts-chart>
+          }
+        }
+        @case ('party') {
+          @if (partyChartOptions.series) {
+            <highcharts-chart [options]="partyChartOptions" style="width: 100%; height: 600px; display: block;"></highcharts-chart>
           }
         }
       }

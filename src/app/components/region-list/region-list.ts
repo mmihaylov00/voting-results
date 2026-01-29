@@ -17,6 +17,9 @@ import { HighchartsChartComponent } from 'highcharts-angular';
 @Component({
   selector: 'app-region-list',
   standalone: true,
+  host: {
+    '(document:click)': 'closePartyFilter()'
+  },
   imports: [
     CommonModule,
     RouterLink,
@@ -57,7 +60,9 @@ export class RegionListComponent implements OnInit {
 
   activeChart = signal<'activity' | 'party' | 'notVoted'>('activity');
   allParties: { id: string, name: string }[] = [];
-  selectedPartyId = signal<string>('');
+  selectedPartyIds = signal<Set<string>>(new Set());
+  showPartyFilter: boolean = false;
+  private readonly DEFAULT_KEYWORDS = ["ГЕРБ", "ПРОДЪЛЖАВАМЕ", "ВЪЗРАЖДАНЕ", "ДПС", "БСП", "ТАКЪВ НАРОД", "МЕЧ", "ВЕЛИЧИЕ"];
 
   getCikUrl(): string {
     if (this.date.startsWith('2023.04')) return 'https://results.cik.bg/ns2023/search/index.html#';
@@ -74,9 +79,9 @@ export class RegionListComponent implements OnInit {
     this.loading$ = this.electionService.loading$;
 
     effect(() => {
-      // Re-calculate charts options when theme or selected party changes
+      // Re-calculate charts options when theme or selected parties change
       this.themeService.darkMode();
-      this.selectedPartyId();
+      this.selectedPartyIds();
       if (this.regions.length > 0) {
         this.updateCharts();
       }
@@ -106,13 +111,15 @@ export class RegionListComponent implements OnInit {
           return a.id.localeCompare(b.id);
         });
 
-      // Default to PRODЪЛЖАВАМЕ if found
-      const ppdb = this.allParties.find(p => p.name.toUpperCase().includes('ПРОДЪЛЖАВАМЕ'));
-      if (ppdb) {
-        this.selectedPartyId.set(ppdb.id);
-      } else if (this.allParties.length > 0) {
-        this.selectedPartyId.set(this.allParties[0].id);
-      }
+      // Apply default selection based on keywords
+      const defaultIds = new Set<string>();
+      this.allParties.forEach(party => {
+        const name = party.name.toUpperCase();
+        if (this.DEFAULT_KEYWORDS.some(k => name.includes(k))) {
+          defaultIds.add(party.id);
+        }
+      });
+      this.selectedPartyIds.set(defaultIds);
     });
   }
 
@@ -170,6 +177,41 @@ export class RegionListComponent implements OnInit {
     }
   }
 
+  togglePartyFilter(event: Event) {
+    event.stopPropagation();
+    this.showPartyFilter = !this.showPartyFilter;
+  }
+
+  closePartyFilter() {
+    this.showPartyFilter = false;
+  }
+
+  togglePartySelection(partyId: string): void {
+    const current = new Set(this.selectedPartyIds());
+    if (current.has(partyId)) {
+      current.delete(partyId);
+    } else {
+      current.add(partyId);
+    }
+    this.selectedPartyIds.set(current);
+  }
+
+  get filteredAllParties(): { id: string, name: string, votes: number }[] {
+    // Calculate total votes per party across all regions
+    const partyVotesMap = new Map<string, number>();
+    this.regions.forEach(region => {
+      Object.entries(region.partyVotes).forEach(([partyId, votes]) => {
+        const currentVotes = partyVotesMap.get(partyId) || 0;
+        partyVotesMap.set(partyId, currentVotes + (votes as number));
+      });
+    });
+
+    return this.allParties.map(p => ({
+      ...p,
+      votes: partyVotesMap.get(p.id) || 0
+    }));
+  }
+
   updateCharts() {
     const isDark = this.themeService.darkMode();
     const textColor = isDark ? '#f8fafc' : '#020817';
@@ -179,14 +221,58 @@ export class RegionListComponent implements OnInit {
     const activityData = this.regions.map(r => r.total > 0 ? (r.voted / r.total) * 100 : 0);
     this.activityChartOptions = this.createBaseChartOptions('Активност по райони (%)', categories, activityData, textColor, '{point.y:.2f}%');
 
-    // 2. Party Votes Chart
-    const partyId = this.selectedPartyId();
-    const partyName = this.allParties.find(p => p.id === partyId)?.name || 'Партия';
-    const partyData = this.regions.map(r => {
-      const votes = r.partyVotes[partyId] || 0;
-      return r.voted > 0 ? (votes / r.voted) * 100 : 0;
-    });
-    this.partyChartOptions = this.createBaseChartOptions(`Гласове за ${partyName} (%)`, categories, partyData, textColor, '{point.y:.2f}%');
+    // 2. Party Votes Chart - Multiple series for selected parties
+    const selectedIds = this.selectedPartyIds();
+    const series: any[] = [];
+
+    if (selectedIds.size > 0) {
+      selectedIds.forEach(partyId => {
+        const party = this.allParties.find(p => p.id === partyId);
+        if (party) {
+          const partyData = this.regions.map(r => {
+            const votes = r.partyVotes[partyId] || 0;
+            return r.voted > 0 ? (votes / r.voted) * 100 : 0;
+          });
+          series.push({
+            name: party.name,
+            data: partyData,
+            type: 'column'
+          });
+        }
+      });
+    }
+
+    this.partyChartOptions = {
+      chart: { type: 'column', backgroundColor: 'transparent', height: 600 },
+      title: { text: 'Гласове за партии (%)', style: { color: textColor, fontSize: '14px' } },
+      xAxis: { categories, labels: { style: { color: textColor } } },
+      yAxis: {
+        title: { text: 'Процент (%)', style: { color: textColor } },
+        labels: { style: { color: textColor } },
+        min: 0,
+        max: 100
+      },
+      legend: {
+        itemStyle: { color: textColor, fontSize: '11px' },
+        itemMarginBottom: 4,
+        symbolHeight: 10,
+        symbolWidth: 10,
+        symbolRadius: 2
+      },
+      tooltip: {
+        shared: true,
+        pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y:.2f}%</b><br/>'
+      },
+      plotOptions: {
+        column: {
+          dataLabels: {
+            enabled: false
+          }
+        }
+      },
+      series: series.length > 0 ? series : [],
+      credits: { enabled: false }
+    };
 
     // 3. Not Voted Chart
     const notVotedData = this.regions.map(r => r.total > 0 ? ((r.total - r.voted) / r.total) * 100 : 0);
