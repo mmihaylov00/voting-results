@@ -285,6 +285,8 @@ export class ElectionDetailComponent implements OnInit {
             noVotes: 0,
             totalMachine: 0,
             totalPaper: 0,
+            riskySectionsCount: 0,
+            riskySectionsList: [] as string[],
             partyVotes: {},
             sections: []
           });
@@ -296,6 +298,10 @@ export class ElectionDetailComponent implements OnInit {
         g.noVotes += s.noVotes;
         g.totalMachine += (s.totalMachine || 0);
         g.totalPaper += (s.totalPaper || 0);
+        if ((s.riskScore || 0) > 0) {
+          g.riskySectionsCount++;
+          g.riskySectionsList.push(s.sectionId);
+        }
         g.sections.push(s);
 
         Object.entries(s.partyVotes).forEach(([pid, v]) => {
@@ -323,6 +329,8 @@ export class ElectionDetailComponent implements OnInit {
           ...g,
           sectionId: `${g.sections.length} секции`,
           sectionName: '',
+          riskScore: g.riskySectionsCount,
+          risks: g.riskySectionsList.length > 0 ? [`Секции с риск:`, ...g.riskySectionsList] : [],
           activityPercent: g.total > 0 ? g.voted / g.total : 0,
           topParties
         };
