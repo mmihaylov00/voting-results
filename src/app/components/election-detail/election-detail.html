@@ -10,7 +10,7 @@
         </div>
     }
 
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+    <div class="flex flex-col md:flex-row md:justify-between items-center md:items-center gap-4 mb-8">
         <div>
             <h1 hlmH2 class="border-b-0 pb-0 text-secondary dark:text-primary">Резултати за {{ dateName }}</h1>
             <p hlmLead class="text-secondary/80 dark:text-foreground/80">{{ regionName }}@if (regionId) { (МИР {{ regionId }}) }</p>
@@ -28,7 +28,7 @@
               Назад към районите
             </a>
           </div>
-          <div class="flex gap-2 flex-row flex-wrap justify-end">
+          <div class="flex gap-2 flex-row justify-end">
             <button hlmBtn variant="outline" (click)="openExportModal()" class="border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Експорт CSV
