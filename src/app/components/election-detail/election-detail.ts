@@ -109,6 +109,7 @@ export class ElectionDetailComponent implements OnInit {
   groupByCity = signal<boolean>(false);
   groupedSections: any[] = [];
   isLoadingAllSections = signal<boolean>(false);
+  isProcessingData = signal<boolean>(false);
 
   getCikUrl(): string {
     if (this.date.startsWith('2023.04')) return 'https://results.cik.bg/ns2023/search/index.html#';
@@ -225,6 +226,8 @@ export class ElectionDetailComponent implements OnInit {
       if (this.regionId === 'all' || !this.regionId) {
         this.isLoadingAllSections.set(true);
       }
+      // Show processing state for all cases
+      this.isProcessingData.set(true);
 
       this.electionService.getSections(this.date, this.regionId).subscribe({
         next: (sections) => {
@@ -243,11 +246,13 @@ export class ElectionDetailComponent implements OnInit {
             this.applyFilter();
             this.sortSections(this.sectionSortColumn, true);
             this.isLoadingAllSections.set(false);
+            this.isProcessingData.set(false);
           }, 0);
         },
         error: (err) => {
           console.error('Error loading sections:', err);
           this.isLoadingAllSections.set(false);
+          this.isProcessingData.set(false);
         }
       });
       this.electionService.getParties(this.date).subscribe(partiesMap => {
@@ -331,11 +336,27 @@ export class ElectionDetailComponent implements OnInit {
           .map(([partyId, total]) => {
             const sectionWithParty = g.sections.find((s: any) => s.partyVotes[partyId]);
             const name = sectionWithParty?.topParties.find((tp: any) => tp.partyId === partyId)?.name || partyId;
+            
+            // Aggregate comparisons for this party from all sections
+            const comparisonsMap: { [date: string]: ComparativeValue } = {};
+            g.sections.forEach((s: Section) => {
+              const partyVotes = s.partyVotes[partyId];
+              if (partyVotes && partyVotes.comparisons) {
+                partyVotes.comparisons.forEach((c: ComparativeValue) => {
+                  if (!comparisonsMap[c.date]) {
+                    comparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
+                  }
+                  comparisonsMap[c.date].value += c.value;
+                });
+              }
+            });
+            
             return {
               partyId,
               name,
               total: total as number,
-              percent: g.voted > 0 ? (total as number) / g.voted : 0
+              percent: g.voted > 0 ? (total as number) / g.voted : 0,
+              comparisons: Object.values(comparisonsMap)
             };
           })
           .sort((a, b) => b.total - a.total)
