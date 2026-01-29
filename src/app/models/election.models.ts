@@ -1,7 +1,14 @@
+export interface ComparativeValue {
+  value: number;
+  date: string;
+  dateName: string;
+}
+
 export interface PartyVotes {
   total: number;
   paper: number;
   machine: number;
+  comparisons?: ComparativeValue[];
 }
 
 export interface Region {
@@ -15,6 +22,7 @@ export interface Region {
   noVotes?: number;
   totalPaper?: number;
   totalMachine?: number;
+  comparisons?: { [key: string]: ComparativeValue[] };
 }
 
 export interface Section {
@@ -33,6 +41,11 @@ export interface Section {
   activityPercent: number;
   totalPaper?: number;
   totalMachine?: number;
+  hasProtocolError?: boolean;
+  protocolErrorDiff?: number;
+  protocolPaperVotes?: number;
+  protocolMachineVotes?: number;
+  comparisons?: { [key: string]: ComparativeValue[] };
 }
 
 export interface PartyResult {

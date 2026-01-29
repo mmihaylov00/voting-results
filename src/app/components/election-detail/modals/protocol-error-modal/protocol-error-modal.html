@@ -1,0 +1,46 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4" (click)="close.emit()">
+    <div hlmCard class="w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl border-primary/20 bg-background/50 backdrop-blur-md" (click)="$event.stopPropagation()">
+        <div hlmCardHeader class="flex flex-row items-center justify-between border-b p-4 bg-transparent">
+            <div>
+                <h3 hlmH4 class="text-secondary dark:text-primary">Секции със сгрешени протоколи</h3>
+                <p hlmMuted class="text-xs">Списък на секциите, при които Общ брой гласове ≠ Хартиени гласове + Машинни гласове</p>
+            </div>
+            <button hlmBtn variant="ghost" size="sm" (click)="close.emit()" class="h-8 w-8 p-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div hlmCardContent class="p-0 overflow-auto flex-grow">
+            <table hlmTable>
+                <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
+                    <tr hlmTableRow>
+                        <th hlmTableHead class="text-secondary dark:text-primary">Секция</th>
+                        <th hlmTableHead class="text-secondary dark:text-primary">Град</th>
+                        <th hlmTableHead class="text-right text-secondary dark:text-primary">Подписи</th>
+                        <th hlmTableHead class="text-right text-secondary dark:text-primary">Хартиени</th>
+                        <th hlmTableHead class="text-right text-secondary dark:text-primary">Машинни</th>
+                        <th hlmTableHead class="text-right text-secondary dark:text-primary">Разлика</th>
+                    </tr>
+                </thead>
+                <tbody hlmTableBody>
+                    @for (section of sectionsWithError; track section.sectionId) {
+                        <tr hlmTableRow class="hover:bg-muted/30">
+                            <td hlmTableCell class="font-mono text-xs">{{ section.sectionId }}</td>
+                            <td hlmTableCell>{{ section.cityName }}</td>
+                            <td hlmTableCell class="text-right font-medium" [hlmTooltip]="section.comparisons!['voted']">{{ section.voted }}</td>
+                            <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons!['totalPaper']">{{ section.protocolPaperVotes }}</td>
+                            <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons!['totalMachine']">{{ section.protocolMachineVotes }}</td>
+                            <td hlmTableCell class="text-right">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-destructive/10 text-destructive">
+                                    {{ section.protocolErrorDiff }}
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div hlmCardFooter class="border-t p-4 flex justify-end bg-transparent">
+            <button hlmBtn variant="outline" (click)="close.emit()">Затвори</button>
+        </div>
+    </div>
+</div>

@@ -23,21 +23,33 @@ export class ElectionService {
     return this.electionDates;
   }
 
+  private allElectionsData: { [date: string]: { sections: Section[], parties: { [id: string]: string } } } = {};
+
   getRegions(date: string): Observable<Region[]> {
-    return this.getSections(date).pipe(
-      map(sections => {
+    return this.getComparativeRegions(date);
+  }
+
+  private getComparativeRegions(date: string): Observable<Region[]> {
+    const dates = this.electionDates.map(d => d.date);
+    return forkJoin(dates.map(d => this.getSections(d))).pipe(
+      map(allSections => {
+        const sectionsByDate: { [date: string]: Section[] } = {};
+        dates.forEach((d, i) => sectionsByDate[d] = allSections[i]);
+
+        const targetSections = sectionsByDate[date];
         const regionsMap = new Map<string, {
           name: string,
-          partyVotes: {[id: string]: number},
+          partyVotes: { [id: string]: number },
           voted: number,
           total: number,
           discardedVotes: number,
           noVotes: number,
           totalPaper: number,
-          totalMachine: number
+          totalMachine: number,
+          sections: Section[]
         }>();
 
-        sections.forEach(s => {
+        targetSections.forEach(s => {
           if (!regionsMap.has(s.regionId)) {
             regionsMap.set(s.regionId, {
               name: (s as any).regionName,
@@ -47,10 +59,12 @@ export class ElectionService {
               discardedVotes: 0,
               noVotes: 0,
               totalPaper: 0,
-              totalMachine: 0
+              totalMachine: 0,
+              sections: []
             });
           }
           const reg = regionsMap.get(s.regionId)!;
+          reg.sections.push(s);
           reg.voted += s.voted;
           reg.total += s.total;
           reg.discardedVotes += s.discardedVotes;
@@ -64,7 +78,7 @@ export class ElectionService {
 
         const parties = this.cache[date].parties;
 
-        return Array.from(regionsMap.entries()).map(([id, data]) => {
+        const regions = Array.from(regionsMap.entries()).map(([id, data]) => {
           const topParties = Object.entries(data.partyVotes)
             .filter(([pid, _]) => pid !== '0')
             .map(([pid, total]) => {
@@ -82,7 +96,7 @@ export class ElectionService {
             .sort((a, b) => b.total - a.total)
             .slice(0, 3);
 
-          return {
+          const region = {
             id,
             name: data.name,
             total: data.total,
@@ -92,8 +106,51 @@ export class ElectionService {
             discardedVotes: data.discardedVotes,
             noVotes: data.noVotes,
             totalPaper: data.totalPaper,
-            totalMachine: data.totalMachine
+            totalMachine: data.totalMachine,
+            comparisons: {}
           } as Region;
+
+          // Add comparisons
+          dates.filter(d => d !== date).forEach(d => {
+            const otherSections = sectionsByDate[d].filter(s => s.regionId === id);
+            const otherVoted = otherSections.reduce((sum, s) => sum + s.voted, 0);
+            const otherTotal = otherSections.reduce((sum, s) => sum + s.total, 0);
+            const otherDiscarded = otherSections.reduce((sum, s) => sum + s.discardedVotes, 0);
+            const otherNoVotes = otherSections.reduce((sum, s) => sum + s.noVotes, 0);
+            const otherPaper = otherSections.reduce((sum, s) => sum + (s.totalPaper || 0), 0);
+            const otherMachine = otherSections.reduce((sum, s) => sum + (s.totalMachine || 0), 0);
+            const dateName = this.electionDates.find(ed => ed.date === d)?.name || d;
+
+            region.comparisons!['voted'] = region.comparisons!['voted'] || [];
+            region.comparisons!['voted'].push({ value: otherVoted, date: d, dateName });
+
+            region.comparisons!['total'] = region.comparisons!['total'] || [];
+            region.comparisons!['total'].push({ value: otherTotal, date: d, dateName });
+
+            region.comparisons!['discardedVotes'] = region.comparisons!['discardedVotes'] || [];
+            region.comparisons!['discardedVotes'].push({ value: otherDiscarded, date: d, dateName });
+
+            region.comparisons!['noVotes'] = region.comparisons!['noVotes'] || [];
+            region.comparisons!['noVotes'].push({ value: otherNoVotes, date: d, dateName });
+
+            region.comparisons!['totalPaper'] = region.comparisons!['totalPaper'] || [];
+            region.comparisons!['totalPaper'].push({ value: otherPaper, date: d, dateName });
+
+            region.comparisons!['totalMachine'] = region.comparisons!['totalMachine'] || [];
+            region.comparisons!['totalMachine'].push({ value: otherMachine, date: d, dateName });
+
+            region.comparisons!['activityPercent'] = region.comparisons!['activityPercent'] || [];
+            region.comparisons!['activityPercent'].push({ value: otherTotal > 0 ? otherVoted / otherTotal : 0, date: d, dateName });
+
+            // Party comparisons for regions
+            Object.keys(region.partyVotes).forEach(pid => {
+              const otherPartyTotal = otherSections.reduce((sum, s) => sum + (s.partyVotes[pid]?.total || 0), 0);
+              region.comparisons![`party_${pid}`] = region.comparisons![`party_${pid}`] || [];
+              region.comparisons![`party_${pid}`].push({ value: otherPartyTotal, date: d, dateName });
+            });
+          });
+
+          return region;
         }).sort((a, b) => {
           const idA = parseInt(a.id, 10);
           const idB = parseInt(b.id, 10);
@@ -102,6 +159,46 @@ export class ElectionService {
           }
           return a.id.localeCompare(b.id);
         });
+
+        // Also update targetSections with comparative data
+        targetSections.forEach(s => {
+          s.comparisons = {};
+          dates.filter(d => d !== date).forEach(d => {
+            const otherSection = sectionsByDate[d].find(os => os.sectionId === s.sectionId);
+            const dateName = this.electionDates.find(ed => ed.date === d)?.name || d;
+            if (otherSection) {
+              s.comparisons!['voted'] = s.comparisons!['voted'] || [];
+              s.comparisons!['voted'].push({ value: otherSection.voted, date: d, dateName });
+
+              s.comparisons!['total'] = s.comparisons!['total'] || [];
+              s.comparisons!['total'].push({ value: otherSection.total, date: d, dateName });
+
+              s.comparisons!['discardedVotes'] = s.comparisons!['discardedVotes'] || [];
+              s.comparisons!['discardedVotes'].push({ value: otherSection.discardedVotes, date: d, dateName });
+
+              s.comparisons!['noVotes'] = s.comparisons!['noVotes'] || [];
+              s.comparisons!['noVotes'].push({ value: otherSection.noVotes, date: d, dateName });
+
+              s.comparisons!['totalPaper'] = s.comparisons!['totalPaper'] || [];
+              s.comparisons!['totalPaper'].push({ value: otherSection.totalPaper || 0, date: d, dateName });
+
+              s.comparisons!['totalMachine'] = s.comparisons!['totalMachine'] || [];
+              s.comparisons!['totalMachine'].push({ value: otherSection.totalMachine || 0, date: d, dateName });
+
+              s.comparisons!['activityPercent'] = s.comparisons!['activityPercent'] || [];
+              s.comparisons!['activityPercent'].push({ value: otherSection.activityPercent, date: d, dateName });
+
+              Object.keys(s.partyVotes).forEach(pid => {
+                if (otherSection.partyVotes[pid]) {
+                  s.partyVotes[pid].comparisons = s.partyVotes[pid].comparisons || [];
+                  s.partyVotes[pid].comparisons!.push({ value: otherSection.partyVotes[pid].total, date: d, dateName });
+                }
+              });
+            }
+          });
+        });
+
+        return regions;
       })
     );
   }
@@ -271,46 +368,41 @@ export class ElectionService {
       const parts = line.split(';');
       if (parts.length <= 9) continue;
 
-      const formType = parts[0].trim();
       const sectionId = parts[1].trim();
       const section = sections[sectionId];
       if (!section) continue;
 
-      let total = 0;
-      let voted = 0;
-      let discarded = 0;
-      let noVote = 0;
-      let noVotePaper = 0;
-      let noVoteMachine = 0;
-
       if (parts.length == 21) {
-        total = this.parseLongSafe(parts[7]) + this.parseLongSafe(parts[10]);
-        voted = this.parseLongSafe(parts[11]);
-        discarded = this.parseLongSafe(parts[15]);
-        noVotePaper = this.parseLongSafe(parts[16]);
-        noVoteMachine = this.parseLongSafe(parts[19]);
+        //2024.06
+        section.total = this.parseLongSafe(parts[7]) + this.parseLongSafe(parts[10]);
+        section.voted = this.parseLongSafe(parts[11]);
+        section.discardedVotes = this.parseLongSafe(parts[15]);
+        section.noVotesPaper = this.parseLongSafe(parts[16]);
+        section.noVotesMachine = this.parseLongSafe(parts[19]);
+        section.protocolPaperVotes = this.parseLongSafe(parts[14]);
+        section.protocolMachineVotes = this.parseLongSafe(parts[18]);
       } else if(parts.length == 25) {
-        total = this.parseLongSafe(parts[7]) + this.parseLongSafe(parts[8]);
-        voted = this.parseLongSafe(parts[9]);
-        discarded = this.parseLongSafe(parts[15]);
-        noVotePaper = this.parseLongSafe(parts[22]);
-        noVoteMachine = this.parseLongSafe(parts[23]);
+        //2023.04
+        section.total = this.parseLongSafe(parts[7]) + this.parseLongSafe(parts[8]);
+        section.voted = this.parseLongSafe(parts[9]);
+        section.discardedVotes = this.parseLongSafe(parts[15]);
+        section.noVotesPaper = this.parseLongSafe(parts[22]);
+        section.noVotesMachine = this.parseLongSafe(parts[23]);
+        section.protocolPaperVotes = this.parseLongSafe(parts[12]);
+        section.protocolMachineVotes = this.parseLongSafe(parts[13]);
       } else {
-        total = this.parseLongSafe(parts[7]) + this.parseLongSafe(parts[8]);
-        voted = this.parseLongSafe(parts[9]);
-        discarded = this.parseLongSafe(parts[13]);
-        noVotePaper = this.parseLongSafe(parts[14]);
-        noVoteMachine = this.parseLongSafe(parts[17]);
+        // 2024.10
+        section.total = this.parseLongSafe(parts[7]) + this.parseLongSafe(parts[8]);
+        section.voted = this.parseLongSafe(parts[9]);
+        section.discardedVotes = this.parseLongSafe(parts[13]);
+        section.noVotesPaper = this.parseLongSafe(parts[14]);
+        section.noVotesMachine = this.parseLongSafe(parts[17]);
+        section.protocolPaperVotes = this.parseLongSafe(parts[12]);
+        section.protocolMachineVotes = this.parseLongSafe(parts[16]);
       }
-      noVote = noVotePaper + noVoteMachine;
-
-
-      section.total += total;
-      section.voted += voted;
-      section.discardedVotes += discarded;
-      section.noVotes += noVote;
-      section.noVotesPaper! += noVotePaper;
-      section.noVotesMachine! += noVoteMachine;
+      section.noVotes = section.noVotesPaper + section.noVotesMachine;
+      section.protocolErrorDiff = section.voted - section.protocolPaperVotes - section.protocolMachineVotes;
+      section.hasProtocolError = section.protocolErrorDiff != 0;
     }
   }
 

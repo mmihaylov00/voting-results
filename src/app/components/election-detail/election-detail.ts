@@ -24,12 +24,15 @@ import {
   HlmCardHeaderDirective
 } from '../ui/card-helm/src/lib/hlm-card.directives';
 import { HlmInputDirective } from '../ui/input-helm/src/lib/hlm-input.directive';
+import { HlmTooltipDirective } from '../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
 import { FormsModule } from '@angular/forms';
+import { SectionDetailModalComponent } from './modals/section-detail-modal/section-detail-modal';
+import { ExportCsvModalComponent } from './modals/export-csv-modal/export-csv-modal';
+import { ProtocolErrorModalComponent } from './modals/protocol-error-modal/protocol-error-modal';
 
 @Component({
   selector: 'app-election-detail',
   host: {
-    '(document:click)': 'closePartyFilter()',
     '(document:keydown.escape)': 'handleEscape()'
   },
   imports: [
@@ -46,10 +49,13 @@ import { FormsModule } from '@angular/forms';
     HlmTypographyDirective,
     HlmCardDirective,
     HlmInputDirective,
-    HighchartsChartComponent,
+    HlmTooltipDirective,
     HlmCardHeaderDirective,
     HlmCardContentDirective,
     HlmCardDescriptionDirective,
+    SectionDetailModalComponent,
+    ExportCsvModalComponent,
+    ProtocolErrorModalComponent,
   ],
   templateUrl: './election-detail.html',
   styleUrl: './election-detail.scss',
@@ -74,25 +80,24 @@ export class ElectionDetailComponent implements OnInit {
   totalTop3Votes: number = 0;
   totalRegionMachine: number = 0;
   totalRegionPaper: number = 0;
+  globalComparisons: { [key: string]: any[] } = {};
 
   sectionSortColumn: keyof Section = 'sectionId';
   sectionSortDir: 'asc' | 'desc' = 'asc';
 
-  partySortColumn: keyof PartyResult = 'total';
-  partySortDir: 'asc' | 'desc' = 'desc';
-
   selectedPartyIds: Set<string> = new Set();
   allParties: { id: string, name: string }[] = [];
-  showPartyFilter: boolean = false;
   isModalOpen = signal<boolean>(false);
   isExportModalOpen = signal<boolean>(false);
-  exportPartyIds: Set<string> = new Set();
+  isErrorModalOpen = signal<boolean>(false);
   currentSectionData?: Section;
-  Highcharts: typeof Highcharts = Highcharts;
-  chartOptions: Highcharts.Options = {};
   regionalChartOptions: Highcharts.Options = {};
 
   private readonly DEFAULT_KEYWORDS = ["ГЕРБ", "ПРОДЪЛЖАВАМЕ", "ВЪЗРАЖДАНЕ", "ДПС", "БСП", "ТАКЪВ НАРОД", "МЕЧ", "ВЕЛИЧИЕ"];
+
+  get sectionsWithError(): Section[] {
+    return this.sections.filter(s => s.hasProtocolError);
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -107,13 +112,10 @@ export class ElectionDetailComponent implements OnInit {
       if (this.regionalChartOptions.series) {
         this.calculateRegionalStats();
       }
-      if (this.isModalOpen() && this.selectedSection) {
-        this.updateChartOptions();
-      }
     });
 
     effect(() => {
-      const anyModalOpen = this.isModalOpen() || this.isExportModalOpen();
+      const anyModalOpen = this.isModalOpen() || this.isExportModalOpen() || this.isErrorModalOpen();
       if (anyModalOpen) {
         document.body.classList.add('overflow-hidden');
       } else {
@@ -122,108 +124,20 @@ export class ElectionDetailComponent implements OnInit {
     });
   }
 
-  openExportModal(): void {
-    if (!this.date || this.sections.length === 0) return;
-    this.exportPartyIds = new Set(this.selectedPartyIds);
-    this.isExportModalOpen.set(true);
+  openErrorModal(): void {
+    this.isErrorModalOpen.set(true);
+  }
+
+  closeErrorModal(): void {
+    this.isErrorModalOpen.set(false);
   }
 
   closeExportModal(): void {
     this.isExportModalOpen.set(false);
   }
 
-  toggleExportPartySelection(partyId: string): void {
-    if (this.exportPartyIds.has(partyId)) {
-      this.exportPartyIds.delete(partyId);
-    } else {
-      this.exportPartyIds.add(partyId);
-    }
-  }
-
-  downloadCsv(): void {
-    if (!this.date || this.sections.length === 0) return;
-
-    this.electionService.getParties(this.date).subscribe(partiesMap => {
-      const csvContent = this.generateCsv(partiesMap);
-      const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.setAttribute('href', url);
-      link.setAttribute('download', `election_results_${this.date}.csv`);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      this.closeExportModal();
-    });
-  }
-
-  private generateCsv(partiesMap: { [id: string]: string }): string {
-    const selectedPartyIds = Array.from(this.exportPartyIds).filter(id => id !== '0');
-    try {
-      selectedPartyIds.sort((a, b) => parseInt(a) - parseInt(b));
-    } catch (e) {
-      selectedPartyIds.sort();
-    }
-
-    let header = 'Град;Секция ИД;Секция;По списък;Гласували;Недействителни;Не подкрепя никого;Активност %';
-    for (const id of selectedPartyIds) {
-      const partyName = partiesMap[id] || id;
-      header += `;${partyName} (Общо);${partyName} (Хартиени);${partyName} (Машинни)`;
-    }
-
-    // Always add Others if not all parties are selected
-    const allPartyIds = Object.keys(partiesMap).filter(id => id !== '0');
-    const hasUnselected = allPartyIds.some(id => !this.exportPartyIds.has(id));
-
-    if (hasUnselected) {
-      header += ';Други (Общо);Други (Хартиени);Други (Машинни)';
-    }
-
-    const rows = this.sections.map(section => {
-      let row = `${section.cityName};${section.sectionId};${this.escapeSemi(section.sectionName)};${section.total};${section.voted};${section.discardedVotes};${section.noVotes};${(section.activityPercent * 100).toFixed(2)}%`;
-
-      for (const partyId of selectedPartyIds) {
-        const votes = section.partyVotes[partyId] || { total: 0, paper: 0, machine: 0 };
-        row += `;${votes.total};${votes.paper};${votes.machine}`;
-      }
-
-      if (hasUnselected) {
-        let othersTotal = 0;
-        let othersPaper = 0;
-        let othersMachine = 0;
-
-        for (const partyId of allPartyIds) {
-          if (!this.exportPartyIds.has(partyId)) {
-            const votes = section.partyVotes[partyId] || { total: 0, paper: 0, machine: 0 };
-            othersTotal += votes.total;
-            othersPaper += votes.paper;
-            othersMachine += votes.machine;
-          }
-        }
-        // Also add the original 'Others' (id '0') if it exists and wasn't selected
-        if (partiesMap['0'] && !this.exportPartyIds.has('0')) {
-          const votes = section.partyVotes['0'] || { total: 0, paper: 0, machine: 0 };
-          othersTotal += votes.total;
-          othersPaper += votes.paper;
-          othersMachine += votes.machine;
-        }
-
-        row += `;${othersTotal};${othersPaper};${othersMachine}`;
-      }
-
-      return row;
-    });
-
-    return [header, ...rows].join('\n');
-  }
-
-  private escapeSemi(v: string): string {
-    if (!v) return '';
-    if (v.includes(';') || v.includes('"') || v.includes('\n') || v.includes('\r')) {
-      return '"' + v.replace(/"/g, '""') + '"';
-    }
-    return v;
+  openExportModal(): void {
+    this.isExportModalOpen.set(true);
   }
 
   ngOnInit(): void {
@@ -319,6 +233,41 @@ export class ElectionDetailComponent implements OnInit {
     this.totalNoVotes = this.sections.reduce((sum, s) => sum + s.noVotes, 0);
     this.totalRegionMachine = this.sections.reduce((sum, s) => sum + (s.totalMachine || 0), 0);
     this.totalRegionPaper = this.sections.reduce((sum, s) => sum + (s.totalPaper || 0), 0);
+
+    // Aggregate comparisons for regional stats
+    this.globalComparisons = {};
+    if (this.sections.length > 0 && this.sections[0].comparisons) {
+      Object.keys(this.sections[0].comparisons).forEach(key => {
+        const aggregated: { [date: string]: { value: number, dateName: string } } = {};
+        this.sections.forEach(s => {
+          s.comparisons![key]?.forEach(c => {
+            if (!aggregated[c.date]) {
+              aggregated[c.date] = { value: 0, dateName: c.dateName };
+            }
+            aggregated[c.date].value += c.value;
+          });
+        });
+        this.globalComparisons[key] = Object.entries(aggregated).map(([date, data]) => ({
+          date,
+          dateName: data.dateName,
+          value: data.value
+        }));
+      });
+
+      // Special handling for avg activity percent
+      const electorsAggr: { [date: string]: number } = {};
+      const votedAggr: { [date: string]: number } = {};
+      this.sections.forEach(s => {
+        s.comparisons!['total']?.forEach(c => electorsAggr[c.date] = (electorsAggr[c.date] || 0) + c.value);
+        s.comparisons!['voted']?.forEach(c => votedAggr[c.date] = (votedAggr[c.date] || 0) + c.value);
+      });
+
+      this.globalComparisons['activityPercent'] = Object.keys(electorsAggr).map(date => ({
+        date,
+        dateName: this.sections[0].comparisons!['total'].find(c => c.date === date)!.dateName,
+        value: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
+      }));
+    }
 
     const regionalPartyVotes: { [partyId: string]: number } = {};
     this.sections.forEach(s => {
@@ -422,60 +371,6 @@ export class ElectionDetailComponent implements OnInit {
     };
   }
 
-  sortSections(column: keyof Section | 'totalPaper' | 'totalMachine', preserveDir: boolean = false): void {
-    if (!preserveDir) {
-      if (this.sectionSortColumn === (column as keyof Section)) {
-        this.sectionSortDir = this.sectionSortDir === 'asc' ? 'desc' : 'asc';
-      } else {
-        this.sectionSortColumn = column as keyof Section;
-        this.sectionSortDir = 'asc';
-      }
-    }
-
-    this.filteredSections.sort((a, b) => {
-      const valA = a[column as keyof Section];
-      const valB = b[column as keyof Section];
-
-      if (typeof valA === 'string' && typeof valB === 'string') {
-        return this.sectionSortDir === 'asc'
-          ? valA.localeCompare(valB)
-          : valB.localeCompare(valA);
-      }
-
-      const numA = (valA as number) || 0;
-      const numB = (valB as number) || 0;
-      return this.sectionSortDir === 'asc' ? numA - numB : numB - numA;
-    });
-  }
-
-  sortParties(column: keyof PartyResult, preserveDir: boolean = false): void {
-    if (!this.selectedSection) return;
-
-    if (!preserveDir) {
-      if (this.partySortColumn === column) {
-        this.partySortDir = this.partySortDir === 'asc' ? 'desc' : 'asc';
-      } else {
-        this.partySortColumn = column;
-        this.partySortDir = 'desc';
-      }
-    }
-
-    this.selectedSection.partyResults.sort((a, b) => {
-      const valA = a[column];
-      const valB = b[column];
-
-      if (typeof valA === 'string' && typeof valB === 'string') {
-        return this.partySortDir === 'asc'
-          ? valA.localeCompare(valB)
-          : valB.localeCompare(valA);
-      }
-
-      const numA = valA as number;
-      const numB = valB as number;
-      return this.partySortDir === 'asc' ? numA - numB : numB - numA;
-    });
-  }
-
   formatRegionName(name: string): string {
     const parts = name.split('.');
     if (parts.length > 1) {
@@ -488,118 +383,14 @@ export class ElectionDetailComponent implements OnInit {
     this.electionService.getSectionDetails(this.date, section.sectionId).subscribe(details => {
       this.selectedSection = details;
       this.currentSectionData = section;
-      this.sortParties(this.partySortColumn, true);
-      this.updateChartOptions();
       this.isModalOpen.set(true);
     });
-  }
-
-  private updateChartOptions(): void {
-    if (!this.selectedSection) return;
-
-    const isDark = this.themeService.darkMode();
-    const textColor = isDark ? '#f8fafc' : '#020817';
-
-    const topResults = [...this.selectedSection.partyResults]
-      .sort((a, b) => b.total - a.total)
-      .slice(0, 10);
-
-    const data = topResults.map(r => ({
-      name: r.partyName,
-      y: r.total
-    }));
-
-    // Add "Others" to the chart if there are more than 10 parties
-    if (this.selectedSection.partyResults.length > 10) {
-      const othersTotal = this.selectedSection.partyResults
-        .sort((a, b) => b.total - a.total)
-        .slice(10)
-        .reduce((sum, r) => sum + r.total, 0);
-
-      if (othersTotal > 0) {
-        data.push({
-          name: 'Други',
-          y: othersTotal
-        });
-      }
-    }
-
-    if (this.currentSectionData) {
-      const nonVoters = Math.max(0, this.currentSectionData.total - this.currentSectionData.voted);
-      if (nonVoters > 0) {
-        data.push({
-          name: 'Негласували',
-          y: nonVoters
-        });
-      }
-      if (this.currentSectionData.noVotes > 0) {
-        data.push({
-          name: 'Не подкрепя никого',
-          y: this.currentSectionData.noVotes
-        });
-      }
-    }
-
-    // Sort data to show bigger slices first
-    data.sort((a, b) => b.y - a.y);
-
-    this.chartOptions = {
-      chart: {
-        type: 'pie',
-        backgroundColor: 'transparent',
-        spacingTop: 0,
-        spacingBottom: 0,
-        spacingLeft: 0,
-        spacingRight: 0
-      },
-      title: {
-        text: 'Разпределение на гласовете',
-        style: { color: textColor }
-      },
-      tooltip: {
-        pointFormat: '{series.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
-      },
-      accessibility: {
-        point: {
-          valueSuffix: '%'
-        }
-      },
-      plotOptions: {
-        pie: {
-          allowPointSelect: true,
-          cursor: 'pointer',
-          size: '85%',
-          dataLabels: {
-            enabled: true,
-            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-            style: {
-              color: textColor,
-              textOutline: 'none',
-              fontSize: '11px'
-            },
-            distance: 15,
-            filter: {
-              property: 'percentage',
-              operator: '>',
-              value: 2
-            }
-          }
-        }
-      },
-      series: [{
-        name: 'Гласове',
-        type: 'pie',
-        data: data
-      }],
-      credits: {
-        enabled: false
-      }
-    };
   }
 
   handleEscape(): void {
     this.closeModal();
     this.closeExportModal();
+    this.closeErrorModal();
   }
 
   closeModal(): void {
@@ -614,38 +405,27 @@ export class ElectionDetailComponent implements OnInit {
     }
   }
 
-  closePartyFilter(): void {
-    this.showPartyFilter = false;
-  }
+  sortSections(column: keyof Section, preserveDir: boolean = false) {
+    if (this.sectionSortColumn === column && !preserveDir) {
+      this.sectionSortDir = this.sectionSortDir === 'asc' ? 'desc' : 'asc';
+    } else if (!preserveDir) {
+      this.sectionSortColumn = column;
+      this.sectionSortDir = (column === 'sectionId' || column === 'cityName' || column === 'sectionName') ? 'asc' : 'desc';
+    }
 
-  togglePartyFilter(event: Event): void {
-    event.stopPropagation();
-    this.showPartyFilter = !this.showPartyFilter;
-  }
+    this.filteredSections.sort((a, b) => {
+      const valA = a[this.sectionSortColumn];
+      const valB = b[this.sectionSortColumn];
 
-  get filteredPartyResults(): PartyResult[] {
-    if (!this.selectedSection) return [];
-    return this.selectedSection.partyResults.filter(r => this.selectedPartyIds.has(r.partyId));
-  }
+      if (typeof valA === 'string' && typeof valB === 'string') {
+        return this.sectionSortDir === 'asc'
+          ? valA.localeCompare(valB)
+          : valB.localeCompare(valA);
+      }
 
-  get othersResult(): PartyResult | null {
-    if (!this.selectedSection) return null;
-
-    const unselected = this.selectedSection.partyResults.filter(r => !this.selectedPartyIds.has(r.partyId));
-    if (unselected.length === 0) return null;
-
-    const total = unselected.reduce((sum, r) => sum + r.total, 0);
-    const paper = unselected.reduce((sum, r) => sum + r.paper, 0);
-    const machine = unselected.reduce((sum, r) => sum + r.machine, 0);
-    const percent = unselected.reduce((sum, r) => sum + r.percent, 0);
-
-    return {
-      partyId: 'others',
-      partyName: 'Останали',
-      total,
-      paper,
-      machine,
-      percent
-    };
+      return this.sectionSortDir === 'asc'
+        ? (valA as number) - (valB as number)
+        : (valB as number) - (valA as number);
+    });
   }
 }

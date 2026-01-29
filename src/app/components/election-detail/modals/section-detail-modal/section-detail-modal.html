@@ -1,0 +1,132 @@
+<div class="fixed inset-0 z-[110] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4" (click)="closeModal()">
+    <div hlmCard class="w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl border-primary/20 bg-background/50 backdrop-blur-md" (click)="$event.stopPropagation()">
+        <div class="flex justify-between items-center p-6 border-b border-primary/20">
+            <h3 hlmH4 class="m-0 text-secondary dark:text-primary">Детайлни резултати за секция {{ section.sectionId }}</h3>
+            <div class="flex items-center gap-2">
+                <div class="relative">
+                    <button hlmBtn variant="outline" size="sm" (click)="togglePartyFilter($event)" class="border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                        <span class="ml-2">Филтър партии</span>
+                    </button>
+                    @if (showPartyFilter) {
+                        <div class="absolute right-0 mt-2 w-64 max-h-96 overflow-auto bg-popover text-popover-foreground border border-primary/20 rounded-md shadow-md z-[120] p-2" (click)="$event.stopPropagation()">
+                            @for (party of allParties; track party.id) {
+                                <div class="flex items-center gap-2 p-1 hover:bg-muted rounded cursor-pointer" (click)="togglePartySelection(party.id)">
+                                    <input type="checkbox" [checked]="selectedPartyIds.has(party.id)" class="cursor-pointer" (click)="$event.stopPropagation(); togglePartySelection(party.id)" />
+                                    <span class="text-sm truncate">{{ party.name }}</span>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+                <button hlmBtn variant="ghost" size="icon" (click)="closeModal()" class="text-secondary dark:text-primary hover:bg-primary dark:hover:bg-primary dark:hover:text-primary-foreground">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="overflow-auto pt-0 p-6">
+            <table hlmTable>
+                <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
+                    <tr hlmTableRow class="hover:bg-transparent">
+                        <th hlmTableHead (click)="sortParties('partyName')" class="cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
+                            Партия
+                            <span class="ml-1">
+                                @if (partySortColumn === 'partyName') {
+                                    {{ partySortDir === 'asc' ? '↑' : '↓' }}
+                                }
+                            </span>
+                        </th>
+                        <th hlmTableHead (click)="sortParties('total')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
+                            Гласове
+                            <span class="ml-1">
+                                @if (partySortColumn === 'total') {
+                                    {{ partySortDir === 'asc' ? '↑' : '↓' }}
+                                }
+                            </span>
+                        </th>
+                        <th hlmTableHead (click)="sortParties('paper')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
+                            Хартиени
+                            <span class="ml-1">
+                                @if (partySortColumn === 'paper') {
+                                    {{ partySortDir === 'asc' ? '↑' : '↓' }}
+                                }
+                            </span>
+                        </th>
+                        <th hlmTableHead (click)="sortParties('machine')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
+                            Машинни
+                            <span class="ml-1">
+                                @if (partySortColumn === 'machine') {
+                                    {{ partySortDir === 'asc' ? '↑' : '↓' }}
+                                }
+                            </span>
+                        </th>
+                        <th hlmTableHead (click)="sortParties('percent')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
+                            %
+                            <span class="ml-1">
+                                @if (partySortColumn === 'percent') {
+                                    {{ partySortDir === 'asc' ? '↑' : '↓' }}
+                                }
+                            </span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody hlmTableBody>
+                    @for (res of filteredPartyResults; track res.partyId) {
+                        <tr hlmTableRow [class.font-bold]="res.partyName.includes('ПРОДЪЛЖАВАМЕ')" [class.text-ppdb]="res.partyName.includes('ПРОДЪЛЖАВАМЕ')">
+                            <td hlmTableCell>{{ res.partyName }}</td>
+                            <td hlmTableCell class="text-right" [hlmTooltip]="currentSectionData?.partyVotes?.[res.partyId]?.comparisons">{{ res.total }}</td>
+                            <td hlmTableCell class="text-right">{{ res.paper }}</td>
+                            <td hlmTableCell class="text-right">{{ res.machine }}</td>
+                            <td hlmTableCell class="text-right">{{ (res.percent * 100).toFixed(2) }}%</td>
+                        </tr>
+                    }
+                    @if (othersResult) {
+                        <tr hlmTableRow>
+                            <td hlmTableCell>{{ othersResult.partyName }}</td>
+                            <td hlmTableCell class="text-right">{{ othersResult.total }}</td>
+                            <td hlmTableCell class="text-right">{{ othersResult.paper }}</td>
+                            <td hlmTableCell class="text-right">{{ othersResult.machine }}</td>
+                            <td hlmTableCell class="text-right">{{ (othersResult.percent * 100).toFixed(2) }}%</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2">
+            <div hlmCard class="p-1 col-span-1 border-primary/10">
+              <highcharts-chart
+                [options]="chartOptions"
+                style="height: 500px; display: block;">
+              </highcharts-chart>
+            </div>
+              @if (currentSectionData) {
+                <div hlmCard class="p-6 border-primary/10">
+                  <h4 hlmH4 class="mb-4 text-secondary dark:text-primary">Статистика за секцията</h4>
+                  <div class="space-y-4">
+                    <div class="flex justify-between items-center border-b border-primary/10 pb-2">
+                      <span class="text-secondary/70 dark:text-foreground/70">Избиратели:</span>
+                      <span class="font-bold">{{ currentSectionData.total }}</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-primary/10 pb-2">
+                      <span class="text-secondary/70 dark:text-foreground/70">Гласували:</span>
+                      <span class="font-bold">{{ currentSectionData.voted }}</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-primary/10 pb-2">
+                      <span class="text-secondary/70 dark:text-foreground/70">Активност:</span>
+                      <span class="font-bold">{{ (currentSectionData.activityPercent * 100).toFixed(2) }}%</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-primary/10 pb-2">
+                      <span class="text-secondary/70 dark:text-foreground/70">Недействителни:</span>
+                      <span class="font-bold">{{ currentSectionData.discardedVotes }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                      <span class="text-secondary/70 dark:text-foreground/70">Не подкрепя никого:</span>
+                      <span class="font-bold">{{ currentSectionData.noVotes }}</span>
+                    </div>
+                  </div>
+                </div>
+              }
+          </div>
+        </div>
+    </div>
+</div>

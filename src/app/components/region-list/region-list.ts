@@ -10,6 +10,7 @@ import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directi
 import { HlmCardDirective, HlmCardHeaderDirective, HlmCardTitleDirective, HlmCardDescriptionDirective, HlmCardContentDirective } from '../ui/card-helm/src/lib/hlm-card.directives';
 import { HlmInputDirective } from '../ui/input-helm/src/lib/hlm-input.directive';
 import { HlmTypographyDirective } from '../ui/typography-helm/src/lib/hlm-typography.directive';
+import { HlmTooltipDirective } from '../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 
@@ -28,6 +29,7 @@ import { HighchartsChartComponent } from 'highcharts-angular';
     HlmCardContentDirective,
     HlmInputDirective,
     HlmTypographyDirective,
+    HlmTooltipDirective,
     HighchartsChartComponent
   ],
   templateUrl: './region-list.html'
@@ -47,6 +49,7 @@ export class RegionListComponent implements OnInit {
   avgActivity: number = 0;
   totalMachine: number = 0;
   totalPaper: number = 0;
+  globalComparisons: { [key: string]: any[] } = {};
 
   activityChartOptions: Highcharts.Options = {};
   partyChartOptions: Highcharts.Options = {};
@@ -123,6 +126,41 @@ export class RegionListComponent implements OnInit {
     this.totalMachine = this.regions.reduce((sum, r) => sum + (r.totalMachine || 0), 0);
     this.totalPaper = this.regions.reduce((sum, r) => sum + (r.totalPaper || 0), 0);
     this.avgActivity = this.totalElectors > 0 ? this.totalVoted / this.totalElectors : 0;
+
+    // Aggregate comparisons for global stats
+    this.globalComparisons = {};
+    if (this.regions.length > 0 && this.regions[0].comparisons) {
+      Object.keys(this.regions[0].comparisons).forEach(key => {
+        const aggregated: { [date: string]: { value: number, dateName: string } } = {};
+        this.regions.forEach(r => {
+          r.comparisons![key]?.forEach(c => {
+            if (!aggregated[c.date]) {
+              aggregated[c.date] = { value: 0, dateName: c.dateName };
+            }
+            aggregated[c.date].value += c.value;
+          });
+        });
+        this.globalComparisons[key] = Object.entries(aggregated).map(([date, data]) => ({
+          date,
+          dateName: data.dateName,
+          value: data.value
+        }));
+      });
+
+      // Special handling for avg activity percent
+      const electorsAggr: { [date: string]: number } = {};
+      const votedAggr: { [date: string]: number } = {};
+      this.regions.forEach(r => {
+        r.comparisons!['total']?.forEach(c => electorsAggr[c.date] = (electorsAggr[c.date] || 0) + c.value);
+        r.comparisons!['voted']?.forEach(c => votedAggr[c.date] = (votedAggr[c.date] || 0) + c.value);
+      });
+
+      this.globalComparisons['activityPercent'] = Object.keys(electorsAggr).map(date => ({
+        date,
+        dateName: this.regions[0].comparisons!['total'].find(c => c.date === date)!.dateName,
+        value: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
+      }));
+    }
   }
 
   updateCharts() {

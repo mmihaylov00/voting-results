@@ -36,7 +36,7 @@
         <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Активност</p>
       </div>
       <div hlmCardContent class="p-4 pt-1">
-        <p hlmH4 class="m-0 text-secondary dark:text-primary">{{ (avgActivity * 100).toFixed(2) }}%</p>
+        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['activityPercent']" [isPercent]="true">{{ (avgActivity * 100).toFixed(2) }}%</p>
       </div>
     </div>
     <div hlmCard class="border-primary/20 bg-primary/5">
@@ -44,7 +44,7 @@
         <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Общо избиратели</p>
       </div>
       <div hlmCardContent class="p-4 pt-1">
-        <p hlmH4 class="m-0 text-secondary dark:text-primary">{{ totalElectors | number }}</p>
+        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['total']">{{ totalElectors | number }}</p>
       </div>
     </div>
     <div hlmCard class="border-primary/20 bg-primary/5">
@@ -52,7 +52,7 @@
         <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Общо гласували</p>
       </div>
       <div hlmCardContent class="p-4 pt-1">
-        <p hlmH4 class="m-0 text-secondary dark:text-primary">{{ totalVoted | number }}</p>
+        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['voted']">{{ totalVoted | number }}</p>
       </div>
     </div>
     <div hlmCard class="border-primary/20 bg-primary/5">
@@ -60,7 +60,7 @@
         <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Общо невалидни</p>
       </div>
       <div hlmCardContent class="p-4 pt-1">
-        <p hlmH4 class="m-0 text-secondary dark:text-primary">{{ totalInvalid | number }}</p>
+        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['discardedVotes']">{{ totalInvalid | number }}</p>
       </div>
     </div>
     <div hlmCard class="border-primary/20 bg-primary/5">
@@ -68,7 +68,7 @@
         <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Общо не подкрепя никого</p>
       </div>
       <div hlmCardContent class="p-4 pt-1">
-        <p hlmH4 class="m-0 text-secondary dark:text-primary">{{ totalNoVotes | number }}</p>
+        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['noVotes']">{{ totalNoVotes | number }}</p>
       </div>
     </div>
     <div hlmCard class="border-primary/20 bg-primary/5">
@@ -77,8 +77,8 @@
       </div>
       <div hlmCardContent class="p-4 pt-1">
         <div class="flex flex-col text-sm whitespace-nowrap">
-          <span class="text-secondary/70 dark:text-foreground/70">машинни: <strong class="text-secondary dark:text-primary">{{ totalMachine | number }}</strong></span>
-          <span class="text-secondary/70 dark:text-foreground/70">хартиени: <strong class="text-secondary dark:text-primary">{{ totalPaper | number }}</strong></span>
+          <span class="text-secondary/70 dark:text-foreground/70">машинни: <strong class="text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['totalMachine']">{{ totalMachine | number }}</strong></span>
+          <span class="text-secondary/70 dark:text-foreground/70">хартиени: <strong class="text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['totalPaper']">{{ totalPaper | number }}</strong></span>
         </div>
       </div>
     </div>
@@ -100,6 +100,16 @@
                 <span class="whitespace-nowrap"><strong class="me-1">{{ tp.total | number }}</strong> <span class="text-[10px] opacity-70">({{ (tp.percent * 100).toFixed(1) }}%)</span></span>
               </div>
             }
+          </div>
+          <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-muted-foreground mb-4">
+            <div class="flex justify-between">
+              <span>Активност:</span>
+              <span class="font-medium text-foreground" [hlmTooltip]="region.comparisons!['activityPercent']" [isPercent]="true">{{ (region.voted / region.total * 100).toFixed(1) }}%</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Гласували:</span>
+              <span class="font-medium text-foreground" [hlmTooltip]="region.comparisons!['voted']">{{ region.voted | number }}</span>
+            </div>
           </div>
           <a [routerLink]="['/election', date, 'region', region.id]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground mt-auto">
             Виж резултати
