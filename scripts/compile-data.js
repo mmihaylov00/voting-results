@@ -179,8 +179,8 @@ for (const { date } of elections) {
 
   const sections = Object.values(sectionsMap);
   for (const section of sections) {
-    section.totalPaper = Object.values(section.partyVotes).reduce((sum, v) => sum + v.paper, 0) + (section.noVotesPaper || 0) + (section.discardedVotes || 0);
-    section.totalMachine = Object.values(section.partyVotes).reduce((sum, v) => sum + v.machine, 0) + (section.noVotesMachine || 0);
+    section.totalPaper = section.protocolPaperVotes || 0;
+    section.totalMachine = section.protocolMachineVotes || 0;
     section.activityPercent = section.total > 0 ? section.voted / section.total : 0;
 
     section.topParties = Object.entries(section.partyVotes)
