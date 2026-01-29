@@ -217,6 +217,11 @@ export class RegionListComponent implements OnInit {
     }
   }
 
+  formatActivity(percent: number): string {
+    const value = percent * 100;
+    return Math.min(100, Math.max(0, value)).toFixed(2);
+  }
+
   formatRegionName(name: string): string {
     const parts = name.split('.');
     if (parts.length > 1) {

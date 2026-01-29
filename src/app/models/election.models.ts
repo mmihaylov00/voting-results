@@ -90,3 +90,5 @@ export const SECTION_COLUMNS: TableColumn[] = [
   { id: 'typeVotes', label: 'Гласове по тип' },
   { id: 'topParties', label: 'Топ 3 партии' },
 ];
+
+export type SectionTab = 'all' | 'target' | 'swing' | 'risky' | 'outside' | 'declining';

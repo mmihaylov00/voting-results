@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
-import { PartyResult, Section, SectionDetails, TableColumn, SECTION_COLUMNS } from '../../models/election.models';
+import { PartyResult, Section, SectionDetails, TableColumn, SECTION_COLUMNS, SectionTab } from '../../models/election.models';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
@@ -29,8 +29,6 @@ import { FormsModule } from '@angular/forms';
 import { SectionDetailModalComponent } from './modals/section-detail-modal/section-detail-modal';
 import { ExportCsvModalComponent } from './modals/export-csv-modal/export-csv-modal';
 import { ProtocolErrorModalComponent } from './modals/protocol-error-modal/protocol-error-modal';
-
-export type SectionTab = 'all' | 'target' | 'swing' | 'risky' | 'outside' | 'declining';
 
 @Component({
   selector: 'app-election-detail',
@@ -154,6 +152,11 @@ export class ElectionDetailComponent implements OnInit {
 
   openExportModal(): void {
     this.isExportModalOpen.set(true);
+  }
+
+  formatActivity(percent: number): string {
+    const value = percent * 100;
+    return Math.min(100, Math.max(0, value)).toFixed(2);
   }
 
   copyToClipboard(text: string, event: Event): void {
@@ -305,10 +308,11 @@ export class ElectionDetailComponent implements OnInit {
     }
 
     if (this.lowActivityThreshold !== null) {
+      this.lowActivityThreshold = Math.min(100, Math.max(0, this.lowActivityThreshold));
       if (this.activityOperator() === 'lte') {
-        result = result.filter(s => (s.activityPercent * 100) <= (this.lowActivityThreshold as number));
+        result = result.filter(s => Math.min(100, Math.max(0, s.activityPercent * 100)) <= (this.lowActivityThreshold as number));
       } else {
-        result = result.filter(s => (s.activityPercent * 100) >= (this.lowActivityThreshold as number));
+        result = result.filter(s => Math.min(100, Math.max(0, s.activityPercent * 100)) >= (this.lowActivityThreshold as number));
       }
     }
 

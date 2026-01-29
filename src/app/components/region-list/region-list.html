@@ -42,7 +42,7 @@
         <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Активност</p>
       </div>
       <div hlmCardContent class="p-4 pt-1">
-        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['activityPercent']" [currentValue]="avgActivity" [isPercent]="true">{{ (avgActivity * 100).toFixed(2) }}%</p>
+        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['activityPercent']" [currentValue]="avgActivity" [isPercent]="true">{{ formatActivity(avgActivity) }}%</p>
       </div>
     </div>
     <div hlmCard class="border-primary/20 bg-primary/5">
@@ -101,16 +101,16 @@
         <div hlmCardContent class="pt-0 flex-grow">
           <div class="flex flex-col text-xs mb-4 space-y-1">
             @for (tp of region.topParties; let i = $index; track tp.name) {
-              <div class="flex justify-between items-center gap-2" [class.font-bold]="tp.name.includes('ПП-ДБ')" [class.text-ppdb]="tp.name.includes('ПП-ДБ')" [title]="tp.name + ': ' + tp.total + ' (' + (tp.percent * 100).toFixed(2) + '%)'" [hlmTooltip]="tp.comparisons" [currentValue]="tp.total">
+              <div class="flex justify-between items-center gap-2" [class.font-bold]="tp.name.includes('ПП-ДБ')" [class.text-ppdb]="tp.name.includes('ПП-ДБ')" [title]="tp.name + ': ' + tp.total + ' (' + formatActivity(tp.percent) + '%)'" [hlmTooltip]="tp.comparisons" [currentValue]="tp.total">
                 <span class="truncate">{{ $index + 1 }}. {{ tp.name }}</span>
-                <span class="whitespace-nowrap"><strong class="me-1">{{ tp.total | number }}</strong> <span class="text-[10px] opacity-70">({{ (tp.percent * 100).toFixed(1) }}%)</span></span>
+                <span class="whitespace-nowrap"><strong class="me-1">{{ tp.total | number }}</strong> <span class="text-[10px] opacity-70">({{ formatActivity(tp.percent) }}%)</span></span>
               </div>
             }
           </div>
           <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-muted-foreground mb-4">
             <div class="flex justify-between">
               <span>Активност:</span>
-              <span class="font-medium text-foreground" [hlmTooltip]="region.comparisons?.['activityPercent']" [currentValue]="region.voted / region.total" [isPercent]="true">{{ (region.voted / region.total * 100).toFixed(1) }}%</span>
+              <span class="font-medium text-foreground" [hlmTooltip]="region.comparisons?.['activityPercent']" [currentValue]="region.voted / region.total" [isPercent]="true">{{ formatActivity(region.voted / region.total) }}%</span>
             </div>
             <div class="flex justify-between">
               <span>Гласували:</span>

@@ -47,7 +47,7 @@
                         <p hlmCardDescription class="text-xs uppercase tracking-wider">Активност</p>
                     </div>
                     <div hlmCardContent class="p-4 pt-1">
-                        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['activityPercent']" [currentValue]="avgRegionActivity" [isPercent]="true">{{ (avgRegionActivity * 100).toFixed(2) }}%</p>
+                        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['activityPercent']" [currentValue]="avgRegionActivity" [isPercent]="true">{{ formatActivity(avgRegionActivity) }}%</p>
                     </div>
                 </div>
                 <div hlmCard class="border-primary/20 bg-primary/5">
@@ -97,7 +97,7 @@
 
             <div hlmCard class="p-4 md:p-6 border-primary/20">
                 <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 mb-6">
-                    <h3 hlmH4 class="text-secondary dark:text-primary">Секции</h3>
+                    <h3 hlmH4 class="text-secondary dark:text-primary">Секции ({{ filteredSections.length }})</h3>
                     <div class="flex flex-col lg:flex-row gap-4 w-full xl:w-auto items-start lg:items-center">
                         <div class="flex flex-wrap gap-2 border-b border-primary/10 w-full xl:w-auto">
                             <button hlmBtn [variant]="'line'" [attr.data-state]="activeTab() === 'all' ? 'active' : 'inactive'" (click)="setTab('all')" hlmTooltip="Показва всички секции в района">
@@ -135,7 +135,7 @@
                                             [hlmTooltip]="activityOperator() === 'lte' ? 'Превключи към по-голямо или равно' : 'Превключи към по-малко или равно'">
                                         Активност {{ activityOperator() === 'lte' ? '≤' : '≥' }}
                                     </button>
-                                    <input hlmInput type="number" placeholder="0" [(ngModel)]="lowActivityThreshold" (ngModelChange)="applyFilter()" class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full pr-6 pl-32 text-right" />
+                                    <input hlmInput type="number" placeholder="0" [(ngModel)]="lowActivityThreshold" (ngModelChange)="applyFilter()" min="0" max="100" step="0.01" class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full pr-6 pl-32 text-right" />
                                     <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">%</span>
                                 </div>
                             </div>
@@ -302,7 +302,7 @@
                                         <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['voted']" [currentValue]="section.voted">{{ section.voted }}</td>
                                     }
                                     @if (visibleColumns().has('activityPercent')) {
-                                      <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['activityPercent']" [currentValue]="section.activityPercent" [isPercent]="true">{{ (section.activityPercent * 100).toFixed(2) }}%</td>
+                                      <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['activityPercent']" [currentValue]="section.activityPercent" [isPercent]="true">{{ formatActivity(section.activityPercent) }}%</td>
                                     }
                                     @if (visibleColumns().has('discardedVotes')) {
                                         <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['discardedVotes']" [currentValue]="section.discardedVotes">{{ section.discardedVotes }}</td>
@@ -322,8 +322,8 @@
                                         <td hlmTableCell>
                                             <div class="flex flex-col text-xs">
                                                 @for (tp of section.topParties; track tp.name) {
-                                                    <div class="truncate" [class.font-bold]="tp.name.includes('ПП-ДБ')" [class.text-ppdb]="tp.name.includes('ПП-ДБ')" [title]="tp.name + ': ' + tp.total + ' (' + (tp.percent * 100).toFixed(2) + '%)'" [hlmTooltip]="tp.comparisons" [currentValue]="tp.total">
-                                                        {{ tp.name }}: <strong>{{ tp.total }}</strong> ({{ (tp.percent * 100).toFixed(2) }}%)
+                                                    <div class="truncate" [class.font-bold]="tp.name.includes('ПП-ДБ')" [class.text-ppdb]="tp.name.includes('ПП-ДБ')" [title]="tp.name + ': ' + tp.total + ' (' + formatActivity(tp.percent) + '%)'" [hlmTooltip]="tp.comparisons" [currentValue]="tp.total">
+                                                        {{ tp.name }}: <strong>{{ tp.total }}</strong> ({{ formatActivity(tp.percent) }}%)
                                                     </div>
                                                 }
                                             </div>
@@ -356,6 +356,10 @@
             [selectedPartyIds]="selectedPartyIds"
             [date]="date"
             [regionName]="regionName"
+            [searchTerm]="searchTerm"
+            [initialActiveTab]="activeTab()"
+            [initialActivityOperator]="activityOperator()"
+            [initialLowActivityThreshold]="lowActivityThreshold"
             (close)="closeExportModal()"
         ></app-export-csv-modal>
     }

@@ -84,7 +84,7 @@
                             <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.comparisons || currentSectionData?.partyVotes?.[res.partyId]?.comparisons" [currentValue]="res.total">{{ res.total }}</td>
                             <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.paperComparisons || currentSectionData?.partyVotes?.[res.partyId]?.paperComparisons" [currentValue]="res.paper">{{ res.paper }}</td>
                             <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.machineComparisons || currentSectionData?.partyVotes?.[res.partyId]?.machineComparisons" [currentValue]="res.machine">{{ res.machine }}</td>
-                            <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.percentComparisons || currentSectionData?.partyVotes?.[res.partyId]?.percentComparisons" [currentValue]="res.percent" [isPercent]="true">{{ (res.percent * 100).toFixed(2) }}%</td>
+                            <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.percentComparisons || currentSectionData?.partyVotes?.[res.partyId]?.percentComparisons" [currentValue]="res.percent" [isPercent]="true">{{ formatActivity(res.percent) }}%</td>
                         </tr>
                     }
                 </tbody>
@@ -110,7 +110,7 @@
                     </div>
                     <div class="flex justify-between items-center border-b border-primary/10 pb-2">
                       <span class="text-secondary/70 dark:text-foreground/70">Активност:</span>
-                      <span class="font-bold" [hlmTooltip]="currentSectionData.comparisons?.['activityPercent']" [currentValue]="currentSectionData.activityPercent" [isPercent]="true">{{ (currentSectionData.activityPercent * 100).toFixed(2) }}%</span>
+                      <span class="font-bold" [hlmTooltip]="currentSectionData.comparisons?.['activityPercent']" [currentValue]="currentSectionData.activityPercent" [isPercent]="true">{{ formatActivity(currentSectionData.activityPercent) }}%</span>
                     </div>
                     <div class="flex justify-between items-center">
                       <span class="text-secondary/70 dark:text-foreground/70">Недействителни:</span>

@@ -65,6 +65,11 @@ export class SectionDetailModalComponent {
     return `https://www.google.com/maps/search/?api=1&query=${query}`;
   }
 
+  formatActivity(percent: number): string {
+    const value = percent * 100;
+    return Math.min(100, Math.max(0, value)).toFixed(2);
+  }
+
   constructor(public themeService: ThemeService) {
     effect(() => {
       this.themeService.darkMode();

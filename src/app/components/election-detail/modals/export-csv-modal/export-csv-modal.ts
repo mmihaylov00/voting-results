@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Section, SECTION_COLUMNS } from '../../../../models/election.models';
+import { Section, SECTION_COLUMNS, SectionTab } from '../../../../models/election.models';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmCardDirective,
@@ -10,6 +10,8 @@ import {
   HlmCardDescriptionDirective
 } from '../../../ui/card-helm/src/lib/hlm-card.directives';
 import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-typography.directive';
+import { HlmInputDirective } from '../../../ui/input-helm/src/lib/hlm-input.directive';
+import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
 
 @Component({
   selector: 'app-export-csv-modal',
@@ -19,7 +21,9 @@ import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-
     FormsModule,
     HlmButtonDirective,
     HlmCardDirective,
-    HlmTypographyDirective
+    HlmTypographyDirective,
+    HlmInputDirective,
+    HlmTooltipDirective,
   ],
   templateUrl: './export-csv-modal.html',
   host: {
@@ -34,12 +38,26 @@ export class ExportCsvModalComponent {
   @Input() regionName: string = '';
   @Output() close = new EventEmitter<void>();
 
+  @Input() searchTerm: string = '';
+  @Input() initialActiveTab: SectionTab = 'all';
+  @Input() initialActivityOperator: 'lte' | 'gte' = 'lte';
+  @Input() initialLowActivityThreshold: number | null = 100;
+
+  activeTab = signal<SectionTab>('all');
+  activityOperator = signal<'lte' | 'gte'>('lte');
+  lowActivityThreshold: number | null = 100;
+
+  filteredSections: Section[] = [];
   exportPartyIds: Set<string> = new Set();
   availableColumns = SECTION_COLUMNS.filter(c => c.id !== 'typeVotes' && c.id !== 'topParties');
   exportColumnIds: Set<string> = new Set(this.availableColumns.map(c => c.id));
 
   ngOnInit() {
+    this.activeTab.set(this.initialActiveTab);
+    this.activityOperator.set(this.initialActivityOperator);
+    this.lowActivityThreshold = this.initialLowActivityThreshold;
     this.exportPartyIds = new Set(this.selectedPartyIds);
+    this.applyFilter();
     const savedColumns = localStorage.getItem('visible_columns');
     if (savedColumns) {
       try {
@@ -55,6 +73,81 @@ export class ExportCsvModalComponent {
         console.error('Error parsing saved columns', e);
       }
     }
+  }
+
+  applyFilter(): void {
+    let result = [...this.sections];
+
+    if (this.searchTerm) {
+      const term = this.searchTerm.toLowerCase();
+      result = result.filter(s =>
+        s.sectionId.toLowerCase().includes(term) ||
+        s.cityName.toLowerCase().includes(term) ||
+        s.sectionName.toLowerCase().includes(term)
+      );
+    }
+
+    const currentTab = this.activeTab();
+    if (currentTab === 'outside') {
+      result = result.filter(s => {
+        return !s.topParties.some(tp => tp.name.includes('ПП-ДБ'));
+      });
+    } else if (currentTab === 'target') {
+      result = result.filter(s => {
+        return s.topParties.length > 0 && s.topParties[0].name.includes('ПП-ДБ');
+      });
+    } else if (currentTab === 'swing') {
+      result = result.filter(s => {
+        if (s.topParties.length === 0) return false;
+        const firstParty = s.topParties[0];
+        const ppdb = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
+        if (!ppdb) return false;
+        if (firstParty.name.includes('ПП-ДБ')) return false;
+        const diff = firstParty.percent - ppdb.percent;
+        return diff < 0.05;
+      });
+    } else if (currentTab === 'declining') {
+      result = result.filter(s => {
+        const ppdbInTop = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
+        if (ppdbInTop && ppdbInTop.comparisons && ppdbInTop.comparisons.length > 0) {
+            const previousVotes = ppdbInTop.comparisons[0].value;
+            return ppdbInTop.total < previousVotes;
+        }
+        return false;
+      });
+    } else if (currentTab === 'risky') {
+      result = result.filter(s => {
+        const isHighActivity = s.activityPercent > 0.5;
+        const ppdbNotFirst = s.topParties.length === 0 || !s.topParties[0].name.includes('ПП-ДБ');
+        return isHighActivity && ppdbNotFirst;
+      });
+    }
+
+    if (this.lowActivityThreshold !== null) {
+      this.lowActivityThreshold = Math.min(100, Math.max(0, this.lowActivityThreshold));
+      if (this.activityOperator() === 'lte') {
+        result = result.filter(s => Math.min(100, Math.max(0, s.activityPercent * 100)) <= (this.lowActivityThreshold as number));
+      } else {
+        result = result.filter(s => Math.min(100, Math.max(0, s.activityPercent * 100)) >= (this.lowActivityThreshold as number));
+      }
+    }
+
+    this.filteredSections = result;
+  }
+
+  setTab(tab: SectionTab): void {
+    this.activeTab.set(tab);
+    this.applyFilter();
+  }
+
+  toggleActivityOperator(): void {
+    this.activityOperator.set(this.activityOperator() === 'lte' ? 'gte' : 'lte');
+    this.applyFilter();
+  }
+
+  formatActivity(percent: number): string {
+    const value = percent * 100;
+    return Math.min(100, Math.max(0, value)).toFixed(2);
   }
 
   toggleExportColumnSelection(columnId: string) {
@@ -116,14 +209,14 @@ export class ExportCsvModalComponent {
 
     headers.push(...sortedPartyIds.map(id => partiesMap[id]));
 
-    const rows = this.sections.map(section => {
+    const rows = this.filteredSections.map(section => {
       const rowData: (string | number)[] = [];
       if (this.exportColumnIds.has('sectionId')) rowData.push(section.sectionId);
       if (this.exportColumnIds.has('cityName')) rowData.push(section.cityName);
       if (this.exportColumnIds.has('sectionName')) rowData.push(section.sectionName);
       if (this.exportColumnIds.has('total')) rowData.push(section.total);
       if (this.exportColumnIds.has('voted')) rowData.push(section.voted);
-      if (this.exportColumnIds.has('activityPercent')) rowData.push((section.activityPercent * 100).toFixed(2) + '%');
+      if (this.exportColumnIds.has('activityPercent')) rowData.push(this.formatActivity(section.activityPercent) + '%');
       if (this.exportColumnIds.has('discardedVotes')) rowData.push(section.discardedVotes);
       if (this.exportColumnIds.has('noVotes')) rowData.push(section.noVotes);
 

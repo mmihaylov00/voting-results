@@ -2,7 +2,7 @@
     <div hlmCard class="w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl border-primary/20 bg-background/50 backdrop-blur-md" (click)="$event.stopPropagation()">
         <div hlmCardHeader class="flex flex-row items-center justify-between border-b p-4 bg-transparent">
             <div>
-                <h3 hlmH4 class="text-secondary dark:text-primary">Секции със сгрешени протоколи</h3>
+                <h3 hlmH4 class="text-secondary dark:text-primary">Секции със сгрешени протоколи ({{ sectionsWithError.length }})</h3>
                 <p hlmMuted class="text-xs">Списък на секциите, при които Общ брой гласове ≠ Хартиени гласове + Машинни гласове</p>
             </div>
             <button hlmBtn variant="ghost" size="sm" (click)="close.emit()" class="h-8 w-8 p-0">
