@@ -102,6 +102,25 @@
     }
   </div>
   <div class="flex flex-col gap-4 w-full" [class.md:flex-row]="!fullWidth" [class.xl:w-50]="!fullWidth">
+    <div class="flex flex-col sm:flex-row md:flex-col  flex-grow gap-2 justify-self-end">
+      <div [class.flex-row]="!fullWidth" class="flex sm:flex-col gap-2 w-full md:w-full">
+        <input hlmInput placeholder="Търсене..." [ngModel]="searchTerm()" (ngModelChange)="onSearchTermChange($event)"
+               class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full"/>
+      </div>
+      <div [class.sm:w-64]="!fullWidth" [class.flex-row]="!fullWidth" class="flex sm:flex-col items-center gap-2 w-full md:w-full">
+        <div class="relative w-full">
+          <button hlmBtn variant="ghost" size="sm" (click)="toggleActivityOperator()"
+                  class="absolute left-1 top-1/2 -translate-y-1/2 h-8 px-2 text-[10px] font-semibold hover:bg-primary/10 text-muted-foreground transition-all"
+                  [hlmTooltip]="activityOperator() === 'lte' ? 'Превключи към по-голямо или равно' : 'Превключи към по-малко или равно'">
+            Активност {{ activityOperator() === 'lte' ? '≤' : '≥' }}
+          </button>
+          <input hlmInput type="number" placeholder="0" [ngModel]="lowActivityThreshold()"
+                 (ngModelChange)="onThresholdChange($event)" min="0" max="100" step="0.01"
+                 class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full pr-6 pl-24 text-right"/>
+          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">%</span>
+        </div>
+      </div>
+    </div>
     <div class="flex flex-wrap gap-2 items-center sm:w-full md:w-52">
       @for (type of availableSectionTypes; track type.id) {
         <button hlmBtn [variant]="sectionTypes().has(type.id) ? 'default' : 'outline'"
@@ -115,25 +134,5 @@
         Рискови
       </button>
     </div>
-    <div class="flex flex-col sm:flex-row md:flex-col  flex-grow gap-2 justify-self-end">
-      <div [class.w-64]="!fullWidth" [class.flex-row]="!fullWidth" class="flex sm:flex-col items-center gap-2 w-full">
-        <div class="relative w-full">
-          <button hlmBtn variant="ghost" size="sm" (click)="toggleActivityOperator()"
-                  class="absolute left-1 top-1/2 -translate-y-1/2 h-8 px-2 text-[10px] font-semibold hover:bg-primary/10 text-muted-foreground transition-all"
-                  [hlmTooltip]="activityOperator() === 'lte' ? 'Превключи към по-голямо или равно' : 'Превключи към по-малко или равно'">
-            Активност {{ activityOperator() === 'lte' ? '≤' : '≥' }}
-          </button>
-          <input hlmInput type="number" placeholder="0" [ngModel]="lowActivityThreshold()"
-                 (ngModelChange)="onThresholdChange($event)" min="0" max="100" step="0.01"
-                 class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full pr-6 pl-24 text-right"/>
-          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">%</span>
-        </div>
-      </div>
-      <div [class.sm:w-72]="!fullWidth" [class.flex-row]="!fullWidth" class="flex sm:flex-col gap-2 w-full md:w-full">
-        <input hlmInput placeholder="Търсене..." [ngModel]="searchTerm()" (ngModelChange)="onSearchTermChange($event)"
-               class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full"/>
-      </div>
-    </div>
-    <ng-content></ng-content>
   </div>
 </div>

@@ -201,7 +201,8 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   getGoogleMapsUrl(cityName: string, sectionName: string): string {
-    const query = encodeURIComponent(`${cityName} ${sectionName}`);
+    const isCity = sectionName.startsWith('Общо за');
+    const query = encodeURIComponent(isCity ? cityName : `${cityName} ${sectionName}`);
     return `https://www.google.com/maps/search/?api=1&query=${query}`;
   }
 
@@ -447,6 +448,11 @@ export class ElectionDetailComponent implements OnInit {
 
   toggleCityGrouping(): void {
     this.groupByCity.set(!this.groupByCity());
+    this.applyFilter();
+  }
+
+  setViewMode(isCityView: boolean): void {
+    this.groupByCity.set(isCityView);
     this.applyFilter();
   }
 

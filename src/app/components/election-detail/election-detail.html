@@ -121,16 +121,20 @@
 
             <div hlmCard class="p-4 md:p-6 border-primary/20">
                 <div class="flex flex-col gap-6 mb-6">
-                    <h3 hlmH4 class="text-secondary dark:text-primary">Секции ({{ filteredSections.length }})</h3>
-                    <app-section-filters
-                        [date]="date"
-                        [initialFilters]="{searchTerm: searchTerm, activeTab: activeTab(), activityOperator: activityOperator(), lowActivityThreshold: lowActivityThreshold, sectionTypes: selectedSectionTypes(), highRiskOnly: highRiskOnly()}"
-                        (filterChange)="onFilterChange($event)">
-                        <div class="flex gap-2 flex-row items-center justify-start md:justify-start md:flex-col">
-                            <button hlmBtn [variant]="groupByCity() ? 'default' : 'outline'" size="icon" (click)="toggleCityGrouping()" hlmTooltip="Групирай по населено място" class="border-primary/50 text-secondary hover:bg-primary hover:text-secondary dark:border-secondary/50 dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4"/><path d="M13 13h4"/><path d="M13 17h4"/></svg>
+                    <div class="flex justify-between gap-4">
+                        <div class="flex gap-2 border-b border-primary/10 align-baseline">
+                            <button hlmBtn [variant]="'line'" [attr.data-state]="!groupByCity() ? 'active' : 'inactive'"
+                                    (click)="setViewMode(false)" class="border-b-0">
+                                Секции
                             </button>
+                            <button hlmBtn [variant]="'line'" [attr.data-state]="groupByCity() ? 'active' : 'inactive'"
+                                    (click)="setViewMode(true)" class="border-b-0">
+                                Градове
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2">
                             <div class="relative">
+                              <span class="text-md text-muted-foreground mr-2">({{ filteredSections.length }})</span>
                                 <button hlmBtn variant="outline" size="icon" (click)="toggleColumnFilter($event)" hlmTooltip="Филтър колони" class="border-primary/50 text-secondary hover:bg-primary hover:text-secondary dark:border-secondary/50 dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10"/><path d="M7 12h10"/><path d="M7 16h10"/></svg>
                                 </button>
@@ -146,7 +150,11 @@
                                 }
                             </div>
                         </div>
-                    </app-section-filters>
+                    </div>
+                    <app-section-filters
+                        [date]="date"
+                        [initialFilters]="{searchTerm: searchTerm, activeTab: activeTab(), activityOperator: activityOperator(), lowActivityThreshold: lowActivityThreshold, sectionTypes: selectedSectionTypes(), highRiskOnly: highRiskOnly()}"
+                        (filterChange)="onFilterChange($event)"/>
                 </div>
 
                 <div class="overflow-auto max-h-[70vh]">
@@ -311,7 +319,18 @@
                                             </td>
                                         }
                                         @if (visibleColumns().has('cityName')) {
-                                        <td hlmTableCell>{{ section.cityName }}</td>
+                                        <td hlmTableCell>
+                                          @if (groupByCity()) {
+                                            <div class="flex items-center gap-1 group">
+                                              <a [href]="getGoogleMapsUrl(section.cityName, section.sectionName)" target="_blank" hlmBtn variant="ghost" size="icon" class="h-6 pl-1 pr-1 w-6 transition-opacity" (click)="$event.stopPropagation()" hlmTooltip="Виж в Google Maps">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                              </a>
+                                              <span>{{ section.cityName }}</span>
+                                            </div>
+                                          } @else {
+                                            <span>{{ section.cityName }}</span>
+                                          }
+                                        </td>
                                     }
                                     @if (visibleColumns().has('sectionName') && !groupByCity()) {
                                         <td hlmTableCell>
