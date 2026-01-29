@@ -142,7 +142,7 @@
                                 </button>
                                 @if (showColumnFilter) {
                                     <div class="absolute right-0 mt-2 w-56 max-h-96 overflow-auto bg-popover text-popover-foreground border border-primary/20 rounded-md shadow-md z-[120] p-2" (click)="$event.stopPropagation()">
-                                        @for (column of availableColumns; track column.id) {
+                                        @for (column of filteredAvailableColumns; track column.id) {
                                             <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleColumn(column.id, $event)">
                                                 <input type="checkbox" [checked]="visibleColumns().has(column.id)" class="cursor-pointer" (click)="$event.stopPropagation(); toggleColumn(column.id, $event)" />
                                                 <span class="text-sm">{{ column.label }}</span>
@@ -165,7 +165,7 @@
                             <tr hlmTableRow class="hover:bg-transparent">
                                 @if (visibleColumns().has('sectionId')) {
                                     <th hlmTableHead (click)="sortSections('sectionId')" class="cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                                        Секция
+                                        {{groupByCity() ? 'Секции' : 'Секция'}}
                                         <span class="ml-1">
                                             @if (sectionSortColumn === 'sectionId') {
                                                 {{ sectionSortDir === 'asc' ? '↑' : '↓' }}

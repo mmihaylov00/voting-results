@@ -106,6 +106,14 @@ export class ElectionDetailComponent implements OnInit {
 
   availableColumns = SECTION_COLUMNS;
   visibleColumns = signal<Set<string>>(new Set(SECTION_COLUMNS.map(c => c.id)));
+
+  get filteredAvailableColumns(): TableColumn[] {
+    // Hide regionName column when not viewing all sections
+    if (this.regionId && this.regionId !== 'all') {
+      return this.availableColumns.filter(c => c.id !== 'regionName');
+    }
+    return this.availableColumns;
+  }
   showColumnFilter = false;
   groupByCity = signal<boolean>(false);
   groupedSections: any[] = [];
@@ -301,6 +309,7 @@ export class ElectionDetailComponent implements OnInit {
         if (!groups.has(s.cityName)) {
           groups.set(s.cityName, {
             cityName: s.cityName,
+            regionName: s.regionName,
             total: 0,
             voted: 0,
             discardedVotes: 0,
@@ -337,7 +346,7 @@ export class ElectionDetailComponent implements OnInit {
           .map(([partyId, total]) => {
             const sectionWithParty = g.sections.find((s: any) => s.partyVotes[partyId]);
             const name = sectionWithParty?.topParties.find((tp: any) => tp.partyId === partyId)?.name || partyId;
-            
+
             // Aggregate comparisons for this party from all sections
             const comparisonsMap: { [date: string]: ComparativeValue } = {};
             g.sections.forEach((s: Section) => {
@@ -351,7 +360,7 @@ export class ElectionDetailComponent implements OnInit {
                 });
               }
             });
-            
+
             return {
               partyId,
               name,
@@ -369,10 +378,10 @@ export class ElectionDetailComponent implements OnInit {
           // Find PP-DB partyId from allParties
           const ppdbParty = this.allParties.find(p => p.name.toUpperCase().includes('ПРОДЪЛЖАВАМЕ'));
           const ppdbId = ppdbParty?.id;
-          
+
           // Get PP-DB total votes from aggregated partyVotes
           const ppdbTotal = ppdbId && g.partyVotes[ppdbId] ? (g.partyVotes[ppdbId] as number) : 0;
-          
+
           const isFirst = topParties[0].name.includes('ПП-ДБ');
           const ppdbInTop3 = topParties.find((tp: any) => tp.name.includes('ПП-ДБ'));
 
@@ -389,7 +398,7 @@ export class ElectionDetailComponent implements OnInit {
         // Aggregate comparisons for city group
         const comparisons: { [key: string]: ComparativeValue[] } = {};
         const comparisonKeys = ['total', 'voted', 'discardedVotes', 'noVotes', 'totalPaper', 'totalMachine', 'activityPercent'];
-        
+
         comparisonKeys.forEach(key => {
           const aggregated: { [date: string]: { value: number, dateName: string } } = {};
           g.sections.forEach((s: Section) => {
@@ -428,8 +437,9 @@ export class ElectionDetailComponent implements OnInit {
 
         return {
           ...g,
-          sectionId: `${g.sections.length} секции`,
+          sectionId: `${g.sections.length}`,
           sectionName: '',
+          regionName: g.regionName,
           riskScore: g.riskySectionsCount,
           risks: g.riskySectionsList.length > 0 ? g.riskySectionsList : [],
           activityPercent: g.total > 0 ? g.voted / g.total : 0,
@@ -444,7 +454,7 @@ export class ElectionDetailComponent implements OnInit {
     }
 
     this.sortSections(this.sectionSortColumn, true);
-    
+
     // Update charts and stats based on filtered sections
     this.calculateAvgActivity(result);
     this.calculateRegionalStats(result);
@@ -806,19 +816,19 @@ export class ElectionDetailComponent implements OnInit {
         // Find paper and machine votes by summing them from all sections in the group
         let paper = 0;
         let machine = 0;
-        
+
         // Aggregate comparisons for this party
         const comparisonsMap: { [date: string]: ComparativeValue } = {};
         const paperComparisonsMap: { [date: string]: ComparativeValue } = {};
         const machineComparisonsMap: { [date: string]: ComparativeValue } = {};
         const percentComparisonsMap: { [date: string]: ComparativeValue } = {};
-        
+
         g.sections.forEach((s: Section) => {
           const v = s.partyVotes[partyId];
           if (v) {
             paper += v.paper;
             machine += v.machine;
-            
+
             // Aggregate comparisons
             v.comparisons?.forEach((c: ComparativeValue) => {
               if (!comparisonsMap[c.date]) {
@@ -826,21 +836,21 @@ export class ElectionDetailComponent implements OnInit {
               }
               comparisonsMap[c.date].value += c.value;
             });
-            
+
             v.paperComparisons?.forEach((c: ComparativeValue) => {
               if (!paperComparisonsMap[c.date]) {
                 paperComparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
               }
               paperComparisonsMap[c.date].value += c.value;
             });
-            
+
             v.machineComparisons?.forEach((c: ComparativeValue) => {
               if (!machineComparisonsMap[c.date]) {
                 machineComparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
               }
               machineComparisonsMap[c.date].value += c.value;
             });
-            
+
             v.percentComparisons?.forEach((c: ComparativeValue) => {
               if (!percentComparisonsMap[c.date]) {
                 percentComparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
@@ -850,7 +860,7 @@ export class ElectionDetailComponent implements OnInit {
             });
           }
         });
-        
+
         // Recalculate percent comparisons from aggregated totals
         // Store as decimal (0-1) since tooltip will multiply by 100
         const percentComparisons: ComparativeValue[] = [];
@@ -884,7 +894,7 @@ export class ElectionDetailComponent implements OnInit {
         const noVotesPaperComparisonsMap: { [date: string]: ComparativeValue } = {};
         const noVotesMachineComparisonsMap: { [date: string]: ComparativeValue } = {};
         const noVotesPercentComparisonsMap: { [date: string]: ComparativeValue } = {};
-        
+
         g.sections.forEach((s: Section) => {
           s.comparisons?.['noVotes']?.forEach((c: any) => {
             if (!noVotesComparisonsMap[c.date]) {
@@ -892,21 +902,21 @@ export class ElectionDetailComponent implements OnInit {
             }
             noVotesComparisonsMap[c.date].value += c.value;
           });
-          
+
           s.comparisons?.['noVotesPaper']?.forEach((c: any) => {
             if (!noVotesPaperComparisonsMap[c.date]) {
               noVotesPaperComparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
             }
             noVotesPaperComparisonsMap[c.date].value += c.value;
           });
-          
+
           s.comparisons?.['noVotesMachine']?.forEach((c: any) => {
             if (!noVotesMachineComparisonsMap[c.date]) {
               noVotesMachineComparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
             }
             noVotesMachineComparisonsMap[c.date].value += c.value;
           });
-          
+
           s.comparisons?.['noVotesPercent']?.forEach((c: any) => {
             if (!noVotesPercentComparisonsMap[c.date]) {
               noVotesPercentComparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
@@ -914,7 +924,7 @@ export class ElectionDetailComponent implements OnInit {
             // For percent, we'll recalculate from aggregated values
           });
         });
-        
+
         // Recalculate noVotesPercent comparisons
         // Store as decimal (0-1) since tooltip will multiply by 100
         const noVotesPercentComparisons: ComparativeValue[] = [];
@@ -927,7 +937,7 @@ export class ElectionDetailComponent implements OnInit {
             value: percent
           });
         });
-        
+
         // Actually, let's just sum paper/machine for noVotes too
         let noVotesPaper = 0;
         let noVotesMachine = 0;
@@ -935,7 +945,7 @@ export class ElectionDetailComponent implements OnInit {
           noVotesPaper += (s.noVotesPaper || 0);
           noVotesMachine += (s.noVotesMachine || 0);
         });
-        
+
         partyResults.push({
           partyId: 'no_votes',
           partyName: 'Не подкрепя никого',
