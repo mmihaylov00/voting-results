@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Section } from '../../../../models/election.models';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
@@ -48,6 +48,41 @@ export class ProtocolErrorModalComponent {
   @Output() close = new EventEmitter<void>();
 
   copiedId = signal<string | null>(null);
+  sortColumn = signal<string>('sectionId');
+  sortDirection = signal<'asc' | 'desc'>('asc');
+
+  sortedSections = computed(() => {
+    const column = this.sortColumn();
+    const direction = this.sortDirection();
+    const sections = [...this.sectionsWithError];
+
+    return sections.sort((a, b) => {
+      let valA: any = a[column as keyof Section];
+      let valB: any = b[column as keyof Section];
+
+      if (typeof valA === 'string' && typeof valB === 'string') {
+        return direction === 'asc'
+          ? valA.localeCompare(valB, 'bg')
+          : valB.localeCompare(valA, 'bg');
+      }
+
+      if (valA === undefined || valA === null) valA = 0;
+      if (valB === undefined || valB === null) valB = 0;
+
+      if (valA < valB) return direction === 'asc' ? -1 : 1;
+      if (valA > valB) return direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+  });
+
+  toggleSort(column: string) {
+    if (this.sortColumn() === column) {
+      this.sortDirection.update(d => d === 'asc' ? 'desc' : 'asc');
+    } else {
+      this.sortColumn.set(column);
+      this.sortDirection.set('asc');
+    }
+  }
 
   copyToClipboard(text: string, event: Event): void {
     event.stopPropagation();

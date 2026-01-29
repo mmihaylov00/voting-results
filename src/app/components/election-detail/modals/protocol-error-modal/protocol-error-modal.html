@@ -13,16 +13,58 @@
             <table hlmTable>
                 <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
                     <tr hlmTableRow>
-                        <th hlmTableHead class="text-secondary dark:text-primary">Секция</th>
-                        <th hlmTableHead class="text-secondary dark:text-primary">Град</th>
-                        <th hlmTableHead class="text-right text-secondary dark:text-primary">Подписи</th>
-                        <th hlmTableHead class="text-right text-secondary dark:text-primary">Хартиени</th>
-                        <th hlmTableHead class="text-right text-secondary dark:text-primary">Машинни</th>
-                        <th hlmTableHead class="text-right text-secondary dark:text-primary">Разлика</th>
+                        <th hlmTableHead class="text-secondary dark:text-primary cursor-pointer hover:bg-muted/50 transition-colors" (click)="toggleSort('sectionId')">
+                            <div class="flex items-center gap-1">
+                                Секция
+                                @if (sortColumn() === 'sectionId') {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform" [class.rotate-180]="sortDirection() === 'desc'"><path d="m18 15-6-6-6 6"/></svg>
+                                }
+                            </div>
+                        </th>
+                        <th hlmTableHead class="text-secondary dark:text-primary cursor-pointer hover:bg-muted/50 transition-colors" (click)="toggleSort('cityName')">
+                            <div class="flex items-center gap-1">
+                                Град
+                                @if (sortColumn() === 'cityName') {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform" [class.rotate-180]="sortDirection() === 'desc'"><path d="m18 15-6-6-6 6"/></svg>
+                                }
+                            </div>
+                        </th>
+                        <th hlmTableHead class="text-right text-secondary dark:text-primary cursor-pointer hover:bg-muted/50 transition-colors" (click)="toggleSort('voted')">
+                            <div class="flex items-center justify-end gap-1">
+                                Подписи
+                                @if (sortColumn() === 'voted') {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform" [class.rotate-180]="sortDirection() === 'desc'"><path d="m18 15-6-6-6 6"/></svg>
+                                }
+                            </div>
+                        </th>
+                        <th hlmTableHead class="text-right text-secondary dark:text-primary cursor-pointer hover:bg-muted/50 transition-colors" (click)="toggleSort('protocolPaperVotes')">
+                            <div class="flex items-center justify-end gap-1">
+                                Хартиени
+                                @if (sortColumn() === 'protocolPaperVotes') {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform" [class.rotate-180]="sortDirection() === 'desc'"><path d="m18 15-6-6-6 6"/></svg>
+                                }
+                            </div>
+                        </th>
+                        <th hlmTableHead class="text-right text-secondary dark:text-primary cursor-pointer hover:bg-muted/50 transition-colors" (click)="toggleSort('protocolMachineVotes')">
+                            <div class="flex items-center justify-end gap-1">
+                                Машинни
+                                @if (sortColumn() === 'protocolMachineVotes') {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform" [class.rotate-180]="sortDirection() === 'desc'"><path d="m18 15-6-6-6 6"/></svg>
+                                }
+                            </div>
+                        </th>
+                        <th hlmTableHead class="text-right text-secondary dark:text-primary cursor-pointer hover:bg-muted/50 transition-colors" (click)="toggleSort('protocolErrorDiff')">
+                            <div class="flex items-center justify-end gap-1">
+                                Разлика
+                                @if (sortColumn() === 'protocolErrorDiff') {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform" [class.rotate-180]="sortDirection() === 'desc'"><path d="m18 15-6-6-6 6"/></svg>
+                                }
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody hlmTableBody>
-                    @for (section of sectionsWithError; track section.sectionId) {
+                    @for (section of sortedSections(); track section.sectionId) {
                         <tr hlmTableRow class="hover:bg-muted/30">
                             <td hlmTableCell class="font-mono text-xs">
                                 <div class="flex items-center gap-1 group">

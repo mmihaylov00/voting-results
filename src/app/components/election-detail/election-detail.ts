@@ -59,6 +59,7 @@ import { SectionFiltersComponent } from './section-filters/section-filters';
     ExportCsvModalComponent,
     ProtocolErrorModalComponent,
     SectionFiltersComponent,
+    HighchartsChartComponent,
   ],
   templateUrl: './election-detail.html',
   styleUrl: './election-detail.scss',
@@ -97,6 +98,8 @@ export class ElectionDetailComponent implements OnInit {
   copiedId = signal<string | null>(null);
   currentSectionData?: Section;
   regionalChartOptions: Highcharts.Options = {};
+  activityChartOptions: Highcharts.Options = {};
+  ppdbChartOptions: Highcharts.Options = {};
 
   availableColumns = SECTION_COLUMNS;
   visibleColumns = signal<Set<string>>(new Set(SECTION_COLUMNS.map(c => c.id)));
@@ -366,46 +369,42 @@ export class ElectionDetailComponent implements OnInit {
 
       this.totalTop3Votes = partyData.slice(0, 3).reduce((sum, p) => sum + p.total, 0);
 
-      this.updateRegionalChartOptions(partyData);
+      this.updateChartOptions(partyData);
     });
   }
 
-  private updateRegionalChartOptions(partyData: { id: string, name: string, total: number }[]): void {
+  private updateChartOptions(partyData: { id: string, name: string, total: number }[]): void {
     const isDark = this.themeService.darkMode();
     const textColor = isDark ? '#f8fafc' : '#020817';
 
     const nonVoters = Math.max(0, this.totalElectors - this.totalVoted);
 
-    const chartData = partyData.map(p => ({
+    const pieData = partyData.map(p => ({
       name: p.name,
       y: p.total
     }));
 
     if (nonVoters > 0) {
-      chartData.push({
+      pieData.push({
         name: 'Негласували',
         y: nonVoters
       });
     }
 
     if (this.totalNoVotes > 0) {
-      chartData.push({
+      pieData.push({
         name: 'Не подкрепя никого',
         y: this.totalNoVotes
       });
     }
 
-    // Sort chart data to show bigger slices first
-    chartData.sort((a, b) => b.y - a.y);
+    // Sort pie data to show bigger slices first
+    pieData.sort((a, b) => b.y - a.y);
 
     this.regionalChartOptions = {
       chart: {
         type: 'pie',
         backgroundColor: 'transparent',
-        spacingTop: 0,
-        spacingBottom: 0,
-        spacingLeft: 0,
-        spacingRight: 0
       },
       title: {
         text: 'Разпределение на гласовете',
@@ -414,16 +413,10 @@ export class ElectionDetailComponent implements OnInit {
       tooltip: {
         pointFormat: '{series.name}: <b>{point.y}</b> ({point.percentage:.1f}%)'
       },
-      accessibility: {
-        point: {
-          valueSuffix: '%'
-        }
-      },
       plotOptions: {
         pie: {
           allowPointSelect: true,
           cursor: 'pointer',
-          size: '85%',
           dataLabels: {
             enabled: true,
             format: '<b>{point.name}</b>: {point.percentage:.1f} %',
@@ -432,11 +425,10 @@ export class ElectionDetailComponent implements OnInit {
               textOutline: 'none',
               fontSize: '11px'
             },
-            distance: 15,
             filter: {
               property: 'percentage',
               operator: '>',
-              value: 2
+              value: 3
             }
           }
         }
@@ -444,7 +436,127 @@ export class ElectionDetailComponent implements OnInit {
       series: [{
         name: 'Гласове',
         colorByPoint: true,
-        data: chartData
+        data: pieData
+      }] as any,
+      credits: { enabled: false }
+    };
+
+    // ПП-ДБ Strategic Distribution
+    let targetCount = 0;
+    let swingCount = 0;
+    let outsideCount = 0;
+    let riskyCount = 0;
+    let decliningCount = 0;
+
+    this.sections.forEach(s => {
+      const ppdbInTop = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
+      const isFirst = s.topParties.length > 0 && s.topParties[0].name.includes('ПП-ДБ');
+
+      if (isFirst) {
+        targetCount++;
+      } else {
+        if (ppdbInTop) {
+          const firstParty = s.topParties[0];
+          if (firstParty.percent - ppdbInTop.percent < 0.05) {
+            swingCount++;
+          }
+        }
+        if (s.activityPercent > 0.5) {
+          riskyCount++;
+        }
+      }
+
+      if (!ppdbInTop) {
+        outsideCount++;
+      }
+
+      if (this.date !== '2023.04.02') {
+        const ppdb = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
+        if (ppdb && ppdb.comparisons && ppdb.comparisons.length > 0) {
+          if (ppdb.total < ppdb.comparisons[0].value) {
+            decliningCount++;
+          }
+        }
+      }
+    });
+
+    const ppdbCategories = ['Целеви', 'Люлеещи се', 'Извън топ 3', 'Рискови'];
+    const ppdbData = [targetCount, swingCount, outsideCount, riskyCount];
+    const ppdbColors = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'];
+
+    if (this.date !== '2023.04.02') {
+      ppdbCategories.push('Намаляващи');
+      ppdbData.push(decliningCount);
+      ppdbColors.push('#6366f1');
+    }
+
+    this.ppdbChartOptions = {
+      chart: {
+        type: 'column',
+        backgroundColor: 'transparent'
+      },
+      title: {
+        text: 'Секции по категории (ПП-ДБ)',
+        style: { color: textColor }
+      },
+      xAxis: {
+        categories: ppdbCategories,
+        labels: { style: { color: textColor } }
+      },
+      yAxis: {
+        title: { text: 'Брой секции', style: { color: textColor } },
+        labels: { style: { color: textColor } },
+        allowDecimals: false
+      },
+      legend: { enabled: false },
+      tooltip: {
+        pointFormat: 'Секции: <b>{point.y}</b>'
+      },
+      plotOptions: {
+        column: {
+          colorByPoint: true,
+          colors: ppdbColors
+        }
+      },
+      series: [{
+        name: 'Секции',
+        data: ppdbData
+      }] as any,
+      credits: { enabled: false }
+    };
+
+    // Activity distribution
+    const activityBins = Array(10).fill(0);
+    this.sections.forEach(s => {
+      const bin = Math.min(Math.floor(s.activityPercent * 10), 9);
+      activityBins[bin]++;
+    });
+
+    this.activityChartOptions = {
+      chart: {
+        type: 'column',
+        backgroundColor: 'transparent'
+      },
+      title: {
+        text: 'Разпределение на секциите по активност',
+        style: { color: textColor }
+      },
+      xAxis: {
+        categories: ['0-10%', '10-20%', '20-30%', '30-40%', '40-50%', '50-60%', '60-70%', '70-80%', '80-90%', '90-100%'],
+        labels: { style: { color: textColor } }
+      },
+      yAxis: {
+        title: { text: 'Брой секции', style: { color: textColor } },
+        labels: { style: { color: textColor } }
+      },
+      legend: { enabled: false },
+      tooltip: {
+        pointFormat: 'Секции: <b>{point.y}</b>'
+      },
+      series: [{
+        name: 'Секции',
+        data: activityBins,
+        color: '#10b981'
       }] as any,
       credits: { enabled: false }
     };

@@ -136,6 +136,7 @@ function applyProtocols(sections, text) {
 
 function applyVotes(sections, text) {
   const lines = text.split('\n');
+  let step;
   for (let line of lines) {
     line = line.trim();
     if (!line) continue;
@@ -146,7 +147,15 @@ function applyVotes(sections, text) {
     const section = sections[sectionId];
     if (!section) continue;
 
-    for (let i = 3; i + 3 < parts.length; i += 5) {
+    if (!step) {
+      if (+parts[3] === +parts[3+5] - 1 && +parts[3+5] === +parts[3+10] - 1) {
+        step = 5;
+      } else {
+        step = 4;
+      }
+    }
+
+    for (let i = 3; i + 3 < parts.length; i += step) {
       const partyId = parts[i].trim();
       const total = parseLongSafe(parts[i + 1]);
       const paper = parseLongSafe(parts[i + 2]);
