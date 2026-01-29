@@ -14,7 +14,6 @@ import {
   HlmCardTitleDirective,
 } from '../ui/card-helm/src/lib/hlm-card.directives';
 import { HlmTypographyDirective } from '../ui/typography-helm/src/lib/hlm-typography.directive';
-import { HlmInputDirective } from '../ui/input-helm/src/lib/hlm-input.directive';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 
@@ -29,6 +28,9 @@ interface ElectionData {
 
 @Component({
   selector: 'app-election-list',
+  host: {
+    '(document:click)': 'closeHistoricalPartyFilter()'
+  },
   imports: [
     CommonModule,
     RouterModule,
@@ -40,7 +42,6 @@ interface ElectionData {
     HlmCardDescriptionDirective,
     HlmCardContentDirective,
     HlmTypographyDirective,
-    HlmInputDirective,
     HighchartsChartComponent,
   ],
   templateUrl: './election-list.html',
@@ -53,13 +54,18 @@ export class ElectionListComponent implements OnInit {
 
   // Historical trends properties
   Highcharts: typeof Highcharts = Highcharts;
-  level = signal<'national' | 'region' | 'section'>('national');
+  level = signal<'national' | 'region'>('national');
   selectedRegionId = signal<string>('');
-  selectedSectionId = signal<string>('');
   regions: { id: string, name: string }[] = [];
   chartOptions: Highcharts.Options = {};
   percentChartOptions: Highcharts.Options = {};
   allData: { [date: string]: any } = {};
+  
+  // Historical charts multiselect
+  selectedHistoricalPartyIds = signal<Set<string>>(new Set());
+  showHistoricalPartyFilter = signal<boolean>(false);
+  allParties: { id: string, name: string }[] = [];
+  private readonly DEFAULT_KEYWORDS = ["ГЕРБ", "ПРОДЪЛЖАВАМЕ", "ВЪЗРАЖДАНЕ", "ДПС", "БСП", "ТАКЪВ НАРОД", "МЕЧ", "ВЕЛИЧИЕ"];
 
   constructor(
     private electionService: ElectionService,
@@ -72,7 +78,7 @@ export class ElectionListComponent implements OnInit {
       this.themeService.darkMode();
       this.level();
       this.selectedRegionId();
-      this.selectedSectionId();
+      this.selectedHistoricalPartyIds();
       if (Object.keys(this.allData).length > 0) {
         this.updateHistoricalCharts();
       }
@@ -86,6 +92,29 @@ export class ElectionListComponent implements OnInit {
     // Load historical trends data
     this.electionService.getAllData().subscribe(data => {
       this.allData = data;
+      
+      // Collect all unique parties across all dates
+      const allPartiesMap = new Map<string, string>();
+      Object.values(data).forEach((electionData: any) => {
+        if (electionData.parties) {
+          Object.entries(electionData.parties).forEach(([id, name]) => {
+            if (!allPartiesMap.has(id)) {
+              allPartiesMap.set(id, name as string);
+            }
+          });
+        }
+      });
+      this.allParties = Array.from(allPartiesMap.entries()).map(([id, name]) => ({ id, name }));
+      
+      // Initialize default historical party selection
+      const defaultIds = new Set<string>();
+      this.allParties.forEach(party => {
+        if (this.DEFAULT_KEYWORDS.some(k => party.name.toUpperCase().includes(k))) {
+          defaultIds.add(party.id);
+        }
+      });
+      this.selectedHistoricalPartyIds.set(defaultIds);
+      
       this.updateHistoricalCharts();
     });
 
@@ -160,17 +189,86 @@ export class ElectionListComponent implements OnInit {
     return Math.min(100, Math.max(0, value)).toFixed(2);
   }
 
+  toggleHistoricalPartyFilter(event: Event) {
+    event.stopPropagation();
+    this.showHistoricalPartyFilter.set(!this.showHistoricalPartyFilter());
+  }
+
+  closeHistoricalPartyFilter() {
+    this.showHistoricalPartyFilter.set(false);
+  }
+
+  toggleHistoricalPartySelection(partyId: string) {
+    const current = new Set(this.selectedHistoricalPartyIds());
+    if (current.has(partyId)) {
+      current.delete(partyId);
+    } else {
+      current.add(partyId);
+    }
+    this.selectedHistoricalPartyIds.set(current);
+  }
+
+  // Extract keywords from party name for matching across elections
+  private getPartyKeywords(partyName: string): string[] {
+    const upperName = partyName.toUpperCase();
+    // Normalize common variations
+    if (upperName.includes('ПРОДЪЛЖАВАМЕ') || upperName.includes('ПП-ДБ')) {
+      return ['ПРОДЪЛЖАВАМЕ', 'ПП-ДБ'];
+    }
+    // Extract main keywords (first significant words, excluding common prefixes)
+    const words = upperName.split(/\s+/).filter(w => w.length > 2);
+    return words.slice(0, 3); // Take first 3 significant words
+  }
+
+  // Find party ID in election data by matching name keywords
+  private findPartyByKeywords(keywords: string[], parties: { [id: string]: string }): string | null {
+    for (const [pid, name] of Object.entries(parties)) {
+      const upperName = name.toUpperCase();
+      // Check if all keywords match
+      if (keywords.every(keyword => upperName.includes(keyword))) {
+        return pid;
+      }
+    }
+    // Fallback: try matching any keyword
+    for (const [pid, name] of Object.entries(parties)) {
+      const upperName = name.toUpperCase();
+      if (keywords.some(keyword => upperName.includes(keyword))) {
+        return pid;
+      }
+    }
+    return null;
+  }
+
   updateHistoricalCharts() {
     const level = this.level();
     const regionId = this.selectedRegionId();
-    const sectionId = this.selectedSectionId();
+    const selectedIds = this.selectedHistoricalPartyIds();
 
-    const votesData: number[] = [];
-    const percentData: number[] = [];
     const categories: string[] = [];
+    const colorPalette = [
+      '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', 
+      '#ec4899', '#06b6d4', '#84cc16', '#f97316', '#6366f1'
+    ];
 
     // Sort dates ascending for the chart
     const sortedDates = [...this.dates].sort((a, b) => a.date.localeCompare(b.date));
+
+    // Build mapping: selected party ID -> keywords -> party data across elections
+    const partyDataMap: { [selectedId: string]: { keywords: string[], name: string, votesData: number[], percentData: number[] } } = {};
+    
+    // Initialize data structure for each selected party
+    selectedIds.forEach(partyId => {
+      const party = this.allParties.find(p => p.id === partyId);
+      if (party) {
+        const keywords = this.getPartyKeywords(party.name);
+        partyDataMap[partyId] = {
+          keywords,
+          name: party.name,
+          votesData: [],
+          percentData: []
+        };
+      }
+    });
 
     sortedDates.forEach(d => {
       const data = this.allData[d.date];
@@ -178,17 +276,14 @@ export class ElectionListComponent implements OnInit {
 
       categories.push(d.name);
 
-      let votes = 0;
       let totalVoted = 0;
+      const datePartyVotes: { [partyId: string]: number } = {};
 
       if (level === 'national') {
         data.regions.forEach((r: Region) => {
           totalVoted += r.voted;
           Object.entries(r.partyVotes).forEach(([pid, v]) => {
-            const name = data.parties[pid] || pid;
-            if (name.toUpperCase().includes('ПРОДЪЛЖАВАМЕ')) {
-              votes += v as number;
-            }
+            datePartyVotes[pid] = (datePartyVotes[pid] || 0) + (v as number);
           });
         });
       } else if (level === 'region' && regionId) {
@@ -196,56 +291,82 @@ export class ElectionListComponent implements OnInit {
         if (region) {
           totalVoted = region.voted;
           Object.entries(region.partyVotes).forEach(([pid, v]) => {
-            const name = data.parties[pid] || pid;
-            if (name.toUpperCase().includes('ПРОДЪЛЖАВАМЕ')) {
-              votes += v as number;
-            }
-          });
-        }
-      } else if (level === 'section' && sectionId) {
-        const section = data.sections.find((s: Section) => s.sectionId === sectionId);
-        if (section) {
-          totalVoted = section.voted;
-          Object.entries(section.partyVotes).forEach(([pid, v]) => {
-            const votesObj = v as PartyVotes;
-            const name = data.parties[pid] || pid;
-            if (name.toUpperCase().includes('ПРОДЪЛЖАВАМЕ')) {
-              votes += votesObj.total;
-            }
+            datePartyVotes[pid] = v as number;
           });
         }
       }
 
-      votesData.push(votes);
-      const percent = totalVoted > 0 ? (votes / totalVoted) * 100 : 0;
-      percentData.push(Math.round(percent * 100) / 100);
+      // Match selected parties by keywords and store data
+      selectedIds.forEach(selectedId => {
+        const partyInfo = partyDataMap[selectedId];
+        if (!partyInfo) return;
+
+        // Find matching party ID in this election by keywords
+        const matchingPartyId = this.findPartyByKeywords(partyInfo.keywords, data.parties);
+        const votes = matchingPartyId ? (datePartyVotes[matchingPartyId] || 0) : 0;
+        
+        partyInfo.votesData.push(votes);
+        const percent = totalVoted > 0 ? (votes / totalVoted) * 100 : 0;
+        partyInfo.percentData.push(Math.round(percent * 100) / 100);
+      });
     });
 
     const isDark = this.themeService.darkMode();
     const textColor = isDark ? '#f8fafc' : '#1e293b';
 
+    // Build series for votes chart
+    const votesSeries: any[] = [];
+    const sortedPartyIds = Array.from(selectedIds).sort();
+    sortedPartyIds.forEach((partyId, idx) => {
+      const partyInfo = partyDataMap[partyId];
+      if (partyInfo) {
+        votesSeries.push({
+          id: `historical-votes-${partyId}`,
+          name: partyInfo.name,
+          data: partyInfo.votesData,
+          type: 'line',
+          color: colorPalette[idx % colorPalette.length]
+        });
+      }
+    });
+
+    // Build series for percent chart
+    const percentSeries: any[] = [];
+    sortedPartyIds.forEach((partyId, idx) => {
+      const partyInfo = partyDataMap[partyId];
+      if (partyInfo) {
+        percentSeries.push({
+          id: `historical-percent-${partyId}`,
+          name: partyInfo.name,
+          data: partyInfo.percentData,
+          type: 'line',
+          color: colorPalette[idx % colorPalette.length]
+        });
+      }
+    });
+
     this.chartOptions = {
       chart: { type: 'line', backgroundColor: 'transparent' },
-      title: { text: 'Абсолютен брой гласове за ПП-ДБ', style: { color: textColor } },
+      title: { text: 'Абсолютен брой гласове', style: { color: textColor } },
       xAxis: { categories, labels: { style: { color: textColor } } },
       yAxis: { title: { text: 'Гласове', style: { color: textColor } }, labels: { style: { color: textColor } } },
       legend: {
         itemStyle: { color: textColor }
       },
-      series: [{ name: 'Гласове', data: votesData, color: '#0ea5e9' }] as any,
+      series: votesSeries,
       credits: { enabled: false },
       tooltip: { shared: true }
     };
 
     this.percentChartOptions = {
       chart: { type: 'line', backgroundColor: 'transparent' },
-      title: { text: 'Процентна подкрепа за ПП-ДБ', style: { color: textColor } },
+      title: { text: 'Процентна подкрепа', style: { color: textColor } },
       xAxis: { categories, labels: { style: { color: textColor } } },
       yAxis: { title: { text: 'Процент (%)', style: { color: textColor } }, labels: { style: { color: textColor } }, min: 0, max: 100 },
       legend: {
         itemStyle: { color: textColor }
       },
-      series: [{ name: 'Процент', data: percentData, color: '#10b981' }] as any,
+      series: percentSeries,
       credits: { enabled: false },
       tooltip: { shared: true, valueSuffix: '%', valueDecimals: 2 }
     };

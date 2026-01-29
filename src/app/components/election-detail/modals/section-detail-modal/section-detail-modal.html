@@ -145,12 +145,51 @@
 
           <!-- Historical Trends Section -->
           <div class="mt-8 border-t border-primary/20 pt-6">
-            <h4 hlmH4 class="mb-4 text-secondary dark:text-primary">Исторически трендове</h4>
+            <div class="flex justify-between items-center mb-4">
+              <h4 hlmH4 class="text-secondary dark:text-primary">Исторически трендове</h4>
+              <div class="relative">
+                <button
+                  hlmBtn
+                  variant="outline"
+                  size="sm"
+                  (click)="toggleHistoricalPartyFilter($event)"
+                  class="relative">
+                  Филтър партии
+                  @if (selectedHistoricalPartyIds().size > 0) {
+                    <span class="ml-2 px-1.5 py-0.5 text-xs bg-primary text-primary-foreground rounded-full">
+                      {{ selectedHistoricalPartyIds().size }}
+                    </span>
+                  }
+                </button>
+                @if (showHistoricalPartyFilter()) {
+                  <div class="absolute right-0 mt-2 w-64 bg-background border border-border rounded-md shadow-lg z-50 max-h-96 overflow-y-auto" (click)="$event.stopPropagation()">
+                    <div class="p-2">
+                      @for (party of allParties; track party.id) {
+                        <label class="flex items-center gap-2 p-2 hover:bg-accent rounded cursor-pointer">
+                          <input
+                            type="checkbox"
+                            [checked]="selectedHistoricalPartyIds().has(party.id)"
+                            (change)="toggleHistoricalPartySelection(party.id)"
+                            class="rounded border-input" />
+                          <span class="flex-1 text-sm">{{ party.name }}</span>
+                          @for (result of section.partyResults; track result.partyId) {
+                            @if (result.partyId === party.id) {
+                              <span class="text-xs text-muted-foreground">({{ result.total | number }})</span>
+                            }
+                          }
+                        </label>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div hlmCard class="border-primary/10 p-4">
                 @if (historicalVotesChartOptions.series) {
                   <highcharts-chart
                     [options]="historicalVotesChartOptions"
+                    [oneToOne]="true"
                     style="width: 100%; height: 300px; display: block;">
                   </highcharts-chart>
                 }
@@ -159,6 +198,7 @@
                 @if (historicalPercentChartOptions.series) {
                   <highcharts-chart
                     [options]="historicalPercentChartOptions"
+                    [oneToOne]="true"
                     style="width: 100%; height: 300px; display: block;">
                   </highcharts-chart>
                 }
