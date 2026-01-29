@@ -228,7 +228,6 @@ for (const { date } of elections) {
 }
 
 console.log('Calculating comparisons and aggregating regions...');
-const compiledData = {};
 
 const dates = elections.map(e => e.date);
 
@@ -543,74 +542,10 @@ for (const date of dates) {
     regions: regions
   };
 
-  compiledData[date] = finalResult;
-
   const json = JSON.stringify(finalResult);
 
   const gzipped = zlib.gzipSync(json);
   fs.writeFileSync(path.join(outputDir, `${date}.json.gz`), gzipped);
-}
-
-console.log('Generating global aggregation...');
-for (const date of dates) {
-  const data = compiledData[date];
-  const globalSummary = {
-    date,
-    total: 0,
-    voted: 0,
-    discardedVotes: 0,
-    noVotes: 0,
-    totalPaper: 0,
-    totalMachine: 0,
-    partyVotes: {},
-    regions: data.regions.map(r => ({
-      id: r.id,
-      name: r.name,
-      total: r.total,
-      voted: r.voted,
-      topParties: r.topParties
-    }))
-  };
-
-  data.regions.forEach(r => {
-    globalSummary.total += r.total;
-    globalSummary.voted += r.voted;
-    globalSummary.discardedVotes += r.discardedVotes;
-    globalSummary.noVotes += r.noVotes;
-    globalSummary.totalPaper += r.totalPaper;
-    globalSummary.totalMachine += r.totalMachine;
-    Object.entries(r.partyVotes).forEach(([pid, total]) => {
-      globalSummary.partyVotes[pid] = (globalSummary.partyVotes[pid] || 0) + total;
-    });
-  });
-
-  const topParties = Object.entries(globalSummary.partyVotes)
-    .filter(([pid, _]) => pid !== '0')
-    .map(([pid, total]) => {
-      let name = data.parties[pid] || pid;
-      if (name.includes('ПРОДЪЛЖАВАМЕ')) {
-        name = 'ПП-ДБ';
-      }
-      return {
-        name,
-        partyId: pid,
-        total,
-        percent: globalSummary.voted > 0 ? total / globalSummary.voted : 0
-      };
-    })
-    .filter(p => p.total > 0)
-    .sort((a, b) => b.total - a.total)
-    .slice(0, 10);
-
-  globalSummary.topParties = topParties;
-
-  const globalJson = JSON.stringify(globalSummary);
-  const globalGzipped = zlib.gzipSync(globalJson);
-  const globalDir = path.join(outputDir, 'global');
-  if (!fs.existsSync(globalDir)) {
-    fs.mkdirSync(globalDir, { recursive: true });
-  }
-  fs.writeFileSync(path.join(globalDir, `${date}.json.gz`), globalGzipped);
 }
 
 // Cleanup .json files

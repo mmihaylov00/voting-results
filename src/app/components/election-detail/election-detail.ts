@@ -108,6 +108,7 @@ export class ElectionDetailComponent implements OnInit {
   showColumnFilter = false;
   groupByCity = signal<boolean>(false);
   groupedSections: any[] = [];
+  isLoadingAllSections = signal<boolean>(false);
 
   getCikUrl(): string {
     if (this.date.startsWith('2023.04')) return 'https://results.cik.bg/ns2023/search/index.html#';
@@ -220,19 +221,34 @@ export class ElectionDetailComponent implements OnInit {
     this.regionId = this.route.snapshot.paramMap.get('regionId') || '';
     this.dateName = this.electionService.getDates().find(d => d.date === this.date)?.name ?? this.date;
     if (this.date) {
-      this.electionService.getSections(this.date, this.regionId).subscribe(sections => {
-        this.sections = sections;
-        if (this.sections.length > 0) {
-          if (this.regionId) {
-            this.regionName = this.formatRegionName((this.sections[0] as any).regionName);
-          } else {
-            this.regionName = 'Всички райони';
-          }
-          this.calculateAvgActivity();
-          this.calculateRegionalStats();
+      // Show loading when loading all sections
+      if (this.regionId === 'all' || !this.regionId) {
+        this.isLoadingAllSections.set(true);
+      }
+
+      this.electionService.getSections(this.date, this.regionId).subscribe({
+        next: (sections) => {
+          // Use setTimeout to allow UI to update and show loading state
+          setTimeout(() => {
+            this.sections = sections;
+            if (this.sections.length > 0) {
+              if (this.regionId && this.regionId !== 'all') {
+                this.regionName = this.formatRegionName((this.sections[0] as any).regionName);
+              } else {
+                this.regionName = 'Всички райони';
+              }
+              this.calculateAvgActivity();
+              this.calculateRegionalStats();
+            }
+            this.applyFilter();
+            this.sortSections(this.sectionSortColumn, true);
+            this.isLoadingAllSections.set(false);
+          }, 0);
+        },
+        error: (err) => {
+          console.error('Error loading sections:', err);
+          this.isLoadingAllSections.set(false);
         }
-        this.applyFilter();
-        this.sortSections(this.sectionSortColumn, true);
       });
       this.electionService.getParties(this.date).subscribe(partiesMap => {
         this.allParties = Object.entries(partiesMap)

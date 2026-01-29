@@ -92,10 +92,31 @@ export class ElectionService {
   }
 
   getSections(date: string, regionId?: string): Observable<Section[]> {
+    // If loading all sections, use regions to determine which sections to include
+    // This avoids loading the full global file upfront
+    if (!regionId || regionId === 'all') {
+      // Load regions first (lightweight), then get their sections
+      return this.getRegions(date).pipe(
+        map((regions) => {
+          // Now ensure sections are loaded
+          // The cache will be populated by ensureDataLoaded when regions are loaded
+          const cachedSections = this.cache[date]?.sections || [];
+          
+          // Get region IDs from loaded regions
+          const regionIds = new Set(regions.map(r => r.id));
+          
+          // Filter sections to only include those from the loaded regions
+          // This reuses the region data instead of loading a separate global file
+          return cachedSections.filter((s) => regionIds.has(s.regionId));
+        })
+      );
+    }
+    
+    // For specific region, load normally
     return this.ensureDataLoaded().pipe(
       map(() => {
         const sections = this.cache[date]?.sections || [];
-        return regionId ? sections.filter((s) => s.regionId === regionId) : sections;
+        return sections.filter((s) => s.regionId === regionId);
       })
     );
   }

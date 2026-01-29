@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output, effect, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, effect, signal, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
-import { Section, SectionDetails, PartyResult, ComparativeValue } from '../../../../models/election.models';
+import { Section, SectionDetails, PartyResult, ComparativeValue, PartyVotes } from '../../../../models/election.models';
 import { ThemeService } from '../../../../services/theme.service';
+import { ElectionService } from '../../../../services/election';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmTableBodyDirective,
@@ -46,7 +47,7 @@ import {
     '(document:keydown.escape)': 'close.emit()'
   }
 })
-export class SectionDetailModalComponent {
+export class SectionDetailModalComponent implements OnInit, OnChanges {
   @Input({ required: true }) section!: SectionDetails;
   @Input() currentSectionData?: Section;
   @Input() allParties: { id: string, name: string }[] = [];
@@ -59,6 +60,11 @@ export class SectionDetailModalComponent {
   showPartyFilter: boolean = false;
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
+  historicalVotesChartOptions: Highcharts.Options = {};
+  historicalPercentChartOptions: Highcharts.Options = {};
+  
+  allData: { [date: string]: any } = {};
+  dates: { date: string, name: string }[] = [];
 
   getGoogleMapsUrl(cityName: string, sectionName: string): string {
     const isCity = this.section.sectionName.startsWith('Общо за');
@@ -71,18 +77,38 @@ export class SectionDetailModalComponent {
     return Math.min(100, Math.max(0, value)).toFixed(2);
   }
 
-  constructor(public themeService: ThemeService) {
+  constructor(
+    public themeService: ThemeService,
+    private electionService: ElectionService
+  ) {
+    this.dates = this.electionService.getDates();
+    
     effect(() => {
       this.themeService.darkMode();
       if (this.section) {
         this.updateChartOptions();
+        if (Object.keys(this.allData).length > 0) {
+          this.updateHistoricalCharts();
+        }
       }
     });
   }
 
-  ngOnChanges() {
+  ngOnInit() {
+    this.electionService.getAllData().subscribe(data => {
+      this.allData = data;
+      if (this.section) {
+        this.updateHistoricalCharts();
+      }
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
     if (this.section) {
-       this.updateChartOptions();
+      this.updateChartOptions();
+      if (Object.keys(this.allData).length > 0) {
+        this.updateHistoricalCharts();
+      }
     }
   }
 
@@ -300,6 +326,108 @@ export class SectionDetailModalComponent {
         }
       ],
       credits: { enabled: false }
+    };
+  }
+
+  updateHistoricalCharts() {
+    if (!this.section) return;
+
+    const isCity = this.section.sectionName.startsWith('Общо за');
+    const sectionId = this.section.sectionId;
+    const cityName = this.section.cityName;
+    const regionId = this.currentSectionData?.regionId;
+
+    const votesData: number[] = [];
+    const percentData: number[] = [];
+    const categories: string[] = [];
+
+    // Sort dates ascending for the chart
+    const sortedDates = [...this.dates].sort((a, b) => a.date.localeCompare(b.date));
+
+    sortedDates.forEach(d => {
+      const data = this.allData[d.date];
+      if (!data) return;
+
+      categories.push(d.name);
+
+      let votes = 0;
+      let totalVoted = 0;
+
+      if (isCity) {
+        // For city totals, find all sections in that city (and region if available)
+        const citySections = data.sections.filter((s: Section) => {
+          const matchesCity = s.cityName === cityName;
+          const matchesRegion = !regionId || s.regionId === regionId;
+          return matchesCity && matchesRegion;
+        });
+        citySections.forEach((section: Section) => {
+          totalVoted += section.voted;
+          Object.entries(section.partyVotes).forEach(([pid, v]) => {
+            const votesObj = v as PartyVotes;
+            const name = data.parties[pid] || pid;
+            if (name.toUpperCase().includes('ПРОДЪЛЖАВАМЕ')) {
+              votes += votesObj.total;
+            }
+          });
+        });
+      } else {
+        // For individual sections, match by sectionId
+        const section = data.sections.find((s: Section) => s.sectionId === sectionId);
+        if (section) {
+          totalVoted = section.voted;
+          Object.entries(section.partyVotes).forEach(([pid, v]) => {
+            const votesObj = v as PartyVotes;
+            const name = data.parties[pid] || pid;
+            if (name.toUpperCase().includes('ПРОДЪЛЖАВАМЕ')) {
+              votes += votesObj.total;
+            }
+          });
+        }
+      }
+
+      votesData.push(votes);
+      const percent = totalVoted > 0 ? (votes / totalVoted) * 100 : 0;
+      percentData.push(Math.round(percent * 100) / 100);
+    });
+
+    const isDark = this.themeService.darkMode();
+    const textColor = isDark ? '#f8fafc' : '#1e293b';
+    const chartTitle = isCity 
+      ? `Исторически тренд за ${cityName}` 
+      : `Исторически тренд за секция ${sectionId}`;
+
+    this.historicalVotesChartOptions = {
+      chart: { type: 'line', backgroundColor: 'transparent' },
+      title: { text: 'Абсолютен брой гласове за ПП-ДБ', style: { color: textColor } },
+      xAxis: { categories, labels: { style: { color: textColor } } },
+      yAxis: { 
+        title: { text: 'Гласове', style: { color: textColor } }, 
+        labels: { style: { color: textColor } } 
+      },
+      legend: {
+        itemStyle: { color: textColor }
+      },
+      series: [{ name: 'Гласове', data: votesData, color: '#0ea5e9' }] as any,
+      credits: { enabled: false },
+      tooltip: { shared: true }
+    };
+
+    this.historicalPercentChartOptions = {
+      chart: { type: 'line', backgroundColor: 'transparent' },
+      title: { text: 'Процентна подкрепа за ПП-ДБ', style: { color: textColor } },
+      xAxis: { categories, labels: { style: { color: textColor } } },
+      yAxis: { 
+        title: { text: 'Процент (%)', style: { color: textColor } }, 
+        labels: { style: { color: textColor } }, 
+        min: 0, 
+        max: 100 
+      },
+      legend: {
+        itemStyle: { color: textColor }
+      },
+      series: [{ name: 'Процент', data: percentData, color: '#10b981' }] as any,
+      credits: { enabled: false },
+      tooltip: { shared: true, valueSuffix: '%', valueDecimals: 2 }
     };
   }
 }
