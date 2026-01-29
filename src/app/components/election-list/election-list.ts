@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
 import { Region, Section, PartyVotes } from '../../models/election.models';
+import { getPartyAlias } from '../../utils/party-aliases';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmCardContentDirective,
@@ -189,6 +190,8 @@ export class ElectionListComponent implements OnInit {
     return Math.min(100, Math.max(0, value)).toFixed(2);
   }
 
+  getPartyAlias = getPartyAlias;
+
   toggleHistoricalPartyFilter(event: Event) {
     event.stopPropagation();
     this.showHistoricalPartyFilter.set(!this.showHistoricalPartyFilter());
@@ -263,7 +266,7 @@ export class ElectionListComponent implements OnInit {
         const keywords = this.getPartyKeywords(party.name);
         partyDataMap[partyId] = {
           keywords,
-          name: party.name,
+          name: getPartyAlias(party.name),
           votesData: [],
           percentData: []
         };

@@ -123,18 +123,20 @@
                 <div class="flex flex-col gap-6 mb-6">
                     <div class="flex justify-between gap-4">
                         <div class="flex gap-2 border-b border-primary/10 align-baseline">
-                            <button hlmBtn [variant]="'line'" size="lg" [attr.data-state]="!groupByCity() ? 'active' : 'inactive'"
-                                    (click)="setViewMode(false)" class="border-b-0">
+                            <button hlmBtn [variant]="'line'" [attr.data-state]="!groupByCity() ? 'active' : 'inactive'"
+                                    (click)="setViewMode(false)">
                                 Секции
                             </button>
-                            <button hlmBtn [variant]="'line'" size="lg" [attr.data-state]="groupByCity() ? 'active' : 'inactive'"
-                                    (click)="setViewMode(true)" class="border-b-0">
+                            <button hlmBtn [variant]="'line'" [attr.data-state]="groupByCity() ? 'active' : 'inactive'"
+                                    (click)="setViewMode(true)">
                                 Градове
                             </button>
                         </div>
                         <div class="flex items-center gap-2">
                             <div class="relative">
-                              <span class="text-md text-muted-foreground mr-2">({{ filteredSections.length }})</span>
+                              <span class="inline-flex items-center justify-center px-3 py-1.5 rounded-full text-sm font-semibold bg-primary/10 text-primary-foreground dark:text-primary border border-primary/20 mr-2 min-w-[3rem]">
+                                Редове: {{ filteredSections.length }}
+                              </span>
                                 <button hlmBtn variant="outline" size="icon" (click)="toggleColumnFilter($event)" hlmTooltip="Филтър колони" class="border-primary/50 text-secondary hover:bg-primary hover:text-secondary dark:border-secondary/50 dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10"/><path d="M7 12h10"/><path d="M7 16h10"/></svg>
                                 </button>
@@ -176,6 +178,16 @@
                                         Рискове
                                         <span class="ml-1">
                                             @if (sectionSortColumn === 'riskScore') {
+                                                {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
+                                            }
+                                        </span>
+                                    </th>
+                                }
+                                @if (visibleColumns().has('regionName') && (regionId === 'all' || !regionId)) {
+                                    <th hlmTableHead (click)="sortSections('regionName')" class="cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
+                                        Регион
+                                        <span class="ml-1">
+                                            @if (sectionSortColumn === 'regionName') {
                                                 {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
                                             }
                                         </span>
@@ -318,6 +330,11 @@
                                                 </div>
                                             </td>
                                         }
+                                        @if (visibleColumns().has('regionName') && (regionId === 'all' || !regionId)) {
+                                            <td hlmTableCell>
+                                                {{ section.regionName || '-' }}
+                                            </td>
+                                        }
                                         @if (visibleColumns().has('cityName')) {
                                         <td hlmTableCell>
                                           @if (groupByCity()) {
@@ -374,8 +391,9 @@
                                         <td hlmTableCell>
                                             <div class="flex flex-col text-xs">
                                                 @for (tp of section.topParties; track tp.name) {
-                                                    <div class="truncate" [class.font-bold]="tp.name.includes('ПП-ДБ')" [class.text-ppdb]="tp.name.includes('ПП-ДБ')" [title]="tp.name + ': ' + tp.total + ' (' + formatActivity(tp.percent) + '%)'" [hlmTooltip]="tp.comparisons" [currentValue]="tp.total">
-                                                        {{ tp.name }}: <strong>{{ tp.total | number }}</strong> ({{ formatActivity(tp.percent) }}%)
+                                                    @let alias = getPartyAlias(tp.name);
+                                                    <div class="truncate" [class.font-bold]="alias.includes('ПП-ДБ')" [class.text-ppdb]="alias.includes('ПП-ДБ')" [title]="alias + ': ' + tp.total + ' (' + formatActivity(tp.percent) + '%)'" [hlmTooltip]="tp.comparisons" [currentValue]="tp.total">
+                                                        {{ alias }}: <strong>{{ tp.total | number }}</strong> ({{ formatActivity(tp.percent) }}%)
                                                     </div>
                                                 }
                                             </div>

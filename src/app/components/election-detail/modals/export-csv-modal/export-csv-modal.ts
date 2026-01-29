@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Section, SECTION_COLUMNS, SectionTab, SectionFilters } from '../../../../models/election.models';
 import { filterSections } from '../../../../utils/election-utils';
+import { getPartyAlias } from '../../../../utils/party-aliases';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmCardDirective,
@@ -105,6 +106,8 @@ export class ExportCsvModalComponent {
     return Math.min(100, Math.max(0, value)).toFixed(2);
   }
 
+  getPartyAlias = getPartyAlias;
+
   toggleExportColumnSelection(columnId: string) {
     if (this.exportColumnIds.has(columnId)) {
       if (this.exportColumnIds.size > 1) {
@@ -127,7 +130,7 @@ export class ExportCsvModalComponent {
     const partiesMap: { [id: string]: string } = {};
     this.allParties.forEach(p => {
       if (this.exportPartyIds.has(p.id)) {
-        partiesMap[p.id] = p.name;
+        partiesMap[p.id] = getPartyAlias(p.name);
       }
     });
 

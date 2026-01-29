@@ -27,8 +27,9 @@
           <div hlmCardContent class="pt-0 flex-grow">
             <div class="flex flex-col text-xs mb-4 space-y-1">
               @for (tp of electionData.topParties; let i = $index; track tp.name) {
-                <div class="flex justify-between items-center gap-2" [class.font-bold]="tp.name.includes('ПП-ДБ')" [class.text-ppdb]="tp.name.includes('ПП-ДБ')" [title]="tp.name + ': ' + tp.total + ' (' + formatActivity(tp.percent) + '%)'">
-                  <span class="truncate">{{ $index + 1 }}. {{ tp.name }}</span>
+                @let alias = getPartyAlias(tp.name);
+                <div class="flex justify-between items-center gap-2" [class.font-bold]="alias.includes('ПП-ДБ')" [class.text-ppdb]="alias.includes('ПП-ДБ')" [title]="alias + ': ' + tp.total + ' (' + formatActivity(tp.percent) + '%)'">
+                  <span class="truncate">{{ $index + 1 }}. {{ alias }}</span>
                   <span class="whitespace-nowrap"><strong class="me-1">{{ tp.total | number }}</strong> <span class="text-[10px] opacity-70">({{ formatActivity(tp.percent) }}%)</span></span>
                 </div>
               }
@@ -101,7 +102,8 @@
             size="sm"
             (click)="toggleHistoricalPartyFilter($event)"
             class="relative">
-            Филтър партии
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            <span class="ml-2">Филтър партии</span>
             @if (selectedHistoricalPartyIds().size > 0) {
               <span class="ml-2 px-1.5 py-0.5 text-xs bg-primary text-primary-foreground rounded-full">
                 {{ selectedHistoricalPartyIds().size }}
@@ -118,7 +120,7 @@
                       [checked]="selectedHistoricalPartyIds().has(party.id)"
                       (change)="toggleHistoricalPartySelection(party.id)"
                       class="rounded border-input" />
-                    <span class="flex-1 text-sm">{{ party.name }}</span>
+                    <span class="flex-1 text-sm">{{ getPartyAlias(party.name) }}</span>
                   </label>
                 }
               </div>

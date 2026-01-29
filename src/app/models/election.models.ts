@@ -31,6 +31,7 @@ export interface Region {
 export interface Section {
   sectionId: string;
   regionId: string;
+  regionName?: string;
   cityName: string;
   sectionName: string;
   sectionType: string;
@@ -87,6 +88,7 @@ export interface TableColumn {
 export const SECTION_COLUMNS: TableColumn[] = [
   { id: 'sectionId', label: 'Секция' },
   { id: 'riskScore', label: 'Рискове' },
+  { id: 'regionName', label: 'Регион' },
   { id: 'cityName', label: 'Град' },
   { id: 'sectionName', label: 'Име на секция' },
   { id: 'total', label: 'Избиратели' },
@@ -108,4 +110,5 @@ export interface SectionFilters {
   lowActivityThreshold: number | null;
   sectionTypes: Set<string>;
   highRiskOnly: boolean;
+  isViewingAllSections?: boolean;
 }

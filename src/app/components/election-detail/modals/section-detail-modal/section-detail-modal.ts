@@ -6,6 +6,7 @@ import { HighchartsChartComponent } from 'highcharts-angular';
 import { Section, SectionDetails, PartyResult, ComparativeValue, PartyVotes } from '../../../../models/election.models';
 import { ThemeService } from '../../../../services/theme.service';
 import { ElectionService } from '../../../../services/election';
+import { getPartyAlias } from '../../../../utils/party-aliases';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmTableBodyDirective,
@@ -63,14 +64,10 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   chartOptions: Highcharts.Options = {};
   historicalVotesChartOptions: Highcharts.Options = {};
   historicalPercentChartOptions: Highcharts.Options = {};
+  activeHistoricalTab = signal<'votes' | 'percent'>('votes');
 
   allData: { [date: string]: any } = {};
   dates: { date: string, name: string }[] = [];
-  
-  // Historical charts multiselect
-  selectedHistoricalPartyIds = signal<Set<string>>(new Set());
-  showHistoricalPartyFilter = signal<boolean>(false);
-  private readonly DEFAULT_KEYWORDS = ["ГЕРБ", "ПРОДЪЛЖАВАМЕ", "ВЪЗРАЖДАНЕ", "ДПС", "БСП", "ТАКЪВ НАРОД", "МЕЧ", "ВЕЛИЧИЕ"];
 
   getGoogleMapsUrl(cityName: string, sectionName: string): string {
     const isCity = this.section.sectionName.startsWith('Общо за');
@@ -82,6 +79,8 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     const value = percent * 100;
     return Math.min(100, Math.max(0, value)).toFixed(2);
   }
+
+  getPartyAlias = getPartyAlias;
 
   constructor(
     public themeService: ThemeService,
@@ -98,27 +97,9 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
         }
       }
     });
-
-    effect(() => {
-      this.selectedHistoricalPartyIds();
-      if (this.section && Object.keys(this.allData).length > 0) {
-        this.updateHistoricalCharts();
-      }
-    });
   }
 
   ngOnInit() {
-    // Initialize default historical party selection
-    if (this.allParties.length > 0) {
-      const defaultIds = new Set<string>();
-      this.allParties.forEach(party => {
-        if (this.DEFAULT_KEYWORDS.some(k => party.name.toUpperCase().includes(k))) {
-          defaultIds.add(party.id);
-        }
-      });
-      this.selectedHistoricalPartyIds.set(defaultIds);
-    }
-
     this.electionService.getAllData().subscribe(data => {
       this.allData = data;
       if (this.section) {
@@ -128,17 +109,6 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['allParties'] && this.allParties.length > 0 && this.selectedHistoricalPartyIds().size === 0) {
-      // Initialize default historical party selection when allParties is first set
-      const defaultIds = new Set<string>();
-      this.allParties.forEach(party => {
-        if (this.DEFAULT_KEYWORDS.some(k => party.name.toUpperCase().includes(k))) {
-          defaultIds.add(party.id);
-        }
-      });
-      this.selectedHistoricalPartyIds.set(defaultIds);
-    }
-    
     if (this.section) {
       this.updateChartOptions();
       if (Object.keys(this.allData).length > 0) {
@@ -162,7 +132,6 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
   closePartyFilters() {
     this.showPartyFilter = false;
-    this.closeHistoricalPartyFilter();
   }
 
   togglePartySelection(partyId: string) {
@@ -171,25 +140,10 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     } else {
       this.selectedPartyIds.add(partyId);
     }
-  }
-
-  toggleHistoricalPartyFilter(event: Event) {
-    event.stopPropagation();
-    this.showHistoricalPartyFilter.set(!this.showHistoricalPartyFilter());
-  }
-
-  closeHistoricalPartyFilter() {
-    this.showHistoricalPartyFilter.set(false);
-  }
-
-  toggleHistoricalPartySelection(partyId: string) {
-    const current = new Set(this.selectedHistoricalPartyIds());
-    if (current.has(partyId)) {
-      current.delete(partyId);
-    } else {
-      current.add(partyId);
+    // Update historical charts when party selection changes
+    if (Object.keys(this.allData).length > 0) {
+      this.updateHistoricalCharts();
     }
-    this.selectedHistoricalPartyIds.set(current);
   }
 
   sortParties(column: keyof PartyResult, preserveDir: boolean = false) {
@@ -334,7 +288,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       .sort((a, b) => b.total - a.total)
       .slice(0, 10);
 
-    const categories = results.map(r => r.partyName);
+    const categories = results.map(r => getPartyAlias(r.partyName));
     const paperData = results.map(r => r.paper);
     const machineData = results.map(r => r.machine);
 
@@ -426,7 +380,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     const sectionId = this.section.sectionId;
     const cityName = this.section.cityName;
     const regionId = this.currentSectionData?.regionId;
-    const selectedIds = this.selectedHistoricalPartyIds();
+    const selectedIds = this.selectedPartyIds;
 
     const categories: string[] = [];
     const colorPalette = [
@@ -447,7 +401,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
         const keywords = this.getPartyKeywords(party.name);
         partyDataMap[partyId] = {
           keywords,
-          name: party.name,
+          name: getPartyAlias(party.name),
           votesData: [],
           percentData: []
         };

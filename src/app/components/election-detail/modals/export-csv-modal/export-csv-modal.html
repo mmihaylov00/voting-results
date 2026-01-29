@@ -40,7 +40,7 @@
                     @for (party of allParties; track party.id) {
                         <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleExportPartySelection(party.id)">
                             <input type="checkbox" [checked]="exportPartyIds.has(party.id)" class="cursor-pointer" (click)="$event.stopPropagation(); toggleExportPartySelection(party.id)" />
-                            <span class="text-sm truncate">{{ party.name }}</span>
+                            <span class="text-sm truncate">{{ getPartyAlias(party.name) }}</span>
                         </div>
                     }
                 </div>

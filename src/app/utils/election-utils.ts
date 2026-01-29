@@ -5,11 +5,13 @@ export function filterSections(sections: Section[], filters: SectionFilters): Se
 
   if (filters.searchTerm) {
     const term = filters.searchTerm.toLowerCase();
-    result = result.filter(s =>
-      s.sectionId.toLowerCase().includes(term) ||
-      s.cityName.toLowerCase().includes(term) ||
-      s.sectionName.toLowerCase().includes(term)
-    );
+    result = result.filter(s => {
+      const matchesSectionId = s.sectionId.toLowerCase().includes(term);
+      const matchesCityName = s.cityName.toLowerCase().includes(term);
+      const matchesSectionName = s.sectionName.toLowerCase().includes(term);
+      const matchesRegionName = filters.isViewingAllSections && s.regionName && s.regionName.toLowerCase().includes(term);
+      return matchesSectionId || matchesCityName || matchesSectionName || matchesRegionName;
+    });
   }
 
   const currentTab = filters.activeTab;

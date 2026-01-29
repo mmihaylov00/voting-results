@@ -6,6 +6,7 @@ import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
 import { PartyResult, Section, SectionDetails, TableColumn, SECTION_COLUMNS, SectionTab, SectionFilters, ComparativeValue } from '../../models/election.models';
 import { filterSections } from '../../utils/election-utils';
+import { getPartyAlias } from '../../utils/party-aliases';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
@@ -241,8 +242,6 @@ export class ElectionDetailComponent implements OnInit {
               } else {
                 this.regionName = 'Всички райони';
               }
-              this.calculateAvgActivity();
-              this.calculateRegionalStats();
             }
             this.applyFilter();
             this.sortSections(this.sectionSortColumn, true);
@@ -290,7 +289,8 @@ export class ElectionDetailComponent implements OnInit {
       activityOperator: this.activityOperator(),
       lowActivityThreshold: this.lowActivityThreshold,
       sectionTypes: this.selectedSectionTypes(),
-      highRiskOnly: this.highRiskOnly()
+      highRiskOnly: this.highRiskOnly(),
+      isViewingAllSections: this.regionId === 'all' || !this.regionId
     };
 
     const result = filterSections(this.sections, filters);
@@ -444,6 +444,10 @@ export class ElectionDetailComponent implements OnInit {
     }
 
     this.sortSections(this.sectionSortColumn, true);
+    
+    // Update charts and stats based on filtered sections
+    this.calculateAvgActivity(result);
+    this.calculateRegionalStats(result);
   }
 
   toggleCityGrouping(): void {
@@ -505,32 +509,32 @@ export class ElectionDetailComponent implements OnInit {
     this.showColumnFilter = false;
   }
 
-  private calculateAvgActivity(): void {
-    if (this.sections.length === 0) {
+  private calculateAvgActivity(sections: Section[] = this.sections): void {
+    if (sections.length === 0) {
       this.avgRegionActivity = 0;
       return;
     }
-    const totalVoted = this.sections.reduce((sum, s) => sum + s.voted, 0);
-    const totalElectors = this.sections.reduce((sum, s) => sum + s.total, 0);
+    const totalVoted = sections.reduce((sum, s) => sum + s.voted, 0);
+    const totalElectors = sections.reduce((sum, s) => sum + s.total, 0);
     this.avgRegionActivity = totalElectors > 0 ? totalVoted / totalElectors : 0;
   }
 
-  private calculateRegionalStats(): void {
-    if (this.sections.length === 0) return;
+  private calculateRegionalStats(sections: Section[] = this.sections): void {
+    if (sections.length === 0) return;
 
-    this.totalElectors = this.sections.reduce((sum, s) => sum + s.total, 0);
-    this.totalVoted = this.sections.reduce((sum, s) => sum + s.voted, 0);
-    this.totalInvalid = this.sections.reduce((sum, s) => sum + s.discardedVotes, 0);
-    this.totalNoVotes = this.sections.reduce((sum, s) => sum + s.noVotes, 0);
-    this.totalRegionMachine = this.sections.reduce((sum, s) => sum + (s.totalMachine || 0), 0);
-    this.totalRegionPaper = this.sections.reduce((sum, s) => sum + (s.totalPaper || 0), 0);
+    this.totalElectors = sections.reduce((sum, s) => sum + s.total, 0);
+    this.totalVoted = sections.reduce((sum, s) => sum + s.voted, 0);
+    this.totalInvalid = sections.reduce((sum, s) => sum + s.discardedVotes, 0);
+    this.totalNoVotes = sections.reduce((sum, s) => sum + s.noVotes, 0);
+    this.totalRegionMachine = sections.reduce((sum, s) => sum + (s.totalMachine || 0), 0);
+    this.totalRegionPaper = sections.reduce((sum, s) => sum + (s.totalPaper || 0), 0);
 
     // Aggregate comparisons for regional stats
     this.globalComparisons = {};
-    if (this.sections.length > 0 && this.sections[0].comparisons) {
-      Object.keys(this.sections[0].comparisons).forEach(key => {
+    if (sections.length > 0 && sections[0].comparisons) {
+      Object.keys(sections[0].comparisons).forEach(key => {
         const aggregated: { [date: string]: { value: number, dateName: string } } = {};
-        this.sections.forEach(s => {
+        sections.forEach(s => {
           s.comparisons?.[key]?.forEach(c => {
             if (!aggregated[c.date]) {
               aggregated[c.date] = { value: 0, dateName: c.dateName };
@@ -548,20 +552,20 @@ export class ElectionDetailComponent implements OnInit {
       // Special handling for avg activity percent
       const electorsAggr: { [date: string]: number } = {};
       const votedAggr: { [date: string]: number } = {};
-      this.sections.forEach(s => {
+      sections.forEach(s => {
         s.comparisons?.['total']?.forEach(c => electorsAggr[c.date] = (electorsAggr[c.date] || 0) + c.value);
         s.comparisons?.['voted']?.forEach(c => votedAggr[c.date] = (votedAggr[c.date] || 0) + c.value);
       });
 
       this.globalComparisons['activityPercent'] = Object.keys(electorsAggr).map(date => ({
         date,
-        dateName: this.sections[0].comparisons?.['total']?.find(c => c.date === date)?.dateName || date,
+        dateName: sections[0].comparisons?.['total']?.find(c => c.date === date)?.dateName || date,
         value: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
       }));
     }
 
     const regionalPartyVotes: { [partyId: string]: number } = {};
-    this.sections.forEach(s => {
+    sections.forEach(s => {
       Object.entries(s.partyVotes).forEach(([partyId, votes]) => {
         regionalPartyVotes[partyId] = (regionalPartyVotes[partyId] || 0) + votes.total;
       });
@@ -578,18 +582,18 @@ export class ElectionDetailComponent implements OnInit {
 
       this.totalTop3Votes = partyData.slice(0, 3).reduce((sum, p) => sum + p.total, 0);
 
-      this.updateChartOptions(partyData);
+      this.updateChartOptions(partyData, sections);
     });
   }
 
-  private updateChartOptions(partyData: { id: string, name: string, total: number }[]): void {
+  private updateChartOptions(partyData: { id: string, name: string, total: number }[], sections: Section[] = this.sections): void {
     const isDark = this.themeService.darkMode();
     const textColor = isDark ? '#f8fafc' : '#020817';
 
     const nonVoters = Math.max(0, this.totalElectors - this.totalVoted);
 
     const pieData = partyData.map(p => ({
-      name: p.name,
+      name: getPartyAlias(p.name),
       y: p.total
     }));
 
@@ -657,7 +661,7 @@ export class ElectionDetailComponent implements OnInit {
     let riskyCount = 0;
     let decliningCount = 0;
 
-    this.sections.forEach(s => {
+    sections.forEach(s => {
       const ppdbInTop = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
       const isFirst = s.topParties.length > 0 && s.topParties[0].name.includes('ПП-ДБ');
 
@@ -736,7 +740,7 @@ export class ElectionDetailComponent implements OnInit {
 
     // Activity distribution
     const activityBins = Array(10).fill(0);
-    this.sections.forEach(s => {
+    sections.forEach(s => {
       const bin = Math.min(Math.floor(s.activityPercent * 10), 9);
       activityBins[bin]++;
     });
@@ -778,6 +782,8 @@ export class ElectionDetailComponent implements OnInit {
     }
     return name.toUpperCase();
   }
+
+  getPartyAlias = getPartyAlias;
 
   loadSectionDetails(section: Section): void {
     if (this.groupByCity()) {
@@ -1043,7 +1049,7 @@ export class ElectionDetailComponent implements OnInit {
       this.sectionSortDir = this.sectionSortDir === 'asc' ? 'desc' : 'asc';
     } else if (!preserveDir) {
       this.sectionSortColumn = column;
-      this.sectionSortDir = (column === 'sectionId' || column === 'cityName' || column === 'sectionName') ? 'asc' : 'desc';
+      this.sectionSortDir = (column === 'sectionId' || column === 'cityName' || column === 'sectionName' || column === 'regionName') ? 'asc' : 'desc';
     }
 
     const valGetter = (s: any) => {
@@ -1052,6 +1058,10 @@ export class ElectionDetailComponent implements OnInit {
         // Sort by the numeric number of sections in the group
         const match = val.match(/(\d+)/);
         return match ? parseInt(match[1], 10) : 0;
+      }
+      if (this.sectionSortColumn === 'regionName') {
+        // Handle undefined regionName
+        return val || '';
       }
       return val;
     };

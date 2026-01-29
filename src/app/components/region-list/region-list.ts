@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
 import { Region } from '../../models/election.models';
+import { getPartyAlias } from '../../utils/party-aliases';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
 import { HlmCardDirective, HlmCardHeaderDirective, HlmCardTitleDirective, HlmCardDescriptionDirective, HlmCardContentDirective } from '../ui/card-helm/src/lib/hlm-card.directives';
 import { HlmInputDirective } from '../ui/input-helm/src/lib/hlm-input.directive';
@@ -299,7 +300,7 @@ export class RegionListComponent implements OnInit, AfterViewInit {
           // Create completely new objects for each series
           series.push({
             id: `party-${partyId}`, // Unique ID for each series
-            name: party.name,
+            name: getPartyAlias(party.name),
             data: partyData.map(v => v), // New array with new number references
             type: 'column',
             color: colorPalette[partyIndex % colorPalette.length] // Assign color based on party position, not selection order
@@ -382,6 +383,8 @@ export class RegionListComponent implements OnInit, AfterViewInit {
     const value = percent * 100;
     return Math.min(100, Math.max(0, value)).toFixed(2);
   }
+
+  getPartyAlias = getPartyAlias;
 
   formatRegionName(name: string): string {
     const parts = name.split('.');
