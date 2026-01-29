@@ -341,6 +341,29 @@ export class ElectionDetailComponent implements OnInit {
           .sort((a, b) => b.total - a.total)
           .slice(0, 3);
 
+        // Calculate votesToFirst for grouped city
+        let votesToFirst: number | undefined = undefined;
+        if (topParties.length > 0) {
+          // Find PP-DB partyId from allParties
+          const ppdbParty = this.allParties.find(p => p.name.toUpperCase().includes('ПРОДЪЛЖАВАМЕ'));
+          const ppdbId = ppdbParty?.id;
+          
+          // Get PP-DB total votes from aggregated partyVotes
+          const ppdbTotal = ppdbId && g.partyVotes[ppdbId] ? (g.partyVotes[ppdbId] as number) : 0;
+          
+          const isFirst = topParties[0].name.includes('ПП-ДБ');
+          const ppdbInTop3 = topParties.find((tp: any) => tp.name.includes('ПП-ДБ'));
+
+          if (isFirst) {
+            votesToFirst = 0;
+          } else if (ppdbInTop3) {
+            votesToFirst = (topParties[0].total - ppdbInTop3.total) + 1;
+          } else if (ppdbTotal > 0) {
+            // PP-DB not in top 3, but we found it in partyVotes
+            votesToFirst = (topParties[0].total - ppdbTotal) + 1;
+          }
+        }
+
         return {
           ...g,
           sectionId: `${g.sections.length} секции`,
@@ -348,7 +371,8 @@ export class ElectionDetailComponent implements OnInit {
           riskScore: g.riskySectionsCount,
           risks: g.riskySectionsList.length > 0 ? g.riskySectionsList : [],
           activityPercent: g.total > 0 ? g.voted / g.total : 0,
-          topParties
+          topParties,
+          votesToFirst
         };
       });
       this.filteredSections = this.groupedSections;
@@ -690,13 +714,10 @@ export class ElectionDetailComponent implements OnInit {
   loadSectionDetails(section: Section): void {
     if (this.groupByCity()) {
       const g = section as any;
+      // Build a complete parties map from allParties (not just topParties)
       const partiesMap: { [id: string]: string } = {};
-
-      // Build a local parties map from all sections in the group
-      g.sections.forEach((s: Section) => {
-        s.topParties.forEach(tp => {
-          partiesMap[tp.partyId] = tp.name;
-        });
+      this.allParties.forEach(p => {
+        partiesMap[p.id] = p.name;
       });
 
       const partyResults: PartyResult[] = Object.entries(g.partyVotes as { [pid: string]: number }).map(([partyId, total]) => {
