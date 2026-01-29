@@ -36,7 +36,11 @@ export class HlmTooltipDirective implements OnDestroy {
 
     let content = '';
     if (typeof this.comparisons === 'string') {
-      content = `<span>${this.comparisons}</span>`;
+      content = `<div class="flex flex-col gap-1">`;
+      this.comparisons.split('\n').forEach(line => {
+        content += `<span class="whitespace-nowrap">${line}</span>`;
+      });
+      content += `</div>`;
     } else if (Array.isArray(this.comparisons)) {
       content = '<div class="flex flex-col gap-1">';
       this.comparisons.forEach(c => {

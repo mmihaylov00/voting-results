@@ -24,11 +24,23 @@
             }
             Извън топ 3
         </button>
-        <button hlmBtn [variant]="'line'" [attr.data-state]="activeTab() === 'risky' ? 'active' : 'inactive'" (click)="setTab('risky')" [hlmTooltip]="'Секции с висока активност (>50%), в които ПП-ДБ не е първа сила'">
+        <button hlmBtn [variant]="'line'" [attr.data-state]="activeTab() === 'dormant' ? 'active' : 'inactive'" (click)="setTab('dormant')" [hlmTooltip]="'Секции с висока подкрепа за ПП-ДБ (>30%), но по-ниска активност от средната за общината'">
             @if (showIcons) {
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M6 16h12"/><path d="M6 12h12"/><path d="M6 8h12"/></svg>
             }
-            Рискови
+            Спящи
+        </button>
+        <button hlmBtn [variant]="'line'" [attr.data-state]="activeTab() === 'flip' ? 'active' : 'inactive'" (click)="setTab('flip')" [hlmTooltip]="'Секции, които могат да бъдат спечелени с малко допълнителни гласове'">
+            @if (showIcons) {
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3"/><path d="M21 3 12 12 3 3"/></svg>
+            }
+            За обръщане
+        </button>
+        <button hlmBtn [variant]="'line'" [attr.data-state]="activeTab() === 'vanishing' ? 'active' : 'inactive'" (click)="setTab('vanishing')" [hlmTooltip]="'Секции, в които ПП-ДБ губи над 40% от гласовете си спрямо предходните избори'">
+            @if (showIcons) {
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+            }
+            Губещи
         </button>
         @if (date !== '2023.04.02') {
             <button hlmBtn [variant]="'line'" [attr.data-state]="activeTab() === 'declining' ? 'active' : 'inactive'" (click)="setTab('declining')" [hlmTooltip]="'Секции, в които гласовете за ПП-ДБ са по-малко от предходните избори'">
@@ -40,18 +52,28 @@
         }
     </div>
     <div class="flex flex-col gap-4 w-full" [class.sm:flex-row]="!fullWidth" [class.xl:w-auto]="!fullWidth">
-        <div class="w-full flex items-center gap-2" [class.sm:w-56]="!fullWidth">
+        <div class="flex flex-wrap gap-2 items-center">
+            @for (type of availableSectionTypes; track type.id) {
+                <button hlmBtn [variant]="sectionTypes().has(type.id) ? 'default' : 'outline'" (click)="toggleSectionType(type.id)" class="h-7 px-2 text-[10px] font-medium uppercase tracking-wider">
+                    {{ type.label }}
+                </button>
+            }
+            <button hlmBtn [variant]="highRiskOnly() ? 'destructive' : 'outline'" (click)="toggleHighRiskOnly()" [hlmTooltip]="'Показва само секции с 1 или повече рискови фактора'" class="h-7 px-2 text-[10px] font-medium uppercase tracking-wider">
+                Рискови
+            </button>
+        </div>
+        <div class="w-full flex items-center gap-2" [class.sm:w-64]="!fullWidth">
             <div class="relative w-full">
                 <button hlmBtn variant="ghost" size="sm" (click)="toggleActivityOperator()"
-                        class="absolute left-1 top-1/2 -translate-y-1/2 h-8 px-2 text-xs font-semibold hover:bg-primary/10 text-muted-foreground transition-all"
+                        class="absolute left-1 top-1/2 -translate-y-1/2 h-8 px-2 text-[10px] font-semibold hover:bg-primary/10 text-muted-foreground transition-all"
                         [hlmTooltip]="activityOperator() === 'lte' ? 'Превключи към по-голямо или равно' : 'Превключи към по-малко или равно'">
                     Активност {{ activityOperator() === 'lte' ? '≤' : '≥' }}
                 </button>
-                <input hlmInput type="number" placeholder="0" [ngModel]="lowActivityThreshold()" (ngModelChange)="onThresholdChange($event)" min="0" max="100" step="0.01" class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full pr-6 pl-32 text-right" />
+                <input hlmInput type="number" placeholder="0" [ngModel]="lowActivityThreshold()" (ngModelChange)="onThresholdChange($event)" min="0" max="100" step="0.01" class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full pr-6 pl-24 text-right" />
                 <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">%</span>
             </div>
         </div>
-        <div class="flex-grow flex gap-2" [class.sm:w-64]="!fullWidth">
+        <div class="flex-grow flex gap-2" [class.sm:w-72]="!fullWidth">
             <input hlmInput placeholder="Търсене..." [ngModel]="searchTerm()" (ngModelChange)="onSearchTermChange($event)" class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full" />
             <ng-content></ng-content>
         </div>

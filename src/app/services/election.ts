@@ -83,6 +83,10 @@ export class ElectionService {
     return this.electionDates;
   }
 
+  getAllData(): Observable<{ [date: string]: { sections: Section[], parties: { [id: string]: string }, regions: Region[] } }> {
+    return this.ensureDataLoaded().pipe(map(() => this.cache));
+  }
+
   getRegions(date: string): Observable<Region[]> {
     return this.ensureDataLoaded().pipe(map(() => this.cache[date]?.regions || []));
   }

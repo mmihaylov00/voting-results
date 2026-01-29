@@ -13,7 +13,7 @@
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
             <h1 hlmH2 class="border-b-0 pb-0 text-secondary dark:text-primary">Резултати за {{ dateName }}</h1>
-            <p hlmLead class="text-secondary/80 dark:text-foreground/80">{{ regionName }} (МИР {{ regionId }})</p>
+            <p hlmLead class="text-secondary/80 dark:text-foreground/80">{{ regionName }}@if (regionId) { (МИР {{ regionId }}) }</p>
         </div>
         <div class="flex gap-2">
             @if (getCikUrl()) {
@@ -100,22 +100,27 @@
                     <h3 hlmH4 class="text-secondary dark:text-primary">Секции ({{ filteredSections.length }})</h3>
                     <app-section-filters
                         [date]="date"
-                        [initialFilters]="{searchTerm: searchTerm, activeTab: activeTab(), activityOperator: activityOperator(), lowActivityThreshold: lowActivityThreshold}"
+                        [initialFilters]="{searchTerm: searchTerm, activeTab: activeTab(), activityOperator: activityOperator(), lowActivityThreshold: lowActivityThreshold, sectionTypes: selectedSectionTypes(), highRiskOnly: highRiskOnly()}"
                         (filterChange)="onFilterChange($event)">
-                        <div class="relative">
-                            <button hlmBtn variant="outline" size="icon" (click)="toggleColumnFilter($event)" hlmTooltip="Филтър колони" class="border-primary/50 text-secondary hover:bg-primary hover:text-secondary dark:border-secondary/50 dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10"/><path d="M7 12h10"/><path d="M7 16h10"/></svg>
+                        <div class="flex gap-2">
+                            <button hlmBtn [variant]="groupByCity() ? 'default' : 'outline'" size="icon" (click)="toggleCityGrouping()" hlmTooltip="Групирай по населено място" class="border-primary/50 text-secondary hover:bg-primary hover:text-secondary dark:border-secondary/50 dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4"/><path d="M13 13h4"/><path d="M13 17h4"/></svg>
                             </button>
-                            @if (showColumnFilter) {
-                                <div class="absolute right-0 mt-2 w-56 max-h-96 overflow-auto bg-popover text-popover-foreground border border-primary/20 rounded-md shadow-md z-[120] p-2" (click)="$event.stopPropagation()">
-                                    @for (column of availableColumns; track column.id) {
-                                        <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleColumn(column.id, $event)">
-                                            <input type="checkbox" [checked]="visibleColumns().has(column.id)" class="cursor-pointer" (click)="$event.stopPropagation(); toggleColumn(column.id, $event)" />
-                                            <span class="text-sm">{{ column.label }}</span>
-                                        </div>
-                                    }
-                                </div>
-                            }
+                            <div class="relative">
+                                <button hlmBtn variant="outline" size="icon" (click)="toggleColumnFilter($event)" hlmTooltip="Филтър колони" class="border-primary/50 text-secondary hover:bg-primary hover:text-secondary dark:border-secondary/50 dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10"/><path d="M7 12h10"/><path d="M7 16h10"/></svg>
+                                </button>
+                                @if (showColumnFilter) {
+                                    <div class="absolute right-0 mt-2 w-56 max-h-96 overflow-auto bg-popover text-popover-foreground border border-primary/20 rounded-md shadow-md z-[120] p-2" (click)="$event.stopPropagation()">
+                                        @for (column of availableColumns; track column.id) {
+                                            <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleColumn(column.id, $event)">
+                                                <input type="checkbox" [checked]="visibleColumns().has(column.id)" class="cursor-pointer" (click)="$event.stopPropagation(); toggleColumn(column.id, $event)" />
+                                                <span class="text-sm">{{ column.label }}</span>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
                         </div>
                     </app-section-filters>
                 </div>
@@ -134,6 +139,16 @@
                                         </span>
                                     </th>
                                 }
+                                @if (visibleColumns().has('riskScore')) {
+                                    <th hlmTableHead (click)="sortSections('riskScore')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
+                                        Рискове
+                                        <span class="ml-1">
+                                            @if (sectionSortColumn === 'riskScore') {
+                                                {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
+                                            }
+                                        </span>
+                                    </th>
+                                }
                                 @if (visibleColumns().has('cityName')) {
                                     <th hlmTableHead (click)="sortSections('cityName')" class="cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
                                         Град
@@ -144,7 +159,7 @@
                                         </span>
                                     </th>
                                 }
-                                @if (visibleColumns().has('sectionName')) {
+                                @if (visibleColumns().has('sectionName') && !groupByCity()) {
                                     <th hlmTableHead (click)="sortSections('sectionName')" class="cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
                                         Име на секция
                                         <span class="ml-1">
@@ -214,37 +229,65 @@
                                         </span>
                                     </th>
                                 }
+                              @if (visibleColumns().has('votesToFirst')) {
+                                <th hlmTableHead (click)="sortSections('votesToFirst')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
+                                  Нужни
+                                  <span class="ml-1">
+                                                @if (sectionSortColumn === 'votesToFirst') {
+                                                  {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
+                                                }
+                                            </span>
+                                </th>
+                              }
                                 @if (visibleColumns().has('topParties')) {
                                     <th hlmTableHead class="min-w-[200px] text-secondary dark:text-primary">
                                         Топ 3 партии
                                     </th>
                                 }
-                            </tr>
-                        </thead>
-                        <tbody hlmTableBody>
-                            @for (section of filteredSections; track section.sectionId) {
-                                <tr hlmTableRow
-                                    class="cursor-pointer"
-                                    [class.bg-muted]="selectedSection?.sectionId === section.sectionId"
-                                    (click)="loadSectionDetails(section)">
-                                    @if (visibleColumns().has('sectionId')) {
-                                        <td hlmTableCell class="font-medium">
-                                          <div class="flex items-center gap-1 group">
-                                            <button hlmBtn variant="ghost" size="icon" class="h-6 w-6 transition-opacity" (click)="copyToClipboard(section.sectionId, $event)" [hlmTooltip]="copiedId() === section.sectionId ? 'Копирано!' : 'Копирай ID на секцията'">
-                                              @if (copiedId() === section.sectionId) {
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-500"><polyline points="20 6 9 17 4 12"/></svg>
+                                </tr>
+                            </thead>
+                            <tbody hlmTableBody>
+                                @for (section of filteredSections; track section.sectionId) {
+                                    <tr hlmTableRow
+                                        [class.cursor-pointer]="!groupByCity()"
+                                        [class.cursor-default]="groupByCity()"
+                                        [class.bg-muted]="selectedSection?.sectionId === section.sectionId"
+                                        (click)="loadSectionDetails(section)">
+                                        @if (visibleColumns().has('sectionId')) {
+                                            <td hlmTableCell class="font-medium">
+                                              @if (groupByCity()) {
+                                                <span class="text-muted-foreground">{{ section.sectionId }}</span>
                                               } @else {
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                                <div class="flex items-center gap-1 group">
+                                                  <button hlmBtn variant="ghost" size="icon" class="h-6 w-6 transition-opacity" (click)="copyToClipboard(section.sectionId, $event)" [hlmTooltip]="copiedId() === section.sectionId ? 'Копирано!' : 'Копирай ID на секцията'">
+                                                    @if (copiedId() === section.sectionId) {
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-500"><polyline points="20 6 9 17 4 12"/></svg>
+                                                    } @else {
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                                    }
+                                                  </button>
+                                                  <span>{{ section.sectionId }}</span>
+                                                </div>
                                               }
-                                            </button>
-                                            <span>{{ section.sectionId }}</span>
-                                          </div>
-                                        </td>
-                                    }
-                                    @if (visibleColumns().has('cityName')) {
+                                            </td>
+                                        }
+                                        @if (visibleColumns().has('riskScore')) {
+                                            <td hlmTableCell class="text-right">
+                                                <div class="flex justify-end">
+                                                    @if (section.riskScore) {
+                                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-s font-bold bg-destructive/10 text-destructive" [hlmTooltip]="section.risks?.join('\n')">
+                                                            {{ section.riskScore }}
+                                                        </span>
+                                                    } @else {
+                                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-s font-bold bg-green-500 text-white">0</span>
+                                                    }
+                                                </div>
+                                            </td>
+                                        }
+                                        @if (visibleColumns().has('cityName')) {
                                         <td hlmTableCell>{{ section.cityName }}</td>
                                     }
-                                    @if (visibleColumns().has('sectionName')) {
+                                    @if (visibleColumns().has('sectionName') && !groupByCity()) {
                                         <td hlmTableCell>
                                           <div class="flex items-center gap-1 group">
                                             <a [href]="getGoogleMapsUrl(section.cityName, section.sectionName)" target="_blank" hlmBtn variant="ghost" size="icon" class="h-6 pl-1 pr-1 w-6 transition-opacity" (click)="$event.stopPropagation()" hlmTooltip="Виж в Google Maps">
@@ -277,6 +320,11 @@
                                             </div>
                                         </td>
                                     }
+                                      @if (visibleColumns().has('votesToFirst')) {
+                                        <td hlmTableCell class="text-right">
+                                          {{ section.votesToFirst !== undefined ? section.votesToFirst : '-' }}
+                                        </td>
+                                      }
                                     @if (visibleColumns().has('topParties')) {
                                         <td hlmTableCell>
                                             <div class="flex flex-col text-xs">

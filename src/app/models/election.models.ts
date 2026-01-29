@@ -33,6 +33,7 @@ export interface Section {
   regionId: string;
   cityName: string;
   sectionName: string;
+  sectionType: string;
   total: number;
   voted: number;
   discardedVotes: number;
@@ -48,6 +49,11 @@ export interface Section {
   protocolErrorDiff?: number;
   protocolPaperVotes?: number;
   protocolMachineVotes?: number;
+  riskScore?: number;
+  risks?: string[];
+  votesToFirst?: number;
+  municipalityAvgTurnout?: number;
+  municipalityPartyPercents?: { [key: string]: number };
   comparisons?: { [key: string]: ComparativeValue[] };
 }
 
@@ -80,6 +86,7 @@ export interface TableColumn {
 
 export const SECTION_COLUMNS: TableColumn[] = [
   { id: 'sectionId', label: 'Секция' },
+  { id: 'riskScore', label: 'Рискове' },
   { id: 'cityName', label: 'Град' },
   { id: 'sectionName', label: 'Име на секция' },
   { id: 'total', label: 'Избиратели' },
@@ -88,14 +95,17 @@ export const SECTION_COLUMNS: TableColumn[] = [
   { id: 'discardedVotes', label: 'Невалидни' },
   { id: 'noVotes', label: 'Не подкрепя никого' },
   { id: 'typeVotes', label: 'Гласове по тип' },
+  { id: 'votesToFirst', label: 'Нужни' },
   { id: 'topParties', label: 'Топ 3 партии' },
 ];
 
-export type SectionTab = 'all' | 'target' | 'swing' | 'risky' | 'outside' | 'declining';
+export type SectionTab = 'all' | 'target' | 'swing' | 'risky' | 'outside' | 'declining' | 'dormant' | 'flip' | 'vanishing';
 
 export interface SectionFilters {
   searchTerm: string;
   activeTab: SectionTab;
   activityOperator: 'lte' | 'gte';
   lowActivityThreshold: number | null;
+  sectionTypes: Set<string>;
+  highRiskOnly: boolean;
 }

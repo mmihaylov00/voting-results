@@ -77,6 +77,8 @@ export class ElectionDetailComponent implements OnInit {
   activeTab = signal<SectionTab>('all');
   activityOperator = signal<'lte' | 'gte'>('lte');
   lowActivityThreshold: number | null = 100;
+  selectedSectionTypes = signal<Set<string>>(new Set());
+  highRiskOnly = signal<boolean>(false);
   avgRegionActivity: number = 0;
   totalElectors: number = 0;
   totalVoted: number = 0;
@@ -104,6 +106,8 @@ export class ElectionDetailComponent implements OnInit {
   availableColumns = SECTION_COLUMNS;
   visibleColumns = signal<Set<string>>(new Set(SECTION_COLUMNS.map(c => c.id)));
   showColumnFilter = false;
+  groupByCity = signal<boolean>(false);
+  groupedSections: any[] = [];
 
   getCikUrl(): string {
     if (this.date.startsWith('2023.04')) return 'https://results.cik.bg/ns2023/search/index.html#';
@@ -219,7 +223,11 @@ export class ElectionDetailComponent implements OnInit {
       this.electionService.getSections(this.date, this.regionId).subscribe(sections => {
         this.sections = sections;
         if (this.sections.length > 0) {
-          this.regionName = this.formatRegionName((this.sections[0] as any).regionName);
+          if (this.regionId) {
+            this.regionName = this.formatRegionName((this.sections[0] as any).regionName);
+          } else {
+            this.regionName = 'Всички райони';
+          }
           this.calculateAvgActivity();
           this.calculateRegionalStats();
         }
@@ -258,18 +266,103 @@ export class ElectionDetailComponent implements OnInit {
       searchTerm: this.searchTerm,
       activeTab: this.activeTab(),
       activityOperator: this.activityOperator(),
-      lowActivityThreshold: this.lowActivityThreshold
+      lowActivityThreshold: this.lowActivityThreshold,
+      sectionTypes: this.selectedSectionTypes(),
+      highRiskOnly: this.highRiskOnly()
     };
 
-    this.filteredSections = filterSections(this.sections, filters);
+    const result = filterSections(this.sections, filters);
+
+    if (this.groupByCity()) {
+      const groups = new Map<string, any>();
+      result.forEach(s => {
+        if (!groups.has(s.cityName)) {
+          groups.set(s.cityName, {
+            cityName: s.cityName,
+            total: 0,
+            voted: 0,
+            discardedVotes: 0,
+            noVotes: 0,
+            totalMachine: 0,
+            totalPaper: 0,
+            partyVotes: {},
+            sections: []
+          });
+        }
+        const g = groups.get(s.cityName);
+        g.total += s.total;
+        g.voted += s.voted;
+        g.discardedVotes += s.discardedVotes;
+        g.noVotes += s.noVotes;
+        g.totalMachine += (s.totalMachine || 0);
+        g.totalPaper += (s.totalPaper || 0);
+        g.sections.push(s);
+
+        Object.entries(s.partyVotes).forEach(([pid, v]) => {
+          if (!g.partyVotes[pid]) g.partyVotes[pid] = 0;
+          g.partyVotes[pid] += v.total;
+        });
+      });
+
+      this.groupedSections = Array.from(groups.values()).map(g => {
+        const topParties = Object.entries(g.partyVotes)
+          .map(([partyId, total]) => {
+            const sectionWithParty = g.sections.find((s: any) => s.partyVotes[partyId]);
+            const name = sectionWithParty?.topParties.find((tp: any) => tp.partyId === partyId)?.name || partyId;
+            return {
+              partyId,
+              name,
+              total: total as number,
+              percent: g.voted > 0 ? (total as number) / g.voted : 0
+            };
+          })
+          .sort((a, b) => b.total - a.total)
+          .slice(0, 3);
+
+        return {
+          ...g,
+          sectionId: `${g.sections.length} секции`,
+          sectionName: '',
+          activityPercent: g.total > 0 ? g.voted / g.total : 0,
+          topParties
+        };
+      });
+      this.filteredSections = this.groupedSections;
+    } else {
+      this.filteredSections = result;
+    }
+
     this.sortSections(this.sectionSortColumn, true);
   }
 
+  toggleCityGrouping(): void {
+    this.groupByCity.set(!this.groupByCity());
+    this.applyFilter();
+  }
+
   onFilterChange(filters: SectionFilters): void {
+    const prevTab = this.activeTab();
     this.searchTerm = filters.searchTerm;
     this.activeTab.set(filters.activeTab);
     this.activityOperator.set(filters.activityOperator);
     this.lowActivityThreshold = filters.lowActivityThreshold;
+    this.selectedSectionTypes.set(filters.sectionTypes);
+    this.highRiskOnly.set(filters.highRiskOnly);
+
+    if (prevTab !== filters.activeTab) {
+      if (filters.activeTab === 'flip') {
+        this.sectionSortColumn = 'votesToFirst';
+        this.sectionSortDir = 'asc';
+        // Ensure votesToFirst is visible
+        const cols = new Set(this.visibleColumns());
+        cols.add('votesToFirst');
+        this.visibleColumns.set(cols);
+      } else if (prevTab === 'flip') {
+        this.sectionSortColumn = 'sectionId';
+        this.sectionSortDir = 'asc';
+      }
+    }
+
     this.applyFilter();
   }
 
@@ -571,6 +664,10 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   loadSectionDetails(section: Section): void {
+    if (this.groupByCity()) {
+      // In grouped mode, we don't open details modal (for now)
+      return;
+    }
     this.electionService.getSectionDetails(this.date, section.sectionId).subscribe(details => {
       this.selectedSection = details;
       this.currentSectionData = section;
@@ -604,9 +701,19 @@ export class ElectionDetailComponent implements OnInit {
       this.sectionSortDir = (column === 'sectionId' || column === 'cityName' || column === 'sectionName') ? 'asc' : 'desc';
     }
 
+    const valGetter = (s: any) => {
+      let val = s[this.sectionSortColumn];
+      if (this.sectionSortColumn === 'sectionId' && this.groupByCity()) {
+        // Sort by the numeric number of sections in the group
+        const match = val.match(/(\d+)/);
+        return match ? parseInt(match[1], 10) : 0;
+      }
+      return val;
+    };
+
     this.filteredSections.sort((a, b) => {
-      const valA = a[this.sectionSortColumn];
-      const valB = b[this.sectionSortColumn];
+      const valA = valGetter(a);
+      const valB = valGetter(b);
 
       if (typeof valA === 'string' && typeof valB === 'string') {
         return this.sectionSortDir === 'asc'

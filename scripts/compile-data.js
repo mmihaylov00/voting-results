@@ -66,6 +66,23 @@ function parseSections(text) {
       sectionName = sectionName.substring(cityName.length + 2);
     }
 
+    let sectionType = 'Other';
+    const sn = sectionName.toLowerCase();
+    const cn = cityName.toLowerCase();
+    if (regionId === '32') {
+      sectionType = 'Abroad';
+    } else if (sn.includes('подвижна') || sn.includes('пск')) {
+      sectionType = 'Mobile';
+    } else if (sn.includes('болница') || sn.includes('мбал') || sn.includes('дкц') || sn.includes('лвз')) {
+      sectionType = 'Hospital';
+    } else if (sn.includes('затвор') || sn.includes('арест')) {
+      sectionType = 'Prison';
+    } else if (cn.startsWith('гр.')) {
+      sectionType = 'City';
+    } else if (cn.startsWith('с.')) {
+      sectionType = 'Village';
+    }
+
     if (sectionId) {
       sections[sectionId] = {
         sectionId,
@@ -73,6 +90,7 @@ function parseSections(text) {
         regionName,
         cityName,
         sectionName,
+        sectionType,
         total: 0,
         voted: 0,
         discardedVotes: 0,
@@ -201,14 +219,16 @@ for (const { date } of elections) {
         }
         return {
           name,
+          partyId,
           total: votes.total,
           percent: section.voted > 0 ? votes.total / section.voted : 0,
           comparisons: []
         };
       })
       .filter(p => p.total > 0)
-      .sort((a, b) => b.total - a.total)
-      .slice(0, 3);
+      .sort((a, b) => b.total - a.total);
+
+    section.topParties = section.topParties.slice(0, 3);
   }
   rawData[date] = { sections, parties };
 }
@@ -222,6 +242,75 @@ for (const date of dates) {
   console.log(`Finalizing ${date}...`);
   const targetSections = rawData[date].sections;
   const parties = rawData[date].parties;
+
+  // Calculate Municipality averages (turnout and party percentages)
+  const munMap = new Map();
+  targetSections.forEach(s => {
+    const munId = `${s.regionId}-${s.cityName}`;
+    if (!munMap.has(munId)) {
+      munMap.set(munId, { voted: 0, total: 0, partyVotes: {} });
+    }
+    const m = munMap.get(munId);
+    m.voted += s.voted;
+    m.total += s.total;
+    Object.entries(s.partyVotes).forEach(([pid, votes]) => {
+      m.partyVotes[pid] = (m.partyVotes[pid] || 0) + votes.total;
+    });
+  });
+
+  const munStats = {};
+  munMap.forEach((data, id) => {
+    munStats[id] = {
+      avgTurnout: data.total > 0 ? data.voted / data.total : 0,
+      partyPercents: {}
+    };
+    Object.entries(data.partyVotes).forEach(([pid, total]) => {
+      munStats[id].partyPercents[pid] = data.voted > 0 ? total / data.voted : 0;
+    });
+  });
+
+  // Risk Score calculation and storage
+  targetSections.forEach(s => {
+    const munId = `${s.regionId}-${s.cityName}`;
+    const stats = munStats[munId];
+    s.municipalityAvgTurnout = stats.avgTurnout;
+    s.municipalityPartyPercents = stats.partyPercents;
+    s.risks = [];
+
+    // Discrepancy: machineVotes share vs paperVotes share for PP-DB
+    const ppdb = s.topParties.find(p => p.name.includes('ПП-ДБ'));
+    if (ppdb) {
+      const partyData = s.partyVotes[ppdb.partyId];
+      if (partyData) {
+        const mPercent = s.totalMachine > 0 ? partyData.machine / s.totalMachine : 0;
+        const pPercent = s.totalPaper > 0 ? partyData.paper / s.totalPaper : 0;
+        if (mPercent - pPercent > 0.15) {
+          s.risks.push('Разминаване машина/хартия');
+        }
+      }
+    }
+
+    // Turnout anomaly: > 20% higher than municipality average
+    if (s.activityPercent > stats.avgTurnout * 1.2) {
+      s.risks.push('Висока активност спрямо общината');
+    }
+
+    // Invalid votes: > 10%
+    if (s.voted > 0 && s.discardedVotes / s.voted > 0.10) {
+      s.risks.push('Висок процент невалидни гласове');
+    }
+
+    // Unanimous non-PP-DB: any party > 80%
+    // Note: topParties are already sorted, so just check the winner
+    if (s.topParties.length > 0) {
+      const winner = s.topParties[0];
+      if (!winner.name.includes('ПП-ДБ') && winner.percent > 0.80) {
+        s.risks.push('Преобладаващ вот за една партия');
+      }
+    }
+
+    s.riskScore = s.risks.length;
+  });
 
   const regionsMap = new Map();
 
@@ -460,10 +549,74 @@ for (const date of dates) {
     regions: regions
   };
 
+  compiledData[date] = finalResult;
+
   const json = JSON.stringify(finalResult);
 
   const gzipped = zlib.gzipSync(json);
   fs.writeFileSync(path.join(outputDir, `${date}.json.gz`), gzipped);
+}
+
+console.log('Generating global aggregation...');
+for (const date of dates) {
+  const data = compiledData[date];
+  const globalSummary = {
+    date,
+    total: 0,
+    voted: 0,
+    discardedVotes: 0,
+    noVotes: 0,
+    totalPaper: 0,
+    totalMachine: 0,
+    partyVotes: {},
+    regions: data.regions.map(r => ({
+      id: r.id,
+      name: r.name,
+      total: r.total,
+      voted: r.voted,
+      topParties: r.topParties
+    }))
+  };
+
+  data.regions.forEach(r => {
+    globalSummary.total += r.total;
+    globalSummary.voted += r.voted;
+    globalSummary.discardedVotes += r.discardedVotes;
+    globalSummary.noVotes += r.noVotes;
+    globalSummary.totalPaper += r.totalPaper;
+    globalSummary.totalMachine += r.totalMachine;
+    Object.entries(r.partyVotes).forEach(([pid, total]) => {
+      globalSummary.partyVotes[pid] = (globalSummary.partyVotes[pid] || 0) + total;
+    });
+  });
+
+  const topParties = Object.entries(globalSummary.partyVotes)
+    .filter(([pid, _]) => pid !== '0')
+    .map(([pid, total]) => {
+      let name = data.parties[pid] || pid;
+      if (name.includes('ПРОДЪЛЖАВАМЕ')) {
+        name = 'ПП-ДБ';
+      }
+      return {
+        name,
+        partyId: pid,
+        total,
+        percent: globalSummary.voted > 0 ? total / globalSummary.voted : 0
+      };
+    })
+    .filter(p => p.total > 0)
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 10);
+
+  globalSummary.topParties = topParties;
+
+  const globalJson = JSON.stringify(globalSummary);
+  const globalGzipped = zlib.gzipSync(globalJson);
+  const globalDir = path.join(outputDir, 'global');
+  if (!fs.existsSync(globalDir)) {
+    fs.mkdirSync(globalDir, { recursive: true });
+  }
+  fs.writeFileSync(path.join(globalDir, `${date}.json.gz`), globalGzipped);
 }
 
 // Cleanup .json files

@@ -13,6 +13,34 @@ export function filterSections(sections: Section[], filters: SectionFilters): Se
   }
 
   const currentTab = filters.activeTab;
+
+  // Calculate votesToFirst for all sections if relevant
+  result.forEach(s => {
+    if (s.topParties.length > 0) {
+      const isFirst = s.topParties[0].name.includes('ПП-ДБ');
+      const ppdb = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
+
+      if (isFirst) {
+        s.votesToFirst = 0;
+      } else if (ppdb) {
+        s.votesToFirst = (s.topParties[0].total - ppdb.total) + 1;
+      } else {
+        // Not in top 3, we'd need to find it in all party votes
+        // Search partyVotes for the partyId that was used for PP-DB in other sections
+        // But we don't have the partyId here easily.
+        // Let's look for any section that HAS PP-DB in topParties to get its partyId
+        const ppdbInAny = sections.find(sec => sec.topParties.some(tp => tp.name.includes('ПП-ДБ')));
+        const ppdbId = ppdbInAny?.topParties.find(tp => tp.name.includes('ПП-ДБ'))?.partyId;
+
+        if (ppdbId && s.partyVotes[ppdbId]) {
+          s.votesToFirst = (s.topParties[0].total - s.partyVotes[ppdbId].total) + 1;
+        } else {
+          s.votesToFirst = undefined;
+        }
+      }
+    }
+  });
+
   if (currentTab === 'outside') {
     result = result.filter(s => {
       // "ПП-ДБ" is not in top 3
@@ -51,11 +79,29 @@ export function filterSections(sections: Section[], filters: SectionFilters): Se
       return false;
     });
   } else if (currentTab === 'risky') {
+    result = result.filter(s => (s.riskScore || 0) > 0);
+  } else if (currentTab === 'dormant') {
     result = result.filter(s => {
-      // Activity > 50% and PP-DB is not first
-      const isHighActivity = s.activityPercent > 0.5;
-      const ppdbNotFirst = s.topParties.length === 0 || !s.topParties[0].name.includes('ПП-ДБ');
-      return isHighActivity && ppdbNotFirst;
+      const ppdb = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
+      if (!ppdb) return false;
+      return ppdb.percent > 0.30 && s.activityPercent < (s.municipalityAvgTurnout || 0);
+    });
+  } else if (currentTab === 'flip') {
+    result = result.filter(s => {
+      return s.votesToFirst !== undefined && s.votesToFirst > 0;
+    });
+  } else if (currentTab === 'vanishing') {
+    result = result.filter(s => {
+      const ppdb = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
+      if (ppdb && ppdb.comparisons && ppdb.comparisons.length > 0) {
+        const currentVotes = ppdb.total;
+        const previousVotes = ppdb.comparisons[0].value;
+        if (previousVotes > 0) {
+          const drop = (previousVotes - currentVotes) / previousVotes;
+          return drop > 0.40;
+        }
+      }
+      return false;
     });
   }
 
@@ -66,6 +112,14 @@ export function filterSections(sections: Section[], filters: SectionFilters): Se
     } else {
       result = result.filter(s => Math.min(100, Math.max(0, s.activityPercent * 100)) >= threshold);
     }
+  }
+
+  if (filters.sectionTypes && filters.sectionTypes.size > 0) {
+    result = result.filter(s => filters.sectionTypes.has(s.sectionType));
+  }
+
+  if (filters.highRiskOnly) {
+    result = result.filter(s => (s.riskScore || 0) >= 1);
   }
 
   return result;

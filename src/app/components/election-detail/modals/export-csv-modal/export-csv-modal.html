@@ -17,7 +17,7 @@
                 [date]="date"
                 [showIcons]="false"
                 [fullWidth]="true"
-                [initialFilters]="{searchTerm: searchTerm, activeTab: activeTab(), activityOperator: activityOperator(), lowActivityThreshold: lowActivityThreshold}"
+                [initialFilters]="{searchTerm: searchTerm, activeTab: activeTab(), activityOperator: activityOperator(), lowActivityThreshold: lowActivityThreshold, sectionTypes: exportSectionTypes, highRiskOnly: false}"
                 (filterChange)="onFilterChange($event)">
               </app-section-filters>
             </div>

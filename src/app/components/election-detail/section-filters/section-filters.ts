@@ -30,6 +30,17 @@ export class SectionFiltersComponent implements OnInit {
   activeTab = signal<SectionTab>('all');
   activityOperator = signal<'lte' | 'gte'>('lte');
   lowActivityThreshold = signal<number | null>(100);
+  sectionTypes = signal<Set<string>>(new Set());
+  highRiskOnly = signal<boolean>(false);
+
+  availableSectionTypes = [
+    { id: 'City', label: 'Град' },
+    { id: 'Village', label: 'Село' },
+    { id: 'Abroad', label: 'Чужбина' },
+    { id: 'Mobile', label: 'Подвижна' },
+    { id: 'Hospital', label: 'Болница' },
+    { id: 'Prison', label: 'Затвор' }
+  ];
 
   ngOnInit() {
     if (this.initialFilters) {
@@ -37,6 +48,8 @@ export class SectionFiltersComponent implements OnInit {
       this.activeTab.set(this.initialFilters.activeTab || 'all');
       this.activityOperator.set(this.initialFilters.activityOperator || 'lte');
       this.lowActivityThreshold.set(this.initialFilters.lowActivityThreshold !== undefined ? this.initialFilters.lowActivityThreshold : 100);
+      this.sectionTypes.set(this.initialFilters.sectionTypes || new Set());
+      this.highRiskOnly.set(this.initialFilters.highRiskOnly || false);
     }
   }
 
@@ -47,8 +60,24 @@ export class SectionFiltersComponent implements OnInit {
         activeTab: this.activeTab(),
         activityOperator: this.activityOperator(),
         lowActivityThreshold: this.lowActivityThreshold(),
+        sectionTypes: this.sectionTypes(),
+        highRiskOnly: this.highRiskOnly()
       });
     });
+  }
+
+  toggleSectionType(typeId: string): void {
+    const newSet = new Set(this.sectionTypes());
+    if (newSet.has(typeId)) {
+      newSet.delete(typeId);
+    } else {
+      newSet.add(typeId);
+    }
+    this.sectionTypes.set(newSet);
+  }
+
+  toggleHighRiskOnly(): void {
+    this.highRiskOnly.set(!this.highRiskOnly());
   }
 
   setTab(tab: SectionTab): void {
