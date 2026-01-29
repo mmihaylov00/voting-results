@@ -169,8 +169,21 @@ export class ElectionService {
         region.comparisons!['activityPercent'].push({ value: otherTotal > 0 ? otherVoted / otherTotal : 0, date: d, dateName });
 
         // Party comparisons for regions
+        const currentPartiesMap = this.cache[date].parties;
+        const otherPartiesMap = this.cache[d].parties;
+
         Object.keys(region.partyVotes).forEach(pid => {
-          const otherPartyTotal = otherSections.reduce((sum, s) => sum + (s.partyVotes[pid]?.total || 0), 0);
+          const normalizedTarget = this.normalizePartyName(currentPartiesMap[pid] || pid);
+
+          let otherPartyTotal = 0;
+          otherSections.forEach(os => {
+            Object.entries(os.partyVotes).forEach(([otherPid, otherVotes]) => {
+              if (this.normalizePartyName(otherPartiesMap[otherPid] || otherPid) === normalizedTarget) {
+                otherPartyTotal += otherVotes.total;
+              }
+            });
+          });
+
           region.comparisons![`party_${pid}`] = region.comparisons![`party_${pid}`] || [];
           region.comparisons![`party_${pid}`].push({ value: otherPartyTotal, date: d, dateName });
         });
@@ -247,20 +260,41 @@ export class ElectionService {
           s.comparisons!['noVotesPercent'] = s.comparisons!['noVotesPercent'] || [];
           s.comparisons!['noVotesPercent'].push({ value: otherSection.voted > 0 ? otherSection.noVotes / otherSection.voted : 0, date: d, dateName });
 
+          // Party comparisons for sections
+          const currentPartiesMap = this.cache[date].parties;
+          const otherPartiesMap = this.cache[d].parties;
+
           Object.keys(s.partyVotes).forEach(pid => {
-            if (otherSection.partyVotes[pid]) {
+            const normalizedTarget = this.normalizePartyName(currentPartiesMap[pid] || pid);
+
+            // Find matching party in other section by normalized name
+            let otherTotal = 0;
+            let otherPaper = 0;
+            let otherMachine = 0;
+            let matchFound = false;
+
+            Object.entries(otherSection.partyVotes).forEach(([otherPid, otherVotes]) => {
+              if (this.normalizePartyName(otherPartiesMap[otherPid] || otherPid) === normalizedTarget) {
+                otherTotal += otherVotes.total;
+                otherPaper += otherVotes.paper;
+                otherMachine += otherVotes.machine;
+                matchFound = true;
+              }
+            });
+
+            if (matchFound) {
               s.partyVotes[pid].comparisons = s.partyVotes[pid].comparisons || [];
-              s.partyVotes[pid].comparisons!.push({ value: otherSection.partyVotes[pid].total, date: d, dateName });
+              s.partyVotes[pid].comparisons!.push({ value: otherTotal, date: d, dateName });
 
               s.partyVotes[pid].percentComparisons = s.partyVotes[pid].percentComparisons || [];
-              const otherPercent = otherSection.voted > 0 ? otherSection.partyVotes[pid].total / otherSection.voted : 0;
+              const otherPercent = otherSection.voted > 0 ? otherTotal / otherSection.voted : 0;
               s.partyVotes[pid].percentComparisons!.push({ value: otherPercent, date: d, dateName });
 
               s.partyVotes[pid].paperComparisons = s.partyVotes[pid].paperComparisons || [];
-              s.partyVotes[pid].paperComparisons!.push({ value: otherSection.partyVotes[pid].paper, date: d, dateName });
+              s.partyVotes[pid].paperComparisons!.push({ value: otherPaper, date: d, dateName });
 
               s.partyVotes[pid].machineComparisons = s.partyVotes[pid].machineComparisons || [];
-              s.partyVotes[pid].machineComparisons!.push({ value: otherSection.partyVotes[pid].machine, date: d, dateName });
+              s.partyVotes[pid].machineComparisons!.push({ value: otherMachine, date: d, dateName });
             }
           });
 
