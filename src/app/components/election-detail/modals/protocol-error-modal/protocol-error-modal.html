@@ -26,9 +26,9 @@
                         <tr hlmTableRow class="hover:bg-muted/30">
                             <td hlmTableCell class="font-mono text-xs">{{ section.sectionId }}</td>
                             <td hlmTableCell>{{ section.cityName }}</td>
-                            <td hlmTableCell class="text-right font-medium" [hlmTooltip]="section.comparisons!['voted']">{{ section.voted }}</td>
-                            <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons!['totalPaper']">{{ section.protocolPaperVotes }}</td>
-                            <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons!['totalMachine']">{{ section.protocolMachineVotes }}</td>
+                            <td hlmTableCell class="text-right font-medium" [hlmTooltip]="section.comparisons?.['voted']" [currentValue]="section.voted">{{ section.voted }}</td>
+                            <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['totalPaper']" [currentValue]="section.protocolPaperVotes">{{ section.protocolPaperVotes }}</td>
+                            <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['totalMachine']" [currentValue]="section.protocolMachineVotes">{{ section.protocolMachineVotes }}</td>
                             <td hlmTableCell class="text-right">
                                 <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-destructive/10 text-destructive">
                                     {{ section.protocolErrorDiff }}

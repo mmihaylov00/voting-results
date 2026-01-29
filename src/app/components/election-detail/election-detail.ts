@@ -240,7 +240,7 @@ export class ElectionDetailComponent implements OnInit {
       Object.keys(this.sections[0].comparisons).forEach(key => {
         const aggregated: { [date: string]: { value: number, dateName: string } } = {};
         this.sections.forEach(s => {
-          s.comparisons![key]?.forEach(c => {
+          s.comparisons?.[key]?.forEach(c => {
             if (!aggregated[c.date]) {
               aggregated[c.date] = { value: 0, dateName: c.dateName };
             }
@@ -258,13 +258,13 @@ export class ElectionDetailComponent implements OnInit {
       const electorsAggr: { [date: string]: number } = {};
       const votedAggr: { [date: string]: number } = {};
       this.sections.forEach(s => {
-        s.comparisons!['total']?.forEach(c => electorsAggr[c.date] = (electorsAggr[c.date] || 0) + c.value);
-        s.comparisons!['voted']?.forEach(c => votedAggr[c.date] = (votedAggr[c.date] || 0) + c.value);
+        s.comparisons?.['total']?.forEach(c => electorsAggr[c.date] = (electorsAggr[c.date] || 0) + c.value);
+        s.comparisons?.['voted']?.forEach(c => votedAggr[c.date] = (votedAggr[c.date] || 0) + c.value);
       });
 
       this.globalComparisons['activityPercent'] = Object.keys(electorsAggr).map(date => ({
         date,
-        dateName: this.sections[0].comparisons!['total'].find(c => c.date === date)!.dateName,
+        dateName: this.sections[0].comparisons?.['total']?.find(c => c.date === date)?.dateName || date,
         value: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
       }));
     }

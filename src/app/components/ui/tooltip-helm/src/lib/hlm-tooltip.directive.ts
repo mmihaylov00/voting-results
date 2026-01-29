@@ -9,6 +9,7 @@ import { DecimalPipe } from '@angular/common';
 })
 export class HlmTooltipDirective implements OnDestroy {
   @Input('hlmTooltip') comparisons: ComparativeValue[] | undefined;
+  @Input() currentValue: number | undefined;
   @Input() isPercent: boolean = false;
 
   private tooltipElement: HTMLElement | null = null;
@@ -38,10 +39,20 @@ export class HlmTooltipDirective implements OnDestroy {
       const formattedValue = this.isPercent
         ? (c.value * 100).toFixed(2) + '%'
         : this.decimalPipe.transform(c.value, '1.0-0');
+
+      let arrow = '';
+      if (this.currentValue !== undefined) {
+        if (this.currentValue > c.value) {
+          arrow = '<span class="text-red-500 ml-1">↓</span>';
+        } else if (this.currentValue < c.value) {
+          arrow = '<span class="text-green-500 ml-1">↑</span>';
+        }
+      }
+
       content += `
-        <div class="flex justify-between gap-4 text-[10px] whitespace-nowrap">
+        <div class="flex justify-between gap-4 text-[10px] whitespace-nowrap items-center">
           <span class="opacity-70">${c.dateName}:</span>
-          <span class="font-bold">${formattedValue}</span>
+          <span class="font-bold flex items-center">${formattedValue}${arrow}</span>
         </div>
       `;
     });

@@ -2,7 +2,7 @@
     @if (loading$ | async) {
         <div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
             <div class="w-full max-w-md px-8 text-center">
-                <p hlmMuted class="mb-4">Обработка на данните...</p>
+                <p hlmMuted class="mb-4">Зареждане на данните...</p>
                 <div class="h-2 w-full overflow-hidden rounded-full bg-secondary">
                     <div class="h-full w-full origin-left animate-progress bg-primary"></div>
                 </div>
@@ -41,7 +41,7 @@
                         <p hlmCardDescription class="text-xs uppercase tracking-wider">Активност</p>
                     </div>
                     <div hlmCardContent class="p-4 pt-1">
-                        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['activityPercent']" [isPercent]="true">{{ (avgRegionActivity * 100).toFixed(2) }}%</p>
+                        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['activityPercent']" [currentValue]="avgRegionActivity" [isPercent]="true">{{ (avgRegionActivity * 100).toFixed(2) }}%</p>
                     </div>
                 </div>
                 <div hlmCard class="border-primary/20 bg-primary/5">
@@ -49,7 +49,7 @@
                         <p hlmCardDescription class="text-xs uppercase tracking-wider">Общо избиратели</p>
                     </div>
                     <div hlmCardContent class="p-4 pt-1">
-                        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['total']">{{ totalElectors | number }}</p>
+                        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['total']" [currentValue]="totalElectors">{{ totalElectors | number }}</p>
                     </div>
                 </div>
                 <div hlmCard class="border-primary/20 bg-primary/5">
@@ -57,7 +57,7 @@
                         <p hlmCardDescription class="text-xs uppercase tracking-wider">Общо гласували</p>
                     </div>
                     <div hlmCardContent class="p-4 pt-1">
-                        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['voted']">{{ totalVoted | number }}</p>
+                        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['voted']" [currentValue]="totalVoted">{{ totalVoted | number }}</p>
                     </div>
                 </div>
                 <div hlmCard class="border-primary/20 bg-primary/5">
@@ -65,7 +65,7 @@
                         <p hlmCardDescription class="text-xs uppercase tracking-wider">Общо невалидни</p>
                     </div>
                     <div hlmCardContent class="p-4 pt-1">
-                        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['discardedVotes']">{{ totalInvalid | number }}</p>
+                        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['discardedVotes']" [currentValue]="totalInvalid">{{ totalInvalid | number }}</p>
                     </div>
                 </div>
                 <div hlmCard class="border-primary/20 bg-primary/5">
@@ -73,7 +73,7 @@
                         <p hlmCardDescription class="text-xs uppercase tracking-wider">Общо не подкрепя никого</p>
                     </div>
                     <div hlmCardContent class="p-4 pt-1">
-                        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['noVotes']">{{ totalNoVotes | number }}</p>
+                        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['noVotes']" [currentValue]="totalNoVotes">{{ totalNoVotes | number }}</p>
                     </div>
                 </div>
                 <div hlmCard class="border-primary/20 bg-primary/5">
@@ -82,8 +82,8 @@
                     </div>
                     <div hlmCardContent class="p-4 pt-1">
                         <div class="flex flex-col text-sm whitespace-nowrap">
-                            <span class="text-secondary/70 dark:text-foreground/70">машинни: <strong class="text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['totalMachine']">{{ totalRegionMachine | number }}</strong></span>
-                            <span class="text-secondary/70 dark:text-foreground/70">хартиени: <strong class="text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['totalPaper']">{{ totalRegionPaper | number }}</strong></span>
+                            <span class="text-secondary/70 dark:text-foreground/70">машинни: <strong class="text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['totalMachine']" [currentValue]="totalRegionMachine">{{ totalRegionMachine | number }}</strong></span>
+                            <span class="text-secondary/70 dark:text-foreground/70">хартиени: <strong class="text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['totalPaper']" [currentValue]="totalRegionPaper">{{ totalRegionPaper | number }}</strong></span>
                         </div>
                     </div>
                 </div>
@@ -200,21 +200,21 @@
                                     <td hlmTableCell class="font-medium">{{ section.sectionId }}</td>
                                     <td hlmTableCell>{{ section.cityName }}</td>
                                     <td hlmTableCell>{{ section.sectionName }}</td>
-                                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons!['total']">{{ section.total }}</td>
-                                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons!['voted']">{{ section.voted }}</td>
-                                  <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons!['activityPercent']" [isPercent]="true">{{ (section.activityPercent * 100).toFixed(2) }}%</td>
-                                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons!['discardedVotes']">{{ section.discardedVotes }}</td>
-                                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons!['noVotes']">{{ section.noVotes }}</td>
+                                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['total']" [currentValue]="section.total">{{ section.total }}</td>
+                                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['voted']" [currentValue]="section.voted">{{ section.voted }}</td>
+                                  <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['activityPercent']" [currentValue]="section.activityPercent" [isPercent]="true">{{ (section.activityPercent * 100).toFixed(2) }}%</td>
+                                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['discardedVotes']" [currentValue]="section.discardedVotes">{{ section.discardedVotes }}</td>
+                                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['noVotes']" [currentValue]="section.noVotes">{{ section.noVotes }}</td>
                                     <td hlmTableCell>
                                         <div class="flex flex-col text-xs whitespace-nowrap">
-                                            <span>машинни: <strong [hlmTooltip]="section.comparisons!['totalMachine']">{{ section.totalMachine }}</strong></span>
-                                            <span>хартиени: <strong [hlmTooltip]="section.comparisons!['totalPaper']">{{ section.totalPaper }}</strong></span>
+                                            <span>машинни: <strong [hlmTooltip]="section.comparisons?.['totalMachine']" [currentValue]="section.totalMachine">{{ section.totalMachine }}</strong></span>
+                                            <span>хартиени: <strong [hlmTooltip]="section.comparisons?.['totalPaper']" [currentValue]="section.totalPaper">{{ section.totalPaper }}</strong></span>
                                         </div>
                                     </td>
                                     <td hlmTableCell>
                                         <div class="flex flex-col text-xs">
                                             @for (tp of section.topParties; track tp.name) {
-                                                <div class="truncate" [class.font-bold]="tp.name.includes('ПП-ДБ')" [class.text-ppdb]="tp.name.includes('ПП-ДБ')" [title]="tp.name + ': ' + tp.total + ' (' + (tp.percent * 100).toFixed(2) + '%)'">
+                                                <div class="truncate" [class.font-bold]="tp.name.includes('ПП-ДБ')" [class.text-ppdb]="tp.name.includes('ПП-ДБ')" [title]="tp.name + ': ' + tp.total + ' (' + (tp.percent * 100).toFixed(2) + '%)'" [hlmTooltip]="tp.comparisons" [currentValue]="tp.total">
                                                     {{ tp.name }}: <strong>{{ tp.total }}</strong> ({{ (tp.percent * 100).toFixed(2) }}%)
                                                 </div>
                                             }

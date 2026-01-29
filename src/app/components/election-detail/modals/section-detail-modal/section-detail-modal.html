@@ -75,10 +75,10 @@
                     @for (res of filteredPartyResults; track res.partyId) {
                         <tr hlmTableRow [class.font-bold]="res.partyName.includes('ПРОДЪЛЖАВАМЕ')" [class.text-ppdb]="res.partyName.includes('ПРОДЪЛЖАВАМЕ')">
                             <td hlmTableCell>{{ res.partyName }}</td>
-                            <td hlmTableCell class="text-right" [hlmTooltip]="currentSectionData?.partyVotes?.[res.partyId]?.comparisons">{{ res.total }}</td>
-                            <td hlmTableCell class="text-right">{{ res.paper }}</td>
-                            <td hlmTableCell class="text-right">{{ res.machine }}</td>
-                            <td hlmTableCell class="text-right">{{ (res.percent * 100).toFixed(2) }}%</td>
+                            <td hlmTableCell class="text-right" [hlmTooltip]="currentSectionData?.partyVotes?.[res.partyId]?.comparisons" [currentValue]="res.total">{{ res.total }}</td>
+                            <td hlmTableCell class="text-right" [hlmTooltip]="currentSectionData?.partyVotes?.[res.partyId]?.paperComparisons" [currentValue]="res.paper">{{ res.paper }}</td>
+                            <td hlmTableCell class="text-right" [hlmTooltip]="currentSectionData?.partyVotes?.[res.partyId]?.machineComparisons" [currentValue]="res.machine">{{ res.machine }}</td>
+                            <td hlmTableCell class="text-right" [hlmTooltip]="currentSectionData?.partyVotes?.[res.partyId]?.percentComparisons" [currentValue]="res.percent" [isPercent]="true">{{ (res.percent * 100).toFixed(2) }}%</td>
                         </tr>
                     }
                     @if (othersResult) {
@@ -105,23 +105,23 @@
                   <div class="space-y-4">
                     <div class="flex justify-between items-center border-b border-primary/10 pb-2">
                       <span class="text-secondary/70 dark:text-foreground/70">Избиратели:</span>
-                      <span class="font-bold">{{ currentSectionData.total }}</span>
+                      <span class="font-bold" [hlmTooltip]="currentSectionData.comparisons?.['total']" [currentValue]="currentSectionData.total">{{ currentSectionData.total }}</span>
                     </div>
                     <div class="flex justify-between items-center border-b border-primary/10 pb-2">
                       <span class="text-secondary/70 dark:text-foreground/70">Гласували:</span>
-                      <span class="font-bold">{{ currentSectionData.voted }}</span>
+                      <span class="font-bold" [hlmTooltip]="currentSectionData.comparisons?.['voted']" [currentValue]="currentSectionData.voted">{{ currentSectionData.voted }}</span>
                     </div>
                     <div class="flex justify-between items-center border-b border-primary/10 pb-2">
                       <span class="text-secondary/70 dark:text-foreground/70">Активност:</span>
-                      <span class="font-bold">{{ (currentSectionData.activityPercent * 100).toFixed(2) }}%</span>
+                      <span class="font-bold" [hlmTooltip]="currentSectionData.comparisons?.['activityPercent']" [currentValue]="currentSectionData.activityPercent" [isPercent]="true">{{ (currentSectionData.activityPercent * 100).toFixed(2) }}%</span>
                     </div>
                     <div class="flex justify-between items-center border-b border-primary/10 pb-2">
                       <span class="text-secondary/70 dark:text-foreground/70">Недействителни:</span>
-                      <span class="font-bold">{{ currentSectionData.discardedVotes }}</span>
+                      <span class="font-bold" [hlmTooltip]="currentSectionData.comparisons?.['discardedVotes']" [currentValue]="currentSectionData.discardedVotes">{{ currentSectionData.discardedVotes }}</span>
                     </div>
                     <div class="flex justify-between items-center">
                       <span class="text-secondary/70 dark:text-foreground/70">Не подкрепя никого:</span>
-                      <span class="font-bold">{{ currentSectionData.noVotes }}</span>
+                      <span class="font-bold" [hlmTooltip]="currentSectionData.comparisons?.['noVotes']" [currentValue]="currentSectionData.noVotes">{{ currentSectionData.noVotes }}</span>
                     </div>
                   </div>
                 </div>

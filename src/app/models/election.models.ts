@@ -9,6 +9,9 @@ export interface PartyVotes {
   paper: number;
   machine: number;
   comparisons?: ComparativeValue[];
+  percentComparisons?: ComparativeValue[];
+  paperComparisons?: ComparativeValue[];
+  machineComparisons?: ComparativeValue[];
 }
 
 export interface Region {
@@ -17,7 +20,7 @@ export interface Region {
   total: number;
   voted: number;
   partyVotes: { [key: string]: number };
-  topParties?: { name: string, total: number, percent: number }[];
+  topParties?: { name: string, total: number, percent: number, comparisons?: ComparativeValue[] }[];
   discardedVotes?: number;
   noVotes?: number;
   totalPaper?: number;
@@ -37,7 +40,7 @@ export interface Section {
   noVotesPaper?: number;
   noVotesMachine?: number;
   partyVotes: { [key: string]: PartyVotes };
-  topParties: { name: string, total: number, percent: number }[];
+  topParties: { name: string, total: number, percent: number, comparisons?: ComparativeValue[] }[];
   activityPercent: number;
   totalPaper?: number;
   totalMachine?: number;
