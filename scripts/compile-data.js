@@ -236,73 +236,41 @@ for (const date of dates) {
   const targetSections = rawData[date].sections;
   const parties = rawData[date].parties;
 
-  // Calculate Municipality averages (turnout and party percentages)
-  const munMap = new Map();
+  // Calculate Region averages (turnout and party percentages)
+  const regionMap = new Map();
   targetSections.forEach(s => {
-    const munId = `${s.regionId}-${s.cityName}`;
-    if (!munMap.has(munId)) {
-      munMap.set(munId, { voted: 0, total: 0, partyVotes: {} });
+    const regionKey = s.regionId;
+    if (!regionMap.has(regionKey)) {
+      regionMap.set(regionKey, { voted: 0, total: 0, partyVotes: {} });
     }
-    const m = munMap.get(munId);
-    m.voted += s.voted;
-    m.total += s.total;
+    const r = regionMap.get(regionKey);
+    r.voted += s.voted;
+    r.total += s.total;
     Object.entries(s.partyVotes).forEach(([pid, votes]) => {
-      m.partyVotes[pid] = (m.partyVotes[pid] || 0) + votes.total;
+      r.partyVotes[pid] = (r.partyVotes[pid] || 0) + votes.total;
     });
   });
 
-  const munStats = {};
-  munMap.forEach((data, id) => {
-    munStats[id] = {
+  const regionStats = {};
+  regionMap.forEach((data, id) => {
+    regionStats[id] = {
       avgTurnout: data.total > 0 ? data.voted / data.total : 0,
       partyPercents: {}
     };
     Object.entries(data.partyVotes).forEach(([pid, total]) => {
-      munStats[id].partyPercents[pid] = data.voted > 0 ? total / data.voted : 0;
+      regionStats[id].partyPercents[pid] = data.voted > 0 ? total / data.voted : 0;
     });
   });
 
-  // Risk Score calculation and storage
+  // Set region stats for sections (used by enhanced risk detection)
   targetSections.forEach(s => {
-    const munId = `${s.regionId}-${s.cityName}`;
-    const stats = munStats[munId];
+    const regionKey = s.regionId;
+    const stats = regionStats[regionKey];
     s.municipalityAvgTurnout = stats.avgTurnout;
     s.municipalityPartyPercents = stats.partyPercents;
+    // Initialize risks array (will be populated by enhanced risk detection)
     s.risks = [];
-
-    // Discrepancy: machineVotes share vs paperVotes share for PP-DB
-    const ppdb = s.topParties.find(p => p.name.includes('ПП-ДБ'));
-    if (ppdb) {
-      const partyData = s.partyVotes[ppdb.partyId];
-      if (partyData) {
-        const mPercent = s.totalMachine > 0 ? partyData.machine / s.totalMachine : 0;
-        const pPercent = s.totalPaper > 0 ? partyData.paper / s.totalPaper : 0;
-        if (mPercent - pPercent > 0.15) {
-          s.risks.push('Разминаване машина/хартия');
-        }
-      }
-    }
-
-    // Turnout anomaly: > 20% higher than municipality average
-    if (s.activityPercent > stats.avgTurnout * 1.2) {
-      s.risks.push('Висока активност спрямо общината');
-    }
-
-    // Invalid votes: > 10%
-    if (s.voted > 0 && s.discardedVotes / s.voted > 0.10) {
-      s.risks.push('Висок процент невалидни гласове');
-    }
-
-    // Unanimous non-PP-DB: any party > 80%
-    // Note: topParties are already sorted, so just check the winner
-    if (s.topParties.length > 0) {
-      const winner = s.topParties[0];
-      if (!winner.name.includes('ПП-ДБ') && winner.percent > 0.80) {
-        s.risks.push('Преобладаващ вот за една партия');
-      }
-    }
-
-    s.riskScore = s.risks.length;
+    s.riskScore = 0;
   });
 
   const regionsMap = new Map();
@@ -534,6 +502,549 @@ for (const date of dates) {
         });
       }
     });
+  });
+
+  console.log(`Computing enhanced risks for ${date}...`);
+
+  // Compute region statistics for risk detection
+  const regionStatsMap = new Map();
+  targetSections.forEach(s => {
+    const regionKey = s.regionId;
+    if (!regionStatsMap.has(regionKey)) {
+      regionStatsMap.set(regionKey, {
+        sections: [],
+        turnoutChanges: [],
+        paperTotals: 0,
+        machineTotals: 0,
+        invalidTotals: 0,
+        votedTotals: 0,
+        partyPaperTotals: {},
+        partyTotals: {}
+      });
+    }
+    const stats = regionStatsMap.get(regionKey);
+    stats.sections.push(s);
+
+    // Calculate turnout change
+    if (s.comparisons?.['activityPercent'] && s.comparisons['activityPercent'].length > 0) {
+      const current = s.activityPercent;
+      const previous = s.comparisons['activityPercent'][0].value;
+      if (previous > 0) {
+        stats.turnoutChanges.push((current - previous) / previous);
+      }
+    }
+
+    stats.paperTotals += s.totalPaper || 0;
+    stats.machineTotals += s.totalMachine || 0;
+    stats.invalidTotals += s.discardedVotes;
+    stats.votedTotals += s.voted;
+
+    Object.entries(s.partyVotes).forEach(([pid, votes]) => {
+      if (!stats.partyPaperTotals[pid]) {
+        stats.partyPaperTotals[pid] = 0;
+        stats.partyTotals[pid] = 0;
+      }
+      stats.partyPaperTotals[pid] += votes.paper || 0;
+      stats.partyTotals[pid] += votes.total;
+    });
+  });
+
+  // Convert to final region stats format
+  const regionStatsMapFinal = {};
+  regionStatsMap.forEach((data, key) => {
+    const avgTurnoutChange = data.turnoutChanges.length > 0
+      ? data.turnoutChanges.reduce((sum, c) => sum + c, 0) / data.turnoutChanges.length
+      : 0;
+
+    const variance = data.turnoutChanges.length > 1
+      ? data.turnoutChanges.reduce((sum, c) => sum + Math.pow(c - avgTurnoutChange, 2), 0) / data.turnoutChanges.length
+      : 0;
+    const turnoutChangeStdDev = Math.sqrt(variance);
+
+    const paperMachineRatio = data.machineTotals > 0 ? data.paperTotals / data.machineTotals : 0;
+    const invalidRate = data.votedTotals > 0 ? data.invalidTotals / data.votedTotals : 0;
+
+    const partyPaperRatios = {};
+    Object.keys(data.partyTotals).forEach(pid => {
+      partyPaperRatios[pid] = data.partyTotals[pid] > 0
+        ? data.partyPaperTotals[pid] / data.partyTotals[pid]
+        : 0;
+    });
+
+    regionStatsMapFinal[key] = {
+      avgTurnoutChange,
+      turnoutChangeStdDev,
+      paperMachineRatio,
+      partyPaperRatios,
+      invalidRate
+    };
+  });
+
+  // Compute enhanced risks for each section
+  // Note: 'parties' map is available in this scope from earlier in the script
+  targetSections.forEach(section => {
+    const regionKey = section.regionId;
+    const regStats = regionStatsMapFinal[regionKey] || {
+      avgTurnoutChange: 0,
+      turnoutChangeStdDev: 0,
+      paperMachineRatio: 0,
+      partyPaperRatios: {},
+      invalidRate: 0
+    };
+
+    // Get historical sections (from other dates)
+    const historicalSections = dates
+      .filter(d => d !== date)
+      .sort()
+      .reverse()
+      .slice(0, 3)
+      .map(d => rawData[d].sections.find(os => os.sectionId === section.sectionId))
+      .filter(s => s !== undefined);
+
+    // Get neighboring sections (same region)
+    const neighboringSections = targetSections.filter(s =>
+      s.regionId === section.regionId && s.sectionId !== section.sectionId
+    );
+
+    // Compute baseline
+    let baseline = null;
+    if (historicalSections.length > 0) {
+      const totalVotes = historicalSections.reduce((sum, s) => sum + s.voted, 0);
+      const totalElectors = historicalSections.reduce((sum, s) => sum + s.total, 0);
+      const totalInvalid = historicalSections.reduce((sum, s) => sum + s.discardedVotes, 0);
+      const totalPaper = historicalSections.reduce((sum, s) => sum + (s.totalPaper || 0), 0);
+      const totalMachine = historicalSections.reduce((sum, s) => sum + (s.totalMachine || 0), 0);
+
+      const partyVoteShares = {};
+      historicalSections.forEach(s => {
+        Object.entries(s.partyVotes).forEach(([pid, votes]) => {
+          if (!partyVoteShares[pid]) partyVoteShares[pid] = 0;
+          partyVoteShares[pid] += votes.total;
+        });
+      });
+
+      const totalPartyVotes = Object.values(partyVoteShares).reduce((sum, v) => sum + v, 0);
+      Object.keys(partyVoteShares).forEach(pid => {
+        partyVoteShares[pid] = totalPartyVotes > 0 ? partyVoteShares[pid] / totalPartyVotes : 0;
+      });
+
+      baseline = {
+        avgTurnout: totalElectors > 0 ? totalVotes / totalElectors : 0,
+        avgInvalidRate: totalVotes > 0 ? totalInvalid / totalVotes : 0,
+        avgPaperMachineRatio: totalMachine > 0 ? totalPaper / totalMachine : 0,
+        partyVoteShares
+      };
+    }
+
+    const riskIndicators = [];
+
+    // R1.1: Turnout anomaly
+    if (baseline && section.comparisons?.['voted'] && section.comparisons['voted'].length > 0) {
+      const currentTurnout = section.activityPercent;
+      const previousTurnout = baseline.avgTurnout;
+      const turnoutChange = previousTurnout > 0 ? (currentTurnout - previousTurnout) / previousTurnout : 0;
+      const deviation = turnoutChange - regStats.avgTurnoutChange;
+      const stdDevs = regStats.turnoutChangeStdDev > 0 ? Math.abs(deviation) / regStats.turnoutChangeStdDev : 0;
+
+      if (stdDevs > 2) {
+        riskIndicators.push({
+          code: 'R1.1',
+          category: 'R1',
+          severity: stdDevs > 3 ? 'high' : 'medium',
+          message: `Аномалия в активността: ${(turnoutChange * 100).toFixed(1)}% промяна (${stdDevs.toFixed(1)}σ от средното)`
+        });
+      }
+    }
+
+      // R1.2: Party turnout capture
+      if (baseline && section.comparisons?.['voted'] && section.comparisons['voted'].length > 0) {
+        const currentVoted = section.voted;
+        const previousVoted = section.comparisons['voted'][0].value || 0;
+        const voteIncrease = currentVoted - previousVoted;
+
+        if (voteIncrease > 0 && previousVoted > 0) {
+          let maxCapture = 0;
+          let capturingParty = null;
+
+          // Get actual previous votes from historical section if available
+          const previousSection = historicalSections.length > 0 ? historicalSections[0] : null;
+
+          Object.entries(section.partyVotes).forEach(([pid, votes]) => {
+            // Try to get actual previous votes from historical section first
+            let previousVotes = 0;
+            if (previousSection && previousSection.partyVotes[pid]) {
+              previousVotes = previousSection.partyVotes[pid].total || 0;
+            } else {
+              // Fallback to baseline estimate
+              previousVotes = (baseline.partyVoteShares[pid] || 0) * previousVoted;
+            }
+
+            const currentVotes = votes.total;
+            const partyIncrease = currentVotes - previousVotes;
+
+            // Calculate capture ratio, but cap it at 1.0 (100%) to handle edge cases
+            // where previous estimate might be wrong or party had negative votes before
+            const captureRatio = voteIncrease > 0 ? Math.min(1.0, Math.max(0, partyIncrease / voteIncrease)) : 0;
+
+            if (captureRatio > maxCapture) {
+              maxCapture = captureRatio;
+              capturingParty = pid;
+            }
+          });
+
+          // Only flag if capture is significant (>= 60%) and reasonable (<= 100%)
+          if (maxCapture >= 0.6 && maxCapture <= 1.0 && capturingParty) {
+            const partyName = section.topParties.find(tp => tp.partyId === capturingParty)?.name || capturingParty;
+            const historicalShare = baseline.partyVoteShares[capturingParty] || 0;
+            const currentShare = section.voted > 0 ? section.partyVotes[capturingParty]?.total / section.voted : 0;
+
+            if (historicalShare < 0.3 && currentShare > 0.5) {
+              riskIndicators.push({
+                code: 'R1.2',
+                category: 'R1',
+                severity: maxCapture > 0.8 ? 'high' : 'medium',
+                message: `Една партия улавя ${(maxCapture * 100).toFixed(0)}% от новите гласове: ${partyName}`
+              });
+            }
+          }
+        }
+      }
+
+    // R1.3: Vote share rigidity
+    if (historicalSections.length >= 2) {
+      const partyVariances = {};
+      historicalSections.forEach(s => {
+        Object.entries(s.partyVotes).forEach(([pid, votes]) => {
+          if (!partyVariances[pid]) partyVariances[pid] = [];
+          const share = s.voted > 0 ? votes.total / s.voted : 0;
+          partyVariances[pid].push(share);
+        });
+      });
+
+      let maxRigidParty = null;
+      let maxRigidShare = 0;
+      let minRigidVariance = Infinity;
+
+      Object.entries(partyVariances).forEach(([pid, shares]) => {
+        if (shares.length < 2) return;
+        const avgShare = shares.reduce((sum, s) => sum + s, 0) / shares.length;
+        const variance = shares.reduce((sum, s) => sum + Math.pow(s - avgShare, 2), 0) / shares.length;
+
+        if (avgShare > 0.6 && variance < 0.01 && avgShare > maxRigidShare) {
+          maxRigidParty = pid;
+          maxRigidShare = avgShare;
+          minRigidVariance = variance;
+        }
+      });
+
+      if (maxRigidParty && neighboringSections.length > 0) {
+        const neighborShares = neighboringSections
+          .map(ns => ns.partyVotes[maxRigidParty] ? ns.partyVotes[maxRigidParty].total / (ns.voted || 1) : 0)
+          .filter(s => s > 0);
+
+        if (neighborShares.length > 0) {
+          const neighborAvg = neighborShares.reduce((sum, v) => sum + v, 0) / neighborShares.length;
+          const neighborVariance = neighborShares.reduce((sum, v) => sum + Math.pow(v - neighborAvg, 2), 0) / neighborShares.length;
+
+          if (neighborVariance > minRigidVariance * 3) {
+            const partyName = section.topParties.find(tp => tp.partyId === maxRigidParty)?.name || maxRigidParty;
+            riskIndicators.push({
+              code: 'R1.3',
+              category: 'R1',
+              severity: 'medium',
+              message: `Ниска волатилност на ${partyName} спрямо съседните секции`
+            });
+          }
+        }
+      }
+    }
+
+    // R2.1: Paper/machine deviation
+    // Only flag if section has meaningful vote count (at least 50 votes)
+    if (section.totalPaper && section.totalMachine && section.voted >= 50) {
+      const sectionPaperPercent = section.totalPaper / section.voted;
+      const regionPaperPercent = regStats.paperMachineRatio > 0
+        ? regStats.paperMachineRatio / (1 + regStats.paperMachineRatio)
+        : 0;
+      const deviation = Math.abs(sectionPaperPercent - regionPaperPercent);
+      const deviationPercent = regionPaperPercent > 0 ? (deviation / regionPaperPercent) * 100 : 0;
+
+      let isSudden = false;
+      if (baseline) {
+        const baselinePaperPercent = baseline.avgPaperMachineRatio > 0
+          ? baseline.avgPaperMachineRatio / (1 + baseline.avgPaperMachineRatio)
+          : 0;
+        const baselineDeviation = Math.abs(sectionPaperPercent - baselinePaperPercent);
+        isSudden = baselineDeviation > baselinePaperPercent * 0.3;
+      }
+
+      if (deviationPercent > 30 || isSudden) {
+        riskIndicators.push({
+          code: 'R2.1',
+          category: 'R2',
+          severity: deviationPercent > 50 || isSudden ? 'high' : 'medium',
+          message: `Отклонение в съотношението хартия/машина: ${(sectionPaperPercent * 100).toFixed(1)}% хартиени (регион: ${(regionPaperPercent * 100).toFixed(1)}%)`
+        });
+      }
+    }
+
+    // R2.2: Party-specific paper dominance (only flag low paper % for top 3 parties)
+    // Only check top 3 parties and only flag when paper percentage is low (high machine percentage)
+    let maxR22Deviation = 0;
+    let maxR22Party = null;
+    let maxR22Message = null;
+    let maxR22SectionRatio = 0;
+    let maxR22RegionRatio = 0;
+
+    // Get party names map for better display
+    const partyNamesMap = {};
+    section.topParties.forEach(tp => {
+      partyNamesMap[tp.partyId] = tp.name;
+    });
+
+    // Only check top 3 parties
+    const top3PartyIds = new Set(section.topParties.slice(0, 3).map(tp => tp.partyId));
+
+    // Check only top 3 parties
+    Object.entries(section.partyVotes).forEach(([pid, votes]) => {
+      // Skip if not in top 3
+      if (!top3PartyIds.has(pid)) return;
+
+      // Skip if party has no votes or too few votes (need at least 10 for meaningful analysis)
+      if (!votes || votes.total === 0 || votes.total < 10) return;
+
+      // Skip party ID "0" (no votes party) as it's not meaningful for this analysis
+      if (pid === '0') return;
+
+      // Get paper and machine values (handle undefined/null)
+      const paperVotes = votes.paper ?? 0;
+      const machineVotes = votes.machine ?? 0;
+
+      // Skip if we don't have paper/machine breakdown (both are 0 or undefined)
+      // Note: A party can have 0 paper (all machine) or 0 machine (all paper), which is valid
+      if (paperVotes === 0 && machineVotes === 0) return;
+
+      // Calculate paper ratio for this party in this section
+      const sectionPaperRatio = votes.total > 0 ? paperVotes / votes.total : 0;
+
+      // Get region average for this party
+      const regionPaperRatio = regStats.partyPaperRatios[pid] ?? 0;
+
+      // Skip if we don't have region data (can't compare)
+      if (regionPaperRatio === 0 && !regStats.partyPaperRatios.hasOwnProperty(pid)) return;
+
+      // Skip if both are 0 (no meaningful data)
+      if (regionPaperRatio === 0 && sectionPaperRatio === 0) return;
+
+      // Only flag when paper percentage is LOW (meaning machine percentage is high)
+      // This means sectionPaperRatio should be significantly lower than regionPaperRatio
+      if (sectionPaperRatio >= regionPaperRatio) return;
+
+      const deviation = regionPaperRatio - sectionPaperRatio; // Positive when section has less paper than region
+
+      // Track the party with the highest deviation (section has much less paper than region average)
+      if (deviation > maxR22Deviation) {
+        maxR22Deviation = deviation;
+        maxR22Party = pid;
+        maxR22SectionRatio = sectionPaperRatio;
+        maxR22RegionRatio = regionPaperRatio;
+      }
+    });
+
+    // Only flag if the highest deviation meets the significance threshold (30%+ difference)
+    if (maxR22Party && maxR22Deviation > 0.3) {
+      const partyName = partyNamesMap[maxR22Party] || (parties && parties[maxR22Party]) || `Партия ${maxR22Party}`;
+      const sectionPercent = Math.round(maxR22SectionRatio * 100);
+      const regionPercent = Math.round(maxR22RegionRatio * 100);
+      maxR22Message = `${partyName}: ${sectionPercent}% хартиени (регион: ${regionPercent}%)`;
+    }
+
+    if (maxR22Party && maxR22Message) {
+      riskIndicators.push({
+        code: 'R2.2',
+        category: 'R2',
+        severity: maxR22Deviation > 0.5 ? 'high' : 'medium',
+        message: maxR22Message
+      });
+    }
+
+    // R2.3: Asymmetric technology advantage
+    if (section.totalPaper && section.totalMachine && section.topParties.length >= 2) {
+      const top1 = section.topParties[0];
+      const top2 = section.topParties[1];
+      const party1PaperRatio = section.partyVotes[top1.partyId]?.total > 0 ?
+        (section.partyVotes[top1.partyId].paper || 0) / section.partyVotes[top1.partyId].total : 0;
+      const party2PaperRatio = section.partyVotes[top2.partyId]?.total > 0 ?
+        (section.partyVotes[top2.partyId].paper || 0) / section.partyVotes[top2.partyId].total : 0;
+      const asymmetry = Math.abs(party1PaperRatio - party2PaperRatio);
+
+      if (asymmetry > 0.4) {
+        riskIndicators.push({
+          code: 'R2.3',
+          category: 'R2',
+          severity: asymmetry > 0.6 ? 'high' : 'medium',
+          message: `Асиметрия: ${top1.name} ${(party1PaperRatio * 100).toFixed(0)}% хартия, ${top2.name} ${(party2PaperRatio * 100).toFixed(0)}% хартия`
+        });
+      }
+    }
+
+    // R3.1: Invalid vote anomaly
+    if (baseline) {
+      const currentInvalidRate = section.voted > 0 ? section.discardedVotes / section.voted : 0;
+      const baselineInvalidRate = baseline.avgInvalidRate;
+      const change = baselineInvalidRate > 0 ? (currentInvalidRate - baselineInvalidRate) / baselineInvalidRate : 0;
+
+      if (change > 0.5 && currentInvalidRate > regStats.invalidRate * 1.5) {
+        riskIndicators.push({
+          code: 'R3.1',
+          category: 'R3',
+          severity: change > 1.0 ? 'high' : 'medium',
+          message: `Скачване в невалидните гласове: ${(currentInvalidRate * 100).toFixed(1)}% (исторически: ${(baselineInvalidRate * 100).toFixed(1)}%)`
+        });
+      }
+    }
+
+    // R3.2: Party-correlated invalid spike
+    if (baseline && section.comparisons?.['discardedVotes']) {
+      const currentInvalid = section.discardedVotes;
+      const previousInvalid = section.comparisons['discardedVotes'][0]?.value || 0;
+      const invalidIncrease = currentInvalid - previousInvalid;
+
+      if (invalidIncrease > 0) {
+        const losingParties = [];
+        Object.entries(section.partyVotes).forEach(([pid, votes]) => {
+          const previousShare = baseline.partyVoteShares[pid] || 0;
+          const currentShare = section.voted > 0 ? votes.total / section.voted : 0;
+          const loss = previousShare - currentShare;
+
+          if (loss > 0.05) {
+            const partyName = section.topParties.find(tp => tp.partyId === pid)?.name || pid;
+            losingParties.push({ pid, loss, name: partyName });
+          }
+        });
+
+        if (losingParties.length > 0 && invalidIncrease > section.voted * 0.05) {
+          losingParties.sort((a, b) => b.loss - a.loss);
+          riskIndicators.push({
+            code: 'R3.2',
+            category: 'R3',
+            severity: 'medium',
+            message: `Увеличение на невалидните (+${invalidIncrease}) корелира с загуби за ${losingParties[0].name}`
+          });
+        }
+      }
+    }
+
+    // R4.1: Vote swing
+    if (historicalSections.length > 0 && section.topParties.length > 0) {
+      const currentTopParty = section.topParties[0];
+      const historicalShares = historicalSections
+        .map(s => {
+          const partyVotes = s.partyVotes[currentTopParty.partyId];
+          return partyVotes && s.voted > 0 ? partyVotes.total / s.voted : null;
+        })
+        .filter(s => s !== null);
+
+      if (historicalShares.length >= 2) {
+        const avgHistoricalShare = historicalShares.reduce((sum, s) => sum + s, 0) / historicalShares.length;
+        const variance = historicalShares.reduce((sum, s) => sum + Math.pow(s - avgHistoricalShare, 2), 0) / historicalShares.length;
+        const currentShare = currentTopParty.percent;
+        const swing = Math.abs(currentShare - avgHistoricalShare);
+
+        // Only flag if historical variance is low (stable) AND swing is significant
+        if (variance < 0.01 && swing > 0.15 && avgHistoricalShare > 0) {
+          riskIndicators.push({
+            code: 'R4.1',
+            category: 'R4',
+            severity: swing > 0.25 ? 'high' : 'medium',
+            message: `Голям замах в исторически стабилна секция: ${currentTopParty.name} ${(swing * 100).toFixed(1)}% промяна (от ${(avgHistoricalShare * 100).toFixed(1)}% към ${(currentShare * 100).toFixed(1)}%)`
+          });
+        }
+      }
+    }
+
+    // R4.2: Fragmentation shock
+    if (historicalSections.length > 0) {
+      const calculateHerfindahl = (s) => {
+        let sum = 0;
+        Object.values(s.partyVotes).forEach(votes => {
+          const share = s.voted > 0 ? votes.total / s.voted : 0;
+          sum += share * share;
+        });
+        return sum;
+      };
+
+      const currentHerfindahl = calculateHerfindahl(section);
+      const historicalHerfindahls = historicalSections.map(calculateHerfindahl);
+      const avgHistorical = historicalHerfindahls.reduce((sum, h) => sum + h, 0) / historicalHerfindahls.length;
+      const change = Math.abs(currentHerfindahl - avgHistorical);
+
+      if (change > 0.15) {
+        const isFragmentation = currentHerfindahl < avgHistorical;
+        riskIndicators.push({
+          code: 'R4.2',
+          category: 'R4',
+          severity: change > 0.25 ? 'high' : 'medium',
+          message: isFragmentation
+            ? `Внезапна фрагментация: индекс ${currentHerfindahl.toFixed(2)} (исторически: ${avgHistorical.toFixed(2)})`
+            : `Внезапна консолидация: индекс ${currentHerfindahl.toFixed(2)} (исторически: ${avgHistorical.toFixed(2)})`
+        });
+      }
+    }
+
+    // R4.3: Swing section (compare top party with ПП-ДБ)
+    if (section.topParties.length >= 1) {
+      const top1 = section.topParties[0];
+      // Find ПП-ДБ in topParties first, then in all partyVotes if not found
+      let ppdb = section.topParties.find(tp => tp.name.includes('ПП-ДБ') || tp.name.includes('ПРОДЪЛЖАВАМЕ'));
+
+      // If not in topParties, search in all partyVotes
+      if (!ppdb) {
+        const ppdbPartyId = Object.keys(section.partyVotes).find(pid => {
+          const partyName = parties[pid] || '';
+          return partyName.includes('ПП-ДБ') || partyName.includes('ПРОДЪЛЖАВАМЕ');
+        });
+
+        if (ppdbPartyId && section.partyVotes[ppdbPartyId] && section.voted > 0) {
+          const ppdbVotes = section.partyVotes[ppdbPartyId];
+          const ppdbPercent = ppdbVotes.total / section.voted;
+          ppdb = {
+            partyId: ppdbPartyId,
+            name: parties[ppdbPartyId] || 'ПП-ДБ',
+            percent: ppdbPercent
+          };
+        }
+      }
+
+      if (ppdb && ppdb.partyId !== top1.partyId) {
+        const margin = top1.percent - ppdb.percent;
+
+        if (margin < 0.05 && margin > 0) {
+          riskIndicators.push({
+            code: 'R4.3',
+            category: 'R4',
+            severity: 'low',
+            message: `Критична секция: ${top1.name} води с ${(margin * 100).toFixed(1)}% пред ${ppdb.name}`
+          });
+        }
+      }
+    }
+
+    // Update section with risk indicators
+    if (riskIndicators.length > 0) {
+      section.riskIndicators = riskIndicators;
+      // Don't duplicate risk messages in the risks array - riskIndicators already contain them
+      // Only keep the original risks that aren't in riskIndicators
+      const indicatorMessages = new Set(riskIndicators.map(r => r.message));
+      const originalRisks = (section.risks || []).filter(r => !indicatorMessages.has(r));
+      section.risks = [...originalRisks, ...riskIndicators.map(r => r.message)];
+      section.riskScore = (section.riskScore || 0) + riskIndicators.length;
+    }
+
+    // Store baseline for reference
+    if (baseline) {
+      section.baseline = baseline;
+    }
   });
 
   const finalResult = {

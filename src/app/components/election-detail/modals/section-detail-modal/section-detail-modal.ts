@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, effect, signal, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
@@ -30,7 +30,6 @@ import {
   imports: [
     CommonModule,
     FormsModule,
-    DecimalPipe,
     HighchartsChartComponent,
     HlmButtonDirective,
     HlmTableDirective,
@@ -64,7 +63,8 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   chartOptions: Highcharts.Options = {};
   historicalVotesChartOptions: Highcharts.Options = {};
   historicalPercentChartOptions: Highcharts.Options = {};
-  activeHistoricalTab = signal<'votes' | 'percent'>('votes');
+  historicalActivityChartOptions: Highcharts.Options = {};
+  activeHistoricalTab = signal<'votes' | 'percent' | 'activity'>('votes');
 
   allData: { [date: string]: any } = {};
   dates: { date: string, name: string }[] = [];
@@ -81,6 +81,14 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   }
 
   getPartyAlias = getPartyAlias;
+
+  get uniqueRisks(): string[] {
+    if (!this.currentSectionData) return [];
+    const indicatorMessages = new Set(
+      this.currentSectionData.riskIndicators?.map(r => r.message) || []
+    );
+    return (this.currentSectionData.risks || []).filter(r => !indicatorMessages.has(r));
+  }
 
   constructor(
     public themeService: ThemeService,
@@ -408,6 +416,8 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       }
     });
 
+    const activityData: number[] = [];
+
     sortedDates.forEach(d => {
       const data = this.allData[d.date];
       if (!data) return;
@@ -415,6 +425,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       categories.push(d.name);
 
       let totalVoted = 0;
+      let totalElectors = 0;
 
       // Collect votes for all parties in this date
       const datePartyVotes: { [partyId: string]: number } = {};
@@ -428,6 +439,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
         });
         citySections.forEach((section: Section) => {
           totalVoted += section.voted;
+          totalElectors += section.total;
           Object.entries(section.partyVotes).forEach(([pid, v]) => {
             const votesObj = v as PartyVotes;
             datePartyVotes[pid] = (datePartyVotes[pid] || 0) + votesObj.total;
@@ -438,12 +450,17 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
         const section = data.sections.find((s: Section) => s.sectionId === sectionId);
         if (section) {
           totalVoted = section.voted;
+          totalElectors = section.total;
           Object.entries(section.partyVotes).forEach(([pid, v]) => {
             const votesObj = v as PartyVotes;
             datePartyVotes[pid] = votesObj.total;
           });
         }
       }
+
+      // Calculate activity (turnout) percentage
+      const activity = totalElectors > 0 ? (totalVoted / totalElectors) * 100 : 0;
+      activityData.push(Math.round(activity * 100) / 100);
 
       // Match selected parties by keywords and store data
       selectedIds.forEach(selectedId => {
@@ -526,6 +543,34 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       series: percentSeries,
       credits: { enabled: false },
       tooltip: { shared: true, valueSuffix: '%', valueDecimals: 2 }
+    };
+
+    // Build activity chart
+    this.historicalActivityChartOptions = {
+      chart: { type: 'line', backgroundColor: 'transparent' },
+      title: { text: 'Активност (избирателна активност)', style: { color: textColor } },
+      xAxis: { categories, labels: { style: { color: textColor } } },
+      yAxis: {
+        title: { text: 'Активност (%)', style: { color: textColor } },
+        labels: { style: { color: textColor } },
+        min: 0,
+        max: 100
+      },
+      legend: {
+        enabled: false
+      },
+      series: [{
+        name: 'Активност',
+        data: activityData,
+        type: 'line',
+        color: '#0ea5e9',
+        tooltip: {
+          valueSuffix: '%',
+          valueDecimals: 2
+        }
+      }],
+      credits: { enabled: false },
+      tooltip: { valueSuffix: '%', valueDecimals: 2 }
     };
   }
 }

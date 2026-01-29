@@ -79,7 +79,8 @@ export class ElectionDetailComponent implements OnInit {
   activityOperator = signal<'lte' | 'gte'>('lte');
   lowActivityThreshold: number | null = 100;
   selectedSectionTypes = signal<Set<string>>(new Set());
-  highRiskOnly = signal<boolean>(false);
+  riskFilterType = signal<'any' | 'none' | null>(null);
+  selectedRiskCategories = signal<Set<string>>(new Set());
   avgRegionActivity: number = 0;
   totalElectors: number = 0;
   totalVoted: number = 0;
@@ -297,7 +298,8 @@ export class ElectionDetailComponent implements OnInit {
       activityOperator: this.activityOperator(),
       lowActivityThreshold: this.lowActivityThreshold,
       sectionTypes: this.selectedSectionTypes(),
-      highRiskOnly: this.highRiskOnly(),
+      riskFilterType: this.riskFilterType(),
+      selectedRiskCategories: this.selectedRiskCategories(),
       isViewingAllSections: this.regionId === 'all' || !this.regionId
     };
 
@@ -477,7 +479,8 @@ export class ElectionDetailComponent implements OnInit {
     this.activityOperator.set(filters.activityOperator);
     this.lowActivityThreshold = filters.lowActivityThreshold;
     this.selectedSectionTypes.set(filters.sectionTypes);
-    this.highRiskOnly.set(filters.highRiskOnly);
+    this.riskFilterType.set(filters.riskFilterType || null);
+    this.selectedRiskCategories.set(filters.selectedRiskCategories || new Set());
 
     if (prevTab !== filters.activeTab) {
       if (filters.activeTab === 'flip') {

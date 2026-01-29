@@ -155,7 +155,7 @@
                     </div>
                     <app-section-filters
                         [date]="date"
-                        [initialFilters]="{searchTerm: searchTerm, activeTab: activeTab(), activityOperator: activityOperator(), lowActivityThreshold: lowActivityThreshold, sectionTypes: selectedSectionTypes(), highRiskOnly: highRiskOnly()}"
+                        [initialFilters]="{searchTerm: searchTerm, activeTab: activeTab(), activityOperator: activityOperator(), lowActivityThreshold: lowActivityThreshold, sectionTypes: selectedSectionTypes(), riskFilterType: riskFilterType(), selectedRiskCategories: selectedRiskCategories()}"
                         (filterChange)="onFilterChange($event)"/>
                 </div>
 

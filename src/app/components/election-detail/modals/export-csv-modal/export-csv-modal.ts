@@ -48,7 +48,12 @@ export class ExportCsvModalComponent {
   activityOperator = signal<'lte' | 'gte'>('lte');
   lowActivityThreshold: number | null = 100;
   exportSectionTypes: Set<string> = new Set();
-  highRiskOnly: boolean = false;
+  riskFilterType: 'any' | 'none' | null = null;
+  selectedRiskCategories: Set<string> = new Set();
+  
+  get emptyRiskCategoriesSet(): Set<string> {
+    return new Set();
+  }
 
   filteredSections: Section[] = [];
   exportPartyIds: Set<string> = new Set();
@@ -85,7 +90,8 @@ export class ExportCsvModalComponent {
       activityOperator: this.activityOperator(),
       lowActivityThreshold: this.lowActivityThreshold,
       sectionTypes: this.exportSectionTypes,
-      highRiskOnly: this.highRiskOnly
+      riskFilterType: this.riskFilterType,
+      selectedRiskCategories: this.selectedRiskCategories
     };
 
     this.filteredSections = filterSections(this.sections, filters);
@@ -97,7 +103,8 @@ export class ExportCsvModalComponent {
     this.activityOperator.set(filters.activityOperator);
     this.lowActivityThreshold = filters.lowActivityThreshold;
     this.exportSectionTypes = filters.sectionTypes;
-    this.highRiskOnly = filters.highRiskOnly;
+    this.riskFilterType = filters.riskFilterType || null;
+    this.selectedRiskCategories = filters.selectedRiskCategories || new Set();
     this.applyFilter();
   }
 

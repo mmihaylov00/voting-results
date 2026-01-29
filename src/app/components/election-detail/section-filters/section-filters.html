@@ -1,4 +1,5 @@
-<div class="flex flex-col gap-4 w-full" [class.xl:flex-row]="!fullWidth" [class.xl:w-auto]="!fullWidth" [class.items-start]="fullWidth" [class.lg:items-center]="!fullWidth">
+<div class="flex flex-col gap-4 w-full" [class.xl:flex-row]="!fullWidth" [class.xl:w-auto]="!fullWidth"
+     [class.items-start]="fullWidth" [class.lg:items-center]="!fullWidth">
 
   <div class="flex flex-col gap-4 w-full" [class.md:flex-row]="!fullWidth" [class.xl:w-50]="!fullWidth">
     <div class="flex flex-col sm:flex-row md:flex-col  flex-grow gap-2 justify-self-end">
@@ -6,7 +7,8 @@
         <input hlmInput placeholder="Търсене..." [ngModel]="searchTerm()" (ngModelChange)="onSearchTermChange($event)"
                class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full"/>
       </div>
-      <div [class.sm:w-64]="!fullWidth" [class.flex-row]="!fullWidth" class="flex sm:flex-col items-center gap-2 w-full md:w-full">
+      <div [class.sm:w-64]="!fullWidth" [class.flex-row]="!fullWidth"
+           class="flex sm:flex-col items-center gap-2 w-full md:w-full">
         <div class="relative w-full">
           <button hlmBtn variant="ghost" size="sm" (click)="toggleActivityOperator()"
                   class="absolute left-1 top-1/2 -translate-y-1/2 h-8 px-2 text-[10px] font-semibold hover:bg-primary/10 text-muted-foreground transition-all"
@@ -27,11 +29,28 @@
           {{ type.label }}
         </button>
       }
-      <button hlmBtn [variant]="highRiskOnly() ? 'destructive' : 'outline'" (click)="toggleHighRiskOnly()"
-              [hlmTooltip]="'Показва само секции с 1 или повече рискови фактора'"
-              class="h-7 px-2 text-[10px] font-medium uppercase tracking-wider">
+    </div>
+    <div class="flex flex-wrap gap-2 items-center sm:w-full md:w-52">
+      <button hlmBtn [variant]="riskFilterType() === 'any' ? 'destructive' : 'outline'"
+              (click)="toggleRiskFilterType('any')"
+              [hlmTooltip]="'Показва секции с каквито и да е рискови индикатори'"
+              class="h-7 px-2 text-[10px] border font-medium uppercase tracking-wider border-destructive/50 hover:bg-destructive/90 hover:text-destructive-foreground">
         Рискови
       </button>
+      <button hlmBtn [variant]="riskFilterType() === 'none' ? 'destructive' : 'outline'"
+              (click)="toggleRiskFilterType('none')"
+              [hlmTooltip]="'Показва секции без рискови индикатори'"
+              class="h-7 px-2 text-[10px] border font-medium uppercase tracking-wider border-destructive/50 hover:bg-destructive/90 hover:text-destructive-foreground">
+        Безрискови
+      </button>
+      @for (category of riskCategories; track category.code) {
+        <button hlmBtn [variant]="selectedRiskCategories().has(category.code) ? 'destructive' : 'outline'"
+                (click)="toggleRiskCategory(category.code)"
+                [hlmTooltip]="category.description"
+                class="h-7 px-2 text-[10px] border font-medium uppercase tracking-wider border-destructive/50 hover:bg-destructive/90 hover:text-destructive-foreground">
+          {{ category.label }}
+        </button>
+      }
     </div>
   </div>
 

@@ -120,8 +120,30 @@ export function filterSections(sections: Section[], filters: SectionFilters): Se
     result = result.filter(s => filters.sectionTypes.has(s.sectionType));
   }
 
-  if (filters.highRiskOnly) {
-    result = result.filter(s => (s.riskScore || 0) >= 1);
+  // Risk filters
+  if (filters.riskFilterType === 'any') {
+    result = result.filter(s => {
+      const hasRiskIndicators = s.riskIndicators && s.riskIndicators.length > 0;
+      const hasRiskScore = (s.riskScore || 0) > 0;
+      return hasRiskIndicators || hasRiskScore;
+    });
+  } else if (filters.riskFilterType === 'none') {
+    result = result.filter(s => {
+      const hasRiskIndicators = s.riskIndicators && s.riskIndicators.length > 0;
+      const hasRiskScore = (s.riskScore || 0) > 0;
+      return !hasRiskIndicators && !hasRiskScore;
+    });
+  }
+
+  // Filter by risk categories (R1, R2, R3, R4)
+  if (filters.selectedRiskCategories && filters.selectedRiskCategories.size > 0) {
+    result = result.filter(s => {
+      if (!s.riskIndicators || s.riskIndicators.length === 0) return false;
+
+      const sectionCategories = new Set(s.riskIndicators.map(ri => ri.category));
+      // Check if section has at least one of the selected categories
+      return Array.from(filters.selectedRiskCategories || []).some(cat => sectionCategories.has(cat));
+    });
   }
 
   return result;

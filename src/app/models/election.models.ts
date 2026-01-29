@@ -52,10 +52,17 @@ export interface Section {
   protocolMachineVotes?: number;
   riskScore?: number;
   risks?: string[];
+  riskIndicators?: Array<{ code: string; category: string; severity: string; message: string; details?: any }>;
   votesToFirst?: number;
   municipalityAvgTurnout?: number;
   municipalityPartyPercents?: { [key: string]: number };
   comparisons?: { [key: string]: ComparativeValue[] };
+  baseline?: {
+    avgTurnout: number;
+    avgInvalidRate: number;
+    avgPaperMachineRatio: number;
+    partyVoteShares: { [partyId: string]: number };
+  };
 }
 
 export interface PartyResult {
@@ -109,6 +116,7 @@ export interface SectionFilters {
   activityOperator: 'lte' | 'gte';
   lowActivityThreshold: number | null;
   sectionTypes: Set<string>;
-  highRiskOnly: boolean;
+  riskFilterType?: 'any' | 'none' | null;
+  selectedRiskCategories?: Set<string>; // R1, R2, R3, R4
   isViewingAllSections?: boolean;
 }
