@@ -92,3 +92,10 @@ export const SECTION_COLUMNS: TableColumn[] = [
 ];
 
 export type SectionTab = 'all' | 'target' | 'swing' | 'risky' | 'outside' | 'declining';
+
+export interface SectionFilters {
+  searchTerm: string;
+  activeTab: SectionTab;
+  activityOperator: 'lte' | 'gte';
+  lowActivityThreshold: number | null;
+}

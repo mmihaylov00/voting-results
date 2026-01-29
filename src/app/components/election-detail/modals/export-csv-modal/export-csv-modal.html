@@ -13,33 +13,13 @@
         <div class="overflow-auto p-6 flex-grow space-y-6">
             <div class="space-y-4 border-b border-primary/10 pb-6">
               <h4 hlmH4 class="mb-2 text-sm font-semibold uppercase tracking-wider text-secondary/70 dark:text-primary/70">Филтри</h4>
-              <div class="flex flex-col gap-4">
-                <div class="flex flex-wrap gap-2">
-                  <button hlmBtn size="sm" [variant]="'line'" [attr.data-state]="activeTab() === 'all' ? 'active' : 'inactive'" (click)="setTab('all')">Всички</button>
-                  <button hlmBtn size="sm" [variant]="'line'" [attr.data-state]="activeTab() === 'target' ? 'active' : 'inactive'" (click)="setTab('target')">Целеви</button>
-                  <button hlmBtn size="sm" [variant]="'line'" [attr.data-state]="activeTab() === 'swing' ? 'active' : 'inactive'" (click)="setTab('swing')">Люлеещи се</button>
-                  <button hlmBtn size="sm" [variant]="'line'" [attr.data-state]="activeTab() === 'outside' ? 'active' : 'inactive'" (click)="setTab('outside')">Извън топ 3</button>
-                  <button hlmBtn size="sm" [variant]="'line'" [attr.data-state]="activeTab() === 'risky' ? 'active' : 'inactive'" (click)="setTab('risky')">Рискови</button>
-                  @if (date !== '2023.04.02') {
-                    <button hlmBtn size="sm" [variant]="'line'" [attr.data-state]="activeTab() === 'declining' ? 'active' : 'inactive'" (click)="setTab('declining')">Намаляващи</button>
-                  }
-                </div>
-                <div class="flex flex-col sm:flex-row gap-4">
-                  <div class="w-full sm:w-64 flex items-center gap-2">
-                    <div class="relative w-full">
-                      <button hlmBtn variant="ghost" size="sm" (click)="toggleActivityOperator()"
-                              class="absolute left-1 top-1/2 -translate-y-1/2 h-8 px-2 text-xs font-semibold hover:bg-primary/10 text-muted-foreground transition-all">
-                        Активност {{ activityOperator() === 'lte' ? '≤' : '≥' }}
-                      </button>
-                      <input hlmInput type="number" placeholder="0" [(ngModel)]="lowActivityThreshold" (ngModelChange)="applyFilter()" min="0" max="100" step="0.01" class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full pr-6 pl-32 text-right" />
-                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">%</span>
-                    </div>
-                  </div>
-                  <div class="flex-grow">
-                    <input hlmInput placeholder="Търсене..." [(ngModel)]="searchTerm" (ngModelChange)="applyFilter()" class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full" />
-                  </div>
-                </div>
-              </div>
+              <app-section-filters
+                [date]="date"
+                [showIcons]="false"
+                [fullWidth]="true"
+                [initialFilters]="{searchTerm: searchTerm, activeTab: activeTab(), activityOperator: activityOperator(), lowActivityThreshold: lowActivityThreshold}"
+                (filterChange)="onFilterChange($event)">
+              </app-section-filters>
             </div>
 
             <div>
