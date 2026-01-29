@@ -146,7 +146,7 @@ function applyVotes(sections, text) {
     const section = sections[sectionId];
     if (!section) continue;
 
-    for (let i = 3; i + 3 < parts.length; i += 4) {
+    for (let i = 3; i + 3 < parts.length; i += 5) {
       const partyId = parts[i].trim();
       const total = parseLongSafe(parts[i + 1]);
       const paper = parseLongSafe(parts[i + 2]);
