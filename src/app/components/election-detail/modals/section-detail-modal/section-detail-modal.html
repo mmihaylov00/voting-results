@@ -11,10 +11,12 @@
                     @if (showPartyFilter) {
                         <div class="absolute right-0 mt-2 w-64 max-h-96 overflow-auto bg-popover text-popover-foreground border border-primary/20 rounded-md shadow-md z-[120] p-2" (click)="$event.stopPropagation()">
                             @for (party of allParties; track party.id) {
-                                <div class="flex items-center gap-2 p-1 hover:bg-muted rounded cursor-pointer" (click)="togglePartySelection(party.id)">
-                                    <input type="checkbox" [checked]="selectedPartyIds.has(party.id)" class="cursor-pointer" (click)="$event.stopPropagation(); togglePartySelection(party.id)" />
-                                    <span class="text-sm truncate">{{ party.name }}</span>
-                                </div>
+                                @if (party.id !== '0') {
+                                    <div class="flex items-center gap-2 p-1 hover:bg-muted rounded cursor-pointer" (click)="togglePartySelection(party.id)">
+                                        <input type="checkbox" [checked]="selectedPartyIds.has(party.id)" class="cursor-pointer" (click)="$event.stopPropagation(); togglePartySelection(party.id)" />
+                                        <span class="text-sm truncate">{{ party.name }}</span>
+                                    </div>
+                                }
                             }
                         </div>
                     }
@@ -84,10 +86,19 @@
                     @if (othersResult) {
                         <tr hlmTableRow>
                             <td hlmTableCell>{{ othersResult.partyName }}</td>
-                            <td hlmTableCell class="text-right">{{ othersResult.total }}</td>
-                            <td hlmTableCell class="text-right">{{ othersResult.paper }}</td>
-                            <td hlmTableCell class="text-right">{{ othersResult.machine }}</td>
-                            <td hlmTableCell class="text-right">{{ (othersResult.percent * 100).toFixed(2) }}%</td>
+                            <td hlmTableCell class="text-right" [hlmTooltip]="othersResult.comparisons" [currentValue]="othersResult.total">{{ othersResult.total }}</td>
+                            <td hlmTableCell class="text-right" [hlmTooltip]="othersResult.paperComparisons" [currentValue]="othersResult.paper">{{ othersResult.paper }}</td>
+                            <td hlmTableCell class="text-right" [hlmTooltip]="othersResult.machineComparisons" [currentValue]="othersResult.machine">{{ othersResult.machine }}</td>
+                            <td hlmTableCell class="text-right" [hlmTooltip]="othersResult.percentComparisons" [currentValue]="othersResult.percent" [isPercent]="true">{{ (othersResult.percent * 100).toFixed(2) }}%</td>
+                        </tr>
+                    }
+                    @if (noVotesResult) {
+                        <tr hlmTableRow>
+                            <td hlmTableCell class="text-muted-foreground">{{ noVotesResult.partyName }}</td>
+                            <td hlmTableCell class="text-right text-muted-foreground" [hlmTooltip]="currentSectionData?.comparisons?.['noVotes']" [currentValue]="noVotesResult.total">{{ noVotesResult.total }}</td>
+                            <td hlmTableCell class="text-right text-muted-foreground" [hlmTooltip]="currentSectionData?.comparisons?.['noVotesPaper']" [currentValue]="noVotesResult.paper">{{ noVotesResult.paper }}</td>
+                            <td hlmTableCell class="text-right text-muted-foreground" [hlmTooltip]="currentSectionData?.comparisons?.['noVotesMachine']" [currentValue]="noVotesResult.machine">{{ noVotesResult.machine }}</td>
+                            <td hlmTableCell class="text-right text-muted-foreground" [hlmTooltip]="currentSectionData?.comparisons?.['noVotesPercent']" [currentValue]="noVotesResult.percent" [isPercent]="true">{{ (noVotesResult.percent * 100).toFixed(2) }}%</td>
                         </tr>
                     }
                 </tbody>
@@ -115,13 +126,9 @@
                       <span class="text-secondary/70 dark:text-foreground/70">Активност:</span>
                       <span class="font-bold" [hlmTooltip]="currentSectionData.comparisons?.['activityPercent']" [currentValue]="currentSectionData.activityPercent" [isPercent]="true">{{ (currentSectionData.activityPercent * 100).toFixed(2) }}%</span>
                     </div>
-                    <div class="flex justify-between items-center border-b border-primary/10 pb-2">
+                    <div class="flex justify-between items-center">
                       <span class="text-secondary/70 dark:text-foreground/70">Недействителни:</span>
                       <span class="font-bold" [hlmTooltip]="currentSectionData.comparisons?.['discardedVotes']" [currentValue]="currentSectionData.discardedVotes">{{ currentSectionData.discardedVotes }}</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                      <span class="text-secondary/70 dark:text-foreground/70">Не подкрепя никого:</span>
-                      <span class="font-bold" [hlmTooltip]="currentSectionData.comparisons?.['noVotes']" [currentValue]="currentSectionData.noVotes">{{ currentSectionData.noVotes }}</span>
                     </div>
                   </div>
                 </div>

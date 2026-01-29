@@ -238,6 +238,15 @@ export class ElectionService {
           s.comparisons!['activityPercent'] = s.comparisons!['activityPercent'] || [];
           s.comparisons!['activityPercent'].push({ value: otherSection.activityPercent, date: d, dateName });
 
+          s.comparisons!['noVotesPaper'] = s.comparisons!['noVotesPaper'] || [];
+          s.comparisons!['noVotesPaper'].push({ value: otherSection.noVotesPaper || 0, date: d, dateName });
+
+          s.comparisons!['noVotesMachine'] = s.comparisons!['noVotesMachine'] || [];
+          s.comparisons!['noVotesMachine'].push({ value: otherSection.noVotesMachine || 0, date: d, dateName });
+
+          s.comparisons!['noVotesPercent'] = s.comparisons!['noVotesPercent'] || [];
+          s.comparisons!['noVotesPercent'].push({ value: otherSection.voted > 0 ? otherSection.noVotes / otherSection.voted : 0, date: d, dateName });
+
           Object.keys(s.partyVotes).forEach(pid => {
             if (otherSection.partyVotes[pid]) {
               s.partyVotes[pid].comparisons = s.partyVotes[pid].comparisons || [];
@@ -326,6 +335,17 @@ export class ElectionService {
           machine: votes.machine,
           percent: section.voted > 0 ? votes.total / section.voted : 0
         })).sort((a, b) => b.total - a.total);
+
+        if (section.noVotes > 0) {
+          partyResults.push({
+            partyId: 'no_votes',
+            partyName: 'Не подкрепя никого',
+            total: section.noVotes,
+            paper: section.noVotesPaper || 0,
+            machine: section.noVotesMachine || 0,
+            percent: section.voted > 0 ? section.noVotes / section.voted : 0
+          });
+        }
 
         return {
           sectionId: section.sectionId,

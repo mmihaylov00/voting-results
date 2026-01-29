@@ -54,7 +54,7 @@ export class SectionDetailModalComponent {
 
   partySortColumn: keyof PartyResult = 'total';
   partySortDir: 'asc' | 'desc' = 'desc';
-  selectedPartyIds: Set<string> = new Set();
+  @Input() selectedPartyIds: Set<string> = new Set();
   showPartyFilter: boolean = false;
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
@@ -120,23 +120,62 @@ export class SectionDetailModalComponent {
   }
 
   get filteredPartyResults(): PartyResult[] {
-    if (this.selectedPartyIds.size === 0) return this.section.partyResults;
-    return this.section.partyResults.filter(r => this.selectedPartyIds.has(r.partyId));
+    if (this.selectedPartyIds.size === 0) return this.section.partyResults.filter(r => r.partyId !== 'no_votes');
+    return this.section.partyResults.filter(r => this.selectedPartyIds.has(r.partyId) && r.partyId !== 'no_votes');
   }
 
-  get othersResult(): PartyResult | null {
+  get othersResult(): any | null {
     if (this.selectedPartyIds.size === 0) return null;
-    const others = this.section.partyResults.filter(r => !this.selectedPartyIds.has(r.partyId));
+    const others = this.section.partyResults.filter(r => !this.selectedPartyIds.has(r.partyId) && r.partyId !== 'no_votes');
     if (others.length === 0) return null;
+
+    const total = others.reduce((sum, r) => sum + r.total, 0);
+    const paper = others.reduce((sum, r) => sum + r.paper, 0);
+    const machine = others.reduce((sum, r) => sum + r.machine, 0);
+    const percent = others.reduce((sum, r) => sum + r.percent, 0);
+
+    // Aggregate comparisons for "Others" row
+    const comparisons: { [date: string]: { value: number, dateName: string } } = {};
+    const paperComparisons: { [date: string]: { value: number, dateName: string } } = {};
+    const machineComparisons: { [date: string]: { value: number, dateName: string } } = {};
+    const percentComparisons: { [date: string]: { value: number, dateName: string } } = {};
+
+    others.forEach(r => {
+      const votes = this.currentSectionData?.partyVotes?.[r.partyId];
+      votes?.comparisons?.forEach(c => {
+        if (!comparisons[c.date]) comparisons[c.date] = { value: 0, dateName: c.dateName };
+        comparisons[c.date].value += c.value;
+      });
+      votes?.paperComparisons?.forEach(c => {
+        if (!paperComparisons[c.date]) paperComparisons[c.date] = { value: 0, dateName: c.dateName };
+        paperComparisons[c.date].value += c.value;
+      });
+      votes?.machineComparisons?.forEach(c => {
+        if (!machineComparisons[c.date]) machineComparisons[c.date] = { value: 0, dateName: c.dateName };
+        machineComparisons[c.date].value += c.value;
+      });
+      votes?.percentComparisons?.forEach(c => {
+        if (!percentComparisons[c.date]) percentComparisons[c.date] = { value: 0, dateName: c.dateName };
+        percentComparisons[c.date].value += c.value;
+      });
+    });
 
     return {
       partyId: 'others',
       partyName: 'Други',
-      total: others.reduce((sum, r) => sum + r.total, 0),
-      paper: others.reduce((sum, r) => sum + r.paper, 0),
-      machine: others.reduce((sum, r) => sum + r.machine, 0),
-      percent: others.reduce((sum, r) => sum + r.percent, 0)
+      total,
+      paper,
+      machine,
+      percent,
+      comparisons: Object.values(comparisons),
+      paperComparisons: Object.values(paperComparisons),
+      machineComparisons: Object.values(machineComparisons),
+      percentComparisons: Object.values(percentComparisons)
     };
+  }
+
+  get noVotesResult(): PartyResult | null {
+    return this.section.partyResults.find(r => r.partyId === 'no_votes') || null;
   }
 
   updateChartOptions() {
@@ -144,6 +183,7 @@ export class SectionDetailModalComponent {
     const textColor = isDark ? '#f8fafc' : '#1e293b';
 
     const results = [...this.section.partyResults]
+      .filter(r => r.partyId !== 'no_votes')
       .sort((a, b) => b.total - a.total)
       .slice(0, 10);
 
