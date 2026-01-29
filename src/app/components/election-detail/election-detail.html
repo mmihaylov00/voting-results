@@ -123,11 +123,11 @@
                 <div class="flex flex-col gap-6 mb-6">
                     <div class="flex justify-between gap-4">
                         <div class="flex gap-2 border-b border-primary/10 align-baseline">
-                            <button hlmBtn [variant]="'line'" [attr.data-state]="!groupByCity() ? 'active' : 'inactive'"
+                            <button hlmBtn [variant]="'line'" size="lg" [attr.data-state]="!groupByCity() ? 'active' : 'inactive'"
                                     (click)="setViewMode(false)" class="border-b-0">
                                 Секции
                             </button>
-                            <button hlmBtn [variant]="'line'" [attr.data-state]="groupByCity() ? 'active' : 'inactive'"
+                            <button hlmBtn [variant]="'line'" size="lg" [attr.data-state]="groupByCity() ? 'active' : 'inactive'"
                                     (click)="setViewMode(true)" class="border-b-0">
                                 Градове
                             </button>

@@ -57,9 +57,8 @@ export class RegionListComponent implements OnInit, AfterViewInit {
 
   activityChartOptions: Highcharts.Options = {};
   partyChartOptions: Highcharts.Options = {};
-  notVotedChartOptions: Highcharts.Options = {};
 
-  activeChart = signal<'activity' | 'party' | 'notVoted'>('activity');
+  activeChart = signal<'activity' | 'party'>('activity');
   allParties: { id: string, name: string }[] = [];
   selectedPartyIds = signal<Set<string>>(new Set());
   showPartyFilter: boolean = false;
@@ -223,17 +222,65 @@ export class RegionListComponent implements OnInit, AfterViewInit {
     const textColor = isDark ? '#f8fafc' : '#020817';
     const categories = this.regions.map(r => this.formatRegionName(r.name));
 
-    // 1. Activity Chart
+    // 1. Combined Activity and Not Voted Chart (100% stacked)
     const activityData = this.regions.map(r => r.total > 0 ? (r.voted / r.total) * 100 : 0);
-    this.activityChartOptions = this.createBaseChartOptions('Активност по райони (%)', categories, activityData, textColor, '{point.y:.2f}%');
+    const notVotedData = this.regions.map(r => r.total > 0 ? ((r.total - r.voted) / r.total) * 100 : 0);
+
+    this.activityChartOptions = {
+      chart: { type: 'column', backgroundColor: 'transparent', height: 300 },
+      title: { text: 'Активност и негласували по райони (%)', style: { color: textColor, fontSize: '14px' } },
+      xAxis: { categories, labels: { style: { color: textColor, fontSize: '10px' }, rotation: -45 } },
+      yAxis: {
+        title: { text: 'Процент (%)', style: { color: textColor } },
+        labels: { style: { color: textColor }, format: '{value}%' },
+        min: 0,
+        max: 100
+      },
+      legend: {
+        enabled: true,
+        itemStyle: { color: textColor, fontSize: '11px' },
+        itemMarginBottom: 4,
+        symbolHeight: 10,
+        symbolWidth: 10,
+        symbolRadius: 2
+      },
+      tooltip: {
+        shared: true,
+        pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y:.2f}%</b><br/>',
+        footerFormat: '<b>Общо: 100%</b>'
+      },
+      plotOptions: {
+        column: {
+          stacking: 'percent',
+          dataLabels: {
+            enabled: false
+          }
+        }
+      },
+      series: [
+        {
+          name: 'Негласували',
+          data: notVotedData,
+          type: 'column',
+          color: '#ef4444' // Red for not voted
+        },
+        {
+          name: 'Активност',
+          data: activityData,
+          type: 'column',
+          color: '#10b981' // Green for activity
+        },
+      ],
+      credits: { enabled: false }
+    };
 
     // 2. Party Votes Chart - Multiple series for selected parties
     const selectedIds = this.selectedPartyIds();
     const series: any[] = [];
-    
+
     // Define a color palette for consistent colors
     const colorPalette = [
-      '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', 
+      '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
       '#ec4899', '#06b6d4', '#84cc16', '#f97316', '#6366f1'
     ];
 
@@ -293,7 +340,7 @@ export class RegionListComponent implements OnInit, AfterViewInit {
       series: series.length > 0 ? series : [{ type: 'column', data: [], name: '', id: 'empty' }], // Always have at least one series to avoid issues
       credits: { enabled: false }
     };
-    
+
     // Only assign if we have series, otherwise set to empty
     if (series.length > 0) {
       this.partyChartOptions = newOptions;
@@ -305,9 +352,6 @@ export class RegionListComponent implements OnInit, AfterViewInit {
       };
     }
 
-    // 3. Not Voted Chart
-    const notVotedData = this.regions.map(r => r.total > 0 ? ((r.total - r.voted) / r.total) * 100 : 0);
-    this.notVotedChartOptions = this.createBaseChartOptions('Негласували по райони (%)', categories, notVotedData, textColor, '{point.y:.2f}%');
   }
 
   private createBaseChartOptions(title: string, categories: string[], data: number[], textColor: string, format: string): Highcharts.Options {
