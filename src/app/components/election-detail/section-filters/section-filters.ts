@@ -36,7 +36,6 @@ export class SectionFiltersComponent implements OnInit {
   availableSectionTypes = [
     { id: 'City', label: 'Град' },
     { id: 'Village', label: 'Село' },
-    { id: 'Abroad', label: 'Чужбина' },
     { id: 'Mobile', label: 'Подвижна' },
     { id: 'Hospital', label: 'Болница' },
     { id: 'Prison', label: 'Затвор' }

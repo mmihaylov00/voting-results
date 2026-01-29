@@ -15,27 +15,31 @@
             <h1 hlmH2 class="border-b-0 pb-0 text-secondary dark:text-primary">Резултати за {{ dateName }}</h1>
             <p hlmLead class="text-secondary/80 dark:text-foreground/80">{{ regionName }}@if (regionId) { (МИР {{ regionId }}) }</p>
         </div>
-        <div class="flex gap-2">
+        <div class="flex gap-2 flex-col">
+          <div class="flex gap-2 flex-row flex-wrap justify-end">
             @if (getCikUrl()) {
-                <a [href]="getCikUrl()" target="_blank" hlmBtn variant="outline" hlmTooltip="Отвори официалните резултати в сайта на ЦИК">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                    ЦИК
-                </a>
+              <a [href]="getCikUrl()" target="_blank" hlmBtn variant="outline" hlmTooltip="Отвори официалните резултати в сайта на ЦИК">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                ЦИК
+              </a>
             }
-            @if (sectionsWithError.length > 0) {
-                <button hlmBtn variant="outline" (click)="openErrorModal()" class="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                    Сгрешени протоколи ({{ sectionsWithError.length }})
-                </button>
-            }
-            <button hlmBtn variant="outline" (click)="openExportModal()" class="border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Експорт CSV
-            </button>
             <a [routerLink]="['/election', date]" hlmBtn variant="default">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-                Назад към районите
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+              Назад към районите
             </a>
+          </div>
+          <div class="flex gap-2 flex-row flex-wrap justify-end">
+            <button hlmBtn variant="outline" (click)="openExportModal()" class="border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Експорт CSV
+            </button>
+            @if (sectionsWithError.length > 0) {
+              <button hlmBtn variant="outline" (click)="openErrorModal()" class="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                Сгрешени протоколи ({{ sectionsWithError.length }})
+              </button>
+            }
+          </div>
         </div>
     </div>
 
@@ -96,13 +100,13 @@
             </div>
 
             <div hlmCard class="p-4 md:p-6 border-primary/20">
-                <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 mb-6">
+                <div class="flex flex-col gap-6 mb-6">
                     <h3 hlmH4 class="text-secondary dark:text-primary">Секции ({{ filteredSections.length }})</h3>
                     <app-section-filters
                         [date]="date"
                         [initialFilters]="{searchTerm: searchTerm, activeTab: activeTab(), activityOperator: activityOperator(), lowActivityThreshold: lowActivityThreshold, sectionTypes: selectedSectionTypes(), highRiskOnly: highRiskOnly()}"
                         (filterChange)="onFilterChange($event)">
-                        <div class="flex gap-2">
+                        <div class="flex gap-2 flex-row items-center justify-start md:justify-between sm:flex-col">
                             <button hlmBtn [variant]="groupByCity() ? 'default' : 'outline'" size="icon" (click)="toggleCityGrouping()" hlmTooltip="Групирай по населено място" class="border-primary/50 text-secondary hover:bg-primary hover:text-secondary dark:border-secondary/50 dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4"/><path d="M13 13h4"/><path d="M13 17h4"/></svg>
                             </button>
@@ -259,7 +263,7 @@
                                                 <span class="text-muted-foreground">{{ section.sectionId }}</span>
                                               } @else {
                                                 <div class="flex items-center gap-1 group">
-                                                  <button hlmBtn variant="ghost" size="icon" class="h-6 w-6 transition-opacity" (click)="copyToClipboard(section.sectionId, $event)" [hlmTooltip]="copiedId() === section.sectionId ? 'Копирано!' : 'Копирай ID на секцията'">
+                                                  <button hlmBtn variant="ghost" size="icon" class="h-6 `w-6` transition-opacity" (click)="copyToClipboard(section.sectionId, $event)" [hlmTooltip]="copiedId() === section.sectionId ? 'Копирано!' : 'Копирай ID на секцията'">
                                                     @if (copiedId() === section.sectionId) {
                                                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-500"><polyline points="20 6 9 17 4 12"/></svg>
                                                     } @else {
