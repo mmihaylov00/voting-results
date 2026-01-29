@@ -62,7 +62,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   chartOptions: Highcharts.Options = {};
   historicalVotesChartOptions: Highcharts.Options = {};
   historicalPercentChartOptions: Highcharts.Options = {};
-  
+
   allData: { [date: string]: any } = {};
   dates: { date: string, name: string }[] = [];
 
@@ -82,7 +82,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     private electionService: ElectionService
   ) {
     this.dates = this.electionService.getDates();
-    
+
     effect(() => {
       this.themeService.darkMode();
       if (this.section) {
@@ -392,17 +392,14 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
     const isDark = this.themeService.darkMode();
     const textColor = isDark ? '#f8fafc' : '#1e293b';
-    const chartTitle = isCity 
-      ? `Исторически тренд за ${cityName}` 
-      : `Исторически тренд за секция ${sectionId}`;
 
     this.historicalVotesChartOptions = {
       chart: { type: 'line', backgroundColor: 'transparent' },
       title: { text: 'Абсолютен брой гласове за ПП-ДБ', style: { color: textColor } },
       xAxis: { categories, labels: { style: { color: textColor } } },
-      yAxis: { 
-        title: { text: 'Гласове', style: { color: textColor } }, 
-        labels: { style: { color: textColor } } 
+      yAxis: {
+        title: { text: 'Гласове', style: { color: textColor } },
+        labels: { style: { color: textColor } }
       },
       legend: {
         itemStyle: { color: textColor }
@@ -416,11 +413,11 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       chart: { type: 'line', backgroundColor: 'transparent' },
       title: { text: 'Процентна подкрепа за ПП-ДБ', style: { color: textColor } },
       xAxis: { categories, labels: { style: { color: textColor } } },
-      yAxis: { 
-        title: { text: 'Процент (%)', style: { color: textColor } }, 
-        labels: { style: { color: textColor } }, 
-        min: 0, 
-        max: 100 
+      yAxis: {
+        title: { text: 'Процент (%)', style: { color: textColor } },
+        labels: { style: { color: textColor } },
+        min: 0,
+        max: 100
       },
       legend: {
         itemStyle: { color: textColor }
