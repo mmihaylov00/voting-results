@@ -14,16 +14,16 @@
     }
 
     (async () => {
-      const salt = "static-salt-change-me";
-      const expectedHash = "6465c8300318e8d0faba5c26a03a79b560da9568deca4e2988af795f7cb5704c";
-
-      while (true) {
-        const pw = prompt("Password:");
-        const h = await sha256(salt + pw);
-        if (h === expectedHash) {
-          return
-        }
-      }
+      // const salt = "static-salt-change-me";
+      // const expectedHash = "6465c8300318e8d0faba5c26a03a79b560da9568deca4e2988af795f7cb5704c";
+      //
+      // while (true) {
+      //   const pw = prompt("Password:");
+      //   const h = await sha256(salt + pw);
+      //   if (h === expectedHash) {
+      //     return
+      //   }
+      // }
     })();
   </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">

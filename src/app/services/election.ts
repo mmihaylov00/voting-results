@@ -26,14 +26,82 @@ export class ElectionService {
   getRegions(date: string): Observable<Region[]> {
     return this.getSections(date).pipe(
       map(sections => {
-        const regionsMap = new Map<string, string>();
-        const baseUrl = `${this.baseDataUrl}/${date}`;
-        // We need to re-parse regions from sections.txt because they might not be in the Section object fully
-        // Actually, I can update parseSections to return both or I can just extract them from Section if I add regionName there.
-        // Let's add regionName to Section.
-        return Array.from(new Set(sections.map(s => JSON.stringify({id: s.regionId, name: (s as any).regionName}))))
-          .map(str => JSON.parse(str) as Region)
-          .sort((a, b) => a.id.localeCompare(b.id));
+        const regionsMap = new Map<string, {
+          name: string,
+          partyVotes: {[id: string]: number},
+          voted: number,
+          total: number,
+          discardedVotes: number,
+          noVotes: number,
+          totalPaper: number,
+          totalMachine: number
+        }>();
+
+        sections.forEach(s => {
+          if (!regionsMap.has(s.regionId)) {
+            regionsMap.set(s.regionId, {
+              name: (s as any).regionName,
+              partyVotes: {},
+              voted: 0,
+              total: 0,
+              discardedVotes: 0,
+              noVotes: 0,
+              totalPaper: 0,
+              totalMachine: 0
+            });
+          }
+          const reg = regionsMap.get(s.regionId)!;
+          reg.voted += s.voted;
+          reg.total += s.total;
+          reg.discardedVotes += s.discardedVotes;
+          reg.noVotes += s.noVotes;
+          reg.totalPaper += s.totalPaper || 0;
+          reg.totalMachine += s.totalMachine || 0;
+          Object.entries(s.partyVotes).forEach(([pid, v]) => {
+            reg.partyVotes[pid] = (reg.partyVotes[pid] || 0) + v.total;
+          });
+        });
+
+        const parties = this.cache[date].parties;
+
+        return Array.from(regionsMap.entries()).map(([id, data]) => {
+          const topParties = Object.entries(data.partyVotes)
+            .filter(([pid, _]) => pid !== '0')
+            .map(([pid, total]) => {
+              let name = parties[pid] || pid;
+              if (name.includes('ПРОДЪЛЖАВАМЕ')) {
+                name = 'ПП-ДБ';
+              }
+              return {
+                name,
+                total,
+                percent: data.voted > 0 ? total / data.voted : 0
+              };
+            })
+            .filter(p => p.total > 0)
+            .sort((a, b) => b.total - a.total)
+            .slice(0, 3);
+
+          return {
+            id,
+            name: data.name,
+            total: data.total,
+            voted: data.voted,
+            partyVotes: data.partyVotes,
+            topParties,
+            discardedVotes: data.discardedVotes,
+            noVotes: data.noVotes,
+            totalPaper: data.totalPaper,
+            totalMachine: data.totalMachine
+          } as Region;
+        }).sort((a, b) => {
+          const idA = parseInt(a.id, 10);
+          const idB = parseInt(b.id, 10);
+          if (!isNaN(idA) && !isNaN(idB)) {
+            return idA - idB;
+          }
+          return a.id.localeCompare(b.id);
+        });
       })
     );
   }
@@ -101,6 +169,8 @@ export class ElectionService {
 
         const sections = Object.values(sectionsMap);
         for (const section of sections) {
+          section.totalPaper = Object.values(section.partyVotes).reduce((sum, v) => sum + v.paper, 0) + (section.noVotesPaper || 0);
+          section.totalMachine = Object.values(section.partyVotes).reduce((sum, v) => sum + v.machine, 0) + (section.noVotesMachine || 0);
           section.activityPercent = section.total > 0 ? section.voted / section.total : 0;
 
           section.topParties = Object.entries(section.partyVotes)
@@ -182,6 +252,8 @@ export class ElectionService {
           voted: 0,
           discardedVotes: 0,
           noVotes: 0,
+          noVotesPaper: 0,
+          noVotesMachine: 0,
           partyVotes: {},
           topParties: [],
           activityPercent: 0
@@ -208,29 +280,37 @@ export class ElectionService {
       let voted = 0;
       let discarded = 0;
       let noVote = 0;
+      let noVotePaper = 0;
+      let noVoteMachine = 0;
 
       if (parts.length == 21) {
         total = this.parseLongSafe(parts[7]) + this.parseLongSafe(parts[10]);
         voted = this.parseLongSafe(parts[11]);
         discarded = this.parseLongSafe(parts[15]);
-        noVote = this.parseLongSafe(parts[16]) + this.parseLongSafe(parts[19]);
+        noVotePaper = this.parseLongSafe(parts[16]);
+        noVoteMachine = this.parseLongSafe(parts[19]);
       } else if(parts.length == 25) {
         total = this.parseLongSafe(parts[7]) + this.parseLongSafe(parts[8]);
         voted = this.parseLongSafe(parts[9]);
         discarded = this.parseLongSafe(parts[15]);
-        noVote = this.parseLongSafe(parts[24]);
+        noVotePaper = this.parseLongSafe(parts[22]);
+        noVoteMachine = this.parseLongSafe(parts[23]);
       } else {
         total = this.parseLongSafe(parts[7]) + this.parseLongSafe(parts[8]);
         voted = this.parseLongSafe(parts[9]);
         discarded = this.parseLongSafe(parts[13]);
-        noVote = this.parseLongSafe(parts[14]) + this.parseLongSafe(parts[17]);
+        noVotePaper = this.parseLongSafe(parts[14]);
+        noVoteMachine = this.parseLongSafe(parts[17]);
       }
+      noVote = noVotePaper + noVoteMachine;
 
 
       section.total += total;
       section.voted += voted;
       section.discardedVotes += discarded;
       section.noVotes += noVote;
+      section.noVotesPaper! += noVotePaper;
+      section.noVotesMachine! += noVoteMachine;
     }
   }
 

@@ -30,16 +30,78 @@
     </div>
   </div>
 
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
+    <div hlmCard class="border-primary/20 bg-primary/5">
+      <div hlmCardHeader class="p-4 pb-0">
+        <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Активност</p>
+      </div>
+      <div hlmCardContent class="p-4 pt-1">
+        <p hlmH4 class="m-0 text-secondary dark:text-primary">{{ (avgActivity * 100).toFixed(2) }}%</p>
+      </div>
+    </div>
+    <div hlmCard class="border-primary/20 bg-primary/5">
+      <div hlmCardHeader class="p-4 pb-0">
+        <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Общо избиратели</p>
+      </div>
+      <div hlmCardContent class="p-4 pt-1">
+        <p hlmH4 class="m-0 text-secondary dark:text-primary">{{ totalElectors | number }}</p>
+      </div>
+    </div>
+    <div hlmCard class="border-primary/20 bg-primary/5">
+      <div hlmCardHeader class="p-4 pb-0">
+        <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Общо гласували</p>
+      </div>
+      <div hlmCardContent class="p-4 pt-1">
+        <p hlmH4 class="m-0 text-secondary dark:text-primary">{{ totalVoted | number }}</p>
+      </div>
+    </div>
+    <div hlmCard class="border-primary/20 bg-primary/5">
+      <div hlmCardHeader class="p-4 pb-0">
+        <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Общо невалидни</p>
+      </div>
+      <div hlmCardContent class="p-4 pt-1">
+        <p hlmH4 class="m-0 text-secondary dark:text-primary">{{ totalInvalid | number }}</p>
+      </div>
+    </div>
+    <div hlmCard class="border-primary/20 bg-primary/5">
+      <div hlmCardHeader class="p-4 pb-0">
+        <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Общо не подкрепя никого</p>
+      </div>
+      <div hlmCardContent class="p-4 pt-1">
+        <p hlmH4 class="m-0 text-secondary dark:text-primary">{{ totalNoVotes | number }}</p>
+      </div>
+    </div>
+    <div hlmCard class="border-primary/20 bg-primary/5">
+      <div hlmCardHeader class="p-4 pb-0">
+        <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Гласове по тип</p>
+      </div>
+      <div hlmCardContent class="p-4 pt-1">
+        <div class="flex flex-col text-sm whitespace-nowrap">
+          <span class="text-secondary/70 dark:text-foreground/70">машинни: <strong class="text-secondary dark:text-primary">{{ totalMachine | number }}</strong></span>
+          <span class="text-secondary/70 dark:text-foreground/70">хартиени: <strong class="text-secondary dark:text-primary">{{ totalPaper | number }}</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
     @for (region of filteredRegions; track region.id) {
       <div hlmCard class="flex flex-col h-full transition-all hover:shadow-xl border-primary/20 hover:border-primary/50 group">
         <div hlmCardHeader>
           <h3 hlmCardTitle class="text-secondary dark:text-primary transition-colors">{{ formatRegionName(region.name) }}</h3>
-          <p hlmCardDescription class="text-secondary/60 dark:text-foreground/60">МИР {{ region.id }}</p>
+          <p hlmCardDescription hlmMuted class="text-secondary/60 dark:text-foreground/60">МИР {{ region.id }}</p>
         </div>
         <div class="flex-grow"></div>
-        <div hlmCardContent class="pt-0">
-          <a [routerLink]="['/election', date, 'region', region.id]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+        <div hlmCardContent class="pt-0 flex-grow">
+          <div class="flex flex-col text-xs mb-4 space-y-1">
+            @for (tp of region.topParties; let i = $index; track tp.name) {
+              <div class="flex justify-between items-center gap-2" [class.font-bold]="tp.name.includes('ПП-ДБ')" [class.text-ppdb]="tp.name.includes('ПП-ДБ')" [title]="tp.name + ': ' + tp.total + ' (' + (tp.percent * 100).toFixed(2) + '%)'">
+                <span class="truncate">{{ $index + 1 }}. {{ tp.name }}</span>
+                <span class="whitespace-nowrap"><strong class="me-1">{{ tp.total | number }}</strong> <span class="text-[10px] opacity-70">({{ (tp.percent * 100).toFixed(1) }}%)</span></span>
+              </div>
+            }
+          </div>
+          <a [routerLink]="['/election', date, 'region', region.id]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground mt-auto">
             Виж резултати
           </a>
         </div>
@@ -50,5 +112,55 @@
         <p hlmMuted>Няма намерени райони, съвпадащи с търсенето.</p>
       </div>
     }
+  </div>
+
+  <div hlmCard class="border-primary/20 p-6 mb-12">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+      <div class="flex flex-wrap gap-2">
+        <button hlmBtn [variant]="activeChart() === 'activity' ? 'default' : 'outline'" size="sm" (click)="activeChart.set('activity')">
+          Активност
+        </button>
+        <button hlmBtn [variant]="activeChart() === 'notVoted' ? 'default' : 'outline'" size="sm" (click)="activeChart.set('notVoted')">
+          Негласували
+        </button>
+        <button hlmBtn [variant]="activeChart() === 'party' ? 'default' : 'outline'" size="sm" (click)="activeChart.set('party')">
+          Резултати за партия
+        </button>
+      </div>
+    </div>
+
+    <div class="w-full">
+      @if (activeChart() === 'party') {
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-xs font-semibold text-muted-foreground uppercase">Избери партия:</span>
+          <select
+            [ngModel]="selectedPartyId()"
+            (ngModelChange)="selectedPartyId.set($event)"
+            class="text-xs bg-background border border-primary/20 rounded px-2 py-1 focus:outline-none focus:border-primary min-w-[150px]"
+          >
+            @for (party of allParties; track party.id) {
+              <option [value]="party.id">{{ party.name }}</option>
+            }
+          </select>
+        </div>
+      }
+      @switch (activeChart()) {
+        @case ('activity') {
+          @if (activityChartOptions.series) {
+            <highcharts-chart [options]="activityChartOptions" style="width: 100%; height: 300px; display: block;"></highcharts-chart>
+          }
+        }
+        @case ('party') {
+          @if (partyChartOptions.series) {
+            <highcharts-chart [options]="partyChartOptions" style="width: 100%; height: 300px; display: block;"></highcharts-chart>
+          }
+        }
+        @case ('notVoted') {
+          @if (notVotedChartOptions.series) {
+            <highcharts-chart [options]="notVotedChartOptions" style="width: 100%; height: 300px; display: block;"></highcharts-chart>
+          }
+        }
+      }
+    </div>
   </div>
 </div>

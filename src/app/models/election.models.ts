@@ -7,6 +7,14 @@ export interface PartyVotes {
 export interface Region {
   id: string;
   name: string;
+  total: number;
+  voted: number;
+  partyVotes: { [key: string]: number };
+  topParties?: { name: string, total: number, percent: number }[];
+  discardedVotes?: number;
+  noVotes?: number;
+  totalPaper?: number;
+  totalMachine?: number;
 }
 
 export interface Section {
@@ -18,9 +26,13 @@ export interface Section {
   voted: number;
   discardedVotes: number;
   noVotes: number;
+  noVotesPaper?: number;
+  noVotesMachine?: number;
   partyVotes: { [key: string]: PartyVotes };
   topParties: { name: string, total: number, percent: number }[];
   activityPercent: number;
+  totalPaper?: number;
+  totalMachine?: number;
 }
 
 export interface PartyResult {
