@@ -76,29 +76,11 @@
                 <tbody hlmTableBody>
                     @for (res of filteredPartyResults; track res.partyId) {
                         <tr hlmTableRow [class.font-bold]="res.partyName.includes('ПРОДЪЛЖАВАМЕ')" [class.text-ppdb]="res.partyName.includes('ПРОДЪЛЖАВАМЕ')">
-                            <td hlmTableCell>{{ res.partyName }}</td>
-                            <td hlmTableCell class="text-right" [hlmTooltip]="currentSectionData?.partyVotes?.[res.partyId]?.comparisons" [currentValue]="res.total">{{ res.total }}</td>
-                            <td hlmTableCell class="text-right" [hlmTooltip]="currentSectionData?.partyVotes?.[res.partyId]?.paperComparisons" [currentValue]="res.paper">{{ res.paper }}</td>
-                            <td hlmTableCell class="text-right" [hlmTooltip]="currentSectionData?.partyVotes?.[res.partyId]?.machineComparisons" [currentValue]="res.machine">{{ res.machine }}</td>
-                            <td hlmTableCell class="text-right" [hlmTooltip]="currentSectionData?.partyVotes?.[res.partyId]?.percentComparisons" [currentValue]="res.percent" [isPercent]="true">{{ (res.percent * 100).toFixed(2) }}%</td>
-                        </tr>
-                    }
-                    @if (othersResult) {
-                        <tr hlmTableRow>
-                            <td hlmTableCell>{{ othersResult.partyName }}</td>
-                            <td hlmTableCell class="text-right" [hlmTooltip]="othersResult.comparisons" [currentValue]="othersResult.total">{{ othersResult.total }}</td>
-                            <td hlmTableCell class="text-right" [hlmTooltip]="othersResult.paperComparisons" [currentValue]="othersResult.paper">{{ othersResult.paper }}</td>
-                            <td hlmTableCell class="text-right" [hlmTooltip]="othersResult.machineComparisons" [currentValue]="othersResult.machine">{{ othersResult.machine }}</td>
-                            <td hlmTableCell class="text-right" [hlmTooltip]="othersResult.percentComparisons" [currentValue]="othersResult.percent" [isPercent]="true">{{ (othersResult.percent * 100).toFixed(2) }}%</td>
-                        </tr>
-                    }
-                    @if (noVotesResult) {
-                        <tr hlmTableRow>
-                            <td hlmTableCell class="text-muted-foreground">{{ noVotesResult.partyName }}</td>
-                            <td hlmTableCell class="text-right text-muted-foreground" [hlmTooltip]="currentSectionData?.comparisons?.['noVotes']" [currentValue]="noVotesResult.total">{{ noVotesResult.total }}</td>
-                            <td hlmTableCell class="text-right text-muted-foreground" [hlmTooltip]="currentSectionData?.comparisons?.['noVotesPaper']" [currentValue]="noVotesResult.paper">{{ noVotesResult.paper }}</td>
-                            <td hlmTableCell class="text-right text-muted-foreground" [hlmTooltip]="currentSectionData?.comparisons?.['noVotesMachine']" [currentValue]="noVotesResult.machine">{{ noVotesResult.machine }}</td>
-                            <td hlmTableCell class="text-right text-muted-foreground" [hlmTooltip]="currentSectionData?.comparisons?.['noVotesPercent']" [currentValue]="noVotesResult.percent" [isPercent]="true">{{ (noVotesResult.percent * 100).toFixed(2) }}%</td>
+                            <td hlmTableCell [class.text-muted-foreground]="res.isNoVotes" [class.italic]="res.isNoVotes">{{ res.partyName }}</td>
+                            <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.comparisons || currentSectionData?.partyVotes?.[res.partyId]?.comparisons" [currentValue]="res.total">{{ res.total }}</td>
+                            <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.paperComparisons || currentSectionData?.partyVotes?.[res.partyId]?.paperComparisons" [currentValue]="res.paper">{{ res.paper }}</td>
+                            <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.machineComparisons || currentSectionData?.partyVotes?.[res.partyId]?.machineComparisons" [currentValue]="res.machine">{{ res.machine }}</td>
+                            <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.percentComparisons || currentSectionData?.partyVotes?.[res.partyId]?.percentComparisons" [currentValue]="res.percent" [isPercent]="true">{{ (res.percent * 100).toFixed(2) }}%</td>
                         </tr>
                     }
                 </tbody>

@@ -58,6 +58,12 @@ export interface PartyResult {
   paper: number;
   machine: number;
   percent: number;
+  isOthers?: boolean;
+  isNoVotes?: boolean;
+  comparisons?: ComparativeValue[];
+  percentComparisons?: ComparativeValue[];
+  paperComparisons?: ComparativeValue[];
+  machineComparisons?: ComparativeValue[];
 }
 
 export interface SectionDetails {

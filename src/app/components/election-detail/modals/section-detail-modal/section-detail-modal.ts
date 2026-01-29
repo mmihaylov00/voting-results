@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
-import { Section, SectionDetails, PartyResult } from '../../../../models/election.models';
+import { Section, SectionDetails, PartyResult, ComparativeValue } from '../../../../models/election.models';
 import { ThemeService } from '../../../../services/theme.service';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
 import {
@@ -120,11 +120,40 @@ export class SectionDetailModalComponent {
   }
 
   get filteredPartyResults(): PartyResult[] {
-    if (this.selectedPartyIds.size === 0) return this.section.partyResults.filter(r => r.partyId !== 'no_votes');
-    return this.section.partyResults.filter(r => this.selectedPartyIds.has(r.partyId) && r.partyId !== 'no_votes');
+    let results: PartyResult[] = [];
+
+    if (this.selectedPartyIds.size === 0) {
+      results = this.section.partyResults.filter(r => r.partyId !== 'no_votes');
+    } else {
+      results = this.section.partyResults.filter(r => this.selectedPartyIds.has(r.partyId) && r.partyId !== 'no_votes');
+      const others = this.othersResult;
+      if (others) {
+        results.push(others);
+      }
+    }
+
+    const noVotes = this.noVotesResult;
+    if (noVotes) {
+      results.push(noVotes);
+    }
+
+    return results.sort((a, b) => {
+      const valA = a[this.partySortColumn];
+      const valB = b[this.partySortColumn];
+
+      if (typeof valA === 'string' && typeof valB === 'string') {
+        return this.partySortDir === 'asc'
+          ? valA.localeCompare(valB)
+          : valB.localeCompare(valA);
+      }
+
+      return this.partySortDir === 'asc'
+        ? (valA as number) - (valB as number)
+        : (valB as number) - (valA as number);
+    });
   }
 
-  get othersResult(): any | null {
+  get othersResult(): PartyResult | null {
     if (this.selectedPartyIds.size === 0) return null;
     const others = this.section.partyResults.filter(r => !this.selectedPartyIds.has(r.partyId) && r.partyId !== 'no_votes');
     if (others.length === 0) return null;
@@ -135,27 +164,27 @@ export class SectionDetailModalComponent {
     const percent = others.reduce((sum, r) => sum + r.percent, 0);
 
     // Aggregate comparisons for "Others" row
-    const comparisons: { [date: string]: { value: number, dateName: string } } = {};
-    const paperComparisons: { [date: string]: { value: number, dateName: string } } = {};
-    const machineComparisons: { [date: string]: { value: number, dateName: string } } = {};
-    const percentComparisons: { [date: string]: { value: number, dateName: string } } = {};
+    const comparisons: { [date: string]: ComparativeValue } = {};
+    const paperComparisons: { [date: string]: ComparativeValue } = {};
+    const machineComparisons: { [date: string]: ComparativeValue } = {};
+    const percentComparisons: { [date: string]: ComparativeValue } = {};
 
     others.forEach(r => {
       const votes = this.currentSectionData?.partyVotes?.[r.partyId];
       votes?.comparisons?.forEach(c => {
-        if (!comparisons[c.date]) comparisons[c.date] = { value: 0, dateName: c.dateName };
+        if (!comparisons[c.date]) comparisons[c.date] = { value: 0, dateName: c.dateName, date: c.date };
         comparisons[c.date].value += c.value;
       });
       votes?.paperComparisons?.forEach(c => {
-        if (!paperComparisons[c.date]) paperComparisons[c.date] = { value: 0, dateName: c.dateName };
+        if (!paperComparisons[c.date]) paperComparisons[c.date] = { value: 0, dateName: c.dateName, date: c.date };
         paperComparisons[c.date].value += c.value;
       });
       votes?.machineComparisons?.forEach(c => {
-        if (!machineComparisons[c.date]) machineComparisons[c.date] = { value: 0, dateName: c.dateName };
+        if (!machineComparisons[c.date]) machineComparisons[c.date] = { value: 0, dateName: c.dateName, date: c.date };
         machineComparisons[c.date].value += c.value;
       });
       votes?.percentComparisons?.forEach(c => {
-        if (!percentComparisons[c.date]) percentComparisons[c.date] = { value: 0, dateName: c.dateName };
+        if (!percentComparisons[c.date]) percentComparisons[c.date] = { value: 0, dateName: c.dateName, date: c.date };
         percentComparisons[c.date].value += c.value;
       });
     });
@@ -167,6 +196,7 @@ export class SectionDetailModalComponent {
       paper,
       machine,
       percent,
+      isOthers: true,
       comparisons: Object.values(comparisons),
       paperComparisons: Object.values(paperComparisons),
       machineComparisons: Object.values(machineComparisons),
@@ -175,7 +205,17 @@ export class SectionDetailModalComponent {
   }
 
   get noVotesResult(): PartyResult | null {
-    return this.section.partyResults.find(r => r.partyId === 'no_votes') || null;
+    const res = this.section.partyResults.find(r => r.partyId === 'no_votes');
+    if (!res) return null;
+
+    return {
+      ...res,
+      isNoVotes: true,
+      comparisons: this.currentSectionData?.comparisons?.['noVotes'],
+      paperComparisons: this.currentSectionData?.comparisons?.['noVotesPaper'],
+      machineComparisons: this.currentSectionData?.comparisons?.['noVotesMachine'],
+      percentComparisons: this.currentSectionData?.comparisons?.['noVotesPercent']
+    };
   }
 
   updateChartOptions() {
