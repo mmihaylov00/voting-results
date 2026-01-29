@@ -72,3 +72,21 @@ export interface SectionDetails {
   sectionName: string;
   partyResults: PartyResult[];
 }
+
+export interface TableColumn {
+  id: string;
+  label: string;
+}
+
+export const SECTION_COLUMNS: TableColumn[] = [
+  { id: 'sectionId', label: 'Секция' },
+  { id: 'cityName', label: 'Град' },
+  { id: 'sectionName', label: 'Име на секция' },
+  { id: 'total', label: 'Избиратели' },
+  { id: 'voted', label: 'Гласували' },
+  { id: 'activityPercent', label: 'Активност' },
+  { id: 'discardedVotes', label: 'Невалидни' },
+  { id: 'noVotes', label: 'Не подкрепя никого' },
+  { id: 'typeVotes', label: 'Гласове по тип' },
+  { id: 'topParties', label: 'Топ 3 партии' },
+];

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Section } from '../../../../models/election.models';
+import { Section, SECTION_COLUMNS } from '../../../../models/election.models';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmCardDirective,
@@ -35,9 +35,36 @@ export class ExportCsvModalComponent {
   @Output() close = new EventEmitter<void>();
 
   exportPartyIds: Set<string> = new Set();
+  availableColumns = SECTION_COLUMNS.filter(c => c.id !== 'typeVotes' && c.id !== 'topParties');
+  exportColumnIds: Set<string> = new Set(this.availableColumns.map(c => c.id));
 
   ngOnInit() {
     this.exportPartyIds = new Set(this.selectedPartyIds);
+    const savedColumns = localStorage.getItem('visible_columns');
+    if (savedColumns) {
+      try {
+        const columnsArray = JSON.parse(savedColumns);
+        if (Array.isArray(columnsArray)) {
+          // Only include columns that exist in our availableColumns for CSV
+          const validSavedColumns = columnsArray.filter(id => this.availableColumns.some(ac => ac.id === id));
+          if (validSavedColumns.length > 0) {
+            this.exportColumnIds = new Set(validSavedColumns);
+          }
+        }
+      } catch (e) {
+        console.error('Error parsing saved columns', e);
+      }
+    }
+  }
+
+  toggleExportColumnSelection(columnId: string) {
+    if (this.exportColumnIds.has(columnId)) {
+      if (this.exportColumnIds.size > 1) {
+        this.exportColumnIds.delete(columnId);
+      }
+    } else {
+      this.exportColumnIds.add(columnId);
+    }
   }
 
   toggleExportPartySelection(partyId: string) {
@@ -77,29 +104,32 @@ export class ExportCsvModalComponent {
       return a.localeCompare(b);
     });
 
-    const headers = [
-      'Секция',
-      'Град',
-      'Име на секция',
-      'Избиратели',
-      'Гласували',
-      'Недействителни',
-      'Не подкрепя никого',
-      ...sortedPartyIds.map(id => partiesMap[id])
-    ];
+    const headers: string[] = [];
+    if (this.exportColumnIds.has('sectionId')) headers.push('Секция');
+    if (this.exportColumnIds.has('cityName')) headers.push('Град');
+    if (this.exportColumnIds.has('sectionName')) headers.push('Име на секция');
+    if (this.exportColumnIds.has('total')) headers.push('Избиратели');
+    if (this.exportColumnIds.has('voted')) headers.push('Гласували');
+    if (this.exportColumnIds.has('activityPercent')) headers.push('Активност');
+    if (this.exportColumnIds.has('discardedVotes')) headers.push('Невалидни');
+    if (this.exportColumnIds.has('noVotes')) headers.push('Не подкрепя никого');
+
+    headers.push(...sortedPartyIds.map(id => partiesMap[id]));
 
     const rows = this.sections.map(section => {
-      const partyVotes = sortedPartyIds.map(id => section.partyVotes[id]?.total || 0);
-      return [
-        section.sectionId,
-        section.cityName,
-        section.sectionName,
-        section.total,
-        section.voted,
-        section.discardedVotes,
-        section.noVotes,
-        ...partyVotes
-      ].map(v => this.escapeSemi(String(v)));
+      const rowData: (string | number)[] = [];
+      if (this.exportColumnIds.has('sectionId')) rowData.push(section.sectionId);
+      if (this.exportColumnIds.has('cityName')) rowData.push(section.cityName);
+      if (this.exportColumnIds.has('sectionName')) rowData.push(section.sectionName);
+      if (this.exportColumnIds.has('total')) rowData.push(section.total);
+      if (this.exportColumnIds.has('voted')) rowData.push(section.voted);
+      if (this.exportColumnIds.has('activityPercent')) rowData.push((section.activityPercent * 100).toFixed(2) + '%');
+      if (this.exportColumnIds.has('discardedVotes')) rowData.push(section.discardedVotes);
+      if (this.exportColumnIds.has('noVotes')) rowData.push(section.noVotes);
+
+      rowData.push(...sortedPartyIds.map(id => section.partyVotes[id]?.total || 0));
+
+      return rowData.map(v => this.escapeSemi(String(v)));
     });
 
     return [

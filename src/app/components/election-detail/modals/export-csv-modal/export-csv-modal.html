@@ -10,14 +10,29 @@
             </button>
         </div>
 
-        <div class="overflow-auto p-6 flex-grow">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                @for (party of allParties; track party.id) {
-                    <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleExportPartySelection(party.id)">
-                        <input type="checkbox" [checked]="exportPartyIds.has(party.id)" class="cursor-pointer" (click)="$event.stopPropagation(); toggleExportPartySelection(party.id)" />
-                        <span class="text-sm truncate">{{ party.name }}</span>
-                    </div>
-                }
+        <div class="overflow-auto p-6 flex-grow space-y-6">
+            <div>
+                <h4 hlmH4 class="mb-2 text-sm font-semibold uppercase tracking-wider text-secondary/70 dark:text-primary/70">Колони</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    @for (column of availableColumns; track column.id) {
+                        <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleExportColumnSelection(column.id)">
+                            <input type="checkbox" [checked]="exportColumnIds.has(column.id)" class="cursor-pointer" (click)="$event.stopPropagation(); toggleExportColumnSelection(column.id)" />
+                            <span class="text-sm truncate">{{ column.label }}</span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div>
+                <h4 hlmH4 class="mb-2 text-sm font-semibold uppercase tracking-wider text-secondary/70 dark:text-primary/70">Партии</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    @for (party of allParties; track party.id) {
+                        <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleExportPartySelection(party.id)">
+                            <input type="checkbox" [checked]="exportPartyIds.has(party.id)" class="cursor-pointer" (click)="$event.stopPropagation(); toggleExportPartySelection(party.id)" />
+                            <span class="text-sm truncate">{{ party.name }}</span>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
 

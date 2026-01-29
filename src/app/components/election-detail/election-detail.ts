@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
-import { PartyResult, Section, SectionDetails } from '../../models/election.models';
+import { PartyResult, Section, SectionDetails, TableColumn, SECTION_COLUMNS } from '../../models/election.models';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
@@ -35,7 +35,8 @@ export type SectionTab = 'all' | 'target' | 'swing' | 'risky' | 'outside' | 'dec
 @Component({
   selector: 'app-election-detail',
   host: {
-    '(document:keydown.escape)': 'handleEscape()'
+    '(document:keydown.escape)': 'handleEscape()',
+    '(document:click)': 'closeColumnFilter()'
   },
   imports: [
     CommonModule,
@@ -96,6 +97,10 @@ export class ElectionDetailComponent implements OnInit {
   currentSectionData?: Section;
   regionalChartOptions: Highcharts.Options = {};
 
+  availableColumns = SECTION_COLUMNS;
+  visibleColumns = signal<Set<string>>(new Set(SECTION_COLUMNS.map(c => c.id)));
+  showColumnFilter = false;
+
   getCikUrl(): string {
     if (this.date.startsWith('2023.04')) return 'https://results.cik.bg/ns2023/search/index.html#';
     if (this.date.startsWith('2024.06')) return 'https://results.cik.bg/europe2024/search/index.html';
@@ -151,6 +156,18 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const savedColumns = localStorage.getItem('visible_columns');
+    if (savedColumns) {
+      try {
+        const columnsArray = JSON.parse(savedColumns);
+        if (Array.isArray(columnsArray)) {
+          this.visibleColumns.set(new Set(columnsArray));
+        }
+      } catch (e) {
+        console.error('Error parsing saved columns', e);
+      }
+    }
+
     this.date = this.route.snapshot.paramMap.get('date') || '';
     this.regionId = this.route.snapshot.paramMap.get('regionId') || '';
     this.dateName = this.electionService.getDates().find(d => d.date === this.date)?.name ?? this.date;
@@ -266,6 +283,29 @@ export class ElectionDetailComponent implements OnInit {
   setTab(tab: SectionTab): void {
     this.activeTab.set(tab);
     this.applyFilter();
+  }
+
+  toggleColumn(columnId: string, event: Event): void {
+    event.stopPropagation();
+    const newSet = new Set(this.visibleColumns());
+    if (newSet.has(columnId)) {
+      if (newSet.size > 1) { // Keep at least one column
+        newSet.delete(columnId);
+      }
+    } else {
+      newSet.add(columnId);
+    }
+    this.visibleColumns.set(newSet);
+    localStorage.setItem('visible_columns', JSON.stringify(Array.from(newSet)));
+  }
+
+  toggleColumnFilter(event: Event): void {
+    event.stopPropagation();
+    this.showColumnFilter = !this.showColumnFilter;
+  }
+
+  closeColumnFilter(): void {
+    this.showColumnFilter = false;
   }
 
   toggleActivityOperator(): void {
