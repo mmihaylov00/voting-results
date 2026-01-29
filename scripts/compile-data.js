@@ -461,10 +461,16 @@ for (const date of dates) {
   };
 
   const json = JSON.stringify(finalResult);
-  fs.writeFileSync(path.join(outputDir, `${date}.json`), json);
 
   const gzipped = zlib.gzipSync(json);
   fs.writeFileSync(path.join(outputDir, `${date}.json.gz`), gzipped);
 }
+
+// Cleanup .json files
+fs.readdirSync(outputDir).forEach(file => {
+  if (file.endsWith('.json')) {
+    fs.unlinkSync(path.join(outputDir, file));
+  }
+});
 
 console.log('Done!');
