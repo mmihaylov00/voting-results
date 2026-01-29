@@ -60,11 +60,9 @@ export class SectionDetailModalComponent {
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
 
-  getCikUrl(): string {
-    if (this.date.startsWith('2023.04')) return 'https://results.cik.bg/ns2023/search/index.html#';
-    if (this.date.startsWith('2024.06')) return 'https://results.cik.bg/europe2024/search/index.html';
-    if (this.date.startsWith('2024.10')) return 'https://results.cik.bg/pe202410/search/index.html';
-    return '';
+  getGoogleMapsUrl(cityName: string, sectionName: string): string {
+    const query = encodeURIComponent(`${cityName} ${sectionName}`);
+    return `https://www.google.com/maps/search/?api=1&query=${query}`;
   }
 
   constructor(public themeService: ThemeService) {

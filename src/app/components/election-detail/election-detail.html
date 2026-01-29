@@ -25,7 +25,7 @@
             @if (sectionsWithError.length > 0) {
                 <button hlmBtn variant="outline" (click)="openErrorModal()" class="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                    Протоколи с грешка
+                    Сгрешени протоколи
                 </button>
             }
             <button hlmBtn variant="outline" (click)="openExportModal()" class="border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
@@ -269,13 +269,31 @@
                                     [class.bg-muted]="selectedSection?.sectionId === section.sectionId"
                                     (click)="loadSectionDetails(section)">
                                     @if (visibleColumns().has('sectionId')) {
-                                        <td hlmTableCell class="font-medium">{{ section.sectionId }}</td>
+                                        <td hlmTableCell class="font-medium">
+                                          <div class="flex items-center gap-1 group">
+                                            <span>{{ section.sectionId }}</span>
+                                            <button hlmBtn variant="ghost" size="icon" class="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity" (click)="copyToClipboard(section.sectionId, $event)" [hlmTooltip]="copiedId() === section.sectionId ? 'Копирано!' : 'Копирай ID на секцията'">
+                                              @if (copiedId() === section.sectionId) {
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-500"><polyline points="20 6 9 17 4 12"/></svg>
+                                              } @else {
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                              }
+                                            </button>
+                                          </div>
+                                        </td>
                                     }
                                     @if (visibleColumns().has('cityName')) {
                                         <td hlmTableCell>{{ section.cityName }}</td>
                                     }
                                     @if (visibleColumns().has('sectionName')) {
-                                        <td hlmTableCell>{{ section.sectionName }}</td>
+                                        <td hlmTableCell>
+                                          <div class="flex items-center gap-1 group">
+                                            <span>{{ section.sectionName }}</span>
+                                            <a [href]="getGoogleMapsUrl(section.cityName, section.sectionName)" target="_blank" hlmBtn variant="ghost" size="icon" class="h-6 pl-1 pr-1 w-6 opacity-0 group-hover:opacity-100 transition-opacity" (click)="$event.stopPropagation()" hlmTooltip="Виж в Google Maps">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                            </a>
+                                          </div>
+                                        </td>
                                     }
                                     @if (visibleColumns().has('total')) {
                                         <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['total']" [currentValue]="section.total">{{ section.total }}</td>

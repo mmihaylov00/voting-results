@@ -94,6 +94,7 @@ export class ElectionDetailComponent implements OnInit {
   isModalOpen = signal<boolean>(false);
   isExportModalOpen = signal<boolean>(false);
   isErrorModalOpen = signal<boolean>(false);
+  copiedId = signal<string | null>(null);
   currentSectionData?: Section;
   regionalChartOptions: Highcharts.Options = {};
 
@@ -153,6 +154,41 @@ export class ElectionDetailComponent implements OnInit {
 
   openExportModal(): void {
     this.isExportModalOpen.set(true);
+  }
+
+  copyToClipboard(text: string, event: Event): void {
+    event.stopPropagation();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        this.markAsCopied(text);
+      });
+    } else {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        this.markAsCopied(text);
+      } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+      }
+      document.body.removeChild(textArea);
+    }
+  }
+
+  private markAsCopied(text: string): void {
+    this.copiedId.set(text);
+    setTimeout(() => {
+      if (this.copiedId() === text) {
+        this.copiedId.set(null);
+      }
+    }, 2000);
+  }
+
+  getGoogleMapsUrl(cityName: string, sectionName: string): string {
+    const query = encodeURIComponent(`${cityName} ${sectionName}`);
+    return `https://www.google.com/maps/search/?api=1&query=${query}`;
   }
 
   ngOnInit(): void {
