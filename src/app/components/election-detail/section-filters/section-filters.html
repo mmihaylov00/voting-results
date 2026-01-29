@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-4 w-full" [class.xl:flex-row]="!fullWidth" [class.xl:w-auto]="!fullWidth" [class.items-start]="fullWidth" [class.lg:items-center]="!fullWidth">
-  <div class="flex flex-wrap gap-2 border-b border-primary/10 w-full" [class.xl:w-auto]="!fullWidth">
+  <div class="flex flex-wrap gap-2 border-b border-primary/10 w-full" [class.xl:w-50]="!fullWidth">
     <button hlmBtn [variant]="'line'" [attr.data-state]="activeTab() === 'all' ? 'active' : 'inactive'"
             (click)="setTab('all')" [hlmTooltip]="'Показва всички секции в района'">
       @if (showIcons) {
@@ -101,8 +101,8 @@
       </button>
     }
   </div>
-  <div class="flex flex-col gap-4 w-full" [class.sm:flex-row]="!fullWidth" [class.xl:w-auto]="!fullWidth">
-    <div class="flex flex-wrap gap-2 items-center">
+  <div class="flex flex-col gap-4 w-full" [class.md:flex-row]="!fullWidth" [class.xl:w-50]="!fullWidth">
+    <div class="flex flex-wrap gap-2 items-center sm:w-full md:w-52">
       @for (type of availableSectionTypes; track type.id) {
         <button hlmBtn [variant]="sectionTypes().has(type.id) ? 'default' : 'outline'"
                 (click)="toggleSectionType(type.id)" class="h-7 px-2 text-[10px] font-medium uppercase tracking-wider">
@@ -115,8 +115,8 @@
         Рискови
       </button>
     </div>
-    <div class="flex flex-row sm:flex-col gap-2 justify-self-end">
-      <div [class.w-64]="!fullWidth" class="flex items-center gap-2 sm:w-full">
+    <div class="flex flex-col sm:flex-row md:flex-col  flex-grow gap-2 justify-self-end">
+      <div [class.w-64]="!fullWidth" [class.flex-row]="!fullWidth" class="flex sm:flex-col items-center gap-2 w-full">
         <div class="relative w-full">
           <button hlmBtn variant="ghost" size="sm" (click)="toggleActivityOperator()"
                   class="absolute left-1 top-1/2 -translate-y-1/2 h-8 px-2 text-[10px] font-semibold hover:bg-primary/10 text-muted-foreground transition-all"
@@ -129,7 +129,7 @@
           <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">%</span>
         </div>
       </div>
-      <div class="flex-grow flex gap-2" [class.sm:w-72]="!fullWidth">
+      <div [class.sm:w-72]="!fullWidth" [class.flex-row]="!fullWidth" class="flex sm:flex-col gap-2 w-full md:w-full">
         <input hlmInput placeholder="Търсене..." [ngModel]="searchTerm()" (ngModelChange)="onSearchTermChange($event)"
                class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full"/>
       </div>

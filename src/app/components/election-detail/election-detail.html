@@ -106,7 +106,7 @@
                         [date]="date"
                         [initialFilters]="{searchTerm: searchTerm, activeTab: activeTab(), activityOperator: activityOperator(), lowActivityThreshold: lowActivityThreshold, sectionTypes: selectedSectionTypes(), highRiskOnly: highRiskOnly()}"
                         (filterChange)="onFilterChange($event)">
-                        <div class="flex gap-2 flex-row items-center justify-start md:justify-between sm:flex-col">
+                        <div class="flex gap-2 flex-row items-center justify-start md:justify-start md:flex-col">
                             <button hlmBtn [variant]="groupByCity() ? 'default' : 'outline'" size="icon" (click)="toggleCityGrouping()" hlmTooltip="Групирай по населено място" class="border-primary/50 text-secondary hover:bg-primary hover:text-secondary dark:border-secondary/50 dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4"/><path d="M13 13h4"/><path d="M13 17h4"/></svg>
                             </button>
