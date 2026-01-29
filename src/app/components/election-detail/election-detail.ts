@@ -385,6 +385,46 @@ export class ElectionDetailComponent implements OnInit {
           }
         }
 
+        // Aggregate comparisons for city group
+        const comparisons: { [key: string]: ComparativeValue[] } = {};
+        const comparisonKeys = ['total', 'voted', 'discardedVotes', 'noVotes', 'totalPaper', 'totalMachine', 'activityPercent'];
+        
+        comparisonKeys.forEach(key => {
+          const aggregated: { [date: string]: { value: number, dateName: string } } = {};
+          g.sections.forEach((s: Section) => {
+            s.comparisons?.[key]?.forEach((c: any) => {
+              if (!aggregated[c.date]) {
+                aggregated[c.date] = { value: 0, dateName: c.dateName };
+              }
+              if (key === 'activityPercent') {
+                // Activity percent needs to be handled carefully, we'll calculate it later
+              } else {
+                aggregated[c.date].value += c.value;
+              }
+            });
+          });
+
+          if (key === 'activityPercent') {
+            const electorsAggr: { [date: string]: number } = {};
+            const votedAggr: { [date: string]: number } = {};
+            g.sections.forEach((s: Section) => {
+              s.comparisons?.['total']?.forEach((c: any) => electorsAggr[c.date] = (electorsAggr[c.date] || 0) + c.value);
+              s.comparisons?.['voted']?.forEach((c: any) => votedAggr[c.date] = (votedAggr[c.date] || 0) + c.value);
+            });
+            comparisons[key] = Object.keys(electorsAggr).map(date => ({
+              date,
+              dateName: aggregated[date]?.dateName || date,
+              value: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
+            }));
+          } else {
+            comparisons[key] = Object.entries(aggregated).map(([date, data]) => ({
+              date,
+              dateName: data.dateName,
+              value: data.value
+            }));
+          }
+        });
+
         return {
           ...g,
           sectionId: `${g.sections.length} секции`,
@@ -393,7 +433,8 @@ export class ElectionDetailComponent implements OnInit {
           risks: g.riskySectionsList.length > 0 ? g.riskySectionsList : [],
           activityPercent: g.total > 0 ? g.voted / g.total : 0,
           topParties,
-          votesToFirst
+          votesToFirst,
+          comparisons
         };
       });
       this.filteredSections = this.groupedSections;

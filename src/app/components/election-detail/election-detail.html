@@ -324,31 +324,31 @@
                                         </td>
                                     }
                                     @if (visibleColumns().has('total')) {
-                                        <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['total']" [currentValue]="section.total">{{ section.total }}</td>
+                                        <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['total']" [currentValue]="section.total">{{ section.total | number }}</td>
                                     }
                                     @if (visibleColumns().has('voted')) {
-                                        <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['voted']" [currentValue]="section.voted">{{ section.voted }}</td>
+                                        <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['voted']" [currentValue]="section.voted">{{ section.voted | number }}</td>
                                     }
                                     @if (visibleColumns().has('activityPercent')) {
                                       <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['activityPercent']" [currentValue]="section.activityPercent" [isPercent]="true">{{ formatActivity(section.activityPercent) }}%</td>
                                     }
                                     @if (visibleColumns().has('discardedVotes')) {
-                                        <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['discardedVotes']" [currentValue]="section.discardedVotes">{{ section.discardedVotes }}</td>
+                                        <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['discardedVotes']" [currentValue]="section.discardedVotes">{{ section.discardedVotes | number }}</td>
                                     }
                                     @if (visibleColumns().has('noVotes')) {
-                                        <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['noVotes']" [currentValue]="section.noVotes">{{ section.noVotes }}</td>
+                                        <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['noVotes']" [currentValue]="section.noVotes">{{ section.noVotes | number }}</td>
                                     }
                                     @if (visibleColumns().has('typeVotes')) {
                                         <td hlmTableCell>
                                             <div class="flex flex-col text-xs whitespace-nowrap">
-                                                <span>машинни: <strong [hlmTooltip]="section.comparisons?.['totalMachine']" [currentValue]="section.totalMachine">{{ section.totalMachine }}</strong></span>
-                                                <span>хартиени: <strong [hlmTooltip]="section.comparisons?.['totalPaper']" [currentValue]="section.totalPaper">{{ section.totalPaper }}</strong></span>
+                                                <span>машинни: <strong [hlmTooltip]="section.comparisons?.['totalMachine']" [currentValue]="section.totalMachine">{{ section.totalMachine | number }}</strong></span>
+                                                <span>хартиени: <strong [hlmTooltip]="section.comparisons?.['totalPaper']" [currentValue]="section.totalPaper">{{ section.totalPaper | number }}</strong></span>
                                             </div>
                                         </td>
                                     }
                                       @if (visibleColumns().has('votesToFirst')) {
                                         <td hlmTableCell class="text-right">
-                                          {{ section.votesToFirst !== undefined ? section.votesToFirst : '-' }}
+                                          {{ section.votesToFirst !== undefined ? (section.votesToFirst | number) : '-' }}
                                         </td>
                                       }
                                     @if (visibleColumns().has('topParties')) {
@@ -356,7 +356,7 @@
                                             <div class="flex flex-col text-xs">
                                                 @for (tp of section.topParties; track tp.name) {
                                                     <div class="truncate" [class.font-bold]="tp.name.includes('ПП-ДБ')" [class.text-ppdb]="tp.name.includes('ПП-ДБ')" [title]="tp.name + ': ' + tp.total + ' (' + formatActivity(tp.percent) + '%)'" [hlmTooltip]="tp.comparisons" [currentValue]="tp.total">
-                                                        {{ tp.name }}: <strong>{{ tp.total }}</strong> ({{ formatActivity(tp.percent) }}%)
+                                                        {{ tp.name }}: <strong>{{ tp.total | number }}</strong> ({{ formatActivity(tp.percent) }}%)
                                                     </div>
                                                 }
                                             </div>
