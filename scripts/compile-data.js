@@ -69,14 +69,8 @@ function parseSections(text) {
     let sectionType = 'Other';
     const sn = sectionName.toLowerCase();
     const cn = cityName.toLowerCase();
-    if (regionId === '32') {
-      sectionType = 'Abroad';
-    } else if (sn.includes('подвижна') || sn.includes('пск')) {
+    if (sn.includes('подвижна') || sn.includes('пск')) {
       sectionType = 'Mobile';
-    } else if (sn.includes('болница') || sn.includes('мбал') || sn.includes('дкц') || sn.includes('лвз')) {
-      sectionType = 'Hospital';
-    } else if (sn.includes('затвор') || sn.includes('арест')) {
-      sectionType = 'Prison';
     } else if (cn.startsWith('гр.')) {
       sectionType = 'City';
     } else if (cn.startsWith('с.')) {
