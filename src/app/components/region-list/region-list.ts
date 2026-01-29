@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, signal } from '@angular/core';
+import { Component, OnInit, effect, signal, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -37,7 +37,8 @@ import { HighchartsChartComponent } from 'highcharts-angular';
   ],
   templateUrl: './region-list.html'
 })
-export class RegionListComponent implements OnInit {
+export class RegionListComponent implements OnInit, AfterViewInit {
+  @ViewChild('partyChart', { static: false }) partyChartComponent?: HighchartsChartComponent;
   date: string = '';
   dateName: string = '';
   regions: Region[] = [];
@@ -196,6 +197,11 @@ export class RegionListComponent implements OnInit {
     this.selectedPartyIds.set(current);
   }
 
+  ngAfterViewInit() {
+    // Chart component is now available
+  }
+
+
   get filteredAllParties(): { id: string, name: string, votes: number }[] {
     // Calculate total votes per party across all regions
     const partyVotesMap = new Map<string, number>();
@@ -224,28 +230,42 @@ export class RegionListComponent implements OnInit {
     // 2. Party Votes Chart - Multiple series for selected parties
     const selectedIds = this.selectedPartyIds();
     const series: any[] = [];
+    
+    // Define a color palette for consistent colors
+    const colorPalette = [
+      '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', 
+      '#ec4899', '#06b6d4', '#84cc16', '#f97316', '#6366f1'
+    ];
 
     if (selectedIds.size > 0) {
-      selectedIds.forEach(partyId => {
+      // Sort selected IDs to ensure consistent color assignment
+      const sortedIds = Array.from(selectedIds).sort();
+      sortedIds.forEach(partyId => {
         const party = this.allParties.find(p => p.id === partyId);
         if (party) {
+          // Use party index in allParties for consistent color, not selection order
+          const partyIndex = this.allParties.findIndex(p => p.id === partyId);
           const partyData = this.regions.map(r => {
             const votes = r.partyVotes[partyId] || 0;
             return r.voted > 0 ? (votes / r.voted) * 100 : 0;
           });
+          // Create completely new objects for each series
           series.push({
+            id: `party-${partyId}`, // Unique ID for each series
             name: party.name,
-            data: partyData,
-            type: 'column'
+            data: partyData.map(v => v), // New array with new number references
+            type: 'column',
+            color: colorPalette[partyIndex % colorPalette.length] // Assign color based on party position, not selection order
           });
         }
       });
     }
 
-    this.partyChartOptions = {
+    // Create a completely new options object - assign to a new variable first to ensure new reference
+    const newOptions: Highcharts.Options = {
       chart: { type: 'column', backgroundColor: 'transparent', height: 600 },
       title: { text: 'Гласове за партии (%)', style: { color: textColor, fontSize: '14px' } },
-      xAxis: { categories, labels: { style: { color: textColor } } },
+      xAxis: { categories: [...categories], labels: { style: { color: textColor } } },
       yAxis: {
         title: { text: 'Процент (%)', style: { color: textColor } },
         labels: { style: { color: textColor } },
@@ -270,9 +290,20 @@ export class RegionListComponent implements OnInit {
           }
         }
       },
-      series: series.length > 0 ? series : [],
+      series: series.length > 0 ? series : [{ type: 'column', data: [], name: '', id: 'empty' }], // Always have at least one series to avoid issues
       credits: { enabled: false }
     };
+    
+    // Only assign if we have series, otherwise set to empty
+    if (series.length > 0) {
+      this.partyChartOptions = newOptions;
+    } else {
+      // Create empty chart options
+      this.partyChartOptions = {
+        ...newOptions,
+        series: []
+      };
+    }
 
     // 3. Not Voted Chart
     const notVotedData = this.regions.map(r => r.total > 0 ? ((r.total - r.voted) / r.total) * 100 : 0);
