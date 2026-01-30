@@ -115,6 +115,18 @@ export class ElectionDetailComponent implements OnInit {
     }
     return this.availableColumns;
   }
+
+  getFormattedRisks(section: Section): string {
+    const riskLines: string[] = [];
+
+    if (section.riskIndicators && section.riskIndicators.length > 0) {
+      section.riskIndicators.forEach(indicator => {
+        riskLines.push(`${indicator.code}: ${indicator.message}`);
+      });
+    }
+
+    return riskLines.join('\n');
+  }
   showColumnFilter = false;
   groupByCity = signal<boolean>(false);
   groupedSections: any[] = [];

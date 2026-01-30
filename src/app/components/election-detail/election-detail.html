@@ -318,7 +318,7 @@
                                             <td hlmTableCell class="text-right">
                                                 <div class="flex justify-end">
                                                     @if (section.riskScore) {
-                                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-s font-bold bg-destructive/10 text-destructive" [hlmTooltip]="section.risks?.join('\n')">
+                                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-s font-bold bg-destructive/10 text-destructive" [hlmTooltip]="getFormattedRisks(section)">
                                                             {{ section.riskScore }}
                                                             @if (groupByCity()) {
                                                                 <span class="ml-1 text-[10px] opacity-70">рискови</span>
