@@ -9,6 +9,9 @@ import { HlmTooltipDirective } from '../../ui/tooltip-helm/src/lib/hlm-tooltip.d
 @Component({
   selector: 'app-section-filters',
   standalone: true,
+  host: {
+    '(document:click)': 'closeAllDropdowns()'
+  },
   imports: [
     CommonModule,
     FormsModule,
@@ -33,6 +36,11 @@ export class SectionFiltersComponent implements OnInit {
   sectionTypes = signal<Set<string>>(new Set());
   riskFilterType = signal<'any' | 'none' | null>(null);
   selectedRiskCategories = signal<Set<string>>(new Set());
+
+  // Dropdown states
+  showSectionTypesDropdown = signal<boolean>(false);
+  showRiskDropdown = signal<boolean>(false);
+  showQuickFiltersDropdown = signal<boolean>(false);
 
   availableSectionTypes = [
     { id: 'City', label: 'Град' },
@@ -78,10 +86,21 @@ export class SectionFiltersComponent implements OnInit {
   }
 
   riskCategories = [
-    { code: 'R1', label: 'R1', description: 'R1: Аномалии в активността и улавяне на гласове' },
-    { code: 'R2', label: 'R2', description: 'R2: Отклонения в съотношението хартия/машина' },
-    { code: 'R3', label: 'R3', description: 'R3: Аномалии в невалидните гласове' },
-    { code: 'R4', label: 'R4', description: 'R4: Волатилност и чувствителност на резултата' }
+    { code: 'R1', label: 'Аномалии в активността', description: 'R1: Аномалии в активността и улавяне на гласове' },
+    { code: 'R2', label: 'Разлика между хартия/машини', description: 'R2: Отклонения в съотношението хартия/машина' },
+    { code: 'R3', label: 'Аномалии в невалидни гласове', description: 'R3: Аномалии в невалидните гласове' },
+    { code: 'R4', label: 'Волатилност на резултатите', description: 'R4: Волатилност и чувствителност на резултата' }
+  ];
+
+  quickFilterTabs = [
+    { id: 'all', label: 'Всички', description: 'Показва всички секции в района', icon: 'grid' },
+    { id: 'target', label: 'Целеви', description: 'Секции, в които ПП-ДБ е първа политическа сила', icon: 'target' },
+    { id: 'swing', label: 'Люлеещи се', description: 'Секции, в които ПП-ДБ е на по-малко от 5% разлика от първия', icon: 'swing' },
+    { id: 'outside', label: 'Извън топ 3', description: 'Секции, в които ПП-ДБ е извън челните три места', icon: 'outside' },
+    { id: 'dormant', label: 'Спящи', description: 'Секции с висока подкрепа за ПП-ДБ (>30%), но по-ниска активност от средната за общината', icon: 'dormant' },
+    { id: 'flip', label: 'За обръщане', description: 'Секции, които могат да бъдат спечелени с малко допълнителни гласове', icon: 'flip' },
+    { id: 'vanishing', label: 'Губещи', description: 'Секции, в които ПП-ДБ губи над 40% от гласовете си спрямо предходните избори', icon: 'vanishing' },
+    { id: 'declining', label: 'Намаляващи', description: 'Секции, в които гласовете за ПП-ДБ са по-малко от предходните избори', icon: 'declining' }
   ];
 
   toggleRiskFilterType(type: 'any' | 'none'): void {
@@ -94,6 +113,14 @@ export class SectionFiltersComponent implements OnInit {
       // Clear R code selections when selecting any/none
       this.selectedRiskCategories.set(new Set());
     }
+    // Close dropdown after selection
+    this.showRiskDropdown.set(false);
+  }
+
+  clearRiskFilter(): void {
+    this.riskFilterType.set(null);
+    this.selectedRiskCategories.set(new Set());
+    this.showRiskDropdown.set(false);
   }
 
   toggleRiskCategory(category: string): void {
@@ -112,6 +139,11 @@ export class SectionFiltersComponent implements OnInit {
 
   setTab(tab: SectionTab): void {
     this.activeTab.set(tab);
+    this.showQuickFiltersDropdown.set(false);
+  }
+
+  selectQuickFilter(tabId: string): void {
+    this.setTab(tabId as SectionTab);
   }
 
   toggleActivityOperator(): void {
@@ -124,5 +156,75 @@ export class SectionFiltersComponent implements OnInit {
 
   onThresholdChange(val: number | null) {
     this.lowActivityThreshold.set(val);
+  }
+
+  getSectionTypesLabel(): string {
+    const selected = Array.from(this.sectionTypes());
+    if (selected.length === 0) return 'Тип';
+    if (selected.length === this.availableSectionTypes.length) return 'Всички типове';
+    if (selected.length === 1) {
+      const type = this.availableSectionTypes.find(t => t.id === selected[0]);
+      return type?.label || 'Тип';
+    }
+    return `Тип (${selected.length})`;
+  }
+
+  getRiskLabel(): string {
+    const type = this.riskFilterType();
+    const selectedCategories = Array.from(this.selectedRiskCategories());
+
+    if (type === 'any') return 'Рискови';
+    if (type === 'none') return 'Безрискови';
+    if (selectedCategories.length > 0) {
+      if (selectedCategories.length === this.riskCategories.length) return 'Всички категории';
+      return `Категории (${selectedCategories.length})`;
+    }
+    return 'Рискове';
+  }
+
+  getQuickFilterLabel(): string {
+    const tab = this.activeTab();
+    const tabInfo = this.quickFilterTabs.find(t => t.id === tab);
+    return tabInfo?.label || 'Филтри';
+  }
+
+  getQuickFilterIcon(): string | null {
+    const tab = this.activeTab();
+    const tabInfo = this.quickFilterTabs.find(t => t.id === tab);
+    return tabInfo?.icon || null;
+  }
+
+  getAvailableQuickFilters(): typeof this.quickFilterTabs {
+    if (this.date === '2023.04.02') {
+      return this.quickFilterTabs.filter(t => t.id !== 'declining');
+    }
+    return this.quickFilterTabs;
+  }
+
+  toggleSectionTypesDropdown(event: Event): void {
+    event.stopPropagation();
+    this.showSectionTypesDropdown.set(!this.showSectionTypesDropdown());
+    this.showRiskDropdown.set(false);
+    this.showQuickFiltersDropdown.set(false);
+  }
+
+  toggleRiskDropdown(event: Event): void {
+    event.stopPropagation();
+    this.showRiskDropdown.set(!this.showRiskDropdown());
+    this.showSectionTypesDropdown.set(false);
+    this.showQuickFiltersDropdown.set(false);
+  }
+
+  toggleQuickFiltersDropdown(event: Event): void {
+    event.stopPropagation();
+    this.showQuickFiltersDropdown.set(!this.showQuickFiltersDropdown());
+    this.showSectionTypesDropdown.set(false);
+    this.showRiskDropdown.set(false);
+  }
+
+  closeAllDropdowns(): void {
+    this.showSectionTypesDropdown.set(false);
+    this.showRiskDropdown.set(false);
+    this.showQuickFiltersDropdown.set(false);
   }
 }

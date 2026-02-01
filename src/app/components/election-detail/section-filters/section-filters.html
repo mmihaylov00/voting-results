@@ -1,159 +1,220 @@
-<div class="flex flex-col gap-4 w-full" [class.xl:flex-row]="!fullWidth" [class.xl:w-auto]="!fullWidth"
-     [class.items-start]="fullWidth" [class.lg:items-center]="!fullWidth">
+<div class="flex flex-col gap-3 w-full">
+  <!-- Mobile: Stack all vertically, md: 2 rows, lg+: 1 row -->
+  <div class="grid grid-cols-1 md:grid-cols-2 md:grid-rows-2 lg:grid-cols-5 lg:grid-rows-1 gap-3 w-full">
+    <!-- Search Input -->
+    <div class="w-full">
+      <input hlmInput placeholder="Търсене..." [ngModel]="searchTerm()" (ngModelChange)="onSearchTermChange($event)"
+             class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full h-9"/>
+    </div>
 
-  <div class="flex flex-col gap-4 w-full" [class.md:flex-row]="!fullWidth" [class.xl:w-50]="!fullWidth">
-    <div class="flex flex-col sm:flex-row md:flex-col  flex-grow gap-2 justify-self-end">
-      <div [class.flex-row]="!fullWidth" class="flex sm:flex-col gap-2 w-full md:w-full">
-        <input hlmInput placeholder="Търсене..." [ngModel]="searchTerm()" (ngModelChange)="onSearchTermChange($event)"
-               class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full"/>
-      </div>
-      <div [class.sm:w-64]="!fullWidth" [class.flex-row]="!fullWidth"
-           class="flex sm:flex-col items-center gap-2 w-full md:w-full">
-        <div class="relative w-full">
-          <button hlmBtn variant="ghost" size="sm" (click)="toggleActivityOperator()"
-                  class="absolute left-1 top-1/2 -translate-y-1/2 h-8 px-2 text-[10px] font-semibold hover:bg-primary/10 text-muted-foreground transition-all"
-                  [hlmTooltip]="activityOperator() === 'lte' ? 'Превключи към по-голямо или равно' : 'Превключи към по-малко или равно'">
-            Активност {{ activityOperator() === 'lte' ? '≤' : '≥' }}
-          </button>
-          <input hlmInput type="number" placeholder="0" [ngModel]="lowActivityThreshold()"
-                 (ngModelChange)="onThresholdChange($event)" min="0" max="100" step="0.01"
-                 class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full pr-6 pl-24 text-right"/>
-          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">%</span>
+    <!-- Activity Threshold Input -->
+    <div class="relative w-full">
+      <button hlmBtn variant="ghost" size="sm" (click)="toggleActivityOperator()"
+              class="absolute left-1 top-1/2 -translate-y-1/2 h-8 px-2 text-[10px] font-semibold hover:bg-primary/10 text-muted-foreground transition-all z-10"
+              [hlmTooltip]="activityOperator() === 'lte' ? 'Превключи към по-голямо или равно' : 'Превключи към по-малко или равно'">
+        Активност {{ activityOperator() === 'lte' ? '≤' : '≥' }}
+      </button>
+      <input hlmInput type="number" placeholder="0" [ngModel]="lowActivityThreshold()"
+             (ngModelChange)="onThresholdChange($event)" min="0" max="100" step="0.01"
+             class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full h-9 pr-8 pl-24 text-right"/>
+      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">%</span>
+    </div>
+    <!-- Quick Filters Dropdown -->
+    <div class="relative w-full md:col-span-2 lg:col-span-1">
+      <button hlmBtn variant="outline" size="sm" (click)="toggleQuickFiltersDropdown($event)"
+              class="w-full justify-between h-9 text-sm border-primary/50 text-secondary hover:bg-primary hover:text-secondary dark:border-secondary/50 dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+        <span class="flex items-center gap-2">
+          @if (showIcons && getQuickFilterIcon()) {
+            @switch (getQuickFilterIcon()) {
+              @case ('grid') {
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="7" height="7" x="3" y="3" rx="1"/>
+                  <rect width="7" height="7" x="14" y="3" rx="1"/>
+                  <rect width="7" height="7" x="14" y="14" rx="1"/>
+                  <rect width="7" height="7" x="3" y="14" rx="1"/>
+                </svg>
+              }
+              @case ('target') {
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <circle cx="12" cy="12" r="6"/>
+                  <circle cx="12" cy="12" r="2"/>
+                </svg>
+              }
+              @case ('swing') {
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/>
+                  <path d="M3 3 9 9M3 3v4.8M3 3h4.8"/>
+                </svg>
+              }
+              @case ('outside') {
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+                </svg>
+              }
+              @case ('dormant') {
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
+                  <path d="M6 16h12"/>
+                  <path d="M6 12h12"/>
+                  <path d="M6 8h12"/>
+                </svg>
+              }
+              @case ('flip') {
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 3h5v5"/>
+                  <path d="M8 3H3v5"/>
+                  <path d="M12 22v-8.3"/>
+                  <path d="M21 3 12 12 3 3"/>
+                </svg>
+              }
+              @case ('vanishing') {
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 3v18h18"/>
+                  <path d="m19 9-5 5-4-4-3 3"/>
+                </svg>
+              }
+              @case ('declining') {
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 5v14M5 12l7 7 7-7"/>
+                </svg>
+              }
+            }
+          }
+          {{ getQuickFilterLabel() }}
+        </span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             [class.rotate-180]="showQuickFiltersDropdown()">
+          <path d="m6 9 6 6 6-6"/>
+        </svg>
+      </button>
+      @if (showQuickFiltersDropdown()) {
+        <div class="absolute z-50 mt-1 w-full max-h-96 overflow-auto bg-popover text-popover-foreground border border-primary/20 rounded-md shadow-md p-2" (click)="$event.stopPropagation()">
+          @for (tab of getAvailableQuickFilters(); track tab.id) {
+            <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="selectQuickFilter(tab.id)" [hlmTooltip]="tab.description">
+              <input type="radio" name="quickFilter" [checked]="activeTab() === tab.id" class="cursor-pointer" (click)="$event.stopPropagation(); selectQuickFilter(tab.id)" />
+              @if (showIcons) {
+                @switch (tab.icon) {
+                  @case ('grid') {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <rect width="7" height="7" x="3" y="3" rx="1"/>
+                      <rect width="7" height="7" x="14" y="3" rx="1"/>
+                      <rect width="7" height="7" x="14" y="14" rx="1"/>
+                      <rect width="7" height="7" x="3" y="14" rx="1"/>
+                    </svg>
+                  }
+                  @case ('target') {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <circle cx="12" cy="12" r="6"/>
+                      <circle cx="12" cy="12" r="2"/>
+                    </svg>
+                  }
+                  @case ('swing') {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/>
+                      <path d="M3 3 9 9M3 3v4.8M3 3h4.8"/>
+                    </svg>
+                  }
+                  @case ('outside') {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+                    </svg>
+                  }
+                  @case ('dormant') {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
+                      <path d="M6 16h12"/>
+                      <path d="M6 12h12"/>
+                      <path d="M6 8h12"/>
+                    </svg>
+                  }
+                  @case ('flip') {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <path d="M16 3h5v5"/>
+                      <path d="M8 3H3v5"/>
+                      <path d="M12 22v-8.3"/>
+                      <path d="M21 3 12 12 3 3"/>
+                    </svg>
+                  }
+                  @case ('vanishing') {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <path d="M3 3v18h18"/>
+                      <path d="m19 9-5 5-4-4-3 3"/>
+                    </svg>
+                  }
+                  @case ('declining') {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <path d="M12 5v14M5 12l7 7 7-7"/>
+                    </svg>
+                  }
+                }
+              }
+              <span class="text-sm">{{ tab.label }}</span>
+            </div>
+          }
         </div>
-      </div>
-    </div>
-    <div class="flex flex-wrap gap-2 items-center sm:w-full md:w-52">
-      @for (type of availableSectionTypes; track type.id) {
-        <button hlmBtn [variant]="sectionTypes().has(type.id) ? 'default' : 'outline'"
-                (click)="toggleSectionType(type.id)" class="h-7 px-2 text-[10px] font-medium uppercase tracking-wider">
-          {{ type.label }}
-        </button>
       }
     </div>
-    <div class="flex flex-wrap gap-2 items-center sm:w-full md:w-52">
-      <button hlmBtn [variant]="riskFilterType() === 'any' ? 'destructive' : 'outline'"
-              (click)="toggleRiskFilterType('any')"
-              [hlmTooltip]="'Показва секции с каквито и да е рискови индикатори'"
-              class="h-7 px-2 text-[10px] border font-medium uppercase tracking-wider border-destructive/50 hover:bg-destructive/90 hover:text-destructive-foreground">
-        Рискови
-      </button>
-      <button hlmBtn [variant]="riskFilterType() === 'none' ? 'destructive' : 'outline'"
-              (click)="toggleRiskFilterType('none')"
-              [hlmTooltip]="'Показва секции без рискови индикатори'"
-              class="h-7 px-2 text-[10px] border font-medium uppercase tracking-wider border-destructive/50 hover:bg-destructive/90 hover:text-destructive-foreground">
-        Безрискови
-      </button>
-      @for (category of riskCategories; track category.code) {
-        <button hlmBtn [variant]="selectedRiskCategories().has(category.code) ? 'destructive' : 'outline'"
-                (click)="toggleRiskCategory(category.code)"
-                [hlmTooltip]="category.description"
-                class="h-7 px-2 text-[10px] border font-medium uppercase tracking-wider border-destructive/50 hover:bg-destructive/90 hover:text-destructive-foreground">
-          {{ category.label }}
-        </button>
-      }
-    </div>
-  </div>
 
-  <div class="flex flex-wrap gap-2 border-b border-primary/10 w-full" [class.xl:w-50]="!fullWidth">
-    <button hlmBtn [variant]="'line'" [attr.data-state]="activeTab() === 'all' ? 'active' : 'inactive'"
-            (click)="setTab('all')" [hlmTooltip]="'Показва всички секции в района'">
-      @if (showIcons) {
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-          <rect width="7" height="7" x="3" y="3" rx="1"/>
-          <rect width="7" height="7" x="14" y="3" rx="1"/>
-          <rect width="7" height="7" x="14" y="14" rx="1"/>
-          <rect width="7" height="7" x="3" y="14" rx="1"/>
+    <!-- Section Types Dropdown (Multiselect) -->
+    <div class="relative w-full">
+      <button hlmBtn variant="outline" size="sm" (click)="toggleSectionTypesDropdown($event)"
+              class="w-full justify-between h-9 text-sm border-primary/50 text-secondary hover:bg-primary hover:text-secondary dark:border-secondary/50 dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+        <span>{{ getSectionTypesLabel() }}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             [class.rotate-180]="showSectionTypesDropdown()">
+          <path d="m6 9 6 6 6-6"/>
         </svg>
-      }
-      Всички
-    </button>
-    <button hlmBtn [variant]="'line'" [attr.data-state]="activeTab() === 'target' ? 'active' : 'inactive'"
-            (click)="setTab('target')" [hlmTooltip]="'Секции, в които ПП-ДБ е първа политическа сила'">
-      @if (showIcons) {
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-          <circle cx="12" cy="12" r="10"/>
-          <circle cx="12" cy="12" r="6"/>
-          <circle cx="12" cy="12" r="2"/>
-        </svg>
-      }
-      Целеви
-    </button>
-    <button hlmBtn [variant]="'line'" [attr.data-state]="activeTab() === 'swing' ? 'active' : 'inactive'"
-            (click)="setTab('swing')" [hlmTooltip]="'Секции, в които ПП-ДБ е на по-малко от 5% разлика от първия'">
-      @if (showIcons) {
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-          <path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/>
-          <path d="M3 3 9 9M3 3v4.8M3 3h4.8"/>
-        </svg>
-      }
-      Люлеещи се
-    </button>
-    <button hlmBtn [variant]="'line'" [attr.data-state]="activeTab() === 'outside' ? 'active' : 'inactive'"
-            (click)="setTab('outside')" [hlmTooltip]="'Секции, в които ПП-ДБ е извън челните три места'">
-      @if (showIcons) {
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
-        </svg>
-      }
-      Извън топ 3
-    </button>
-    <button hlmBtn [variant]="'line'" [attr.data-state]="activeTab() === 'dormant' ? 'active' : 'inactive'"
-            (click)="setTab('dormant')"
-            [hlmTooltip]="'Секции с висока подкрепа за ПП-ДБ (>30%), но по-ниска активност от средната за общината'">
-      @if (showIcons) {
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-          <path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/>
-          <path d="M6 16h12"/>
-          <path d="M6 12h12"/>
-          <path d="M6 8h12"/>
-        </svg>
-      }
-      Спящи
-    </button>
-    <button hlmBtn [variant]="'line'" [attr.data-state]="activeTab() === 'flip' ? 'active' : 'inactive'"
-            (click)="setTab('flip')"
-            [hlmTooltip]="'Секции, които могат да бъдат спечелени с малко допълнителни гласове'">
-      @if (showIcons) {
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-          <path d="M16 3h5v5"/>
-          <path d="M8 3H3v5"/>
-          <path d="M12 22v-8.3"/>
-          <path d="M21 3 12 12 3 3"/>
-        </svg>
-      }
-      За обръщане
-    </button>
-    <button hlmBtn [variant]="'line'" [attr.data-state]="activeTab() === 'vanishing' ? 'active' : 'inactive'"
-            (click)="setTab('vanishing')"
-            [hlmTooltip]="'Секции, в които ПП-ДБ губи над 40% от гласовете си спрямо предходните избори'">
-      @if (showIcons) {
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-          <path d="M3 3v18h18"/>
-          <path d="m19 9-5 5-4-4-3 3"/>
-        </svg>
-      }
-      Губещи
-    </button>
-    @if (date !== '2023.04.02') {
-      <button hlmBtn [variant]="'line'" [attr.data-state]="activeTab() === 'declining' ? 'active' : 'inactive'"
-              (click)="setTab('declining')"
-              [hlmTooltip]="'Секции, в които гласовете за ПП-ДБ са по-малко от предходните избори'">
-        @if (showIcons) {
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-            <path d="M12 5v14M5 12l7 7 7-7"/>
-          </svg>
-        }
-        Намаляващи
       </button>
-    }
+      @if (showSectionTypesDropdown()) {
+        <div class="absolute z-50 mt-1 w-full overflow-auto bg-popover text-popover-foreground border border-primary/20 rounded-md shadow-md p-2" (click)="$event.stopPropagation()">
+          @for (type of availableSectionTypes; track type.id) {
+            <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleSectionType(type.id)">
+              <input type="checkbox" [checked]="sectionTypes().has(type.id)" class="cursor-pointer" (click)="$event.stopPropagation(); toggleSectionType(type.id)" />
+              <span class="text-sm">{{ type.label }}</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Combined Risk Dropdown (Type + Categories) -->
+    <div class="relative w-full">
+      <button hlmBtn variant="outline" size="sm" (click)="toggleRiskDropdown($event)"
+              class="w-full justify-between h-9 text-sm border-destructive/50 text-destructive hover:bg-destructive/90 hover:text-destructive-foreground">
+        <span>{{ getRiskLabel() }}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             [class.rotate-180]="showRiskDropdown()">
+          <path d="m6 9 6 6 6-6"/>
+        </svg>
+      </button>
+      @if (showRiskDropdown()) {
+        <div class="absolute z-50 mt-1 w-full overflow-auto bg-popover text-popover-foreground border border-destructive/20 rounded-md shadow-md p-2" (click)="$event.stopPropagation()">
+          <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="clearRiskFilter()">
+            <input type="radio" name="riskType" [checked]="riskFilterType() === null && selectedRiskCategories().size === 0" class="cursor-pointer" (click)="$event.stopPropagation(); clearRiskFilter()" />
+            <span class="text-sm">Всички</span>
+          </div>
+          <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleRiskFilterType('any')">
+            <input type="radio" name="riskType" [checked]="riskFilterType() === 'any'" class="cursor-pointer" (click)="$event.stopPropagation(); toggleRiskFilterType('any')" />
+            <span class="text-sm">Рискови</span>
+          </div>
+          <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleRiskFilterType('none')">
+            <input type="radio" name="riskType" [checked]="riskFilterType() === 'none'" class="cursor-pointer" (click)="$event.stopPropagation(); toggleRiskFilterType('none')" />
+            <span class="text-sm">Безрискови</span>
+          </div>
+          <div class="border-t border-border my-2"></div>
+          <div class="text-xs font-semibold text-muted-foreground uppercase mb-2 px-2">Рискови категории</div>
+          @for (category of riskCategories; track category.code) {
+            <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleRiskCategory(category.code)">
+              <input type="checkbox" [checked]="selectedRiskCategories().has(category.code)" class="cursor-pointer" (click)="$event.stopPropagation(); toggleRiskCategory(category.code)" />
+              <span class="text-sm">{{ category.label }}</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
   </div>
 </div>

@@ -36,68 +36,296 @@
             </div>
         </div>
 
-        <div class="overflow-auto pt-0 p-6">
-            <div class="overflow-x-auto -mx-6 px-6">
-                <table hlmTable class="min-w-full">
-                <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
-                    <tr hlmTableRow class="hover:bg-transparent">
-                        <th hlmTableHead (click)="sortParties('partyName')" class="cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                            Партия
-                            <span class="ml-1">
-                                @if (partySortColumn === 'partyName') {
-                                    {{ partySortDir === 'asc' ? '↑' : '↓' }}
-                                }
-                            </span>
-                        </th>
-                        <th hlmTableHead (click)="sortParties('total')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                            Гласове
-                            <span class="ml-1">
-                                @if (partySortColumn === 'total') {
-                                    {{ partySortDir === 'asc' ? '↑' : '↓' }}
-                                }
-                            </span>
-                        </th>
-                        <th hlmTableHead (click)="sortParties('paper')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                            Хартиени
-                            <span class="ml-1">
-                                @if (partySortColumn === 'paper') {
-                                    {{ partySortDir === 'asc' ? '↑' : '↓' }}
-                                }
-                            </span>
-                        </th>
-                        <th hlmTableHead (click)="sortParties('machine')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                            Машинни
-                            <span class="ml-1">
-                                @if (partySortColumn === 'machine') {
-                                    {{ partySortDir === 'asc' ? '↑' : '↓' }}
-                                }
-                            </span>
-                        </th>
-                        <th hlmTableHead (click)="sortParties('percent')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                            %
-                            <span class="ml-1">
-                                @if (partySortColumn === 'percent') {
-                                    {{ partySortDir === 'asc' ? '↑' : '↓' }}
-                                }
-                            </span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody hlmTableBody>
-                    @for (res of filteredPartyResults; track res.partyId) {
-                        @let alias = getPartyAlias(res.partyName);
-                        <tr hlmTableRow [class.font-bold]="alias.includes('ПП-ДБ')" [class.text-ppdb]="alias.includes('ПП-ДБ')">
-                            <td hlmTableCell [class.text-muted-foreground]="res.isNoVotes" [class.italic]="res.isNoVotes">{{ alias }}</td>
-                            <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.comparisons || currentSectionData?.partyVotes?.[res.partyId]?.comparisons" [currentValue]="res.total">{{ res.total }}</td>
-                            <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.paperComparisons || currentSectionData?.partyVotes?.[res.partyId]?.paperComparisons" [currentValue]="res.paper">{{ res.paper }}</td>
-                            <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.machineComparisons || currentSectionData?.partyVotes?.[res.partyId]?.machineComparisons" [currentValue]="res.machine">{{ res.machine }}</td>
-                            <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.percentComparisons || currentSectionData?.partyVotes?.[res.partyId]?.percentComparisons" [currentValue]="res.percent" [isPercent]="true">{{ formatActivity(res.percent) }}%</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        <div class="flex flex-col h-[90vh] overflow-auto pt-0 p-6">
+            <!-- Tabs -->
+            <div class="flex flex-wrap gap-2 border-b border-primary/10 mb-4 flex-shrink-0">
+                <button hlmBtn [variant]="activeTab() === 'parties' ? 'default' : 'outline'" size="lg" [attr.data-state]="activeTab() === 'parties' ? 'active' : 'inactive'"
+                        (click)="activeTab.set('parties')">
+                    Партии
+                </button>
+                <button hlmBtn [variant]="activeTab() === 'candidates' ? 'default' : 'outline'" size="lg" [attr.data-state]="activeTab() === 'candidates' ? 'active' : 'inactive'"
+                        (click)="activeTab.set('candidates')">
+                    Кандидати
+                </button>
             </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2">
+
+          <div class="flex-1 -mx-6 px-6 overflow-x-auto" style="max-height: 60vh; min-height: 60vh">
+            <table hlmTable class="overflow-auto min-w-full">
+              <!-- Parties Table -->
+              @if (activeTab() === 'parties') {
+                  <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
+                      <tr hlmTableRow class="hover:bg-transparent">
+                          <th hlmTableHead (click)="sortParties('partyName')" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <span class="flex items-center justify-between">
+                                  <span>Партия</span>
+                                  <span class="ml-1 flex items-center">
+                                      @if (partySortColumn === 'partyName') {
+                                          <span class="text-primary dark:text-secondary font-bold">{{ partySortDir === 'asc' ? '↑' : '↓' }}</span>
+                                      } @else {
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                              <path d="M8 9l4-4 4 4"/>
+                                              <path d="M8 15l4 4 4-4"/>
+                                          </svg>
+                                      }
+                                  </span>
+                              </span>
+                          </th>
+                          <th hlmTableHead (click)="sortParties('total')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <span class="flex items-center justify-end">
+                                  <span>Гласове</span>
+                                  <span class="ml-1 flex items-center">
+                                      @if (partySortColumn === 'total') {
+                                          <span class="text-primary dark:text-secondary font-bold">{{ partySortDir === 'asc' ? '↑' : '↓' }}</span>
+                                      } @else {
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                              <path d="M8 9l4-4 4 4"/>
+                                              <path d="M8 15l4 4 4-4"/>
+                                          </svg>
+                                      }
+                                  </span>
+                              </span>
+                          </th>
+                          <th hlmTableHead (click)="sortParties('paper')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <span class="flex items-center justify-end">
+                                  <span>Хартиени</span>
+                                  <span class="ml-1 flex items-center">
+                                      @if (partySortColumn === 'paper') {
+                                          <span class="text-primary dark:text-secondary font-bold">{{ partySortDir === 'asc' ? '↑' : '↓' }}</span>
+                                      } @else {
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                              <path d="M8 9l4-4 4 4"/>
+                                              <path d="M8 15l4 4 4-4"/>
+                                          </svg>
+                                      }
+                                  </span>
+                              </span>
+                          </th>
+                          <th hlmTableHead (click)="sortParties('machine')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <span class="flex items-center justify-end">
+                                  <span>Машинни</span>
+                                  <span class="ml-1 flex items-center">
+                                      @if (partySortColumn === 'machine') {
+                                          <span class="text-primary dark:text-secondary font-bold">{{ partySortDir === 'asc' ? '↑' : '↓' }}</span>
+                                      } @else {
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                              <path d="M8 9l4-4 4 4"/>
+                                              <path d="M8 15l4 4 4-4"/>
+                                          </svg>
+                                      }
+                                  </span>
+                              </span>
+                          </th>
+                          <th hlmTableHead (click)="sortParties('percent')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <span class="flex items-center justify-end">
+                                  <span>%</span>
+                                  <span class="ml-1 flex items-center">
+                                      @if (partySortColumn === 'percent') {
+                                          <span class="text-primary dark:text-secondary font-bold">{{ partySortDir === 'asc' ? '↑' : '↓' }}</span>
+                                      } @else {
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                              <path d="M8 9l4-4 4 4"/>
+                                              <path d="M8 15l4 4 4-4"/>
+                                          </svg>
+                                      }
+                                  </span>
+                              </span>
+                          </th>
+                      </tr>
+                  </thead>
+                  <tbody hlmTableBody>
+                          @for (res of filteredPartyResults; track res.partyId) {
+                              @let alias = getPartyAlias(res.partyName);
+                              <tr hlmTableRow [class.font-bold]="alias.includes('ПП-ДБ')" [class.text-ppdb]="alias.includes('ПП-ДБ')">
+                                  <td hlmTableCell [class.text-muted-foreground]="res.isNoVotes" [class.italic]="res.isNoVotes">{{ alias }}</td>
+                                  <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.comparisons || currentSectionData?.partyVotes?.[res.partyId]?.comparisons" [currentValue]="res.total">{{ res.total }}</td>
+                                  <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.paperComparisons || currentSectionData?.partyVotes?.[res.partyId]?.paperComparisons" [currentValue]="res.paper">{{ res.paper }}</td>
+                                  <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.machineComparisons || currentSectionData?.partyVotes?.[res.partyId]?.machineComparisons" [currentValue]="res.machine">{{ res.machine }}</td>
+                                  <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.percentComparisons || currentSectionData?.partyVotes?.[res.partyId]?.percentComparisons" [currentValue]="res.percent" [isPercent]="true">{{ formatActivity(res.percent) }}%</td>
+                              </tr>
+                          }
+                      </tbody>
+              }
+
+              <!-- Candidates Table -->
+              @if (activeTab() === 'candidates') {
+                  <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
+                      <tr hlmTableRow class="hover:bg-transparent">
+                          <th hlmTableHead (click)="sortCandidates('candidateName')" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <span class="flex items-center justify-between">
+                                  <span>Име</span>
+                                  <span class="ml-1 flex items-center">
+                                      @if (candidateSortColumn === 'candidateName') {
+                                          <span class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                      } @else {
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                              <path d="M8 9l4-4 4 4"/>
+                                              <path d="M8 15l4 4 4-4"/>
+                                          </svg>
+                                      }
+                                  </span>
+                              </span>
+                          </th>
+                          <th hlmTableHead (click)="sortCandidates('candidateId')" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <span class="flex items-center justify-between">
+                                  <span>Преференция ID</span>
+                                  <span class="ml-1 flex items-center">
+                                      @if (candidateSortColumn === 'candidateId') {
+                                          <span class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                      } @else {
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                              <path d="M8 9l4-4 4 4"/>
+                                              <path d="M8 15l4 4 4-4"/>
+                                          </svg>
+                                      }
+                                  </span>
+                              </span>
+                          </th>
+                          <th hlmTableHead (click)="sortCandidates('partyName')" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <span class="flex items-center justify-between">
+                                  <span>Партия</span>
+                                  <span class="ml-1 flex items-center">
+                                      @if (candidateSortColumn === 'partyName') {
+                                          <span class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                      } @else {
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                              <path d="M8 9l4-4 4 4"/>
+                                              <path d="M8 15l4 4 4-4"/>
+                                          </svg>
+                                      }
+                                  </span>
+                              </span>
+                          </th>
+                          <th hlmTableHead (click)="sortCandidates('paper')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <span class="flex items-center justify-end">
+                                  <span>Хартиени</span>
+                                  <span class="ml-1 flex items-center">
+                                      @if (candidateSortColumn === 'paper') {
+                                          <span class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                      } @else {
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                              <path d="M8 9l4-4 4 4"/>
+                                              <path d="M8 15l4 4 4-4"/>
+                                          </svg>
+                                      }
+                                  </span>
+                              </span>
+                          </th>
+                          <th hlmTableHead (click)="sortCandidates('machine')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <span class="flex items-center justify-end">
+                                  <span>Машинни</span>
+                                  <span class="ml-1 flex items-center">
+                                      @if (candidateSortColumn === 'machine') {
+                                          <span class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                      } @else {
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                              <path d="M8 9l4-4 4 4"/>
+                                              <path d="M8 15l4 4 4-4"/>
+                                          </svg>
+                                      }
+                                  </span>
+                              </span>
+                          </th>
+                          <th hlmTableHead (click)="sortCandidates('percentInSection')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <span class="flex items-center justify-end">
+                                  <span>Процент от преференциите в {{ isGroupedByCity ? 'града' : 'секцията' }}</span>
+                                  <span class="ml-1 flex items-center">
+                                      @if (candidateSortColumn === 'percentInSection') {
+                                          <span class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                      } @else {
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                              <path d="M8 9l4-4 4 4"/>
+                                              <path d="M8 15l4 4 4-4"/>
+                                          </svg>
+                                      }
+                                  </span>
+                              </span>
+                          </th>
+                        <th hlmTableHead (click)="sortCandidates('totalInRegion')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <span class="flex items-center justify-end">
+                                  <span>Общо преференции в региона</span>
+                                  <span class="ml-1 flex items-center">
+                                      @if (candidateSortColumn === 'totalInRegion') {
+                                        <span class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                      } @else {
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                              <path d="M8 9l4-4 4 4"/>
+                                              <path d="M8 15l4 4 4-4"/>
+                                          </svg>
+                                      }
+                                  </span>
+                              </span>
+                        </th>
+                          <th hlmTableHead (click)="sortCandidates('partyPercentInSection')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <span class="flex items-center justify-end">
+                                  <span>{{ isGroupedByCity ? 'Гласове за партия в града' : 'Гласове за партия в секцията' }}</span>
+                                  <span class="ml-1 flex items-center">
+                                      @if (candidateSortColumn === 'partyPercentInSection') {
+                                          <span class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                      } @else {
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                              <path d="M8 9l4-4 4 4"/>
+                                              <path d="M8 15l4 4 4-4"/>
+                                          </svg>
+                                      }
+                                  </span>
+                              </span>
+                          </th>
+                          <th hlmTableHead (click)="sortCandidates('partyPercentInRegion')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <span class="flex items-center justify-end">
+                                  <span>Процент от преференциите на партия в региона</span>
+                                  <span class="ml-1 flex items-center">
+                                      @if (candidateSortColumn === 'partyPercentInRegion') {
+                                          <span class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                      } @else {
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                              <path d="M8 9l4-4 4 4"/>
+                                              <path d="M8 15l4 4 4-4"/>
+                                          </svg>
+                                      }
+                                  </span>
+                              </span>
+                          </th>
+                      </tr>
+                  </thead>
+                  <tbody hlmTableBody>
+                          @for (candidate of candidateResults; track candidate.candidateId + candidate.partyId) {
+                              <tr hlmTableRow>
+                                  <td hlmTableCell>{{ candidate.candidateName }}</td>
+                                  <td hlmTableCell>{{ candidate.candidateId }}</td>
+                                  <td hlmTableCell>{{ getPartyAlias(candidate.partyName) }}</td>
+                                  <td hlmTableCell class="text-right">{{ candidate.paper | number }}</td>
+                                  <td hlmTableCell class="text-right">{{ candidate.machine | number }}</td>
+                                  <td hlmTableCell class="text-right">{{ candidate.percentInSection.toFixed(2) }}%</td>
+                                  <td hlmTableCell class="text-right">{{ candidate.totalInRegion | number }}</td>
+                                  <td hlmTableCell class="text-right">{{ candidate.partyPercentInSection | number }}</td>
+                                  <td hlmTableCell class="text-right">{{ candidate.partyPercentInRegion.toFixed(2) }}%</td>
+                              </tr>
+                          }
+                          @if (votesWithoutPreferencesEntries.length > 0) {
+                              @for (entry of votesWithoutPreferencesEntries; track entry[0]) {
+                                  @let partyId = entry[0];
+                                  @let data = entry[1];
+                                  @let sectionVoted = currentSectionData?.voted || 0;
+                                  @let partyVotes = currentSectionData?.partyVotes?.[partyId];
+                                  @let partyTotal = partyVotes?.total || 0;
+                                  <tr hlmTableRow class="bg-muted/50">
+                                      <td hlmTableCell class="font-bold italic">Без преференции</td>
+                                      <td hlmTableCell></td>
+                                      <td hlmTableCell class="font-bold">{{ getPartyAlias(data.partyName) }}</td>
+                                      <td hlmTableCell class="text-right font-bold">{{ data.paper | number }}</td>
+                                      <td hlmTableCell class="text-right font-bold">{{ data.machine | number }}</td>
+                                      <td hlmTableCell class="text-right font-bold">{{ sectionVoted > 0 ? (data.total / sectionVoted * 100).toFixed(2) : '0.00' }}%</td>
+                                      <td hlmTableCell class="text-right font-bold">{{ partyTotal > 0 ? (data.total / partyTotal * 100).toFixed(2) : '0.00' }}%</td>
+                                      <td hlmTableCell class="text-right font-bold">{{ data.total | number }}</td>
+                                      <td hlmTableCell></td>
+                                  </tr>
+                              }
+                          }
+                      </tbody>
+              }
+            </table>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 flex-shrink-0">
             <div hlmCard class="p-1 col-span-1 border-primary/10">
               <highcharts-chart
                 [options]="chartOptions"
@@ -165,7 +393,7 @@
           </div>
 
           <!-- Historical Trends Section -->
-          <div class="mt-8 border-t border-primary/20 pt-6">
+          <div class="mt-8 border-t border-primary/20 pt-6 flex-shrink-0">
             <div class="flex justify-between items-center mb-4">
               <h4 hlmH4 class="text-secondary dark:text-primary">Исторически трендове</h4>
             </div>

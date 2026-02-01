@@ -14,6 +14,16 @@ export interface PartyVotes {
   machineComparisons?: ComparativeValue[];
 }
 
+export interface CandidateVotes {
+  candidateId: string;
+  candidateName: string;
+  partyId: string;
+  partyName: string;
+  total: number;
+  paper: number;
+  machine: number;
+}
+
 export interface Region {
   id: string;
   name: string;
@@ -42,7 +52,9 @@ export interface Section {
   noVotesPaper?: number;
   noVotesMachine?: number;
   partyVotes: { [key: string]: PartyVotes };
+  candidateVotes?: { [key: string]: CandidateVotes };
   topParties: { partyId: string, name: string, total: number, percent: number, comparisons?: ComparativeValue[] }[];
+  topCandidates?: { candidateName: string, partyId: string, partyName: string, total: number }[];
   activityPercent: number;
   totalPaper?: number;
   totalMachine?: number;
@@ -80,11 +92,29 @@ export interface PartyResult {
   machineComparisons?: ComparativeValue[];
 }
 
+export interface CandidateResult {
+  candidateId: string;
+  candidateName: string;
+  partyId: string;
+  partyName: string;
+  paper: number;
+  machine: number;
+  total: number;
+  percentInSection: number;
+  partyPercentInSection: number;
+  totalInRegion: number;
+  partyPercentInRegion: number;
+}
+
 export interface SectionDetails {
   sectionId: string;
   cityName: string;
   sectionName: string;
   partyResults: PartyResult[];
+  candidateResults?: CandidateResult[];
+  votesWithoutPreferences?: number;
+  votesWithoutPreferencesByParty?: { [partyId: string]: { total: number, paper: number, machine: number } };
+  candidateVotes?: { [key: string]: CandidateVotes };
 }
 
 export interface TableColumn {
@@ -106,6 +136,7 @@ export const SECTION_COLUMNS: TableColumn[] = [
   { id: 'typeVotes', label: 'Гласове по тип' },
   { id: 'votesToFirst', label: 'Нужни' },
   { id: 'topParties', label: 'Топ 3 партии' },
+  { id: 'topCandidates', label: 'Топ 3 кандидати' },
 ];
 
 export type SectionTab = 'all' | 'target' | 'swing' | 'risky' | 'outside' | 'declining' | 'dormant' | 'flip' | 'vanishing';

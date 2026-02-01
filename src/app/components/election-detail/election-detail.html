@@ -164,123 +164,207 @@
                         <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
                             <tr hlmTableRow class="hover:bg-transparent">
                                 @if (visibleColumns().has('sectionId')) {
-                                    <th hlmTableHead (click)="sortSections('sectionId')" class="cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                                        {{groupByCity() ? 'Секции' : 'Секция'}}
-                                        <span class="ml-1">
-                                            @if (sectionSortColumn === 'sectionId') {
-                                                {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
-                                            }
+                                    <th hlmTableHead (click)="sortSections('sectionId')" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                        <span class="flex items-center justify-between">
+                                            <span>{{groupByCity() ? 'Секции' : 'Секция'}}</span>
+                                            <span class="ml-1 flex items-center">
+                                                @if (sectionSortColumn === 'sectionId') {
+                                                    <span class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                } @else {
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                                        <path d="M8 9l4-4 4 4"/>
+                                                        <path d="M8 15l4 4 4-4"/>
+                                                    </svg>
+                                                }
+                                            </span>
                                         </span>
                                     </th>
                                 }
                                 @if (visibleColumns().has('riskScore')) {
-                                    <th hlmTableHead (click)="sortSections('riskScore')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                                        Рискове
-                                        <span class="ml-1">
-                                            @if (sectionSortColumn === 'riskScore') {
-                                                {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
-                                            }
+                                    <th hlmTableHead (click)="sortSections('riskScore')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                        <span class="flex items-center justify-end">
+                                            <span>Рискове</span>
+                                            <span class="ml-1 flex items-center">
+                                                @if (sectionSortColumn === 'riskScore') {
+                                                    <span class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                } @else {
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                                        <path d="M8 9l4-4 4 4"/>
+                                                        <path d="M8 15l4 4 4-4"/>
+                                                    </svg>
+                                                }
+                                            </span>
                                         </span>
                                     </th>
                                 }
                                 @if (visibleColumns().has('regionName') && (regionId === 'all' || !regionId)) {
-                                    <th hlmTableHead (click)="sortSections('regionName')" class="cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                                        Регион
-                                        <span class="ml-1">
-                                            @if (sectionSortColumn === 'regionName') {
-                                                {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
-                                            }
+                                    <th hlmTableHead (click)="sortSections('regionName')" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                        <span class="flex items-center justify-between">
+                                            <span>Регион</span>
+                                            <span class="ml-1 flex items-center">
+                                                @if (sectionSortColumn === 'regionName') {
+                                                    <span class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                } @else {
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                                        <path d="M8 9l4-4 4 4"/>
+                                                        <path d="M8 15l4 4 4-4"/>
+                                                    </svg>
+                                                }
+                                            </span>
                                         </span>
                                     </th>
                                 }
                                 @if (visibleColumns().has('cityName')) {
-                                    <th hlmTableHead (click)="sortSections('cityName')" class="cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                                        Град
-                                        <span class="ml-1">
-                                            @if (sectionSortColumn === 'cityName') {
-                                                {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
-                                            }
+                                    <th hlmTableHead (click)="sortSections('cityName')" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                        <span class="flex items-center justify-between">
+                                            <span>Град</span>
+                                            <span class="ml-1 flex items-center">
+                                                @if (sectionSortColumn === 'cityName') {
+                                                    <span class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                } @else {
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                                        <path d="M8 9l4-4 4 4"/>
+                                                        <path d="M8 15l4 4 4-4"/>
+                                                    </svg>
+                                                }
+                                            </span>
                                         </span>
                                     </th>
                                 }
                                 @if (visibleColumns().has('sectionName') && !groupByCity()) {
-                                    <th hlmTableHead (click)="sortSections('sectionName')" class="cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                                        Име на секция
-                                        <span class="ml-1">
-                                            @if (sectionSortColumn === 'sectionName') {
-                                                {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
-                                            }
+                                    <th hlmTableHead (click)="sortSections('sectionName')" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                        <span class="flex items-center justify-between">
+                                            <span>Име на секция</span>
+                                            <span class="ml-1 flex items-center">
+                                                @if (sectionSortColumn === 'sectionName') {
+                                                    <span class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                } @else {
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                                        <path d="M8 9l4-4 4 4"/>
+                                                        <path d="M8 15l4 4 4-4"/>
+                                                    </svg>
+                                                }
+                                            </span>
                                         </span>
                                     </th>
                                 }
                                 @if (visibleColumns().has('total')) {
-                                    <th hlmTableHead (click)="sortSections('total')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                                        Избиратели
-                                        <span class="ml-1">
-                                            @if (sectionSortColumn === 'total') {
-                                                {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
-                                            }
+                                    <th hlmTableHead (click)="sortSections('total')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                        <span class="flex items-center justify-end">
+                                            <span>Избиратели</span>
+                                            <span class="ml-1 flex items-center">
+                                                @if (sectionSortColumn === 'total') {
+                                                    <span class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                } @else {
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                                        <path d="M8 9l4-4 4 4"/>
+                                                        <path d="M8 15l4 4 4-4"/>
+                                                    </svg>
+                                                }
+                                            </span>
                                         </span>
                                     </th>
                                 }
                                 @if (visibleColumns().has('voted')) {
-                                    <th hlmTableHead (click)="sortSections('voted')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                                        Гласували
-                                        <span class="ml-1">
-                                            @if (sectionSortColumn === 'voted') {
-                                                {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
-                                            }
+                                    <th hlmTableHead (click)="sortSections('voted')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                        <span class="flex items-center justify-end">
+                                            <span>Гласували</span>
+                                            <span class="ml-1 flex items-center">
+                                                @if (sectionSortColumn === 'voted') {
+                                                    <span class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                } @else {
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                                        <path d="M8 9l4-4 4 4"/>
+                                                        <path d="M8 15l4 4 4-4"/>
+                                                    </svg>
+                                                }
+                                            </span>
                                         </span>
                                     </th>
                                 }
                                 @if (visibleColumns().has('activityPercent')) {
-                                    <th hlmTableHead (click)="sortSections('activityPercent')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                                    Активност
-                                    <span class="ml-1">
-                                            @if (sectionSortColumn === 'activityPercent') {
-                                              {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
-                                            }
+                                    <th hlmTableHead (click)="sortSections('activityPercent')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                        <span class="flex items-center justify-end">
+                                            <span>Активност</span>
+                                            <span class="ml-1 flex items-center">
+                                                @if (sectionSortColumn === 'activityPercent') {
+                                                    <span class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                } @else {
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                                        <path d="M8 9l4-4 4 4"/>
+                                                        <path d="M8 15l4 4 4-4"/>
+                                                    </svg>
+                                                }
+                                            </span>
                                         </span>
                                     </th>
                                 }
                                 @if (visibleColumns().has('discardedVotes')) {
-                                    <th hlmTableHead (click)="sortSections('discardedVotes')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                                        Невалидни
-                                        <span class="ml-1">
-                                            @if (sectionSortColumn === 'discardedVotes') {
-                                                {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
-                                            }
+                                    <th hlmTableHead (click)="sortSections('discardedVotes')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                        <span class="flex items-center justify-end">
+                                            <span>Невалидни</span>
+                                            <span class="ml-1 flex items-center">
+                                                @if (sectionSortColumn === 'discardedVotes') {
+                                                    <span class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                } @else {
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                                        <path d="M8 9l4-4 4 4"/>
+                                                        <path d="M8 15l4 4 4-4"/>
+                                                    </svg>
+                                                }
+                                            </span>
                                         </span>
                                     </th>
                                 }
                                 @if (visibleColumns().has('noVotes')) {
-                                    <th hlmTableHead (click)="sortSections('noVotes')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                                        Не подкрепя никого
-                                        <span class="ml-1">
-                                            @if (sectionSortColumn === 'noVotes') {
-                                                {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
-                                            }
+                                    <th hlmTableHead (click)="sortSections('noVotes')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                        <span class="flex items-center justify-end">
+                                            <span>Не подкрепя никого</span>
+                                            <span class="ml-1 flex items-center">
+                                                @if (sectionSortColumn === 'noVotes') {
+                                                    <span class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                } @else {
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                                        <path d="M8 9l4-4 4 4"/>
+                                                        <path d="M8 15l4 4 4-4"/>
+                                                    </svg>
+                                                }
+                                            </span>
                                         </span>
                                     </th>
                                 }
                                 @if (visibleColumns().has('typeVotes')) {
-                                    <th hlmTableHead (click)="sortSections('totalMachine')" class="cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                                        Гласове по тип
-                                        <span class="ml-1">
-                                            @if (sectionSortColumn === 'totalMachine' || sectionSortColumn === 'totalPaper') {
-                                                {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
-                                            }
+                                    <th hlmTableHead (click)="sortSections('totalMachine')" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                        <span class="flex items-center justify-between">
+                                            <span>Гласове по тип</span>
+                                            <span class="ml-1 flex items-center">
+                                                @if (sectionSortColumn === 'totalMachine' || sectionSortColumn === 'totalPaper') {
+                                                    <span class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                } @else {
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                                        <path d="M8 9l4-4 4 4"/>
+                                                        <path d="M8 15l4 4 4-4"/>
+                                                    </svg>
+                                                }
+                                            </span>
                                         </span>
                                     </th>
                                 }
                               @if (visibleColumns().has('votesToFirst')) {
-                                <th hlmTableHead (click)="sortSections('votesToFirst')" class="text-right cursor-pointer hover:bg-primary/20 transition-colors text-secondary dark:text-primary">
-                                  Нужни
-                                  <span class="ml-1">
-                                                @if (sectionSortColumn === 'votesToFirst') {
-                                                  {{ sectionSortDir === 'asc' ? '↑' : '↓' }}
-                                                }
-                                            </span>
+                                <th hlmTableHead (click)="sortSections('votesToFirst')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                    <span class="flex items-center justify-end">
+                                        <span>Нужни</span>
+                                        <span class="ml-1 flex items-center">
+                                            @if (sectionSortColumn === 'votesToFirst') {
+                                                <span class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                            } @else {
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                                    <path d="M8 9l4-4 4 4"/>
+                                                    <path d="M8 15l4 4 4-4"/>
+                                                </svg>
+                                            }
+                                        </span>
+                                    </span>
                                 </th>
                               }
                                 @if (visibleColumns().has('topParties')) {
@@ -288,16 +372,25 @@
                                         Топ 3 партии
                                     </th>
                                 }
+                                @if (visibleColumns().has('topCandidates')) {
+                                    <th hlmTableHead class="min-w-[200px] text-secondary dark:text-primary">
+                                        Топ 3 кандидати
+                                    </th>
+                                }
                                 </tr>
                             </thead>
                             <tbody hlmTableBody>
                                 @for (section of filteredSections; track section.sectionId) {
                                     <tr hlmTableRow
-                                        class="cursor-pointer"
+                                        class="cursor-pointer hover:bg-primary/10 active:bg-primary/20 transition-colors group relative"
                                         [class.bg-muted]="selectedSection?.sectionId === section.sectionId"
+                                        [class.bg-primary/5]="selectedSection?.sectionId === section.sectionId"
                                         (click)="loadSectionDetails(section)">
                                         @if (visibleColumns().has('sectionId')) {
-                                            <td hlmTableCell class="font-medium">
+                                            <td hlmTableCell class="font-medium relative pr-6">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute right-2 top-1/2 -translate-y-1/2 opacity-30 group-hover:opacity-70 transition-opacity text-primary dark:text-secondary pointer-events-none">
+                                                <path d="m9 18 6-6-6-6"/>
+                                              </svg>
                                               @if (groupByCity()) {
                                                 <span class="text-muted-foreground">{{ section.sectionId }}</span>
                                               } @else {
@@ -395,6 +488,22 @@
                                                     <div class="truncate" [class.font-bold]="alias.includes('ПП-ДБ')" [class.text-ppdb]="alias.includes('ПП-ДБ')" [title]="alias + ': ' + tp.total + ' (' + formatActivity(tp.percent) + '%)'" [hlmTooltip]="tp.comparisons" [currentValue]="tp.total">
                                                         {{ alias }}: <strong>{{ tp.total | number }}</strong> ({{ formatActivity(tp.percent) }}%)
                                                     </div>
+                                                }
+                                            </div>
+                                        </td>
+                                    }
+                                    @if (visibleColumns().has('topCandidates')) {
+                                        <td hlmTableCell>
+                                            <div class="flex flex-col text-xs">
+                                                @if (section.topCandidates && section.topCandidates.length > 0) {
+                                                    @for (candidate of section.topCandidates; track candidate.candidateName + candidate.partyId) {
+                                                        @let alias = getPartyAlias(candidate.partyName);
+                                                        <div class="truncate" [title]="candidate.candidateName + ' (' + alias + '): ' + candidate.total + ' преференциални гласа'">
+                                                            {{ candidate.candidateName }} ({{ alias }}): <strong>{{ candidate.total | number }}</strong>
+                                                        </div>
+                                                    }
+                                                } @else {
+                                                    <span class="text-muted-foreground">-</span>
                                                 }
                                             </div>
                                         </td>

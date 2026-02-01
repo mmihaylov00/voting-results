@@ -13,53 +13,95 @@
             <table hlmTable>
                 <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
                     <tr hlmTableRow>
-                        <th hlmTableHead class="text-secondary dark:text-primary cursor-pointer hover:bg-muted/50 transition-colors" (click)="toggleSort('sectionId')">
-                            <div class="flex items-center gap-1">
-                                Секция
-                                @if (sortColumn() === 'sectionId') {
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform" [class.rotate-180]="sortDirection() === 'desc'"><path d="m18 15-6-6-6 6"/></svg>
-                                }
-                            </div>
+                        <th hlmTableHead class="text-secondary dark:text-primary cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors group relative" (click)="toggleSort('sectionId')">
+                            <span class="flex items-center justify-between">
+                                <span>Секция</span>
+                                <span class="ml-1 flex items-center">
+                                    @if (sortColumn() === 'sectionId') {
+                                        <span class="text-primary dark:text-secondary font-bold">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
+                                    } @else {
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                            <path d="M8 9l4-4 4 4"/>
+                                            <path d="M8 15l4 4 4-4"/>
+                                        </svg>
+                                    }
+                                </span>
+                            </span>
                         </th>
-                        <th hlmTableHead class="text-secondary dark:text-primary cursor-pointer hover:bg-muted/50 transition-colors" (click)="toggleSort('cityName')">
-                            <div class="flex items-center gap-1">
-                                Град
-                                @if (sortColumn() === 'cityName') {
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform" [class.rotate-180]="sortDirection() === 'desc'"><path d="m18 15-6-6-6 6"/></svg>
-                                }
-                            </div>
+                        <th hlmTableHead class="text-secondary dark:text-primary cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors group relative" (click)="toggleSort('cityName')">
+                            <span class="flex items-center justify-between">
+                                <span>Град</span>
+                                <span class="ml-1 flex items-center">
+                                    @if (sortColumn() === 'cityName') {
+                                        <span class="text-primary dark:text-secondary font-bold">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
+                                    } @else {
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                            <path d="M8 9l4-4 4 4"/>
+                                            <path d="M8 15l4 4 4-4"/>
+                                        </svg>
+                                    }
+                                </span>
+                            </span>
                         </th>
-                        <th hlmTableHead class="text-right text-secondary dark:text-primary cursor-pointer hover:bg-muted/50 transition-colors" (click)="toggleSort('voted')">
-                            <div class="flex items-center justify-end gap-1">
-                                Подписи
-                                @if (sortColumn() === 'voted') {
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform" [class.rotate-180]="sortDirection() === 'desc'"><path d="m18 15-6-6-6 6"/></svg>
-                                }
-                            </div>
+                        <th hlmTableHead class="text-right text-secondary dark:text-primary cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors group relative" (click)="toggleSort('voted')">
+                            <span class="flex items-center justify-end">
+                                <span>Подписи</span>
+                                <span class="ml-1 flex items-center">
+                                    @if (sortColumn() === 'voted') {
+                                        <span class="text-primary dark:text-secondary font-bold">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
+                                    } @else {
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                            <path d="M8 9l4-4 4 4"/>
+                                            <path d="M8 15l4 4 4-4"/>
+                                        </svg>
+                                    }
+                                </span>
+                            </span>
                         </th>
-                        <th hlmTableHead class="text-right text-secondary dark:text-primary cursor-pointer hover:bg-muted/50 transition-colors" (click)="toggleSort('protocolPaperVotes')">
-                            <div class="flex items-center justify-end gap-1">
-                                Хартиени
-                                @if (sortColumn() === 'protocolPaperVotes') {
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform" [class.rotate-180]="sortDirection() === 'desc'"><path d="m18 15-6-6-6 6"/></svg>
-                                }
-                            </div>
+                        <th hlmTableHead class="text-right text-secondary dark:text-primary cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors group relative" (click)="toggleSort('protocolPaperVotes')">
+                            <span class="flex items-center justify-end">
+                                <span>Хартиени</span>
+                                <span class="ml-1 flex items-center">
+                                    @if (sortColumn() === 'protocolPaperVotes') {
+                                        <span class="text-primary dark:text-secondary font-bold">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
+                                    } @else {
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                            <path d="M8 9l4-4 4 4"/>
+                                            <path d="M8 15l4 4 4-4"/>
+                                        </svg>
+                                    }
+                                </span>
+                            </span>
                         </th>
-                        <th hlmTableHead class="text-right text-secondary dark:text-primary cursor-pointer hover:bg-muted/50 transition-colors" (click)="toggleSort('protocolMachineVotes')">
-                            <div class="flex items-center justify-end gap-1">
-                                Машинни
-                                @if (sortColumn() === 'protocolMachineVotes') {
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform" [class.rotate-180]="sortDirection() === 'desc'"><path d="m18 15-6-6-6 6"/></svg>
-                                }
-                            </div>
+                        <th hlmTableHead class="text-right text-secondary dark:text-primary cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors group relative" (click)="toggleSort('protocolMachineVotes')">
+                            <span class="flex items-center justify-end">
+                                <span>Машинни</span>
+                                <span class="ml-1 flex items-center">
+                                    @if (sortColumn() === 'protocolMachineVotes') {
+                                        <span class="text-primary dark:text-secondary font-bold">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
+                                    } @else {
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                            <path d="M8 9l4-4 4 4"/>
+                                            <path d="M8 15l4 4 4-4"/>
+                                        </svg>
+                                    }
+                                </span>
+                            </span>
                         </th>
-                        <th hlmTableHead class="text-right text-secondary dark:text-primary cursor-pointer hover:bg-muted/50 transition-colors" (click)="toggleSort('protocolErrorDiff')">
-                            <div class="flex items-center justify-end gap-1">
-                                Разлика
-                                @if (sortColumn() === 'protocolErrorDiff') {
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform" [class.rotate-180]="sortDirection() === 'desc'"><path d="m18 15-6-6-6 6"/></svg>
-                                }
-                            </div>
+                        <th hlmTableHead class="text-right text-secondary dark:text-primary cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors group relative" (click)="toggleSort('protocolErrorDiff')">
+                            <span class="flex items-center justify-end">
+                                <span>Разлика</span>
+                                <span class="ml-1 flex items-center">
+                                    @if (sortColumn() === 'protocolErrorDiff') {
+                                        <span class="text-primary dark:text-secondary font-bold">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
+                                    } @else {
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                            <path d="M8 9l4-4 4 4"/>
+                                            <path d="M8 15l4 4 4-4"/>
+                                        </svg>
+                                    }
+                                </span>
+                            </span>
                         </th>
                     </tr>
                 </thead>

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
-import { Section, SectionDetails, PartyResult, ComparativeValue, PartyVotes } from '../../../../models/election.models';
+import { Section, SectionDetails, PartyResult, ComparativeValue, PartyVotes, CandidateResult, CandidateVotes } from '../../../../models/election.models';
 import { ThemeService } from '../../../../services/theme.service';
 import { ElectionService } from '../../../../services/election';
 import { getPartyAlias } from '../../../../utils/party-aliases';
@@ -57,8 +57,11 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
   partySortColumn: keyof PartyResult = 'total';
   partySortDir: 'asc' | 'desc' = 'desc';
+  candidateSortColumn: keyof CandidateResult = 'total';
+  candidateSortDir: 'asc' | 'desc' = 'desc';
   @Input() selectedPartyIds: Set<string> = new Set();
   showPartyFilter: boolean = false;
+  activeTab = signal<'parties' | 'candidates'>('parties');
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
   historicalVotesChartOptions: Highcharts.Options = {};
@@ -68,11 +71,18 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
   allData: { [date: string]: any } = {};
   dates: { date: string, name: string }[] = [];
+  candidateResults: CandidateResult[] = [];
+  votesWithoutPreferences: number = 0;
+  votesWithoutPreferencesByParty: { [partyId: string]: { total: number, paper: number, machine: number, partyName: string } } = {};
 
   getGoogleMapsUrl(cityName: string, sectionName: string): string {
     const isCity = this.section.sectionName.startsWith('Общо за');
     const query = encodeURIComponent(isCity ? cityName : `${cityName} ${sectionName}`);
     return `https://www.google.com/maps/search/?api=1&query=${query}`;
+  }
+
+  get isGroupedByCity(): boolean {
+    return this.section.sectionName.startsWith('Общо за');
   }
 
   formatActivity(percent: number): string {
@@ -105,12 +115,24 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
         }
       }
     });
+
+    effect(() => {
+      // Update charts when tab changes
+      this.activeTab();
+      if (this.section) {
+        this.updateChartOptions();
+        if (Object.keys(this.allData).length > 0) {
+          this.updateHistoricalCharts();
+        }
+      }
+    });
   }
 
   ngOnInit() {
     this.electionService.getAllData().subscribe(data => {
       this.allData = data;
       if (this.section) {
+        this.calculateCandidateResults();
         this.updateHistoricalCharts();
       }
     });
@@ -118,6 +140,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.section) {
+      this.calculateCandidateResults();
       this.updateChartOptions();
       if (Object.keys(this.allData).length > 0) {
         this.updateHistoricalCharts();
@@ -287,67 +310,301 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     };
   }
 
+  calculateCandidateResults() {
+    // Check if we have candidate votes from section or from SectionDetails (for grouped cities)
+    const candidateVotes = this.currentSectionData?.candidateVotes || this.section.candidateVotes;
+    
+    if (!this.currentSectionData) {
+      this.candidateResults = [];
+      this.votesWithoutPreferences = 0;
+      this.votesWithoutPreferencesByParty = {};
+      return;
+    }
+
+    // Use pre-calculated votes without preferences by party if available (for grouped cities)
+    if (this.section.votesWithoutPreferencesByParty) {
+      this.votesWithoutPreferencesByParty = {};
+      Object.entries(this.section.votesWithoutPreferencesByParty).forEach(([partyId, data]) => {
+        const party = this.allParties.find(p => p.id === partyId);
+        this.votesWithoutPreferencesByParty[partyId] = {
+          ...data,
+          partyName: party?.name || partyId
+        };
+      });
+      this.votesWithoutPreferences = this.section.votesWithoutPreferences || 0;
+    } else if (!candidateVotes) {
+      this.candidateResults = [];
+      this.votesWithoutPreferences = this.currentSectionData.voted || 0;
+      this.votesWithoutPreferencesByParty = {};
+      return;
+    } else {
+      // Calculate votes without preferences per party for single section
+      this.votesWithoutPreferencesByParty = {};
+      const partiesMap: { [id: string]: string } = {};
+      this.allParties.forEach(p => {
+        partiesMap[p.id] = p.name;
+      });
+      
+      const section = this.currentSectionData;
+      Object.entries(section.partyVotes).forEach(([partyId, partyVotes]) => {
+        if (partyId === 'no_votes') return;
+        
+        // Get total preference votes for this party
+        let partyPreferenceVotes = 0;
+        let partyPreferencePaper = 0;
+        let partyPreferenceMachine = 0;
+        
+        Object.values(candidateVotes).forEach(candidate => {
+          if (candidate.partyId === partyId) {
+            partyPreferenceVotes += candidate.total;
+            partyPreferencePaper += candidate.paper;
+            partyPreferenceMachine += candidate.machine;
+          }
+        });
+        
+        // Votes without preferences = party total - preference votes
+        const withoutPrefs = partyVotes.total - partyPreferenceVotes;
+        if (withoutPrefs > 0) {
+          this.votesWithoutPreferencesByParty[partyId] = {
+            total: withoutPrefs,
+            paper: partyVotes.paper - partyPreferencePaper,
+            machine: partyVotes.machine - partyPreferenceMachine,
+            partyName: partiesMap[partyId] || partyId
+          };
+        }
+      });
+      
+      // Calculate total votes without preferences
+      const totalPreferenceVotes = Object.values(candidateVotes).reduce((sum, c) => sum + c.total, 0);
+      const sectionVoted = section.voted;
+      this.votesWithoutPreferences = sectionVoted - totalPreferenceVotes;
+    }
+
+    if (!candidateVotes) {
+      this.candidateResults = [];
+      return;
+    }
+
+    const section = this.currentSectionData;
+    const regionId = section.regionId;
+    const cityName = section.cityName;
+    const sectionVoted = section.voted;
+    const isCity = this.isGroupedByCity;
+
+    // Get all sections in the region for region-level calculations
+    const currentDateData = this.allData[this.date];
+    
+    // Initialize region totals
+    const regionPartyVotes: { [partyId: string]: number } = {};
+    const regionPartyPreferenceVotes: { [partyId: string]: number } = {}; // Total preference votes per party in region
+    const regionCandidateVotes: { [key: string]: number } = {};
+    let regionTotalVoted = 0;
+
+    // Only calculate region totals if we have data loaded
+    if (currentDateData && currentDateData.sections && regionId) {
+      const regionSections: Section[] = currentDateData.sections.filter((s: Section) => s.regionId === regionId);
+      
+      regionSections.forEach((s: Section) => {
+        regionTotalVoted += s.voted;
+        Object.entries(s.partyVotes).forEach(([partyId, votes]) => {
+          regionPartyVotes[partyId] = (regionPartyVotes[partyId] || 0) + votes.total;
+        });
+        if (s.candidateVotes) {
+          Object.values(s.candidateVotes).forEach(candidate => {
+            const key = `${candidate.partyId}_${candidate.candidateId}`;
+            regionCandidateVotes[key] = (regionCandidateVotes[key] || 0) + candidate.total;
+            // Sum preference votes per party
+            regionPartyPreferenceVotes[candidate.partyId] = (regionPartyPreferenceVotes[candidate.partyId] || 0) + candidate.total;
+          });
+        }
+      });
+    }
+
+    // Build candidate results
+    const candidateResultsMap: { [key: string]: CandidateResult } = {};
+    
+    // Get party votes from partyResults (available in both single sections and grouped cities)
+    const partyVotesMap: { [partyId: string]: number } = {};
+    this.section.partyResults.forEach(pr => {
+      if (pr.partyId !== 'no_votes' && pr.partyId !== 'others') {
+        partyVotesMap[pr.partyId] = pr.total;
+      }
+    });
+    
+    Object.values(candidateVotes).forEach(candidate => {
+      const key = `${candidate.partyId}_${candidate.candidateId}`;
+      // Get party total from partyResults (works for both single sections and grouped cities)
+      const partyTotalInSection = partyVotesMap[candidate.partyId] || 0;
+      const partyTotalInRegion = regionPartyVotes[candidate.partyId] || 0;
+      const candidateTotalInRegion = regionCandidateVotes[key] || 0;
+      const partyPreferenceVotesInRegion = regionPartyPreferenceVotes[candidate.partyId] || 0;
+
+      candidateResultsMap[key] = {
+        candidateId: candidate.candidateId,
+        candidateName: candidate.candidateName,
+        partyId: candidate.partyId,
+        partyName: candidate.partyName,
+        paper: candidate.paper,
+        machine: candidate.machine,
+        total: candidate.total,
+        percentInSection: sectionVoted > 0 ? (candidate.total / sectionVoted) * 100 : 0,
+        partyPercentInSection: partyTotalInSection, // Show actual number, not percentage
+        totalInRegion: candidateTotalInRegion,
+        partyPercentInRegion: partyPreferenceVotesInRegion > 0 ? (candidateTotalInRegion / partyPreferenceVotesInRegion) * 100 : 0
+      };
+    });
+
+    this.candidateResults = Object.values(candidateResultsMap);
+    this.sortCandidates(this.candidateSortColumn, true);
+  }
+
+  get votesWithoutPreferencesEntries(): Array<[string, { total: number, paper: number, machine: number, partyName: string }]> {
+    return Object.entries(this.votesWithoutPreferencesByParty);
+  }
+
+  sortCandidates(column: keyof CandidateResult, preserveDir: boolean = false) {
+    if (this.candidateSortColumn === column && !preserveDir) {
+      this.candidateSortDir = this.candidateSortDir === 'asc' ? 'desc' : 'asc';
+    } else if (!preserveDir) {
+      this.candidateSortColumn = column;
+      this.candidateSortDir = column === 'candidateName' || column === 'partyName' || column === 'candidateId' ? 'asc' : 'desc';
+    }
+
+    this.candidateResults.sort((a, b) => {
+      const valA = a[this.candidateSortColumn];
+      const valB = b[this.candidateSortColumn];
+
+      if (typeof valA === 'string' && typeof valB === 'string') {
+        return this.candidateSortDir === 'asc'
+          ? valA.localeCompare(valB)
+          : valB.localeCompare(valA);
+      }
+
+      return this.candidateSortDir === 'asc'
+        ? (valA as number) - (valB as number)
+        : (valB as number) - (valA as number);
+    });
+  }
+
   updateChartOptions() {
     const isDark = this.themeService.darkMode();
     const textColor = isDark ? '#f8fafc' : '#1e293b';
-
-    const results = [...this.section.partyResults]
-      .filter(r => r.partyId !== 'no_votes')
-      .sort((a, b) => b.total - a.total)
-      .slice(0, 10);
-
-    const categories = results.map(r => getPartyAlias(r.partyName));
-    const paperData = results.map(r => r.paper);
-    const machineData = results.map(r => r.machine);
-
     const isCity = this.section.sectionName.startsWith('Общо за');
 
-    this.chartOptions = {
-      chart: {
-        type: 'bar',
-        backgroundColor: 'transparent',
-      },
-      title: {
-        text: isCity ? `Топ 10 партии в ${this.section.cityName}` : 'Топ 10 партии в секцията',
-        style: { color: textColor }
-      },
-      xAxis: {
-        categories: categories,
-        labels: { style: { color: textColor } }
-      },
-      yAxis: {
+    if (this.activeTab() === 'candidates') {
+      // Show candidate preference votes chart
+      const candidates = [...this.candidateResults]
+        .sort((a, b) => b.total - a.total)
+        .slice(0, 10);
+
+      const categories = candidates.map(c => `${c.candidateName} (${getPartyAlias(c.partyName)})`);
+      const paperData = candidates.map(c => c.paper);
+      const machineData = candidates.map(c => c.machine);
+
+      this.chartOptions = {
+        chart: {
+          type: 'bar',
+          backgroundColor: 'transparent',
+        },
         title: {
-          text: 'Гласове',
+          text: isCity ? `Топ 10 кандидати в ${this.section.cityName}` : 'Топ 10 кандидати в секцията',
           style: { color: textColor }
         },
-        labels: { style: { color: textColor } },
-        gridLineColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
-      },
-      legend: {
-        itemStyle: { color: textColor }
-      },
-      plotOptions: {
-        series: {
-          stacking: 'normal',
-          borderWidth: 0
-        }
-      },
-      series: [
-        {
-          name: 'Хартиени',
-          type: 'bar',
-          data: paperData,
-          color: '#fbbf24'
+        xAxis: {
+          categories: categories,
+          labels: { style: { color: textColor }, rotation: -45, align: 'right' }
         },
-        {
-          name: 'Машинни',
+        yAxis: {
+          title: {
+            text: 'Преференции',
+            style: { color: textColor }
+          },
+          labels: { style: { color: textColor } },
+          gridLineColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+        },
+        legend: {
+          itemStyle: { color: textColor }
+        },
+        plotOptions: {
+          series: {
+            stacking: 'normal',
+            borderWidth: 0
+          }
+        },
+        series: [
+          {
+            name: 'Хартиени',
+            type: 'bar',
+            data: paperData,
+            color: '#fbbf24'
+          },
+          {
+            name: 'Машинни',
+            type: 'bar',
+            data: machineData,
+            color: '#3b82f6'
+          }
+        ],
+        credits: { enabled: false }
+      };
+    } else {
+      // Show party votes chart
+      const results = [...this.section.partyResults]
+        .filter(r => r.partyId !== 'no_votes')
+        .sort((a, b) => b.total - a.total)
+        .slice(0, 10);
+
+      const categories = results.map(r => getPartyAlias(r.partyName));
+      const paperData = results.map(r => r.paper);
+      const machineData = results.map(r => r.machine);
+
+      this.chartOptions = {
+        chart: {
           type: 'bar',
-          data: machineData,
-          color: '#3b82f6'
-        }
-      ],
-      credits: { enabled: false }
-    };
+          backgroundColor: 'transparent',
+        },
+        title: {
+          text: isCity ? `Топ 10 партии в ${this.section.cityName}` : 'Топ 10 партии в секцията',
+          style: { color: textColor }
+        },
+        xAxis: {
+          categories: categories,
+          labels: { style: { color: textColor } }
+        },
+        yAxis: {
+          title: {
+            text: 'Гласове',
+            style: { color: textColor }
+          },
+          labels: { style: { color: textColor } },
+          gridLineColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+        },
+        legend: {
+          itemStyle: { color: textColor }
+        },
+        plotOptions: {
+          series: {
+            stacking: 'normal',
+            borderWidth: 0
+          }
+        },
+        series: [
+          {
+            name: 'Хартиени',
+            type: 'bar',
+            data: paperData,
+            color: '#fbbf24'
+          },
+          {
+            name: 'Машинни',
+            type: 'bar',
+            data: machineData,
+            color: '#3b82f6'
+          }
+        ],
+        credits: { enabled: false }
+      };
+    }
   }
 
   // Extract keywords from party name for matching across elections
@@ -383,6 +640,12 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
   updateHistoricalCharts() {
     if (!this.section) return;
+
+    if (this.activeTab() === 'candidates') {
+      // For candidates, show preference votes over time
+      this.updateHistoricalCandidateCharts();
+      return;
+    }
 
     const isCity = this.section.sectionName.startsWith('Общо за');
     const sectionId = this.section.sectionId;
@@ -569,6 +832,200 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
           valueDecimals: 2
         }
       }],
+      credits: { enabled: false },
+      tooltip: { valueSuffix: '%', valueDecimals: 2 }
+    };
+  }
+
+  updateHistoricalCandidateCharts() {
+    if (!this.currentSectionData || !this.currentSectionData.candidateVotes) {
+      // No candidate data available
+      this.historicalVotesChartOptions = { chart: { type: 'line' }, series: [] };
+      this.historicalPercentChartOptions = { chart: { type: 'line' }, series: [] };
+      this.historicalActivityChartOptions = { chart: { type: 'line' }, series: [] };
+      return;
+    }
+
+    const isCity = this.section.sectionName.startsWith('Общо за');
+    const sectionId = this.section.sectionId;
+    const cityName = this.section.cityName;
+    const regionId = this.currentSectionData?.regionId;
+
+    const categories: string[] = [];
+    const colorPalette = [
+      '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', 
+      '#ec4899', '#06b6d4', '#84cc16', '#f97316', '#6366f1'
+    ];
+
+    // Get top candidates from current section
+    const topCandidates = [...this.candidateResults]
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 5);
+
+    // Build mapping: candidate key -> data across elections
+    const candidateDataMap: { [key: string]: { name: string, partyName: string, votesData: number[], percentData: number[] } } = {};
+    
+    topCandidates.forEach((candidate, idx) => {
+      const key = `${candidate.partyId}_${candidate.candidateId}`;
+      candidateDataMap[key] = {
+        name: candidate.candidateName,
+        partyName: candidate.partyName,
+        votesData: [],
+        percentData: []
+      };
+    });
+
+    // Sort dates ascending for the chart
+    const sortedDates = [...this.dates].sort((a, b) => a.date.localeCompare(b.date));
+
+    sortedDates.forEach(d => {
+      const data = this.allData[d.date];
+      if (!data) return;
+
+      categories.push(d.name);
+
+      let totalVoted = 0;
+
+      if (isCity) {
+        const citySections = data.sections.filter((s: Section) => {
+          const matchesCity = s.cityName === cityName;
+          const matchesRegion = !regionId || s.regionId === regionId;
+          return matchesCity && matchesRegion;
+        });
+        citySections.forEach((section: Section) => {
+          totalVoted += section.voted;
+        });
+      } else {
+        const section = data.sections.find((s: Section) => s.sectionId === sectionId);
+        if (section) {
+          totalVoted = section.voted;
+        }
+      }
+
+      // Collect candidate preference votes for this date
+      topCandidates.forEach(candidate => {
+        const key = `${candidate.partyId}_${candidate.candidateId}`;
+        const candidateInfo = candidateDataMap[key];
+        if (!candidateInfo) return;
+
+        let candidateVotes = 0;
+
+        if (isCity) {
+          const citySections = data.sections.filter((s: Section) => {
+            const matchesCity = s.cityName === cityName;
+            const matchesRegion = !regionId || s.regionId === regionId;
+            return matchesCity && matchesRegion;
+          });
+          citySections.forEach((section: Section) => {
+            if (section.candidateVotes) {
+              const candidateKey = `${candidate.partyId}_${candidate.candidateId}`;
+              const candidateData = section.candidateVotes[candidateKey];
+              if (candidateData) {
+                candidateVotes += candidateData.total;
+              }
+            }
+          });
+        } else {
+          const section = data.sections.find((s: Section) => s.sectionId === sectionId);
+          if (section?.candidateVotes) {
+            const candidateKey = `${candidate.partyId}_${candidate.candidateId}`;
+            const candidateData = section.candidateVotes[candidateKey];
+            if (candidateData) {
+              candidateVotes = candidateData.total;
+            }
+          }
+        }
+
+        candidateInfo.votesData.push(candidateVotes);
+        const percent = totalVoted > 0 ? (candidateVotes / totalVoted) * 100 : 0;
+        candidateInfo.percentData.push(Math.round(percent * 100) / 100);
+      });
+    });
+
+    const isDark = this.themeService.darkMode();
+    const textColor = isDark ? '#f8fafc' : '#1e293b';
+
+    // Build series for votes chart
+    const votesSeries: any[] = [];
+    topCandidates.forEach((candidate, idx) => {
+      const key = `${candidate.partyId}_${candidate.candidateId}`;
+      const candidateInfo = candidateDataMap[key];
+      if (candidateInfo) {
+        votesSeries.push({
+          id: `historical-candidate-votes-${key}`,
+          name: `${candidateInfo.name} (${getPartyAlias(candidateInfo.partyName)})`,
+          data: candidateInfo.votesData,
+          type: 'line',
+          color: colorPalette[idx % colorPalette.length]
+        });
+      }
+    });
+
+    // Build series for percent chart
+    const percentSeries: any[] = [];
+    topCandidates.forEach((candidate, idx) => {
+      const key = `${candidate.partyId}_${candidate.candidateId}`;
+      const candidateInfo = candidateDataMap[key];
+      if (candidateInfo) {
+        percentSeries.push({
+          id: `historical-candidate-percent-${key}`,
+          name: `${candidateInfo.name} (${getPartyAlias(candidateInfo.partyName)})`,
+          data: candidateInfo.percentData,
+          type: 'line',
+          color: colorPalette[idx % colorPalette.length]
+        });
+      }
+    });
+
+    this.historicalVotesChartOptions = {
+      chart: { type: 'line', backgroundColor: 'transparent' },
+      title: { text: 'Абсолютен брой преференции', style: { color: textColor } },
+      xAxis: { categories, labels: { style: { color: textColor } } },
+      yAxis: {
+        title: { text: 'Преференции', style: { color: textColor } },
+        labels: { style: { color: textColor } }
+      },
+      legend: {
+        itemStyle: { color: textColor }
+      },
+      series: votesSeries,
+      credits: { enabled: false },
+      tooltip: { shared: true }
+    };
+
+    this.historicalPercentChartOptions = {
+      chart: { type: 'line', backgroundColor: 'transparent' },
+      title: { text: 'Процент преференции', style: { color: textColor } },
+      xAxis: { categories, labels: { style: { color: textColor } } },
+      yAxis: {
+        title: { text: 'Процент (%)', style: { color: textColor } },
+        labels: { style: { color: textColor } },
+        min: 0,
+        max: 100
+      },
+      legend: {
+        itemStyle: { color: textColor }
+      },
+      series: percentSeries,
+      credits: { enabled: false },
+      tooltip: { shared: true, valueSuffix: '%', valueDecimals: 2 }
+    };
+
+    // Activity chart remains the same for candidates
+    this.historicalActivityChartOptions = {
+      chart: { type: 'line', backgroundColor: 'transparent' },
+      title: { text: 'Активност (избирателна активност)', style: { color: textColor } },
+      xAxis: { categories, labels: { style: { color: textColor } } },
+      yAxis: {
+        title: { text: 'Активност (%)', style: { color: textColor } },
+        labels: { style: { color: textColor } },
+        min: 0,
+        max: 100
+      },
+      legend: {
+        enabled: false
+      },
+      series: [],
       credits: { enabled: false },
       tooltip: { valueSuffix: '%', valueDecimals: 2 }
     };

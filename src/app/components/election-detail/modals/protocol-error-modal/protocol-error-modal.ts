@@ -34,7 +34,6 @@ import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-toolti
     HlmCardDirective,
     HlmCardHeaderDirective,
     HlmCardContentDirective,
-    HlmCardFooterDirective,
     HlmTypographyDirective,
     HlmTooltipDirective
   ],

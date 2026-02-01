@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
-import { PartyResult, Section, SectionDetails, TableColumn, SECTION_COLUMNS, SectionTab, SectionFilters, ComparativeValue } from '../../models/election.models';
+import { PartyResult, Section, SectionDetails, TableColumn, SECTION_COLUMNS, SectionTab, SectionFilters, ComparativeValue, CandidateVotes } from '../../models/election.models';
 import { filterSections } from '../../utils/election-utils';
 import { getPartyAlias } from '../../utils/party-aliases';
 import * as Highcharts from 'highcharts';
@@ -386,6 +386,28 @@ export class ElectionDetailComponent implements OnInit {
           .sort((a, b) => b.total - a.total)
           .slice(0, 3);
 
+        // Aggregate candidate votes for grouped city
+        const candidateVotesMap: { [key: string]: { candidateName: string, partyId: string, partyName: string, total: number } } = {};
+        g.sections.forEach((s: Section) => {
+          if (s.topCandidates) {
+            s.topCandidates.forEach(candidate => {
+              const key = `${candidate.partyId}_${candidate.candidateName}`;
+              if (!candidateVotesMap[key]) {
+                candidateVotesMap[key] = {
+                  candidateName: candidate.candidateName,
+                  partyId: candidate.partyId,
+                  partyName: candidate.partyName,
+                  total: 0
+                };
+              }
+              candidateVotesMap[key].total += candidate.total;
+            });
+          }
+        });
+        const topCandidates = Object.values(candidateVotesMap)
+          .sort((a, b) => b.total - a.total)
+          .slice(0, 3);
+
         // Calculate votesToFirst for grouped city
         let votesToFirst: number | undefined = undefined;
         if (topParties.length > 0) {
@@ -458,6 +480,7 @@ export class ElectionDetailComponent implements OnInit {
           risks: g.riskySectionsList.length > 0 ? g.riskySectionsList : [],
           activityPercent: g.total > 0 ? g.voted / g.total : 0,
           topParties,
+          topCandidates,
           votesToFirst,
           comparisons
         };
@@ -975,17 +998,80 @@ export class ElectionDetailComponent implements OnInit {
         });
       }
 
+      // Aggregate candidate votes from all sections in the group
+      const aggregatedCandidateVotes: { [key: string]: CandidateVotes } = {};
+      const votesWithoutPreferencesByParty: { [partyId: string]: { total: number, paper: number, machine: number } } = {};
+
+      g.sections.forEach((s: Section) => {
+        if (s.candidateVotes) {
+          Object.values(s.candidateVotes).forEach(candidate => {
+            const key = `${candidate.partyId}_${candidate.candidateId}`;
+            if (!aggregatedCandidateVotes[key]) {
+              aggregatedCandidateVotes[key] = {
+                candidateId: candidate.candidateId,
+                candidateName: candidate.candidateName,
+                partyId: candidate.partyId,
+                partyName: candidate.partyName,
+                total: 0,
+                paper: 0,
+                machine: 0
+              };
+            }
+            aggregatedCandidateVotes[key].total += candidate.total;
+            aggregatedCandidateVotes[key].paper += candidate.paper;
+            aggregatedCandidateVotes[key].machine += candidate.machine;
+          });
+        }
+
+        // Calculate votes without preferences per party
+        Object.entries(s.partyVotes).forEach(([partyId, partyVotes]) => {
+          if (!votesWithoutPreferencesByParty[partyId]) {
+            votesWithoutPreferencesByParty[partyId] = { total: 0, paper: 0, machine: 0 };
+          }
+          
+          // Get total preference votes for this party in this section
+          let partyPreferenceVotes = 0;
+          let partyPreferencePaper = 0;
+          let partyPreferenceMachine = 0;
+          
+          if (s.candidateVotes) {
+            Object.values(s.candidateVotes).forEach(candidate => {
+              if (candidate.partyId === partyId) {
+                partyPreferenceVotes += candidate.total;
+                partyPreferencePaper += candidate.paper;
+                partyPreferenceMachine += candidate.machine;
+              }
+            });
+          }
+          
+          // Votes without preferences = party total - preference votes
+          votesWithoutPreferencesByParty[partyId].total += partyVotes.total - partyPreferenceVotes;
+          votesWithoutPreferencesByParty[partyId].paper += partyVotes.paper - partyPreferencePaper;
+          votesWithoutPreferencesByParty[partyId].machine += partyVotes.machine - partyPreferenceMachine;
+        });
+      });
+
+      // Calculate total votes without preferences
+      const totalVotesWithoutPreferences = Object.values(votesWithoutPreferencesByParty).reduce((sum, v) => sum + v.total, 0);
+
       const details: SectionDetails = {
         sectionId: g.cityName,
         cityName: g.cityName,
         sectionName: `Общо за ${g.sections.length} секции`,
-        partyResults
+        partyResults,
+        candidateVotes: Object.keys(aggregatedCandidateVotes).length > 0 ? aggregatedCandidateVotes : undefined,
+        votesWithoutPreferences: totalVotesWithoutPreferences,
+        votesWithoutPreferencesByParty: Object.keys(votesWithoutPreferencesByParty).length > 0 ? votesWithoutPreferencesByParty : undefined
       };
 
-      // Create a virtual Section object for comparisons
+      // Create a virtual Section object for comparisons with aggregated candidate votes
+      // Get regionId from the first section in the group
+      const firstSection = g.sections[0] as Section;
       const currentSectionData: Section = {
         ...section,
-        comparisons: {}
+        regionId: firstSection.regionId, // Ensure regionId is set from the first section
+        comparisons: {},
+        candidateVotes: Object.keys(aggregatedCandidateVotes).length > 0 ? aggregatedCandidateVotes : undefined
       };
 
       // Aggregate comparisons

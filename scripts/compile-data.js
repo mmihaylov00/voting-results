@@ -183,6 +183,84 @@ function applyVotes(sections, text) {
   }
 }
 
+function parseLocalCandidates(text) {
+  const candidates = {}; // regionId -> { partyId -> { candidateId -> { candidateId, candidateName } } }
+  const lines = text.split('\n');
+  for (let line of lines) {
+    line = line.trim();
+    if (!line) continue;
+    const parts = line.split(';');
+    if (parts.length < 6) continue;
+
+    const regionId = parts[0].trim();
+    const partyId = parts[2].trim();
+    const candidateId = parts[4].trim();
+    const candidateName = parts[5].trim();
+
+    if (!regionId || !partyId || !candidateId || !candidateName) continue;
+
+    if (!candidates[regionId]) {
+      candidates[regionId] = {};
+    }
+    if (!candidates[regionId][partyId]) {
+      candidates[regionId][partyId] = {};
+    }
+    candidates[regionId][partyId][candidateId] = {
+      candidateId,
+      candidateName
+    };
+  }
+  return candidates;
+}
+
+function applyPreferences(sections, text, candidatesByRegion, parties) {
+  const lines = text.split('\n');
+  for (let line of lines) {
+    line = line.trim();
+    if (!line) continue;
+    const parts = line.split(';');
+    if (parts.length < 7) continue;
+
+    const sectionId = parts[1].trim();
+    const partyId = parts[2].trim();
+    const preferenceVote = parts[3].trim();
+    const paperVotes = parseLongSafe(parts[5]);
+    const machineVotes = parseLongSafe(parts[6]);
+    const totalVotes = paperVotes + machineVotes;
+
+    if (preferenceVote === 'Без' || !preferenceVote || totalVotes === 0) continue;
+
+    const section = sections[sectionId];
+    if (!section) continue;
+
+    const regionId = section.regionId;
+    const candidates = candidatesByRegion[regionId];
+    if (!candidates || !candidates[partyId] || !candidates[partyId][preferenceVote]) continue;
+
+    const candidate = candidates[partyId][preferenceVote];
+    const partyName = parties[partyId] || partyId;
+
+    if (!section.candidateVotes) {
+      section.candidateVotes = {};
+    }
+    const key = `${partyId}_${preferenceVote}`;
+    if (!section.candidateVotes[key]) {
+      section.candidateVotes[key] = {
+        candidateId: candidate.candidateId,
+        candidateName: candidate.candidateName,
+        partyId: partyId,
+        partyName: partyName,
+        total: 0,
+        paper: 0,
+        machine: 0
+      };
+    }
+    section.candidateVotes[key].total += totalVotes;
+    section.candidateVotes[key].paper += paperVotes;
+    section.candidateVotes[key].machine += machineVotes;
+  }
+}
+
 console.log('Loading raw data...');
 const rawData = {};
 for (const { date } of elections) {
@@ -197,6 +275,16 @@ for (const { date } of elections) {
   const sectionsMap = parseSections(sectionsText);
   applyProtocols(sectionsMap, protocolsText);
   applyVotes(sectionsMap, votesText);
+
+  // Parse local candidates and preferences if files exist
+  const localCandidatesPath = path.join(baseUrl, 'local_candidates.txt');
+  const preferencesPath = path.join(baseUrl, 'preferences.txt');
+  if (fs.existsSync(localCandidatesPath) && fs.existsSync(preferencesPath)) {
+    const localCandidatesText = fs.readFileSync(localCandidatesPath, 'utf8');
+    const preferencesText = fs.readFileSync(preferencesPath, 'utf8');
+    const candidatesByRegion = parseLocalCandidates(localCandidatesText);
+    applyPreferences(sectionsMap, preferencesText, candidatesByRegion, parties);
+  }
 
   const sections = Object.values(sectionsMap);
   for (const section of sections) {
@@ -223,6 +311,22 @@ for (const { date } of elections) {
       .sort((a, b) => b.total - a.total);
 
     section.topParties = section.topParties.slice(0, 3);
+
+    // Calculate top 3 candidates
+    if (section.candidateVotes) {
+      section.topCandidates = Object.values(section.candidateVotes)
+        .filter(c => c.total > 0)
+        .sort((a, b) => b.total - a.total)
+        .slice(0, 3)
+        .map(c => ({
+          candidateName: c.candidateName,
+          partyId: c.partyId,
+          partyName: c.partyName,
+          total: c.total
+        }));
+    } else {
+      section.topCandidates = [];
+    }
   }
   rawData[date] = { sections, parties };
 }
