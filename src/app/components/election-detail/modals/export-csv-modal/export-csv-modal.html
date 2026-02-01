@@ -5,9 +5,19 @@
                 <h3 hlmH4 class="m-0 text-secondary dark:text-primary">Експорт на данни</h3>
                 <p hlmMuted class="text-xs">Изберете партии за включване в CSV файла</p>
             </div>
+
+
+          <div class="flex flex-row justify-end">
+            <div class="grid grid-cols-1 gap-2">
+              <app-party-filter
+                [parties]="allParties"
+                [selectedPartyIds]="exportPartyIds"
+                (selectedPartyIdsChange)="onExportPartySelectionChange($event)"/>
+            </div>
             <button hlmBtn variant="ghost" size="icon" (click)="close.emit()" class="text-secondary dark:text-primary hover:bg-primary dark:hover:bg-primary dark:hover:text-primary-foreground">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
+          </div>
         </div>
 
         <div class="overflow-auto p-6 flex-grow space-y-6">
@@ -29,18 +39,6 @@
                         <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleExportColumnSelection(column.id)">
                             <input type="checkbox" [checked]="exportColumnIds.has(column.id)" class="cursor-pointer" (click)="$event.stopPropagation(); toggleExportColumnSelection(column.id)" />
                             <span class="text-sm truncate">{{ column.label }}</span>
-                        </div>
-                    }
-                </div>
-            </div>
-
-            <div>
-                <h4 hlmH4 class="mb-2 text-sm font-semibold uppercase tracking-wider text-secondary/70 dark:text-primary/70">Партии</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    @for (party of allParties; track party.id) {
-                        <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleExportPartySelection(party.id)">
-                            <input type="checkbox" [checked]="exportPartyIds.has(party.id)" class="cursor-pointer" (click)="$event.stopPropagation(); toggleExportPartySelection(party.id)" />
-                            <span class="text-sm truncate">{{ getPartyAlias(party.name) }}</span>
                         </div>
                     }
                 </div>

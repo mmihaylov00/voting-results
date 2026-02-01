@@ -1,0 +1,30 @@
+<div class="relative w-full">
+    <button hlmBtn variant="outline" size="sm" (click)="toggleDropdown($event)">
+        Партия
+        @if (selectedPartyIds.size > 0) {
+            <span class="ml-1">({{ selectedPartyIds.size }})</span>
+        }
+    </button>
+    @if (showDropdown()) {
+        <div class="absolute right-0 mt-2 w-64 max-h-96 overflow-auto bg-popover text-popover-foreground border border-primary/20 rounded-md shadow-md z-[120] p-2" (click)="$event.stopPropagation()">
+            <!-- Select All / Deselect All -->
+            <div class="flex items-center gap-2 p-2 border-b border-primary/10 mb-2">
+                <button hlmBtn variant="ghost" size="sm" (click)="allSelected ? deselectAll() : selectAll()" class="w-full justify-start text-xs">
+                    {{ allSelected ? 'Премахни всички' : 'Избери всички' }}
+                </button>
+            </div>
+            
+            @for (party of sortedParties; track party.id) {
+                <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleParty(party.id)">
+                    <input type="checkbox" [checked]="selectedPartyIds.has(party.id)" class="cursor-pointer" />
+                    <span class="text-sm truncate">
+                        @if (showVotes && partyVotes && partyVotes[party.id] !== undefined) {
+                            ({{ partyVotes[party.id] | number }}) 
+                        }
+                        {{ getPartyAlias(party.name) }}
+                    </span>
+                </div>
+            }
+        </div>
+    }
+</div>

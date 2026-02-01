@@ -198,26 +198,10 @@
                               </div>
 
                               <!-- Party Filter -->
-                              <div class="relative w-full">
-                                  <button hlmBtn variant="outline" size="sm" (click)="showCandidatePartyFilter = !showCandidatePartyFilter">
-                                      Партия
-                                      @if (selectedCandidatePartyIds().size > 0) {
-                                          <span class="ml-1">({{ selectedCandidatePartyIds().size }})</span>
-                                      }
-                                  </button>
-                                  @if (showCandidatePartyFilter) {
-                                      <div class="absolute right-0 mt-2 w-64 max-h-96 overflow-auto bg-popover text-popover-foreground border border-primary/20 rounded-md shadow-md z-[120] p-2" (click)="$event.stopPropagation()">
-                                          @for (party of allParties; track party.id) {
-                                              <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer"
-                                                   (click)="toggleCandidateParty(party.id)">
-                                                  <input type="checkbox" [checked]="selectedCandidatePartyIds().has(party.id)"
-                                                         class="cursor-pointer" (click)="$event.stopPropagation(); toggleCandidateParty(party.id)" />
-                                                  <span class="text-sm">{{ getPartyAlias(party.name) }}</span>
-                                              </div>
-                                          }
-                                      </div>
-                                  }
-                              </div>
+                              <app-party-filter
+                                  [parties]="allParties"
+                                  [selectedPartyIds]="selectedCandidatePartyIds()"
+                                  (selectedPartyIdsChange)="onCandidatePartySelectionChange($event)"/>
 
                               <!-- Leaders Filter -->
                               <div style="align-content: center">

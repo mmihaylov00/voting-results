@@ -14,6 +14,7 @@ import {
 import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-typography.directive';
 import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
 import { SectionFiltersComponent } from '../../section-filters/section-filters';
+import { PartyFilterComponent } from '../../party-filter/party-filter';
 
 @Component({
   selector: 'app-export-csv-modal',
@@ -25,6 +26,7 @@ import { SectionFiltersComponent } from '../../section-filters/section-filters';
     HlmCardDirective,
     HlmTypographyDirective,
     SectionFiltersComponent,
+    PartyFilterComponent,
   ],
   templateUrl: './export-csv-modal.html',
   host: {
@@ -50,7 +52,7 @@ export class ExportCsvModalComponent {
   exportSectionTypes: Set<string> = new Set();
   riskFilterType: 'any' | 'none' | null = null;
   selectedRiskCategories: Set<string> = new Set();
-  
+
   get emptyRiskCategoriesSet(): Set<string> {
     return new Set();
   }
@@ -59,6 +61,7 @@ export class ExportCsvModalComponent {
   exportPartyIds: Set<string> = new Set();
   availableColumns = SECTION_COLUMNS.filter(c => c.id !== 'typeVotes' && c.id !== 'topParties');
   exportColumnIds: Set<string> = new Set(this.availableColumns.map(c => c.id));
+
 
   ngOnInit() {
     this.activeTab.set(this.initialActiveTab);
@@ -125,12 +128,8 @@ export class ExportCsvModalComponent {
     }
   }
 
-  toggleExportPartySelection(partyId: string) {
-    if (this.exportPartyIds.has(partyId)) {
-      this.exportPartyIds.delete(partyId);
-    } else {
-      this.exportPartyIds.add(partyId);
-    }
+  onExportPartySelectionChange(selectedIds: Set<string>) {
+    this.exportPartyIds = selectedIds;
   }
 
   downloadCsv() {

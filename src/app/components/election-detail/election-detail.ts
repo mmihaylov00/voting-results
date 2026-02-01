@@ -31,6 +31,7 @@ import { SectionDetailModalComponent } from './modals/section-detail-modal/secti
 import { ExportCsvModalComponent } from './modals/export-csv-modal/export-csv-modal';
 import { ProtocolErrorModalComponent } from './modals/protocol-error-modal/protocol-error-modal';
 import { SectionFiltersComponent } from './section-filters/section-filters';
+import { PartyFilterComponent } from './party-filter/party-filter';
 import {HlmInputDirective} from '../ui/input-helm/src/lib/hlm-input.directive';
 
 @Component({
@@ -61,6 +62,7 @@ import {HlmInputDirective} from '../ui/input-helm/src/lib/hlm-input.directive';
     ExportCsvModalComponent,
     ProtocolErrorModalComponent,
     SectionFiltersComponent,
+    PartyFilterComponent,
     HighchartsChartComponent,
     HlmInputDirective,
   ],
@@ -128,7 +130,7 @@ export class ElectionDetailComponent implements OnInit {
     }
     return this.visibleColumns();
   }
-  
+
   visibleCandidateColumns = signal<Set<string>>(new Set());
 
   getFormattedRisks(section: Section): string {
@@ -159,7 +161,6 @@ export class ElectionDetailComponent implements OnInit {
   showLeadersOnly = signal<boolean>(false);
   candidateSortColumn: keyof RegionCandidate = 'total';
   candidateSortDir: 'asc' | 'desc' = 'desc';
-  showCandidatePartyFilter = false;
 
   candidateColumns: TableColumn[] = [
     { id: 'candidateId', label: 'Номер' },
@@ -276,7 +277,7 @@ export class ElectionDetailComponent implements OnInit {
         console.error('Error parsing saved columns', e);
       }
     }
-    
+
     // Load candidate columns visibility
     const savedCandidateColumns = localStorage.getItem('visible_candidate_columns');
     if (savedCandidateColumns) {
@@ -712,15 +713,8 @@ export class ElectionDetailComponent implements OnInit {
     });
   }
 
-  toggleCandidateParty(partyId: string): void {
-    const current = this.selectedCandidatePartyIds();
-    const newSet = new Set(current);
-    if (newSet.has(partyId)) {
-      newSet.delete(partyId);
-    } else {
-      newSet.add(partyId);
-    }
-    this.selectedCandidatePartyIds.set(newSet);
+  onCandidatePartySelectionChange(selectedIds: Set<string>): void {
+    this.selectedCandidatePartyIds.set(selectedIds);
     this.applyCandidateFilter();
   }
 
@@ -923,7 +917,7 @@ export class ElectionDetailComponent implements OnInit {
 
     // Get party votes for parties that have filtered candidates
     const filteredPartyIds = new Set(this.filteredCandidates.map(c => c.partyId));
-    
+
     this.sections.forEach(section => {
       Object.entries(section.partyVotes).forEach(([partyId, votes]) => {
         if (filteredPartyIds.has(partyId)) {
@@ -936,7 +930,7 @@ export class ElectionDetailComponent implements OnInit {
     this.totalVoted = totalPreferences;
     this.totalRegionPaper = totalPreferencesPaper;
     this.totalRegionMachine = totalPreferencesMachine;
-    
+
     // Calculate average preference percentage from filtered data
     let totalPartyVotes = 0;
     let totalPartyPreferenceVotes = 0;
@@ -945,7 +939,7 @@ export class ElectionDetailComponent implements OnInit {
       totalPartyPreferenceVotes += (regionPartyPreferenceVotes[partyId] || 0);
     });
     this.avgRegionActivity = totalPartyVotes > 0 ? (totalPartyPreferenceVotes / totalPartyVotes) * 100 : 0;
-    
+
     // Update total electors to show total party votes for filtered parties
     this.totalElectors = totalPartyVotes;
   }

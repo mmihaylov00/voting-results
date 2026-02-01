@@ -23,6 +23,7 @@ import {
   HlmCardHeaderDirective,
   HlmCardContentDirective
 } from '../../../ui/card-helm/src/lib/hlm-card.directives';
+import { PartyFilterComponent } from '../../party-filter/party-filter';
 
 @Component({
   selector: 'app-section-detail-modal',
@@ -41,10 +42,10 @@ import {
     HlmTypographyDirective,
     HlmTooltipDirective,
     HlmCardDirective,
+    PartyFilterComponent,
   ],
   templateUrl: './section-detail-modal.html',
   host: {
-    '(document:click)': 'closePartyFilters()',
     '(document:keydown.escape)': 'close.emit()'
   }
 })
@@ -60,7 +61,6 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   candidateSortColumn: keyof CandidateResult = 'total';
   candidateSortDir: 'asc' | 'desc' = 'desc';
   @Input() selectedPartyIds: Set<string> = new Set();
-  showPartyFilter: boolean = false;
   activeTab = signal<'parties' | 'candidates'>('parties');
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
@@ -154,31 +154,22 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     this.close.emit();
   }
 
-  togglePartyFilter(event: Event) {
-    event.stopPropagation();
-    this.showPartyFilter = !this.showPartyFilter;
-  }
-
-  closePartyFilter() {
-    this.showPartyFilter = false;
-  }
-
-  closePartyFilters() {
-    this.showPartyFilter = false;
-  }
-
-  togglePartySelection(partyId: string) {
-    if (this.selectedPartyIds.has(partyId)) {
-      this.selectedPartyIds.delete(partyId);
-    } else {
-      this.selectedPartyIds.add(partyId);
-    }
+  onPartySelectionChange(selectedIds: Set<string>) {
+    this.selectedPartyIds = selectedIds;
     // Recalculate candidate results to update other parties aggregates
     this.calculateCandidateResults();
     // Update historical charts when party selection changes
     if (Object.keys(this.allData).length > 0) {
       this.updateHistoricalCharts();
     }
+  }
+
+  get partyVotesMap(): { [partyId: string]: number } {
+    const map: { [partyId: string]: number } = {};
+    this.section.partyResults.forEach(r => {
+      map[r.partyId] = r.total;
+    });
+    return map;
   }
 
   sortParties(column: keyof PartyResult, preserveDir: boolean = false) {
@@ -239,15 +230,6 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     });
   }
 
-  get filteredAllParties(): { id: string, name: string, votes: number }[] {
-    const partyVotesMap = new Map<string, number>();
-    this.section.partyResults.forEach(r => partyVotesMap.set(r.partyId, r.total));
-
-    return this.allParties.map(p => ({
-      ...p,
-      votes: partyVotesMap.get(p.id) || 0
-    }));
-  }
 
   get othersResult(): PartyResult | null {
     if (this.selectedPartyIds.size === 0) return null;
