@@ -74,6 +74,8 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   candidateResults: CandidateResult[] = [];
   votesWithoutPreferences: number = 0;
   votesWithoutPreferencesByParty: { [partyId: string]: { total: number, paper: number, machine: number, partyName: string } } = {};
+  otherPartiesWithoutPreferences: { total: number, paper: number, machine: number } | null = null;
+  otherPartiesPreferenceVotes: { total: number, paper: number, machine: number } | null = null;
 
   getGoogleMapsUrl(cityName: string, sectionName: string): string {
     const isCity = this.section.sectionName.startsWith('Общо за');
@@ -171,6 +173,8 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     } else {
       this.selectedPartyIds.add(partyId);
     }
+    // Recalculate candidate results to update other parties aggregates
+    this.calculateCandidateResults();
     // Update historical charts when party selection changes
     if (Object.keys(this.allData).length > 0) {
       this.updateHistoricalCharts();
@@ -313,7 +317,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   calculateCandidateResults() {
     // Check if we have candidate votes from section or from SectionDetails (for grouped cities)
     const candidateVotes = this.currentSectionData?.candidateVotes || this.section.candidateVotes;
-    
+
     if (!this.currentSectionData) {
       this.candidateResults = [];
       this.votesWithoutPreferences = 0;
@@ -344,16 +348,16 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       this.allParties.forEach(p => {
         partiesMap[p.id] = p.name;
       });
-      
+
       const section = this.currentSectionData;
       Object.entries(section.partyVotes).forEach(([partyId, partyVotes]) => {
         if (partyId === 'no_votes') return;
-        
+
         // Get total preference votes for this party
         let partyPreferenceVotes = 0;
         let partyPreferencePaper = 0;
         let partyPreferenceMachine = 0;
-        
+
         Object.values(candidateVotes).forEach(candidate => {
           if (candidate.partyId === partyId) {
             partyPreferenceVotes += candidate.total;
@@ -361,7 +365,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
             partyPreferenceMachine += candidate.machine;
           }
         });
-        
+
         // Votes without preferences = party total - preference votes
         const withoutPrefs = partyVotes.total - partyPreferenceVotes;
         if (withoutPrefs > 0) {
@@ -373,7 +377,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
           };
         }
       });
-      
+
       // Calculate total votes without preferences
       const totalPreferenceVotes = Object.values(candidateVotes).reduce((sum, c) => sum + c.total, 0);
       const sectionVoted = section.voted;
@@ -393,7 +397,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
     // Get all sections in the region for region-level calculations
     const currentDateData = this.allData[this.date];
-    
+
     // Initialize region totals
     const regionPartyVotes: { [partyId: string]: number } = {};
     const regionPartyPreferenceVotes: { [partyId: string]: number } = {}; // Total preference votes per party in region
@@ -403,7 +407,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     // Only calculate region totals if we have data loaded
     if (currentDateData && currentDateData.sections && regionId) {
       const regionSections: Section[] = currentDateData.sections.filter((s: Section) => s.regionId === regionId);
-      
+
       regionSections.forEach((s: Section) => {
         regionTotalVoted += s.voted;
         Object.entries(s.partyVotes).forEach(([partyId, votes]) => {
@@ -422,7 +426,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
     // Build candidate results
     const candidateResultsMap: { [key: string]: CandidateResult } = {};
-    
+
     // Get party votes from partyResults (available in both single sections and grouped cities)
     const partyVotesMap: { [partyId: string]: number } = {};
     this.section.partyResults.forEach(pr => {
@@ -430,7 +434,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
         partyVotesMap[pr.partyId] = pr.total;
       }
     });
-    
+
     Object.values(candidateVotes).forEach(candidate => {
       const key = `${candidate.partyId}_${candidate.candidateId}`;
       // Get party total from partyResults (works for both single sections and grouped cities)
@@ -456,10 +460,107 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
     this.candidateResults = Object.values(candidateResultsMap);
     this.sortCandidates(this.candidateSortColumn, true);
+
+    // Calculate other parties aggregates (for parties not in selectedPartyIds)
+    this.calculateOtherPartiesAggregates(candidateVotes);
+  }
+
+  calculateOtherPartiesAggregates(candidateVotes: { [key: string]: CandidateVotes } | undefined) {
+    if (!candidateVotes || this.selectedPartyIds.size === 0) {
+      this.otherPartiesWithoutPreferences = null;
+      this.otherPartiesPreferenceVotes = null;
+      return;
+    }
+
+    // Get other parties (not in selectedPartyIds, excluding no_votes and others)
+    const otherParties = this.section.partyResults.filter(pr =>
+      !this.selectedPartyIds.has(pr.partyId) &&
+      pr.partyId !== 'no_votes' &&
+      pr.partyId !== 'others'
+    );
+
+    let otherWithoutPrefsTotal = 0;
+    let otherWithoutPrefsPaper = 0;
+    let otherWithoutPrefsMachine = 0;
+    let otherPreferenceTotal = 0;
+    let otherPreferencePaper = 0;
+    let otherPreferenceMachine = 0;
+
+    otherParties.forEach(pr => {
+      const partyId = pr.partyId;
+
+      // Get preference votes for this party
+      let partyPreferenceVotes = 0;
+      let partyPreferencePaper = 0;
+      let partyPreferenceMachine = 0;
+
+      Object.values(candidateVotes).forEach(candidate => {
+        if (candidate.partyId === partyId) {
+          partyPreferenceVotes += candidate.total;
+          partyPreferencePaper += candidate.paper;
+          partyPreferenceMachine += candidate.machine;
+        }
+      });
+
+      // Votes without preferences
+      const withoutPrefs = pr.total - partyPreferenceVotes;
+      otherWithoutPrefsTotal += withoutPrefs;
+      otherWithoutPrefsPaper += pr.paper - partyPreferencePaper;
+      otherWithoutPrefsMachine += pr.machine - partyPreferenceMachine;
+
+      // Preference votes
+      otherPreferenceTotal += partyPreferenceVotes;
+      otherPreferencePaper += partyPreferencePaper;
+      otherPreferenceMachine += partyPreferenceMachine;
+    });
+
+    this.otherPartiesWithoutPreferences = (otherWithoutPrefsTotal > 0) ? {
+      total: otherWithoutPrefsTotal,
+      paper: otherWithoutPrefsPaper,
+      machine: otherWithoutPrefsMachine
+    } : null;
+
+    this.otherPartiesPreferenceVotes = (otherPreferenceTotal > 0) ? {
+      total: otherPreferenceTotal,
+      paper: otherPreferencePaper,
+      machine: otherPreferenceMachine
+    } : null;
   }
 
   get votesWithoutPreferencesEntries(): Array<[string, { total: number, paper: number, machine: number, partyName: string }]> {
-    return Object.entries(this.votesWithoutPreferencesByParty);
+    // Filter to show only selected parties
+    if (this.selectedPartyIds.size === 0) {
+      return Object.entries(this.votesWithoutPreferencesByParty);
+    }
+    return Object.entries(this.votesWithoutPreferencesByParty).filter(([partyId]) =>
+      this.selectedPartyIds.has(partyId)
+    );
+  }
+
+  get otherPartiesTotal(): number {
+    return this.section.partyResults
+      .filter(pr => !this.selectedPartyIds.has(pr.partyId) && pr.partyId !== 'no_votes' && pr.partyId !== 'others')
+      .reduce((sum, pr) => sum + pr.total, 0);
+  }
+
+  get otherPartiesPreferenceTotal(): number {
+    const candidateVotes = this.currentSectionData?.candidateVotes || this.section.candidateVotes;
+    if (!candidateVotes) return 0;
+
+    return this.section.partyResults
+      .filter(pr => !this.selectedPartyIds.has(pr.partyId) && pr.partyId !== 'no_votes' && pr.partyId !== 'others')
+      .reduce((sum, pr) => {
+        let prefVotes = 0;
+        Object.values(candidateVotes).forEach(c => {
+          if (c.partyId === pr.partyId) prefVotes += c.total;
+        });
+        return sum + prefVotes;
+      }, 0);
+  }
+
+  getPartyTotal(partyId: string): number {
+    const partyResult = this.section.partyResults.find(pr => pr.partyId === partyId);
+    return partyResult?.total || 0;
   }
 
   sortCandidates(column: keyof CandidateResult, preserveDir: boolean = false) {
@@ -655,7 +756,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
     const categories: string[] = [];
     const colorPalette = [
-      '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', 
+      '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
       '#ec4899', '#06b6d4', '#84cc16', '#f97316', '#6366f1'
     ];
 
@@ -664,7 +765,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
     // Build mapping: selected party ID -> keywords -> party data across elections
     const partyDataMap: { [selectedId: string]: { keywords: string[], name: string, votesData: number[], percentData: number[] } } = {};
-    
+
     // Initialize data structure for each selected party
     selectedIds.forEach(partyId => {
       const party = this.allParties.find(p => p.id === partyId);
@@ -733,7 +834,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
         // Find matching party ID in this election by keywords
         const matchingPartyId = this.findPartyByKeywords(partyInfo.keywords, data.parties);
         const votes = matchingPartyId ? (datePartyVotes[matchingPartyId] || 0) : 0;
-        
+
         partyInfo.votesData.push(votes);
         const percent = totalVoted > 0 ? (votes / totalVoted) * 100 : 0;
         partyInfo.percentData.push(Math.round(percent * 100) / 100);
@@ -853,18 +954,18 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
     const categories: string[] = [];
     const colorPalette = [
-      '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', 
+      '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
       '#ec4899', '#06b6d4', '#84cc16', '#f97316', '#6366f1'
     ];
 
     // Get top candidates from current section
     const topCandidates = [...this.candidateResults]
       .sort((a, b) => b.total - a.total)
-      .slice(0, 5);
+      .slice(0, 10);
 
     // Build mapping: candidate key -> data across elections
     const candidateDataMap: { [key: string]: { name: string, partyName: string, votesData: number[], percentData: number[] } } = {};
-    
+
     topCandidates.forEach((candidate, idx) => {
       const key = `${candidate.partyId}_${candidate.candidateId}`;
       candidateDataMap[key] = {

@@ -306,8 +306,7 @@
                                   @let partyId = entry[0];
                                   @let data = entry[1];
                                   @let sectionVoted = currentSectionData?.voted || 0;
-                                  @let partyVotes = currentSectionData?.partyVotes?.[partyId];
-                                  @let partyTotal = partyVotes?.total || 0;
+                                  @let partyTotal = getPartyTotal(partyId);
                                   <tr hlmTableRow class="bg-muted/50">
                                       <td hlmTableCell class="font-bold italic">Без преференции</td>
                                       <td hlmTableCell></td>
@@ -315,11 +314,39 @@
                                       <td hlmTableCell class="text-right font-bold">{{ data.paper | number }}</td>
                                       <td hlmTableCell class="text-right font-bold">{{ data.machine | number }}</td>
                                       <td hlmTableCell class="text-right font-bold">{{ sectionVoted > 0 ? (data.total / sectionVoted * 100).toFixed(2) : '0.00' }}%</td>
+                                      <td hlmTableCell class="text-right font-bold">-</td>
                                       <td hlmTableCell class="text-right font-bold">{{ partyTotal > 0 ? (data.total / partyTotal * 100).toFixed(2) : '0.00' }}%</td>
                                       <td hlmTableCell class="text-right font-bold">{{ data.total | number }}</td>
-                                      <td hlmTableCell></td>
                                   </tr>
                               }
+                          }
+                          @if (otherPartiesWithoutPreferences) {
+                              @let sectionVoted = currentSectionData?.voted || 0;
+                              <tr hlmTableRow class="bg-muted/30">
+                                  <td hlmTableCell class="font-bold italic">Без преференции</td>
+                                  <td hlmTableCell></td>
+                                  <td hlmTableCell class="font-bold italic">Други партии</td>
+                                  <td hlmTableCell class="text-right font-bold">{{ otherPartiesWithoutPreferences.paper | number }}</td>
+                                  <td hlmTableCell class="text-right font-bold">{{ otherPartiesWithoutPreferences.machine | number }}</td>
+                                  <td hlmTableCell class="text-right font-bold">{{ sectionVoted > 0 ? (otherPartiesWithoutPreferences.total / sectionVoted * 100).toFixed(2) : '0.00' }}%</td>
+                                  <td hlmTableCell class="text-right font-bold">-</td>
+                                  <td hlmTableCell class="text-right font-bold">{{ otherPartiesTotal > 0 ? (otherPartiesWithoutPreferences.total / otherPartiesTotal * 100).toFixed(2) : '0.00' }}%</td>
+                                  <td hlmTableCell class="text-right font-bold">{{ otherPartiesWithoutPreferences.total | number }}</td>
+                              </tr>
+                          }
+                          @if (otherPartiesPreferenceVotes) {
+                              @let sectionVoted = currentSectionData?.voted || 0;
+                              <tr hlmTableRow class="bg-muted/30">
+                                  <td hlmTableCell class="font-bold italic">Преференции</td>
+                                  <td hlmTableCell></td>
+                                  <td hlmTableCell class="font-bold italic">Други партии</td>
+                                  <td hlmTableCell class="text-right font-bold">{{ otherPartiesPreferenceVotes.paper | number }}</td>
+                                  <td hlmTableCell class="text-right font-bold">{{ otherPartiesPreferenceVotes.machine | number }}</td>
+                                  <td hlmTableCell class="text-right font-bold">{{ sectionVoted > 0 ? (otherPartiesPreferenceVotes.total / sectionVoted * 100).toFixed(2) : '0.00' }}%</td>
+                                  <td hlmTableCell class="text-right font-bold">-</td>
+                                  <td hlmTableCell class="text-right font-bold">{{ otherPartiesPreferenceTotal > 0 ? (otherPartiesPreferenceVotes.total / otherPartiesPreferenceTotal * 100).toFixed(2) : '0.00' }}%</td>
+                                  <td hlmTableCell class="text-right font-bold">{{ otherPartiesPreferenceVotes.total | number }}</td>
+                              </tr>
                           }
                       </tbody>
               }
