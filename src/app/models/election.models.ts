@@ -106,6 +106,19 @@ export interface CandidateResult {
   partyPercentInRegion: number;
 }
 
+export interface RegionCandidate {
+  candidateId: string;
+  candidateName: string;
+  partyId: string;
+  partyName: string;
+  paper: number;
+  machine: number;
+  total: number;
+  totalInRegion: number;
+  partyPercentInRegion: number;
+  preferencePercentOfPartyVotes: number; // Percentage of party votes in region that are preferences for this candidate
+}
+
 export interface SectionDetails {
   sectionId: string;
   cityName: string;
@@ -140,6 +153,7 @@ export const SECTION_COLUMNS: TableColumn[] = [
 ];
 
 export type SectionTab = 'all' | 'target' | 'swing' | 'risky' | 'outside' | 'declining' | 'dormant' | 'flip' | 'vanishing';
+export type ViewMode = 'sections' | 'cities' | 'candidates';
 
 export interface SectionFilters {
   searchTerm: string;
