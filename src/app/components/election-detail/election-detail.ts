@@ -31,6 +31,7 @@ import { SectionDetailModalComponent } from './modals/section-detail-modal/secti
 import { ExportCsvModalComponent } from './modals/export-csv-modal/export-csv-modal';
 import { ProtocolErrorModalComponent } from './modals/protocol-error-modal/protocol-error-modal';
 import { SectionFiltersComponent } from './section-filters/section-filters';
+import {HlmInputDirective} from '../ui/input-helm/src/lib/hlm-input.directive';
 
 @Component({
   selector: 'app-election-detail',
@@ -61,6 +62,7 @@ import { SectionFiltersComponent } from './section-filters/section-filters';
     ProtocolErrorModalComponent,
     SectionFiltersComponent,
     HighchartsChartComponent,
+    HlmInputDirective,
   ],
   templateUrl: './election-detail.html',
   styleUrl: './election-detail.scss',
@@ -109,12 +111,25 @@ export class ElectionDetailComponent implements OnInit {
   visibleColumns = signal<Set<string>>(new Set(SECTION_COLUMNS.map(c => c.id)));
 
   get filteredAvailableColumns(): TableColumn[] {
+    if (this.viewMode() === 'candidates') {
+      return this.candidateColumns;
+    }
     // Hide regionName column when not viewing all sections
     if (this.regionId && this.regionId !== 'all') {
       return this.availableColumns.filter(c => c.id !== 'regionName');
     }
     return this.availableColumns;
   }
+
+  get currentVisibleColumns(): Set<string> {
+    if (this.viewMode() === 'candidates') {
+      // For candidates, use a separate visible columns set
+      return this.visibleCandidateColumns();
+    }
+    return this.visibleColumns();
+  }
+  
+  visibleCandidateColumns = signal<Set<string>>(new Set());
 
   getFormattedRisks(section: Section): string {
     const riskLines: string[] = [];
@@ -133,18 +148,26 @@ export class ElectionDetailComponent implements OnInit {
   groupedSections: any[] = [];
   isLoadingAllSections = signal<boolean>(false);
   isProcessingData = signal<boolean>(false);
-  
+
   // Candidate data
   regionCandidates: RegionCandidate[] = [];
   filteredCandidates: RegionCandidate[] = [];
   candidateSearchTerm: string = '';
-  candidatePreferenceOperator = signal<'lte' | 'gte'>('lte');
-  candidatePreferenceThreshold: number | null = null;
+  candidatePreferenceOperator = signal<'lte' | 'gte'>('gte');
+  candidatePreferenceThreshold: number | null = 1;
   selectedCandidatePartyIds = signal<Set<string>>(new Set());
   showLeadersOnly = signal<boolean>(false);
   candidateSortColumn: keyof RegionCandidate = 'total';
   candidateSortDir: 'asc' | 'desc' = 'desc';
   showCandidatePartyFilter = false;
+
+  candidateColumns: TableColumn[] = [
+    { id: 'candidateId', label: 'Номер' },
+    { id: 'candidateName', label: 'Име' },
+    { id: 'partyName', label: 'Партия' },
+    { id: 'totalInRegion', label: 'Преференции' },
+    { id: 'preferencePercentOfPartyVotes', label: '% от гласовете за партията' }
+  ];
 
   getCikUrl(): string {
     if (this.date.startsWith('2023.04')) return 'https://results.cik.bg/ns2023/search/index.html#';
@@ -252,6 +275,26 @@ export class ElectionDetailComponent implements OnInit {
       } catch (e) {
         console.error('Error parsing saved columns', e);
       }
+    }
+    
+    // Load candidate columns visibility
+    const savedCandidateColumns = localStorage.getItem('visible_candidate_columns');
+    if (savedCandidateColumns) {
+      try {
+        const columnsArray = JSON.parse(savedCandidateColumns);
+        if (Array.isArray(columnsArray)) {
+          this.visibleCandidateColumns.set(new Set(columnsArray));
+        } else {
+          // Default: show all candidate columns
+          this.visibleCandidateColumns.set(new Set(this.candidateColumns.map(c => c.id)));
+        }
+      } catch (e) {
+        console.error('Error parsing saved candidate columns', e);
+        this.visibleCandidateColumns.set(new Set(this.candidateColumns.map(c => c.id)));
+      }
+    } else {
+      // Default: show all candidate columns
+      this.visibleCandidateColumns.set(new Set(this.candidateColumns.map(c => c.id)));
     }
 
     this.date = this.route.snapshot.paramMap.get('date') || '';
@@ -515,7 +558,7 @@ export class ElectionDetailComponent implements OnInit {
     // Update charts and stats based on filtered sections
     this.calculateAvgActivity(result);
     this.calculateRegionalStats(result);
-    
+
     // Calculate region candidates if in candidates view
     if (this.viewMode() === 'candidates') {
       this.calculateRegionCandidates();
@@ -548,7 +591,7 @@ export class ElectionDetailComponent implements OnInit {
       if (section.candidateVotes) {
         Object.values(section.candidateVotes).forEach(candidate => {
           const key = `${candidate.partyId}_${candidate.candidateId}`;
-          
+
           if (!candidateMap[key]) {
             const partyName = this.allParties.find(p => p.id === candidate.partyId)?.name || candidate.partyName;
             candidateMap[key] = {
@@ -564,7 +607,7 @@ export class ElectionDetailComponent implements OnInit {
               preferencePercentOfPartyVotes: 0
             };
           }
-          
+
           candidateMap[key].paper += candidate.paper;
           candidateMap[key].machine += candidate.machine;
           candidateMap[key].total += candidate.total;
@@ -575,7 +618,7 @@ export class ElectionDetailComponent implements OnInit {
     // Calculate totals and percentages
     Object.values(candidateMap).forEach(candidate => {
       candidate.totalInRegion = candidate.total;
-      
+
       // Calculate party preference votes in region
       if (!regionPartyPreferenceVotes[candidate.partyId]) {
         regionPartyPreferenceVotes[candidate.partyId] = 0;
@@ -589,10 +632,10 @@ export class ElectionDetailComponent implements OnInit {
           }
         });
       }
-      
+
       const partyTotalInRegion = regionPartyVotes[candidate.partyId] || 0;
       const partyPreferenceVotesInRegion = regionPartyPreferenceVotes[candidate.partyId] || 0;
-      
+
       candidate.partyPercentInRegion = regionTotalVoted > 0 ? (partyTotalInRegion / regionTotalVoted) * 100 : 0;
       candidate.preferencePercentOfPartyVotes = partyPreferenceVotesInRegion > 0 ? (candidate.total / partyPreferenceVotesInRegion) * 100 : 0;
     });
@@ -607,7 +650,7 @@ export class ElectionDetailComponent implements OnInit {
     // Search filter
     if (this.candidateSearchTerm) {
       const searchLower = this.candidateSearchTerm.toLowerCase();
-      result = result.filter(c => 
+      result = result.filter(c =>
         c.candidateName.toLowerCase().includes(searchLower) ||
         c.candidateId.toLowerCase().includes(searchLower) ||
         getPartyAlias(c.partyName).toLowerCase().includes(searchLower)
@@ -624,20 +667,20 @@ export class ElectionDetailComponent implements OnInit {
       result = result.filter(c => c.candidateId === '101');
     }
 
-    // Preference percentage filter
+    // Preference filter (on totalInRegion, not percentage)
     if (this.candidatePreferenceThreshold !== null) {
       result = result.filter(c => {
         if (this.candidatePreferenceOperator() === 'lte') {
-          return c.preferencePercentOfPartyVotes <= this.candidatePreferenceThreshold!;
+          return c.totalInRegion <= this.candidatePreferenceThreshold!;
         } else {
-          return c.preferencePercentOfPartyVotes >= this.candidatePreferenceThreshold!;
+          return c.totalInRegion >= this.candidatePreferenceThreshold!;
         }
       });
     }
 
     this.filteredCandidates = result;
     this.sortCandidates(this.candidateSortColumn, true);
-    
+
     // Update charts and stats for candidates view
     if (this.viewMode() === 'candidates') {
       this.updateCandidateCharts();
@@ -683,7 +726,7 @@ export class ElectionDetailComponent implements OnInit {
 
   updateCandidateCharts(): void {
     if (this.viewMode() !== 'candidates' || this.filteredCandidates.length === 0) return;
-    
+
     const isDark = this.themeService.darkMode();
     const textColor = isDark ? '#f8fafc' : '#020817';
 
@@ -863,25 +906,30 @@ export class ElectionDetailComponent implements OnInit {
   updateCandidateStats(): void {
     if (this.viewMode() !== 'candidates') return;
 
-    // Calculate preference stats
+    // Calculate preference stats from filtered candidates
     let totalPreferences = 0;
     let totalPreferencesPaper = 0;
     let totalPreferencesMachine = 0;
-    const regionPartyVotes: { [partyId: string]: number } = {};
     const regionPartyPreferenceVotes: { [partyId: string]: number } = {};
+    const regionPartyVotes: { [partyId: string]: number } = {};
 
+    // Use filtered candidates for preference stats
+    this.filteredCandidates.forEach(candidate => {
+      totalPreferences += candidate.total;
+      totalPreferencesPaper += candidate.paper;
+      totalPreferencesMachine += candidate.machine;
+      regionPartyPreferenceVotes[candidate.partyId] = (regionPartyPreferenceVotes[candidate.partyId] || 0) + candidate.total;
+    });
+
+    // Get party votes for parties that have filtered candidates
+    const filteredPartyIds = new Set(this.filteredCandidates.map(c => c.partyId));
+    
     this.sections.forEach(section => {
       Object.entries(section.partyVotes).forEach(([partyId, votes]) => {
-        regionPartyVotes[partyId] = (regionPartyVotes[partyId] || 0) + votes.total;
+        if (filteredPartyIds.has(partyId)) {
+          regionPartyVotes[partyId] = (regionPartyVotes[partyId] || 0) + votes.total;
+        }
       });
-      if (section.candidateVotes) {
-        Object.values(section.candidateVotes).forEach(candidate => {
-          totalPreferences += candidate.total;
-          totalPreferencesPaper += candidate.paper;
-          totalPreferencesMachine += candidate.machine;
-          regionPartyPreferenceVotes[candidate.partyId] = (regionPartyPreferenceVotes[candidate.partyId] || 0) + candidate.total;
-        });
-      }
     });
 
     // Update stats for candidates view
@@ -889,14 +937,17 @@ export class ElectionDetailComponent implements OnInit {
     this.totalRegionPaper = totalPreferencesPaper;
     this.totalRegionMachine = totalPreferencesMachine;
     
-    // Calculate average preference percentage
+    // Calculate average preference percentage from filtered data
     let totalPartyVotes = 0;
     let totalPartyPreferenceVotes = 0;
-    Object.keys(regionPartyVotes).forEach(partyId => {
-      totalPartyVotes += regionPartyVotes[partyId];
+    filteredPartyIds.forEach(partyId => {
+      totalPartyVotes += (regionPartyVotes[partyId] || 0);
       totalPartyPreferenceVotes += (regionPartyPreferenceVotes[partyId] || 0);
     });
     this.avgRegionActivity = totalPartyVotes > 0 ? (totalPartyPreferenceVotes / totalPartyVotes) * 100 : 0;
+    
+    // Update total electors to show total party votes for filtered parties
+    this.totalElectors = totalPartyVotes;
   }
 
   toggleCityGrouping(): void {
@@ -947,16 +998,29 @@ export class ElectionDetailComponent implements OnInit {
 
   toggleColumn(columnId: string, event: Event): void {
     event.stopPropagation();
-    const newSet = new Set(this.visibleColumns());
-    if (newSet.has(columnId)) {
-      if (newSet.size > 1) { // Keep at least one column
-        newSet.delete(columnId);
+    if (this.viewMode() === 'candidates') {
+      const newSet = new Set(this.visibleCandidateColumns());
+      if (newSet.has(columnId)) {
+        if (newSet.size > 1) { // Keep at least one column
+          newSet.delete(columnId);
+        }
+      } else {
+        newSet.add(columnId);
       }
+      this.visibleCandidateColumns.set(newSet);
+      localStorage.setItem('visible_candidate_columns', JSON.stringify(Array.from(newSet)));
     } else {
-      newSet.add(columnId);
+      const newSet = new Set(this.visibleColumns());
+      if (newSet.has(columnId)) {
+        if (newSet.size > 1) { // Keep at least one column
+          newSet.delete(columnId);
+        }
+      } else {
+        newSet.add(columnId);
+      }
+      this.visibleColumns.set(newSet);
+      localStorage.setItem('visible_columns', JSON.stringify(Array.from(newSet)));
     }
-    this.visibleColumns.set(newSet);
-    localStorage.setItem('visible_columns', JSON.stringify(Array.from(newSet)));
   }
 
   toggleColumnFilter(event: Event): void {
@@ -1439,12 +1503,12 @@ export class ElectionDetailComponent implements OnInit {
           if (!votesWithoutPreferencesByParty[partyId]) {
             votesWithoutPreferencesByParty[partyId] = { total: 0, paper: 0, machine: 0 };
           }
-          
+
           // Get total preference votes for this party in this section
           let partyPreferenceVotes = 0;
           let partyPreferencePaper = 0;
           let partyPreferenceMachine = 0;
-          
+
           if (s.candidateVotes) {
             Object.values(s.candidateVotes).forEach(candidate => {
               if (candidate.partyId === partyId) {
@@ -1454,7 +1518,7 @@ export class ElectionDetailComponent implements OnInit {
               }
             });
           }
-          
+
           // Votes without preferences = party total - preference votes
           votesWithoutPreferencesByParty[partyId].total += partyVotes.total - partyPreferenceVotes;
           votesWithoutPreferencesByParty[partyId].paper += partyVotes.paper - partyPreferencePaper;
