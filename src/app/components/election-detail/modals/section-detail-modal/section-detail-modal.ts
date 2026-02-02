@@ -151,7 +151,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     }
   }
 
-  closeModal() {
+  closeModal(): void {
     this.close.emit();
   }
 
@@ -1227,5 +1227,92 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       credits: { enabled: false },
       tooltip: { valueSuffix: '%', valueDecimals: 2 }
     };
+  }
+
+  onCandidateRowClick(candidate: CandidateResult): void {
+    // Convert CandidateResult to RegionCandidate format
+    // Find all sections where this candidate appears
+    const candidateSections: Section[] = [];
+    
+    if (this.allSections.length > 0) {
+      // Use provided allSections
+      this.allSections.forEach(section => {
+        if (!section.candidateVotes) return;
+        const candidateKey = `${candidate.partyId}_${candidate.candidateId}`;
+        const candidateVotes = section.candidateVotes[candidateKey];
+        if (candidateVotes && candidateVotes.total > 0) {
+          candidateSections.push(section);
+        }
+      });
+    } else if (this.currentSectionData) {
+      // Fallback: use current section data and find other sections from allData
+      const regionId = this.currentSectionData.regionId;
+      const currentDateData = this.allData[this.date];
+      
+      if (currentDateData && currentDateData.sections && regionId) {
+        const regionSections = currentDateData.sections.filter((s: Section) => s.regionId === regionId);
+        regionSections.forEach((section: Section) => {
+          if (!section.candidateVotes) return;
+          const candidateKey = `${candidate.partyId}_${candidate.candidateId}`;
+          const candidateVotes = section.candidateVotes[candidateKey];
+          if (candidateVotes && candidateVotes.total > 0) {
+            candidateSections.push(section);
+          }
+        });
+      }
+    }
+
+    // Create RegionCandidate from CandidateResult
+    const regionCandidate: RegionCandidate = {
+      candidateId: candidate.candidateId,
+      candidateName: candidate.candidateName,
+      partyId: candidate.partyId,
+      partyName: candidate.partyName,
+      paper: candidate.paper,
+      machine: candidate.machine,
+      total: candidate.total,
+      totalInRegion: candidate.totalInRegion || candidate.total,
+      partyPercentInRegion: candidate.partyPercentInRegion || 0,
+      preferencePercentOfPartyVotes: candidate.partyPercentInSection || 0,
+      riskIndicators: [] // Will be populated from sections
+    };
+
+    // Aggregate risk indicators from all sections
+    const riskIndicatorsMap = new Map<string, any>();
+    candidateSections.forEach(section => {
+      const risksToCheck = (section as any).candidateRiskIndicators || section.riskIndicators;
+      if (risksToCheck) {
+        risksToCheck.forEach((risk: any) => {
+          if (risk.details && risk.details.candidateId) {
+            const riskCandidateId = String(risk.details.candidateId);
+            const candidateId = String(candidate.candidateId);
+            const partyIdMatches = risk.details.partyId 
+              ? risk.details.partyId === candidate.partyId 
+              : true;
+            
+            if (riskCandidateId === candidateId && partyIdMatches) {
+              // Deduplicate by code (for unique risks like R6.2, R4.4, etc.)
+              const isUniqueRisk = risk.code === 'R5.1' || risk.code === 'R6.1' || risk.code === 'R6.2' || 
+                                   risk.code === 'R4.4' || risk.code === 'R2.4' || risk.code === 'R5.2';
+              if (isUniqueRisk) {
+                if (!riskIndicatorsMap.has(risk.code)) {
+                  riskIndicatorsMap.set(risk.code, risk);
+                }
+              } else {
+                // For non-unique risks, include all with sectionId
+                const key = `${risk.code}_${risk.details.sectionId || ''}`;
+                if (!riskIndicatorsMap.has(key)) {
+                  riskIndicatorsMap.set(key, risk);
+                }
+              }
+            }
+          }
+        });
+      }
+    });
+    
+    regionCandidate.riskIndicators = Array.from(riskIndicatorsMap.values());
+
+    this.openCandidate.emit(regionCandidate);
   }
 }

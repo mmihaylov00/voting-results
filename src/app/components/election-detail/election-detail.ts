@@ -1847,6 +1847,12 @@ export class ElectionDetailComponent implements OnInit {
     this.loadSectionDetails(section);
   }
 
+  onSectionCandidateClick(candidate: RegionCandidate): void {
+    this.closeModal();
+    this.selectedCandidate = candidate;
+    this.isCandidateModalOpen.set(true);
+  }
+
   handleEscape(): void {
     this.closeModal();
     this.closeExportModal();
