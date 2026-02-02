@@ -30,6 +30,7 @@ import { FormsModule } from '@angular/forms';
 import { SectionDetailModalComponent } from './modals/section-detail-modal/section-detail-modal';
 import { ExportCsvModalComponent } from './modals/export-csv-modal/export-csv-modal';
 import { ProtocolErrorModalComponent } from './modals/protocol-error-modal/protocol-error-modal';
+import { CandidateDetailModalComponent } from './modals/candidate-detail-modal/candidate-detail-modal';
 import { SectionFiltersComponent } from './section-filters/section-filters';
 import { PartyFilterComponent } from './party-filter/party-filter';
 import {HlmInputDirective} from '../ui/input-helm/src/lib/hlm-input.directive';
@@ -61,6 +62,7 @@ import {HlmInputDirective} from '../ui/input-helm/src/lib/hlm-input.directive';
     SectionDetailModalComponent,
     ExportCsvModalComponent,
     ProtocolErrorModalComponent,
+    CandidateDetailModalComponent,
     SectionFiltersComponent,
     PartyFilterComponent,
     HighchartsChartComponent,
@@ -78,6 +80,8 @@ export class ElectionDetailComponent implements OnInit {
   sections: Section[] = [];
   filteredSections: Section[] = [];
   selectedSection: SectionDetails | null = null;
+  selectedCandidate: RegionCandidate | null = null;
+  isCandidateModalOpen = signal<boolean>(false);
   searchTerm: string = '';
   activeTab = signal<SectionTab>('all');
   activityOperator = signal<'lte' | 'gte'>('lte');
@@ -93,6 +97,7 @@ export class ElectionDetailComponent implements OnInit {
   totalTop3Votes: number = 0;
   totalRegionMachine: number = 0;
   totalRegionPaper: number = 0;
+  candidateVotesWithoutPreferences: number = 0;
   globalComparisons: { [key: string]: any[] } = {};
 
   sectionSortColumn: keyof Section = 'sectionId';
@@ -159,11 +164,56 @@ export class ElectionDetailComponent implements OnInit {
   candidatePreferenceThreshold: number | null = 1;
   selectedCandidatePartyIds = signal<Set<string>>(new Set());
   showLeadersOnly = signal<boolean>(false);
-  candidateSortColumn: keyof RegionCandidate = 'total';
+  candidateSortColumn: keyof RegionCandidate | 'risks' = 'total';
   candidateSortDir: 'asc' | 'desc' = 'desc';
+
+  // Candidate risk filters
+  candidateRiskFilterType = signal<'any' | 'none' | null>(null);
+  selectedCandidateRiskCategories = signal<Set<string>>(new Set());
+  showCandidateRiskDropdown = signal<boolean>(false);
+
+  riskCategories = [
+    { code: 'R1', label: 'Аномалии в активността', description: 'R1: Аномалии в активността и улавяне на гласове' },
+    { code: 'R2', label: 'Разлика между хартия/машини', description: 'R2: Отклонения в съотношението хартия/машина' },
+    { code: 'R3', label: 'Аномалии в невалидни гласове', description: 'R3: Аномалии в невалидните гласове' },
+    { code: 'R4', label: 'Волатилност на резултатите', description: 'R4: Волатилност и чувствителност на резултата' },
+    { code: 'R5', label: 'Аномалии в преференциите', description: 'R5: Аномалии в участието и активацията на преференции' },
+    { code: 'R6', label: 'Концентрация на преференции', description: 'R6: Концентрация и ексклузивност на преференции' }
+  ];
+
+  toggleCandidateRiskFilterType(type: 'any' | 'none'): void {
+    if (this.candidateRiskFilterType() === type) {
+      this.candidateRiskFilterType.set(null);
+    } else {
+      this.candidateRiskFilterType.set(type);
+    }
+    this.applyCandidateFilter();
+  }
+
+  toggleCandidateRiskCategory(category: string): void {
+    const newSet = new Set(this.selectedCandidateRiskCategories());
+    if (newSet.has(category)) {
+      newSet.delete(category);
+    } else {
+      newSet.add(category);
+    }
+    this.selectedCandidateRiskCategories.set(newSet);
+    this.applyCandidateFilter();
+  }
+
+  clearCandidateRiskFilter(): void {
+    this.candidateRiskFilterType.set(null);
+    this.selectedCandidateRiskCategories.set(new Set());
+    this.applyCandidateFilter();
+  }
+
+  closeCandidateRiskDropdown(): void {
+    this.showCandidateRiskDropdown.set(false);
+  }
 
   candidateColumns: TableColumn[] = [
     { id: 'candidateId', label: 'Номер' },
+    { id: 'risks', label: 'Рискове' },
     { id: 'candidateName', label: 'Име' },
     { id: 'partyName', label: 'Партия' },
     { id: 'totalInRegion', label: 'Преференции' },
@@ -453,8 +503,8 @@ export class ElectionDetailComponent implements OnInit {
         // Aggregate candidate votes for grouped city
         const candidateVotesMap: { [key: string]: { candidateName: string, partyId: string, partyName: string, total: number } } = {};
         g.sections.forEach((s: Section) => {
-          if (s.topCandidates) {
-            s.topCandidates.forEach(candidate => {
+          if (s.candidateVotes) {
+            Object.values(s.candidateVotes).forEach(candidate => {
               const key = `${candidate.partyId}_${candidate.candidateName}`;
               if (!candidateVotesMap[key]) {
                 candidateVotesMap[key] = {
@@ -587,7 +637,7 @@ export class ElectionDetailComponent implements OnInit {
       });
     });
 
-    // Second pass: aggregate candidate votes
+    // Second pass: aggregate candidate votes and risks
     this.sections.forEach(section => {
       if (section.candidateVotes) {
         Object.values(section.candidateVotes).forEach(candidate => {
@@ -605,13 +655,47 @@ export class ElectionDetailComponent implements OnInit {
               total: 0,
               totalInRegion: 0,
               partyPercentInRegion: 0,
-              preferencePercentOfPartyVotes: 0
+              preferencePercentOfPartyVotes: 0,
+              riskIndicators: []
             };
           }
 
           candidateMap[key].paper += candidate.paper;
           candidateMap[key].machine += candidate.machine;
           candidateMap[key].total += candidate.total;
+
+          // Aggregate risks for this candidate from this section
+          // Only add risks that match both candidateId AND partyId
+          // Use candidateRiskIndicators if available (includes R6.2), otherwise use riskIndicators
+          const risksToCheck = (section as any).candidateRiskIndicators || section.riskIndicators;
+          if (risksToCheck) {
+            risksToCheck.forEach((risk: any) => {
+              if (risk.details && risk.details.candidateId) {
+                // Match by candidateId (convert to string for comparison)
+                const riskCandidateId = String(risk.details.candidateId);
+                const candidateId = String(candidate.candidateId);
+
+                // If partyId is in details, also match by partyId (for new data)
+                // Otherwise, just match by candidateId (for backwards compatibility)
+                const partyIdMatches = risk.details.partyId
+                  ? risk.details.partyId === candidate.partyId
+                  : true;
+
+                if (riskCandidateId === candidateId && partyIdMatches) {
+                  if (!candidateMap[key].riskIndicators) {
+                    candidateMap[key].riskIndicators = [];
+                  }
+                  candidateMap[key].riskIndicators!.push({
+                    code: risk.code,
+                    category: risk.category,
+                    severity: risk.severity,
+                    message: risk.message,
+                    details: { sectionId: section.sectionId }
+                  });
+                }
+              }
+            });
+          }
         });
       }
     });
@@ -679,6 +763,30 @@ export class ElectionDetailComponent implements OnInit {
       });
     }
 
+    // Risk filters
+    if (this.candidateRiskFilterType() === 'any') {
+      result = result.filter(c => {
+        const hasRiskIndicators = c.riskIndicators && c.riskIndicators.length > 0;
+        return hasRiskIndicators;
+      });
+    } else if (this.candidateRiskFilterType() === 'none') {
+      result = result.filter(c => {
+        const hasRiskIndicators = c.riskIndicators && c.riskIndicators.length > 0;
+        return !hasRiskIndicators;
+      });
+    }
+
+    // Filter by risk categories (R1, R2, R3, R4, R5, R6)
+    if (this.selectedCandidateRiskCategories().size > 0) {
+      result = result.filter(c => {
+        if (!c.riskIndicators || c.riskIndicators.length === 0) return false;
+
+        const candidateCategories = new Set(c.riskIndicators.map(ri => ri.category));
+        // Check if candidate has at least one of the selected categories
+        return Array.from(this.selectedCandidateRiskCategories()).some(cat => candidateCategories.has(cat));
+      });
+    }
+
     this.filteredCandidates = result;
     this.sortCandidates(this.candidateSortColumn, true);
 
@@ -689,17 +797,25 @@ export class ElectionDetailComponent implements OnInit {
     }
   }
 
-  sortCandidates(column: keyof RegionCandidate, preserveDir: boolean = false) {
+  sortCandidates(column: keyof RegionCandidate | 'risks', preserveDir: boolean = false) {
     if (this.candidateSortColumn === column && !preserveDir) {
       this.candidateSortDir = this.candidateSortDir === 'asc' ? 'desc' : 'asc';
     } else if (!preserveDir) {
       this.candidateSortColumn = column;
-      this.candidateSortDir = column === 'candidateName' || column === 'partyName' || column === 'candidateId' ? 'asc' : 'desc';
+      this.candidateSortDir = (column === 'candidateId' || column === 'candidateName' || column === 'partyName') ? 'asc' : 'desc';
     }
 
     this.filteredCandidates.sort((a, b) => {
-      const valA = a[this.candidateSortColumn];
-      const valB = b[this.candidateSortColumn];
+      let valA: any;
+      let valB: any;
+
+      if (this.candidateSortColumn === 'risks') {
+        valA = a.riskIndicators?.length || 0;
+        valB = b.riskIndicators?.length || 0;
+      } else {
+        valA = a[this.candidateSortColumn as keyof RegionCandidate];
+        valB = b[this.candidateSortColumn as keyof RegionCandidate];
+      }
 
       if (typeof valA === 'string' && typeof valB === 'string') {
         return this.candidateSortDir === 'asc'
@@ -716,6 +832,23 @@ export class ElectionDetailComponent implements OnInit {
   onCandidatePartySelectionChange(selectedIds: Set<string>): void {
     this.selectedCandidatePartyIds.set(selectedIds);
     this.applyCandidateFilter();
+  }
+
+  getTopCandidates(section: Section) {
+    // Calculate top 3 candidates
+    if (section.candidateVotes) {
+      return Object.values(section.candidateVotes)
+        .filter(c => c.total > 0)
+        .sort((a, b) => b.total - a.total)
+        .slice(0, 3)
+        .map(c => ({
+          candidateName: c.candidateName,
+          partyId: c.partyId,
+          partyName: c.partyName,
+          total: c.total
+        }));
+    }
+    return [];
   }
 
   updateCandidateCharts(): void {
@@ -900,28 +1033,37 @@ export class ElectionDetailComponent implements OnInit {
   updateCandidateStats(): void {
     if (this.viewMode() !== 'candidates') return;
 
-    // Calculate preference stats from filtered candidates
+    // Get filtered party IDs from filtered candidates
+    const filteredPartyIds = new Set(this.filteredCandidates.map(c => c.partyId));
+
+    // Calculate preference stats from filtered candidates (for display)
     let totalPreferences = 0;
     let totalPreferencesPaper = 0;
     let totalPreferencesMachine = 0;
-    const regionPartyPreferenceVotes: { [partyId: string]: number } = {};
-    const regionPartyVotes: { [partyId: string]: number } = {};
-
-    // Use filtered candidates for preference stats
     this.filteredCandidates.forEach(candidate => {
       totalPreferences += candidate.total;
       totalPreferencesPaper += candidate.paper;
       totalPreferencesMachine += candidate.machine;
-      regionPartyPreferenceVotes[candidate.partyId] = (regionPartyPreferenceVotes[candidate.partyId] || 0) + candidate.total;
     });
 
-    // Get party votes for parties that have filtered candidates
-    const filteredPartyIds = new Set(this.filteredCandidates.map(c => c.partyId));
+    // Calculate ALL party votes and ALL preference votes for filtered parties
+    // (not just from filtered candidates, but all preferences for those parties)
+    const regionPartyVotes: { [partyId: string]: number } = {};
+    const regionPartyPreferenceVotes: { [partyId: string]: number } = {};
 
     this.sections.forEach(section => {
       Object.entries(section.partyVotes).forEach(([partyId, votes]) => {
         if (filteredPartyIds.has(partyId)) {
           regionPartyVotes[partyId] = (regionPartyVotes[partyId] || 0) + votes.total;
+
+          // Count ALL preference votes for this party (not just filtered candidates)
+          if (section.candidateVotes) {
+            Object.values(section.candidateVotes).forEach(candidate => {
+              if (candidate.partyId === partyId) {
+                regionPartyPreferenceVotes[partyId] = (regionPartyPreferenceVotes[partyId] || 0) + candidate.total;
+              }
+            });
+          }
         }
       });
     });
@@ -931,17 +1073,26 @@ export class ElectionDetailComponent implements OnInit {
     this.totalRegionPaper = totalPreferencesPaper;
     this.totalRegionMachine = totalPreferencesMachine;
 
-    // Calculate average preference percentage from filtered data
+    // Calculate totals for filtered parties
     let totalPartyVotes = 0;
     let totalPartyPreferenceVotes = 0;
     filteredPartyIds.forEach(partyId => {
       totalPartyVotes += (regionPartyVotes[partyId] || 0);
       totalPartyPreferenceVotes += (regionPartyPreferenceVotes[partyId] || 0);
     });
+
     this.avgRegionActivity = totalPartyVotes > 0 ? (totalPartyPreferenceVotes / totalPartyVotes) * 100 : 0;
 
     // Update total electors to show total party votes for filtered parties
     this.totalElectors = totalPartyVotes;
+
+    // Calculate votes without preferences = total party votes - total preference votes
+    // This is already calculated correctly as totalElectors - totalPartyPreferenceVotes
+    // But we need to store it separately for the stat card
+    const votesWithoutPreferences = totalPartyVotes - totalPartyPreferenceVotes;
+
+    // Store this in a property for the template
+    this.candidateVotesWithoutPreferences = votesWithoutPreferences;
   }
 
   toggleCityGrouping(): void {
@@ -1606,10 +1757,26 @@ export class ElectionDetailComponent implements OnInit {
     });
   }
 
+  openCandidateModal(candidate: RegionCandidate): void {
+    this.selectedCandidate = candidate;
+    this.isCandidateModalOpen.set(true);
+  }
+
+  closeCandidateModal(): void {
+    this.isCandidateModalOpen.set(false);
+    this.selectedCandidate = null;
+  }
+
+  onCandidateSectionClick(section: Section): void {
+    this.closeCandidateModal();
+    this.loadSectionDetails(section);
+  }
+
   handleEscape(): void {
     this.closeModal();
     this.closeExportModal();
     this.closeErrorModal();
+    this.closeCandidateModal();
   }
 
   closeModal(): void {

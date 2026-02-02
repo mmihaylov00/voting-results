@@ -109,7 +109,7 @@
                     <p hlmCardDescription class="text-xs uppercase tracking-wider">Гласували без преференции</p>
                   </div>
                   <div hlmCardContent class="p-4 pt-1">
-                    <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['voted']" [currentValue]="totalElectors - totalVoted">{{ totalElectors - totalVoted | number }}</p>
+                    <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['voted']" [currentValue]="candidateVotesWithoutPreferences">{{ candidateVotesWithoutPreferences | number }}</p>
                   </div>
                 </div>
               }
@@ -178,7 +178,7 @@
                             (filterChange)="onFilterChange($event)"/>
                     } @else {
                         <!-- Candidate Filters -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-1 gap-3 w-full">
+                        <div class="grid grid-cols-1 md:grid-cols-2 md:grid-rows-3 lg:grid-cols-5 lg:grid-rows-1 gap-3 w-full">
                                 <!-- Search -->
                             <div class="w-full">
                               <input hlmInput placeholder="Търсене..." [(ngModel)]="candidateSearchTerm" (ngModelChange)="applyCandidateFilter()"
@@ -210,6 +210,40 @@
                                              class="cursor-pointer"/>
                                       <span class="text-sm font-medium">Само водачи (101)</span>
                                   </label>
+                              </div>
+
+                              <!-- Risk Filter -->
+                              <div class="relative w-full">
+                                  <button hlmBtn variant="outline" size="sm" (click)="showCandidateRiskDropdown.set(!showCandidateRiskDropdown())">
+                                      Рискове
+                                      @if (candidateRiskFilterType() || selectedCandidateRiskCategories().size > 0) {
+                                          <span class="ml-1">●</span>
+                                      }
+                                  </button>
+                                  @if (showCandidateRiskDropdown()) {
+                                      <div class="absolute z-50 mt-1 w-full overflow-auto bg-popover text-popover-foreground border border-destructive/20 rounded-md shadow-md p-2" (click)="$event.stopPropagation()">
+                                          <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="clearCandidateRiskFilter()">
+                                              <input type="radio" name="candidateRiskType" [checked]="candidateRiskFilterType() === null && selectedCandidateRiskCategories().size === 0" class="cursor-pointer" />
+                                              <span class="text-sm">Всички</span>
+                                          </div>
+                                          <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleCandidateRiskFilterType('any')">
+                                              <input type="radio" name="candidateRiskType" [checked]="candidateRiskFilterType() === 'any'" class="cursor-pointer" />
+                                              <span class="text-sm">Рискови</span>
+                                          </div>
+                                          <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleCandidateRiskFilterType('none')">
+                                              <input type="radio" name="candidateRiskType" [checked]="candidateRiskFilterType() === 'none'" class="cursor-pointer" />
+                                              <span class="text-sm">Безрискови</span>
+                                          </div>
+                                          <div class="border-t border-border my-2"></div>
+                                          <div class="text-xs font-semibold text-muted-foreground uppercase mb-2 px-2">Рискови категории</div>
+                                          @for (category of riskCategories; track category.code) {
+                                              <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleCandidateRiskCategory(category.code)">
+                                                  <input type="checkbox" [checked]="selectedCandidateRiskCategories().has(category.code)" class="cursor-pointer" />
+                                                  <span class="text-sm">{{ category.label }}</span>
+                                              </div>
+                                          }
+                                      </div>
+                                  }
                               </div>
                         </div>
                     }
@@ -437,7 +471,7 @@
                                 </tr>
                             </thead>
                             <tbody hlmTableBody>
-                                @for (section of filteredSections; track section.sectionId) {
+                                @for (section of filteredSections; track section.sectionId + section.cityName) {
                                     <tr hlmTableRow
                                         class="cursor-pointer hover:bg-primary/10 active:bg-primary/20 transition-colors group relative"
                                         [class.bg-muted]="selectedSection?.sectionId === section.sectionId"
@@ -552,16 +586,12 @@
                                     @if (visibleColumns().has('topCandidates')) {
                                         <td hlmTableCell>
                                             <div class="flex flex-col text-xs">
-                                                @if (section.topCandidates && section.topCandidates.length > 0) {
-                                                    @for (candidate of section.topCandidates; track candidate.candidateName + candidate.partyId) {
-                                                        @let alias = getPartyAlias(candidate.partyName);
-                                                        <div class="truncate" [title]="candidate.candidateName + ' (' + alias + '): ' + candidate.total + ' преференциални гласа'">
-                                                            {{ candidate.candidateName }} ({{ alias }}): <strong>{{ candidate.total | number }}</strong>
-                                                        </div>
-                                                    }
-                                                } @else {
-                                                    <span class="text-muted-foreground">-</span>
-                                                }
+                                                  @for (candidate of getTopCandidates(section); track candidate.candidateName + candidate.partyId) {
+                                                      @let alias = getPartyAlias(candidate.partyName);
+                                                      <div class="truncate" [title]="candidate.candidateName + ' (' + alias + '): ' + candidate.total + ' преференциални гласа'">
+                                                          {{ candidate.candidateName }} ({{ alias }}): <strong>{{ candidate.total | number }}</strong>
+                                                      </div>
+                                                  }
                                             </div>
                                         </td>
                                     }
@@ -593,6 +623,23 @@
                                             </span>
                                         </th>
                                     }
+                                  @if (currentVisibleColumns.has('risks')) {
+                                    <th hlmTableHead (click)="sortCandidates('risks')" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                            <span class="flex items-center justify-between">
+                                                <span>Рискове</span>
+                                                <span class="ml-1 flex items-center">
+                                                    @if (candidateSortColumn === 'risks') {
+                                                      <span class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                    } @else {
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                                            <path d="M8 9l4-4 4 4"/>
+                                                            <path d="M8 15l4 4 4-4"/>
+                                                        </svg>
+                                                    }
+                                                </span>
+                                            </span>
+                                    </th>
+                                  }
                                     @if (currentVisibleColumns.has('candidateName')) {
                                         <th hlmTableHead (click)="sortCandidates('candidateName')" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                             <span class="flex items-center justify-between">
@@ -665,10 +712,35 @@
                             </thead>
                             <tbody hlmTableBody>
                                 @for (candidate of filteredCandidates; track candidate.partyId + candidate.candidateId) {
-                                    <tr hlmTableRow class="hover:bg-primary/10 transition-colors">
+                                    <tr hlmTableRow
+                                        class="hover:bg-primary/10 transition-colors cursor-pointer"
+                                        (click)="openCandidateModal(candidate)">
                                         @if (currentVisibleColumns.has('candidateId')) {
                                             <td hlmTableCell>{{ candidate.candidateId }}</td>
                                         }
+                                      @if (currentVisibleColumns.has('risks')) {
+                                        <td hlmTableCell>
+                                          @if (candidate.riskIndicators && candidate.riskIndicators.length > 0) {
+                                            <div class="flex flex-wrap gap-1">
+                                              @for (risk of candidate.riskIndicators; track risk.code + risk.details?.sectionId) {
+                                                <span class="px-1.5 py-0.5 text-xs rounded-full"
+                                                      [class.bg-red-500/20]="risk.severity === 'high'"
+                                                  [class.text-red-600]="risk.severity === 'high'"
+                                                  [class.dark:text-red-400]="risk.severity === 'high'"
+                                                  [class.bg-yellow-500/20]="risk.severity === 'medium'"
+                                                  [class.text-yellow-600]="risk.severity === 'medium'"
+                                                  [class.dark:text-yellow-400]="risk.severity === 'medium'"
+                                                  [class.bg-blue-500/20]="risk.severity === 'low'"
+                                                  [class.text-blue-600]="risk.severity === 'low'"
+                                                  [class.dark:text-blue-400]="risk.severity === 'low'"
+                                                  [hlmTooltip]="risk.message">
+                                                {{ risk.code }}
+                                                </span>
+                                              }
+                                            </div>
+                                          }
+                                        </td>
+                                      }
                                         @if (currentVisibleColumns.has('candidateName')) {
                                             <td hlmTableCell class="font-medium">{{ candidate.candidateName }}</td>
                                         }
@@ -724,6 +796,15 @@
             [date]="date"
             (close)="closeModal()"
         ></app-section-detail-modal>
+    }
+
+    @if (isCandidateModalOpen() && selectedCandidate) {
+        <app-candidate-detail-modal
+            [candidate]="selectedCandidate"
+            [sections]="sections"
+            (close)="closeCandidateModal()"
+            (openSection)="onCandidateSectionClick($event)"
+        />
     }
 
     @if (isExportModalOpen()) {
