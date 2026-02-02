@@ -313,6 +313,10 @@ export class ElectionDetailComponent implements OnInit {
 
   formatActivity = formatActivity;
   getGoogleMapsUrl = getGoogleMapsUrl;
+  toBp(value: number | null | undefined): number {
+    if (value === null || value === undefined) return 0;
+    return Math.round(value * 10000);
+  }
 
   async copyToClipboard(text: string, event: Event): Promise<void> {
     event.stopPropagation();
@@ -450,7 +454,7 @@ export class ElectionDetailComponent implements OnInit {
     });
     const regionAvgTurnoutById: { [regionId: string]: number } = {};
     Object.entries(regionTotals).forEach(([regionId, totals]) => {
-      regionAvgTurnoutById[regionId] = totals.total > 0 ? totals.voted / totals.total : 0;
+      regionAvgTurnoutById[regionId] = totals.total > 0 ? Math.round((totals.voted / totals.total) * 10000) : 0;
     });
 
     const filters: SectionFilters = {
@@ -528,7 +532,7 @@ export class ElectionDetailComponent implements OnInit {
               partyId,
               name,
               total: total as number,
-              percent: g.voted > 0 ? (total as number) / g.voted : 0,
+              percentBp: g.voted > 0 ? Math.round(((total as number) / g.voted) * 10000) : 0,
               comparisons: Object.values(comparisonsMap)
             };
           })
@@ -608,7 +612,7 @@ export class ElectionDetailComponent implements OnInit {
             });
             comparisons[key] = Object.keys(electorsAggr).map(date => ({
               d: date,
-              v: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
+              v: electorsAggr[date] > 0 ? Math.round((votedAggr[date] / electorsAggr[date]) * 10000) : 0
             }));
           } else {
             comparisons[key] = Object.entries(aggregated).map(([date, data]) => ({
@@ -633,7 +637,7 @@ export class ElectionDetailComponent implements OnInit {
           sectionName: '',
           regionName: g.regionName,
           riskScore: totalRiskCount,
-          activityPercent: g.total > 0 ? g.voted / g.total : 0,
+          activityBp: g.total > 0 ? Math.round((g.voted / g.total) * 10000) : 0,
           topParties,
           topCandidates,
           votesToFirst,
@@ -1325,7 +1329,7 @@ export class ElectionDetailComponent implements OnInit {
 
       this.globalComparisons['activityPercent'] = Object.keys(electorsAggr).map(date => ({
         d: date,
-        v: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
+        v: electorsAggr[date] > 0 ? Math.round((votedAggr[date] / electorsAggr[date]) * 10000) : 0
       }));
     }
 
@@ -1424,7 +1428,6 @@ export class ElectionDetailComponent implements OnInit {
     let swingCount = 0;
     let outsideCount = 0;
     let riskyCount = 0;
-    let decliningCount = 0;
 
     sections.forEach(s => {
       const ppdbInTop = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
@@ -1435,11 +1438,11 @@ export class ElectionDetailComponent implements OnInit {
       } else {
         if (ppdbInTop) {
           const firstParty = s.topParties[0];
-          if (firstParty.percent - ppdbInTop.percent < 0.05) {
+          if ((firstParty.percentBp || 0) - (ppdbInTop.percentBp || 0) < 500) {
             swingCount++;
           }
         }
-        if (s.activityPercent > 0.5) {
+        if ((s.activityBp || 0) > 5000) {
           riskyCount++;
         }
       }
@@ -1448,25 +1451,12 @@ export class ElectionDetailComponent implements OnInit {
         outsideCount++;
       }
 
-      if (this.date !== '2023.04.02') {
-        const ppdb = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
-        if (ppdb && ppdb.comparisons && ppdb.comparisons.length > 0) {
-          if (ppdb.total < ppdb.comparisons[0].v) {
-            decliningCount++;
-          }
-        }
-      }
     });
 
     const ppdbCategories = ['Целеви', 'Люлеещи се', 'Извън топ 3', 'Рискови'];
     const ppdbData = [targetCount, swingCount, outsideCount, riskyCount];
     const ppdbColors = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'];
 
-    if (this.date !== '2023.04.02') {
-      ppdbCategories.push('Намаляващи');
-      ppdbData.push(decliningCount);
-      ppdbColors.push('#6366f1');
-    }
 
     this.ppdbChartOptions = {
       chart: {
@@ -1506,7 +1496,7 @@ export class ElectionDetailComponent implements OnInit {
     // Activity distribution
     const activityBins = Array(10).fill(0);
     sections.forEach(s => {
-      const bin = Math.min(Math.floor(s.activityPercent * 10), 9);
+      const bin = Math.min(Math.floor((s.activityBp || 0) / 1000), 9);
       activityBins[bin]++;
     });
 
@@ -1624,7 +1614,7 @@ export class ElectionDetailComponent implements OnInit {
           const percent = totalVotedForDate > 0 ? (comparisonsMap[date].v / totalVotedForDate) : 0;
           percentComparisons.push({
             d: date,
-            v: percent
+            v: Math.round(percent * 10000)
           });
         });
 
@@ -1687,7 +1677,7 @@ export class ElectionDetailComponent implements OnInit {
           const percent = totalVotedForDate > 0 ? (noVotesComparisonsMap[date].v / totalVotedForDate) : 0;
           noVotesPercentComparisons.push({
             d: date,
-            v: percent
+            v: Math.round(percent * 10000)
           });
         });
 
@@ -1815,7 +1805,7 @@ export class ElectionDetailComponent implements OnInit {
           });
           currentSectionData.comparisons![key] = Object.keys(electorsAggr).map(date => ({
             d: date,
-            v: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
+            v: electorsAggr[date] > 0 ? Math.round((votedAggr[date] / electorsAggr[date]) * 10000) : 0
           }));
         } else if (key === 'noVotesPercent') {
           const noVotesAggr: { [date: string]: number } = {};
@@ -1827,7 +1817,7 @@ export class ElectionDetailComponent implements OnInit {
           // Store as decimal (0-1) since tooltip will multiply by 100
           currentSectionData.comparisons![key] = Object.keys(noVotesAggr).map(date => ({
             d: date,
-            v: votedAggr[date] > 0 ? (noVotesAggr[date] / votedAggr[date]) : 0
+            v: votedAggr[date] > 0 ? Math.round((noVotesAggr[date] / votedAggr[date]) * 10000) : 0
           }));
         } else {
           currentSectionData.comparisons![key] = Object.entries(aggregated).map(([date, data]) => ({

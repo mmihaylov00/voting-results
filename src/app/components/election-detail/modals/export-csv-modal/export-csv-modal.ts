@@ -162,7 +162,7 @@ export class ExportCsvModalComponent {
     if (this.exportColumnIds.has('sectionName')) headers.push('Име на секция');
     if (this.exportColumnIds.has('total')) headers.push('Избиратели');
     if (this.exportColumnIds.has('voted')) headers.push('Гласували');
-    if (this.exportColumnIds.has('activityPercent')) headers.push('Активност');
+    if (this.exportColumnIds.has('activityBp')) headers.push('Активност');
     if (this.exportColumnIds.has('discardedVotes')) headers.push('Невалидни');
     if (this.exportColumnIds.has('noVotes')) headers.push('Не подкрепя никого');
 
@@ -175,7 +175,7 @@ export class ExportCsvModalComponent {
       if (this.exportColumnIds.has('sectionName')) rowData.push(section.sectionName);
       if (this.exportColumnIds.has('total')) rowData.push(section.total);
       if (this.exportColumnIds.has('voted')) rowData.push(section.voted);
-      if (this.exportColumnIds.has('activityPercent')) rowData.push(this.formatActivity(section.activityPercent) + '%');
+      if (this.exportColumnIds.has('activityBp')) rowData.push(this.formatActivity((section.activityBp || 0) / 10000) + '%');
       if (this.exportColumnIds.has('discardedVotes')) rowData.push(section.discardedVotes);
       if (this.exportColumnIds.has('noVotes')) rowData.push(section.noVotes);
 

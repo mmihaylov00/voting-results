@@ -46,7 +46,7 @@ export class HlmTooltipDirective implements OnDestroy {
       content = '<div class="flex flex-col gap-1">';
       this.comparisons.forEach(c => {
       const formattedValue = this.isPercent
-        ? (c.v * 100).toFixed(2) + '%'
+        ? (c.v / 100).toFixed(2) + '%'
         : this.decimalPipe.transform(c.v, '1.0-0');
 
       let arrow = '';

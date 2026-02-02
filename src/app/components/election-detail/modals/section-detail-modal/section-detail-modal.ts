@@ -90,6 +90,10 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   getPartyAlias = getPartyAlias;
   getPartyKeywords = getPartyKeywords;
   findPartyByKeywords = findPartyByKeywords;
+  toBp(value: number | null | undefined): number {
+    if (value === null || value === undefined) return 0;
+    return Math.round(value * 10000);
+  }
 
   get partiesById(): { [id: string]: string } {
     const map: { [id: string]: string } = {};
@@ -114,7 +118,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       total += s.total;
       voted += s.voted;
     });
-    return total > 0 ? voted / total : 0;
+    return total > 0 ? Math.round((voted / total) * 10000) : 0;
   }
 
   constructor(

@@ -68,21 +68,8 @@ export function filterSections(
       if (!ppdb) return false;
       if (firstParty.name.includes('ПП-ДБ')) return false; // Already in 'target'
 
-      const diff = firstParty.percent - ppdb.percent;
-      return diff < 0.05;
-    });
-  } else if (currentTab === 'declining') {
-    result = result.filter(s => {
-      // Votes for ПП-ДБ in the selected election are less than the ones in the previous election
-      const ppdbInTop = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
-
-      // s.topParties[].comparisons contains historical data
-      if (ppdbInTop && ppdbInTop.comparisons && ppdbInTop.comparisons.length > 0) {
-          const previousVotes = ppdbInTop.comparisons[0].v;
-          return ppdbInTop.total < previousVotes;
-      }
-
-      return false;
+      const diffBp = (firstParty.percentBp || 0) - (ppdb.percentBp || 0);
+      return diffBp < 500;
     });
   } else if (currentTab === 'risky') {
     result = result.filter(s => (s.riskScore || 0) > 0);
@@ -91,33 +78,20 @@ export function filterSections(
       const ppdb = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
       if (!ppdb) return false;
       const avgTurnout = regionAvgTurnoutById[s.regionId] || 0;
-      return ppdb.percent > 0.30 && s.activityPercent < avgTurnout;
+      return (ppdb.percentBp || 0) > 3000 && (s.activityBp || 0) < avgTurnout;
     });
   } else if (currentTab === 'flip') {
     result = result.filter(s => {
       return s.votesToFirst !== undefined && s.votesToFirst > 0;
-    });
-  } else if (currentTab === 'vanishing') {
-    result = result.filter(s => {
-      const ppdb = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
-      if (ppdb && ppdb.comparisons && ppdb.comparisons.length > 0) {
-        const currentVotes = ppdb.total;
-        const previousVotes = ppdb.comparisons[0].v;
-        if (previousVotes > 0) {
-          const drop = (previousVotes - currentVotes) / previousVotes;
-          return drop > 0.40;
-        }
-      }
-      return false;
     });
   }
 
   if (filters.lowActivityThreshold !== null) {
     const threshold = Math.min(100, Math.max(0, filters.lowActivityThreshold));
     if (filters.activityOperator === 'lte') {
-      result = result.filter(s => Math.min(100, Math.max(0, s.activityPercent * 100)) <= threshold);
+      result = result.filter(s => Math.min(100, Math.max(0, (s.activityBp || 0) / 100)) <= threshold);
     } else {
-      result = result.filter(s => Math.min(100, Math.max(0, s.activityPercent * 100)) >= threshold);
+      result = result.filter(s => Math.min(100, Math.max(0, (s.activityBp || 0) / 100)) >= threshold);
     }
   }
 

@@ -169,7 +169,7 @@ function parseSections(text) {
       partyVotesNorm: Object.create(null), // normalizedName -> { total, paper, machine } (for fast comparisons)
 
       topParties: [],
-      activityPercent: 0,
+      activityBp: 0,
 
       // risks
       riskScore: 0
@@ -563,7 +563,8 @@ for (const {date} of elections) {
   for (const section of sections) {
     section.totalPaper = section.protocolPaperVotes || 0;
     section.totalMachine = section.protocolMachineVotes || 0;
-    section.activityPercent = section.total > 0 ? section.voted / section.total : 0;
+    const activityRatio = section.total > 0 ? section.voted / section.total : 0;
+    section.activityBp = Math.round(activityRatio * 10000);
 
     // Build top parties by raw pid (as before), but normalize name once here.
     const tps = [];
@@ -579,8 +580,7 @@ for (const {date} of elections) {
         name,
         partyId,
         total: votes.total,
-        percent: section.voted > 0 ? votes.total / section.voted : 0,
-        comparisons: []
+        percentBp: section.voted > 0 ? Math.round((votes.total / section.voted) * 10000) : 0
       });
     }
 
@@ -629,8 +629,7 @@ for (const date of dates) {
         topParties.push({
           name,
           total,
-          percent: agg.voted > 0 ? total / agg.voted : 0,
-          comparisons: []
+          percentBp: agg.voted > 0 ? Math.round((total / agg.voted) * 10000) : 0
         });
       }
       topParties.sort((a, b) => b.total - a.total);
@@ -647,11 +646,11 @@ for (const date of dates) {
         noVotes: agg.noVotes,
         totalPaper: agg.totalPaper,
         totalMachine: agg.totalMachine,
-        avgTurnout: agg.total > 0 ? agg.voted / agg.total : 0,
-        partyPercents: (() => {
+        avgTurnoutBp: agg.total > 0 ? Math.round((agg.voted / agg.total) * 10000) : 0,
+        partyPercentsBp: (() => {
           const partyPercents = Object.create(null);
           for (const pid in agg.partyTotals) {
-            partyPercents[pid] = agg.voted > 0 ? agg.partyTotals[pid] / agg.voted : 0;
+            partyPercents[pid] = agg.voted > 0 ? Math.round((agg.partyTotals[pid] / agg.voted) * 10000) : 0;
           }
           return partyPercents;
         })(),
@@ -671,7 +670,7 @@ for (const date of dates) {
         (region.comparisons.totalPaper ||= []).push({v: otherAgg.totalPaper, d});
         (region.comparisons.totalMachine ||= []).push({v: otherAgg.totalMachine, d});
         (region.comparisons.activityPercent ||= []).push({
-          v: otherAgg.total > 0 ? otherAgg.voted / otherAgg.total : 0,
+          v: otherAgg.total > 0 ? Math.round((otherAgg.voted / otherAgg.total) * 10000) : 0,
           d
         });
 
@@ -686,13 +685,7 @@ for (const date of dates) {
           (region.comparisons[`party_${pid}`] ||= []).push({v: otherPartyTotal, d});
         }
 
-        // Top parties comparisons for regions
-        const otherAggNormTop = otherAgg.partyTotalsNorm;
-        for (const tp of region.topParties) {
-          const normalizedTarget = normalizePartyName(tp.name);
-          const otherTotal = otherAggNormTop[normalizedTarget] || 0;
-          tp.comparisons.push({v: otherTotal, d});
-        }
+        // Top parties comparisons for regions removed
       }
 
       return region;
@@ -719,11 +712,11 @@ for (const date of dates) {
       (s.comparisons.noVotes ||= []).push({v: otherSection.noVotes, d});
       (s.comparisons.totalPaper ||= []).push({v: otherSection.totalPaper || 0, d});
       (s.comparisons.totalMachine ||= []).push({v: otherSection.totalMachine || 0, d});
-      (s.comparisons.activityPercent ||= []).push({v: otherSection.activityPercent, d});
+      (s.comparisons.activityPercent ||= []).push({v: otherSection.activityBp || 0, d});
       (s.comparisons.noVotesPaper ||= []).push({v: otherSection.noVotesPaper || 0, d});
       (s.comparisons.noVotesMachine ||= []).push({v: otherSection.noVotesMachine || 0, d});
       (s.comparisons.noVotesPercent ||= []).push({
-        v: otherSection.voted > 0 ? otherSection.noVotes / otherSection.voted : 0,
+        v: otherSection.voted > 0 ? Math.round((otherSection.noVotes / otherSection.voted) * 10000) : 0,
         d
       });
 
@@ -746,20 +739,13 @@ for (const date of dates) {
         (sv.comparisons ||= []).push({v: otherTotal, d});
 
         const otherPercent = otherSection.voted > 0 ? otherTotal / otherSection.voted : 0;
-        (sv.percentComparisons ||= []).push({v: otherPercent, d});
+        (sv.percentComparisons ||= []).push({v: Math.round(otherPercent * 10000), d});
 
         (sv.paperComparisons ||= []).push({v: otherPaper, d});
         (sv.machineComparisons ||= []).push({v: otherMachine, d});
       }
 
-      // Top parties comparisons for sections (also use partyVotesNorm)
-      const otherNormMapTop = otherSection.partyVotesNorm || Object.create(null);
-      for (const tp of s.topParties) {
-        const normalizedTarget = normalizePartyName(tp.name);
-        const otherBucket = otherNormMapTop[normalizedTarget];
-        const otherTotal = otherBucket ? (otherBucket.total || 0) : 0;
-        tp.comparisons.push({v: otherTotal, d});
-      }
+      // Top parties comparisons for sections removed
     }
   }
 
@@ -787,8 +773,8 @@ for (const date of dates) {
 
     // turnout change (current vs most recent comparison entry you have)
     if (s.comparisons?.activityPercent && s.comparisons.activityPercent.length > 0) {
-      const currentTurnout = s.activityPercent;
-      const previousTurnout = s.comparisons.activityPercent[0].v;
+      const currentTurnout = (s.activityBp || 0) / 10000;
+      const previousTurnout = (s.comparisons.activityPercent[0].v || 0) / 10000;
       if (previousTurnout > 0) stats.turnoutChanges.push((currentTurnout - previousTurnout) / previousTurnout);
     }
 
@@ -910,7 +896,7 @@ for (const date of dates) {
 
     // R1.1: Turnout anomaly
     if (baseline && section.comparisons?.voted && section.comparisons.voted.length > 0) {
-      const currentTurnout = section.activityPercent;
+      const currentTurnout = (section.activityBp || 0) / 10000;
       const previousTurnout = baseline.avgTurnout;
       const turnoutChange = previousTurnout > 0 ? (currentTurnout - previousTurnout) / previousTurnout : 0;
       const deviation = turnoutChange - regStats.avgTurnoutChange;
@@ -1229,7 +1215,7 @@ for (const date of dates) {
         const avgHistoricalShare = sum / historicalShares.length;
         const variance = calculateVariance(historicalShares);
 
-        const currentShare = currentTopParty.percent;
+        const currentShare = (currentTopParty.percentBp || 0) / 10000;
         const swing = Math.abs(currentShare - avgHistoricalShare);
 
         if (variance < 0.01 && swing > 0.15 && avgHistoricalShare > 0) {
@@ -1305,17 +1291,17 @@ for (const date of dates) {
 
         if (ppdbPartyId && section.partyVotes[ppdbPartyId] && section.voted > 0) {
           const ppdbVotes = section.partyVotes[ppdbPartyId];
-          const ppdbPercent = (ppdbVotes.total || 0) / section.voted;
+          const ppdbPercent = section.voted > 0 ? (ppdbVotes.total || 0) / section.voted : 0;
           ppdb = {
             partyId: ppdbPartyId,
             name: parties[ppdbPartyId] || 'ПП-ДБ',
-            percent: ppdbPercent
+            percentBp: Math.round(ppdbPercent * 10000)
           };
         }
       }
 
       if (ppdb && ppdb.partyId !== top1.partyId) {
-        const margin = top1.percent - ppdb.percent;
+        const margin = ((top1.percentBp || 0) - (ppdb.percentBp || 0)) / 10000;
         if (margin < 0.05 && margin > 0) {
           riskIndicators.push({
             code: 'R4.3',
@@ -1924,7 +1910,7 @@ for (const date of dates) {
   }
 
   const rawBytes = Buffer.byteLength(json);
-  const gzipped = zlib.gzipSync(json);
+  const gzipped = zlib.gzipSync(json, {level: 9});
   const gzipBytes = gzipped.length;
   const ratio = rawBytes > 0 ? (gzipBytes / rawBytes).toFixed(3) : '0.000';
   console.log(`Output size ${date}: rawBytes=${rawBytes} gzipBytes=${gzipBytes} ratio=${ratio}`);

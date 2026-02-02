@@ -87,36 +87,9 @@ Reduce the size of the compiled election artifacts (`public/data/compiled/<date>
 
 ---
 
-## Phase 4 — Reduce Duplicated Representations
-
-Choose one of the following strategies (A is smallest output):
-
-- [ ] **T4.A: Keep only `section.comparisons` and drop other comparison copies**
-  - Remove:
-    - `partyVotes[pid].comparisons`
-    - `partyVotes[pid].percentComparisons`
-    - `partyVotes[pid].paperComparisons`
-    - `partyVotes[pid].machineComparisons`
-    - `topParties[*].comparisons`
-  - UI derives party/top party comparison series from `section.comparisons` + `partyVotes`.
-  - Acceptance:
-    - Output contains exactly one comparison structure per section and per region.
-
-OR
-
-- [ ] **T4.B: Keep only top-3 party comparisons**
-  - Keep:
-    - `topParties[*].comparisons`
-  - Drop:
-    - full per-party comparisons under `partyVotes`
-  - Acceptance:
-    - No comparison arrays exist under `partyVotes`.
-
----
-
 ## Phase 5 — Compact Numeric Encoding
 
-- [ ] **T5.1: Quantize percent floats to integers (basis points)**
+- [x] **T5.1: Quantize percent floats to integers (basis points)**
   - Replace floats such as:
     - `activityPercent`, `percent`, `noVotesPercent`
   - With integers:
@@ -139,7 +112,7 @@ OR
 
 ## Phase 6 — Stronger Compression
 
-- [ ] **T6.1: Gzip max compression**
+- [x] **T6.1: Gzip max compression**
   - Change gzip call to:
     - `zlib.gzipSync(json, { level: 9 })`
   - Acceptance:
@@ -166,7 +139,7 @@ OR
     - UI loads meta once and joins by `sectionId`.
 
 - [ ] **T7.2: Extract candidate metadata to a shared file**
-  - Create `compiled/candidates_meta_<date>.json.(gz|br)` or global if stable:
+  - Create `compiled/candidates_meta_<date>.json.(gz|br)`:
     - `candidateKey -> { candidateId, partyId, candidateName, partyName, regionId }`
   - Date file contains only numeric/risk data keyed by candidateKey.
   - Acceptance:

@@ -172,7 +172,7 @@ export class RegionListComponent implements OnInit, AfterViewInit {
 
       this.globalComparisons['activityPercent'] = Object.keys(electorsAggr).map(date => ({
         d: date,
-        v: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
+        v: electorsAggr[date] > 0 ? Math.round((votedAggr[date] / electorsAggr[date]) * 10000) : 0
       }));
     }
   }
@@ -359,6 +359,10 @@ export class RegionListComponent implements OnInit, AfterViewInit {
 
   formatActivity = formatActivity;
   getPartyAlias = getPartyAlias;
+  toBp(value: number | null | undefined): number {
+    if (value === null || value === undefined) return 0;
+    return Math.round(value * 10000);
+  }
 
   formatRegionName(name: string): string {
     const parts = name.split('.');

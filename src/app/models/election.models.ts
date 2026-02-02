@@ -29,13 +29,13 @@ export interface Region {
   total: number;
   voted: number;
   partyVotes: { [key: string]: number };
-  topParties?: { partyId: string, name: string, total: number, percent: number, comparisons?: ComparativeValue[] }[];
+  topParties?: { partyId: string, name: string, total: number, percentBp: number }[];
   discardedVotes?: number;
   noVotes?: number;
   totalPaper?: number;
   totalMachine?: number;
-  avgTurnout?: number;
-  partyPercents?: { [key: string]: number };
+  avgTurnoutBp?: number;
+  partyPercentsBp?: { [key: string]: number };
   comparisons?: { [key: string]: ComparativeValue[] };
 }
 
@@ -54,8 +54,8 @@ export interface Section {
   noVotesMachine?: number;
   partyVotes: { [key: string]: PartyVotes };
   candidateVotes?: { [key: string]: CandidateVotes };
-  topParties: { partyId: string, name: string, total: number, percent: number, comparisons?: ComparativeValue[] }[];
-  activityPercent: number;
+  topParties: { partyId: string, name: string, total: number, percentBp: number }[];
+  activityBp: number;
   totalPaper?: number;
   totalMachine?: number;
   hasProtocolError?: boolean;
@@ -141,7 +141,7 @@ export const SECTION_COLUMNS: TableColumn[] = [
   { id: 'sectionName', label: 'Име на секция' },
   { id: 'total', label: 'Избиратели' },
   { id: 'voted', label: 'Гласували' },
-  { id: 'activityPercent', label: 'Активност' },
+  { id: 'activityBp', label: 'Активност' },
   { id: 'discardedVotes', label: 'Невалидни' },
   { id: 'noVotes', label: 'Не подкрепя никого' },
   { id: 'typeVotes', label: 'Гласове по тип' },
