@@ -158,6 +158,18 @@ export class ElectionDetailComponent implements OnInit {
 
     return riskLines.join('\n');
   }
+
+  getFormattedCandidateRisks(candidate: RegionCandidate): string {
+    const riskLines: string[] = [];
+
+    if (candidate.riskIndicators && candidate.riskIndicators.length > 0) {
+      candidate.riskIndicators.forEach(indicator => {
+        riskLines.push(`${indicator.code}: ${indicator.message}`);
+      });
+    }
+
+    return riskLines.join('\n');
+  }
   viewMode = signal<ViewMode>('sections');
   groupByCity = signal<boolean>(false);
   groupedSections: any[] = [];

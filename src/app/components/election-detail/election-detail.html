@@ -688,11 +688,11 @@
                                       @if (currentVisibleColumns.has('risks')) {
                                         <td hlmTableCell>
                                           @if (candidate.riskIndicators && candidate.riskIndicators.length > 0) {
-                                            <div class="flex flex-wrap gap-1">
-                                              @for (risk of candidate.riskIndicators; track risk.code + risk.details?.sectionId) {
-                                                <app-risk-badge [risk]="risk" size="small" displayMode="compact" />
-                                              }
-                                            </div>
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-destructive/10 text-destructive cursor-help" [hlmTooltip]="getFormattedCandidateRisks(candidate)">
+                                              {{ candidate.riskIndicators.length }}
+                                            </span>
+                                          } @else {
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-green-500/20 text-green-600 dark:text-green-400">0</span>
                                           }
                                         </td>
                                       }
