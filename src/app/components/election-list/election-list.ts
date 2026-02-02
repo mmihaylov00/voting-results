@@ -18,6 +18,7 @@ import {
 import { HlmTypographyDirective } from '../ui/typography-helm/src/lib/hlm-typography.directive';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
+import { PartyFilterComponent } from '../election-detail/party-filter/party-filter';
 
 interface ElectionData {
   date: string;
@@ -30,9 +31,6 @@ interface ElectionData {
 
 @Component({
   selector: 'app-election-list',
-  host: {
-    '(document:click)': 'closeHistoricalPartyFilter()'
-  },
   imports: [
     CommonModule,
     RouterModule,
@@ -45,6 +43,7 @@ interface ElectionData {
     HlmCardContentDirective,
     HlmTypographyDirective,
     HighchartsChartComponent,
+    PartyFilterComponent,
   ],
   templateUrl: './election-list.html',
   styleUrl: './election-list.scss',
@@ -65,7 +64,6 @@ export class ElectionListComponent implements OnInit {
   
   // Historical charts multiselect
   selectedHistoricalPartyIds = signal<Set<string>>(new Set());
-  showHistoricalPartyFilter = signal<boolean>(false);
   allParties: { id: string, name: string }[] = [];
   private readonly DEFAULT_KEYWORDS = ["ГЕРБ", "ПРОДЪЛЖАВАМЕ", "ВЪЗРАЖДАНЕ", "ДПС", "БСП", "ТАКЪВ НАРОД", "МЕЧ", "ВЕЛИЧИЕ"];
 
@@ -191,23 +189,8 @@ export class ElectionListComponent implements OnInit {
   getPartyKeywords = getPartyKeywords;
   findPartyByKeywords = findPartyByKeywords;
 
-  toggleHistoricalPartyFilter(event: Event) {
-    event.stopPropagation();
-    this.showHistoricalPartyFilter.set(!this.showHistoricalPartyFilter());
-  }
-
-  closeHistoricalPartyFilter() {
-    this.showHistoricalPartyFilter.set(false);
-  }
-
-  toggleHistoricalPartySelection(partyId: string) {
-    const current = new Set(this.selectedHistoricalPartyIds());
-    if (current.has(partyId)) {
-      current.delete(partyId);
-    } else {
-      current.add(partyId);
-    }
-    this.selectedHistoricalPartyIds.set(current);
+  onHistoricalPartySelectionChange(selectedIds: Set<string>): void {
+    this.selectedHistoricalPartyIds.set(selectedIds);
   }
 
   updateHistoricalCharts() {

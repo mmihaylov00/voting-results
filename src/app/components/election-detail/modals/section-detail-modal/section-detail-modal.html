@@ -19,9 +19,9 @@
         </div>
     </ng-template>
 
-    <div class="flex flex-col h-[90vh] overflow-auto pt-0 -mx-6 px-6">
+    <div class="flex flex-col" style="max-height: calc(90vh - 200px); overflow-y: auto;">
             <!-- Tabs -->
-            <div class="flex flex-wrap gap-2 border-b border-primary/10 mb-4 flex-shrink-0">
+            <div class="flex flex-wrap gap-2 border-b border-primary/10 mb-4 flex-shrink-0 px-6">
                 <button hlmBtn [variant]="activeTab() === 'parties' ? 'default' : 'outline'" size="lg" [attr.data-state]="activeTab() === 'parties' ? 'active' : 'inactive'"
                         (click)="activeTab.set('parties')">
                     Партии
@@ -32,46 +32,51 @@
                 </button>
             </div>
 
-          <div class="flex-1 -mx-6 px-6 overflow-x-auto" style="max-height: 60vh; min-height: 60vh">
-            <table hlmTable class="overflow-auto min-w-full">
+          <div class="overflow-x-auto px-6" style="min-height: 400px;">
+            <table hlmTable class="min-w-full">
               <!-- Parties Table -->
               @if (activeTab() === 'parties') {
                   <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
                       <tr hlmTableRow class="hover:bg-transparent">
-                          <app-sortable-table-header 
+                          <th hlmTableHead 
+                              app-sortable-table-header
                               columnKey="partyName"
                               label="Партия"
                               [currentSortColumn]="partySortColumn"
                               [sortDirection]="partySortDir"
-                              (sortChange)="sortParties($event)" />
-                          <app-sortable-table-header 
+                              (sortChange)="sortParties($event)"></th>
+                          <th hlmTableHead 
+                              app-sortable-table-header
                               columnKey="total"
                               label="Гласове"
                               align="right"
                               [currentSortColumn]="partySortColumn"
                               [sortDirection]="partySortDir"
-                              (sortChange)="sortParties($event)" />
-                          <app-sortable-table-header 
+                              (sortChange)="sortParties($event)"></th>
+                          <th hlmTableHead 
+                              app-sortable-table-header
                               columnKey="paper"
                               label="Хартиени"
                               align="right"
                               [currentSortColumn]="partySortColumn"
                               [sortDirection]="partySortDir"
-                              (sortChange)="sortParties($event)" />
-                          <app-sortable-table-header 
+                              (sortChange)="sortParties($event)"></th>
+                          <th hlmTableHead 
+                              app-sortable-table-header
                               columnKey="machine"
                               label="Машинни"
                               align="right"
                               [currentSortColumn]="partySortColumn"
                               [sortDirection]="partySortDir"
-                              (sortChange)="sortParties($event)" />
-                          <app-sortable-table-header 
+                              (sortChange)="sortParties($event)"></th>
+                          <th hlmTableHead 
+                              app-sortable-table-header
                               columnKey="percent"
                               label="%"
                               align="right"
                               [currentSortColumn]="partySortColumn"
                               [sortDirection]="partySortDir"
-                              (sortChange)="sortParties($event)" />
+                              (sortChange)="sortParties($event)"></th>
                       </tr>
                   </thead>
                   <tbody hlmTableBody>

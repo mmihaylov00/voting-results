@@ -95,37 +95,11 @@
           </div>
         }
 
-        <div class="relative ml-auto">
-          <button
-            hlmBtn
-            variant="outline"
-            size="sm"
-            (click)="toggleHistoricalPartyFilter($event)"
-            class="relative">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-            <span class="ml-2">Филтър партии</span>
-            @if (selectedHistoricalPartyIds().size > 0) {
-              <span class="ml-2 px-1.5 py-0.5 text-xs bg-primary text-primary-foreground rounded-full">
-                {{ selectedHistoricalPartyIds().size }}
-              </span>
-            }
-          </button>
-          @if (showHistoricalPartyFilter()) {
-            <div class="absolute right-0 mt-2 w-64 bg-background border border-border rounded-md shadow-lg z-50 max-h-96 overflow-y-auto" (click)="$event.stopPropagation()">
-              <div class="p-2">
-                @for (party of allParties; track party.id) {
-                  <label class="flex items-center gap-2 p-2 hover:bg-accent rounded cursor-pointer">
-                    <input
-                      type="checkbox"
-                      [checked]="selectedHistoricalPartyIds().has(party.id)"
-                      (change)="toggleHistoricalPartySelection(party.id)"
-                      class="rounded border-input" />
-                    <span class="flex-1 text-sm">{{ getPartyAlias(party.name) }}</span>
-                  </label>
-                }
-              </div>
-            </div>
-          }
+        <div class="ml-auto">
+          <app-party-filter
+            [parties]="allParties"
+            [selectedPartyIds]="selectedHistoricalPartyIds()"
+            (selectedPartyIdsChange)="onHistoricalPartySelectionChange($event)" />
         </div>
       </div>
 

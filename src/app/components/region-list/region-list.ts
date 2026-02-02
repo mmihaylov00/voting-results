@@ -15,13 +15,11 @@ import { HlmTypographyDirective } from '../ui/typography-helm/src/lib/hlm-typogr
 import { HlmTooltipDirective } from '../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
+import { PartyFilterComponent } from '../election-detail/party-filter/party-filter';
 
 @Component({
   selector: 'app-region-list',
   standalone: true,
-  host: {
-    '(document:click)': 'closePartyFilter()'
-  },
   imports: [
     CommonModule,
     RouterLink,
@@ -35,7 +33,8 @@ import { HighchartsChartComponent } from 'highcharts-angular';
     HlmInputDirective,
     HlmTypographyDirective,
     HlmTooltipDirective,
-    HighchartsChartComponent
+    HighchartsChartComponent,
+    PartyFilterComponent
   ],
   templateUrl: './region-list.html'
 })
@@ -63,7 +62,6 @@ export class RegionListComponent implements OnInit, AfterViewInit {
   activeChart = signal<'activity' | 'party'>('activity');
   allParties: { id: string, name: string }[] = [];
   selectedPartyIds = signal<Set<string>>(new Set());
-  showPartyFilter: boolean = false;
   private readonly DEFAULT_KEYWORDS = ["ГЕРБ", "ПРОДЪЛЖАВАМЕ", "ВЪЗРАЖДАНЕ", "ДПС", "БСП", "ТАКЪВ НАРОД", "МЕЧ", "ВЕЛИЧИЕ"];
 
   getCikUrl(): string {
@@ -179,23 +177,8 @@ export class RegionListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  togglePartyFilter(event: Event) {
-    event.stopPropagation();
-    this.showPartyFilter = !this.showPartyFilter;
-  }
-
-  closePartyFilter() {
-    this.showPartyFilter = false;
-  }
-
-  togglePartySelection(partyId: string): void {
-    const current = new Set(this.selectedPartyIds());
-    if (current.has(partyId)) {
-      current.delete(partyId);
-    } else {
-      current.add(partyId);
-    }
-    this.selectedPartyIds.set(current);
+  onPartySelectionChange(selectedIds: Set<string>): void {
+    this.selectedPartyIds.set(selectedIds);
   }
 
   ngAfterViewInit() {
@@ -203,20 +186,14 @@ export class RegionListComponent implements OnInit, AfterViewInit {
   }
 
 
-  get filteredAllParties(): { id: string, name: string, votes: number }[] {
-    // Calculate total votes per party across all regions
-    const partyVotesMap = new Map<string, number>();
+  get partyVotesMap(): { [partyId: string]: number } {
+    const votesMap: { [partyId: string]: number } = {};
     this.regions.forEach(region => {
       Object.entries(region.partyVotes).forEach(([partyId, votes]) => {
-        const currentVotes = partyVotesMap.get(partyId) || 0;
-        partyVotesMap.set(partyId, currentVotes + (votes as number));
+        votesMap[partyId] = (votesMap[partyId] || 0) + (votes as number);
       });
     });
-
-    return this.allParties.map(p => ({
-      ...p,
-      votes: partyVotesMap.get(p.id) || 0
-    }));
+    return votesMap;
   }
 
   updateCharts() {

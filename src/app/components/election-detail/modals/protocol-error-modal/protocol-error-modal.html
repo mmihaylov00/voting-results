@@ -5,50 +5,56 @@
     zIndex="z-50"
     (close)="close.emit()">
     
-    <div class="overflow-auto">
+    <div style="max-height: calc(90vh - 200px); overflow: auto;">
             <table hlmTable>
                 <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
                     <tr hlmTableRow>
-                        <app-sortable-table-header 
+                        <th hlmTableHead 
+                            app-sortable-table-header
                             columnKey="sectionId"
                             label="Секция"
                             [currentSortColumn]="sortColumn()"
                             [sortDirection]="sortDirection()"
-                            (sortChange)="toggleSort($event)" />
-                        <app-sortable-table-header 
+                            (sortChange)="toggleSort($event)"></th>
+                        <th hlmTableHead 
+                            app-sortable-table-header
                             columnKey="cityName"
                             label="Град"
                             [currentSortColumn]="sortColumn()"
                             [sortDirection]="sortDirection()"
-                            (sortChange)="toggleSort($event)" />
-                        <app-sortable-table-header 
+                            (sortChange)="toggleSort($event)"></th>
+                        <th hlmTableHead 
+                            app-sortable-table-header
                             columnKey="voted"
                             label="Подписи"
                             align="right"
                             [currentSortColumn]="sortColumn()"
                             [sortDirection]="sortDirection()"
-                            (sortChange)="toggleSort($event)" />
-                        <app-sortable-table-header 
+                            (sortChange)="toggleSort($event)"></th>
+                        <th hlmTableHead 
+                            app-sortable-table-header
                             columnKey="protocolPaperVotes"
                             label="Хартиени"
                             align="right"
                             [currentSortColumn]="sortColumn()"
                             [sortDirection]="sortDirection()"
-                            (sortChange)="toggleSort($event)" />
-                        <app-sortable-table-header 
+                            (sortChange)="toggleSort($event)"></th>
+                        <th hlmTableHead 
+                            app-sortable-table-header
                             columnKey="protocolMachineVotes"
                             label="Машинни"
                             align="right"
                             [currentSortColumn]="sortColumn()"
                             [sortDirection]="sortDirection()"
-                            (sortChange)="toggleSort($event)" />
-                        <app-sortable-table-header 
+                            (sortChange)="toggleSort($event)"></th>
+                        <th hlmTableHead 
+                            app-sortable-table-header
                             columnKey="protocolErrorDiff"
                             label="Разлика"
                             align="right"
                             [currentSortColumn]="sortColumn()"
                             [sortDirection]="sortDirection()"
-                            (sortChange)="toggleSort($event)" />
+                            (sortChange)="toggleSort($event)"></th>
                     </tr>
                 </thead>
                 <tbody hlmTableBody>

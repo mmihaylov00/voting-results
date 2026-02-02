@@ -49,7 +49,6 @@ import { RiskBadgeComponent } from '../../../ui/risk-badge/risk-badge';
     PartyFilterComponent,
     BaseModalComponent,
     SortableTableHeaderComponent,
-    RiskBadgeComponent,
   ],
   templateUrl: './section-detail-modal.html'
 })

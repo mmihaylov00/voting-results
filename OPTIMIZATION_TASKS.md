@@ -568,7 +568,7 @@ Create a reusable `SearchInputComponent` that:
    - ✅ Base Modal Component - **COMPLETED**
    - ✅ Sortable Table Header Component - **COMPLETED**
    - ✅ Risk Badge Component - **COMPLETED**
-   - ⏳ Party Filter Button and Dropdown Component - **IN PROGRESS**
+   - ✅ Party Filter Button and Dropdown Component - **COMPLETED**
    - ✅ Comparison Operator Input Component (≤/≥) - **COMPLETED**
 
 2. **Medium Priority** (Significant code reduction):
@@ -588,9 +588,11 @@ Create a reusable `SearchInputComponent` that:
 
 ### Refactoring Status:
 - ✅ Candidate Detail Modal - **REFACTORED** to use BaseModalComponent and RiskBadgeComponent
-- ⏳ Section Detail Modal - **PENDING**
-- ⏳ Protocol Error Modal - **PENDING**
-- ⏳ Export CSV Modal - **PENDING**
+- ✅ Section Detail Modal - **REFACTORED** to use BaseModalComponent and SortableTableHeaderComponent
+- ✅ Protocol Error Modal - **REFACTORED** to use BaseModalComponent and SortableTableHeaderComponent
+- ✅ Export CSV Modal - **REFACTORED** to use BaseModalComponent
+- ✅ Election List - **REFACTORED** to use PartyFilterComponent
+- ✅ Region List - **REFACTORED** to use PartyFilterComponent
 
 ---
 

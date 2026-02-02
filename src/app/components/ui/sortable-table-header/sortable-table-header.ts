@@ -1,9 +1,9 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostListener, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HlmTableHeadDirective } from '../table-helm/src/lib/hlm-table.directives';
 
 @Component({
-  selector: 'app-sortable-table-header',
+  selector: 'th[app-sortable-table-header]',
   standalone: true,
   imports: [
     CommonModule,
@@ -30,6 +30,13 @@ export class SortableTableHeaderComponent {
     return '';
   }
 
+  @HostBinding('class')
+  get hostClasses(): string {
+    const baseClasses = 'cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative';
+    return this.align === 'right' ? `${baseClasses} text-right` : baseClasses;
+  }
+
+  @HostListener('click')
   onClick(): void {
     this.sortChange.emit(this.columnKey);
   }
