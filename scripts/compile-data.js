@@ -40,6 +40,53 @@ function timeAction(label, fn) {
   return result;
 }
 
+function readFileWithHeaders(filePath) {
+  const text = fs.readFileSync(filePath, 'utf8');
+  const newlineIndex = text.indexOf('\n');
+  if (newlineIndex === -1) {
+    throw new Error(`Missing header row in ${filePath}`);
+  }
+
+  let headerLine = text.slice(0, newlineIndex);
+  if (headerLine.endsWith('\r')) headerLine = headerLine.slice(0, -1);
+  const headers = headerLine.split(';').map((h) => h.trim());
+  const body = text.slice(newlineIndex + 1);
+  return {headers, body};
+}
+
+function buildHeaderIndex(headers) {
+  const map = Object.create(null);
+  for (let i = 0; i < headers.length; i++) {
+    const key = headers[i];
+    if (!key) continue;
+    if (map[key] === undefined) map[key] = i;
+  }
+  return map;
+}
+
+function requireHeaderIndex(headerMap, name, label) {
+  const idx = headerMap[name];
+  if (idx === undefined) {
+    throw new Error(`Missing header "${name}" in ${label}`);
+  }
+  return idx;
+}
+
+function findHeaderIndexes(headers, name) {
+  const out = [];
+  for (let i = 0; i < headers.length; i++) {
+    if (headers[i] === name) out.push(i);
+  }
+  return out;
+}
+
+function findHeaderIndexBetween(headers, name, start, end) {
+  for (let i = start; i < end; i++) {
+    if (headers[i] === name) return i;
+  }
+  return -1;
+}
+
 /**
  * Faster than text.split('\n') for big files (less allocation).
  * Handles both \n and \r\n.
@@ -109,14 +156,17 @@ function calculateGini(sortedValues) {
   return (2 * weightedSum) / (n * sum) - (n + 1) / n;
 }
 
-function parseParties(text) {
+function parseParties(text, headers) {
+  const headerMap = buildHeaderIndex(headers);
+  const partyIdIdx = requireHeaderIndex(headerMap, 'partyId', 'cik_parties');
+  const partyNameIdx = requireHeaderIndex(headerMap, 'partyName', 'cik_parties');
   const parties = Object.create(null);
   forEachLine(text, (line) => {
     // Avoid trim: split first, then minimal cleanup
     const parts = line.split(';');
-    if (parts.length < 2) return;
-    const partyId = (parts[0] || '').trim();
-    const partyName = (parts[1] || '').trim();
+    if (parts.length <= Math.max(partyIdIdx, partyNameIdx)) return;
+    const partyId = (parts[partyIdIdx] || '').trim();
+    const partyName = (parts[partyNameIdx] || '').trim();
     if (partyId) parties[partyId] = partyName;
   });
   parties['0'] = 'Други';
@@ -227,7 +277,13 @@ function compactRegion(region, mapping) {
   return out;
 }
 
-function parseSections(text) {
+function parseSections(text, headers) {
+  const headerMap = buildHeaderIndex(headers);
+  const sectionIdIdx = requireHeaderIndex(headerMap, 'sectionId', 'sections');
+  const regionIdIdx = requireHeaderIndex(headerMap, 'regionId', 'sections');
+  const regionNameIdx = requireHeaderIndex(headerMap, 'regionName', 'sections');
+  const cityNameIdx = requireHeaderIndex(headerMap, 'cityName', 'sections');
+  const sectionNameIdx = requireHeaderIndex(headerMap, 'sectionName', 'sections');
   const sections = Object.create(null);
 
   forEachLine(text, (raw) => {
@@ -235,17 +291,17 @@ function parseSections(text) {
     if (!line) return;
 
     const parts = line.split(';');
-    if (parts.length <= 5) return;
+    if (parts.length <= sectionNameIdx) return;
 
-    const sectionId = (parts[0] || '').trim();
+    const sectionId = (parts[sectionIdIdx] || '').trim();
     if (!sectionId) return;
 
-    const regionId = (parts[1] || '').trim();
-    const regionName = (parts[2] || '').trim();
-    const cityName = (parts[4] || '').trim();
+    const regionId = (parts[regionIdIdx] || '').trim();
+    const regionName = (parts[regionNameIdx] || '').trim();
+    const cityName = (parts[cityNameIdx] || '').trim();
 
     // Cheap cleanup: remove spaces before punctuation
-    let sectionName = (parts[5] || '').trim().replace(/\s+([,.:;!?])/g, '$1');
+    let sectionName = (parts[sectionNameIdx] || '').trim().replace(/\s+([,.:;!?])/g, '$1');
 
     // Try to drop leading "гр." / "с." part if present
     const lower = sectionName.toLowerCase();
@@ -301,46 +357,36 @@ function parseSections(text) {
   return sections;
 }
 
-function applyProtocols(sections, text) {
+function applyProtocols(sections, text, headers) {
+  const headerMap = buildHeaderIndex(headers);
+  const sectionIdIdx = requireHeaderIndex(headerMap, 'sectionId', 'protocols');
+  const totalAIdx = requireHeaderIndex(headerMap, 'totalA', 'protocols');
+  const totalBIdx = requireHeaderIndex(headerMap, 'totalB', 'protocols');
+  const votedIdx = requireHeaderIndex(headerMap, 'voted', 'protocols');
+  const discardedVotesIdx = requireHeaderIndex(headerMap, 'discardedVotes', 'protocols');
+  const noVotesPaperIdx = requireHeaderIndex(headerMap, 'noVotesPaper', 'protocols');
+  const noVotesMachineIdx = requireHeaderIndex(headerMap, 'noVotesMachine', 'protocols');
+  const protocolPaperVotesIdx = requireHeaderIndex(headerMap, 'protocolPaperVotes', 'protocols');
+  const protocolMachineVotesIdx = requireHeaderIndex(headerMap, 'protocolMachineVotes', 'protocols');
+
   forEachLine(text, (raw) => {
     const line = raw.trim();
     if (!line) return;
 
     const parts = line.split(';');
-    if (parts.length <= 9) return;
+    if (parts.length <= sectionIdIdx) return;
 
-    const sectionId = (parts[1] || '').trim();
+    const sectionId = (parts[sectionIdIdx] || '').trim();
     const section = sections[sectionId];
     if (!section) return;
 
-    if (parts.length === 21) {
-      // 2024.06
-      section.total = parseLongSafe(parts[7]) + parseLongSafe(parts[10]);
-      section.voted = parseLongSafe(parts[11]);
-      section.discardedVotes = parseLongSafe(parts[15]);
-      section.noVotesPaper = parseLongSafe(parts[16]);
-      section.noVotesMachine = parseLongSafe(parts[19]);
-      section.protocolPaperVotes = parseLongSafe(parts[14]);
-      section.protocolMachineVotes = parseLongSafe(parts[18]);
-    } else if (parts.length === 25) {
-      // 2023.04
-      section.total = parseLongSafe(parts[7]) + parseLongSafe(parts[8]);
-      section.voted = parseLongSafe(parts[9]);
-      section.discardedVotes = parseLongSafe(parts[15]);
-      section.noVotesPaper = parseLongSafe(parts[22]);
-      section.noVotesMachine = parseLongSafe(parts[23]);
-      section.protocolPaperVotes = parseLongSafe(parts[12]);
-      section.protocolMachineVotes = parseLongSafe(parts[13]);
-    } else {
-      // 2024.10 (default)
-      section.total = parseLongSafe(parts[7]) + parseLongSafe(parts[8]);
-      section.voted = parseLongSafe(parts[9]);
-      section.discardedVotes = parseLongSafe(parts[13]);
-      section.noVotesPaper = parseLongSafe(parts[14]);
-      section.noVotesMachine = parseLongSafe(parts[17]);
-      section.protocolPaperVotes = parseLongSafe(parts[12]);
-      section.protocolMachineVotes = parseLongSafe(parts[16]);
-    }
+    section.total = parseLongSafe(parts[totalAIdx]) + parseLongSafe(parts[totalBIdx]);
+    section.voted = parseLongSafe(parts[votedIdx]);
+    section.discardedVotes = parseLongSafe(parts[discardedVotesIdx]);
+    section.noVotesPaper = parseLongSafe(parts[noVotesPaperIdx]);
+    section.noVotesMachine = parseLongSafe(parts[noVotesMachineIdx]);
+    section.protocolPaperVotes = parseLongSafe(parts[protocolPaperVotesIdx]);
+    section.protocolMachineVotes = parseLongSafe(parts[protocolMachineVotesIdx]);
 
     section.noVotes = (section.noVotesPaper || 0) + (section.noVotesMachine || 0);
     section.protocolErrorDiff =
@@ -349,36 +395,47 @@ function applyProtocols(sections, text) {
   });
 }
 
-function applyVotes(sections, text, normByPid) {
-  let step = 0;
+function applyVotes(sections, text, headers, normByPid) {
+  const headerMap = buildHeaderIndex(headers);
+  const sectionIdIdx = requireHeaderIndex(headerMap, 'sectionId', 'votes');
+  const partyIdIndexes = findHeaderIndexes(headers, 'partyId');
+  if (partyIdIndexes.length === 0) {
+    throw new Error('Missing partyId headers in votes');
+  }
+
+  const firstPartyIdx = partyIdIndexes[0];
+  const step = partyIdIndexes.length > 1 ? partyIdIndexes[1] - partyIdIndexes[0] : 4;
+  const blockEnd = Math.min(headers.length, firstPartyIdx + step);
+  const totalIdx = findHeaderIndexBetween(headers, 'total', firstPartyIdx + 1, blockEnd);
+  const paperIdx = findHeaderIndexBetween(headers, 'paper', firstPartyIdx + 1, blockEnd);
+  const machineIdx = findHeaderIndexBetween(headers, 'machine', firstPartyIdx + 1, blockEnd);
+
+  if (totalIdx === -1 || paperIdx === -1 || machineIdx === -1) {
+    throw new Error('Missing total/paper/machine headers in votes');
+  }
+
+  const totalOffset = totalIdx - firstPartyIdx;
+  const paperOffset = paperIdx - firstPartyIdx;
+  const machineOffset = machineIdx - firstPartyIdx;
 
   forEachLine(text, (raw) => {
     const line = raw.trim();
     if (!line) return;
 
     const parts = line.split(';');
-    if (parts.length < 4) return;
+    if (parts.length <= sectionIdIdx) return;
 
-    const sectionId = (parts[1] || '').trim();
+    const sectionId = (parts[sectionIdIdx] || '').trim();
     const section = sections[sectionId];
     if (!section) return;
 
-    if (!step) {
-      // Detect format once
-      const a = +parts[3];
-      const b = +parts[8];
-      const c = +parts[13];
-      // If parsable and consistent -> step 5
-      step = a === b - 1 && b === c - 1 ? 5 : 4;
-    }
-
-    for (let i = 3; i + 3 < parts.length; i += step) {
+    for (let i = firstPartyIdx; i + machineOffset < parts.length; i += step) {
       const partyId = (parts[i] || '').trim();
       if (!partyId) continue;
 
-      const total = parseLongSafe(parts[i + 1]);
-      const paper = parseLongSafe(parts[i + 2]);
-      const machine = parseLongSafe(parts[i + 3]);
+      const total = parseLongSafe(parts[i + totalOffset]);
+      const paper = parseLongSafe(parts[i + paperOffset]);
+      const machine = parseLongSafe(parts[i + machineOffset]);
 
       let pv = section.partyVotes[partyId];
       if (!pv) pv = section.partyVotes[partyId] = {total: 0, paper: 0, machine: 0};
@@ -396,19 +453,24 @@ function applyVotes(sections, text, normByPid) {
   });
 }
 
-function parseLocalCandidates(text) {
+function parseLocalCandidates(text, headers) {
+  const headerMap = buildHeaderIndex(headers);
+  const regionIdIdx = requireHeaderIndex(headerMap, 'regionId', 'local_candidates');
+  const partyIdIdx = requireHeaderIndex(headerMap, 'partyId', 'local_candidates');
+  const candidateIdIdx = requireHeaderIndex(headerMap, 'candidateId', 'local_candidates');
+  const candidateNameIdx = requireHeaderIndex(headerMap, 'candidateName', 'local_candidates');
   const candidates = Object.create(null); // regionId -> partyId -> candidateId -> { candidateId, candidateName }
   forEachLine(text, (raw) => {
     const line = raw.trim();
     if (!line) return;
 
     const parts = line.split(';');
-    if (parts.length < 6) return;
+    if (parts.length <= Math.max(regionIdIdx, partyIdIdx, candidateIdIdx, candidateNameIdx)) return;
 
-    const regionId = (parts[0] || '').trim();
-    const partyId = (parts[2] || '').trim();
-    const candidateId = (parts[4] || '').trim();
-    const candidateName = (parts[5] || '').trim();
+    const regionId = (parts[regionIdIdx] || '').trim();
+    const partyId = (parts[partyIdIdx] || '').trim();
+    const candidateId = (parts[candidateIdIdx] || '').trim();
+    const candidateName = (parts[candidateNameIdx] || '').trim();
 
     if (!regionId || !partyId || !candidateId || !candidateName) return;
 
@@ -423,19 +485,26 @@ function parseLocalCandidates(text) {
   return candidates;
 }
 
-function applyPreferences(sections, text, candidatesByRegion, parties) {
+function applyPreferences(sections, text, headers, candidatesByRegion, parties) {
+  const headerMap = buildHeaderIndex(headers);
+  const sectionIdIdx = requireHeaderIndex(headerMap, 'sectionId', 'preferences');
+  const partyIdIdx = requireHeaderIndex(headerMap, 'partyId', 'preferences');
+  const preferenceIdx = requireHeaderIndex(headerMap, 'preference', 'preferences');
+  const paperIdx = requireHeaderIndex(headerMap, 'paper', 'preferences');
+  const machineIdx = requireHeaderIndex(headerMap, 'machine', 'preferences');
+
   forEachLine(text, (raw) => {
     const line = raw.trim();
     if (!line) return;
 
     const parts = line.split(';');
-    if (parts.length < 7) return;
+    if (parts.length <= Math.max(sectionIdIdx, partyIdIdx, preferenceIdx, paperIdx, machineIdx)) return;
 
-    const sectionId = (parts[1] || '').trim();
-    const partyId = (parts[2] || '').trim();
-    const preferenceVote = (parts[3] || '').trim();
-    const paperVotes = parseLongSafe(parts[5]);
-    const machineVotes = parseLongSafe(parts[6]);
+    const sectionId = (parts[sectionIdIdx] || '').trim();
+    const partyId = (parts[partyIdIdx] || '').trim();
+    const preferenceVote = (parts[preferenceIdx] || '').trim();
+    const paperVotes = parseLongSafe(parts[paperIdx]);
+    const machineVotes = parseLongSafe(parts[machineIdx]);
     const totalVotes = paperVotes + machineVotes;
 
     if (preferenceVote === 'Без' || !preferenceVote || totalVotes === 0) return;
@@ -658,30 +727,44 @@ for (const {date} of elections) {
   const baseUrl = path.join(baseDataDir, date);
 
   const input = timeAction('Read input files', () => ({
-    sectionsText: fs.readFileSync(path.join(baseUrl, 'sections.txt'), 'utf8'),
-    protocolsText: fs.readFileSync(path.join(baseUrl, 'protocols.txt'), 'utf8'),
-    votesText: fs.readFileSync(path.join(baseUrl, 'votes.txt'), 'utf8'),
-    partiesText: fs.readFileSync(path.join(baseUrl, 'cik_parties.txt'), 'utf8')
+    sections: readFileWithHeaders(path.join(baseUrl, 'sections.txt')),
+    protocols: readFileWithHeaders(path.join(baseUrl, 'protocols.txt')),
+    votes: readFileWithHeaders(path.join(baseUrl, 'votes.txt')),
+    parties: readFileWithHeaders(path.join(baseUrl, 'cik_parties.txt'))
   }));
 
-  const parties = timeAction('Parse parties', () => parseParties(input.partiesText));
+  const parties = timeAction('Parse parties', () =>
+    parseParties(input.parties.body, input.parties.headers)
+  );
   const normByPid = timeAction('Normalize parties', () => buildPartyNormalization(parties));
 
-  const sectionsMap = timeAction('Parse sections', () => parseSections(input.sectionsText));
-  timeAction('Apply protocols', () => applyProtocols(sectionsMap, input.protocolsText));
-  timeAction('Apply votes', () => applyVotes(sectionsMap, input.votesText, normByPid));
+  const sectionsMap = timeAction('Parse sections', () =>
+    parseSections(input.sections.body, input.sections.headers)
+  );
+  timeAction('Apply protocols', () =>
+    applyProtocols(sectionsMap, input.protocols.body, input.protocols.headers)
+  );
+  timeAction('Apply votes', () =>
+    applyVotes(sectionsMap, input.votes.body, input.votes.headers, normByPid)
+  );
 
   // Parse local candidates and preferences if files exist
   const localCandidatesPath = path.join(baseUrl, 'local_candidates.txt');
   const preferencesPath = path.join(baseUrl, 'preferences.txt');
   if (fs.existsSync(localCandidatesPath) && fs.existsSync(preferencesPath)) {
-    const localCandidatesText = fs.readFileSync(localCandidatesPath, 'utf8');
-    const preferencesText = fs.readFileSync(preferencesPath, 'utf8');
+    const localCandidates = readFileWithHeaders(localCandidatesPath);
+    const preferences = readFileWithHeaders(preferencesPath);
     const candidatesByRegion = timeAction('Parse local candidates', () =>
-      parseLocalCandidates(localCandidatesText)
+      parseLocalCandidates(localCandidates.body, localCandidates.headers)
     );
     timeAction('Apply preferences', () =>
-      applyPreferences(sectionsMap, preferencesText, candidatesByRegion, parties)
+      applyPreferences(
+        sectionsMap,
+        preferences.body,
+        preferences.headers,
+        candidatesByRegion,
+        parties
+      )
     );
   } else {
     console.log('Local candidates/preferences: skipped (0.00s)');
