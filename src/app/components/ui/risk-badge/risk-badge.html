@@ -1,6 +1,6 @@
-<span [class]="severityClasses" [hlmTooltip]="risk.message" style="display: inline-block; cursor: help; position: relative;">
+<span [class]="severityClasses" [hlmTooltip]="tooltipText" style="display: inline-block; cursor: help; position: relative;">
     @if (displayMode === 'full') {
-        <strong>{{ risk.code }}</strong>: {{ risk.message }}
+        <strong>{{ risk.code }}</strong>: {{ tooltipText }}
     } @else {
         {{ risk.code }}
     }

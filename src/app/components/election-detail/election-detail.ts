@@ -10,6 +10,7 @@ import { getPartyAlias } from '../../utils/party-aliases';
 import { formatActivity, getGoogleMapsUrl, copyToClipboard as copyToClipboardUtil } from '../../utils/common.utils';
 import { sortArray, toggleSort as toggleSortUtil, getDefaultSortDirection } from '../../utils/table-sort.util';
 import { getDateName } from '../../utils/date-name.util';
+import { formatRiskMessage } from '../../utils/risk-message.util';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
@@ -146,12 +147,22 @@ export class ElectionDetailComponent implements OnInit {
 
   visibleCandidateColumns = signal<Set<string>>(new Set());
 
+  private getPartiesById(): { [id: string]: string } {
+    const map: { [id: string]: string } = {};
+    this.allParties.forEach(p => {
+      map[p.id] = p.name;
+    });
+    return map;
+  }
+
   getFormattedRisks(section: Section | any): string {
     const riskLines: string[] = [];
+    const partiesById = this.getPartiesById();
 
     if (section.riskIndicators && section.riskIndicators.length > 0) {
       section.riskIndicators.forEach((indicator: any) => {
-        riskLines.push(`${indicator.code}: ${indicator.message}`);
+        const message = formatRiskMessage(indicator, { section, partiesById });
+        riskLines.push(`${indicator.code}: ${message}`);
       });
     }
 
@@ -160,6 +171,7 @@ export class ElectionDetailComponent implements OnInit {
 
   getFormattedCityRisks(groupedSection: any): string {
     const riskLines: string[] = [];
+    const partiesById = this.getPartiesById();
 
     // Check if this is a grouped city (has sections array)
     if (groupedSection.sections && Array.isArray(groupedSection.sections)) {
@@ -172,7 +184,8 @@ export class ElectionDetailComponent implements OnInit {
         if (allRiskIndicators.length > 0) {
           allRiskIndicators.forEach((indicator: any) => {
             // Prefix each risk with section ID
-            riskLines.push(`${section.sectionId}: ${indicator.code}: ${indicator.message}`);
+            const message = formatRiskMessage(indicator, { section, partiesById });
+            riskLines.push(`${section.sectionId}: ${indicator.code}: ${message}`);
           });
         }
       });
@@ -183,10 +196,12 @@ export class ElectionDetailComponent implements OnInit {
 
   getFormattedCandidateRisks(candidate: RegionCandidate): string {
     const riskLines: string[] = [];
+    const partiesById = this.getPartiesById();
 
     if (candidate.riskIndicators && candidate.riskIndicators.length > 0) {
       candidate.riskIndicators.forEach(indicator => {
-        riskLines.push(`${indicator.code}: ${indicator.message}`);
+        const message = formatRiskMessage(indicator, { candidate, partiesById });
+        riskLines.push(`${indicator.code}: ${message}`);
       });
     }
 
@@ -774,8 +789,10 @@ export class ElectionDetailComponent implements OnInit {
                     code: risk.code,
                     category: risk.category,
                     severity: risk.severity,
-                    message: risk.message,
-                    details: { sectionId: section.sectionId }
+                    details: {
+                      ...risk.details,
+                      sectionId: section.sectionId
+                    }
                   });
                 }
               }

@@ -43,7 +43,7 @@ Reduce the size of the compiled election artifacts (`public/data/compiled/<date>
 
 ## Phase 2 — Stop Shipping Long Text Messages
 
-- [ ] **T2.1: Replace `riskIndicators[].message` with template-friendly data**
+- [x] **T2.1: Replace `riskIndicators[].message` with template-friendly data**
   - For each risk, output:
     - `code`, `category`, `severity`
     - `details` containing only numbers/ids needed to render the message
@@ -54,7 +54,7 @@ Reduce the size of the compiled election artifacts (`public/data/compiled/<date>
     - No `message` property exists in any risk indicator in the output.
     - UI renders Bulgarian messages using a per-code template table.
 
-- [ ] **T2.2: Create UI risk message templates**
+- [x] **T2.2: Create UI risk message templates**
   - Map: `code -> (details) => message`
   - Must support all existing risk codes used by the build.
   - Consider a fallback for unknown codes.

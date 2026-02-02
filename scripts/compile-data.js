@@ -459,15 +459,9 @@ function aggregateR61ForRegion(regionSections) {
       code: 'R6.1',
       category: 'R6',
       severity,
-      message:
-        `Доминиране на концентрация (средно от ${a.count} секции): ` +
-        `${a.candidateName} (${a.partyName || a.partyId}) има ${(avgSectionShare * 100).toFixed(1)}% ` +
-        `(община: ${(avgMunicipalityShare * 100).toFixed(1)}%)`,
       details: {
         partyId: a.partyId,
-        partyName: a.partyName,
         candidateId: a.candidateId,
-        candidateName: a.candidateName,
         avgSectionShare,
         avgMunicipalityShare,
         sectionsTriggered: a.count
@@ -935,7 +929,10 @@ for (const date of dates) {
           code: 'R1.1',
           category: 'R1',
           severity: stdDevs > 3 ? 'high' : 'medium',
-          message: `Аномалия в активността: ${(turnoutChange * 100).toFixed(1)}% промяна (${stdDevs.toFixed(1)}σ от средното)`
+          details: {
+            turnoutChange,
+            stdDevs
+          }
         });
       }
     }
@@ -984,7 +981,10 @@ for (const date of dates) {
               code: 'R1.2',
               category: 'R1',
               severity: maxCapture > 0.8 ? 'high' : 'medium',
-              message: `Една партия улавя ${(maxCapture * 100).toFixed(0)}% от новите гласове: ${partyName}`
+              details: {
+                partyId: capturingParty,
+                captureRatio: maxCapture
+              }
             });
           }
         }
@@ -1048,7 +1048,9 @@ for (const date of dates) {
               code: 'R1.3',
               category: 'R1',
               severity: 'medium',
-              message: `Ниска волатилност на ${partyName} спрямо съседните секции`
+              details: {
+                partyId: maxRigidParty
+              }
             });
           }
         }
@@ -1077,7 +1079,10 @@ for (const date of dates) {
           code: 'R2.1',
           category: 'R2',
           severity: deviationPercent > 50 || isSudden ? 'high' : 'medium',
-          message: `Отклонение в съотношението хартия/машина: ${(sectionPaperPercent * 100).toFixed(1)}% хартиени (регион: ${(regionPaperPercent * 100).toFixed(1)}%)`
+          details: {
+            sectionPaperPercent,
+            regionPaperPercent
+          }
         });
       }
     }
@@ -1127,7 +1132,11 @@ for (const date of dates) {
         code: 'R2.2',
         category: 'R2',
         severity: maxR22Deviation > 0.5 ? 'high' : 'medium',
-        message: `${partyName}: ${sectionPercent}% хартиени (регион: ${regionPercent}%)`
+        details: {
+          partyId: maxR22Party,
+          sectionPaperRatio: maxR22SectionRatio,
+          regionPaperRatio: maxR22RegionRatio
+        }
       });
     }
 
@@ -1148,7 +1157,12 @@ for (const date of dates) {
           code: 'R2.3',
           category: 'R2',
           severity: asymmetry > 0.6 ? 'high' : 'medium',
-          message: `Асиметрия: ${top1.name} ${(party1PaperRatio * 100).toFixed(0)}% хартия, ${top2.name} ${(party2PaperRatio * 100).toFixed(0)}% хартия`
+          details: {
+            party1Id: top1.partyId,
+            party2Id: top2.partyId,
+            party1PaperRatio,
+            party2PaperRatio
+          }
         });
       }
     }
@@ -1164,7 +1178,10 @@ for (const date of dates) {
           code: 'R3.1',
           category: 'R3',
           severity: change > 1.0 ? 'high' : 'medium',
-          message: `Скачване в невалидните гласове: ${(currentInvalidRate * 100).toFixed(1)}% (исторически: ${(baselineInvalidRate * 100).toFixed(1)}%)`
+          details: {
+            currentInvalidRate,
+            baselineInvalidRate
+          }
         });
       }
     }
@@ -1195,7 +1212,10 @@ for (const date of dates) {
             code: 'R3.2',
             category: 'R3',
             severity: 'medium',
-            message: `Увеличение на невалидните (+${invalidIncrease}) корелира с загуби за ${losingParties[0].name}`
+            details: {
+              invalidIncrease,
+              partyId: losingParties[0].pid
+            }
           });
         }
       }
@@ -1225,7 +1245,12 @@ for (const date of dates) {
             code: 'R4.1',
             category: 'R4',
             severity: swing > 0.25 ? 'high' : 'medium',
-            message: `Голям замах в исторически стабилна секция: ${currentTopParty.name} ${(swing * 100).toFixed(1)}% промяна (от ${(avgHistoricalShare * 100).toFixed(1)}% към ${(currentShare * 100).toFixed(1)}%)`
+            details: {
+              partyId: currentTopParty.partyId,
+              swing,
+              avgHistoricalShare,
+              currentShare
+            }
           });
         }
       }
@@ -1261,9 +1286,11 @@ for (const date of dates) {
           code: 'R4.2',
           category: 'R4',
           severity: change > 0.25 ? 'high' : 'medium',
-          message: isFragmentation
-            ? `Внезапна фрагментация: индекс ${currentHerfindahl.toFixed(2)} (исторически: ${avgHistorical.toFixed(2)})`
-            : `Внезапна консолидация: индекс ${currentHerfindahl.toFixed(2)} (исторически: ${avgHistorical.toFixed(2)})`
+          details: {
+            currentHerfindahl,
+            avgHistorical,
+            isFragmentation
+          }
         });
       }
     }
@@ -1302,7 +1329,11 @@ for (const date of dates) {
             code: 'R4.3',
             category: 'R4',
             severity: 'low',
-            message: `Критична секция: ${top1.name} води с ${(margin * 100).toFixed(1)}% пред ${ppdb.name}`
+            details: {
+              topPartyId: top1.partyId,
+              ppdbPartyId: ppdb.partyId,
+              margin
+            }
           });
         }
       }
@@ -1338,12 +1369,12 @@ for (const date of dates) {
                 code: 'R2.5',
                 category: 'R2',
                 severity: 'medium',
-                message: `Инверсия: ${candidate.candidateName} (${candidate.partyName}) има ${(candidatePaperRatio * 100).toFixed(0)}% хартиени преференции, докато партията е ${(partyMachineRatio * 100).toFixed(0)}% машинни`,
                 details: {
                   candidateId: candidate.candidateId,
-                  candidateName: candidate.candidateName,
                   partyId: candidate.partyId,
-                  sectionId: section.sectionId
+                  sectionId: section.sectionId,
+                  candidatePaperRatio,
+                  partyMachineRatio
                 }
               });
             }
@@ -1381,10 +1412,8 @@ for (const date of dates) {
             code: 'R4.4',
             category: 'R4',
             severity: 'medium',
-            message: `Несъответствие волатилност: ${candidate.candidateName} (${candidate.partyName}) е стабилен докато партията е волатилна`,
             details: {
               candidateId: candidate.candidateId,
-              candidateName: candidate.candidateName,
               partyId: candidate.partyId,
               sectionId: section.sectionId
             }
@@ -1418,12 +1447,12 @@ for (const date of dates) {
               code: 'R5.1',
               category: 'R5',
               severity: sectionPreferenceRate > regionPreferenceRate * 2 ? 'high' : 'medium',
-              message: `Аномалия в участието на преференции: ${candidate.candidateName} (${candidate.partyName}) има ${(sectionPreferenceRate * 100).toFixed(1)}% (регион: ${(regionPreferenceRate * 100).toFixed(1)}%)`,
               details: {
                 candidateId: candidate.candidateId,
-                candidateName: candidate.candidateName,
                 partyId: candidate.partyId,
-                sectionId: section.sectionId
+                sectionId: section.sectionId,
+                sectionPreferenceRate,
+                regionPreferenceRate
               }
             };
             riskIndicators.push(r51Risk);
@@ -1473,12 +1502,9 @@ for (const date of dates) {
               code: 'R6.1',
               category: 'R6',
               severity: sectionShare > municipalityShare * 2 ? 'high' : 'medium',
-              message: `Доминиране на концентрация: ${candidate.candidateName} (${candidate.partyName}) има ${(sectionShare * 100).toFixed(1)}% от преференциите (община: ${(municipalityShare * 100).toFixed(1)}%)`,
               details: {
                 candidateId: candidate.candidateId,
-                candidateName: candidate.candidateName,
                 partyId: candidate.partyId,
-                partyName: candidate.partyName,
                 sectionId: section.sectionId,
                 sectionShare,
                 municipalityShare,
@@ -1516,12 +1542,13 @@ for (const date of dates) {
             code: 'R6.2',
             category: 'R6',
             severity: gini > 0.85 ? 'high' : 'medium',
-            message: `Ексклузивност: ${candidate.candidateName} (${candidate.partyName}) е концентриран в ${totals.length} от ${regionSections.length} секции (Gini: ${gini.toFixed(2)})`,
             details: {
               candidateId: candidate.candidateId,
-              candidateName: candidate.candidateName,
               partyId: candidate.partyId,
-              sectionId: section.sectionId
+              sectionId: section.sectionId,
+              sectionsWithCandidate: totals.length,
+              regionSectionsCount: regionSections.length,
+              gini
             }
           });
         }
@@ -1596,11 +1623,11 @@ for (const date of dates) {
           code: 'R2.4',
           category: 'R2',
           severity: divergence > 0.5 ? 'high' : 'medium',
-          message: `Разлика в преференциите по технология за ${candidate.candidateName} (${candidate.partyName}): ${(paperShare * 100).toFixed(0)}% хартиени, ${(machineShare * 100).toFixed(0)}% машинни`,
           details: {
             candidateId: candidate.candidateId,
-            candidateName: candidate.candidateName,
-            partyId: candidate.partyId
+            partyId: candidate.partyId,
+            paperShare,
+            machineShare
             // No sectionId since this is region-level
           }
         };
@@ -1756,11 +1783,11 @@ for (const date of dates) {
           code: 'R5.2',
           category: 'R5',
           severity: currentRate > threshold * 2 ? 'high' : 'medium',
-          message: `Внезапна активация на преференции: ${candidate.candidateName} (${candidate.partyName}) от ${(avgHistoricalRate * 100).toFixed(1)}% към ${(currentRate * 100).toFixed(1)}%`,
           details: {
             candidateId: candidate.candidateId,
-            candidateName: candidate.candidateName,
-            partyId: candidate.partyId
+            partyId: candidate.partyId,
+            avgHistoricalRate,
+            currentRate
             // No sectionId since this is region-level
           }
         };
@@ -1874,11 +1901,6 @@ for (const date of dates) {
 
         prev.severity =
           mergedAvgMunicipalityShare > 0 && mergedAvgSectionShare > mergedAvgMunicipalityShare * 2 ? 'high' : 'medium';
-
-        prev.message =
-          `Доминиране на концентрация (средно от ${mergedCount} секции): ` +
-          `${prev.details.candidateName} (${existing.partyName || existing.partyId}) има ${(mergedAvgSectionShare * 100).toFixed(1)}% ` +
-          `(община: ${(mergedAvgMunicipalityShare * 100).toFixed(1)}%)`;
       }
     }
   }

@@ -91,7 +91,7 @@
                                 @if (data.risks && data.risks.length > 0) {
                                     <div class="flex flex-wrap gap-1">
                                         @for (risk of data.risks; track risk.code) {
-                                            <app-risk-badge [risk]="risk" size="small" displayMode="compact" />
+                                            <app-risk-badge [risk]="risk" size="small" displayMode="compact" [context]="{ section: data.section, candidate: candidate, partiesById: partiesById }" />
                                         }
                                     </div>
                                 }
@@ -114,7 +114,8 @@
                 [riskData]="{
                     riskScore: candidate.riskIndicators.length,
                     riskIndicators: candidate.riskIndicators
-                }" />
+                }"
+                [context]="{ candidate: candidate, partiesById: partiesById }" />
         }
     </div>
 

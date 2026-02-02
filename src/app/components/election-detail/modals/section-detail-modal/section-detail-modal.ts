@@ -91,6 +91,14 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   getPartyKeywords = getPartyKeywords;
   findPartyByKeywords = findPartyByKeywords;
 
+  get partiesById(): { [id: string]: string } {
+    const map: { [id: string]: string } = {};
+    this.allParties.forEach(p => {
+      map[p.id] = p.name;
+    });
+    return map;
+  }
+
   get isGroupedByCity(): boolean {
     return this.section.sectionName.startsWith('Общо за');
   }

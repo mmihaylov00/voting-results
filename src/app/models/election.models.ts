@@ -61,7 +61,7 @@ export interface Section {
   protocolPaperVotes?: number;
   protocolMachineVotes?: number;
   riskScore?: number;
-  riskIndicators?: Array<{ code: string; category: string; severity: string; message: string; details?: any }>;
+  riskIndicators?: Array<{ code: string; category: string; severity: string; details?: any }>;
   votesToFirst?: number;
   municipalityAvgTurnout?: number;
   municipalityPartyPercents?: { [key: string]: number };
@@ -117,7 +117,7 @@ export interface RegionCandidate {
   totalInRegion: number;
   partyPercentInRegion: number;
   preferencePercentOfPartyVotes: number; // Percentage of party votes in region that are preferences for this candidate
-  riskIndicators?: Array<{ code: string; category: string; severity: string; message: string; details?: { sectionId: string } }>;
+  riskIndicators?: Array<{ code: string; category: string; severity: string; details?: { sectionId: string } }>;
   comparisons?: ComparativeValue[];
   paperComparisons?: ComparativeValue[];
   machineComparisons?: ComparativeValue[];

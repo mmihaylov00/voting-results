@@ -13,12 +13,12 @@
     </h5>
     <div class="flex flex-col gap-2">
       @if (riskData && riskData.riskIndicators && riskData.riskIndicators.length > 0) {
-        @for (indicator of riskData.riskIndicators; track indicator.code + indicator.message) {
+        @for (indicator of riskData.riskIndicators; track indicator.code + (indicator.details?.sectionId || '') + (indicator.details?.candidateId || '')) {
           <div class="flex items-start gap-2">
             <span class="px-2 py-0.5 rounded text-white text-[10px] font-bold uppercase {{ getSeverityColor(indicator.severity) }}">
               {{ getCategoryCode(indicator.code) }}
             </span>
-            <span class="text-xs flex-1">{{ indicator.message }}</span>
+            <span class="text-xs flex-1">{{ getMessage(indicator) }}</span>
           </div>
         }
       }

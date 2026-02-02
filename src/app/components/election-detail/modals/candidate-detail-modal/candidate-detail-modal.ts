@@ -30,7 +30,7 @@ export interface CandidateSectionData {
   percentInSection: number;
   partyPercentInSection: number;
   section: Section; // Keep reference to section for opening detail modal
-  risks?: Array<{ code: string; category: string; severity: string; message: string }>;
+  risks?: Array<{ code: string; category: string; severity: string; details?: any }>;
   comparisons?: ComparativeValue[];
   paperComparisons?: ComparativeValue[];
   machineComparisons?: ComparativeValue[];
@@ -70,6 +70,10 @@ export class CandidateDetailModalComponent implements OnInit {
   sortDir: 'asc' | 'desc' = 'desc';
 
   constructor(private electionService: ElectionService) {}
+
+  get partiesById(): { [id: string]: string } {
+    return this.allData[this.currentDate]?.parties || {};
+  }
 
   ngOnInit(): void {
     // Load all election data for comparisons

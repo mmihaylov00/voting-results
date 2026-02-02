@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HlmTooltipDirective } from '../tooltip-helm/src/lib/hlm-tooltip.directive';
+import { formatRiskMessage, RiskContext } from '../../../utils/risk-message.util';
 
 export interface RiskIndicator {
   code: string;
   category: string;
   severity: string; // 'high' | 'medium' | 'low' as string
-  message: string;
   details?: any;
 }
 
@@ -23,6 +23,7 @@ export class RiskBadgeComponent {
   @Input() risk!: RiskIndicator;
   @Input() size: 'small' | 'medium' = 'small';
   @Input() displayMode: 'compact' | 'full' = 'compact';
+  @Input() context?: RiskContext;
 
   get severityClasses(): string {
     const baseClasses = this.size === 'small' 
@@ -39,9 +40,14 @@ export class RiskBadgeComponent {
   }
 
   get displayText(): string {
+    const message = formatRiskMessage(this.risk, this.context);
     if (this.displayMode === 'full') {
-      return `<strong>${this.risk.code}</strong>: ${this.risk.message}`;
+      return `<strong>${this.risk.code}</strong>: ${message}`;
     }
     return this.risk.code;
+  }
+
+  get tooltipText(): string {
+    return formatRiskMessage(this.risk, this.context);
   }
 }
