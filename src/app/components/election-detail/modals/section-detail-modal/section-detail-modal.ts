@@ -439,6 +439,35 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     this.candidateResults = Object.values(candidateResultsMap);
     this.sortCandidates(this.candidateSortColumn, true);
 
+    // Calculate comparisons asynchronously after candidates are displayed
+    // This prevents freezing the UI
+    if (Object.keys(this.allData).length > 0) {
+      setTimeout(() => {
+        this.candidateResults.forEach(candidateResult => {
+          // Find the original candidate to get the candidate data
+          const originalCandidate = candidatesToProcess.find(c => 
+            c.candidateId === candidateResult.candidateId && 
+            c.partyId === candidateResult.partyId
+          );
+          if (originalCandidate) {
+            // For grouped cities, we need to aggregate across all sections in the city
+            // For single sections, we just use the sectionId
+            const comparisons = isCity 
+              ? this.calculateCandidateComparisonsForCity(originalCandidate, cityName, regionId)
+              : this.calculateCandidateComparisons(originalCandidate, section.sectionId);
+            
+            // Set comparisons for total in section/city (candidate.total)
+            candidateResult.comparisons = comparisons.total;
+            candidateResult.paperComparisons = comparisons.paper;
+            candidateResult.machineComparisons = comparisons.machine;
+          }
+        });
+      }, 0);
+    }
+
+    this.candidateResults = Object.values(candidateResultsMap);
+    this.sortCandidates(this.candidateSortColumn, true);
+
     // Calculate other parties aggregates (for parties not in selectedPartyIds)
     this.calculateOtherPartiesAggregates(candidateVotes);
   }
@@ -503,6 +532,124 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       paper: otherPreferencePaper,
       machine: otherPreferenceMachine
     } : null;
+  }
+
+  calculateCandidateComparisons(candidate: CandidateVotes, sectionId: string): { total?: ComparativeValue[], paper?: ComparativeValue[], machine?: ComparativeValue[] } {
+    // Skip if allData is not loaded yet
+    if (Object.keys(this.allData).length === 0) {
+      return { total: undefined, paper: undefined, machine: undefined };
+    }
+
+    const dates = this.dates;
+    const comparisons: ComparativeValue[] = [];
+    const paperComparisons: ComparativeValue[] = [];
+    const machineComparisons: ComparativeValue[] = [];
+
+    // Normalize candidate name and party for matching
+    const candidateNameLower = candidate.candidateName.trim().toLowerCase();
+    const candidatePartyLower = candidate.partyName.trim().toLowerCase();
+
+    dates.forEach(dateInfo => {
+      if (dateInfo.date === this.date) return; // Skip current date
+
+      const otherDateData = this.allData[dateInfo.date];
+      if (!otherDateData || !otherDateData.sections) return;
+
+      // Find the same section in other election
+      const otherSection = otherDateData.sections.find((s: Section) => s.sectionId === sectionId);
+      if (!otherSection || !otherSection.candidateVotes) return;
+
+      // Find candidate by matching name and party
+      let foundTotal = 0;
+      let foundPaper = 0;
+      let foundMachine = 0;
+
+      // Optimize: use for...of loop and break early
+      for (const otherCandidate of Object.values(otherSection.candidateVotes) as any[]) {
+        const nameMatches = otherCandidate.candidateName.trim().toLowerCase() === candidateNameLower;
+        const partyMatches = otherCandidate.partyName.trim().toLowerCase() === candidatePartyLower;
+        
+        if (nameMatches && partyMatches) {
+          foundTotal = otherCandidate.total;
+          foundPaper = otherCandidate.paper;
+          foundMachine = otherCandidate.machine;
+          break; // Found match, no need to check other candidates
+        }
+      }
+
+      if (foundTotal > 0) {
+        comparisons.push({ value: foundTotal, date: dateInfo.date, dateName: dateInfo.name });
+        paperComparisons.push({ value: foundPaper, date: dateInfo.date, dateName: dateInfo.name });
+        machineComparisons.push({ value: foundMachine, date: dateInfo.date, dateName: dateInfo.name });
+      }
+    });
+
+    return {
+      total: comparisons.length > 0 ? comparisons : undefined,
+      paper: paperComparisons.length > 0 ? paperComparisons : undefined,
+      machine: machineComparisons.length > 0 ? machineComparisons : undefined
+    };
+  }
+
+  calculateCandidateComparisonsForCity(candidate: CandidateVotes, cityName: string, regionId: string): { total?: ComparativeValue[], paper?: ComparativeValue[], machine?: ComparativeValue[] } {
+    // Skip if allData is not loaded yet
+    if (Object.keys(this.allData).length === 0) {
+      return { total: undefined, paper: undefined, machine: undefined };
+    }
+
+    const dates = this.dates;
+    const comparisons: ComparativeValue[] = [];
+    const paperComparisons: ComparativeValue[] = [];
+    const machineComparisons: ComparativeValue[] = [];
+
+    // Normalize candidate name and party for matching
+    const candidateNameLower = candidate.candidateName.trim().toLowerCase();
+    const candidatePartyLower = candidate.partyName.trim().toLowerCase();
+
+    dates.forEach(dateInfo => {
+      if (dateInfo.date === this.date) return; // Skip current date
+
+      const otherDateData = this.allData[dateInfo.date];
+      if (!otherDateData || !otherDateData.sections) return;
+
+      // Find all sections in the same city and region in other election
+      const otherCitySections = otherDateData.sections.filter((s: Section) => 
+        s.cityName === cityName && s.regionId === regionId
+      );
+
+      // Aggregate candidate votes across all sections in the city
+      let foundTotal = 0;
+      let foundPaper = 0;
+      let foundMachine = 0;
+
+      otherCitySections.forEach((otherSection: Section) => {
+        if (!otherSection.candidateVotes) return;
+
+        for (const otherCandidate of Object.values(otherSection.candidateVotes) as any[]) {
+          const nameMatches = otherCandidate.candidateName.trim().toLowerCase() === candidateNameLower;
+          const partyMatches = otherCandidate.partyName.trim().toLowerCase() === candidatePartyLower;
+          
+          if (nameMatches && partyMatches) {
+            foundTotal += otherCandidate.total;
+            foundPaper += otherCandidate.paper;
+            foundMachine += otherCandidate.machine;
+            break; // Found match in this section, no need to check other candidates
+          }
+        }
+      });
+
+      if (foundTotal > 0) {
+        comparisons.push({ value: foundTotal, date: dateInfo.date, dateName: dateInfo.name });
+        paperComparisons.push({ value: foundPaper, date: dateInfo.date, dateName: dateInfo.name });
+        machineComparisons.push({ value: foundMachine, date: dateInfo.date, dateName: dateInfo.name });
+      }
+    });
+
+    return {
+      total: comparisons.length > 0 ? comparisons : undefined,
+      paper: paperComparisons.length > 0 ? paperComparisons : undefined,
+      machine: machineComparisons.length > 0 ? machineComparisons : undefined
+    };
   }
 
   get votesWithoutPreferencesEntries(): Array<[string, { total: number, paper: number, machine: number, partyName: string }]> {

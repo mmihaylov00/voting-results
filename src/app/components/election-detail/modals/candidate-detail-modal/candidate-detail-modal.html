@@ -38,9 +38,9 @@
                         <td hlmTableCell>{{ data.sectionId }}</td>
                         <td hlmTableCell>{{ data.cityName }}</td>
                         <td hlmTableCell>{{ data.sectionName }}</td>
-                        <td hlmTableCell class="text-right">{{ data.paper | number }}</td>
-                        <td hlmTableCell class="text-right">{{ data.machine | number }}</td>
-                        <td hlmTableCell class="text-right font-semibold">{{ data.total | number }}</td>
+                        <td hlmTableCell class="text-right" [hlmTooltip]="data.paperComparisons" [currentValue]="data.paper">{{ data.paper | number }}</td>
+                        <td hlmTableCell class="text-right" [hlmTooltip]="data.machineComparisons" [currentValue]="data.machine">{{ data.machine | number }}</td>
+                        <td hlmTableCell class="text-right font-semibold" [hlmTooltip]="data.comparisons" [currentValue]="data.total">{{ data.total | number }}</td>
                         <td hlmTableCell class="text-right">{{ data.percentInSection | number:'1.2-2' }}%</td>
                         <td hlmTableCell class="text-right">{{ data.partyPercentInSection | number:'1.2-2' }}%</td>
                         <td hlmTableCell>

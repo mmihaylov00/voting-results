@@ -704,10 +704,10 @@
                                         }
                                         @if (currentVisibleColumns.has('totalInRegion')) {
                                             <td hlmTableCell class="text-right flex flex-row justify-between" style="align-items: center">
-                                                {{ candidate.totalInRegion | number }}
+                                                <span [hlmTooltip]="candidate.comparisons" [currentValue]="candidate.totalInRegion">{{ candidate.totalInRegion | number }}</span>
                                                 <div class="flex flex-col gap-1 ms-1">
-                                                    <span><strong>{{ candidate.paper | number }}</strong> хартиени</span>
-                                                    <span><strong>{{ candidate.machine | number }}</strong> машинни</span>
+                                                    <span [hlmTooltip]="candidate.paperComparisons" [currentValue]="candidate.paper"><strong>{{ candidate.paper | number }}</strong> хартиени</span>
+                                                    <span [hlmTooltip]="candidate.machineComparisons" [currentValue]="candidate.machine"><strong>{{ candidate.machine | number }}</strong> машинни</span>
                                                 </div>
                                             </td>
                                         }
@@ -757,6 +757,7 @@
         <app-candidate-detail-modal
             [candidate]="selectedCandidate"
             [sections]="sections"
+            [currentDate]="date"
             (close)="closeCandidateModal()"
             (openSection)="onCandidateSectionClick($event)"
         />

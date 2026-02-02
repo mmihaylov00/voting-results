@@ -19,7 +19,6 @@ export interface RiskAnalysisData {
   standalone: true,
   imports: [
     CommonModule,
-    RiskBadgeComponent,
   ],
   templateUrl: './risk-analysis-summary.html',
 })

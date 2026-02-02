@@ -1,9 +1,9 @@
-<app-base-modal 
+<app-base-modal
     [title]="'Детайлни резултати за секция ' + section.sectionId"
     maxWidth="max-w-4xl"
     zIndex="z-[110]"
     (close)="closeModal()">
-    
+
     <ng-template #headerActions>
         <div class="flex flex-wrap items-center gap-2 mt-3">
             <a [href]="getGoogleMapsUrl(section.cityName, section.sectionName)" target="_blank" hlmBtn variant="outline" size="sm" hlmTooltip="Виж в Google Maps" class="border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
@@ -38,14 +38,14 @@
               @if (activeTab() === 'parties') {
                   <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
                       <tr hlmTableRow class="hover:bg-transparent">
-                          <th hlmTableHead 
+                          <th hlmTableHead
                               app-sortable-table-header
                               columnKey="partyName"
                               label="Партия"
                               [currentSortColumn]="partySortColumn"
                               [sortDirection]="partySortDir"
                               (sortChange)="sortParties($event)"></th>
-                          <th hlmTableHead 
+                          <th hlmTableHead
                               app-sortable-table-header
                               columnKey="total"
                               label="Гласове"
@@ -53,7 +53,7 @@
                               [currentSortColumn]="partySortColumn"
                               [sortDirection]="partySortDir"
                               (sortChange)="sortParties($event)"></th>
-                          <th hlmTableHead 
+                          <th hlmTableHead
                               app-sortable-table-header
                               columnKey="paper"
                               label="Хартиени"
@@ -61,7 +61,7 @@
                               [currentSortColumn]="partySortColumn"
                               [sortDirection]="partySortDir"
                               (sortChange)="sortParties($event)"></th>
-                          <th hlmTableHead 
+                          <th hlmTableHead
                               app-sortable-table-header
                               columnKey="machine"
                               label="Машинни"
@@ -69,7 +69,7 @@
                               [currentSortColumn]="partySortColumn"
                               [sortDirection]="partySortDir"
                               (sortChange)="sortParties($event)"></th>
-                          <th hlmTableHead 
+                          <th hlmTableHead
                               app-sortable-table-header
                               columnKey="percent"
                               label="%"
@@ -240,11 +240,12 @@
                                   <td hlmTableCell>{{ candidate.candidateName }}</td>
                                   <td hlmTableCell>{{ candidate.candidateId }}</td>
                                   <td hlmTableCell>{{ getPartyAlias(candidate.partyName) }}</td>
-                                  <td hlmTableCell class="text-right">{{ candidate.paper | number }}</td>
-                                  <td hlmTableCell class="text-right">{{ candidate.machine | number }}</td>
+                                  <td hlmTableCell class="text-right" [hlmTooltip]="candidate.paperComparisons" [currentValue]="candidate.paper">{{ candidate.paper | number }}</td>
+                                  <td hlmTableCell class="text-right" [hlmTooltip]="candidate.machineComparisons" [currentValue]="candidate.machine">{{ candidate.machine | number }}</td>
                                   <td hlmTableCell class="text-right">{{ candidate.percentInSection.toFixed(2) }}%</td>
-                                  <td hlmTableCell class="text-right">{{ candidate.totalInRegion | number }}</td>
+                                  <td hlmTableCell class="text-right" [hlmTooltip]="candidate.comparisons" [currentValue]="candidate.total">{{ candidate.total | number }}</td>
                                   <td hlmTableCell class="text-right">{{ candidate.partyPercentInSection | number }}</td>
+                                  <td hlmTableCell class="text-right" [hlmTooltip]="candidate.comparisons" [currentValue]="candidate.totalInRegion">{{ candidate.totalInRegion | number }}</td>
                                   <td hlmTableCell class="text-right">{{ candidate.partyPercentInRegion.toFixed(2) }}%</td>
                               </tr>
                           }
@@ -310,10 +311,10 @@
                 <div hlmCard class="p-6 border-primary/10">
                   <h4 hlmH4 class="mb-4 text-secondary dark:text-primary">Статистика за секцията</h4>
 
-                  <app-risk-analysis-summary 
+                  <app-risk-analysis-summary
                     [riskData]="{
-                      riskScore: currentSectionData?.riskScore,
-                      riskIndicators: currentSectionData?.riskIndicators,
+                      riskScore: currentSectionData.riskScore,
+                      riskIndicators: currentSectionData.riskIndicators,
                       risks: uniqueRisks
                     }" />
 

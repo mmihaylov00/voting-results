@@ -14,6 +14,8 @@ import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-
 import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
 import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
 import { RiskBadgeComponent } from '../../../ui/risk-badge/risk-badge';
+import { ComparativeValue } from '../../../../models/election.models';
+import { ElectionService } from '../../../../services/election';
 
 export interface CandidateSectionData {
   sectionId: string;
@@ -26,6 +28,9 @@ export interface CandidateSectionData {
   partyPercentInSection: number;
   section: Section; // Keep reference to section for opening detail modal
   risks?: Array<{ code: string; category: string; severity: string; message: string }>;
+  comparisons?: ComparativeValue[];
+  paperComparisons?: ComparativeValue[];
+  machineComparisons?: ComparativeValue[];
 }
 
 @Component({
@@ -40,6 +45,7 @@ export interface CandidateSectionData {
     HlmTableRowDirective,
     HlmTableHeadDirective,
     HlmTableCellDirective,
+    HlmTooltipDirective,
     BaseModalComponent,
     RiskBadgeComponent,
   ],
@@ -48,13 +54,21 @@ export interface CandidateSectionData {
 export class CandidateDetailModalComponent implements OnInit {
   @Input({ required: true }) candidate!: RegionCandidate;
   @Input({ required: true }) sections: Section[] = [];
+  @Input() currentDate: string = '';
   @Output() close = new EventEmitter<void>();
   @Output() openSection = new EventEmitter<Section>();
 
   sectionData: CandidateSectionData[] = [];
+  allData: { [date: string]: { sections: Section[], parties: { [id: string]: string }, regions: any[] } } = {};
+
+  constructor(private electionService: ElectionService) {}
 
   ngOnInit(): void {
-    this.calculateSectionData();
+    // Load all election data for comparisons
+    this.electionService.getAllData().subscribe(data => {
+      this.allData = data;
+      this.calculateSectionData();
+    });
   }
 
   calculateSectionData(): void {
@@ -91,7 +105,10 @@ export class CandidateDetailModalComponent implements OnInit {
         return riskCandidateId === candidateId && partyIdMatches;
       }) || [];
 
-      data.push({
+      // Calculate comparisons for this candidate in this section
+      const comparisons = this.calculateCandidateComparisons(section.sectionId, candidateVotes);
+
+      const sectionDataItem: CandidateSectionData = {
         sectionId: section.sectionId,
         cityName: section.cityName,
         sectionName: section.sectionName,
@@ -102,11 +119,69 @@ export class CandidateDetailModalComponent implements OnInit {
         partyPercentInSection,
         section,
         risks: candidateRisks
-      });
+      };
+      
+      if (comparisons.total) {
+        sectionDataItem.comparisons = comparisons.total;
+      }
+      if (comparisons.paper) {
+        sectionDataItem.paperComparisons = comparisons.paper;
+      }
+      if (comparisons.machine) {
+        sectionDataItem.machineComparisons = comparisons.machine;
+      }
+      
+      data.push(sectionDataItem);
     });
 
     // Sort by total votes descending
     this.sectionData = data.sort((a, b) => b.total - a.total);
+  }
+
+  calculateCandidateComparisons(sectionId: string, candidateVotes: any): { total?: ComparativeValue[], paper?: ComparativeValue[], machine?: ComparativeValue[] } {
+    const dates = this.electionService.getDates();
+    const comparisons: ComparativeValue[] = [];
+    const paperComparisons: ComparativeValue[] = [];
+    const machineComparisons: ComparativeValue[] = [];
+
+    dates.forEach(dateInfo => {
+      if (dateInfo.date === this.currentDate) return; // Skip current date
+
+      const otherDateData = this.allData[dateInfo.date];
+      if (!otherDateData || !otherDateData.sections) return;
+
+      // Find the same section in other election
+      const otherSection = otherDateData.sections.find((s: Section) => s.sectionId === sectionId);
+      if (!otherSection || !otherSection.candidateVotes) return;
+
+      // Find candidate by matching name and party
+      let foundTotal = 0;
+      let foundPaper = 0;
+      let foundMachine = 0;
+
+      Object.values(otherSection.candidateVotes).forEach((otherCandidate: any) => {
+        const nameMatches = otherCandidate.candidateName.trim().toLowerCase() === this.candidate.candidateName.trim().toLowerCase();
+        const partyMatches = otherCandidate.partyName.trim().toLowerCase() === this.candidate.partyName.trim().toLowerCase();
+        
+        if (nameMatches && partyMatches) {
+          foundTotal = otherCandidate.total;
+          foundPaper = otherCandidate.paper;
+          foundMachine = otherCandidate.machine;
+        }
+      });
+
+      if (foundTotal > 0) {
+        comparisons.push({ value: foundTotal, date: dateInfo.date, dateName: dateInfo.name });
+        paperComparisons.push({ value: foundPaper, date: dateInfo.date, dateName: dateInfo.name });
+        machineComparisons.push({ value: foundMachine, date: dateInfo.date, dateName: dateInfo.name });
+      }
+    });
+
+    return {
+      total: comparisons.length > 0 ? comparisons : undefined,
+      paper: paperComparisons.length > 0 ? paperComparisons : undefined,
+      machine: machineComparisons.length > 0 ? machineComparisons : undefined
+    };
   }
 
   onRowClick(sectionData: CandidateSectionData): void {

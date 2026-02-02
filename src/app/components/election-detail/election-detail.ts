@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
-import { PartyResult, Section, SectionDetails, TableColumn, SECTION_COLUMNS, SectionTab, SectionFilters, ComparativeValue, CandidateVotes, ViewMode, RegionCandidate } from '../../models/election.models';
+import { PartyResult, Section, SectionDetails, TableColumn, SECTION_COLUMNS, SectionTab, SectionFilters, ComparativeValue, CandidateVotes, ViewMode, RegionCandidate, Region } from '../../models/election.models';
 import { filterSections } from '../../utils/election-utils';
 import { getPartyAlias } from '../../utils/party-aliases';
 import { formatActivity, getGoogleMapsUrl, copyToClipboard as copyToClipboardUtil } from '../../utils/common.utils';
@@ -350,6 +350,12 @@ export class ElectionDetailComponent implements OnInit {
     this.date = this.route.snapshot.paramMap.get('date') || '';
     this.regionId = this.route.snapshot.paramMap.get('regionId') || '';
     this.dateName = this.electionService.getDates().find(d => d.date === this.date)?.name ?? this.date;
+    
+    // Load all election data for comparisons
+    this.electionService.getAllData().subscribe(data => {
+      this.allData = data;
+    });
+
     if (this.date) {
       // Show loading when loading all sections
       if (this.regionId === 'all' || !this.regionId) {
@@ -616,6 +622,67 @@ export class ElectionDetailComponent implements OnInit {
     }
   }
 
+  allData: { [date: string]: { sections: Section[], parties: { [id: string]: string }, regions: Region[] } } = {};
+
+  calculateCandidateComparisons(candidate: RegionCandidate): void {
+    // Skip if allData is not loaded yet
+    if (Object.keys(this.allData).length === 0) return;
+
+    const dates = this.electionService.getDates();
+    const comparisons: ComparativeValue[] = [];
+    const paperComparisons: ComparativeValue[] = [];
+    const machineComparisons: ComparativeValue[] = [];
+
+    // Normalize candidate name and party for matching
+    const candidateNameLower = candidate.candidateName.trim().toLowerCase();
+    const candidatePartyLower = candidate.partyName.trim().toLowerCase();
+
+    dates.forEach(dateInfo => {
+      if (dateInfo.date === this.date) return; // Skip current date
+
+      const otherDateData = this.allData[dateInfo.date];
+      if (!otherDateData || !otherDateData.sections) return;
+
+      // Find candidate in other election by matching name and party
+      let foundTotal = 0;
+      let foundPaper = 0;
+      let foundMachine = 0;
+
+      // Filter sections by region if we have a specific region
+      const otherSections = this.regionId && this.regionId !== 'all'
+        ? otherDateData.sections.filter(s => s.regionId === this.regionId)
+        : otherDateData.sections;
+
+      // Optimize: only process sections that have candidateVotes
+      for (const section of otherSections) {
+        if (!section.candidateVotes) continue;
+
+        for (const otherCandidate of Object.values(section.candidateVotes)) {
+          // Match by candidate name and party name (case-insensitive, trimmed)
+          const nameMatches = otherCandidate.candidateName.trim().toLowerCase() === candidateNameLower;
+          const partyMatches = otherCandidate.partyName.trim().toLowerCase() === candidatePartyLower;
+          
+          if (nameMatches && partyMatches) {
+            foundTotal += otherCandidate.total;
+            foundPaper += otherCandidate.paper;
+            foundMachine += otherCandidate.machine;
+            break; // Found match, no need to check other candidates in this section
+          }
+        }
+      }
+
+      if (foundTotal > 0) {
+        comparisons.push({ value: foundTotal, date: dateInfo.date, dateName: dateInfo.name });
+        paperComparisons.push({ value: foundPaper, date: dateInfo.date, dateName: dateInfo.name });
+        machineComparisons.push({ value: foundMachine, date: dateInfo.date, dateName: dateInfo.name });
+      }
+    });
+
+    candidate.comparisons = comparisons.length > 0 ? comparisons : undefined;
+    candidate.paperComparisons = paperComparisons.length > 0 ? paperComparisons : undefined;
+    candidate.machineComparisons = machineComparisons.length > 0 ? machineComparisons : undefined;
+  }
+
   calculateRegionCandidates(): void {
     if (!this.sections || this.sections.length === 0) {
       this.regionCandidates = [];
@@ -684,6 +751,17 @@ export class ElectionDetailComponent implements OnInit {
                   if (!candidateMap[key].riskIndicators) {
                     candidateMap[key].riskIndicators = [];
                   }
+                  
+                  // For R6.2 risks, only add once per candidate (deduplicate by code)
+                  const isR62 = risk.code === 'R6.2';
+                  if (isR62) {
+                    // Check if R6.2 already exists for this candidate
+                    const hasR62 = candidateMap[key].riskIndicators!.some(r => r.code === 'R6.2');
+                    if (hasR62) {
+                      return; // Skip this R6.2 risk, already added
+                    }
+                  }
+                  
                   candidateMap[key].riskIndicators!.push({
                     code: risk.code,
                     category: risk.category,
@@ -726,6 +804,16 @@ export class ElectionDetailComponent implements OnInit {
 
     this.regionCandidates = Object.values(candidateMap);
     this.sortCandidates(this.candidateSortColumn, true);
+
+    // Calculate comparisons asynchronously after candidates are displayed
+    // This prevents freezing the UI
+    if (Object.keys(this.allData).length > 0) {
+      setTimeout(() => {
+        this.regionCandidates.forEach(candidate => {
+          this.calculateCandidateComparisons(candidate);
+        });
+      }, 0);
+    }
   }
 
   applyCandidateFilter(): void {

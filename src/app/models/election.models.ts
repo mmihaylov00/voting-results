@@ -103,6 +103,9 @@ export interface CandidateResult {
   partyPercentInSection: number;
   totalInRegion: number;
   partyPercentInRegion: number;
+  comparisons?: ComparativeValue[];
+  paperComparisons?: ComparativeValue[];
+  machineComparisons?: ComparativeValue[];
 }
 
 export interface RegionCandidate {
@@ -117,6 +120,9 @@ export interface RegionCandidate {
   partyPercentInRegion: number;
   preferencePercentOfPartyVotes: number; // Percentage of party votes in region that are preferences for this candidate
   riskIndicators?: Array<{ code: string; category: string; severity: string; message: string; details?: { sectionId: string } }>;
+  comparisons?: ComparativeValue[];
+  paperComparisons?: ComparativeValue[];
+  machineComparisons?: ComparativeValue[];
 }
 
 export interface SectionDetails {
