@@ -1,0 +1,103 @@
+<div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4" (click)="closeModal()">
+    <div class="bg-background border border-primary/20 rounded-lg shadow-xl max-w-6xl w-full max-h-[90vh] flex flex-col" (click)="$event.stopPropagation()">
+        <!-- Header -->
+        <div class="flex items-center justify-between p-6 border-b border-primary/20">
+            <div class="flex-1">
+                <h2 hlmH2 class="m-0 text-secondary dark:text-primary">{{ candidate.candidateName }}</h2>
+                <p hlmMuted class="text-sm mt-1">{{ candidate.partyName }} - Преференция {{ candidate.candidateId }}</p>
+                @if (candidate.riskIndicators && candidate.riskIndicators.length > 0) {
+                    <div class="flex flex-wrap gap-2 mt-3">
+                        @for (risk of candidate.riskIndicators; track risk.code + risk.details?.sectionId) {
+                            <span class="px-2 py-1 text-xs rounded-md"
+                                  [class.bg-red-500/20]="risk.severity === 'high'"
+                                  [class.text-red-600]="risk.severity === 'high'"
+                                  [class.dark:text-red-400]="risk.severity === 'high'"
+                                  [class.bg-yellow-500/20]="risk.severity === 'medium'"
+                                  [class.text-yellow-600]="risk.severity === 'medium'"
+                                  [class.dark:text-yellow-400]="risk.severity === 'medium'"
+                                  [class.bg-blue-500/20]="risk.severity === 'low'"
+                                  [class.text-blue-600]="risk.severity === 'low'"
+                                  [class.dark:text-blue-400]="risk.severity === 'low'"
+                                  [hlmTooltip]="risk.message">
+                                <strong>{{ risk.code }}</strong>: {{ risk.message }}
+                            </span>
+                        }
+                    </div>
+                }
+            </div>
+            <button hlmBtn variant="ghost" size="icon" (click)="closeModal()" class="text-secondary dark:text-primary hover:bg-primary dark:hover:bg-primary dark:hover:text-primary-foreground">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+
+        <!-- Content -->
+        <div class="flex-1 overflow-auto p-6">
+            <div class="overflow-x-auto">
+                <table hlmTable class="min-w-full">
+                    <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
+                        <tr hlmTableRow class="hover:bg-transparent">
+                            <th hlmTableHead>Секция</th>
+                            <th hlmTableHead>Град</th>
+                            <th hlmTableHead>Име на секция</th>
+                            <th hlmTableHead class="text-right">Хартиени</th>
+                            <th hlmTableHead class="text-right">Машинни</th>
+                            <th hlmTableHead class="text-right">Общо</th>
+                            <th hlmTableHead class="text-right">% от гласовете в секцията</th>
+                            <th hlmTableHead class="text-right">% от гласовете за партията в секцията</th>
+                            <th hlmTableHead>Рискове</th>
+                        </tr>
+                    </thead>
+                    <tbody hlmTableBody>
+                        @for (data of sectionData; track data.sectionId) {
+                            <tr hlmTableRow
+                                class="hover:bg-primary/10 transition-colors cursor-pointer"
+                                (click)="onRowClick(data)">
+                                <td hlmTableCell>{{ data.sectionId }}</td>
+                                <td hlmTableCell>{{ data.cityName }}</td>
+                                <td hlmTableCell>{{ data.sectionName }}</td>
+                                <td hlmTableCell class="text-right">{{ data.paper | number }}</td>
+                                <td hlmTableCell class="text-right">{{ data.machine | number }}</td>
+                                <td hlmTableCell class="text-right font-semibold">{{ data.total | number }}</td>
+                                <td hlmTableCell class="text-right">{{ data.percentInSection | number:'1.2-2' }}%</td>
+                                <td hlmTableCell class="text-right">{{ data.partyPercentInSection | number:'1.2-2' }}%</td>
+                                <td hlmTableCell>
+                                    @if (data.risks && data.risks.length > 0) {
+                                        <div class="flex flex-wrap gap-1">
+                                            @for (risk of data.risks; track risk.code) {
+                                                <span class="px-1.5 py-0.5 text-xs rounded-full"
+                                                      [class.bg-red-500/20]="risk.severity === 'high'"
+                                                      [class.text-red-600]="risk.severity === 'high'"
+                                                      [class.dark:text-red-400]="risk.severity === 'high'"
+                                                      [class.bg-yellow-500/20]="risk.severity === 'medium'"
+                                                      [class.text-yellow-600]="risk.severity === 'medium'"
+                                                      [class.dark:text-yellow-400]="risk.severity === 'medium'"
+                                                      [class.bg-blue-500/20]="risk.severity === 'low'"
+                                                      [class.text-blue-600]="risk.severity === 'low'"
+                                                      [class.dark:text-blue-400]="risk.severity === 'low'"
+                                                      [hlmTooltip]="risk.message">
+                                                    {{ risk.code }}
+                                                </span>
+                                            }
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        @if (sectionData.length === 0) {
+                            <tr hlmTableRow>
+                                <td hlmTableCell [attr.colspan]="9" class="text-center text-muted-foreground py-8">
+                                    Няма данни за преференции в секциите
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-end gap-2 p-6 border-t border-primary/20">
+            <button hlmBtn variant="outline" (click)="closeModal()">Затвори</button>
+        </div>
+    </div>
+</div>
