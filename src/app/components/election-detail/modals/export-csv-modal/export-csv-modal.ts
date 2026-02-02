@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Section, SECTION_COLUMNS, SectionTab, SectionFilters } from '../../../../models/election.models';
 import { filterSections } from '../../../../utils/election-utils';
 import { getPartyAlias } from '../../../../utils/party-aliases';
+import { formatActivity } from '../../../../utils/common.utils';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmCardDirective,
@@ -15,6 +16,7 @@ import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-
 import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
 import { SectionFiltersComponent } from '../../section-filters/section-filters';
 import { PartyFilterComponent } from '../../party-filter/party-filter';
+import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
 
 @Component({
   selector: 'app-export-csv-modal',
@@ -23,15 +25,12 @@ import { PartyFilterComponent } from '../../party-filter/party-filter';
     CommonModule,
     FormsModule,
     HlmButtonDirective,
-    HlmCardDirective,
     HlmTypographyDirective,
     SectionFiltersComponent,
     PartyFilterComponent,
+    BaseModalComponent,
   ],
-  templateUrl: './export-csv-modal.html',
-  host: {
-    '(document:keydown.escape)': 'close.emit()'
-  }
+  templateUrl: './export-csv-modal.html'
 })
 export class ExportCsvModalComponent {
   @Input({ required: true }) sections: Section[] = [];
@@ -111,11 +110,7 @@ export class ExportCsvModalComponent {
     this.applyFilter();
   }
 
-  formatActivity(percent: number): string {
-    const value = percent * 100;
-    return Math.min(100, Math.max(0, value)).toFixed(2);
-  }
-
+  formatActivity = formatActivity;
   getPartyAlias = getPartyAlias;
 
   toggleExportColumnSelection(columnId: string) {

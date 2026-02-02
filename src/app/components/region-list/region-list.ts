@@ -7,6 +7,7 @@ import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
 import { Region } from '../../models/election.models';
 import { getPartyAlias } from '../../utils/party-aliases';
+import { formatActivity } from '../../utils/common.utils';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
 import { HlmCardDirective, HlmCardHeaderDirective, HlmCardTitleDirective, HlmCardDescriptionDirective, HlmCardContentDirective } from '../ui/card-helm/src/lib/hlm-card.directives';
 import { HlmInputDirective } from '../ui/input-helm/src/lib/hlm-input.directive';
@@ -379,11 +380,7 @@ export class RegionListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  formatActivity(percent: number): string {
-    const value = percent * 100;
-    return Math.min(100, Math.max(0, value)).toFixed(2);
-  }
-
+  formatActivity = formatActivity;
   getPartyAlias = getPartyAlias;
 
   formatRegionName(name: string): string {

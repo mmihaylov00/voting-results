@@ -12,6 +12,8 @@ import {
 } from '../../../ui/table-helm/src/lib/hlm-table.directives';
 import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-typography.directive';
 import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
+import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
+import { RiskBadgeComponent } from '../../../ui/risk-badge/risk-badge';
 
 export interface CandidateSectionData {
   sectionId: string;
@@ -38,13 +40,10 @@ export interface CandidateSectionData {
     HlmTableRowDirective,
     HlmTableHeadDirective,
     HlmTableCellDirective,
-    HlmTypographyDirective,
-    HlmTooltipDirective,
+    BaseModalComponent,
+    RiskBadgeComponent,
   ],
-  templateUrl: './candidate-detail-modal.html',
-  host: {
-    '(document:keydown.escape)': 'close.emit()'
-  }
+  templateUrl: './candidate-detail-modal.html'
 })
 export class CandidateDetailModalComponent implements OnInit {
   @Input({ required: true }) candidate!: RegionCandidate;

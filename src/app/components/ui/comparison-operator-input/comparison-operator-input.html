@@ -1,0 +1,19 @@
+<div class="relative w-full">
+  <button hlmBtn variant="ghost" size="sm" (click)="toggleOperator()"
+          class="absolute left-1 top-1/2 -translate-y-1/2 h-8 px-2 text-[10px] font-semibold hover:bg-primary/10 text-muted-foreground transition-all z-10"
+          [hlmTooltip]="tooltipText">
+    {{ label }} {{ operatorSymbol }}
+  </button>
+  <input hlmInput 
+         type="number" 
+         [placeholder]="placeholder" 
+         [ngModel]="value"
+         (ngModelChange)="onValueChange($event)" 
+         [min]="min" 
+         [max]="max" 
+         [step]="step"
+         class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full h-9 pr-8 pl-24 text-right"/>
+  @if (suffix) {
+    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">{{ suffix }}</span>
+  }
+</div>

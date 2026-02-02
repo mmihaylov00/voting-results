@@ -7,6 +7,7 @@ import { ThemeService } from '../../services/theme.service';
 import { PartyResult, Section, SectionDetails, TableColumn, SECTION_COLUMNS, SectionTab, SectionFilters, ComparativeValue, CandidateVotes, ViewMode, RegionCandidate } from '../../models/election.models';
 import { filterSections } from '../../utils/election-utils';
 import { getPartyAlias } from '../../utils/party-aliases';
+import { formatActivity, getGoogleMapsUrl, copyToClipboard as copyToClipboardUtil } from '../../utils/common.utils';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
@@ -34,6 +35,8 @@ import { CandidateDetailModalComponent } from './modals/candidate-detail-modal/c
 import { SectionFiltersComponent } from './section-filters/section-filters';
 import { PartyFilterComponent } from './party-filter/party-filter';
 import {HlmInputDirective} from '../ui/input-helm/src/lib/hlm-input.directive';
+import { RiskBadgeComponent } from '../ui/risk-badge/risk-badge';
+import { ComparisonOperatorInputComponent } from '../ui/comparison-operator-input/comparison-operator-input';
 
 @Component({
   selector: 'app-election-detail',
@@ -67,6 +70,8 @@ import {HlmInputDirective} from '../ui/input-helm/src/lib/hlm-input.directive';
     PartyFilterComponent,
     HighchartsChartComponent,
     HlmInputDirective,
+    RiskBadgeComponent,
+    ComparisonOperatorInputComponent,
   ],
   templateUrl: './election-detail.html',
   styleUrl: './election-detail.scss',
@@ -274,29 +279,14 @@ export class ElectionDetailComponent implements OnInit {
     this.isExportModalOpen.set(true);
   }
 
-  formatActivity(percent: number): string {
-    const value = percent * 100;
-    return Math.min(100, Math.max(0, value)).toFixed(2);
-  }
+  formatActivity = formatActivity;
+  getGoogleMapsUrl = getGoogleMapsUrl;
 
-  copyToClipboard(text: string, event: Event): void {
+  async copyToClipboard(text: string, event: Event): Promise<void> {
     event.stopPropagation();
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(() => {
-        this.markAsCopied(text);
-      });
-    } else {
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      document.body.appendChild(textArea);
-      textArea.select();
-      try {
-        document.execCommand('copy');
-        this.markAsCopied(text);
-      } catch (err) {
-        console.error('Fallback: Oops, unable to copy', err);
-      }
-      document.body.removeChild(textArea);
+    const success = await copyToClipboardUtil(text);
+    if (success) {
+      this.markAsCopied(text);
     }
   }
 
@@ -307,12 +297,6 @@ export class ElectionDetailComponent implements OnInit {
         this.copiedId.set(null);
       }
     }, 2000);
-  }
-
-  getGoogleMapsUrl(cityName: string, sectionName: string): string {
-    const isCity = sectionName.startsWith('Общо за');
-    const query = encodeURIComponent(isCity ? cityName : `${cityName} ${sectionName}`);
-    return `https://www.google.com/maps/search/?api=1&query=${query}`;
   }
 
   ngOnInit(): void {

@@ -6,6 +6,7 @@ import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
 import { Region, Section, PartyVotes } from '../../models/election.models';
 import { getPartyAlias } from '../../utils/party-aliases';
+import { formatActivity, getPartyKeywords, findPartyByKeywords } from '../../utils/common.utils';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmCardContentDirective,
@@ -185,12 +186,10 @@ export class ElectionListComponent implements OnInit {
     return this.electionsData.get(date);
   }
 
-  formatActivity(percent: number): string {
-    const value = percent * 100;
-    return Math.min(100, Math.max(0, value)).toFixed(2);
-  }
-
+  formatActivity = formatActivity;
   getPartyAlias = getPartyAlias;
+  getPartyKeywords = getPartyKeywords;
+  findPartyByKeywords = findPartyByKeywords;
 
   toggleHistoricalPartyFilter(event: Event) {
     event.stopPropagation();
@@ -209,37 +208,6 @@ export class ElectionListComponent implements OnInit {
       current.add(partyId);
     }
     this.selectedHistoricalPartyIds.set(current);
-  }
-
-  // Extract keywords from party name for matching across elections
-  private getPartyKeywords(partyName: string): string[] {
-    const upperName = partyName.toUpperCase();
-    // Normalize common variations
-    if (upperName.includes('ПРОДЪЛЖАВАМЕ') || upperName.includes('ПП-ДБ')) {
-      return ['ПРОДЪЛЖАВАМЕ', 'ПП-ДБ'];
-    }
-    // Extract main keywords (first significant words, excluding common prefixes)
-    const words = upperName.split(/\s+/).filter(w => w.length > 2);
-    return words.slice(0, 3); // Take first 3 significant words
-  }
-
-  // Find party ID in election data by matching name keywords
-  private findPartyByKeywords(keywords: string[], parties: { [id: string]: string }): string | null {
-    for (const [pid, name] of Object.entries(parties)) {
-      const upperName = name.toUpperCase();
-      // Check if all keywords match
-      if (keywords.every(keyword => upperName.includes(keyword))) {
-        return pid;
-      }
-    }
-    // Fallback: try matching any keyword
-    for (const [pid, name] of Object.entries(parties)) {
-      const upperName = name.toUpperCase();
-      if (keywords.some(keyword => upperName.includes(keyword))) {
-        return pid;
-      }
-    }
-    return null;
   }
 
   updateHistoricalCharts() {

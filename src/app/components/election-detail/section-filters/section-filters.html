@@ -8,17 +8,16 @@
     </div>
 
     <!-- Activity Threshold Input -->
-    <div class="relative w-full">
-      <button hlmBtn variant="ghost" size="sm" (click)="toggleActivityOperator()"
-              class="absolute left-1 top-1/2 -translate-y-1/2 h-8 px-2 text-[10px] font-semibold hover:bg-primary/10 text-muted-foreground transition-all z-10"
-              [hlmTooltip]="activityOperator() === 'lte' ? 'Превключи към по-голямо или равно' : 'Превключи към по-малко или равно'">
-        Активност {{ activityOperator() === 'lte' ? '≤' : '≥' }}
-      </button>
-      <input hlmInput type="number" placeholder="0" [ngModel]="lowActivityThreshold()"
-             (ngModelChange)="onThresholdChange($event)" min="0" max="100" step="0.01"
-             class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full h-9 pr-8 pl-24 text-right"/>
-      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">%</span>
-    </div>
+    <app-comparison-operator-input
+        [operator]="activityOperator()"
+        [value]="lowActivityThreshold()"
+        label="Активност"
+        [min]="0"
+        [max]="100"
+        [step]="0.01"
+        suffix="%"
+        (operatorChange)="activityOperator.set($event)"
+        (valueChange)="onThresholdChange($event)" />
     <!-- Quick Filters Dropdown -->
     <div class="relative w-full md:col-span-2 lg:col-span-1">
       <button hlmBtn variant="outline" size="sm" (click)="toggleQuickFiltersDropdown($event)"

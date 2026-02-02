@@ -1,0 +1,7 @@
+<span [class]="severityClasses" [hlmTooltip]="risk.message">
+    @if (displayMode === 'full') {
+        <strong>{{ risk.code }}</strong>: {{ risk.message }}
+    } @else {
+        {{ risk.code }}
+    }
+</span>

@@ -7,6 +7,7 @@ import { Section, SectionDetails, PartyResult, ComparativeValue, PartyVotes, Can
 import { ThemeService } from '../../../../services/theme.service';
 import { ElectionService } from '../../../../services/election';
 import { getPartyAlias } from '../../../../utils/party-aliases';
+import { formatActivity, getGoogleMapsUrl, getPartyKeywords, findPartyByKeywords } from '../../../../utils/common.utils';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmTableBodyDirective,
@@ -24,6 +25,9 @@ import {
   HlmCardContentDirective
 } from '../../../ui/card-helm/src/lib/hlm-card.directives';
 import { PartyFilterComponent } from '../../party-filter/party-filter';
+import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
+import { SortableTableHeaderComponent } from '../../../ui/sortable-table-header/sortable-table-header';
+import { RiskBadgeComponent } from '../../../ui/risk-badge/risk-badge';
 
 @Component({
   selector: 'app-section-detail-modal',
@@ -43,11 +47,11 @@ import { PartyFilterComponent } from '../../party-filter/party-filter';
     HlmTooltipDirective,
     HlmCardDirective,
     PartyFilterComponent,
+    BaseModalComponent,
+    SortableTableHeaderComponent,
+    RiskBadgeComponent,
   ],
-  templateUrl: './section-detail-modal.html',
-  host: {
-    '(document:keydown.escape)': 'close.emit()'
-  }
+  templateUrl: './section-detail-modal.html'
 })
 export class SectionDetailModalComponent implements OnInit, OnChanges {
   @Input({ required: true }) section!: SectionDetails;
@@ -77,22 +81,15 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   otherPartiesWithoutPreferences: { total: number, paper: number, machine: number } | null = null;
   otherPartiesPreferenceVotes: { total: number, paper: number, machine: number } | null = null;
 
-  getGoogleMapsUrl(cityName: string, sectionName: string): string {
-    const isCity = this.section.sectionName.startsWith('Общо за');
-    const query = encodeURIComponent(isCity ? cityName : `${cityName} ${sectionName}`);
-    return `https://www.google.com/maps/search/?api=1&query=${query}`;
-  }
+  getGoogleMapsUrl = getGoogleMapsUrl;
+  formatActivity = formatActivity;
+  getPartyAlias = getPartyAlias;
+  getPartyKeywords = getPartyKeywords;
+  findPartyByKeywords = findPartyByKeywords;
 
   get isGroupedByCity(): boolean {
     return this.section.sectionName.startsWith('Общо за');
   }
-
-  formatActivity(percent: number): string {
-    const value = percent * 100;
-    return Math.min(100, Math.max(0, value)).toFixed(2);
-  }
-
-  getPartyAlias = getPartyAlias;
 
   get uniqueRisks(): string[] {
     if (!this.currentSectionData) return [];
@@ -172,7 +169,9 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     return map;
   }
 
-  sortParties(column: keyof PartyResult, preserveDir: boolean = false) {
+  sortParties(eventOrColumn: string | keyof PartyResult, preserveDir: boolean = false) {
+    const column = (typeof eventOrColumn === 'string' ? eventOrColumn : eventOrColumn) as keyof PartyResult;
+    
     if (this.partySortColumn === column && !preserveDir) {
       this.partySortDir = this.partySortDir === 'asc' ? 'desc' : 'asc';
     } else if (!preserveDir) {
@@ -545,7 +544,9 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     return partyResult?.total || 0;
   }
 
-  sortCandidates(column: keyof CandidateResult, preserveDir: boolean = false) {
+  sortCandidates(eventOrColumn: string | keyof CandidateResult, preserveDir: boolean = false) {
+    const column = (typeof eventOrColumn === 'string' ? eventOrColumn : eventOrColumn) as keyof CandidateResult;
+    
     if (this.candidateSortColumn === column && !preserveDir) {
       this.candidateSortDir = this.candidateSortDir === 'asc' ? 'desc' : 'asc';
     } else if (!preserveDir) {
@@ -690,36 +691,6 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     }
   }
 
-  // Extract keywords from party name for matching across elections
-  private getPartyKeywords(partyName: string): string[] {
-    const upperName = partyName.toUpperCase();
-    // Normalize common variations
-    if (upperName.includes('ПРОДЪЛЖАВАМЕ') || upperName.includes('ПП-ДБ')) {
-      return ['ПРОДЪЛЖАВАМЕ', 'ПП-ДБ'];
-    }
-    // Extract main keywords (first significant words, excluding common prefixes)
-    const words = upperName.split(/\s+/).filter(w => w.length > 2);
-    return words.slice(0, 3); // Take first 3 significant words
-  }
-
-  // Find party ID in election data by matching name keywords
-  private findPartyByKeywords(keywords: string[], parties: { [id: string]: string }): string | null {
-    for (const [pid, name] of Object.entries(parties)) {
-      const upperName = name.toUpperCase();
-      // Check if all keywords match
-      if (keywords.every(keyword => upperName.includes(keyword))) {
-        return pid;
-      }
-    }
-    // Fallback: try matching any keyword
-    for (const [pid, name] of Object.entries(parties)) {
-      const upperName = name.toUpperCase();
-      if (keywords.some(keyword => upperName.includes(keyword))) {
-        return pid;
-      }
-    }
-    return null;
-  }
 
   updateHistoricalCharts() {
     if (!this.section) return;

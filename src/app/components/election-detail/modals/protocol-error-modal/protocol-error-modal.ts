@@ -18,6 +18,9 @@ import {
 } from '../../../ui/card-helm/src/lib/hlm-card.directives';
 import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-typography.directive';
 import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
+import { getGoogleMapsUrl, copyToClipboard as copyToClipboardUtil } from '../../../../utils/common.utils';
+import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
+import { SortableTableHeaderComponent } from '../../../ui/sortable-table-header/sortable-table-header';
 
 @Component({
   selector: 'app-protocol-error-modal',
@@ -29,18 +32,12 @@ import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-toolti
     HlmTableHeaderDirective,
     HlmTableBodyDirective,
     HlmTableRowDirective,
-    HlmTableHeadDirective,
     HlmTableCellDirective,
-    HlmCardDirective,
-    HlmCardHeaderDirective,
-    HlmCardContentDirective,
-    HlmTypographyDirective,
-    HlmTooltipDirective
+    HlmTooltipDirective,
+    BaseModalComponent,
+    SortableTableHeaderComponent
   ],
-  templateUrl: './protocol-error-modal.html',
-  host: {
-    '(document:keydown.escape)': 'close.emit()'
-  }
+  templateUrl: './protocol-error-modal.html'
 })
 export class ProtocolErrorModalComponent {
   @Input({ required: true }) sectionsWithError: Section[] = [];
@@ -83,24 +80,13 @@ export class ProtocolErrorModalComponent {
     }
   }
 
-  copyToClipboard(text: string, event: Event): void {
+  getGoogleMapsUrl = getGoogleMapsUrl;
+
+  async copyToClipboard(text: string, event: Event): Promise<void> {
     event.stopPropagation();
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(() => {
-        this.markAsCopied(text);
-      });
-    } else {
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      document.body.appendChild(textArea);
-      textArea.select();
-      try {
-        document.execCommand('copy');
-        this.markAsCopied(text);
-      } catch (err) {
-        console.error('Fallback: Oops, unable to copy', err);
-      }
-      document.body.removeChild(textArea);
+    const success = await copyToClipboardUtil(text);
+    if (success) {
+      this.markAsCopied(text);
     }
   }
 
@@ -111,10 +97,5 @@ export class ProtocolErrorModalComponent {
         this.copiedId.set(null);
       }
     }, 2000);
-  }
-
-  getGoogleMapsUrl(cityName: string, sectionName: string): string {
-    const query = encodeURIComponent(`${cityName} ${sectionName}`);
-    return `https://www.google.com/maps/search/?api=1&query=${query}`;
   }
 }

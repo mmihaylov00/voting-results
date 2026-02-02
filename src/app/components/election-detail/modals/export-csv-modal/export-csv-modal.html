@@ -1,26 +1,20 @@
-<div class="fixed inset-0 z-[110] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4" (click)="close.emit()">
-    <div hlmCard class="w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl border-primary/20 bg-background/50 backdrop-blur-md" (click)="$event.stopPropagation()">
-        <div class="flex justify-between items-center p-6 border-b border-primary/20">
-            <div>
-                <h3 hlmH4 class="m-0 text-secondary dark:text-primary">Експорт на данни</h3>
-                <p hlmMuted class="text-xs">Изберете партии за включване в CSV файла</p>
-            </div>
-
-
-          <div class="flex flex-row justify-end">
-            <div class="grid grid-cols-1 gap-2">
-              <app-party-filter
+<app-base-modal 
+    title="Експорт на данни"
+    subtitle="Изберете партии за включване в CSV файла"
+    maxWidth="max-w-2xl"
+    zIndex="z-[110]"
+    (close)="close.emit()">
+    
+    <ng-template #headerActions>
+        <div class="flex flex-row justify-end mt-3">
+            <app-party-filter
                 [parties]="allParties"
                 [selectedPartyIds]="exportPartyIds"
                 (selectedPartyIdsChange)="onExportPartySelectionChange($event)"/>
-            </div>
-            <button hlmBtn variant="ghost" size="icon" (click)="close.emit()" class="text-secondary dark:text-primary hover:bg-primary dark:hover:bg-primary dark:hover:text-primary-foreground">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-          </div>
         </div>
+    </ng-template>
 
-        <div class="overflow-auto p-6 flex-grow space-y-6">
+    <div class="space-y-6">
             <div class="space-y-4 border-b border-primary/10 pb-6">
               <h4 hlmH4 class="mb-2 text-sm font-semibold uppercase tracking-wider text-secondary/70 dark:text-primary/70">Филтри</h4>
               <app-section-filters
@@ -43,11 +37,10 @@
                     }
                 </div>
             </div>
-        </div>
-
-        <div class="flex justify-end gap-2 p-6 border-t border-primary/20">
-            <button hlmBtn variant="outline" (click)="close.emit()">Отказ</button>
-            <button hlmBtn variant="default" (click)="downloadCsv()">Експорт {{ filteredSections.length }} записа</button>
-        </div>
     </div>
-</div>
+
+    <ng-template #footer>
+        <button hlmBtn variant="outline" (click)="close.emit()">Отказ</button>
+        <button hlmBtn variant="default" (click)="downloadCsv()">Експорт {{ filteredSections.length }} записа</button>
+    </ng-template>
+</app-base-modal>

@@ -186,16 +186,14 @@
                             </div>
 
                               <!-- Preference Filter (Number) -->
-                              <div class="relative w-full">
-                                  <button hlmBtn variant="ghost" size="sm" (click)="candidatePreferenceOperator.set(candidatePreferenceOperator() === 'lte' ? 'gte' : 'lte'); applyCandidateFilter()"
-                                          class="absolute left-1 top-1/2 -translate-y-1/2 h-8 px-2 text-[10px] font-semibold hover:bg-primary/10 text-muted-foreground transition-all z-10"
-                                          [hlmTooltip]="candidatePreferenceOperator() === 'lte' ? 'Превключи към по-голямо или равно' : 'Превключи към по-малко или равно'">
-                                      Преференции {{ candidatePreferenceOperator() === 'lte' ? '≤' : '≥' }}
-                                  </button>
-                                  <input hlmInput type="number" placeholder="0" [(ngModel)]="candidatePreferenceThreshold"
-                                         (ngModelChange)="applyCandidateFilter()" min="0" step="1"
-                                         class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full h-9 pr-8 pl-24 text-right"/>
-                              </div>
+                              <app-comparison-operator-input
+                                  [operator]="candidatePreferenceOperator()"
+                                  [value]="candidatePreferenceThreshold"
+                                  label="Преференции"
+                                  [min]="0"
+                                  [step]="1"
+                                  (operatorChange)="candidatePreferenceOperator.set($event); applyCandidateFilter()"
+                                  (valueChange)="candidatePreferenceThreshold = $event; applyCandidateFilter()" />
 
                               <!-- Party Filter -->
                               <app-party-filter
@@ -723,19 +721,7 @@
                                           @if (candidate.riskIndicators && candidate.riskIndicators.length > 0) {
                                             <div class="flex flex-wrap gap-1">
                                               @for (risk of candidate.riskIndicators; track risk.code + risk.details?.sectionId) {
-                                                <span class="px-1.5 py-0.5 text-xs rounded-full"
-                                                      [class.bg-red-500/20]="risk.severity === 'high'"
-                                                  [class.text-red-600]="risk.severity === 'high'"
-                                                  [class.dark:text-red-400]="risk.severity === 'high'"
-                                                  [class.bg-yellow-500/20]="risk.severity === 'medium'"
-                                                  [class.text-yellow-600]="risk.severity === 'medium'"
-                                                  [class.dark:text-yellow-400]="risk.severity === 'medium'"
-                                                  [class.bg-blue-500/20]="risk.severity === 'low'"
-                                                  [class.text-blue-600]="risk.severity === 'low'"
-                                                  [class.dark:text-blue-400]="risk.severity === 'low'"
-                                                  [hlmTooltip]="risk.message">
-                                                {{ risk.code }}
-                                                </span>
+                                                <app-risk-badge [risk]="risk" size="small" displayMode="compact" />
                                               }
                                             </div>
                                           }
