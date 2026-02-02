@@ -1,6 +1,7 @@
 import { Directive, Input, ElementRef, HostListener, Renderer2, OnDestroy } from '@angular/core';
 import { ComparativeValue } from '../../../../../models/election.models';
 import { DecimalPipe } from '@angular/common';
+import { getDateName } from '../../../../../utils/date-name.util';
 
 @Directive({
   selector: '[hlmTooltip]',
@@ -45,21 +46,21 @@ export class HlmTooltipDirective implements OnDestroy {
       content = '<div class="flex flex-col gap-1">';
       this.comparisons.forEach(c => {
       const formattedValue = this.isPercent
-        ? (c.value * 100).toFixed(2) + '%'
-        : this.decimalPipe.transform(c.value, '1.0-0');
+        ? (c.v * 100).toFixed(2) + '%'
+        : this.decimalPipe.transform(c.v, '1.0-0');
 
       let arrow = '';
       if (this.currentValue !== undefined) {
-        if (this.currentValue > c.value) {
+        if (this.currentValue > c.v) {
           arrow = '<span class="text-red-500 ml-1">↓</span>';
-        } else if (this.currentValue < c.value) {
+        } else if (this.currentValue < c.v) {
           arrow = '<span class="text-green-500 ml-1">↑</span>';
         }
       }
 
       content += `
         <div class="flex justify-between gap-4 text-[10px] whitespace-nowrap items-center">
-          <span class="opacity-70">${c.dateName}:</span>
+          <span class="opacity-70">${getDateName(c.d)}:</span>
           <span class="font-bold flex items-center">${formattedValue}${arrow}</span>
         </div>
       `;

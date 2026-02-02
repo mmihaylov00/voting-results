@@ -95,14 +95,6 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     return this.section.sectionName.startsWith('Общо за');
   }
 
-  get uniqueRisks(): string[] {
-    if (!this.currentSectionData) return [];
-    const indicatorMessages = new Set(
-      this.currentSectionData.riskIndicators?.map(r => r.message) || []
-    );
-    return (this.currentSectionData.risks || []).filter(r => !indicatorMessages.has(r));
-  }
-
   constructor(
     public themeService: ThemeService,
     private electionService: ElectionService
@@ -243,20 +235,20 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     others.forEach(r => {
       const votes = this.currentSectionData?.partyVotes?.[r.partyId];
       votes?.comparisons?.forEach(c => {
-        if (!comparisons[c.date]) comparisons[c.date] = { value: 0, dateName: c.dateName, date: c.date };
-        comparisons[c.date].value += c.value;
+        if (!comparisons[c.d]) comparisons[c.d] = { v: 0, d: c.d };
+        comparisons[c.d].v += c.v;
       });
       votes?.paperComparisons?.forEach(c => {
-        if (!paperComparisons[c.date]) paperComparisons[c.date] = { value: 0, dateName: c.dateName, date: c.date };
-        paperComparisons[c.date].value += c.value;
+        if (!paperComparisons[c.d]) paperComparisons[c.d] = { v: 0, d: c.d };
+        paperComparisons[c.d].v += c.v;
       });
       votes?.machineComparisons?.forEach(c => {
-        if (!machineComparisons[c.date]) machineComparisons[c.date] = { value: 0, dateName: c.dateName, date: c.date };
-        machineComparisons[c.date].value += c.value;
+        if (!machineComparisons[c.d]) machineComparisons[c.d] = { v: 0, d: c.d };
+        machineComparisons[c.d].v += c.v;
       });
       votes?.percentComparisons?.forEach(c => {
-        if (!percentComparisons[c.date]) percentComparisons[c.date] = { value: 0, dateName: c.dateName, date: c.date };
-        percentComparisons[c.date].value += c.value;
+        if (!percentComparisons[c.d]) percentComparisons[c.d] = { v: 0, d: c.d };
+        percentComparisons[c.d].v += c.v;
       });
     });
 
@@ -580,9 +572,9 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       }
 
       if (foundTotal > 0) {
-        comparisons.push({ value: foundTotal, date: dateInfo.date, dateName: dateInfo.name });
-        paperComparisons.push({ value: foundPaper, date: dateInfo.date, dateName: dateInfo.name });
-        machineComparisons.push({ value: foundMachine, date: dateInfo.date, dateName: dateInfo.name });
+        comparisons.push({ v: foundTotal, d: dateInfo.date });
+        paperComparisons.push({ v: foundPaper, d: dateInfo.date });
+        machineComparisons.push({ v: foundMachine, d: dateInfo.date });
       }
     });
 
@@ -641,9 +633,9 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       });
 
       if (foundTotal > 0) {
-        comparisons.push({ value: foundTotal, date: dateInfo.date, dateName: dateInfo.name });
-        paperComparisons.push({ value: foundPaper, date: dateInfo.date, dateName: dateInfo.name });
-        machineComparisons.push({ value: foundMachine, date: dateInfo.date, dateName: dateInfo.name });
+        comparisons.push({ v: foundTotal, d: dateInfo.date });
+        paperComparisons.push({ v: foundPaper, d: dateInfo.date });
+        machineComparisons.push({ v: foundMachine, d: dateInfo.date });
       }
     });
 

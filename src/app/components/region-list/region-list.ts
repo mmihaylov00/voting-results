@@ -147,19 +147,18 @@ export class RegionListComponent implements OnInit, AfterViewInit {
     this.globalComparisons = {};
     if (this.regions.length > 0 && this.regions[0].comparisons) {
       Object.keys(this.regions[0].comparisons).forEach(key => {
-        const aggregated: { [date: string]: { value: number, dateName: string } } = {};
+        const aggregated: { [date: string]: { value: number } } = {};
         this.regions.forEach(r => {
           r.comparisons?.[key]?.forEach(c => {
-            if (!aggregated[c.date]) {
-              aggregated[c.date] = { value: 0, dateName: c.dateName };
+            if (!aggregated[c.d]) {
+              aggregated[c.d] = { value: 0 };
             }
-            aggregated[c.date].value += c.value;
+            aggregated[c.d].value += c.v;
           });
         });
         this.globalComparisons[key] = Object.entries(aggregated).map(([date, data]) => ({
-          date,
-          dateName: data.dateName,
-          value: data.value
+          d: date,
+          v: data.value
         }));
       });
 
@@ -167,14 +166,13 @@ export class RegionListComponent implements OnInit, AfterViewInit {
       const electorsAggr: { [date: string]: number } = {};
       const votedAggr: { [date: string]: number } = {};
       this.regions.forEach(r => {
-        r.comparisons?.['total']?.forEach(c => electorsAggr[c.date] = (electorsAggr[c.date] || 0) + c.value);
-        r.comparisons?.['voted']?.forEach(c => votedAggr[c.date] = (votedAggr[c.date] || 0) + c.value);
+        r.comparisons?.['total']?.forEach(c => electorsAggr[c.d] = (electorsAggr[c.d] || 0) + c.v);
+        r.comparisons?.['voted']?.forEach(c => votedAggr[c.d] = (votedAggr[c.d] || 0) + c.v);
       });
 
       this.globalComparisons['activityPercent'] = Object.keys(electorsAggr).map(date => ({
-        date,
-        dateName: this.regions[0].comparisons?.['total']?.find(c => c.date === date)?.dateName || date,
-        value: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
+        d: date,
+        v: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
       }));
     }
   }

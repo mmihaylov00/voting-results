@@ -1,7 +1,6 @@
 export interface ComparativeValue {
-  value: number;
-  date: string;
-  dateName: string;
+  v: number;
+  d: string;
 }
 
 export interface PartyVotes {
@@ -62,7 +61,6 @@ export interface Section {
   protocolPaperVotes?: number;
   protocolMachineVotes?: number;
   riskScore?: number;
-  risks?: string[];
   riskIndicators?: Array<{ code: string; category: string; severity: string; message: string; details?: any }>;
   votesToFirst?: number;
   municipalityAvgTurnout?: number;

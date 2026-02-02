@@ -172,7 +172,6 @@ function parseSections(text) {
       activityPercent: 0,
 
       // risks
-      risks: [],
       riskScore: 0
     };
   });
@@ -633,7 +632,6 @@ for (const date of dates) {
     const stats = regionStats[s.regionId] || {avgTurnout: 0, partyPercents: Object.create(null)};
     s.municipalityAvgTurnout = stats.avgTurnout;
     s.municipalityPartyPercents = stats.partyPercents;
-    s.risks = s.risks || [];
     s.riskScore = s.riskScore || 0;
   }
 
@@ -680,18 +678,15 @@ for (const date of dates) {
         const otherAgg = other.regionAgg.get(id);
         if (!otherAgg) continue;
 
-        const dateName = dateNameByDate[d];
-
-        (region.comparisons.voted ||= []).push({value: otherAgg.voted, date: d, dateName});
-        (region.comparisons.total ||= []).push({value: otherAgg.total, date: d, dateName});
-        (region.comparisons.discardedVotes ||= []).push({value: otherAgg.discardedVotes, date: d, dateName});
-        (region.comparisons.noVotes ||= []).push({value: otherAgg.noVotes, date: d, dateName});
-        (region.comparisons.totalPaper ||= []).push({value: otherAgg.totalPaper, date: d, dateName});
-        (region.comparisons.totalMachine ||= []).push({value: otherAgg.totalMachine, date: d, dateName});
+        (region.comparisons.voted ||= []).push({v: otherAgg.voted, d});
+        (region.comparisons.total ||= []).push({v: otherAgg.total, d});
+        (region.comparisons.discardedVotes ||= []).push({v: otherAgg.discardedVotes, d});
+        (region.comparisons.noVotes ||= []).push({v: otherAgg.noVotes, d});
+        (region.comparisons.totalPaper ||= []).push({v: otherAgg.totalPaper, d});
+        (region.comparisons.totalMachine ||= []).push({v: otherAgg.totalMachine, d});
         (region.comparisons.activityPercent ||= []).push({
-          value: otherAgg.total > 0 ? otherAgg.voted / otherAgg.total : 0,
-          date: d,
-          dateName
+          v: otherAgg.total > 0 ? otherAgg.voted / otherAgg.total : 0,
+          d
         });
 
         // Party comparisons for regions:
@@ -702,7 +697,7 @@ for (const date of dates) {
         for (const pid in region.partyVotes) {
           const normalizedTarget = normalizePartyName(currentPartiesMap[pid] || pid);
           const otherPartyTotal = otherAggNorm[normalizedTarget] || 0;
-          (region.comparisons[`party_${pid}`] ||= []).push({value: otherPartyTotal, date: d, dateName});
+          (region.comparisons[`party_${pid}`] ||= []).push({v: otherPartyTotal, d});
         }
 
         // Top parties comparisons for regions
@@ -710,7 +705,7 @@ for (const date of dates) {
         for (const tp of region.topParties) {
           const normalizedTarget = normalizePartyName(tp.name);
           const otherTotal = otherAggNormTop[normalizedTarget] || 0;
-          tp.comparisons.push({value: otherTotal, date: d, dateName});
+          tp.comparisons.push({v: otherTotal, d});
         }
       }
 
@@ -732,21 +727,18 @@ for (const date of dates) {
       const otherSection = other.byId.get(s.sectionId);
       if (!otherSection) continue;
 
-      const dateName = dateNameByDate[d];
-
-      (s.comparisons.voted ||= []).push({value: otherSection.voted, date: d, dateName});
-      (s.comparisons.total ||= []).push({value: otherSection.total, date: d, dateName});
-      (s.comparisons.discardedVotes ||= []).push({value: otherSection.discardedVotes, date: d, dateName});
-      (s.comparisons.noVotes ||= []).push({value: otherSection.noVotes, date: d, dateName});
-      (s.comparisons.totalPaper ||= []).push({value: otherSection.totalPaper || 0, date: d, dateName});
-      (s.comparisons.totalMachine ||= []).push({value: otherSection.totalMachine || 0, date: d, dateName});
-      (s.comparisons.activityPercent ||= []).push({value: otherSection.activityPercent, date: d, dateName});
-      (s.comparisons.noVotesPaper ||= []).push({value: otherSection.noVotesPaper || 0, date: d, dateName});
-      (s.comparisons.noVotesMachine ||= []).push({value: otherSection.noVotesMachine || 0, date: d, dateName});
+      (s.comparisons.voted ||= []).push({v: otherSection.voted, d});
+      (s.comparisons.total ||= []).push({v: otherSection.total, d});
+      (s.comparisons.discardedVotes ||= []).push({v: otherSection.discardedVotes, d});
+      (s.comparisons.noVotes ||= []).push({v: otherSection.noVotes, d});
+      (s.comparisons.totalPaper ||= []).push({v: otherSection.totalPaper || 0, d});
+      (s.comparisons.totalMachine ||= []).push({v: otherSection.totalMachine || 0, d});
+      (s.comparisons.activityPercent ||= []).push({v: otherSection.activityPercent, d});
+      (s.comparisons.noVotesPaper ||= []).push({v: otherSection.noVotesPaper || 0, d});
+      (s.comparisons.noVotesMachine ||= []).push({v: otherSection.noVotesMachine || 0, d});
       (s.comparisons.noVotesPercent ||= []).push({
-        value: otherSection.voted > 0 ? otherSection.noVotes / otherSection.voted : 0,
-        date: d,
-        dateName
+        v: otherSection.voted > 0 ? otherSection.noVotes / otherSection.voted : 0,
+        d
       });
 
       // Party comparisons for sections:
@@ -765,13 +757,13 @@ for (const date of dates) {
         const otherMachine = otherBucket.machine || 0;
 
         const sv = s.partyVotes[pid];
-        (sv.comparisons ||= []).push({value: otherTotal, date: d, dateName});
+        (sv.comparisons ||= []).push({v: otherTotal, d});
 
         const otherPercent = otherSection.voted > 0 ? otherTotal / otherSection.voted : 0;
-        (sv.percentComparisons ||= []).push({value: otherPercent, date: d, dateName});
+        (sv.percentComparisons ||= []).push({v: otherPercent, d});
 
-        (sv.paperComparisons ||= []).push({value: otherPaper, date: d, dateName});
-        (sv.machineComparisons ||= []).push({value: otherMachine, date: d, dateName});
+        (sv.paperComparisons ||= []).push({v: otherPaper, d});
+        (sv.machineComparisons ||= []).push({v: otherMachine, d});
       }
 
       // Top parties comparisons for sections (also use partyVotesNorm)
@@ -780,7 +772,7 @@ for (const date of dates) {
         const normalizedTarget = normalizePartyName(tp.name);
         const otherBucket = otherNormMapTop[normalizedTarget];
         const otherTotal = otherBucket ? (otherBucket.total || 0) : 0;
-        tp.comparisons.push({value: otherTotal, date: d, dateName});
+        tp.comparisons.push({v: otherTotal, d});
       }
     }
   }
@@ -810,7 +802,7 @@ for (const date of dates) {
     // turnout change (current vs most recent comparison entry you have)
     if (s.comparisons?.activityPercent && s.comparisons.activityPercent.length > 0) {
       const currentTurnout = s.activityPercent;
-      const previousTurnout = s.comparisons.activityPercent[0].value;
+      const previousTurnout = s.comparisons.activityPercent[0].v;
       if (previousTurnout > 0) stats.turnoutChanges.push((currentTurnout - previousTurnout) / previousTurnout);
     }
 
@@ -951,7 +943,7 @@ for (const date of dates) {
     // R1.2: Party turnout capture
     if (baseline && section.comparisons?.voted && section.comparisons.voted.length > 0) {
       const currentVoted = section.voted;
-      const previousVoted = section.comparisons.voted[0].value || 0;
+      const previousVoted = section.comparisons.voted[0].v || 0;
       const voteIncrease = currentVoted - previousVoted;
 
       if (voteIncrease > 0 && previousVoted > 0) {
@@ -1180,7 +1172,7 @@ for (const date of dates) {
     // R3.2: Party-correlated invalid spike
     if (baseline && section.comparisons?.discardedVotes) {
       const currentInvalid = section.discardedVotes;
-      const previousInvalid = section.comparisons.discardedVotes[0]?.value || 0;
+      const previousInvalid = section.comparisons.discardedVotes[0]?.v || 0;
       const invalidIncrease = currentInvalid - previousInvalid;
 
       if (invalidIncrease > 0) {
@@ -1543,10 +1535,6 @@ for (const date of dates) {
     if (sectionRiskIndicators.length > 0) {
       section.riskIndicators = sectionRiskIndicators;
 
-      const indicatorMessages = new Set(sectionRiskIndicators.map((r) => r.message));
-      const originalRisks = (section.risks || []).filter((r) => !indicatorMessages.has(r));
-      section.risks = [...originalRisks, ...sectionRiskIndicators.map((r) => r.message)];
-
       section.riskScore = (section.riskScore || 0) + sectionRiskIndicators.length;
     }
 
@@ -1905,7 +1893,28 @@ for (const date of dates) {
   };
 
   const json = JSON.stringify(finalResult);
+  let parsed = null;
+  try {
+    parsed = JSON.parse(json);
+  } catch (err) {
+    throw new Error(`Invalid JSON output for ${date}: ${err && err.message ? err.message : err}`);
+  }
+
+  if (
+    !parsed ||
+    !parsed.sections ||
+    !parsed.parties ||
+    !parsed.regions ||
+    !parsed.candidates
+  ) {
+    throw new Error(`Missing top-level keys in output for ${date}`);
+  }
+
+  const rawBytes = Buffer.byteLength(json);
   const gzipped = zlib.gzipSync(json);
+  const gzipBytes = gzipped.length;
+  const ratio = rawBytes > 0 ? (gzipBytes / rawBytes).toFixed(3) : '0.000';
+  console.log(`Output size ${date}: rawBytes=${rawBytes} gzipBytes=${gzipBytes} ratio=${ratio}`);
   fs.writeFileSync(path.join(outputDir, `${date}.json.gz`), gzipped);
 }
 

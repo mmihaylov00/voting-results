@@ -234,9 +234,9 @@ export class CandidateDetailModalComponent implements OnInit {
       });
 
       if (foundTotal > 0) {
-        comparisons.push({ value: foundTotal, date: dateInfo.date, dateName: dateInfo.name });
-        paperComparisons.push({ value: foundPaper, date: dateInfo.date, dateName: dateInfo.name });
-        machineComparisons.push({ value: foundMachine, date: dateInfo.date, dateName: dateInfo.name });
+        comparisons.push({ v: foundTotal, d: dateInfo.date });
+        paperComparisons.push({ v: foundPaper, d: dateInfo.date });
+        machineComparisons.push({ v: foundMachine, d: dateInfo.date });
       }
     });
 

@@ -74,7 +74,7 @@ export function filterSections(sections: Section[], filters: SectionFilters): Se
 
       // s.topParties[].comparisons contains historical data
       if (ppdbInTop && ppdbInTop.comparisons && ppdbInTop.comparisons.length > 0) {
-          const previousVotes = ppdbInTop.comparisons[0].value;
+          const previousVotes = ppdbInTop.comparisons[0].v;
           return ppdbInTop.total < previousVotes;
       }
 
@@ -97,7 +97,7 @@ export function filterSections(sections: Section[], filters: SectionFilters): Se
       const ppdb = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
       if (ppdb && ppdb.comparisons && ppdb.comparisons.length > 0) {
         const currentVotes = ppdb.total;
-        const previousVotes = ppdb.comparisons[0].value;
+        const previousVotes = ppdb.comparisons[0].v;
         if (previousVotes > 0) {
           const drop = (previousVotes - currentVotes) / previousVotes;
           return drop > 0.40;

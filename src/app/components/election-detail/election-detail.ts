@@ -9,6 +9,7 @@ import { filterSections } from '../../utils/election-utils';
 import { getPartyAlias } from '../../utils/party-aliases';
 import { formatActivity, getGoogleMapsUrl, copyToClipboard as copyToClipboardUtil } from '../../utils/common.utils';
 import { sortArray, toggleSort as toggleSortUtil, getDefaultSortDirection } from '../../utils/table-sort.util';
+import { getDateName } from '../../utils/date-name.util';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
@@ -487,10 +488,10 @@ export class ElectionDetailComponent implements OnInit {
               const partyVotes = s.partyVotes[partyId];
               if (partyVotes && partyVotes.comparisons) {
                 partyVotes.comparisons.forEach((c: ComparativeValue) => {
-                  if (!comparisonsMap[c.date]) {
-                    comparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
+                  if (!comparisonsMap[c.d]) {
+                    comparisonsMap[c.d] = { v: 0, d: c.d };
                   }
-                  comparisonsMap[c.date].value += c.value;
+                  comparisonsMap[c.d].v += c.v;
                 });
               }
             });
@@ -556,16 +557,16 @@ export class ElectionDetailComponent implements OnInit {
         const comparisonKeys = ['total', 'voted', 'discardedVotes', 'noVotes', 'totalPaper', 'totalMachine', 'activityPercent'];
 
         comparisonKeys.forEach(key => {
-          const aggregated: { [date: string]: { value: number, dateName: string } } = {};
+          const aggregated: { [date: string]: { value: number } } = {};
           g.sections.forEach((s: Section) => {
             s.comparisons?.[key]?.forEach((c: any) => {
-              if (!aggregated[c.date]) {
-                aggregated[c.date] = { value: 0, dateName: c.dateName };
+              if (!aggregated[c.d]) {
+                aggregated[c.d] = { value: 0 };
               }
               if (key === 'activityPercent') {
                 // Activity percent needs to be handled carefully, we'll calculate it later
               } else {
-                aggregated[c.date].value += c.value;
+                aggregated[c.d].value += c.v;
               }
             });
           });
@@ -574,19 +575,17 @@ export class ElectionDetailComponent implements OnInit {
             const electorsAggr: { [date: string]: number } = {};
             const votedAggr: { [date: string]: number } = {};
             g.sections.forEach((s: Section) => {
-              s.comparisons?.['total']?.forEach((c: any) => electorsAggr[c.date] = (electorsAggr[c.date] || 0) + c.value);
-              s.comparisons?.['voted']?.forEach((c: any) => votedAggr[c.date] = (votedAggr[c.date] || 0) + c.value);
+              s.comparisons?.['total']?.forEach((c: any) => electorsAggr[c.d] = (electorsAggr[c.d] || 0) + c.v);
+              s.comparisons?.['voted']?.forEach((c: any) => votedAggr[c.d] = (votedAggr[c.d] || 0) + c.v);
             });
             comparisons[key] = Object.keys(electorsAggr).map(date => ({
-              date,
-              dateName: aggregated[date]?.dateName || date,
-              value: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
+              d: date,
+              v: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
             }));
           } else {
             comparisons[key] = Object.entries(aggregated).map(([date, data]) => ({
-              date,
-              dateName: data.dateName,
-              value: data.value
+              d: date,
+              v: data.value
             }));
           }
         });
@@ -606,7 +605,6 @@ export class ElectionDetailComponent implements OnInit {
           sectionName: '',
           regionName: g.regionName,
           riskScore: totalRiskCount,
-          risks: g.riskySectionsList.length > 0 ? g.riskySectionsList : [],
           activityPercent: g.total > 0 ? g.voted / g.total : 0,
           topParties,
           topCandidates,
@@ -682,9 +680,9 @@ export class ElectionDetailComponent implements OnInit {
       }
 
       if (foundTotal > 0) {
-        comparisons.push({ value: foundTotal, date: dateInfo.date, dateName: dateInfo.name });
-        paperComparisons.push({ value: foundPaper, date: dateInfo.date, dateName: dateInfo.name });
-        machineComparisons.push({ value: foundMachine, date: dateInfo.date, dateName: dateInfo.name });
+        comparisons.push({ v: foundTotal, d: dateInfo.date });
+        paperComparisons.push({ v: foundPaper, d: dateInfo.date });
+        machineComparisons.push({ v: foundMachine, d: dateInfo.date });
       }
     });
 
@@ -1272,19 +1270,18 @@ export class ElectionDetailComponent implements OnInit {
     this.globalComparisons = {};
     if (sections.length > 0 && sections[0].comparisons) {
       Object.keys(sections[0].comparisons).forEach(key => {
-        const aggregated: { [date: string]: { value: number, dateName: string } } = {};
+        const aggregated: { [date: string]: { value: number } } = {};
         sections.forEach(s => {
           s.comparisons?.[key]?.forEach(c => {
-            if (!aggregated[c.date]) {
-              aggregated[c.date] = { value: 0, dateName: c.dateName };
+            if (!aggregated[c.d]) {
+              aggregated[c.d] = { value: 0 };
             }
-            aggregated[c.date].value += c.value;
+            aggregated[c.d].value += c.v;
           });
         });
         this.globalComparisons[key] = Object.entries(aggregated).map(([date, data]) => ({
-          date,
-          dateName: data.dateName,
-          value: data.value
+          d: date,
+          v: data.value
         }));
       });
 
@@ -1292,14 +1289,13 @@ export class ElectionDetailComponent implements OnInit {
       const electorsAggr: { [date: string]: number } = {};
       const votedAggr: { [date: string]: number } = {};
       sections.forEach(s => {
-        s.comparisons?.['total']?.forEach(c => electorsAggr[c.date] = (electorsAggr[c.date] || 0) + c.value);
-        s.comparisons?.['voted']?.forEach(c => votedAggr[c.date] = (votedAggr[c.date] || 0) + c.value);
+        s.comparisons?.['total']?.forEach(c => electorsAggr[c.d] = (electorsAggr[c.d] || 0) + c.v);
+        s.comparisons?.['voted']?.forEach(c => votedAggr[c.d] = (votedAggr[c.d] || 0) + c.v);
       });
 
       this.globalComparisons['activityPercent'] = Object.keys(electorsAggr).map(date => ({
-        date,
-        dateName: sections[0].comparisons?.['total']?.find(c => c.date === date)?.dateName || date,
-        value: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
+        d: date,
+        v: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
       }));
     }
 
@@ -1425,7 +1421,7 @@ export class ElectionDetailComponent implements OnInit {
       if (this.date !== '2023.04.02') {
         const ppdb = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
         if (ppdb && ppdb.comparisons && ppdb.comparisons.length > 0) {
-          if (ppdb.total < ppdb.comparisons[0].value) {
+          if (ppdb.total < ppdb.comparisons[0].v) {
             decliningCount++;
           }
         }
@@ -1537,7 +1533,7 @@ export class ElectionDetailComponent implements OnInit {
       const votedComparisonsMap: { [date: string]: number } = {};
       g.sections.forEach((s: Section) => {
         s.comparisons?.['voted']?.forEach((c: any) => {
-          votedComparisonsMap[c.date] = (votedComparisonsMap[c.date] || 0) + c.value;
+          votedComparisonsMap[c.d] = (votedComparisonsMap[c.d] || 0) + c.v;
         });
       });
 
@@ -1560,29 +1556,29 @@ export class ElectionDetailComponent implements OnInit {
 
             // Aggregate comparisons
             v.comparisons?.forEach((c: ComparativeValue) => {
-              if (!comparisonsMap[c.date]) {
-                comparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
+              if (!comparisonsMap[c.d]) {
+                comparisonsMap[c.d] = { v: 0, d: c.d };
               }
-              comparisonsMap[c.date].value += c.value;
+              comparisonsMap[c.d].v += c.v;
             });
 
             v.paperComparisons?.forEach((c: ComparativeValue) => {
-              if (!paperComparisonsMap[c.date]) {
-                paperComparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
+              if (!paperComparisonsMap[c.d]) {
+                paperComparisonsMap[c.d] = { v: 0, d: c.d };
               }
-              paperComparisonsMap[c.date].value += c.value;
+              paperComparisonsMap[c.d].v += c.v;
             });
 
             v.machineComparisons?.forEach((c: ComparativeValue) => {
-              if (!machineComparisonsMap[c.date]) {
-                machineComparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
+              if (!machineComparisonsMap[c.d]) {
+                machineComparisonsMap[c.d] = { v: 0, d: c.d };
               }
-              machineComparisonsMap[c.date].value += c.value;
+              machineComparisonsMap[c.d].v += c.v;
             });
 
             v.percentComparisons?.forEach((c: ComparativeValue) => {
-              if (!percentComparisonsMap[c.date]) {
-                percentComparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
+              if (!percentComparisonsMap[c.d]) {
+                percentComparisonsMap[c.d] = { v: 0, d: c.d };
               }
               // For percent comparisons, we need to aggregate differently - calculate from aggregated totals
               // We'll recalculate this after aggregating all sections
@@ -1595,11 +1591,10 @@ export class ElectionDetailComponent implements OnInit {
         const percentComparisons: ComparativeValue[] = [];
         Object.keys(comparisonsMap).forEach(date => {
           const totalVotedForDate = votedComparisonsMap[date] || 0;
-          const percent = totalVotedForDate > 0 ? (comparisonsMap[date].value / totalVotedForDate) : 0;
+          const percent = totalVotedForDate > 0 ? (comparisonsMap[date].v / totalVotedForDate) : 0;
           percentComparisons.push({
-            date,
-            dateName: comparisonsMap[date].dateName,
-            value: percent
+            d: date,
+            v: percent
           });
         });
 
@@ -1626,29 +1621,29 @@ export class ElectionDetailComponent implements OnInit {
 
         g.sections.forEach((s: Section) => {
           s.comparisons?.['noVotes']?.forEach((c: any) => {
-            if (!noVotesComparisonsMap[c.date]) {
-              noVotesComparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
+            if (!noVotesComparisonsMap[c.d]) {
+              noVotesComparisonsMap[c.d] = { v: 0, d: c.d };
             }
-            noVotesComparisonsMap[c.date].value += c.value;
+            noVotesComparisonsMap[c.d].v += c.v;
           });
 
           s.comparisons?.['noVotesPaper']?.forEach((c: any) => {
-            if (!noVotesPaperComparisonsMap[c.date]) {
-              noVotesPaperComparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
+            if (!noVotesPaperComparisonsMap[c.d]) {
+              noVotesPaperComparisonsMap[c.d] = { v: 0, d: c.d };
             }
-            noVotesPaperComparisonsMap[c.date].value += c.value;
+            noVotesPaperComparisonsMap[c.d].v += c.v;
           });
 
           s.comparisons?.['noVotesMachine']?.forEach((c: any) => {
-            if (!noVotesMachineComparisonsMap[c.date]) {
-              noVotesMachineComparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
+            if (!noVotesMachineComparisonsMap[c.d]) {
+              noVotesMachineComparisonsMap[c.d] = { v: 0, d: c.d };
             }
-            noVotesMachineComparisonsMap[c.date].value += c.value;
+            noVotesMachineComparisonsMap[c.d].v += c.v;
           });
 
           s.comparisons?.['noVotesPercent']?.forEach((c: any) => {
-            if (!noVotesPercentComparisonsMap[c.date]) {
-              noVotesPercentComparisonsMap[c.date] = { value: 0, date: c.date, dateName: c.dateName };
+            if (!noVotesPercentComparisonsMap[c.d]) {
+              noVotesPercentComparisonsMap[c.d] = { v: 0, d: c.d };
             }
             // For percent, we'll recalculate from aggregated values
           });
@@ -1659,11 +1654,10 @@ export class ElectionDetailComponent implements OnInit {
         const noVotesPercentComparisons: ComparativeValue[] = [];
         Object.keys(noVotesComparisonsMap).forEach(date => {
           const totalVotedForDate = votedComparisonsMap[date] || 0;
-          const percent = totalVotedForDate > 0 ? (noVotesComparisonsMap[date].value / totalVotedForDate) : 0;
+          const percent = totalVotedForDate > 0 ? (noVotesComparisonsMap[date].v / totalVotedForDate) : 0;
           noVotesPercentComparisons.push({
-            date,
-            dateName: noVotesComparisonsMap[date].dateName,
-            value: percent
+            d: date,
+            v: percent
           });
         });
 
@@ -1768,16 +1762,16 @@ export class ElectionDetailComponent implements OnInit {
       // Aggregate comparisons
       const comparisonKeys = ['total', 'voted', 'discardedVotes', 'noVotes', 'totalPaper', 'totalMachine', 'activityPercent', 'noVotesPaper', 'noVotesMachine', 'noVotesPercent'];
       comparisonKeys.forEach(key => {
-        const aggregated: { [date: string]: { value: number, dateName: string } } = {};
+        const aggregated: { [date: string]: { value: number } } = {};
         g.sections.forEach((s: Section) => {
           s.comparisons?.[key]?.forEach((c: any) => {
-            if (!aggregated[c.date]) {
-              aggregated[c.date] = { value: 0, dateName: c.dateName };
+            if (!aggregated[c.d]) {
+              aggregated[c.d] = { value: 0 };
             }
             if (key === 'activityPercent' || key === 'noVotesPercent') {
               // Activity percent and noVotesPercent need to be handled carefully, we'll calculate them later
             } else {
-              aggregated[c.date].value += c.value;
+              aggregated[c.d].value += c.v;
             }
           });
         });
@@ -1786,32 +1780,29 @@ export class ElectionDetailComponent implements OnInit {
           const electorsAggr: { [date: string]: number } = {};
           const votedAggr: { [date: string]: number } = {};
           g.sections.forEach((s: Section) => {
-            s.comparisons?.['total']?.forEach((c: any) => electorsAggr[c.date] = (electorsAggr[c.date] || 0) + c.value);
-            s.comparisons?.['voted']?.forEach((c: any) => votedAggr[c.date] = (votedAggr[c.date] || 0) + c.value);
+            s.comparisons?.['total']?.forEach((c: any) => electorsAggr[c.d] = (electorsAggr[c.d] || 0) + c.v);
+            s.comparisons?.['voted']?.forEach((c: any) => votedAggr[c.d] = (votedAggr[c.d] || 0) + c.v);
           });
           currentSectionData.comparisons![key] = Object.keys(electorsAggr).map(date => ({
-            date,
-            dateName: aggregated[date]?.dateName || date,
-            value: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
+            d: date,
+            v: electorsAggr[date] > 0 ? votedAggr[date] / electorsAggr[date] : 0
           }));
         } else if (key === 'noVotesPercent') {
           const noVotesAggr: { [date: string]: number } = {};
           const votedAggr: { [date: string]: number } = {};
           g.sections.forEach((s: Section) => {
-            s.comparisons?.['noVotes']?.forEach((c: any) => noVotesAggr[c.date] = (noVotesAggr[c.date] || 0) + c.value);
-            s.comparisons?.['voted']?.forEach((c: any) => votedAggr[c.date] = (votedAggr[c.date] || 0) + c.value);
+            s.comparisons?.['noVotes']?.forEach((c: any) => noVotesAggr[c.d] = (noVotesAggr[c.d] || 0) + c.v);
+            s.comparisons?.['voted']?.forEach((c: any) => votedAggr[c.d] = (votedAggr[c.d] || 0) + c.v);
           });
           // Store as decimal (0-1) since tooltip will multiply by 100
           currentSectionData.comparisons![key] = Object.keys(noVotesAggr).map(date => ({
-            date,
-            dateName: aggregated[date]?.dateName || date,
-            value: votedAggr[date] > 0 ? (noVotesAggr[date] / votedAggr[date]) : 0
+            d: date,
+            v: votedAggr[date] > 0 ? (noVotesAggr[date] / votedAggr[date]) : 0
           }));
         } else {
           currentSectionData.comparisons![key] = Object.entries(aggregated).map(([date, data]) => ({
-            date,
-            dateName: data.dateName,
-            value: data.value
+            d: date,
+            v: data.value
           }));
         }
       });

@@ -11,7 +11,6 @@ export interface RiskAnalysisData {
     message: string;
     details?: any;
   }>;
-  risks?: string[];
 }
 
 @Component({
@@ -27,13 +26,8 @@ export class RiskAnalysisSummaryComponent {
 
   get hasRisks(): boolean {
     return !!(
-      (this.riskData?.risks && this.riskData.risks.length > 0) ||
       (this.riskData?.riskIndicators && this.riskData.riskIndicators.length > 0)
     );
-  }
-
-  get uniqueRisks(): string[] {
-    return this.riskData?.risks || [];
   }
 
   getSeverityColor(severity: string): string {
