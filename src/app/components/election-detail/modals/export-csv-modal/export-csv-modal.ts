@@ -1,20 +1,10 @@
-import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Section, SECTION_COLUMNS, SectionTab, SectionFilters } from '../../../../models/election.models';
-import { filterSections } from '../../../../utils/election-utils';
+import { RegionCandidate, Section, SECTION_COLUMNS, TableColumn, ViewMode } from '../../../../models/election.models';
 import { getPartyAlias } from '../../../../utils/party-aliases';
 import { formatActivity } from '../../../../utils/common.utils';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
-import {
-  HlmCardDirective,
-  HlmCardHeaderDirective,
-  HlmCardContentDirective,
-  HlmCardDescriptionDirective
-} from '../../../ui/card-helm/src/lib/hlm-card.directives';
 import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-typography.directive';
-import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
-import { SectionFiltersComponent } from '../../section-filters/section-filters';
 import { PartyFilterComponent } from '../../party-filter/party-filter';
 import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
 
@@ -23,51 +13,41 @@ import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     HlmButtonDirective,
     HlmTypographyDirective,
-    SectionFiltersComponent,
     PartyFilterComponent,
     BaseModalComponent,
   ],
   templateUrl: './export-csv-modal.html'
 })
 export class ExportCsvModalComponent {
-  @Input({ required: true }) sections: Section[] = [];
+  @Input() tableSections: Section[] = [];
+  @Input() filteredCandidates: RegionCandidate[] = [];
   @Input() allParties: { id: string, name: string }[] = [];
   @Input() selectedPartyIds: Set<string> = new Set();
+  @Input() initialCandidateColumnIds: Set<string> = new Set();
+  @Input() viewMode: ViewMode = 'sections';
   @Input() date: string = '';
   @Input() regionName: string = '';
   @Output() close = new EventEmitter<void>();
-
-  @Input() searchTerm: string = '';
-  @Input() initialActiveTab: SectionTab = 'all';
-  @Input() initialActivityOperator: 'lte' | 'gte' = 'lte';
-  @Input() initialLowActivityThreshold: number | null = 100;
-
-  activeTab = signal<SectionTab>('all');
-  activityOperator = signal<'lte' | 'gte'>('lte');
-  lowActivityThreshold: number | null = 100;
-  exportSectionTypes: Set<string> = new Set();
-  riskFilterType: 'any' | 'none' | null = null;
-  selectedRiskCategories: Set<string> = new Set();
-
-  get emptyRiskCategoriesSet(): Set<string> {
-    return new Set();
-  }
 
   filteredSections: Section[] = [];
   exportPartyIds: Set<string> = new Set();
   availableColumns = SECTION_COLUMNS.filter(c => c.id !== 'typeVotes' && c.id !== 'topParties');
   exportColumnIds: Set<string> = new Set(this.availableColumns.map(c => c.id));
-
+  candidateAvailableColumns: TableColumn[] = [
+    { id: 'candidateId', label: 'Номер' },
+    { id: 'risks', label: 'Рискове' },
+    { id: 'candidateName', label: 'Име' },
+    { id: 'partyName', label: 'Партия' },
+    { id: 'totalInRegion', label: 'Преференции' },
+    { id: 'preferencePercentOfPartyVotes', label: '% от гласовете за партията' },
+  ];
+  exportCandidateColumnIds: Set<string> = new Set(this.candidateAvailableColumns.map(c => c.id));
 
   ngOnInit() {
-    this.activeTab.set(this.initialActiveTab);
-    this.activityOperator.set(this.initialActivityOperator);
-    this.lowActivityThreshold = this.initialLowActivityThreshold;
     this.exportPartyIds = new Set(this.selectedPartyIds);
-    this.applyFilter();
+    this.filteredSections = this.tableSections;
     const savedColumns = localStorage.getItem('visible_columns');
     if (savedColumns) {
       try {
@@ -83,43 +63,27 @@ export class ExportCsvModalComponent {
         console.error('Error parsing saved columns', e);
       }
     }
-  }
 
-  applyFilter(): void {
-    const filters: SectionFilters = {
-      searchTerm: this.searchTerm,
-      activeTab: this.activeTab(),
-      activityOperator: this.activityOperator(),
-      lowActivityThreshold: this.lowActivityThreshold,
-      sectionTypes: this.exportSectionTypes,
-      riskFilterType: this.riskFilterType,
-      selectedRiskCategories: this.selectedRiskCategories
-    };
-
-    this.filteredSections = filterSections(this.sections, filters);
-  }
-
-  onFilterChange(filters: SectionFilters): void {
-    this.searchTerm = filters.searchTerm;
-    this.activeTab.set(filters.activeTab);
-    this.activityOperator.set(filters.activityOperator);
-    this.lowActivityThreshold = filters.lowActivityThreshold;
-    this.exportSectionTypes = filters.sectionTypes;
-    this.riskFilterType = filters.riskFilterType || null;
-    this.selectedRiskCategories = filters.selectedRiskCategories || new Set();
-    this.applyFilter();
+    if (this.initialCandidateColumnIds.size > 0) {
+      const validCandidateColumns = Array.from(this.initialCandidateColumnIds)
+        .filter(id => this.candidateAvailableColumns.some(c => c.id === id));
+      if (validCandidateColumns.length > 0) {
+        this.exportCandidateColumnIds = new Set(validCandidateColumns);
+      }
+    }
   }
 
   formatActivity = formatActivity;
   getPartyAlias = getPartyAlias;
 
   toggleExportColumnSelection(columnId: string) {
-    if (this.exportColumnIds.has(columnId)) {
-      if (this.exportColumnIds.size > 1) {
-        this.exportColumnIds.delete(columnId);
+    const selection = this.viewMode === 'candidates' ? this.exportCandidateColumnIds : this.exportColumnIds;
+    if (selection.has(columnId)) {
+      if (selection.size > 1) {
+        selection.delete(columnId);
       }
     } else {
-      this.exportColumnIds.add(columnId);
+      selection.add(columnId);
     }
   }
 
@@ -128,24 +92,30 @@ export class ExportCsvModalComponent {
   }
 
   downloadCsv() {
+    const filePrefix = this.viewMode === 'candidates' ? 'candidates' : this.viewMode === 'cities' ? 'cities' : 'results';
+    const csvContent = this.viewMode === 'candidates'
+      ? this.generateCandidatesCsv()
+      : this.generateCsv(this.buildPartiesMap());
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `${filePrefix}_${this.regionName}_${this.date}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    this.close.emit();
+  }
+
+  buildPartiesMap(): { [id: string]: string } {
     const partiesMap: { [id: string]: string } = {};
     this.allParties.forEach(p => {
       if (this.exportPartyIds.has(p.id)) {
         partiesMap[p.id] = getPartyAlias(p.name);
       }
     });
-
-    const csvContent = this.generateCsv(partiesMap);
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', `results_${this.regionName}_${this.date}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    this.close.emit();
+    return partiesMap;
   }
 
   generateCsv(partiesMap: { [id: string]: string }): string {
@@ -179,7 +149,13 @@ export class ExportCsvModalComponent {
       if (this.exportColumnIds.has('discardedVotes')) rowData.push(section.discardedVotes);
       if (this.exportColumnIds.has('noVotes')) rowData.push(section.noVotes);
 
-      rowData.push(...sortedPartyIds.map(id => section.partyVotes[id]?.total || 0));
+      rowData.push(...sortedPartyIds.map(id => {
+        const partyVotes = section.partyVotes[id] as any;
+        if (typeof partyVotes === 'number') {
+          return partyVotes;
+        }
+        return partyVotes?.total || 0;
+      }));
 
       return rowData.map(v => this.escapeSemi(String(v)));
     });
@@ -188,6 +164,60 @@ export class ExportCsvModalComponent {
       headers.map(h => this.escapeSemi(h)).join(';'),
       ...rows.map(r => r.join(';'))
     ].join('\n');
+  }
+
+  generateCandidatesCsv(): string {
+    const headers: string[] = [];
+    if (this.exportCandidateColumnIds.has('candidateId')) headers.push('Номер');
+    if (this.exportCandidateColumnIds.has('risks')) headers.push('Рискове');
+    if (this.exportCandidateColumnIds.has('candidateName')) headers.push('Име');
+    if (this.exportCandidateColumnIds.has('partyName')) headers.push('Партия');
+    if (this.exportCandidateColumnIds.has('totalInRegion')) headers.push('Преференции');
+    if (this.exportCandidateColumnIds.has('preferencePercentOfPartyVotes')) headers.push('% от гласовете за партията');
+
+    const rows = this.filteredCandidates.map(candidate => {
+      const rowData: (string | number)[] = [];
+      if (this.exportCandidateColumnIds.has('candidateId')) rowData.push(candidate.candidateId);
+      if (this.exportCandidateColumnIds.has('risks')) rowData.push(candidate.riskIndicators?.length || 0);
+      if (this.exportCandidateColumnIds.has('candidateName')) rowData.push(candidate.candidateName);
+      if (this.exportCandidateColumnIds.has('partyName')) rowData.push(getPartyAlias(candidate.partyName));
+      if (this.exportCandidateColumnIds.has('totalInRegion')) rowData.push(candidate.totalInRegion);
+      if (this.exportCandidateColumnIds.has('preferencePercentOfPartyVotes')) {
+        rowData.push(`${candidate.preferencePercentOfPartyVotes.toFixed(2)}%`);
+      }
+
+      return rowData.map(v => this.escapeSemi(String(v)));
+    });
+
+    return [
+      headers.map(h => this.escapeSemi(h)).join(';'),
+      ...rows.map(r => r.join(';'))
+    ].join('\n');
+  }
+
+  get modalTitle(): string {
+    if (this.viewMode === 'candidates') return 'Експорт на кандидати';
+    if (this.viewMode === 'cities') return 'Експорт на градове';
+    return 'Експорт на секции';
+  }
+
+  get modalSubtitle(): string {
+    return 'Експортирайте текущите резултати от таблицата'
+  }
+
+  get exportCount(): number {
+    if (this.viewMode === 'candidates') return this.filteredCandidates.length;
+    return this.filteredSections.length;
+  }
+
+  get exportColumns(): TableColumn[] {
+    return this.viewMode === 'candidates' ? this.candidateAvailableColumns : this.availableColumns;
+  }
+
+  isColumnSelected(columnId: string): boolean {
+    return this.viewMode === 'candidates'
+      ? this.exportCandidateColumnIds.has(columnId)
+      : this.exportColumnIds.has(columnId);
   }
 
   escapeSemi(v: string): string {

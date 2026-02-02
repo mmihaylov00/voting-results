@@ -1,37 +1,28 @@
 <app-base-modal
-    title="Експорт на данни"
-    subtitle="Изберете партии за включване в CSV файла"
+    [title]="modalTitle"
+    [subtitle]="modalSubtitle"
     maxWidth="max-w-2xl"
     zIndex="z-[110]"
     (close)="close.emit()">
 
     <ng-template #headerActions>
-        <div class="flex flex-row justify-start mt-3">
-            <app-party-filter
-                [parties]="allParties"
-                [selectedPartyIds]="exportPartyIds"
-                (selectedPartyIdsChange)="onExportPartySelectionChange($event)"/>
-        </div>
+        @if (viewMode !== 'candidates') {
+            <div class="flex flex-row justify-start mt-3">
+                <app-party-filter
+                    [parties]="allParties"
+                    [selectedPartyIds]="exportPartyIds"
+                    (selectedPartyIdsChange)="onExportPartySelectionChange($event)"/>
+            </div>
+        }
     </ng-template>
 
     <div class="space-y-6">
-            <div class="space-y-4 border-b border-primary/10 pb-6">
-              <h4 hlmH4 class="mb-2 text-sm font-semibold uppercase tracking-wider text-secondary/70 dark:text-primary/70">Филтри</h4>
-              <app-section-filters
-                [date]="date"
-                [showIcons]="false"
-                [fullWidth]="true"
-                [initialFilters]="{searchTerm: searchTerm, activeTab: activeTab(), activityOperator: activityOperator(), lowActivityThreshold: lowActivityThreshold, sectionTypes: exportSectionTypes, riskFilterType: null, selectedRiskCategories: emptyRiskCategoriesSet}"
-                (filterChange)="onFilterChange($event)">
-              </app-section-filters>
-            </div>
-
             <div>
                 <h4 hlmH4 class="mb-2 text-sm font-semibold uppercase tracking-wider text-secondary/70 dark:text-primary/70">Колони</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    @for (column of availableColumns; track column.id) {
+                    @for (column of exportColumns; track column.id) {
                         <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleExportColumnSelection(column.id)">
-                            <input type="checkbox" [checked]="exportColumnIds.has(column.id)" class="cursor-pointer" (click)="$event.stopPropagation(); toggleExportColumnSelection(column.id)" />
+                            <input type="checkbox" [checked]="isColumnSelected(column.id)" class="cursor-pointer" (click)="$event.stopPropagation(); toggleExportColumnSelection(column.id)" />
                             <span class="text-sm truncate">{{ column.label }}</span>
                         </div>
                     }
@@ -41,6 +32,6 @@
 
     <ng-template #footer>
         <button hlmBtn variant="outline" (click)="close.emit()">Отказ</button>
-        <button hlmBtn variant="default" (click)="downloadCsv()">Експорт {{ filteredSections.length }} записа</button>
+        <button hlmBtn variant="default" (click)="downloadCsv()">Експорт {{ exportCount }} записа</button>
     </ng-template>
 </app-base-modal>
