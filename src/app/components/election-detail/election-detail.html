@@ -180,38 +180,14 @@
                               </div>
 
                               <!-- Risk Filter -->
-                              <div class="relative w-full">
-                                  <button hlmBtn variant="outline" size="sm" (click)="showCandidateRiskDropdown.set(!showCandidateRiskDropdown())">
-                                      Рискове
-                                      @if (candidateRiskFilterType() || selectedCandidateRiskCategories().size > 0) {
-                                          <span class="ml-1">●</span>
-                                      }
-                                  </button>
-                                  @if (showCandidateRiskDropdown()) {
-                                      <div class="absolute z-50 mt-1 w-full overflow-auto bg-popover text-popover-foreground border border-destructive/20 rounded-md shadow-md p-2" (click)="$event.stopPropagation()">
-                                          <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="clearCandidateRiskFilter()">
-                                              <input type="radio" name="candidateRiskType" [checked]="candidateRiskFilterType() === null && selectedCandidateRiskCategories().size === 0" class="cursor-pointer" />
-                                              <span class="text-sm">Всички</span>
-                                          </div>
-                                          <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleCandidateRiskFilterType('any')">
-                                              <input type="radio" name="candidateRiskType" [checked]="candidateRiskFilterType() === 'any'" class="cursor-pointer" />
-                                              <span class="text-sm">Рискови</span>
-                                          </div>
-                                          <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleCandidateRiskFilterType('none')">
-                                              <input type="radio" name="candidateRiskType" [checked]="candidateRiskFilterType() === 'none'" class="cursor-pointer" />
-                                              <span class="text-sm">Безрискови</span>
-                                          </div>
-                                          <div class="border-t border-border my-2"></div>
-                                          <div class="text-xs font-semibold text-muted-foreground uppercase mb-2 px-2">Рискови категории</div>
-                                          @for (category of riskCategories; track category.code) {
-                                              <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleCandidateRiskCategory(category.code)">
-                                                  <input type="checkbox" [checked]="selectedCandidateRiskCategories().has(category.code)" class="cursor-pointer" />
-                                                  <span class="text-sm">{{ category.label }}</span>
-                                              </div>
-                                          }
-                                      </div>
-                                  }
-                              </div>
+                              <app-risk-filter-dropdown
+                                [riskCategories]="riskCategories"
+                                [riskFilterType]="candidateRiskFilterType()"
+                                [selectedRiskCategories]="selectedCandidateRiskCategories()"
+                                [radioName]="'candidateRiskType'"
+                                (riskFilterTypeChange)="onCandidateRiskFilterTypeChange($event)"
+                                (selectedRiskCategoriesChange)="onCandidateRiskCategoriesChange($event)"
+                              />
                         </div>
                     }
                 </div>

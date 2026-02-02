@@ -40,6 +40,7 @@ import { RiskBadgeComponent } from '../ui/risk-badge/risk-badge';
 import { ComparisonOperatorInputComponent } from '../ui/comparison-operator-input/comparison-operator-input';
 import { StatCardComponent } from '../ui/stat-card/stat-card';
 import { ColumnFilterComponent } from '../ui/column-filter/column-filter';
+import { RiskFilterDropdownComponent, RiskCategory } from '../ui/risk-filter-dropdown/risk-filter-dropdown';
 
 @Component({
   selector: 'app-election-detail',
@@ -76,6 +77,7 @@ import { ColumnFilterComponent } from '../ui/column-filter/column-filter';
     ComparisonOperatorInputComponent,
     StatCardComponent,
     ColumnFilterComponent,
+    RiskFilterDropdownComponent,
   ],
   templateUrl: './election-detail.html',
   styleUrl: './election-detail.scss',
@@ -213,9 +215,8 @@ export class ElectionDetailComponent implements OnInit {
   // Candidate risk filters
   candidateRiskFilterType = signal<'any' | 'none' | null>(null);
   selectedCandidateRiskCategories = signal<Set<string>>(new Set());
-  showCandidateRiskDropdown = signal<boolean>(false);
 
-  riskCategories = [
+  riskCategories: RiskCategory[] = [
     { code: 'R1', label: 'Аномалии в активността', description: 'R1: Аномалии в активността и улавяне на гласове' },
     { code: 'R2', label: 'Разлика между хартия/машини', description: 'R2: Отклонения в съотношението хартия/машина' },
     { code: 'R3', label: 'Аномалии в невалидни гласове', description: 'R3: Аномалии в невалидните гласове' },
@@ -224,35 +225,16 @@ export class ElectionDetailComponent implements OnInit {
     { code: 'R6', label: 'Концентрация на преференции', description: 'R6: Концентрация и ексклузивност на преференции' }
   ];
 
-  toggleCandidateRiskFilterType(type: 'any' | 'none'): void {
-    if (this.candidateRiskFilterType() === type) {
-      this.candidateRiskFilterType.set(null);
-    } else {
-      this.candidateRiskFilterType.set(type);
-    }
+  onCandidateRiskFilterTypeChange(type: 'any' | 'none' | null): void {
+    this.candidateRiskFilterType.set(type);
     this.applyCandidateFilter();
   }
 
-  toggleCandidateRiskCategory(category: string): void {
-    const newSet = new Set(this.selectedCandidateRiskCategories());
-    if (newSet.has(category)) {
-      newSet.delete(category);
-    } else {
-      newSet.add(category);
-    }
-    this.selectedCandidateRiskCategories.set(newSet);
+  onCandidateRiskCategoriesChange(categories: Set<string>): void {
+    this.selectedCandidateRiskCategories.set(categories);
     this.applyCandidateFilter();
   }
 
-  clearCandidateRiskFilter(): void {
-    this.candidateRiskFilterType.set(null);
-    this.selectedCandidateRiskCategories.set(new Set());
-    this.applyCandidateFilter();
-  }
-
-  closeCandidateRiskDropdown(): void {
-    this.showCandidateRiskDropdown.set(false);
-  }
 
   candidateColumns: TableColumn[] = [
     { id: 'candidateId', label: 'Номер' },

@@ -6,6 +6,7 @@ import { HlmButtonDirective } from '../../ui/button-helm/src/lib/hlm-button.dire
 import { HlmInputDirective } from '../../ui/input-helm/src/lib/hlm-input.directive';
 import { HlmTooltipDirective } from '../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
 import { ComparisonOperatorInputComponent } from '../../ui/comparison-operator-input/comparison-operator-input';
+import { RiskFilterDropdownComponent, RiskCategory } from '../../ui/risk-filter-dropdown/risk-filter-dropdown';
 
 @Component({
   selector: 'app-section-filters',
@@ -20,6 +21,7 @@ import { ComparisonOperatorInputComponent } from '../../ui/comparison-operator-i
     HlmInputDirective,
     HlmTooltipDirective,
     ComparisonOperatorInputComponent,
+    RiskFilterDropdownComponent,
   ],
   templateUrl: './section-filters.html',
 })
@@ -41,7 +43,6 @@ export class SectionFiltersComponent implements OnInit {
 
   // Dropdown states
   showSectionTypesDropdown = signal<boolean>(false);
-  showRiskDropdown = signal<boolean>(false);
   showQuickFiltersDropdown = signal<boolean>(false);
 
   availableSectionTypes = [
@@ -87,7 +88,7 @@ export class SectionFiltersComponent implements OnInit {
     this.sectionTypes.set(newSet);
   }
 
-  riskCategories = [
+  riskCategories: RiskCategory[] = [
     { code: 'R1', label: 'Аномалии в активността', description: 'R1: Аномалии в активността и улавяне на гласове' },
     { code: 'R2', label: 'Разлика между хартия/машини', description: 'R2: Отклонения в съотношението хартия/машина' },
     { code: 'R3', label: 'Аномалии в невалидни гласове', description: 'R3: Аномалии в невалидните гласове' },
@@ -107,38 +108,12 @@ export class SectionFiltersComponent implements OnInit {
     { id: 'declining', label: 'Намаляващи', description: 'Секции, в които гласовете за ПП-ДБ са по-малко от предходните избори', icon: 'declining' }
   ];
 
-  toggleRiskFilterType(type: 'any' | 'none'): void {
-    // If clicking the same type, deselect it
-    if (this.riskFilterType() === type) {
-      this.riskFilterType.set(null);
-    } else {
-      // Otherwise, select the new type (this automatically deselects the other)
-      this.riskFilterType.set(type);
-      // Clear R code selections when selecting any/none
-      this.selectedRiskCategories.set(new Set());
-    }
-    // Close dropdown after selection
-    this.showRiskDropdown.set(false);
+  onRiskFilterTypeChange(type: 'any' | 'none' | null): void {
+    this.riskFilterType.set(type);
   }
 
-  clearRiskFilter(): void {
-    this.riskFilterType.set(null);
-    this.selectedRiskCategories.set(new Set());
-    this.showRiskDropdown.set(false);
-  }
-
-  toggleRiskCategory(category: string): void {
-    const newSet = new Set(this.selectedRiskCategories());
-    if (newSet.has(category)) {
-      newSet.delete(category);
-    } else {
-      newSet.add(category);
-    }
-    this.selectedRiskCategories.set(newSet);
-    // Clear any/none selection when selecting specific R codes
-    if (newSet.size > 0) {
-      this.riskFilterType.set(null);
-    }
+  onSelectedRiskCategoriesChange(categories: Set<string>): void {
+    this.selectedRiskCategories.set(categories);
   }
 
   setTab(tab: SectionTab): void {
@@ -173,18 +148,6 @@ export class SectionFiltersComponent implements OnInit {
     return `Тип (${selected.length})`;
   }
 
-  getRiskLabel(): string {
-    const type = this.riskFilterType();
-    const selectedCategories = Array.from(this.selectedRiskCategories());
-
-    if (type === 'any') return 'Рискови';
-    if (type === 'none') return 'Безрискови';
-    if (selectedCategories.length > 0) {
-      if (selectedCategories.length === this.riskCategories.length) return 'Всички категории';
-      return `Категории (${selectedCategories.length})`;
-    }
-    return 'Рискове';
-  }
 
   getQuickFilterLabel(): string {
     const tab = this.activeTab();
@@ -208,27 +171,18 @@ export class SectionFiltersComponent implements OnInit {
   toggleSectionTypesDropdown(event: Event): void {
     event.stopPropagation();
     this.showSectionTypesDropdown.set(!this.showSectionTypesDropdown());
-    this.showRiskDropdown.set(false);
     this.showQuickFiltersDropdown.set(false);
   }
 
-  toggleRiskDropdown(event: Event): void {
-    event.stopPropagation();
-    this.showRiskDropdown.set(!this.showRiskDropdown());
-    this.showSectionTypesDropdown.set(false);
-    this.showQuickFiltersDropdown.set(false);
-  }
 
   toggleQuickFiltersDropdown(event: Event): void {
     event.stopPropagation();
     this.showQuickFiltersDropdown.set(!this.showQuickFiltersDropdown());
     this.showSectionTypesDropdown.set(false);
-    this.showRiskDropdown.set(false);
   }
 
   closeAllDropdowns(): void {
     this.showSectionTypesDropdown.set(false);
-    this.showRiskDropdown.set(false);
     this.showQuickFiltersDropdown.set(false);
   }
 }

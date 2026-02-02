@@ -1,23 +1,48 @@
+/* eslint-disable no-console */
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 
-const elections = JSON.parse(fs.readFileSync(path.join(__dirname, '../src/assets/elections.json'), 'utf8'));
+const elections = JSON.parse(
+  fs.readFileSync(path.join(__dirname, '../src/assets/elections.json'), 'utf8')
+);
+
 const baseDataDir = path.join(__dirname, '../public/data');
 const outputDir = path.join(baseDataDir, 'compiled');
 
 if (!fs.existsSync(outputDir)) {
-  fs.mkdirSync(outputDir, { recursive: true });
+  fs.mkdirSync(outputDir, {recursive: true});
+}
+
+/**
+ * Faster than text.split('\n') for big files (less allocation).
+ * Handles both \n and \r\n.
+ */
+function forEachLine(text, fn) {
+  let start = 0;
+  const len = text.length;
+  while (start < len) {
+    let end = text.indexOf('\n', start);
+    if (end === -1) end = len;
+
+    let lineEnd = end;
+    // strip \r for CRLF
+    if (lineEnd > start && text.charCodeAt(lineEnd - 1) === 13) lineEnd--;
+
+    if (lineEnd > start) fn(text.slice(start, lineEnd));
+    start = end + 1;
+  }
 }
 
 function parseLongSafe(s) {
   if (!s) return 0;
-  const n = parseInt(s.trim(), 10);
-  return isNaN(n) ? 0 : n;
+  // Avoid trim() allocation unless needed
+  const n = parseInt(s, 10);
+  return Number.isFinite(n) ? n : 0;
 }
 
 function normalizePartyName(name) {
-  const n = name.toUpperCase();
+  const n = (name || '').toUpperCase();
   if (n.includes('ПРОДЪЛЖАВАМЕ')) return 'ПП-ДБ';
   if (n.includes('ГЕРБ')) return 'ГЕРБ-СДС';
   if (n.includes('ВЪЗРАЖДАНЕ')) return 'ВЪЗРАЖДАНЕ';
@@ -29,41 +54,83 @@ function normalizePartyName(name) {
   return name;
 }
 
-function parseParties(text) {
-  const parties = {};
-  const lines = text.split('\n');
-  for (let line of lines) {
-    line = line.trim();
-    if (!line) continue;
-    const parts = line.split(';');
-    if (parts.length < 2) continue;
-    const partyId = parts[0].trim();
-    const partyName = parts[1].trim();
-    if (partyId) {
-      parties[partyId] = partyName;
-    }
+function calculateVariance(values) {
+  const n = values.length;
+  if (n === 0) return 0;
+  let sum = 0;
+  for (let i = 0; i < n; i++) sum += values[i];
+  const mean = sum / n;
+
+  let sq = 0;
+  for (let i = 0; i < n; i++) {
+    const d = values[i] - mean;
+    sq += d * d;
   }
+  return sq / n;
+}
+
+function calculateGini(sortedValues) {
+  const n = sortedValues.length;
+  if (n === 0) return 0;
+
+  let sum = 0;
+  for (let i = 0; i < n; i++) sum += sortedValues[i];
+  if (sum === 0) return 0;
+
+  let weightedSum = 0;
+  for (let i = 0; i < n; i++) weightedSum += (i + 1) * sortedValues[i];
+
+  return (2 * weightedSum) / (n * sum) - (n + 1) / n;
+}
+
+function parseParties(text) {
+  const parties = Object.create(null);
+  forEachLine(text, (line) => {
+    // Avoid trim: split first, then minimal cleanup
+    const parts = line.split(';');
+    if (parts.length < 2) return;
+    const partyId = (parts[0] || '').trim();
+    const partyName = (parts[1] || '').trim();
+    if (partyId) parties[partyId] = partyName;
+  });
   parties['0'] = 'Други';
   return parties;
 }
 
+function buildPartyNormalization(parties) {
+  const normByPid = Object.create(null);
+  for (const pid in parties) {
+    normByPid[pid] = normalizePartyName(parties[pid] || pid);
+  }
+  return normByPid;
+}
+
 function parseSections(text) {
-  const sections = {};
-  const lines = text.split('\n');
-  for (let line of lines) {
-    line = line.trim();
-    if (!line) continue;
+  const sections = Object.create(null);
+
+  forEachLine(text, (raw) => {
+    const line = raw.trim();
+    if (!line) return;
+
     const parts = line.split(';');
-    if (parts.length <= 5) continue;
+    if (parts.length <= 5) return;
 
-    const sectionId = parts[0].trim();
-    const regionId = parts[1].trim();
-    const regionName = parts[2].trim();
-    const cityName = parts[4].trim();
-    let sectionName = parts[5].trim().replace(/\s+([,.!? ])/g, '$1');
+    const sectionId = (parts[0] || '').trim();
+    if (!sectionId) return;
 
-    if (sectionName.toLowerCase().startsWith('гр.') || sectionName.toLowerCase().startsWith('с.')) {
-      sectionName = sectionName.substring(cityName.length + 2);
+    const regionId = (parts[1] || '').trim();
+    const regionName = (parts[2] || '').trim();
+    const cityName = (parts[4] || '').trim();
+
+    // Cheap cleanup: remove spaces before punctuation
+    let sectionName = (parts[5] || '').trim().replace(/\s+([,.:;!?])/g, '$1');
+
+    // Try to drop leading "гр." / "с." part if present
+    const lower = sectionName.toLowerCase();
+    if (lower.startsWith('гр.') || lower.startsWith('с.')) {
+      // Original logic used cityName.length; keep behavior but safer
+      const cut = (cityName ? cityName.length : 0) + 2;
+      if (cut > 0 && cut < sectionName.length) sectionName = sectionName.substring(cut);
     }
 
     let sectionType = 'Other';
@@ -77,42 +144,55 @@ function parseSections(text) {
       sectionType = 'Village';
     }
 
-    if (sectionId) {
-      sections[sectionId] = {
-        sectionId,
-        regionId,
-        regionName,
-        cityName,
-        sectionName,
-        sectionType,
-        total: 0,
-        voted: 0,
-        discardedVotes: 0,
-        noVotes: 0,
-        noVotesPaper: 0,
-        noVotesMachine: 0,
-        partyVotes: {},
-        topParties: [],
-        activityPercent: 0
-      };
-    }
-  }
+    sections[sectionId] = {
+      sectionId,
+      regionId,
+      regionName,
+      cityName,
+      sectionName,
+      sectionType,
+
+      total: 0,
+      voted: 0,
+      discardedVotes: 0,
+      noVotes: 0,
+      noVotesPaper: 0,
+      noVotesMachine: 0,
+
+      protocolPaperVotes: 0,
+      protocolMachineVotes: 0,
+      protocolErrorDiff: 0,
+      hasProtocolError: false,
+
+      // votes
+      partyVotes: Object.create(null), // pid -> { total, paper, machine, ...comparisons }
+      partyVotesNorm: Object.create(null), // normalizedName -> { total, paper, machine } (for fast comparisons)
+
+      topParties: [],
+      activityPercent: 0,
+
+      // risks
+      risks: [],
+      riskScore: 0
+    };
+  });
+
   return sections;
 }
 
 function applyProtocols(sections, text) {
-  const lines = text.split('\n');
-  for (let line of lines) {
-    line = line.trim();
-    if (!line) continue;
+  forEachLine(text, (raw) => {
+    const line = raw.trim();
+    if (!line) return;
+
     const parts = line.split(';');
-    if (parts.length <= 9) continue;
+    if (parts.length <= 9) return;
 
-    const sectionId = parts[1].trim();
+    const sectionId = (parts[1] || '').trim();
     const section = sections[sectionId];
-    if (!section) continue;
+    if (!section) return;
 
-    if (parts.length == 21) {
+    if (parts.length === 21) {
       // 2024.06
       section.total = parseLongSafe(parts[7]) + parseLongSafe(parts[10]);
       section.voted = parseLongSafe(parts[11]);
@@ -121,7 +201,7 @@ function applyProtocols(sections, text) {
       section.noVotesMachine = parseLongSafe(parts[19]);
       section.protocolPaperVotes = parseLongSafe(parts[14]);
       section.protocolMachineVotes = parseLongSafe(parts[18]);
-    } else if (parts.length == 25) {
+    } else if (parts.length === 25) {
       // 2023.04
       section.total = parseLongSafe(parts[7]) + parseLongSafe(parts[8]);
       section.voted = parseLongSafe(parts[9]);
@@ -131,7 +211,7 @@ function applyProtocols(sections, text) {
       section.protocolPaperVotes = parseLongSafe(parts[12]);
       section.protocolMachineVotes = parseLongSafe(parts[13]);
     } else {
-      // 2024.10
+      // 2024.10 (default)
       section.total = parseLongSafe(parts[7]) + parseLongSafe(parts[8]);
       section.voted = parseLongSafe(parts[9]);
       section.discardedVotes = parseLongSafe(parts[13]);
@@ -140,141 +220,270 @@ function applyProtocols(sections, text) {
       section.protocolPaperVotes = parseLongSafe(parts[12]);
       section.protocolMachineVotes = parseLongSafe(parts[16]);
     }
+
     section.noVotes = (section.noVotesPaper || 0) + (section.noVotesMachine || 0);
-    section.protocolErrorDiff = section.voted - (section.protocolPaperVotes || 0) - (section.protocolMachineVotes || 0);
-    section.hasProtocolError = section.protocolErrorDiff != 0;
-  }
+    section.protocolErrorDiff =
+      section.voted - (section.protocolPaperVotes || 0) - (section.protocolMachineVotes || 0);
+    section.hasProtocolError = section.protocolErrorDiff !== 0;
+  });
 }
 
-function applyVotes(sections, text) {
-  const lines = text.split('\n');
-  let step;
-  for (let line of lines) {
-    line = line.trim();
-    if (!line) continue;
-    const parts = line.split(';');
-    if (parts.length < 4) continue;
+function applyVotes(sections, text, normByPid) {
+  let step = 0;
 
-    const sectionId = parts[1].trim();
+  forEachLine(text, (raw) => {
+    const line = raw.trim();
+    if (!line) return;
+
+    const parts = line.split(';');
+    if (parts.length < 4) return;
+
+    const sectionId = (parts[1] || '').trim();
     const section = sections[sectionId];
-    if (!section) continue;
+    if (!section) return;
 
     if (!step) {
-      if (+parts[3] === +parts[3+5] - 1 && +parts[3+5] === +parts[3+10] - 1) {
-        step = 5;
-      } else {
-        step = 4;
-      }
+      // Detect format once
+      const a = +parts[3];
+      const b = +parts[8];
+      const c = +parts[13];
+      // If parsable and consistent -> step 5
+      step = a === b - 1 && b === c - 1 ? 5 : 4;
     }
 
     for (let i = 3; i + 3 < parts.length; i += step) {
-      const partyId = parts[i].trim();
+      const partyId = (parts[i] || '').trim();
+      if (!partyId) continue;
+
       const total = parseLongSafe(parts[i + 1]);
       const paper = parseLongSafe(parts[i + 2]);
       const machine = parseLongSafe(parts[i + 3]);
 
-      if (!section.partyVotes[partyId]) {
-        section.partyVotes[partyId] = { total: 0, paper: 0, machine: 0 };
-      }
-      section.partyVotes[partyId].total += total;
-      section.partyVotes[partyId].paper += paper;
-      section.partyVotes[partyId].machine += machine;
+      let pv = section.partyVotes[partyId];
+      if (!pv) pv = section.partyVotes[partyId] = {total: 0, paper: 0, machine: 0};
+      pv.total += total;
+      pv.paper += paper;
+      pv.machine += machine;
+
+      const norm = normByPid[partyId] || normalizePartyName(partyId);
+      let nv = section.partyVotesNorm[norm];
+      if (!nv) nv = section.partyVotesNorm[norm] = {total: 0, paper: 0, machine: 0};
+      nv.total += total;
+      nv.paper += paper;
+      nv.machine += machine;
     }
-  }
+  });
 }
 
 function parseLocalCandidates(text) {
-  const candidates = {}; // regionId -> { partyId -> { candidateId -> { candidateId, candidateName } } }
-  const lines = text.split('\n');
-  for (let line of lines) {
-    line = line.trim();
-    if (!line) continue;
+  const candidates = Object.create(null); // regionId -> partyId -> candidateId -> { candidateId, candidateName }
+  forEachLine(text, (raw) => {
+    const line = raw.trim();
+    if (!line) return;
+
     const parts = line.split(';');
-    if (parts.length < 6) continue;
+    if (parts.length < 6) return;
 
-    const regionId = parts[0].trim();
-    const partyId = parts[2].trim();
-    const candidateId = parts[4].trim();
-    const candidateName = parts[5].trim();
+    const regionId = (parts[0] || '').trim();
+    const partyId = (parts[2] || '').trim();
+    const candidateId = (parts[4] || '').trim();
+    const candidateName = (parts[5] || '').trim();
 
-    if (!regionId || !partyId || !candidateId || !candidateName) continue;
+    if (!regionId || !partyId || !candidateId || !candidateName) return;
 
-    if (!candidates[regionId]) {
-      candidates[regionId] = {};
-    }
-    if (!candidates[regionId][partyId]) {
-      candidates[regionId][partyId] = {};
-    }
-    candidates[regionId][partyId][candidateId] = {
-      candidateId,
-      candidateName
-    };
-  }
+    let r = candidates[regionId];
+    if (!r) r = candidates[regionId] = Object.create(null);
+
+    let p = r[partyId];
+    if (!p) p = r[partyId] = Object.create(null);
+
+    p[candidateId] = {candidateId, candidateName};
+  });
   return candidates;
 }
 
 function applyPreferences(sections, text, candidatesByRegion, parties) {
-  const lines = text.split('\n');
-  for (let line of lines) {
-    line = line.trim();
-    if (!line) continue;
-    const parts = line.split(';');
-    if (parts.length < 7) continue;
+  forEachLine(text, (raw) => {
+    const line = raw.trim();
+    if (!line) return;
 
-    const sectionId = parts[1].trim();
-    const partyId = parts[2].trim();
-    const preferenceVote = parts[3].trim();
+    const parts = line.split(';');
+    if (parts.length < 7) return;
+
+    const sectionId = (parts[1] || '').trim();
+    const partyId = (parts[2] || '').trim();
+    const preferenceVote = (parts[3] || '').trim();
     const paperVotes = parseLongSafe(parts[5]);
     const machineVotes = parseLongSafe(parts[6]);
     const totalVotes = paperVotes + machineVotes;
 
-    if (preferenceVote === 'Без' || !preferenceVote || totalVotes === 0) continue;
+    if (preferenceVote === 'Без' || !preferenceVote || totalVotes === 0) return;
 
     const section = sections[sectionId];
-    if (!section) continue;
+    if (!section) return;
 
     const regionId = section.regionId;
-    const candidates = candidatesByRegion[regionId];
-    if (!candidates || !candidates[partyId] || !candidates[partyId][preferenceVote]) continue;
+    const regionCandidates = candidatesByRegion[regionId];
+    if (!regionCandidates) return;
+    const partyCandidates = regionCandidates[partyId];
+    if (!partyCandidates) return;
+    const candidate = partyCandidates[preferenceVote];
+    if (!candidate) return;
 
-    const candidate = candidates[partyId][preferenceVote];
     const partyName = parties[partyId] || partyId;
 
-    if (!section.candidateVotes) {
-      section.candidateVotes = {};
-    }
+    if (!section.candidateVotes) section.candidateVotes = Object.create(null);
+
     const key = `${partyId}_${preferenceVote}`;
-    if (!section.candidateVotes[key]) {
-      section.candidateVotes[key] = {
+    let cv = section.candidateVotes[key];
+    if (!cv) {
+      cv = section.candidateVotes[key] = {
         candidateId: candidate.candidateId,
         candidateName: candidate.candidateName,
-        partyId: partyId,
-        partyName: partyName,
+        partyId,
+        partyName,
         total: 0,
         paper: 0,
         machine: 0
       };
     }
-    section.candidateVotes[key].total += totalVotes;
-    section.candidateVotes[key].paper += paperVotes;
-    section.candidateVotes[key].machine += machineVotes;
-  }
+
+    cv.total += totalVotes;
+    cv.paper += paperVotes;
+    cv.machine += machineVotes;
+  });
 }
 
+/**
+ * Build fast indexes + region aggregates.
+ * Adds:
+ *  - byId: Map(sectionId -> section)
+ *  - byRegion: Map(regionId -> [sections])
+ *  - regionAgg: Map(regionId -> aggregated totals + party totals)
+ */
+function buildIndexes(sections) {
+  const byId = new Map();
+  const byRegion = new Map();
+  const regionAgg = new Map();
+
+  for (const s of sections) {
+    byId.set(s.sectionId, s);
+
+    let arr = byRegion.get(s.regionId);
+    if (!arr) byRegion.set(s.regionId, (arr = []));
+    arr.push(s);
+
+    let agg = regionAgg.get(s.regionId);
+    if (!agg) {
+      agg = {
+        voted: 0,
+        total: 0,
+        discardedVotes: 0,
+        noVotes: 0,
+        totalPaper: 0,
+        totalMachine: 0,
+        partyTotals: Object.create(null),
+        partyTotalsNorm: Object.create(null)
+      };
+      regionAgg.set(s.regionId, agg);
+    }
+
+    agg.voted += s.voted;
+    agg.total += s.total;
+    agg.discardedVotes += s.discardedVotes;
+    agg.noVotes += s.noVotes;
+    agg.totalPaper += s.totalPaper || 0;
+    agg.totalMachine += s.totalMachine || 0;
+
+    // Raw PID totals (kept because you later iterate region.partyVotes keys)
+    for (const pid in s.partyVotes) {
+      const v = s.partyVotes[pid];
+      agg.partyTotals[pid] = (agg.partyTotals[pid] || 0) + (v.total || 0);
+    }
+
+    // Normalized totals for fast cross-date comparisons
+    for (const norm in s.partyVotesNorm) {
+      const v = s.partyVotesNorm[norm];
+      agg.partyTotalsNorm[norm] = (agg.partyTotalsNorm[norm] || 0) + (v.total || 0);
+    }
+  }
+
+  return {byId, byRegion, regionAgg};
+}
+
+function buildRegionCandidateAggregates(byRegion) {
+  const candidateAggByRegion = new Map(); // regionId -> key -> { total,paper,machine,sections,partyId }
+  const partyPrefAggByRegion = new Map(); // regionId -> partyId -> { totalPartyVotes,totalPreferences }
+
+  for (const [regionId, regionSections] of byRegion.entries()) {
+    const candAgg = Object.create(null);
+    const partyPrefAgg = Object.create(null);
+
+    for (const rs of regionSections) {
+      // party totals denominator
+      for (const partyId in (rs.partyVotes || {})) {
+        const pv = rs.partyVotes[partyId];
+        let p = partyPrefAgg[partyId];
+        if (!p) p = partyPrefAgg[partyId] = {totalPartyVotes: 0, totalPreferences: 0};
+        p.totalPartyVotes += pv.total || 0;
+      }
+
+      const cvMap = rs.candidateVotes;
+      if (!cvMap) continue;
+
+      for (const key in cvMap) {
+        const cv = cvMap[key];
+        let a = candAgg[key];
+        if (!a) {
+          a = candAgg[key] = {total: 0, paper: 0, machine: 0, sections: 0, partyId: cv.partyId};
+        }
+        a.total += cv.total;
+        a.paper += cv.paper;
+        a.machine += cv.machine;
+        a.sections += 1;
+
+        const p = partyPrefAgg[cv.partyId] || (partyPrefAgg[cv.partyId] = {totalPartyVotes: 0, totalPreferences: 0});
+        p.totalPreferences += cv.total;
+      }
+    }
+
+    candidateAggByRegion.set(regionId, candAgg);
+    partyPrefAggByRegion.set(regionId, partyPrefAgg);
+  }
+
+  return {candidateAggByRegion, partyPrefAggByRegion};
+}
+
+// Precompute date lookups (avoid repeated elections.find / dates.filter)
+const dates = elections.map((e) => e.date);
+const dateNameByDate = Object.fromEntries(elections.map((e) => [e.date, e.name]));
+const otherDatesByDate = Object.fromEntries(dates.map((dt) => [dt, dates.filter((d) => d !== dt)]));
+// For risk baseline, you were taking latest 3 other dates (by lexicographic sort). Keep same behavior but cached.
+const histDatesByDate = Object.fromEntries(
+  dates.map((dt) => {
+    const hist = otherDatesByDate[dt].slice().sort().reverse().slice(0, 3);
+    return [dt, hist];
+  })
+);
+
 console.log('Loading raw data...');
-const rawData = {};
-for (const { date } of elections) {
+const rawData = Object.create(null);
+
+for (const {date} of elections) {
   console.log(`Processing ${date}...`);
   const baseUrl = path.join(baseDataDir, date);
+
   const sectionsText = fs.readFileSync(path.join(baseUrl, 'sections.txt'), 'utf8');
   const protocolsText = fs.readFileSync(path.join(baseUrl, 'protocols.txt'), 'utf8');
   const votesText = fs.readFileSync(path.join(baseUrl, 'votes.txt'), 'utf8');
   const partiesText = fs.readFileSync(path.join(baseUrl, 'cik_parties.txt'), 'utf8');
 
   const parties = parseParties(partiesText);
+  const normByPid = buildPartyNormalization(parties);
+
   const sectionsMap = parseSections(sectionsText);
   applyProtocols(sectionsMap, protocolsText);
-  applyVotes(sectionsMap, votesText);
+  applyVotes(sectionsMap, votesText, normByPid);
 
   // Parse local candidates and preferences if files exist
   const localCandidatesPath = path.join(baseUrl, 'local_candidates.txt');
@@ -287,340 +496,253 @@ for (const { date } of elections) {
   }
 
   const sections = Object.values(sectionsMap);
+
+  // Finalize per-section derived fields + topParties (avoid extra normalization work)
   for (const section of sections) {
     section.totalPaper = section.protocolPaperVotes || 0;
     section.totalMachine = section.protocolMachineVotes || 0;
     section.activityPercent = section.total > 0 ? section.voted / section.total : 0;
 
-    section.topParties = Object.entries(section.partyVotes)
-      .filter(([id, _]) => id !== '0')
-      .map(([partyId, votes]) => {
-        let name = parties[partyId] || partyId;
-        if (name.includes('ПРОДЪЛЖАВАМЕ')) {
-          name = 'ПП-ДБ';
-        }
-        return {
-          name,
-          partyId,
-          total: votes.total,
-          percent: section.voted > 0 ? votes.total / section.voted : 0,
-          comparisons: []
-        };
-      })
-      .filter(p => p.total > 0)
-      .sort((a, b) => b.total - a.total);
+    // Build top parties by raw pid (as before), but normalize name once here.
+    const tps = [];
+    for (const partyId in section.partyVotes) {
+      if (partyId === '0') continue;
+      const votes = section.partyVotes[partyId];
+      if (!votes || votes.total <= 0) continue;
 
-    section.topParties = section.topParties.slice(0, 3);
+      const originalName = parties[partyId] || partyId;
+      const name = normalizePartyName(originalName);
 
+      tps.push({
+        name,
+        partyId,
+        total: votes.total,
+        percent: section.voted > 0 ? votes.total / section.voted : 0,
+        comparisons: []
+      });
+    }
+
+    tps.sort((a, b) => b.total - a.total);
+    section.topParties = tps.slice(0, 3);
   }
-  rawData[date] = { sections, parties };
+
+  // Build fast indexes + region aggregates
+  const idx = buildIndexes(sections);
+
+  rawData[date] = {
+    sections,
+    parties,
+    normByPid,
+    ...idx
+  };
 }
 
 console.log('Calculating comparisons and aggregating regions...');
 
-const dates = elections.map(e => e.date);
-
 for (const date of dates) {
   console.log(`Finalizing ${date}...`);
-  const targetSections = rawData[date].sections;
-  const parties = rawData[date].parties;
 
-  // Calculate Region averages (turnout and party percentages)
-  const regionMap = new Map();
-  targetSections.forEach(s => {
-    const regionKey = s.regionId;
-    if (!regionMap.has(regionKey)) {
-      regionMap.set(regionKey, { voted: 0, total: 0, partyVotes: {} });
+  const current = rawData[date];
+  const targetSections = current.sections;
+  const parties = current.parties;
+
+  // ----- Region averages (turnout and party percentages) from pre-aggregates -----
+  const regionStats = Object.create(null);
+  for (const [regionId, agg] of current.regionAgg.entries()) {
+    const partyPercents = Object.create(null);
+    for (const pid in agg.partyTotals) {
+      partyPercents[pid] = agg.voted > 0 ? agg.partyTotals[pid] / agg.voted : 0;
     }
-    const r = regionMap.get(regionKey);
-    r.voted += s.voted;
-    r.total += s.total;
-    Object.entries(s.partyVotes).forEach(([pid, votes]) => {
-      r.partyVotes[pid] = (r.partyVotes[pid] || 0) + votes.total;
-    });
-  });
-
-  const regionStats = {};
-  regionMap.forEach((data, id) => {
-    regionStats[id] = {
-      avgTurnout: data.total > 0 ? data.voted / data.total : 0,
-      partyPercents: {}
+    regionStats[regionId] = {
+      avgTurnout: agg.total > 0 ? agg.voted / agg.total : 0,
+      partyPercents
     };
-    Object.entries(data.partyVotes).forEach(([pid, total]) => {
-      regionStats[id].partyPercents[pid] = data.voted > 0 ? total / data.voted : 0;
-    });
-  });
+  }
 
   // Set region stats for sections (used by enhanced risk detection)
-  targetSections.forEach(s => {
-    const regionKey = s.regionId;
-    const stats = regionStats[regionKey];
+  for (const s of targetSections) {
+    const stats = regionStats[s.regionId] || {avgTurnout: 0, partyPercents: Object.create(null)};
     s.municipalityAvgTurnout = stats.avgTurnout;
     s.municipalityPartyPercents = stats.partyPercents;
-    // Initialize risks array (will be populated by enhanced risk detection)
-    s.risks = [];
-    s.riskScore = 0;
-  });
+    s.risks = s.risks || [];
+    s.riskScore = s.riskScore || 0;
+  }
 
-  const regionsMap = new Map();
+  // ----- Regions list (use current.regionAgg + current.byRegion for sections list) -----
+  const regions = Array.from(current.regionAgg.entries())
+    .map(([id, agg]) => {
+      // Top parties for region
+      const topParties = [];
+      for (const pid in agg.partyTotals) {
+        if (pid === '0') continue;
+        const total = agg.partyTotals[pid];
+        if (!total) continue;
 
-  targetSections.forEach(s => {
-    if (!regionsMap.has(s.regionId)) {
-      regionsMap.set(s.regionId, {
-        name: s.regionName,
-        partyVotes: {},
-        voted: 0,
-        total: 0,
-        discardedVotes: 0,
-        noVotes: 0,
-        totalPaper: 0,
-        totalMachine: 0,
-        sections: []
-      });
-    }
-    const reg = regionsMap.get(s.regionId);
-    reg.sections.push(s);
-    reg.voted += s.voted;
-    reg.total += s.total;
-    reg.discardedVotes += s.discardedVotes;
-    reg.noVotes += s.noVotes;
-    reg.totalPaper += s.totalPaper || 0;
-    reg.totalMachine += s.totalMachine || 0;
-    Object.entries(s.partyVotes).forEach(([pid, v]) => {
-      reg.partyVotes[pid] = (reg.partyVotes[pid] || 0) + v.total;
-    });
-  });
+        const originalName = parties[pid] || pid;
+        const name = normalizePartyName(originalName);
 
-  const regions = Array.from(regionsMap.entries()).map(([id, data]) => {
-    const topParties = Object.entries(data.partyVotes)
-      .filter(([pid, _]) => pid !== '0')
-      .map(([pid, total]) => {
-        let name = parties[pid] || pid;
-        if (name.includes('ПРОДЪЛЖАВАМЕ')) {
-          name = 'ПП-ДБ';
-        }
-        return {
+        topParties.push({
           name,
           total,
-          percent: data.voted > 0 ? total / data.voted : 0,
+          percent: agg.voted > 0 ? total / agg.voted : 0,
           comparisons: []
-        };
-      })
-      .filter(p => p.total > 0)
-      .sort((a, b) => b.total - a.total)
-      .slice(0, 3);
-
-    const region = {
-      id,
-      name: data.name,
-      total: data.total,
-      voted: data.voted,
-      partyVotes: data.partyVotes,
-      topParties,
-      discardedVotes: data.discardedVotes,
-      noVotes: data.noVotes,
-      totalPaper: data.totalPaper,
-      totalMachine: data.totalMachine,
-      comparisons: {}
-    };
-
-    // Add comparisons
-    dates.filter(d => d !== date).forEach(d => {
-      const otherSections = rawData[d].sections.filter(s => s.regionId === id);
-      const otherVoted = otherSections.reduce((sum, s) => sum + s.voted, 0);
-      const otherTotal = otherSections.reduce((sum, s) => sum + s.total, 0);
-      const otherDiscarded = otherSections.reduce((sum, s) => sum + s.discardedVotes, 0);
-      const otherNoVotes = otherSections.reduce((sum, s) => sum + s.noVotes, 0);
-      const otherPaper = otherSections.reduce((sum, s) => sum + (s.totalPaper || 0), 0);
-      const otherMachine = otherSections.reduce((sum, s) => sum + (s.totalMachine || 0), 0);
-      const dateName = elections.find(ed => ed.date === d).name;
-
-      region.comparisons['voted'] = region.comparisons['voted'] || [];
-      region.comparisons['voted'].push({ value: otherVoted, date: d, dateName });
-
-      region.comparisons['total'] = region.comparisons['total'] || [];
-      region.comparisons['total'].push({ value: otherTotal, date: d, dateName });
-
-      region.comparisons['discardedVotes'] = region.comparisons['discardedVotes'] || [];
-      region.comparisons['discardedVotes'].push({ value: otherDiscarded, date: d, dateName });
-
-      region.comparisons['noVotes'] = region.comparisons['noVotes'] || [];
-      region.comparisons['noVotes'].push({ value: otherNoVotes, date: d, dateName });
-
-      region.comparisons['totalPaper'] = region.comparisons['totalPaper'] || [];
-      region.comparisons['totalPaper'].push({ value: otherPaper, date: d, dateName });
-
-      region.comparisons['totalMachine'] = region.comparisons['totalMachine'] || [];
-      region.comparisons['totalMachine'].push({ value: otherMachine, date: d, dateName });
-
-      region.comparisons['activityPercent'] = region.comparisons['activityPercent'] || [];
-      region.comparisons['activityPercent'].push({ value: otherTotal > 0 ? otherVoted / otherTotal : 0, date: d, dateName });
-
-      // Party comparisons for regions
-      const currentPartiesMap = rawData[date].parties;
-      const otherPartiesMap = rawData[d].parties;
-
-      Object.keys(region.partyVotes).forEach(pid => {
-        const normalizedTarget = normalizePartyName(currentPartiesMap[pid] || pid);
-
-        let otherPartyTotal = 0;
-        otherSections.forEach(os => {
-          Object.entries(os.partyVotes).forEach(([otherPid, otherVotes]) => {
-            if (normalizePartyName(otherPartiesMap[otherPid] || otherPid) === normalizedTarget) {
-              otherPartyTotal += otherVotes.total;
-            }
-          });
-        });
-
-        region.comparisons[`party_${pid}`] = region.comparisons[`party_${pid}`] || [];
-        region.comparisons[`party_${pid}`].push({ value: otherPartyTotal, date: d, dateName });
-      });
-
-      // Top Parties Comparisons for regions
-      region.topParties.forEach(tp => {
-        const normalizedTarget = normalizePartyName(tp.name);
-        let otherTotal = 0;
-        otherSections.forEach(os => {
-          Object.entries(os.partyVotes).forEach(([pid, votes]) => {
-            if (normalizePartyName(otherPartiesMap[pid] || pid) === normalizedTarget) {
-              otherTotal += votes.total;
-            }
-          });
-        });
-
-        tp.comparisons = tp.comparisons || [];
-        tp.comparisons.push({ value: otherTotal, date: d, dateName });
-      });
-    });
-
-    return region;
-  }).sort((a, b) => {
-    const idA = parseInt(a.id, 10);
-    const idB = parseInt(b.id, 10);
-    if (!isNaN(idA) && !isNaN(idB)) {
-      return idA - idB;
-    }
-    return a.id.localeCompare(b.id);
-  });
-
-  // Section Comparisons
-  targetSections.forEach(s => {
-    s.comparisons = {};
-    dates.filter(d => d !== date).forEach(d => {
-      const otherSection = rawData[d].sections.find(os => os.sectionId === s.sectionId);
-      const dateName = elections.find(ed => ed.date === d).name;
-      if (otherSection) {
-        s.comparisons['voted'] = s.comparisons['voted'] || [];
-        s.comparisons['voted'].push({ value: otherSection.voted, date: d, dateName });
-
-        s.comparisons['total'] = s.comparisons['total'] || [];
-        s.comparisons['total'].push({ value: otherSection.total, date: d, dateName });
-
-        s.comparisons['discardedVotes'] = s.comparisons['discardedVotes'] || [];
-        s.comparisons['discardedVotes'].push({ value: otherSection.discardedVotes, date: d, dateName });
-
-        s.comparisons['noVotes'] = s.comparisons['noVotes'] || [];
-        s.comparisons['noVotes'].push({ value: otherSection.noVotes, date: d, dateName });
-
-        s.comparisons['totalPaper'] = s.comparisons['totalPaper'] || [];
-        s.comparisons['totalPaper'].push({ value: otherSection.totalPaper || 0, date: d, dateName });
-
-        s.comparisons['totalMachine'] = s.comparisons['totalMachine'] || [];
-        s.comparisons['totalMachine'].push({ value: otherSection.totalMachine || 0, date: d, dateName });
-
-        s.comparisons['activityPercent'] = s.comparisons['activityPercent'] || [];
-        s.comparisons['activityPercent'].push({ value: otherSection.activityPercent, date: d, dateName });
-
-        s.comparisons['noVotesPaper'] = s.comparisons['noVotesPaper'] || [];
-        s.comparisons['noVotesPaper'].push({ value: otherSection.noVotesPaper || 0, date: d, dateName });
-
-        s.comparisons['noVotesMachine'] = s.comparisons['noVotesMachine'] || [];
-        s.comparisons['noVotesMachine'].push({ value: otherSection.noVotesMachine || 0, date: d, dateName });
-
-        s.comparisons['noVotesPercent'] = s.comparisons['noVotesPercent'] || [];
-        s.comparisons['noVotesPercent'].push({ value: otherSection.voted > 0 ? otherSection.noVotes / otherSection.voted : 0, date: d, dateName });
-
-        // Party comparisons for sections
-        const currentPartiesMap = rawData[date].parties;
-        const otherPartiesMap = rawData[d].parties;
-
-        Object.keys(s.partyVotes).forEach(pid => {
-          const normalizedTarget = normalizePartyName(currentPartiesMap[pid] || pid);
-
-          let otherTotal = 0;
-          let otherPaper = 0;
-          let otherMachine = 0;
-          let matchFound = false;
-
-          Object.entries(otherSection.partyVotes).forEach(([otherPid, otherVotes]) => {
-            if (normalizePartyName(otherPartiesMap[otherPid] || otherPid) === normalizedTarget) {
-              otherTotal += otherVotes.total;
-              otherPaper += otherVotes.paper;
-              otherMachine += otherVotes.machine;
-              matchFound = true;
-            }
-          });
-
-          if (matchFound) {
-            s.partyVotes[pid].comparisons = s.partyVotes[pid].comparisons || [];
-            s.partyVotes[pid].comparisons.push({ value: otherTotal, date: d, dateName });
-
-            s.partyVotes[pid].percentComparisons = s.partyVotes[pid].percentComparisons || [];
-            const otherPercent = otherSection.voted > 0 ? otherTotal / otherSection.voted : 0;
-            s.partyVotes[pid].percentComparisons.push({ value: otherPercent, date: d, dateName });
-
-            s.partyVotes[pid].paperComparisons = s.partyVotes[pid].paperComparisons || [];
-            s.partyVotes[pid].paperComparisons.push({ value: otherPaper, date: d, dateName });
-
-            s.partyVotes[pid].machineComparisons = s.partyVotes[pid].machineComparisons || [];
-            s.partyVotes[pid].machineComparisons.push({ value: otherMachine, date: d, dateName });
-          }
-        });
-
-        // Top Parties Comparisons for sections
-        s.topParties.forEach(tp => {
-          const normalizedTarget = normalizePartyName(tp.name);
-          let otherTotal = 0;
-          Object.entries(otherSection.partyVotes).forEach(([pid, votes]) => {
-            if (normalizePartyName(otherPartiesMap[pid] || pid) === normalizedTarget) {
-              otherTotal += votes.total;
-            }
-          });
-          tp.comparisons = tp.comparisons || [];
-          tp.comparisons.push({ value: otherTotal, date: d, dateName });
         });
       }
+      topParties.sort((a, b) => b.total - a.total);
+      const top3 = topParties.slice(0, 3);
+
+      const region = {
+        id,
+        name: (current.byRegion.get(id)?.[0]?.regionName) || '',
+        total: agg.total,
+        voted: agg.voted,
+        partyVotes: agg.partyTotals,
+        topParties: top3,
+        discardedVotes: agg.discardedVotes,
+        noVotes: agg.noVotes,
+        totalPaper: agg.totalPaper,
+        totalMachine: agg.totalMachine,
+        comparisons: Object.create(null)
+      };
+
+      // Comparisons vs other dates (use other.regionAgg, O(1))
+      for (const d of otherDatesByDate[date]) {
+        const other = rawData[d];
+        const otherAgg = other.regionAgg.get(id);
+        if (!otherAgg) continue;
+
+        const dateName = dateNameByDate[d];
+
+        (region.comparisons.voted ||= []).push({value: otherAgg.voted, date: d, dateName});
+        (region.comparisons.total ||= []).push({value: otherAgg.total, date: d, dateName});
+        (region.comparisons.discardedVotes ||= []).push({value: otherAgg.discardedVotes, date: d, dateName});
+        (region.comparisons.noVotes ||= []).push({value: otherAgg.noVotes, date: d, dateName});
+        (region.comparisons.totalPaper ||= []).push({value: otherAgg.totalPaper, date: d, dateName});
+        (region.comparisons.totalMachine ||= []).push({value: otherAgg.totalMachine, date: d, dateName});
+        (region.comparisons.activityPercent ||= []).push({
+          value: otherAgg.total > 0 ? otherAgg.voted / otherAgg.total : 0,
+          date: d,
+          dateName
+        });
+
+        // Party comparisons for regions:
+        // Previously: normalize by name and scan all other sections partyVotes.
+        // Now: use otherAgg.partyTotalsNorm[normalized] directly.
+        const otherAggNorm = otherAgg.partyTotalsNorm;
+        const currentPartiesMap = current.parties; // for normalized target
+        for (const pid in region.partyVotes) {
+          const normalizedTarget = normalizePartyName(currentPartiesMap[pid] || pid);
+          const otherPartyTotal = otherAggNorm[normalizedTarget] || 0;
+          (region.comparisons[`party_${pid}`] ||= []).push({value: otherPartyTotal, date: d, dateName});
+        }
+
+        // Top parties comparisons for regions
+        const otherAggNormTop = otherAgg.partyTotalsNorm;
+        for (const tp of region.topParties) {
+          const normalizedTarget = normalizePartyName(tp.name);
+          const otherTotal = otherAggNormTop[normalizedTarget] || 0;
+          tp.comparisons.push({value: otherTotal, date: d, dateName});
+        }
+      }
+
+      return region;
+    })
+    .sort((a, b) => {
+      const idA = parseInt(a.id, 10);
+      const idB = parseInt(b.id, 10);
+      if (!Number.isNaN(idA) && !Number.isNaN(idB)) return idA - idB;
+      return a.id.localeCompare(b.id);
     });
-  });
+
+  // ----- Section comparisons (use byId instead of find) -----
+  for (const s of targetSections) {
+    s.comparisons = Object.create(null);
+
+    for (const d of otherDatesByDate[date]) {
+      const other = rawData[d];
+      const otherSection = other.byId.get(s.sectionId);
+      if (!otherSection) continue;
+
+      const dateName = dateNameByDate[d];
+
+      (s.comparisons.voted ||= []).push({value: otherSection.voted, date: d, dateName});
+      (s.comparisons.total ||= []).push({value: otherSection.total, date: d, dateName});
+      (s.comparisons.discardedVotes ||= []).push({value: otherSection.discardedVotes, date: d, dateName});
+      (s.comparisons.noVotes ||= []).push({value: otherSection.noVotes, date: d, dateName});
+      (s.comparisons.totalPaper ||= []).push({value: otherSection.totalPaper || 0, date: d, dateName});
+      (s.comparisons.totalMachine ||= []).push({value: otherSection.totalMachine || 0, date: d, dateName});
+      (s.comparisons.activityPercent ||= []).push({value: otherSection.activityPercent, date: d, dateName});
+      (s.comparisons.noVotesPaper ||= []).push({value: otherSection.noVotesPaper || 0, date: d, dateName});
+      (s.comparisons.noVotesMachine ||= []).push({value: otherSection.noVotesMachine || 0, date: d, dateName});
+      (s.comparisons.noVotesPercent ||= []).push({
+        value: otherSection.voted > 0 ? otherSection.noVotes / otherSection.voted : 0,
+        date: d,
+        dateName
+      });
+
+      // Party comparisons for sections:
+      // Previously: for each pid in s.partyVotes, scan otherSection.partyVotes with normalization.
+      // Now: use otherSection.partyVotesNorm[normalized] (O(#parties in s)).
+      const currentPartiesMap = current.parties;
+      const otherNormMap = otherSection.partyVotesNorm || Object.create(null);
+
+      for (const pid in s.partyVotes) {
+        const normalizedTarget = normalizePartyName(currentPartiesMap[pid] || pid);
+        const otherBucket = otherNormMap[normalizedTarget];
+        if (!otherBucket) continue;
+
+        const otherTotal = otherBucket.total || 0;
+        const otherPaper = otherBucket.paper || 0;
+        const otherMachine = otherBucket.machine || 0;
+
+        const sv = s.partyVotes[pid];
+        (sv.comparisons ||= []).push({value: otherTotal, date: d, dateName});
+
+        const otherPercent = otherSection.voted > 0 ? otherTotal / otherSection.voted : 0;
+        (sv.percentComparisons ||= []).push({value: otherPercent, date: d, dateName});
+
+        (sv.paperComparisons ||= []).push({value: otherPaper, date: d, dateName});
+        (sv.machineComparisons ||= []).push({value: otherMachine, date: d, dateName});
+      }
+
+      // Top parties comparisons for sections (also use partyVotesNorm)
+      const otherNormMapTop = otherSection.partyVotesNorm || Object.create(null);
+      for (const tp of s.topParties) {
+        const normalizedTarget = normalizePartyName(tp.name);
+        const otherBucket = otherNormMapTop[normalizedTarget];
+        const otherTotal = otherBucket ? (otherBucket.total || 0) : 0;
+        tp.comparisons.push({value: otherTotal, date: d, dateName});
+      }
+    }
+  }
 
   console.log(`Computing enhanced risks for ${date}...`);
 
-  // Compute region statistics for risk detection
+  // ----- Compute region statistics for risk detection (single pass) -----
   const regionStatsMap = new Map();
-  targetSections.forEach(s => {
-    const regionKey = s.regionId;
-    if (!regionStatsMap.has(regionKey)) {
-      regionStatsMap.set(regionKey, {
+
+  for (const s of targetSections) {
+    let stats = regionStatsMap.get(s.regionId);
+    if (!stats) {
+      stats = {
         sections: [],
         turnoutChanges: [],
         paperTotals: 0,
         machineTotals: 0,
         invalidTotals: 0,
         votedTotals: 0,
-        partyPaperTotals: {},
-        partyTotals: {}
-      });
+        partyPaperTotals: Object.create(null),
+        partyTotals: Object.create(null)
+      };
+      regionStatsMap.set(s.regionId, stats);
     }
-    const stats = regionStatsMap.get(regionKey);
     stats.sections.push(s);
 
-    // Calculate turnout change
-    if (s.comparisons?.['activityPercent'] && s.comparisons['activityPercent'].length > 0) {
-      const current = s.activityPercent;
-      const previous = s.comparisons['activityPercent'][0].value;
-      if (previous > 0) {
-        stats.turnoutChanges.push((current - previous) / previous);
-      }
+    // turnout change (current vs most recent comparison entry you have)
+    if (s.comparisons?.activityPercent && s.comparisons.activityPercent.length > 0) {
+      const currentTurnout = s.activityPercent;
+      const previousTurnout = s.comparisons.activityPercent[0].value;
+      if (previousTurnout > 0) stats.turnoutChanges.push((currentTurnout - previousTurnout) / previousTurnout);
     }
 
     stats.paperTotals += s.totalPaper || 0;
@@ -628,37 +750,36 @@ for (const date of dates) {
     stats.invalidTotals += s.discardedVotes;
     stats.votedTotals += s.voted;
 
-    Object.entries(s.partyVotes).forEach(([pid, votes]) => {
-      if (!stats.partyPaperTotals[pid]) {
-        stats.partyPaperTotals[pid] = 0;
+    for (const pid in s.partyVotes) {
+      const votes = s.partyVotes[pid];
+      if (!stats.partyTotals[pid]) {
         stats.partyTotals[pid] = 0;
+        stats.partyPaperTotals[pid] = 0;
       }
+      stats.partyTotals[pid] += votes.total || 0;
       stats.partyPaperTotals[pid] += votes.paper || 0;
-      stats.partyTotals[pid] += votes.total;
-    });
-  });
+    }
+  }
 
-  // Convert to final region stats format
-  const regionStatsMapFinal = {};
-  regionStatsMap.forEach((data, key) => {
-    const avgTurnoutChange = data.turnoutChanges.length > 0
-      ? data.turnoutChanges.reduce((sum, c) => sum + c, 0) / data.turnoutChanges.length
-      : 0;
+  const regionStatsMapFinal = Object.create(null);
+  for (const [key, data] of regionStatsMap.entries()) {
+    let avgTurnoutChange = 0;
+    if (data.turnoutChanges.length > 0) {
+      let sum = 0;
+      for (const c of data.turnoutChanges) sum += c;
+      avgTurnoutChange = sum / data.turnoutChanges.length;
+    }
 
-    const variance = data.turnoutChanges.length > 1
-      ? data.turnoutChanges.reduce((sum, c) => sum + Math.pow(c - avgTurnoutChange, 2), 0) / data.turnoutChanges.length
-      : 0;
+    const variance = data.turnoutChanges.length > 1 ? calculateVariance(data.turnoutChanges) : 0;
     const turnoutChangeStdDev = Math.sqrt(variance);
 
     const paperMachineRatio = data.machineTotals > 0 ? data.paperTotals / data.machineTotals : 0;
     const invalidRate = data.votedTotals > 0 ? data.invalidTotals / data.votedTotals : 0;
 
-    const partyPaperRatios = {};
-    Object.keys(data.partyTotals).forEach(pid => {
-      partyPaperRatios[pid] = data.partyTotals[pid] > 0
-        ? data.partyPaperTotals[pid] / data.partyTotals[pid]
-        : 0;
-    });
+    const partyPaperRatios = Object.create(null);
+    for (const pid in data.partyTotals) {
+      partyPaperRatios[pid] = data.partyTotals[pid] > 0 ? data.partyPaperTotals[pid] / data.partyTotals[pid] : 0;
+    }
 
     regionStatsMapFinal[key] = {
       avgTurnoutChange,
@@ -667,55 +788,65 @@ for (const date of dates) {
       partyPaperRatios,
       invalidRate
     };
-  });
+  }
 
-  // Compute enhanced risks for each section
-  // Note: 'parties' map is available in this scope from earlier in the script
-  targetSections.forEach(section => {
+  // Precompute region candidate aggregates ONCE per region (big O(n^2) killer)
+  const {candidateAggByRegion, partyPrefAggByRegion} = buildRegionCandidateAggregates(current.byRegion);
+
+  // ----- Enhanced risks per section -----
+  const histDates = histDatesByDate[date];
+
+  for (const section of targetSections) {
     const regionKey = section.regionId;
     const regStats = regionStatsMapFinal[regionKey] || {
       avgTurnoutChange: 0,
       turnoutChangeStdDev: 0,
       paperMachineRatio: 0,
-      partyPaperRatios: {},
+      partyPaperRatios: Object.create(null),
       invalidRate: 0
     };
 
-    // Get historical sections (from other dates)
-    const historicalSections = dates
-      .filter(d => d !== date)
-      .sort()
-      .reverse()
-      .slice(0, 3)
-      .map(d => rawData[d].sections.find(os => os.sectionId === section.sectionId))
-      .filter(s => s !== undefined);
+    // Historical sections: use byId lookups (O(1))
+    const historicalSections = [];
+    for (const d of histDates) {
+      const hs = rawData[d].byId.get(section.sectionId);
+      if (hs) historicalSections.push(hs);
+    }
 
-    // Get neighboring sections (same region)
-    const neighboringSections = targetSections.filter(s =>
-      s.regionId === section.regionId && s.sectionId !== section.sectionId
-    );
+    // Neighboring sections: use byRegion once (no global filter)
+    const regionSections = current.byRegion.get(regionKey) || [];
+    const riskIndicators = [];
 
-    // Compute baseline
+    // Baseline from historical sections (same logic, faster loops)
     let baseline = null;
     if (historicalSections.length > 0) {
-      const totalVotes = historicalSections.reduce((sum, s) => sum + s.voted, 0);
-      const totalElectors = historicalSections.reduce((sum, s) => sum + s.total, 0);
-      const totalInvalid = historicalSections.reduce((sum, s) => sum + s.discardedVotes, 0);
-      const totalPaper = historicalSections.reduce((sum, s) => sum + (s.totalPaper || 0), 0);
-      const totalMachine = historicalSections.reduce((sum, s) => sum + (s.totalMachine || 0), 0);
+      let totalVotes = 0;
+      let totalElectors = 0;
+      let totalInvalid = 0;
+      let totalPaper = 0;
+      let totalMachine = 0;
 
-      const partyVoteShares = {};
-      historicalSections.forEach(s => {
-        Object.entries(s.partyVotes).forEach(([pid, votes]) => {
-          if (!partyVoteShares[pid]) partyVoteShares[pid] = 0;
-          partyVoteShares[pid] += votes.total;
-        });
-      });
+      const partyVoteSharesRaw = Object.create(null);
 
-      const totalPartyVotes = Object.values(partyVoteShares).reduce((sum, v) => sum + v, 0);
-      Object.keys(partyVoteShares).forEach(pid => {
-        partyVoteShares[pid] = totalPartyVotes > 0 ? partyVoteShares[pid] / totalPartyVotes : 0;
-      });
+      for (const hs of historicalSections) {
+        totalVotes += hs.voted;
+        totalElectors += hs.total;
+        totalInvalid += hs.discardedVotes;
+        totalPaper += hs.totalPaper || 0;
+        totalMachine += hs.totalMachine || 0;
+
+        for (const pid in hs.partyVotes) {
+          partyVoteSharesRaw[pid] = (partyVoteSharesRaw[pid] || 0) + (hs.partyVotes[pid].total || 0);
+        }
+      }
+
+      let totalPartyVotes = 0;
+      for (const pid in partyVoteSharesRaw) totalPartyVotes += partyVoteSharesRaw[pid];
+
+      const partyVoteShares = Object.create(null);
+      for (const pid in partyVoteSharesRaw) {
+        partyVoteShares[pid] = totalPartyVotes > 0 ? partyVoteSharesRaw[pid] / totalPartyVotes : 0;
+      }
 
       baseline = {
         avgTurnout: totalElectors > 0 ? totalVotes / totalElectors : 0,
@@ -725,34 +856,8 @@ for (const date of dates) {
       };
     }
 
-    const riskIndicators = [];
-
-    // Helper function to calculate variance
-    function calculateVariance(values) {
-      if (values.length === 0) return 0;
-      const mean = values.reduce((a, b) => a + b, 0) / values.length;
-      const squaredDiffs = values.map(v => Math.pow(v - mean, 2));
-      return squaredDiffs.reduce((a, b) => a + b, 0) / values.length;
-    }
-
-    // Helper function to calculate Gini coefficient
-    function calculateGini(sortedValues) {
-      const n = sortedValues.length;
-      if (n === 0) return 0;
-
-      const sum = sortedValues.reduce((a, b) => a + b, 0);
-      if (sum === 0) return 0;
-
-      let weightedSum = 0;
-      for (let i = 0; i < n; i++) {
-        weightedSum += (i + 1) * sortedValues[i];
-      }
-
-      return (2 * weightedSum) / (n * sum) - (n + 1) / n;
-    }
-
     // R1.1: Turnout anomaly
-    if (baseline && section.comparisons?.['voted'] && section.comparisons['voted'].length > 0) {
+    if (baseline && section.comparisons?.voted && section.comparisons.voted.length > 0) {
       const currentTurnout = section.activityPercent;
       const previousTurnout = baseline.avgTurnout;
       const turnoutChange = previousTurnout > 0 ? (currentTurnout - previousTurnout) / previousTurnout : 0;
@@ -769,98 +874,110 @@ for (const date of dates) {
       }
     }
 
-      // R1.2: Party turnout capture
-      if (baseline && section.comparisons?.['voted'] && section.comparisons['voted'].length > 0) {
-        const currentVoted = section.voted;
-        const previousVoted = section.comparisons['voted'][0].value || 0;
-        const voteIncrease = currentVoted - previousVoted;
+    // R1.2: Party turnout capture
+    if (baseline && section.comparisons?.voted && section.comparisons.voted.length > 0) {
+      const currentVoted = section.voted;
+      const previousVoted = section.comparisons.voted[0].value || 0;
+      const voteIncrease = currentVoted - previousVoted;
 
-        if (voteIncrease > 0 && previousVoted > 0) {
-          let maxCapture = 0;
-          let capturingParty = null;
+      if (voteIncrease > 0 && previousVoted > 0) {
+        let maxCapture = 0;
+        let capturingParty = null;
 
-          // Get actual previous votes from historical section if available
-          const previousSection = historicalSections.length > 0 ? historicalSections[0] : null;
+        const previousSection = historicalSections.length > 0 ? historicalSections[0] : null;
 
-          Object.entries(section.partyVotes).forEach(([pid, votes]) => {
-            // Try to get actual previous votes from historical section first
-            let previousVotes = 0;
-            if (previousSection && previousSection.partyVotes[pid]) {
-              previousVotes = previousSection.partyVotes[pid].total || 0;
-            } else {
-              // Fallback to baseline estimate
-              previousVotes = (baseline.partyVoteShares[pid] || 0) * previousVoted;
-            }
+        for (const pid in section.partyVotes) {
+          const votes = section.partyVotes[pid];
+          let previousVotes = 0;
 
-            const currentVotes = votes.total;
-            const partyIncrease = currentVotes - previousVotes;
+          if (previousSection && previousSection.partyVotes[pid]) {
+            previousVotes = previousSection.partyVotes[pid].total || 0;
+          } else {
+            previousVotes = (baseline.partyVoteShares[pid] || 0) * previousVoted;
+          }
 
-            // Calculate capture ratio, but cap it at 1.0 (100%) to handle edge cases
-            // where previous estimate might be wrong or party had negative votes before
-            const captureRatio = voteIncrease > 0 ? Math.min(1.0, Math.max(0, partyIncrease / voteIncrease)) : 0;
+          const currentVotes = votes.total || 0;
+          const partyIncrease = currentVotes - previousVotes;
+          const captureRatio = voteIncrease > 0 ? Math.min(1.0, Math.max(0, partyIncrease / voteIncrease)) : 0;
 
-            if (captureRatio > maxCapture) {
-              maxCapture = captureRatio;
-              capturingParty = pid;
-            }
-          });
+          if (captureRatio > maxCapture) {
+            maxCapture = captureRatio;
+            capturingParty = pid;
+          }
+        }
 
-          // Only flag if capture is significant (>= 60%) and reasonable (<= 100%)
-          if (maxCapture >= 0.6 && maxCapture <= 1.0 && capturingParty) {
-            const partyName = section.topParties.find(tp => tp.partyId === capturingParty)?.name || capturingParty;
-            const historicalShare = baseline.partyVoteShares[capturingParty] || 0;
-            const currentShare = section.voted > 0 ? section.partyVotes[capturingParty]?.total / section.voted : 0;
+        if (maxCapture >= 0.6 && maxCapture <= 1.0 && capturingParty) {
+          const partyName =
+            section.topParties.find((tp) => tp.partyId === capturingParty)?.name || capturingParty;
 
-            if (historicalShare < 0.3 && currentShare > 0.5) {
-              riskIndicators.push({
-                code: 'R1.2',
-                category: 'R1',
-                severity: maxCapture > 0.8 ? 'high' : 'medium',
-                message: `Една партия улавя ${(maxCapture * 100).toFixed(0)}% от новите гласове: ${partyName}`
-              });
-            }
+          const historicalShare = baseline.partyVoteShares[capturingParty] || 0;
+          const currentShare = section.voted > 0 ? (section.partyVotes[capturingParty]?.total || 0) / section.voted : 0;
+
+          if (historicalShare < 0.3 && currentShare > 0.5) {
+            riskIndicators.push({
+              code: 'R1.2',
+              category: 'R1',
+              severity: maxCapture > 0.8 ? 'high' : 'medium',
+              message: `Една партия улавя ${(maxCapture * 100).toFixed(0)}% от новите гласове: ${partyName}`
+            });
           }
         }
       }
+    }
 
     // R1.3: Vote share rigidity
     if (historicalSections.length >= 2) {
-      const partyVariances = {};
-      historicalSections.forEach(s => {
-        Object.entries(s.partyVotes).forEach(([pid, votes]) => {
-          if (!partyVariances[pid]) partyVariances[pid] = [];
-          const share = s.voted > 0 ? votes.total / s.voted : 0;
-          partyVariances[pid].push(share);
-        });
-      });
+      const partySharesByPid = Object.create(null);
+
+      for (const hs of historicalSections) {
+        for (const pid in hs.partyVotes) {
+          const votes = hs.partyVotes[pid];
+          (partySharesByPid[pid] ||= []).push(hs.voted > 0 ? (votes.total || 0) / hs.voted : 0);
+        }
+      }
 
       let maxRigidParty = null;
       let maxRigidShare = 0;
       let minRigidVariance = Infinity;
 
-      Object.entries(partyVariances).forEach(([pid, shares]) => {
-        if (shares.length < 2) return;
-        const avgShare = shares.reduce((sum, s) => sum + s, 0) / shares.length;
-        const variance = shares.reduce((sum, s) => sum + Math.pow(s - avgShare, 2), 0) / shares.length;
+      for (const pid in partySharesByPid) {
+        const shares = partySharesByPid[pid];
+        if (shares.length < 2) continue;
+        let sum = 0;
+        for (const x of shares) sum += x;
+        const avgShare = sum / shares.length;
+        const variance = calculateVariance(shares);
 
         if (avgShare > 0.6 && variance < 0.01 && avgShare > maxRigidShare) {
           maxRigidParty = pid;
           maxRigidShare = avgShare;
           minRigidVariance = variance;
         }
-      });
+      }
 
-      if (maxRigidParty && neighboringSections.length > 0) {
-        const neighborShares = neighboringSections
-          .map(ns => ns.partyVotes[maxRigidParty] ? ns.partyVotes[maxRigidParty].total / (ns.voted || 1) : 0)
-          .filter(s => s > 0);
+      if (maxRigidParty && regionSections.length > 1) {
+        const neighborShares = [];
+        for (const ns of regionSections) {
+          if (ns.sectionId === section.sectionId) continue;
+          const pv = ns.partyVotes[maxRigidParty];
+          if (pv && ns.voted > 0) neighborShares.push((pv.total || 0) / ns.voted);
+        }
 
         if (neighborShares.length > 0) {
-          const neighborAvg = neighborShares.reduce((sum, v) => sum + v, 0) / neighborShares.length;
-          const neighborVariance = neighborShares.reduce((sum, v) => sum + Math.pow(v - neighborAvg, 2), 0) / neighborShares.length;
+          let sum = 0;
+          for (const x of neighborShares) sum += x;
+          const neighborAvg = sum / neighborShares.length;
+          let v = 0;
+          for (const x of neighborShares) {
+            const d = x - neighborAvg;
+            v += d * d;
+          }
+          const neighborVariance = v / neighborShares.length;
 
           if (neighborVariance > minRigidVariance * 3) {
-            const partyName = section.topParties.find(tp => tp.partyId === maxRigidParty)?.name || maxRigidParty;
+            const partyName =
+              section.topParties.find((tp) => tp.partyId === maxRigidParty)?.name || maxRigidParty;
+
             riskIndicators.push({
               code: 'R1.3',
               category: 'R1',
@@ -873,22 +990,20 @@ for (const date of dates) {
     }
 
     // R2.1: Paper/machine deviation
-    // Only flag if section has meaningful vote count (at least 50 votes)
     if (section.totalPaper && section.totalMachine && section.voted >= 50) {
       const sectionPaperPercent = section.totalPaper / section.voted;
-      const regionPaperPercent = regStats.paperMachineRatio > 0
-        ? regStats.paperMachineRatio / (1 + regStats.paperMachineRatio)
-        : 0;
+      const regionPaperPercent =
+        regStats.paperMachineRatio > 0 ? regStats.paperMachineRatio / (1 + regStats.paperMachineRatio) : 0;
+
       const deviation = Math.abs(sectionPaperPercent - regionPaperPercent);
       const deviationPercent = regionPaperPercent > 0 ? (deviation / regionPaperPercent) * 100 : 0;
 
       let isSudden = false;
       if (baseline) {
-        const baselinePaperPercent = baseline.avgPaperMachineRatio > 0
-          ? baseline.avgPaperMachineRatio / (1 + baseline.avgPaperMachineRatio)
-          : 0;
+        const baselinePaperPercent =
+          baseline.avgPaperMachineRatio > 0 ? baseline.avgPaperMachineRatio / (1 + baseline.avgPaperMachineRatio) : 0;
         const baselineDeviation = Math.abs(sectionPaperPercent - baselinePaperPercent);
-        isSudden = baselineDeviation > baselinePaperPercent * 0.3;
+        isSudden = baselinePaperPercent > 0 ? baselineDeviation > baselinePaperPercent * 0.3 : false;
       }
 
       if (deviationPercent > 30 || isSudden) {
@@ -901,83 +1016,52 @@ for (const date of dates) {
       }
     }
 
-    // R2.2: Party-specific paper dominance (only flag low paper % for top 3 parties)
-    // Only check top 3 parties and only flag when paper percentage is low (high machine percentage)
+    // R2.2: Party-specific paper dominance (only top 3 parties, only when paper is low)
     let maxR22Deviation = 0;
     let maxR22Party = null;
-    let maxR22Message = null;
     let maxR22SectionRatio = 0;
     let maxR22RegionRatio = 0;
 
-    // Get party names map for better display
-    const partyNamesMap = {};
-    section.topParties.forEach(tp => {
-      partyNamesMap[tp.partyId] = tp.name;
-    });
+    const top3PartyIds = new Set(section.topParties.slice(0, 3).map((tp) => tp.partyId));
 
-    // Only check top 3 parties
-    const top3PartyIds = new Set(section.topParties.slice(0, 3).map(tp => tp.partyId));
+    for (const pid in section.partyVotes) {
+      if (!top3PartyIds.has(pid)) continue;
+      if (pid === '0') continue;
 
-    // Check only top 3 parties
-    Object.entries(section.partyVotes).forEach(([pid, votes]) => {
-      // Skip if not in top 3
-      if (!top3PartyIds.has(pid)) return;
+      const votes = section.partyVotes[pid];
+      if (!votes || votes.total < 10) continue;
 
-      // Skip if party has no votes or too few votes (need at least 10 for meaningful analysis)
-      if (!votes || votes.total === 0 || votes.total < 10) return;
-
-      // Skip party ID "0" (no votes party) as it's not meaningful for this analysis
-      if (pid === '0') return;
-
-      // Get paper and machine values (handle undefined/null)
       const paperVotes = votes.paper ?? 0;
       const machineVotes = votes.machine ?? 0;
+      if (paperVotes === 0 && machineVotes === 0) continue;
 
-      // Skip if we don't have paper/machine breakdown (both are 0 or undefined)
-      // Note: A party can have 0 paper (all machine) or 0 machine (all paper), which is valid
-      if (paperVotes === 0 && machineVotes === 0) return;
-
-      // Calculate paper ratio for this party in this section
       const sectionPaperRatio = votes.total > 0 ? paperVotes / votes.total : 0;
+      const regionPaperRatio = regStats.partyPaperRatios[pid];
 
-      // Get region average for this party
-      const regionPaperRatio = regStats.partyPaperRatios[pid] ?? 0;
+      if (regionPaperRatio === undefined) continue;
+      if (regionPaperRatio === 0 && sectionPaperRatio === 0) continue;
 
-      // Skip if we don't have region data (can't compare)
-      if (regionPaperRatio === 0 && !regStats.partyPaperRatios.hasOwnProperty(pid)) return;
+      if (sectionPaperRatio >= regionPaperRatio) continue;
 
-      // Skip if both are 0 (no meaningful data)
-      if (regionPaperRatio === 0 && sectionPaperRatio === 0) return;
-
-      // Only flag when paper percentage is LOW (meaning machine percentage is high)
-      // This means sectionPaperRatio should be significantly lower than regionPaperRatio
-      if (sectionPaperRatio >= regionPaperRatio) return;
-
-      const deviation = regionPaperRatio - sectionPaperRatio; // Positive when section has less paper than region
-
-      // Track the party with the highest deviation (section has much less paper than region average)
+      const deviation = regionPaperRatio - sectionPaperRatio;
       if (deviation > maxR22Deviation) {
         maxR22Deviation = deviation;
         maxR22Party = pid;
         maxR22SectionRatio = sectionPaperRatio;
         maxR22RegionRatio = regionPaperRatio;
       }
-    });
-
-    // Only flag if the highest deviation meets the significance threshold (30%+ difference)
-    if (maxR22Party && maxR22Deviation > 0.3) {
-      const partyName = partyNamesMap[maxR22Party] || (parties && parties[maxR22Party]) || `Партия ${maxR22Party}`;
-      const sectionPercent = Math.round(maxR22SectionRatio * 100);
-      const regionPercent = Math.round(maxR22RegionRatio * 100);
-      maxR22Message = `${partyName}: ${sectionPercent}% хартиени (регион: ${regionPercent}%)`;
     }
 
-    if (maxR22Party && maxR22Message) {
+    if (maxR22Party && maxR22Deviation > 0.3) {
+      const partyName = section.topParties.find((tp) => tp.partyId === maxR22Party)?.name || parties[maxR22Party] || `Партия ${maxR22Party}`;
+      const sectionPercent = Math.round(maxR22SectionRatio * 100);
+      const regionPercent = Math.round(maxR22RegionRatio * 100);
+
       riskIndicators.push({
         code: 'R2.2',
         category: 'R2',
         severity: maxR22Deviation > 0.5 ? 'high' : 'medium',
-        message: maxR22Message
+        message: `${partyName}: ${sectionPercent}% хартиени (регион: ${regionPercent}%)`
       });
     }
 
@@ -985,12 +1069,14 @@ for (const date of dates) {
     if (section.totalPaper && section.totalMachine && section.topParties.length >= 2) {
       const top1 = section.topParties[0];
       const top2 = section.topParties[1];
-      const party1PaperRatio = section.partyVotes[top1.partyId]?.total > 0 ?
-        (section.partyVotes[top1.partyId].paper || 0) / section.partyVotes[top1.partyId].total : 0;
-      const party2PaperRatio = section.partyVotes[top2.partyId]?.total > 0 ?
-        (section.partyVotes[top2.partyId].paper || 0) / section.partyVotes[top2.partyId].total : 0;
-      const asymmetry = Math.abs(party1PaperRatio - party2PaperRatio);
 
+      const pv1 = section.partyVotes[top1.partyId];
+      const pv2 = section.partyVotes[top2.partyId];
+
+      const party1PaperRatio = pv1 && pv1.total > 0 ? (pv1.paper || 0) / pv1.total : 0;
+      const party2PaperRatio = pv2 && pv2.total > 0 ? (pv2.paper || 0) / pv2.total : 0;
+
+      const asymmetry = Math.abs(party1PaperRatio - party2PaperRatio);
       if (asymmetry > 0.4) {
         riskIndicators.push({
           code: 'R2.3',
@@ -1018,23 +1104,24 @@ for (const date of dates) {
     }
 
     // R3.2: Party-correlated invalid spike
-    if (baseline && section.comparisons?.['discardedVotes']) {
+    if (baseline && section.comparisons?.discardedVotes) {
       const currentInvalid = section.discardedVotes;
-      const previousInvalid = section.comparisons['discardedVotes'][0]?.value || 0;
+      const previousInvalid = section.comparisons.discardedVotes[0]?.value || 0;
       const invalidIncrease = currentInvalid - previousInvalid;
 
       if (invalidIncrease > 0) {
         const losingParties = [];
-        Object.entries(section.partyVotes).forEach(([pid, votes]) => {
+        for (const pid in section.partyVotes) {
+          const votes = section.partyVotes[pid];
           const previousShare = baseline.partyVoteShares[pid] || 0;
-          const currentShare = section.voted > 0 ? votes.total / section.voted : 0;
+          const currentShare = section.voted > 0 ? (votes.total || 0) / section.voted : 0;
           const loss = previousShare - currentShare;
 
           if (loss > 0.05) {
-            const partyName = section.topParties.find(tp => tp.partyId === pid)?.name || pid;
-            losingParties.push({ pid, loss, name: partyName });
+            const partyName = section.topParties.find((tp) => tp.partyId === pid)?.name || pid;
+            losingParties.push({pid, loss, name: partyName});
           }
-        });
+        }
 
         if (losingParties.length > 0 && invalidIncrease > section.voted * 0.05) {
           losingParties.sort((a, b) => b.loss - a.loss);
@@ -1051,20 +1138,22 @@ for (const date of dates) {
     // R4.1: Vote swing
     if (historicalSections.length > 0 && section.topParties.length > 0) {
       const currentTopParty = section.topParties[0];
-      const historicalShares = historicalSections
-        .map(s => {
-          const partyVotes = s.partyVotes[currentTopParty.partyId];
-          return partyVotes && s.voted > 0 ? partyVotes.total / s.voted : null;
-        })
-        .filter(s => s !== null);
+      const historicalShares = [];
+
+      for (const hs of historicalSections) {
+        const pv = hs.partyVotes[currentTopParty.partyId];
+        if (pv && hs.voted > 0) historicalShares.push((pv.total || 0) / hs.voted);
+      }
 
       if (historicalShares.length >= 2) {
-        const avgHistoricalShare = historicalShares.reduce((sum, s) => sum + s, 0) / historicalShares.length;
-        const variance = historicalShares.reduce((sum, s) => sum + Math.pow(s - avgHistoricalShare, 2), 0) / historicalShares.length;
+        let sum = 0;
+        for (const x of historicalShares) sum += x;
+        const avgHistoricalShare = sum / historicalShares.length;
+        const variance = calculateVariance(historicalShares);
+
         const currentShare = currentTopParty.percent;
         const swing = Math.abs(currentShare - avgHistoricalShare);
 
-        // Only flag if historical variance is low (stable) AND swing is significant
         if (variance < 0.01 && swing > 0.15 && avgHistoricalShare > 0) {
           riskIndicators.push({
             code: 'R4.1',
@@ -1076,20 +1165,28 @@ for (const date of dates) {
       }
     }
 
-    // R4.2: Fragmentation shock
+    // R4.2: Fragmentation shock (Herfindahl)
     if (historicalSections.length > 0) {
-      const calculateHerfindahl = (s) => {
+      const calculateHerfindahl = (sec) => {
         let sum = 0;
-        Object.values(s.partyVotes).forEach(votes => {
-          const share = s.voted > 0 ? votes.total / s.voted : 0;
+        for (const pid in sec.partyVotes) {
+          const votes = sec.partyVotes[pid];
+          const share = sec.voted > 0 ? (votes.total || 0) / sec.voted : 0;
           sum += share * share;
-        });
+        }
         return sum;
       };
 
       const currentHerfindahl = calculateHerfindahl(section);
-      const historicalHerfindahls = historicalSections.map(calculateHerfindahl);
-      const avgHistorical = historicalHerfindahls.reduce((sum, h) => sum + h, 0) / historicalHerfindahls.length;
+
+      let sumH = 0;
+      const hsH = [];
+      for (const hs of historicalSections) {
+        const h = calculateHerfindahl(hs);
+        hsH.push(h);
+        sumH += h;
+      }
+      const avgHistorical = hsH.length > 0 ? sumH / hsH.length : 0;
       const change = Math.abs(currentHerfindahl - avgHistorical);
 
       if (change > 0.15) {
@@ -1108,19 +1205,22 @@ for (const date of dates) {
     // R4.3: Swing section (compare top party with ПП-ДБ)
     if (section.topParties.length >= 1) {
       const top1 = section.topParties[0];
-      // Find ПП-ДБ in topParties first, then in all partyVotes if not found
-      let ppdb = section.topParties.find(tp => tp.name.includes('ПП-ДБ') || tp.name.includes('ПРОДЪЛЖАВАМЕ'));
+      let ppdb = section.topParties.find((tp) => tp.name.includes('ПП-ДБ') || tp.name.includes('ПРОДЪЛЖАВАМЕ'));
 
-      // If not in topParties, search in all partyVotes
       if (!ppdb) {
-        const ppdbPartyId = Object.keys(section.partyVotes).find(pid => {
+        // find ppdb party id among partyVotes
+        let ppdbPartyId = null;
+        for (const pid in section.partyVotes) {
           const partyName = parties[pid] || '';
-          return partyName.includes('ПП-ДБ') || partyName.includes('ПРОДЪЛЖАВАМЕ');
-        });
+          if (partyName.includes('ПП-ДБ') || partyName.includes('ПРОДЪЛЖАВАМЕ')) {
+            ppdbPartyId = pid;
+            break;
+          }
+        }
 
         if (ppdbPartyId && section.partyVotes[ppdbPartyId] && section.voted > 0) {
           const ppdbVotes = section.partyVotes[ppdbPartyId];
-          const ppdbPercent = ppdbVotes.total / section.voted;
+          const ppdbPercent = (ppdbVotes.total || 0) / section.voted;
           ppdb = {
             partyId: ppdbPartyId,
             name: parties[ppdbPartyId] || 'ПП-ДБ',
@@ -1131,7 +1231,6 @@ for (const date of dates) {
 
       if (ppdb && ppdb.partyId !== top1.partyId) {
         const margin = top1.percent - ppdb.percent;
-
         if (margin < 0.05 && margin > 0) {
           riskIndicators.push({
             code: 'R4.3',
@@ -1143,188 +1242,167 @@ for (const date of dates) {
       }
     }
 
-    // ===== CANDIDATE-RELATED RISKS =====
-    // Calculate region-level candidate statistics for comparison
-    const regionCandidateStats = {};
-    const regionPartyPreferenceStats = {};
-
-    if (section.candidateVotes) {
-      // Aggregate candidate stats across region for this section
-      const regionSections = targetSections.filter(s => s.regionId === section.regionId);
-
-      regionSections.forEach(rs => {
-        if (!rs.candidateVotes) return;
-        Object.entries(rs.candidateVotes).forEach(([key, cv]) => {
-          if (!regionCandidateStats[key]) {
-            regionCandidateStats[key] = { total: 0, paper: 0, machine: 0, sections: 0 };
-          }
-          regionCandidateStats[key].total += cv.total;
-          regionCandidateStats[key].paper += cv.paper;
-          regionCandidateStats[key].machine += cv.machine;
-          regionCandidateStats[key].sections += 1;
-        });
-      });
-
-      // Calculate region party preference rates
-      regionSections.forEach(rs => {
-        Object.entries(rs.partyVotes || {}).forEach(([partyId, pv]) => {
-          if (!regionPartyPreferenceStats[partyId]) {
-            regionPartyPreferenceStats[partyId] = { totalPartyVotes: 0, totalPreferences: 0 };
-          }
-          regionPartyPreferenceStats[partyId].totalPartyVotes += pv.total;
-
-          // Sum preferences for this party
-          Object.entries(rs.candidateVotes || {}).forEach(([key, cv]) => {
-            if (cv.partyId === partyId) {
-              regionPartyPreferenceStats[partyId].totalPreferences += cv.total;
-            }
-          });
-        });
-      });
-    }
+    // ===== CANDIDATE-RELATED RISKS (use precomputed region aggregates) =====
+    const regionCandidateStats = candidateAggByRegion.get(regionKey);
+    const regionPartyPreferenceStats = partyPrefAggByRegion.get(regionKey);
 
     // R2.4: Preference-by-technology divergence
     if (section.candidateVotes) {
-      Object.entries(section.candidateVotes).forEach(([key, candidate]) => {
+      for (const key in section.candidateVotes) {
+        const candidate = section.candidateVotes[key];
         const candidateTotal = candidate.paper + candidate.machine;
-        if (candidateTotal < 10) return; // Skip very small counts
+        if (candidateTotal < 10) continue;
 
         const paperShare = candidate.paper / candidateTotal;
         const machineShare = candidate.machine / candidateTotal;
         const divergence = Math.abs(paperShare - machineShare);
 
-        // Flag when strong divergence exists only on paper ballots (paper share much higher)
         if (divergence > 0.3 && paperShare > 0.7) {
           riskIndicators.push({
             code: 'R2.4',
             category: 'R2',
             severity: divergence > 0.5 ? 'high' : 'medium',
             message: `Разлика в преференциите по технология за ${candidate.candidateName} (${candidate.partyName}): ${(paperShare * 100).toFixed(0)}% хартиени, ${(machineShare * 100).toFixed(0)}% машинни`,
-            details: { candidateId: candidate.candidateId, candidateName: candidate.candidateName, partyId: candidate.partyId, sectionId: section.sectionId }
+            details: {
+              candidateId: candidate.candidateId,
+              candidateName: candidate.candidateName,
+              partyId: candidate.partyId,
+              sectionId: section.sectionId
+            }
           });
         }
-      });
+      }
     }
 
     // R2.5: Party list vs candidate preference inversion
     if (section.candidateVotes && section.partyVotes) {
-      Object.entries(section.partyVotes).forEach(([partyId, partyVotes]) => {
+      for (const partyId in section.partyVotes) {
+        const partyVotes = section.partyVotes[partyId];
         const partyTotal = partyVotes.total || 0;
-        if (partyTotal < 20) return;
+        if (partyTotal < 20) continue;
 
-        const partyPaperRatio = partyVotes.paper / partyTotal;
-        const partyMachineRatio = partyVotes.machine / partyTotal;
+        const partyPaperRatio = partyTotal > 0 ? (partyVotes.paper || 0) / partyTotal : 0;
+        const partyMachineRatio = partyTotal > 0 ? (partyVotes.machine || 0) / partyTotal : 0;
 
-        // Check if party is machine-heavy
         if (partyMachineRatio > 0.6) {
-          // Find candidate preferences for this party
-          Object.entries(section.candidateVotes).forEach(([key, candidate]) => {
-            if (candidate.partyId !== partyId) return;
+          for (const key in section.candidateVotes) {
+            const candidate = section.candidateVotes[key];
+            if (candidate.partyId !== partyId) continue;
 
             const candidateTotal = candidate.paper + candidate.machine;
-            if (candidateTotal < 10) return;
+            if (candidateTotal < 10) continue;
 
-            const candidatePaperRatio = candidate.paper / candidateTotal;
-
-            // Flag when preferences are paper-heavy but party is machine-heavy
+            const candidatePaperRatio = candidateTotal > 0 ? candidate.paper / candidateTotal : 0;
             if (candidatePaperRatio > 0.6 && (candidatePaperRatio - partyPaperRatio) > 0.3) {
               riskIndicators.push({
                 code: 'R2.5',
                 category: 'R2',
                 severity: 'medium',
                 message: `Инверсия: ${candidate.candidateName} (${candidate.partyName}) има ${(candidatePaperRatio * 100).toFixed(0)}% хартиени преференции, докато партията е ${(partyMachineRatio * 100).toFixed(0)}% машинни`,
-                details: { candidateId: candidate.candidateId, candidateName: candidate.candidateName, partyId: candidate.partyId, sectionId: section.sectionId }
+                details: {
+                  candidateId: candidate.candidateId,
+                  candidateName: candidate.candidateName,
+                  partyId: candidate.partyId,
+                  sectionId: section.sectionId
+                }
               });
             }
-          });
+          }
         }
-      });
+      }
     }
 
     // R4.4: Candidate volatility mismatch
     if (historicalSections.length >= 2 && section.candidateVotes) {
-      Object.entries(section.candidateVotes).forEach(([key, candidate]) => {
+      for (const key in section.candidateVotes) {
+        const candidate = section.candidateVotes[key];
         const partyId = candidate.partyId;
 
-        // Calculate party vote volatility
-        const partyShares = historicalSections.map(s => {
-          const pv = s.partyVotes[partyId];
-          return pv && s.voted > 0 ? pv.total / s.voted : 0;
-        });
-        const partyVariance = calculateVariance(partyShares);
+        const partyShares = [];
+        const candidateShares = [];
 
-        // Calculate candidate preference volatility
-        const candidateShares = historicalSections.map(s => {
-          const cv = s.candidateVotes?.[key];
-          const pv = s.partyVotes[partyId];
-          return cv && pv && pv.total > 0 ? cv.total / pv.total : 0;
-        });
+        for (const hs of historicalSections) {
+          const pv = hs.partyVotes[partyId];
+          partyShares.push(pv && hs.voted > 0 ? (pv.total || 0) / hs.voted : 0);
+
+          const cv = hs.candidateVotes?.[key];
+          candidateShares.push(cv && pv && (pv.total || 0) > 0 ? (cv.total || 0) / (pv.total || 1) : 0);
+        }
+
+        const partyVariance = calculateVariance(partyShares);
         const candidateVariance = calculateVariance(candidateShares);
 
-        // Flag when party is volatile but candidate is unusually stable
         if (partyVariance > 0.01 && candidateVariance < partyVariance * 0.3) {
           riskIndicators.push({
             code: 'R4.4',
             category: 'R4',
             severity: 'medium',
             message: `Несъответствие волатилност: ${candidate.candidateName} (${candidate.partyName}) е стабилен докато партията е волатилна`,
-            details: { candidateId: candidate.candidateId, candidateName: candidate.candidateName, partyId: candidate.partyId, sectionId: section.sectionId }
+            details: {
+              candidateId: candidate.candidateId,
+              candidateName: candidate.candidateName,
+              partyId: candidate.partyId,
+              sectionId: section.sectionId
+            }
           });
         }
-      });
+      }
     }
 
     // R5.1: Preference participation rate anomaly
     if (section.candidateVotes && regionPartyPreferenceStats) {
-      Object.entries(section.candidateVotes).forEach(([key, candidate]) => {
+      for (const key in section.candidateVotes) {
+        const candidate = section.candidateVotes[key];
         const partyId = candidate.partyId;
         const partyVotes = section.partyVotes[partyId];
-        if (!partyVotes || partyVotes.total < 10) return;
+        if (!partyVotes || partyVotes.total < 10) continue;
 
         const sectionPreferenceRate = candidate.total / partyVotes.total;
         const regionStats = regionPartyPreferenceStats[partyId];
-        if (!regionStats || regionStats.totalPartyVotes < 50) return;
+        if (!regionStats || regionStats.totalPartyVotes < 50) continue;
 
         const regionPreferenceRate = regionStats.totalPreferences / regionStats.totalPartyVotes;
 
-        // Flag when preference rate is significantly higher than region average
         if (sectionPreferenceRate > regionPreferenceRate * 1.5 && sectionPreferenceRate > 0.1) {
           riskIndicators.push({
             code: 'R5.1',
             category: 'R5',
             severity: sectionPreferenceRate > regionPreferenceRate * 2 ? 'high' : 'medium',
             message: `Аномалия в участието на преференции: ${candidate.candidateName} (${candidate.partyName}) има ${(sectionPreferenceRate * 100).toFixed(1)}% (регион: ${(regionPreferenceRate * 100).toFixed(1)}%)`,
-            details: { candidateId: candidate.candidateId, candidateName: candidate.candidateName, partyId: candidate.partyId, sectionId: section.sectionId }
+            details: {
+              candidateId: candidate.candidateId,
+              candidateName: candidate.candidateName,
+              partyId: candidate.partyId,
+              sectionId: section.sectionId
+            }
           });
         }
-      });
+      }
     }
 
     // R5.2: Sudden preference activation
     if (historicalSections.length >= 2 && section.candidateVotes) {
-      Object.entries(section.candidateVotes).forEach(([key, candidate]) => {
+      for (const key in section.candidateVotes) {
+        const candidate = section.candidateVotes[key];
         const partyId = candidate.partyId;
 
-        // Calculate historical preference rates
-        const historicalRates = historicalSections.map(s => {
-          const cv = s.candidateVotes?.[key];
-          const pv = s.partyVotes[partyId];
-          return cv && pv && pv.total > 0 ? cv.total / pv.total : 0;
-        });
+        const historicalRates = [];
+        for (const hs of historicalSections) {
+          const cv = hs.candidateVotes?.[key];
+          const pv = hs.partyVotes[partyId];
+          historicalRates.push(cv && pv && (pv.total || 0) > 0 ? (cv.total || 0) / (pv.total || 1) : 0);
+        }
 
-        const avgHistoricalRate = historicalRates.reduce((a, b) => a + b, 0) / historicalRates.length;
+        let sum = 0;
+        for (const r of historicalRates) sum += r;
+        const avgHistoricalRate = historicalRates.length > 0 ? sum / historicalRates.length : 0;
+        if (avgHistoricalRate === 0) continue;
 
-        // Skip if candidate had 0% in all previous elections (wasn't in the lists)
-        if (avgHistoricalRate === 0) return;
-
-        const historicalVariance = calculateVariance(historicalRates);
-        const historicalStdDev = Math.sqrt(historicalVariance);
+        const historicalStdDev = Math.sqrt(calculateVariance(historicalRates));
 
         const currentPartyVotes = section.partyVotes[partyId];
-        const currentRate = currentPartyVotes && currentPartyVotes.total > 0
-          ? candidate.total / currentPartyVotes.total : 0;
+        const currentRate = currentPartyVotes && currentPartyVotes.total > 0 ? candidate.total / currentPartyVotes.total : 0;
 
-        // Flag when preferences spike from near-zero (but not from 0%)
         const threshold = avgHistoricalRate + 3 * historicalStdDev;
         if (avgHistoricalRate < 0.05 && avgHistoricalRate > 0 && currentRate > threshold && currentRate > 0.1) {
           riskIndicators.push({
@@ -1332,137 +1410,135 @@ for (const date of dates) {
             category: 'R5',
             severity: currentRate > threshold * 2 ? 'high' : 'medium',
             message: `Внезапна активация на преференции: ${candidate.candidateName} (${candidate.partyName}) от ${(avgHistoricalRate * 100).toFixed(1)}% към ${(currentRate * 100).toFixed(1)}%`,
-            details: { candidateId: candidate.candidateId, candidateName: candidate.candidateName, partyId: candidate.partyId, sectionId: section.sectionId }
+            details: {
+              candidateId: candidate.candidateId,
+              candidateName: candidate.candidateName,
+              partyId: candidate.partyId,
+              sectionId: section.sectionId
+            }
           });
         }
-      });
+      }
     }
 
-    // R6.1: Candidate concentration dominance
-    if (section.candidateVotes) {
-      const regionSections = targetSections.filter(s => s.regionId === section.regionId);
-
-      Object.entries(section.candidateVotes).forEach(([key, candidate]) => {
+    // R6.1: Candidate concentration dominance (use region aggregates instead of per-section recompute)
+    if (section.candidateVotes && regionCandidateStats) {
+      for (const key in section.candidateVotes) {
+        const candidate = section.candidateVotes[key];
         const partyId = candidate.partyId;
         const partyVotes = section.partyVotes[partyId];
-        if (!partyVotes || partyVotes.total < 10) return;
+        if (!partyVotes || partyVotes.total < 10) continue;
 
-        // Calculate candidate's share of party preferences in this section
         const sectionShare = candidate.total / partyVotes.total;
 
-        // Calculate candidate's average share across municipality
-        let totalMunicipalityPreferences = 0;
-        let totalMunicipalityPartyVotes = 0;
-        regionSections.forEach(rs => {
-          const rc = rs.candidateVotes?.[key];
-          const rp = rs.partyVotes[partyId];
-          if (rc) totalMunicipalityPreferences += rc.total;
-          if (rp) totalMunicipalityPartyVotes += rp.total;
-        });
-        const municipalityShare = totalMunicipalityPartyVotes > 0
-          ? totalMunicipalityPreferences / totalMunicipalityPartyVotes : 0;
+        // Municipality share using precomputed totals:
+        const agg = regionCandidateStats[key];
+        // Need total municipality party votes for this candidate's party:
+        let municipalityPartyVotes = 0;
+        for (const rs of regionSections) {
+          const pv = rs.partyVotes?.[partyId];
+          if (pv) municipalityPartyVotes += pv.total || 0;
+        }
+        const municipalityShare = municipalityPartyVotes > 0 ? (agg?.total || 0) / municipalityPartyVotes : 0;
 
         // Compare to other candidates of same party in this section
         let otherCandidatesTotal = 0;
-        Object.entries(section.candidateVotes).forEach(([k, c]) => {
-          if (c.partyId === partyId && k !== key) {
-            otherCandidatesTotal += c.total;
-          }
-        });
-        const otherCandidatesShare = partyVotes.total > 0
-          ? otherCandidatesTotal / partyVotes.total : 0;
+        for (const k in section.candidateVotes) {
+          if (k === key) continue;
+          const c = section.candidateVotes[k];
+          if (c.partyId === partyId) otherCandidatesTotal += c.total;
+        }
+        const otherCandidatesShare = partyVotes.total > 0 ? otherCandidatesTotal / partyVotes.total : 0;
 
-        // Flag when one candidate captures disproportionate share
         if (sectionShare > municipalityShare * 1.5 && sectionShare > otherCandidatesShare * 2) {
           riskIndicators.push({
             code: 'R6.1',
             category: 'R6',
             severity: sectionShare > municipalityShare * 2 ? 'high' : 'medium',
             message: `Доминиране на концентрация: ${candidate.candidateName} (${candidate.partyName}) има ${(sectionShare * 100).toFixed(1)}% от преференциите (община: ${(municipalityShare * 100).toFixed(1)}%)`,
-            details: { candidateId: candidate.candidateId, candidateName: candidate.candidateName, partyId: candidate.partyId, sectionId: section.sectionId }
+            details: {
+              candidateId: candidate.candidateId,
+              candidateName: candidate.candidateName,
+              partyId: candidate.partyId,
+              sectionId: section.sectionId
+            }
           });
         }
-      });
+      }
     }
 
-    // R6.2: Candidate-section exclusivity
+    // R6.2: Candidate-section exclusivity (Gini across region sections) – still O(#sections in region),
+    // but avoids global filtering and is only per candidate present in this section.
     if (section.candidateVotes) {
-      const regionSections = targetSections.filter(s => s.regionId === section.regionId);
+      for (const key in section.candidateVotes) {
+        const candidate = section.candidateVotes[key];
 
-      Object.entries(section.candidateVotes).forEach(([key, candidate]) => {
-        // Calculate Gini coefficient for candidate's distribution across sections
-        const sectionTotals = regionSections.map(s => {
-          const cv = s.candidateVotes?.[key];
-          return cv ? cv.total : 0;
-        }).filter(v => v > 0).sort((a, b) => a - b);
+        const totals = [];
+        for (const rs of regionSections) {
+          const cv = rs.candidateVotes?.[key];
+          if (cv && cv.total > 0) totals.push(cv.total);
+        }
+        if (totals.length < 2) continue;
 
-        if (sectionTotals.length < 2) return;
+        totals.sort((a, b) => a - b);
+        let total = 0;
+        for (const x of totals) total += x;
+        if (total < 20) continue;
 
-        const total = sectionTotals.reduce((a, b) => a + b, 0);
-        if (total < 20) return;
-
-        const gini = calculateGini(sectionTotals);
-        const concentrationThreshold = 0.7;
-
-        // Flag when highly concentrated in few sections
-        if (gini > concentrationThreshold) {
-          const sectionsWithVotes = sectionTotals.length;
-          const totalSections = regionSections.length;
-
+        const gini = calculateGini(totals);
+        if (gini > 0.7) {
           riskIndicators.push({
             code: 'R6.2',
             category: 'R6',
             severity: gini > 0.85 ? 'high' : 'medium',
-            message: `Ексклузивност: ${candidate.candidateName} (${candidate.partyName}) е концентриран в ${sectionsWithVotes} от ${totalSections} секции (Gini: ${gini.toFixed(2)})`,
-            details: { candidateId: candidate.candidateId, candidateName: candidate.candidateName, partyId: candidate.partyId, sectionId: section.sectionId }
+            message: `Ексклузивност: ${candidate.candidateName} (${candidate.partyName}) е концентриран в ${totals.length} от ${regionSections.length} секции (Gini: ${gini.toFixed(2)})`,
+            details: {
+              candidateId: candidate.candidateId,
+              candidateName: candidate.candidateName,
+              partyId: candidate.partyId,
+              sectionId: section.sectionId
+            }
           });
         }
-      });
+      }
     }
 
     // Update section with risk indicators
-    // Filter out R6.2 from section risks (only show for candidates)
-    const sectionRiskIndicators = riskIndicators.filter(r => r.code !== 'R6.2');
+    const sectionRiskIndicators = riskIndicators.filter((r) => r.code !== 'R6.2');
 
     if (sectionRiskIndicators.length > 0) {
       section.riskIndicators = sectionRiskIndicators;
-      // Don't duplicate risk messages in the risks array - riskIndicators already contain them
-      // Only keep the original risks that aren't in riskIndicators
-      const indicatorMessages = new Set(sectionRiskIndicators.map(r => r.message));
-      const originalRisks = (section.risks || []).filter(r => !indicatorMessages.has(r));
-      section.risks = [...originalRisks, ...sectionRiskIndicators.map(r => r.message)];
+
+      const indicatorMessages = new Set(sectionRiskIndicators.map((r) => r.message));
+      const originalRisks = (section.risks || []).filter((r) => !indicatorMessages.has(r));
+      section.risks = [...originalRisks, ...sectionRiskIndicators.map((r) => r.message)];
+
       section.riskScore = (section.riskScore || 0) + sectionRiskIndicators.length;
     }
 
-    // Store all risks (including R6.2) separately for candidate aggregation
-    // This allows R6.2 to still be shown on candidates even though it's not shown on sections
     if (riskIndicators.length > 0) {
       section.candidateRiskIndicators = riskIndicators;
     }
 
-    // Store baseline for reference
-    if (baseline) {
-      section.baseline = baseline;
-    }
-  });
+    if (baseline) section.baseline = baseline;
+  }
 
   const finalResult = {
     sections: targetSections,
-    parties: parties,
-    regions: regions
+    parties,
+    regions
   };
 
   const json = JSON.stringify(finalResult);
-
   const gzipped = zlib.gzipSync(json);
   fs.writeFileSync(path.join(outputDir, `${date}.json.gz`), gzipped);
 }
 
-// Cleanup .json files
-fs.readdirSync(outputDir).forEach(file => {
+// Cleanup .json files (kept as-is)
+for (const file of fs.readdirSync(outputDir)) {
   if (file.endsWith('.json')) {
     fs.unlinkSync(path.join(outputDir, file));
   }
-});
+}
 
 console.log('Done!');
