@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
-import { Section, SectionDetails, PartyResult, ComparativeValue, PartyVotes, CandidateResult, CandidateVotes, RegionCandidate } from '../../../../models/election.models';
+import { Section, SectionDetails, PartyResult, ComparativeValue, PartyVotes, CandidateResult, CandidateVotes, RegionCandidate, TableColumn } from '../../../../models/election.models';
 import { ThemeService } from '../../../../services/theme.service';
 import { ElectionService } from '../../../../services/election';
 import { getPartyAlias } from '../../../../utils/party-aliases';
@@ -20,6 +20,7 @@ import {
 } from '../../../ui/table-helm/src/lib/hlm-table.directives';
 import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-typography.directive';
 import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
+import { HlmInputDirective } from '../../../ui/input-helm/src/lib/hlm-input.directive';
 import {
   HlmCardDirective,
   HlmCardHeaderDirective,
@@ -30,6 +31,7 @@ import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
 import { SortableTableHeaderComponent } from '../../../ui/sortable-table-header/sortable-table-header';
 import { RiskBadgeComponent } from '../../../ui/risk-badge/risk-badge';
 import { RiskAnalysisSummaryComponent } from '../../../ui/risk-analysis-summary/risk-analysis-summary';
+import { ColumnFilterComponent } from '../../../ui/column-filter/column-filter';
 
 @Component({
   selector: 'app-section-detail-modal',
@@ -47,15 +49,20 @@ import { RiskAnalysisSummaryComponent } from '../../../ui/risk-analysis-summary/
     HlmTableCellDirective,
     HlmTypographyDirective,
     HlmTooltipDirective,
+    HlmInputDirective,
     HlmCardDirective,
     PartyFilterComponent,
     BaseModalComponent,
     SortableTableHeaderComponent,
     RiskAnalysisSummaryComponent,
+    ColumnFilterComponent,
   ],
   templateUrl: './section-detail-modal.html'
 })
 export class SectionDetailModalComponent implements OnInit, OnChanges {
+  private readonly leaderCandidateId = '101';
+  private readonly partyColumnsStorageKey = 'visible_section_detail_party_columns';
+  private readonly candidateColumnsStorageKey = 'visible_section_detail_candidate_columns';
   @Input({ required: true }) section!: SectionDetails;
   @Input() currentSectionData?: Section;
   @Input() allParties: { id: string, name: string }[] = [];
@@ -84,12 +91,63 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   votesWithoutPreferencesByParty: { [partyId: string]: { total: number, paper: number, machine: number, partyName: string } } = {};
   otherPartiesWithoutPreferences: { total: number, paper: number, machine: number } | null = null;
   otherPartiesPreferenceVotes: { total: number, paper: number, machine: number } | null = null;
+  partySearchTerm: string = '';
+  candidateSearchTerm: string = '';
+
+  partyColumns: TableColumn[] = [
+    { id: 'partyName', label: 'Партия' },
+    { id: 'total', label: 'Гласове' },
+    { id: 'paper', label: 'Хартиени' },
+    { id: 'machine', label: 'Машинни' },
+    { id: 'percent', label: '%' },
+  ];
+
+  candidateColumns: TableColumn[] = [
+    { id: 'candidateName', label: 'Име' },
+    { id: 'candidateId', label: 'Номер' },
+    { id: 'partyName', label: 'Партия' },
+    { id: 'paper', label: 'Хартиени' },
+    { id: 'machine', label: 'Машинни' },
+    { id: 'percentInSection', label: 'Процент от преференциите' },
+    { id: 'total', label: 'Общо преференции' },
+    { id: 'totalInRegion', label: 'Общо преференции в региона' },
+    { id: 'partyPercentInSection', label: 'Гласове за партия' },
+    { id: 'partyPercentInRegion', label: 'Процент от преференциите на партия в региона' },
+  ];
+
+  visiblePartyColumns = signal<Set<string>>(new Set(this.partyColumns.map(column => column.id)));
+  visibleCandidateColumns = signal<Set<string>>(new Set(this.candidateColumns.map(column => column.id)));
 
   getGoogleMapsUrl = getGoogleMapsUrl;
   formatActivity = formatActivity;
   getPartyAlias = getPartyAlias;
   getPartyKeywords = getPartyKeywords;
   findPartyByKeywords = findPartyByKeywords;
+
+  getVideoUrl(): string | null {
+    const sectionId = this.section?.sectionId;
+    const date = this.date;
+
+    if (!sectionId || !date) return null;
+
+    const regionFromSection = sectionId.length >= 2 ? sectionId.slice(0, 2) : null;
+    const regionRaw = this.currentSectionData?.regionId ?? regionFromSection;
+
+    if (!regionRaw) return null;
+
+    const region = String(regionRaw).padStart(2, '0');
+
+    switch (date) {
+      case '2024.10.27':
+        return `https://evideo.bg/pe202410/${region}.html#${sectionId}`;
+      case '2024.06.09':
+        return `https://evideo.bg/europe2024/${region}.html#${sectionId}`;
+      case '2023.04.02':
+        return `https://evideo.bg/pe202304/rik${region}.html#${sectionId}`;
+      default:
+        return null;
+    }
+  }
   toBp(value: number | null | undefined): number {
     if (value === null || value === undefined) return 0;
     return Math.round(value * 10000);
@@ -105,6 +163,14 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
   get isGroupedByCity(): boolean {
     return this.section.sectionName.startsWith('Общо за');
+  }
+
+  isLeaderCandidate(candidateId: string | number | null | undefined): boolean {
+    return String(candidateId ?? '') === this.leaderCandidateId;
+  }
+
+  getLeaderTooltip(partyName: string): string {
+    return `Водач на листата на ${getPartyAlias(partyName)}`;
   }
 
   get regionAvgTurnout(): number | null {
@@ -150,6 +216,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.loadVisibleColumns();
     this.electionService.getAllData().subscribe(data => {
       this.allData = data;
       if (this.section) {
@@ -185,6 +252,53 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     }
   }
 
+  get visiblePartyColumnCount(): number {
+    return this.visiblePartyColumns().size;
+  }
+
+  get visibleCandidateColumnCount(): number {
+    return this.visibleCandidateColumns().size;
+  }
+
+  get currentColumns(): TableColumn[] {
+    return this.activeTab() === 'parties' ? this.partyColumns : this.candidateColumns;
+  }
+
+  get currentVisibleColumns(): Set<string> {
+    return this.activeTab() === 'parties' ? this.visiblePartyColumns() : this.visibleCandidateColumns();
+  }
+
+  get currentRowCount(): number {
+    return this.activeTab() === 'parties' ? this.filteredPartyResults.length : this.filteredCandidateResults.length;
+  }
+
+  get currentRowCountLabel(): string {
+    return this.activeTab() === 'parties' ? 'Партии' : 'Кандидати';
+  }
+
+  get currentSearchTerm(): string {
+    return this.activeTab() === 'parties' ? this.partySearchTerm : this.candidateSearchTerm;
+  }
+
+  onSearchTermChange(term: string): void {
+    if (this.activeTab() === 'parties') {
+      this.partySearchTerm = term;
+      return;
+    }
+    this.candidateSearchTerm = term;
+  }
+
+  onColumnSelectionChange(selectedIds: Set<string>): void {
+    if (this.activeTab() === 'parties') {
+      this.visiblePartyColumns.set(selectedIds);
+      localStorage.setItem(this.partyColumnsStorageKey, JSON.stringify(Array.from(selectedIds)));
+      return;
+    }
+
+    this.visibleCandidateColumns.set(selectedIds);
+    localStorage.setItem(this.candidateColumnsStorageKey, JSON.stringify(Array.from(selectedIds)));
+  }
+
   get partyVotesMap(): { [partyId: string]: number } {
     const map: { [partyId: string]: number } = {};
     this.section.partyResults.forEach(r => {
@@ -195,7 +309,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
   sortParties(eventOrColumn: string | keyof PartyResult, preserveDir: boolean = false) {
     const column = (typeof eventOrColumn === 'string' ? eventOrColumn : eventOrColumn) as keyof PartyResult;
-    
+
     if (!preserveDir) {
       if (this.partySortColumn === column) {
         this.partySortDir = this.partySortDir === 'asc' ? 'desc' : 'asc';
@@ -216,6 +330,37 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     this.section.partyResults.push(...sorted);
   }
 
+  private loadVisibleColumns(): void {
+    const savedPartyColumns = localStorage.getItem(this.partyColumnsStorageKey);
+    if (savedPartyColumns) {
+      try {
+        const columnsArray = JSON.parse(savedPartyColumns);
+        if (Array.isArray(columnsArray)) {
+          const validColumns = columnsArray.filter(id => this.partyColumns.some(column => column.id === id));
+          if (validColumns.length > 0) {
+            this.visiblePartyColumns.set(new Set(validColumns));
+          }
+        }
+      } catch (error) {
+        console.error('Error parsing saved party modal columns', error);
+      }
+    }
+
+    const savedCandidateColumns = localStorage.getItem(this.candidateColumnsStorageKey);
+    if (!savedCandidateColumns) return;
+    try {
+      const columnsArray = JSON.parse(savedCandidateColumns);
+      if (Array.isArray(columnsArray)) {
+        const validColumns = columnsArray.filter(id => this.candidateColumns.some(column => column.id === id));
+        if (validColumns.length > 0) {
+          this.visibleCandidateColumns.set(new Set(validColumns));
+        }
+      }
+    } catch (error) {
+      console.error('Error parsing saved candidate modal columns', error);
+    }
+  }
+
   get filteredPartyResults(): PartyResult[] {
     let results: PartyResult[] = [];
 
@@ -234,11 +379,29 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       results.push(noVotes);
     }
 
-    return sortArray(
-      results,
-      this.partySortColumn,
-      this.partySortDir
-    );
+    const term = this.partySearchTerm.trim().toLowerCase();
+    if (term) {
+      results = results.filter(r => {
+        const alias = getPartyAlias(r.partyName || '');
+        return alias.toLowerCase().includes(term) || String(r.partyId).toLowerCase().includes(term);
+      });
+    }
+
+    return sortArray(results, this.partySortColumn, this.partySortDir);
+  }
+
+  get filteredCandidateResults(): CandidateResult[] {
+    const term = this.candidateSearchTerm.trim().toLowerCase();
+    if (!term) {
+      return this.candidateResults;
+    }
+
+    return this.candidateResults.filter(candidate => {
+      const partyAlias = getPartyAlias(candidate.partyName || '');
+      return candidate.candidateName.toLowerCase().includes(term) ||
+        String(candidate.candidateId).toLowerCase().includes(term) ||
+        partyAlias.toLowerCase().includes(term);
+    });
   }
 
 
@@ -465,17 +628,17 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       setTimeout(() => {
         this.candidateResults.forEach(candidateResult => {
           // Find the original candidate to get the candidate data
-          const originalCandidate = candidatesToProcess.find(c => 
-            c.candidateId === candidateResult.candidateId && 
+          const originalCandidate = candidatesToProcess.find(c =>
+            c.candidateId === candidateResult.candidateId &&
             c.partyId === candidateResult.partyId
           );
           if (originalCandidate) {
             // For grouped cities, we need to aggregate across all sections in the city
             // For single sections, we just use the sectionId
-            const comparisons = isCity 
+            const comparisons = isCity
               ? this.calculateCandidateComparisonsForCity(originalCandidate, cityName, regionId)
               : this.calculateCandidateComparisons(originalCandidate, section.sectionId);
-            
+
             // Set comparisons for total in section/city (candidate.total)
             candidateResult.comparisons = comparisons.total;
             candidateResult.paperComparisons = comparisons.paper;
@@ -588,7 +751,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       for (const otherCandidate of Object.values(otherSection.candidateVotes) as any[]) {
         const nameMatches = otherCandidate.candidateName.trim().toLowerCase() === candidateNameLower;
         const partyMatches = otherCandidate.partyName.trim().toLowerCase() === candidatePartyLower;
-        
+
         if (nameMatches && partyMatches) {
           foundTotal = otherCandidate.total;
           foundPaper = otherCandidate.paper;
@@ -633,7 +796,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       if (!otherDateData || !otherDateData.sections) return;
 
       // Find all sections in the same city and region in other election
-      const otherCitySections = otherDateData.sections.filter((s: Section) => 
+      const otherCitySections = otherDateData.sections.filter((s: Section) =>
         s.cityName === cityName && s.regionId === regionId
       );
 
@@ -648,7 +811,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
         for (const otherCandidate of Object.values(otherSection.candidateVotes) as any[]) {
           const nameMatches = otherCandidate.candidateName.trim().toLowerCase() === candidateNameLower;
           const partyMatches = otherCandidate.partyName.trim().toLowerCase() === candidatePartyLower;
-          
+
           if (nameMatches && partyMatches) {
             foundTotal += otherCandidate.total;
             foundPaper += otherCandidate.paper;
@@ -710,7 +873,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
   sortCandidates(eventOrColumn: string | keyof CandidateResult, preserveDir: boolean = false) {
     const column = (typeof eventOrColumn === 'string' ? eventOrColumn : eventOrColumn) as keyof CandidateResult;
-    
+
     if (!preserveDir) {
       if (this.candidateSortColumn === column) {
         this.candidateSortDir = this.candidateSortDir === 'asc' ? 'desc' : 'asc';
@@ -1251,7 +1414,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     // Convert CandidateResult to RegionCandidate format
     // Find all sections where this candidate appears
     const candidateSections: Section[] = [];
-    
+
     if (this.allSections.length > 0) {
       // Use provided allSections
       this.allSections.forEach(section => {
@@ -1266,7 +1429,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       // Fallback: use current section data and find other sections from allData
       const regionId = this.currentSectionData.regionId;
       const currentDateData = this.allData[this.date];
-      
+
       if (currentDateData && currentDateData.sections && regionId) {
         const regionSections = currentDateData.sections.filter((s: Section) => s.regionId === regionId);
         regionSections.forEach((section: Section) => {
@@ -1304,13 +1467,13 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
           if (risk.details && risk.details.candidateId) {
             const riskCandidateId = String(risk.details.candidateId);
             const candidateId = String(candidate.candidateId);
-            const partyIdMatches = risk.details.partyId 
-              ? risk.details.partyId === candidate.partyId 
+            const partyIdMatches = risk.details.partyId
+              ? risk.details.partyId === candidate.partyId
               : true;
-            
+
             if (riskCandidateId === candidateId && partyIdMatches) {
               // Deduplicate by code (for unique risks like R6.2, R4.4, etc.)
-              const isUniqueRisk = risk.code === 'R5.1' || risk.code === 'R6.1' || risk.code === 'R6.2' || 
+              const isUniqueRisk = risk.code === 'R5.1' || risk.code === 'R6.1' || risk.code === 'R6.2' ||
                                    risk.code === 'R4.4' || risk.code === 'R2.4' || risk.code === 'R5.2';
               if (isUniqueRisk) {
                 if (!riskIndicatorsMap.has(risk.code)) {
@@ -1328,7 +1491,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
         });
       }
     });
-    
+
     regionCandidate.riskIndicators = Array.from(riskIndicatorsMap.values());
 
     this.openCandidate.emit(regionCandidate);

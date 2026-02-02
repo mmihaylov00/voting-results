@@ -6,88 +6,126 @@
     (close)="close.emit()">
     
     <div style="max-height: calc(90vh - 200px); overflow: auto;">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-3">
+                <input
+                    hlmInput
+                    placeholder="Търсене..."
+                    [value]="searchTerm()"
+                    (input)="searchTerm.set($any($event.target).value)"
+                    class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full sm:max-w-xs h-9" />
+                <app-column-filter
+                    [columns]="protocolColumns"
+                    [selectedColumnIds]="visibleColumns()"
+                    [rowCount]="sortedSections().length"
+                    rowCountLabel="Секции"
+                    (selectedColumnIdsChange)="onColumnSelectionChange($event)" />
+            </div>
             <table hlmTable>
                 <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
                     <tr hlmTableRow>
-                        <th hlmTableHead 
-                            app-sortable-table-header
-                            columnKey="sectionId"
-                            label="Секция"
-                            [currentSortColumn]="sortColumn()"
-                            [sortDirection]="sortDirection()"
-                            (sortChange)="toggleSort($event)"></th>
-                        <th hlmTableHead 
-                            app-sortable-table-header
-                            columnKey="cityName"
-                            label="Град"
-                            [currentSortColumn]="sortColumn()"
-                            [sortDirection]="sortDirection()"
-                            (sortChange)="toggleSort($event)"></th>
-                        <th hlmTableHead 
-                            app-sortable-table-header
-                            columnKey="voted"
-                            label="Подписи"
-                            align="right"
-                            [currentSortColumn]="sortColumn()"
-                            [sortDirection]="sortDirection()"
-                            (sortChange)="toggleSort($event)"></th>
-                        <th hlmTableHead 
-                            app-sortable-table-header
-                            columnKey="protocolPaperVotes"
-                            label="Хартиени"
-                            align="right"
-                            [currentSortColumn]="sortColumn()"
-                            [sortDirection]="sortDirection()"
-                            (sortChange)="toggleSort($event)"></th>
-                        <th hlmTableHead 
-                            app-sortable-table-header
-                            columnKey="protocolMachineVotes"
-                            label="Машинни"
-                            align="right"
-                            [currentSortColumn]="sortColumn()"
-                            [sortDirection]="sortDirection()"
-                            (sortChange)="toggleSort($event)"></th>
-                        <th hlmTableHead 
-                            app-sortable-table-header
-                            columnKey="protocolErrorDiff"
-                            label="Разлика"
-                            align="right"
-                            [currentSortColumn]="sortColumn()"
-                            [sortDirection]="sortDirection()"
-                            (sortChange)="toggleSort($event)"></th>
+                        @if (visibleColumns().has('sectionId')) {
+                            <th hlmTableHead 
+                                app-sortable-table-header
+                                columnKey="sectionId"
+                                label="Секция"
+                                [currentSortColumn]="sortColumn()"
+                                [sortDirection]="sortDirection()"
+                                (sortChange)="toggleSort($event)"></th>
+                        }
+                        @if (visibleColumns().has('cityName')) {
+                            <th hlmTableHead 
+                                app-sortable-table-header
+                                columnKey="cityName"
+                                label="Град"
+                                [currentSortColumn]="sortColumn()"
+                                [sortDirection]="sortDirection()"
+                                (sortChange)="toggleSort($event)"></th>
+                        }
+                        @if (visibleColumns().has('voted')) {
+                            <th hlmTableHead 
+                                app-sortable-table-header
+                                columnKey="voted"
+                                label="Подписи"
+                                align="right"
+                                [currentSortColumn]="sortColumn()"
+                                [sortDirection]="sortDirection()"
+                                (sortChange)="toggleSort($event)"></th>
+                        }
+                        @if (visibleColumns().has('protocolPaperVotes')) {
+                            <th hlmTableHead 
+                                app-sortable-table-header
+                                columnKey="protocolPaperVotes"
+                                label="Хартиени"
+                                align="right"
+                                [currentSortColumn]="sortColumn()"
+                                [sortDirection]="sortDirection()"
+                                (sortChange)="toggleSort($event)"></th>
+                        }
+                        @if (visibleColumns().has('protocolMachineVotes')) {
+                            <th hlmTableHead 
+                                app-sortable-table-header
+                                columnKey="protocolMachineVotes"
+                                label="Машинни"
+                                align="right"
+                                [currentSortColumn]="sortColumn()"
+                                [sortDirection]="sortDirection()"
+                                (sortChange)="toggleSort($event)"></th>
+                        }
+                        @if (visibleColumns().has('protocolErrorDiff')) {
+                            <th hlmTableHead 
+                                app-sortable-table-header
+                                columnKey="protocolErrorDiff"
+                                label="Разлика"
+                                align="right"
+                                [currentSortColumn]="sortColumn()"
+                                [sortDirection]="sortDirection()"
+                                (sortChange)="toggleSort($event)"></th>
+                        }
                     </tr>
                 </thead>
                 <tbody hlmTableBody>
                     @for (section of sortedSections(); track section.sectionId) {
                         <tr hlmTableRow class="hover:bg-muted/30">
-                            <td hlmTableCell class="font-mono text-xs">
-                                <div class="flex items-center gap-1 group">
-                                    <span>{{ section.sectionId }}</span>
-                                    <button hlmBtn variant="ghost" size="icon" class="h-6 w-6 transition-opacity" (click)="copyToClipboard(section.sectionId, $event)" [hlmTooltip]="copiedId() === section.sectionId ? 'Копирано!' : 'Копирай ID на секцията'">
-                                        @if (copiedId() === section.sectionId) {
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-500"><polyline points="20 6 9 17 4 12"/></svg>
-                                        } @else {
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                                        }
-                                    </button>
-                                </div>
-                            </td>
-                            <td hlmTableCell>
-                                <div class="flex items-center gap-1 group">
-                                    <span>{{ section.cityName }}</span>
-                                    <a [href]="getGoogleMapsUrl(section.cityName, section.sectionName)" target="_blank" hlmBtn variant="ghost" size="icon" class="h-6 w-6 transition-opacity" (click)="$event.stopPropagation()" hlmTooltip="Виж в Google Maps">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                                    </a>
-                                </div>
-                            </td>
-                            <td hlmTableCell class="text-right font-medium" [hlmTooltip]="section.comparisons?.['voted']" [currentValue]="section.voted">{{ section.voted }}</td>
-                            <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['totalPaper']" [currentValue]="section.protocolPaperVotes">{{ section.protocolPaperVotes }}</td>
-                            <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['totalMachine']" [currentValue]="section.protocolMachineVotes">{{ section.protocolMachineVotes }}</td>
-                            <td hlmTableCell class="text-right">
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-destructive/10 text-destructive">
-                                    {{ section.protocolErrorDiff }}
-                                </span>
-                            </td>
+                            @if (visibleColumns().has('sectionId')) {
+                                <td hlmTableCell class="font-mono text-xs">
+                                    <div class="flex items-center gap-1 group">
+                                        <span>{{ section.sectionId }}</span>
+                                        <button hlmBtn variant="ghost" size="icon" class="h-6 w-6 transition-opacity" (click)="copyToClipboard(section.sectionId, $event)" [hlmTooltip]="copiedId() === section.sectionId ? 'Копирано!' : 'Копирай ID на секцията'">
+                                            @if (copiedId() === section.sectionId) {
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-500"><polyline points="20 6 9 17 4 12"/></svg>
+                                            } @else {
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                            }
+                                        </button>
+                                    </div>
+                                </td>
+                            }
+                            @if (visibleColumns().has('cityName')) {
+                                <td hlmTableCell>
+                                    <div class="flex items-center gap-1 group">
+                                        <span>{{ section.cityName }}</span>
+                                        <a [href]="getGoogleMapsUrl(section.cityName, section.sectionName)" target="_blank" hlmBtn variant="ghost" size="icon" class="h-6 w-6 transition-opacity" (click)="$event.stopPropagation()" hlmTooltip="Виж в Google Maps">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                        </a>
+                                    </div>
+                                </td>
+                            }
+                            @if (visibleColumns().has('voted')) {
+                                <td hlmTableCell class="text-right font-medium" [hlmTooltip]="section.comparisons?.['voted']" [currentValue]="section.voted">{{ section.voted }}</td>
+                            }
+                            @if (visibleColumns().has('protocolPaperVotes')) {
+                                <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['totalPaper']" [currentValue]="section.protocolPaperVotes">{{ section.protocolPaperVotes }}</td>
+                            }
+                            @if (visibleColumns().has('protocolMachineVotes')) {
+                                <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['totalMachine']" [currentValue]="section.protocolMachineVotes">{{ section.protocolMachineVotes }}</td>
+                            }
+                            @if (visibleColumns().has('protocolErrorDiff')) {
+                                <td hlmTableCell class="text-right">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-destructive/10 text-destructive">
+                                        {{ section.protocolErrorDiff }}
+                                    </span>
+                                </td>
+                            }
                         </tr>
                     }
                 </tbody>

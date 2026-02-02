@@ -533,8 +533,16 @@
                                             <div class="flex flex-col text-xs">
                                                   @for (candidate of getTopCandidates(section); track candidate.candidateName + candidate.partyId) {
                                                       @let alias = getPartyAlias(candidate.partyName);
-                                                      <div class="truncate" [title]="candidate.candidateName + ' (' + alias + '): ' + candidate.total + ' преференциални гласа'">
-                                                          {{ candidate.candidateName }} ({{ alias }}): <strong>{{ candidate.total | number }}</strong>
+                                                      <div class="flex items-center gap-1 truncate" [title]="candidate.candidateName + ' (' + alias + '): ' + candidate.total + ' преференциални гласа'">
+                                                          <span class="truncate">
+                                                            {{ candidate.candidateName }} ({{ alias }}): <strong>{{ candidate.total | number }}</strong>
+                                                          </span>
+                                                          @if (isLeaderCandidate(candidate.candidateId)) {
+                                                            <span class="inline-flex items-center rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary"
+                                                                  [hlmTooltip]="getLeaderTooltip(candidate.partyName)">
+                                                              Водач
+                                                            </span>
+                                                          }
                                                       </div>
                                                   }
                                             </div>
@@ -675,7 +683,17 @@
                                         </td>
                                       }
                                         @if (currentVisibleColumns.has('candidateName')) {
-                                            <td hlmTableCell class="font-medium">{{ candidate.candidateName }}</td>
+                                            <td hlmTableCell class="font-medium">
+                                              <span class="inline-flex items-center gap-2">
+                                                <span>{{ candidate.candidateName }}</span>
+                                                @if (isLeaderCandidate(candidate.candidateId)) {
+                                                  <span class="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary"
+                                                        [hlmTooltip]="getLeaderTooltip(candidate.partyName)">
+                                                    Водач
+                                                  </span>
+                                                }
+                                              </span>
+                                            </td>
                                         }
                                         @if (currentVisibleColumns.has('partyName')) {
                                             <td hlmTableCell>{{ getPartyAlias(candidate.partyName) }}</td>

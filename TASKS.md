@@ -99,7 +99,7 @@ Reduce the size of the compiled election artifacts (`public/data/compiled/<date>
     - No percent floats are emitted (or only where strictly necessary).
     - UI divides by 10000 when displaying.
 
-- [ ] **T5.2: Shorten key names for hot-path repeated structures (optional)**
+- [x] **T5.2: Shorten key names for hot-path repeated structures (optional)**
   - For comparison entries:
     - `{ v, d }` already covered
   - For common numeric fields:
@@ -118,7 +118,7 @@ Reduce the size of the compiled election artifacts (`public/data/compiled/<date>
   - Acceptance:
     - Output file sizes decrease measurably vs baseline.
 
-- [ ] **T6.2: Add Brotli output (optional, best size)**
+- [x] **T6.2: Add Brotli output (optional, best size)**
   - Produce:
     - `${date}.json.br` alongside `.gz`
   - Acceptance:

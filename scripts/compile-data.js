@@ -6,6 +6,9 @@ const zlib = require('zlib');
 const elections = JSON.parse(
   fs.readFileSync(path.join(__dirname, '../src/assets/elections.json'), 'utf8')
 );
+const compactMapping = JSON.parse(
+  fs.readFileSync(path.join(__dirname, '../src/assets/compact-mapping.json'), 'utf8')
+);
 
 const baseDataDir = path.join(__dirname, '../public/data');
 const outputDir = path.join(baseDataDir, 'compiled');
@@ -103,6 +106,102 @@ function buildPartyNormalization(parties) {
     normByPid[pid] = normalizePartyName(parties[pid] || pid);
   }
   return normByPid;
+}
+
+function compactPartyVotesMap(partyVotes, mapping) {
+  if (!partyVotes) return partyVotes;
+  const out = Object.create(null);
+  for (const pid in partyVotes) {
+    const pv = partyVotes[pid];
+    const compact = {...pv};
+    compact[mapping.total] = pv.total;
+    compact[mapping.paper] = pv.paper;
+    compact[mapping.machine] = pv.machine;
+    delete compact.total;
+    delete compact.paper;
+    delete compact.machine;
+    out[pid] = compact;
+  }
+  return out;
+}
+
+function compactCandidateVotesMap(candidateVotes, mapping) {
+  if (!candidateVotes) return candidateVotes;
+  const out = Object.create(null);
+  for (const key in candidateVotes) {
+    const cv = candidateVotes[key];
+    const compact = {...cv};
+    compact[mapping.total] = cv.total;
+    compact[mapping.paper] = cv.paper;
+    compact[mapping.machine] = cv.machine;
+    delete compact.total;
+    delete compact.paper;
+    delete compact.machine;
+    out[key] = compact;
+  }
+  return out;
+}
+
+function compactTopParties(topParties, mapping) {
+  if (!topParties) return topParties;
+  return topParties.map((tp) => {
+    const compact = {...tp};
+    compact[mapping.percentBp] = tp.percentBp;
+    delete compact.percentBp;
+    return compact;
+  });
+}
+
+function compactSection(section, mapping) {
+  const out = {...section};
+  out[mapping.section.total] = section.total;
+  out[mapping.section.voted] = section.voted;
+  out[mapping.section.discardedVotes] = section.discardedVotes;
+  out[mapping.section.noVotes] = section.noVotes;
+  if (section.noVotesPaper !== undefined) out[mapping.section.noVotesPaper] = section.noVotesPaper;
+  if (section.noVotesMachine !== undefined) out[mapping.section.noVotesMachine] = section.noVotesMachine;
+  if (section.totalPaper !== undefined) out[mapping.section.totalPaper] = section.totalPaper;
+  if (section.totalMachine !== undefined) out[mapping.section.totalMachine] = section.totalMachine;
+  out[mapping.section.activityBp] = section.activityBp;
+  delete out.total;
+  delete out.voted;
+  delete out.discardedVotes;
+  delete out.noVotes;
+  delete out.noVotesPaper;
+  delete out.noVotesMachine;
+  delete out.totalPaper;
+  delete out.totalMachine;
+  delete out.activityBp;
+
+  out.partyVotes = compactPartyVotesMap(section.partyVotes, mapping.partyVotes);
+  if (section.candidateVotes) {
+    out.candidateVotes = compactCandidateVotesMap(section.candidateVotes, mapping.candidateVotes);
+  }
+  out.topParties = compactTopParties(section.topParties, mapping.topParties);
+  return out;
+}
+
+function compactRegion(region, mapping) {
+  const out = {...region};
+  out[mapping.region.total] = region.total;
+  out[mapping.region.voted] = region.voted;
+  if (region.discardedVotes !== undefined) out[mapping.region.discardedVotes] = region.discardedVotes;
+  if (region.noVotes !== undefined) out[mapping.region.noVotes] = region.noVotes;
+  if (region.totalPaper !== undefined) out[mapping.region.totalPaper] = region.totalPaper;
+  if (region.totalMachine !== undefined) out[mapping.region.totalMachine] = region.totalMachine;
+  if (region.avgTurnoutBp !== undefined) out[mapping.region.avgTurnoutBp] = region.avgTurnoutBp;
+  if (region.partyPercentsBp !== undefined) out[mapping.region.partyPercentsBp] = region.partyPercentsBp;
+  delete out.total;
+  delete out.voted;
+  delete out.discardedVotes;
+  delete out.noVotes;
+  delete out.totalPaper;
+  delete out.totalMachine;
+  delete out.avgTurnoutBp;
+  delete out.partyPercentsBp;
+
+  out.topParties = compactTopParties(region.topParties, mapping.topParties);
+  return out;
 }
 
 function parseSections(text) {
@@ -1885,9 +1984,9 @@ for (const date of dates) {
   const candidates = Array.from(candidatesMap.values());
 
   const finalResult = {
-    sections: targetSections,
+    sections: targetSections.map((s) => compactSection(s, compactMapping)),
     parties,
-    regions,
+    regions: regions.map((r) => compactRegion(r, compactMapping)),
     candidates
   };
 
@@ -1915,6 +2014,10 @@ for (const date of dates) {
   const ratio = rawBytes > 0 ? (gzipBytes / rawBytes).toFixed(3) : '0.000';
   console.log(`Output size ${date}: rawBytes=${rawBytes} gzipBytes=${gzipBytes} ratio=${ratio}`);
   fs.writeFileSync(path.join(outputDir, `${date}.json.gz`), gzipped);
+  const brotli = zlib.brotliCompressSync(Buffer.from(json), {
+    params: {[zlib.constants.BROTLI_PARAM_QUALITY]: 11},
+  });
+  fs.writeFileSync(path.join(outputDir, `${date}.json.br`), brotli);
 }
 
 // Cleanup .json files (kept as-is)

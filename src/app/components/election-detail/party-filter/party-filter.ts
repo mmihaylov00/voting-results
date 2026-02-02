@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, signal, OnChanges, SimpleChanges } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, signal, OnChanges, SimpleChanges, ElementRef, Inject, OnDestroy } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HlmButtonDirective } from '../../ui/button-helm/src/lib/hlm-button.directive';
 import { getPartyAlias } from '../../../utils/party-aliases';
@@ -12,12 +12,9 @@ import { getPartyAlias } from '../../../utils/party-aliases';
     FormsModule,
     HlmButtonDirective,
   ],
-  templateUrl: './party-filter.html',
-  host: {
-    '(document:click)': 'closeDropdown()'
-  }
+  templateUrl: './party-filter.html'
 })
-export class PartyFilterComponent implements OnChanges {
+export class PartyFilterComponent implements OnChanges, OnDestroy {
   @Input() parties: { id: string, name: string }[] = [];
   @Input() selectedPartyIds: Set<string> = new Set();
   @Input() showVotes: boolean = false;
@@ -25,6 +22,7 @@ export class PartyFilterComponent implements OnChanges {
   @Output() selectedPartyIdsChange = new EventEmitter<Set<string>>();
 
   showDropdown = signal<boolean>(false);
+  private readonly onDocumentClick: (event: MouseEvent) => void;
 
   get sortedParties(): { id: string, name: string }[] {
     const priorityOrder = [
@@ -111,11 +109,29 @@ export class PartyFilterComponent implements OnChanges {
 
   getPartyAlias = getPartyAlias;
 
+  constructor(
+    private elementRef: ElementRef<HTMLElement>,
+    @Inject(DOCUMENT) private document: Document
+  ) {
+    this.onDocumentClick = (event: MouseEvent) => {
+      if (!this.showDropdown()) return;
+      const target = event.target as Node | null;
+      if (target && this.elementRef.nativeElement.contains(target)) return;
+      this.closeDropdown();
+    };
+
+    this.document.addEventListener('click', this.onDocumentClick, true);
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     // Ensure the component updates when selectedPartyIds input changes
     if (changes['selectedPartyIds'] && !changes['selectedPartyIds'].firstChange) {
       // Force change detection by accessing the signal
       this.showDropdown.set(this.showDropdown());
     }
+  }
+
+  ngOnDestroy(): void {
+    this.document.removeEventListener('click', this.onDocumentClick, true);
   }
 }

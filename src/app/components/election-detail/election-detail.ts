@@ -81,6 +81,7 @@ import { RiskFilterDropdownComponent, RiskCategory } from '../ui/risk-filter-dro
   styleUrl: './election-detail.scss',
 })
 export class ElectionDetailComponent implements OnInit {
+  private readonly leaderCandidateId = '101';
   loading$: Observable<boolean>;
   date: string = '';
   regionId: string = '';
@@ -206,6 +207,14 @@ export class ElectionDetailComponent implements OnInit {
     }
 
     return riskLines.join('\n');
+  }
+
+  isLeaderCandidate(candidateId: string | number | null | undefined): boolean {
+    return String(candidateId ?? '') === this.leaderCandidateId;
+  }
+
+  getLeaderTooltip(partyName: string): string {
+    return `Водач на листата на ${getPartyAlias(partyName)}`;
   }
   viewMode = signal<ViewMode>('sections');
   groupByCity = signal<boolean>(false);
@@ -970,6 +979,7 @@ export class ElectionDetailComponent implements OnInit {
         .sort((a, b) => b.total - a.total)
         .slice(0, 3)
         .map(c => ({
+          candidateId: c.candidateId,
           candidateName: c.candidateName,
           partyId: c.partyId,
           partyName: c.partyName,
@@ -1769,6 +1779,32 @@ export class ElectionDetailComponent implements OnInit {
         votesWithoutPreferencesByParty: Object.keys(votesWithoutPreferencesByParty).length > 0 ? votesWithoutPreferencesByParty : undefined
       };
 
+      // Aggregate risks from all sections (section-level + candidate-level)
+      const aggregatedRiskIndicators: any[] = [];
+      g.sections.forEach((s: Section) => {
+        const sectionRisks = s.riskIndicators || [];
+        sectionRisks.forEach((risk: any) => {
+          aggregatedRiskIndicators.push({
+            ...risk,
+            details: {
+              ...(risk.details || {}),
+              sectionId: s.sectionId
+            }
+          });
+        });
+
+        const candidateRisks = (s as any).candidateRiskIndicators || [];
+        candidateRisks.forEach((risk: any) => {
+          aggregatedRiskIndicators.push({
+            ...risk,
+            details: {
+              ...(risk.details || {}),
+              sectionId: s.sectionId
+            }
+          });
+        });
+      });
+
       // Create a virtual Section object for comparisons with aggregated candidate votes
       // Get regionId from the first section in the group
       const firstSection = g.sections[0] as Section;
@@ -1776,7 +1812,9 @@ export class ElectionDetailComponent implements OnInit {
         ...section,
         regionId: firstSection.regionId, // Ensure regionId is set from the first section
         comparisons: {},
-        candidateVotes: Object.keys(aggregatedCandidateVotes).length > 0 ? aggregatedCandidateVotes : undefined
+        candidateVotes: Object.keys(aggregatedCandidateVotes).length > 0 ? aggregatedCandidateVotes : undefined,
+        riskIndicators: aggregatedRiskIndicators,
+        riskScore: aggregatedRiskIndicators.length
       };
 
       // Aggregate comparisons

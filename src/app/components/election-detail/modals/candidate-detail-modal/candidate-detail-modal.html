@@ -6,101 +6,159 @@
     (close)="closeModal()">
 
     <div class="flex flex-col gap-4" style="max-height: calc(90vh - 200px); overflow-y: auto;">
+        @if (isLeaderCandidate(candidate.candidateId)) {
+            <div class="flex items-center">
+                <span class="inline-flex items-center rounded-full bg-primary/10 px-2 py-1 text-xs font-semibold text-primary"
+                      [hlmTooltip]="getLeaderTooltip(candidate.partyName)">
+                    Водач на листата
+                </span>
+            </div>
+        }
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <input
+                hlmInput
+                placeholder="Търсене..."
+                [value]="searchTerm"
+                (input)="onSearchTermChange($any($event.target).value)"
+                class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full sm:max-w-xs h-9" />
+            <app-column-filter
+                [columns]="candidateColumns"
+                [selectedColumnIds]="visibleColumns"
+                [rowCount]="filteredSectionData.length"
+                rowCountLabel="Секции"
+                (selectedColumnIdsChange)="onColumnSelectionChange($event)" />
+        </div>
         <div class="overflow-x-auto">
             <table hlmTable class="min-w-full">
                 <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
                     <tr hlmTableRow class="hover:bg-transparent">
-                        <th hlmTableHead
-                            app-sortable-table-header
-                            columnKey="sectionId"
-                            label="Секция"
-                            [currentSortColumn]="sortColumn"
-                            [sortDirection]="sortDir"
-                            (sortChange)="toggleSort($event)"></th>
-                        <th hlmTableHead
-                            app-sortable-table-header
-                            columnKey="cityName"
-                            label="Град"
-                            [currentSortColumn]="sortColumn"
-                            [sortDirection]="sortDir"
-                            (sortChange)="toggleSort($event)"></th>
-                        <th hlmTableHead
-                            app-sortable-table-header
-                            columnKey="sectionName"
-                            label="Име на секция"
-                            [currentSortColumn]="sortColumn"
-                            [sortDirection]="sortDir"
-                            (sortChange)="toggleSort($event)"></th>
-                        <th hlmTableHead
-                            app-sortable-table-header
-                            columnKey="paper"
-                            label="Хартиени"
-                            align="right"
-                            [currentSortColumn]="sortColumn"
-                            [sortDirection]="sortDir"
-                            (sortChange)="toggleSort($event)"></th>
-                        <th hlmTableHead
-                            app-sortable-table-header
-                            columnKey="machine"
-                            label="Машинни"
-                            align="right"
-                            [currentSortColumn]="sortColumn"
-                            [sortDirection]="sortDir"
-                            (sortChange)="toggleSort($event)"></th>
-                        <th hlmTableHead
-                            app-sortable-table-header
-                            columnKey="total"
-                            label="Общо"
-                            align="right"
-                            [currentSortColumn]="sortColumn"
-                            [sortDirection]="sortDir"
-                            (sortChange)="toggleSort($event)"></th>
-                        <th hlmTableHead
-                            app-sortable-table-header
-                            columnKey="percentInSection"
-                            label="% от гласовете в секцията"
-                            align="right"
-                            [currentSortColumn]="sortColumn"
-                            [sortDirection]="sortDir"
-                            (sortChange)="toggleSort($event)"></th>
-                        <th hlmTableHead
-                            app-sortable-table-header
-                            columnKey="partyPercentInSection"
-                            label="% от гласовете за партията в секцията"
-                            align="right"
-                            [currentSortColumn]="sortColumn"
-                            [sortDirection]="sortDir"
-                            (sortChange)="toggleSort($event)"></th>
-                        <th hlmTableHead>Рискове</th>
+                        @if (visibleColumns.has('sectionId')) {
+                            <th hlmTableHead
+                                app-sortable-table-header
+                                columnKey="sectionId"
+                                label="Секция"
+                                [currentSortColumn]="sortColumn"
+                                [sortDirection]="sortDir"
+                                (sortChange)="toggleSort($event)"></th>
+                        }
+                        @if (visibleColumns.has('cityName')) {
+                            <th hlmTableHead
+                                app-sortable-table-header
+                                columnKey="cityName"
+                                label="Град"
+                                [currentSortColumn]="sortColumn"
+                                [sortDirection]="sortDir"
+                                (sortChange)="toggleSort($event)"></th>
+                        }
+                        @if (visibleColumns.has('sectionName')) {
+                            <th hlmTableHead
+                                app-sortable-table-header
+                                columnKey="sectionName"
+                                label="Име на секция"
+                                [currentSortColumn]="sortColumn"
+                                [sortDirection]="sortDir"
+                                (sortChange)="toggleSort($event)"></th>
+                        }
+                        @if (visibleColumns.has('paper')) {
+                            <th hlmTableHead
+                                app-sortable-table-header
+                                columnKey="paper"
+                                label="Хартиени"
+                                align="right"
+                                [currentSortColumn]="sortColumn"
+                                [sortDirection]="sortDir"
+                                (sortChange)="toggleSort($event)"></th>
+                        }
+                        @if (visibleColumns.has('machine')) {
+                            <th hlmTableHead
+                                app-sortable-table-header
+                                columnKey="machine"
+                                label="Машинни"
+                                align="right"
+                                [currentSortColumn]="sortColumn"
+                                [sortDirection]="sortDir"
+                                (sortChange)="toggleSort($event)"></th>
+                        }
+                        @if (visibleColumns.has('total')) {
+                            <th hlmTableHead
+                                app-sortable-table-header
+                                columnKey="total"
+                                label="Общо"
+                                align="right"
+                                [currentSortColumn]="sortColumn"
+                                [sortDirection]="sortDir"
+                                (sortChange)="toggleSort($event)"></th>
+                        }
+                        @if (visibleColumns.has('percentInSection')) {
+                            <th hlmTableHead
+                                app-sortable-table-header
+                                columnKey="percentInSection"
+                                label="% от гласовете в секцията"
+                                align="right"
+                                [currentSortColumn]="sortColumn"
+                                [sortDirection]="sortDir"
+                                (sortChange)="toggleSort($event)"></th>
+                        }
+                        @if (visibleColumns.has('partyPercentInSection')) {
+                            <th hlmTableHead
+                                app-sortable-table-header
+                                columnKey="partyPercentInSection"
+                                label="% от гласовете за партията в секцията"
+                                align="right"
+                                [currentSortColumn]="sortColumn"
+                                [sortDirection]="sortDir"
+                                (sortChange)="toggleSort($event)"></th>
+                        }
+                        @if (visibleColumns.has('risks')) {
+                            <th hlmTableHead>Рискове</th>
+                        }
                     </tr>
                 </thead>
                 <tbody hlmTableBody>
-                    @for (data of sectionData; track data.sectionId) {
+                    @for (data of filteredSectionData; track data.sectionId) {
                         <tr hlmTableRow
                             class="hover:bg-primary/10 transition-colors cursor-pointer"
                             (click)="onRowClick(data)">
-                            <td hlmTableCell>{{ data.sectionId }}</td>
-                            <td hlmTableCell>{{ data.cityName }}</td>
-                            <td hlmTableCell>{{ data.sectionName }}</td>
-                            <td hlmTableCell class="text-right" [hlmTooltip]="data.paperComparisons" [currentValue]="data.paper">{{ data.paper | number }}</td>
-                            <td hlmTableCell class="text-right" [hlmTooltip]="data.machineComparisons" [currentValue]="data.machine">{{ data.machine | number }}</td>
-                            <td hlmTableCell class="text-right font-semibold" [hlmTooltip]="data.comparisons" [currentValue]="data.total">{{ data.total | number }}</td>
-                            <td hlmTableCell class="text-right">{{ data.percentInSection | number:'1.2-2' }}%</td>
-                            <td hlmTableCell class="text-right">{{ data.partyPercentInSection | number:'1.2-2' }}%</td>
-                            <td hlmTableCell>
-                                @if (data.risks && data.risks.length > 0) {
-                                    <div class="flex flex-wrap gap-1">
-                                        @for (risk of data.risks; track risk.code) {
-                                            <app-risk-badge [risk]="risk" size="small" displayMode="compact" [context]="{ section: data.section, candidate: candidate, partiesById: partiesById }" />
-                                        }
-                                    </div>
-                                }
-                            </td>
+                            @if (visibleColumns.has('sectionId')) {
+                                <td hlmTableCell>{{ data.sectionId }}</td>
+                            }
+                            @if (visibleColumns.has('cityName')) {
+                                <td hlmTableCell>{{ data.cityName }}</td>
+                            }
+                            @if (visibleColumns.has('sectionName')) {
+                                <td hlmTableCell>{{ data.sectionName }}</td>
+                            }
+                            @if (visibleColumns.has('paper')) {
+                                <td hlmTableCell class="text-right" [hlmTooltip]="data.paperComparisons" [currentValue]="data.paper">{{ data.paper | number }}</td>
+                            }
+                            @if (visibleColumns.has('machine')) {
+                                <td hlmTableCell class="text-right" [hlmTooltip]="data.machineComparisons" [currentValue]="data.machine">{{ data.machine | number }}</td>
+                            }
+                            @if (visibleColumns.has('total')) {
+                                <td hlmTableCell class="text-right font-semibold" [hlmTooltip]="data.comparisons" [currentValue]="data.total">{{ data.total | number }}</td>
+                            }
+                            @if (visibleColumns.has('percentInSection')) {
+                                <td hlmTableCell class="text-right">{{ data.percentInSection | number:'1.2-2' }}%</td>
+                            }
+                            @if (visibleColumns.has('partyPercentInSection')) {
+                                <td hlmTableCell class="text-right">{{ data.partyPercentInSection | number:'1.2-2' }}%</td>
+                            }
+                            @if (visibleColumns.has('risks')) {
+                                <td hlmTableCell>
+                                    @if (data.risks && data.risks.length > 0) {
+                                        <div class="flex flex-wrap gap-1">
+                                            @for (risk of data.risks; track risk.code) {
+                                                <app-risk-badge [risk]="risk" size="small" displayMode="compact" [context]="{ section: data.section, candidate: candidate, partiesById: partiesById }" />
+                                            }
+                                        </div>
+                                    }
+                                </td>
+                            }
                         </tr>
                     }
-                    @if (sectionData.length === 0) {
+                    @if (filteredSectionData.length === 0) {
                         <tr hlmTableRow>
-                            <td hlmTableCell [attr.colspan]="9" class="text-center text-muted-foreground py-8">
+                            <td hlmTableCell [attr.colspan]="visibleColumnCount" class="text-center text-muted-foreground py-8">
                                 Няма данни за преференции в секциите
                             </td>
                         </tr>

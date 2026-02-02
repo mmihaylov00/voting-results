@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Section, RegionCandidate } from '../../../../models/election.models';
+import { Section, RegionCandidate, TableColumn } from '../../../../models/election.models';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmTableBodyDirective,
@@ -12,13 +12,16 @@ import {
 } from '../../../ui/table-helm/src/lib/hlm-table.directives';
 import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-typography.directive';
 import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
+import { HlmInputDirective } from '../../../ui/input-helm/src/lib/hlm-input.directive';
 import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
 import { RiskBadgeComponent } from '../../../ui/risk-badge/risk-badge';
 import { RiskAnalysisSummaryComponent } from '../../../ui/risk-analysis-summary/risk-analysis-summary';
 import { SortableTableHeaderComponent } from '../../../ui/sortable-table-header/sortable-table-header';
+import { ColumnFilterComponent } from '../../../ui/column-filter/column-filter';
 import { sortArray, getDefaultSortDirection } from '../../../../utils/table-sort.util';
 import { ComparativeValue } from '../../../../models/election.models';
 import { ElectionService } from '../../../../services/election';
+import { getPartyAlias } from '../../../../utils/party-aliases';
 
 export interface CandidateSectionData {
   sectionId: string;
@@ -49,33 +52,60 @@ export interface CandidateSectionData {
     HlmTableHeadDirective,
     HlmTableCellDirective,
     HlmTooltipDirective,
+    HlmInputDirective,
     BaseModalComponent,
     RiskBadgeComponent,
     RiskAnalysisSummaryComponent,
     SortableTableHeaderComponent,
+    ColumnFilterComponent,
   ],
   templateUrl: './candidate-detail-modal.html'
 })
 export class CandidateDetailModalComponent implements OnInit {
+  private readonly leaderCandidateId = '101';
+  private readonly visibleColumnsStorageKey = 'visible_candidate_detail_columns';
   @Input({ required: true }) candidate!: RegionCandidate;
   @Input({ required: true }) sections: Section[] = [];
   @Input() currentDate: string = '';
   @Output() close = new EventEmitter<void>();
   @Output() openSection = new EventEmitter<Section>();
 
+  searchTerm: string = '';
   sectionData: CandidateSectionData[] = [];
   allData: { [date: string]: { sections: Section[], parties: { [id: string]: string }, regions: any[] } } = {};
 
   sortColumn: keyof CandidateSectionData = 'total';
   sortDir: 'asc' | 'desc' = 'desc';
 
+  candidateColumns: TableColumn[] = [
+    { id: 'sectionId', label: 'Секция' },
+    { id: 'cityName', label: 'Град' },
+    { id: 'sectionName', label: 'Име на секция' },
+    { id: 'paper', label: 'Хартиени' },
+    { id: 'machine', label: 'Машинни' },
+    { id: 'total', label: 'Общо' },
+    { id: 'percentInSection', label: '% от гласовете в секцията' },
+    { id: 'partyPercentInSection', label: '% от гласовете за партията в секцията' },
+    { id: 'risks', label: 'Рискове' },
+  ];
+  visibleColumns: Set<string> = new Set(this.candidateColumns.map(column => column.id));
+
   constructor(private electionService: ElectionService) {}
+
+  isLeaderCandidate(candidateId: string | number | null | undefined): boolean {
+    return String(candidateId ?? '') === this.leaderCandidateId;
+  }
+
+  getLeaderTooltip(partyName: string): string {
+    return `Водач на листата на ${getPartyAlias(partyName)}`;
+  }
 
   get partiesById(): { [id: string]: string } {
     return this.allData[this.currentDate]?.parties || {};
   }
 
   ngOnInit(): void {
+    this.loadVisibleColumns();
     // Load all election data for comparisons
     this.electionService.getAllData().subscribe(data => {
       this.allData = data;
@@ -182,6 +212,27 @@ export class CandidateDetailModalComponent implements OnInit {
     this.sortSectionData(this.sortColumn, true);
   }
 
+  get visibleColumnCount(): number {
+    return this.visibleColumns.size;
+  }
+
+  get filteredSectionData(): CandidateSectionData[] {
+    const term = this.searchTerm.trim().toLowerCase();
+    if (!term) {
+      return this.sectionData;
+    }
+
+    return this.sectionData.filter(data =>
+      String(data.sectionId).toLowerCase().includes(term) ||
+      data.cityName.toLowerCase().includes(term) ||
+      data.sectionName.toLowerCase().includes(term)
+    );
+  }
+
+  onSearchTermChange(term: string): void {
+    this.searchTerm = term;
+  }
+
   toggleSort(column: string): void {
     const typedColumn = column as keyof CandidateSectionData;
     if (this.sortColumn === typedColumn) {
@@ -203,6 +254,27 @@ export class CandidateDetailModalComponent implements OnInit {
     const sorted = sortArray(this.sectionData, this.sortColumn, this.sortDir);
     this.sectionData.length = 0;
     this.sectionData.push(...sorted);
+  }
+
+  onColumnSelectionChange(selectedIds: Set<string>): void {
+    this.visibleColumns = selectedIds;
+    localStorage.setItem(this.visibleColumnsStorageKey, JSON.stringify(Array.from(selectedIds)));
+  }
+
+  private loadVisibleColumns(): void {
+    const savedColumns = localStorage.getItem(this.visibleColumnsStorageKey);
+    if (!savedColumns) return;
+    try {
+      const columnsArray = JSON.parse(savedColumns);
+      if (Array.isArray(columnsArray)) {
+        const validColumns = columnsArray.filter(id => this.candidateColumns.some(column => column.id === id));
+        if (validColumns.length > 0) {
+          this.visibleColumns = new Set(validColumns);
+        }
+      }
+    } catch (error) {
+      console.error('Error parsing saved candidate modal columns', error);
+    }
   }
 
   calculateCandidateComparisons(sectionId: string, candidateVotes: any): { total?: ComparativeValue[], paper?: ComparativeValue[], machine?: ComparativeValue[] } {

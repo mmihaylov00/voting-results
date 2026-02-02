@@ -1,15 +1,15 @@
-<div class="relative inline-flex items-center gap-2">
+<div class="flex flex-row gap-2 w-full">
   @if (rowCount !== undefined) {
     <span class="inline-flex items-center justify-center px-3 py-1.5 rounded-full text-sm font-semibold bg-primary/10 text-primary-foreground dark:text-primary border border-primary/20 mr-2 min-w-[3rem]">
       {{ rowCountLabel }}: {{ rowCount }}
     </span>
   }
-  <button 
-    hlmBtn 
-    variant="outline" 
-    size="icon" 
-    (click)="toggleDropdown($event)" 
-    hlmTooltip="Филтър колони" 
+  <button
+    hlmBtn
+    variant="outline"
+    size="icon"
+    (click)="toggleDropdown($event)"
+    hlmTooltip="Филтър колони"
     class="border-primary/50 text-secondary hover:bg-primary hover:text-secondary dark:border-secondary/50 dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <rect x="3" y="3" width="18" height="18" rx="2"/>
@@ -19,13 +19,13 @@
     </svg>
   </button>
   @if (showDropdown()) {
-    <div class="absolute right-0 mt-2 w-56 max-h-96 overflow-auto bg-popover text-popover-foreground border border-primary/20 rounded-md shadow-md z-[120] p-2" (click)="$event.stopPropagation()">
+    <div class="absolute right-0 mt-8 w-64 max-h-96 overflow-auto bg-popover text-popover-foreground border border-primary/20 rounded-md shadow-md z-[120] p-2" (click)="$event.stopPropagation()">
       @for (column of filteredColumns; track column.id) {
         <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleColumn(column.id, $event)">
-          <input 
-            type="checkbox" 
-            [checked]="selectedColumnIds.has(column.id)" 
-            class="cursor-pointer" 
+          <input
+            type="checkbox"
+            [checked]="selectedColumnIds.has(column.id)"
+            class="cursor-pointer"
             (click)="$event.stopPropagation(); toggleColumn(column.id, $event)" />
           <span class="text-sm">{{ column.label }}</span>
         </div>
