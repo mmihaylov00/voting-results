@@ -8,6 +8,7 @@ import { ThemeService } from '../../../../services/theme.service';
 import { ElectionService } from '../../../../services/election';
 import { getPartyAlias } from '../../../../utils/party-aliases';
 import { formatActivity, getGoogleMapsUrl, getPartyKeywords, findPartyByKeywords } from '../../../../utils/common.utils';
+import { sortArray, getDefaultSortDirection } from '../../../../utils/table-sort.util';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmTableBodyDirective,
@@ -28,6 +29,7 @@ import { PartyFilterComponent } from '../../party-filter/party-filter';
 import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
 import { SortableTableHeaderComponent } from '../../../ui/sortable-table-header/sortable-table-header';
 import { RiskBadgeComponent } from '../../../ui/risk-badge/risk-badge';
+import { RiskAnalysisSummaryComponent } from '../../../ui/risk-analysis-summary/risk-analysis-summary';
 
 @Component({
   selector: 'app-section-detail-modal',
@@ -49,6 +51,7 @@ import { RiskBadgeComponent } from '../../../ui/risk-badge/risk-badge';
     PartyFilterComponent,
     BaseModalComponent,
     SortableTableHeaderComponent,
+    RiskAnalysisSummaryComponent,
   ],
   templateUrl: './section-detail-modal.html'
 })
@@ -152,8 +155,10 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
   onPartySelectionChange(selectedIds: Set<string>) {
     this.selectedPartyIds = selectedIds;
-    // Recalculate candidate results to update other parties aggregates
+    // Recalculate candidate results to filter by selected parties
     this.calculateCandidateResults();
+    // Update charts to reflect filtered candidates
+    this.updateChartOptions();
     // Update historical charts when party selection changes
     if (Object.keys(this.allData).length > 0) {
       this.updateHistoricalCharts();
@@ -171,27 +176,24 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   sortParties(eventOrColumn: string | keyof PartyResult, preserveDir: boolean = false) {
     const column = (typeof eventOrColumn === 'string' ? eventOrColumn : eventOrColumn) as keyof PartyResult;
     
-    if (this.partySortColumn === column && !preserveDir) {
-      this.partySortDir = this.partySortDir === 'asc' ? 'desc' : 'asc';
-    } else if (!preserveDir) {
-      this.partySortColumn = column;
-      this.partySortDir = column === 'partyName' ? 'asc' : 'desc';
+    if (!preserveDir) {
+      if (this.partySortColumn === column) {
+        this.partySortDir = this.partySortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        this.partySortColumn = column;
+        this.partySortDir = getDefaultSortDirection(column as string, column === 'partyName');
+      }
     }
 
-    this.section.partyResults.sort((a, b) => {
-      const valA = a[this.partySortColumn];
-      const valB = b[this.partySortColumn];
+    const sorted = sortArray(
+      this.section.partyResults,
+      this.partySortColumn,
+      this.partySortDir
+    );
 
-      if (typeof valA === 'string' && typeof valB === 'string') {
-        return this.partySortDir === 'asc'
-          ? valA.localeCompare(valB)
-          : valB.localeCompare(valA);
-      }
-
-      return this.partySortDir === 'asc'
-        ? (valA as number) - (valB as number)
-        : (valB as number) - (valA as number);
-    });
+    // Update the array in place
+    this.section.partyResults.length = 0;
+    this.section.partyResults.push(...sorted);
   }
 
   get filteredPartyResults(): PartyResult[] {
@@ -212,20 +214,11 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       results.push(noVotes);
     }
 
-    return results.sort((a, b) => {
-      const valA = a[this.partySortColumn];
-      const valB = b[this.partySortColumn];
-
-      if (typeof valA === 'string' && typeof valB === 'string') {
-        return this.partySortDir === 'asc'
-          ? valA.localeCompare(valB)
-          : valB.localeCompare(valA);
-      }
-
-      return this.partySortDir === 'asc'
-        ? (valA as number) - (valB as number)
-        : (valB as number) - (valA as number);
-    });
+    return sortArray(
+      results,
+      this.partySortColumn,
+      this.partySortDir
+    );
   }
 
 
@@ -415,7 +408,12 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       }
     });
 
-    Object.values(candidateVotes).forEach(candidate => {
+    // Filter candidates by selected parties if any are selected
+    const candidatesToProcess = this.selectedPartyIds.size > 0
+      ? Object.values(candidateVotes).filter(c => this.selectedPartyIds.has(c.partyId))
+      : Object.values(candidateVotes);
+
+    candidatesToProcess.forEach(candidate => {
       const key = `${candidate.partyId}_${candidate.candidateId}`;
       // Get party total from partyResults (works for both single sections and grouped cities)
       const partyTotalInSection = partyVotesMap[candidate.partyId] || 0;
@@ -546,27 +544,25 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   sortCandidates(eventOrColumn: string | keyof CandidateResult, preserveDir: boolean = false) {
     const column = (typeof eventOrColumn === 'string' ? eventOrColumn : eventOrColumn) as keyof CandidateResult;
     
-    if (this.candidateSortColumn === column && !preserveDir) {
-      this.candidateSortDir = this.candidateSortDir === 'asc' ? 'desc' : 'asc';
-    } else if (!preserveDir) {
-      this.candidateSortColumn = column;
-      this.candidateSortDir = column === 'candidateName' || column === 'partyName' || column === 'candidateId' ? 'asc' : 'desc';
+    if (!preserveDir) {
+      if (this.candidateSortColumn === column) {
+        this.candidateSortDir = this.candidateSortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        this.candidateSortColumn = column;
+        const isStringColumn = column === 'candidateName' || column === 'partyName' || column === 'candidateId';
+        this.candidateSortDir = getDefaultSortDirection(column as string, isStringColumn);
+      }
     }
 
-    this.candidateResults.sort((a, b) => {
-      const valA = a[this.candidateSortColumn];
-      const valB = b[this.candidateSortColumn];
+    const sorted = sortArray(
+      this.candidateResults,
+      this.candidateSortColumn,
+      this.candidateSortDir
+    );
 
-      if (typeof valA === 'string' && typeof valB === 'string') {
-        return this.candidateSortDir === 'asc'
-          ? valA.localeCompare(valB)
-          : valB.localeCompare(valA);
-      }
-
-      return this.candidateSortDir === 'asc'
-        ? (valA as number) - (valB as number)
-        : (valB as number) - (valA as number);
-    });
+    // Update the array in place
+    this.candidateResults.length = 0;
+    this.candidateResults.push(...sorted);
   }
 
   updateChartOptions() {

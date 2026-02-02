@@ -20,7 +20,6 @@ export class BaseModalComponent {
   @Input() title: string = '';
   @Input() subtitle: string = '';
   @Input() maxWidth: string = 'max-w-6xl';
-  @Input() showCloseButton: boolean = true;
   @Input() zIndex: string = 'z-[100]';
   @Output() close = new EventEmitter<void>();
 

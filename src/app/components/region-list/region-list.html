@@ -40,57 +40,40 @@
   </div>
 
   <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
-    <div hlmCard class="border-primary/20 bg-primary/5">
-      <div hlmCardHeader class="p-4 pb-0">
-        <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Активност</p>
-      </div>
-      <div hlmCardContent class="p-4 pt-1">
-        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['activityPercent']" [currentValue]="avgActivity" [isPercent]="true">{{ formatActivity(avgActivity) }}%</p>
-      </div>
-    </div>
-    <div hlmCard class="border-primary/20 bg-primary/5">
-      <div hlmCardHeader class="p-4 pb-0">
-        <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Общо избиратели</p>
-      </div>
-      <div hlmCardContent class="p-4 pt-1">
-        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['total']" [currentValue]="totalElectors">{{ totalElectors | number }}</p>
-      </div>
-    </div>
-    <div hlmCard class="border-primary/20 bg-primary/5">
-      <div hlmCardHeader class="p-4 pb-0">
-        <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Общо гласували</p>
-      </div>
-      <div hlmCardContent class="p-4 pt-1">
-        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['voted']" [currentValue]="totalVoted">{{ totalVoted | number }}</p>
-      </div>
-    </div>
-    <div hlmCard class="border-primary/20 bg-primary/5">
-      <div hlmCardHeader class="p-4 pb-0">
-        <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Общо невалидни</p>
-      </div>
-      <div hlmCardContent class="p-4 pt-1">
-        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['discardedVotes']" [currentValue]="totalInvalid">{{ totalInvalid | number }}</p>
-      </div>
-    </div>
-    <div hlmCard class="border-primary/20 bg-primary/5">
-      <div hlmCardHeader class="p-4 pb-0">
-        <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Общо не подкрепя никого</p>
-      </div>
-      <div hlmCardContent class="p-4 pt-1">
-        <p hlmH4 class="m-0 text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['noVotes']" [currentValue]="totalNoVotes">{{ totalNoVotes | number }}</p>
-      </div>
-    </div>
-    <div hlmCard class="border-primary/20 bg-primary/5">
-      <div hlmCardHeader class="p-4 pb-0">
-        <p hlmCardDescription hlmMuted class="text-xs uppercase tracking-wider">Гласове по тип</p>
-      </div>
-      <div hlmCardContent class="p-4 pt-1">
+    <app-stat-card
+      label="Активност"
+      [value]="avgActivity"
+      [isPercent]="true"
+      [tooltipData]="globalComparisons['activityPercent']"
+      [currentValue]="avgActivity" />
+    <app-stat-card
+      label="Общо избиратели"
+      [value]="totalElectors"
+      [tooltipData]="globalComparisons['total']"
+      [currentValue]="totalElectors" />
+    <app-stat-card
+      label="Общо гласували"
+      [value]="totalVoted"
+      [tooltipData]="globalComparisons['voted']"
+      [currentValue]="totalVoted" />
+    <app-stat-card
+      label="Общо невалидни"
+      [value]="totalInvalid"
+      [tooltipData]="globalComparisons['discardedVotes']"
+      [currentValue]="totalInvalid" />
+    <app-stat-card
+      label="Общо не подкрепя никого"
+      [value]="totalNoVotes"
+      [tooltipData]="globalComparisons['noVotes']"
+      [currentValue]="totalNoVotes" />
+    <app-stat-card label="Гласове по тип">
+      <ng-template #customContent>
         <div class="flex flex-col text-sm whitespace-nowrap">
           <span class="text-secondary/70 dark:text-foreground/70">машинни: <strong class="text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['totalMachine']" [currentValue]="totalMachine">{{ totalMachine | number }}</strong></span>
           <span class="text-secondary/70 dark:text-foreground/70">хартиени: <strong class="text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['totalPaper']" [currentValue]="totalPaper">{{ totalPaper | number }}</strong></span>
         </div>
-      </div>
-    </div>
+      </ng-template>
+    </app-stat-card>
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

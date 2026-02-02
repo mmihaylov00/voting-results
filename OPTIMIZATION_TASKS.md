@@ -572,14 +572,14 @@ Create a reusable `SearchInputComponent` that:
    - ✅ Comparison Operator Input Component (≤/≥) - **COMPLETED**
 
 2. **Medium Priority** (Significant code reduction):
-   - ⏳ Table Sorting Service/Utility - **PENDING**
+   - ✅ Table Sorting Service/Utility - **COMPLETED**
    - ✅ Utility Functions Module - **COMPLETED**
    - ⏳ Chart Configuration Service - **PENDING**
    - ⏳ Election/Region Card Component - **PENDING**
-   - ⏳ Statistics Card Component - **PENDING**
-   - ⏳ Column Filter Dropdown Component - **PENDING**
+   - ✅ Statistics Card Component - **COMPLETED**
+   - ✅ Column Filter Dropdown Component - **COMPLETED**
    - ⏳ Risk Filter Dropdown Component - **PENDING**
-   - ⏳ Risk Analysis Summary Component - **PENDING**
+   - ✅ Risk Analysis Summary Component - **COMPLETED**
 
 3. **Low Priority** (Nice to have, but less critical):
    - ⏳ Party Selection Logic Service - **PENDING**

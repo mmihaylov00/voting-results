@@ -16,6 +16,7 @@ import { HlmTooltipDirective } from '../ui/tooltip-helm/src/lib/hlm-tooltip.dire
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { PartyFilterComponent } from '../election-detail/party-filter/party-filter';
+import { StatCardComponent } from '../ui/stat-card/stat-card';
 
 @Component({
   selector: 'app-region-list',
@@ -34,7 +35,8 @@ import { PartyFilterComponent } from '../election-detail/party-filter/party-filt
     HlmTypographyDirective,
     HlmTooltipDirective,
     HighchartsChartComponent,
-    PartyFilterComponent
+    PartyFilterComponent,
+    StatCardComponent
   ],
   templateUrl: './region-list.html'
 })

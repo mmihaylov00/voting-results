@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HlmButtonDirective } from '../../ui/button-helm/src/lib/hlm-button.directive';
@@ -17,7 +17,7 @@ import { getPartyAlias } from '../../../utils/party-aliases';
     '(document:click)': 'closeDropdown()'
   }
 })
-export class PartyFilterComponent {
+export class PartyFilterComponent implements OnChanges {
   @Input() parties: { id: string, name: string }[] = [];
   @Input() selectedPartyIds: Set<string> = new Set();
   @Input() showVotes: boolean = false;
@@ -110,4 +110,12 @@ export class PartyFilterComponent {
   }
 
   getPartyAlias = getPartyAlias;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Ensure the component updates when selectedPartyIds input changes
+    if (changes['selectedPartyIds'] && !changes['selectedPartyIds'].firstChange) {
+      // Force change detection by accessing the signal
+      this.showDropdown.set(this.showDropdown());
+    }
+  }
 }

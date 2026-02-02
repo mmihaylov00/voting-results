@@ -19,6 +19,7 @@ import {
 import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-typography.directive';
 import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
 import { getGoogleMapsUrl, copyToClipboard as copyToClipboardUtil } from '../../../../utils/common.utils';
+import { sortArray, toggleSort as toggleSortUtil, SortState } from '../../../../utils/table-sort.util';
 import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
 import { SortableTableHeaderComponent } from '../../../ui/sortable-table-header/sortable-table-header';
 
@@ -48,36 +49,21 @@ export class ProtocolErrorModalComponent {
   sortDirection = signal<'asc' | 'desc'>('asc');
 
   sortedSections = computed(() => {
-    const column = this.sortColumn();
-    const direction = this.sortDirection();
-    const sections = [...this.sectionsWithError];
-
-    return sections.sort((a, b) => {
-      let valA: any = a[column as keyof Section];
-      let valB: any = b[column as keyof Section];
-
-      if (typeof valA === 'string' && typeof valB === 'string') {
-        return direction === 'asc'
-          ? valA.localeCompare(valB, 'bg')
-          : valB.localeCompare(valA, 'bg');
-      }
-
-      if (valA === undefined || valA === null) valA = 0;
-      if (valB === undefined || valB === null) valB = 0;
-
-      if (valA < valB) return direction === 'asc' ? -1 : 1;
-      if (valA > valB) return direction === 'asc' ? 1 : -1;
-      return 0;
-    });
+    return sortArray(
+      this.sectionsWithError,
+      this.sortColumn(),
+      this.sortDirection()
+    );
   });
 
   toggleSort(column: string) {
-    if (this.sortColumn() === column) {
-      this.sortDirection.update(d => d === 'asc' ? 'desc' : 'asc');
-    } else {
-      this.sortColumn.set(column);
-      this.sortDirection.set('asc');
-    }
+    const newState = toggleSortUtil(
+      this.sortColumn(),
+      this.sortDirection(),
+      column
+    );
+    this.sortColumn.set(newState.column);
+    this.sortDirection.set(newState.direction);
   }
 
   getGoogleMapsUrl = getGoogleMapsUrl;

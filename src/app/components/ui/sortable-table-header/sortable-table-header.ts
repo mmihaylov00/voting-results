@@ -1,13 +1,11 @@
 import { Component, Input, Output, EventEmitter, HostListener, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HlmTableHeadDirective } from '../table-helm/src/lib/hlm-table.directives';
 
 @Component({
   selector: 'th[app-sortable-table-header]',
   standalone: true,
   imports: [
     CommonModule,
-    HlmTableHeadDirective,
   ],
   templateUrl: './sortable-table-header.html',
 })

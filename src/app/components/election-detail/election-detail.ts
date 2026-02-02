@@ -8,6 +8,7 @@ import { PartyResult, Section, SectionDetails, TableColumn, SECTION_COLUMNS, Sec
 import { filterSections } from '../../utils/election-utils';
 import { getPartyAlias } from '../../utils/party-aliases';
 import { formatActivity, getGoogleMapsUrl, copyToClipboard as copyToClipboardUtil } from '../../utils/common.utils';
+import { sortArray, toggleSort as toggleSortUtil, getDefaultSortDirection } from '../../utils/table-sort.util';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
@@ -37,13 +38,14 @@ import { PartyFilterComponent } from './party-filter/party-filter';
 import {HlmInputDirective} from '../ui/input-helm/src/lib/hlm-input.directive';
 import { RiskBadgeComponent } from '../ui/risk-badge/risk-badge';
 import { ComparisonOperatorInputComponent } from '../ui/comparison-operator-input/comparison-operator-input';
+import { StatCardComponent } from '../ui/stat-card/stat-card';
+import { ColumnFilterComponent } from '../ui/column-filter/column-filter';
 
 @Component({
   selector: 'app-election-detail',
   standalone: true,
   host: {
-    '(document:keydown.escape)': 'handleEscape()',
-    '(document:click)': 'closeColumnFilter()'
+    '(document:keydown.escape)': 'handleEscape()'
   },
   imports: [
     CommonModule,
@@ -72,6 +74,8 @@ import { ComparisonOperatorInputComponent } from '../ui/comparison-operator-inpu
     HlmInputDirective,
     RiskBadgeComponent,
     ComparisonOperatorInputComponent,
+    StatCardComponent,
+    ColumnFilterComponent,
   ],
   templateUrl: './election-detail.html',
   styleUrl: './election-detail.scss',
@@ -154,7 +158,6 @@ export class ElectionDetailComponent implements OnInit {
 
     return riskLines.join('\n');
   }
-  showColumnFilter = false;
   viewMode = signal<ViewMode>('sections');
   groupByCity = signal<boolean>(false);
   groupedSections: any[] = [];
@@ -782,35 +785,34 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   sortCandidates(column: keyof RegionCandidate | 'risks', preserveDir: boolean = false) {
-    if (this.candidateSortColumn === column && !preserveDir) {
-      this.candidateSortDir = this.candidateSortDir === 'asc' ? 'desc' : 'asc';
-    } else if (!preserveDir) {
-      this.candidateSortColumn = column;
-      this.candidateSortDir = (column === 'candidateId' || column === 'candidateName' || column === 'partyName') ? 'asc' : 'desc';
+    if (!preserveDir) {
+      if (this.candidateSortColumn === column) {
+        this.candidateSortDir = this.candidateSortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        this.candidateSortColumn = column;
+        const isStringColumn = column === 'candidateId' || column === 'candidateName' || column === 'partyName';
+        this.candidateSortDir = getDefaultSortDirection(column as string, isStringColumn);
+      }
     }
 
-    this.filteredCandidates.sort((a, b) => {
-      let valA: any;
-      let valB: any;
-
+    const valGetter = (c: RegionCandidate) => {
       if (this.candidateSortColumn === 'risks') {
-        valA = a.riskIndicators?.length || 0;
-        valB = b.riskIndicators?.length || 0;
-      } else {
-        valA = a[this.candidateSortColumn as keyof RegionCandidate];
-        valB = b[this.candidateSortColumn as keyof RegionCandidate];
+        return c.riskIndicators?.length || 0;
       }
+      return c[this.candidateSortColumn as keyof RegionCandidate];
+    };
 
-      if (typeof valA === 'string' && typeof valB === 'string') {
-        return this.candidateSortDir === 'asc'
-          ? valA.localeCompare(valB)
-          : valB.localeCompare(valA);
-      }
+    const sorted = sortArray(
+      this.filteredCandidates,
+      this.candidateSortColumn,
+      this.candidateSortDir,
+      'bg',
+      valGetter
+    );
 
-      return this.candidateSortDir === 'asc'
-        ? (valA as number) - (valB as number)
-        : (valB as number) - (valA as number);
-    });
+    // Update the array in place
+    this.filteredCandidates.length = 0;
+    this.filteredCandidates.push(...sorted);
   }
 
   onCandidatePartySelectionChange(selectedIds: Set<string>): void {
@@ -1125,41 +1127,16 @@ export class ElectionDetailComponent implements OnInit {
     this.applyFilter();
   }
 
-  toggleColumn(columnId: string, event: Event): void {
-    event.stopPropagation();
+  onColumnSelectionChange(selectedIds: Set<string>): void {
     if (this.viewMode() === 'candidates') {
-      const newSet = new Set(this.visibleCandidateColumns());
-      if (newSet.has(columnId)) {
-        if (newSet.size > 1) { // Keep at least one column
-          newSet.delete(columnId);
-        }
-      } else {
-        newSet.add(columnId);
-      }
-      this.visibleCandidateColumns.set(newSet);
-      localStorage.setItem('visible_candidate_columns', JSON.stringify(Array.from(newSet)));
+      this.visibleCandidateColumns.set(selectedIds);
+      localStorage.setItem('visible_candidate_columns', JSON.stringify(Array.from(selectedIds)));
     } else {
-      const newSet = new Set(this.visibleColumns());
-      if (newSet.has(columnId)) {
-        if (newSet.size > 1) { // Keep at least one column
-          newSet.delete(columnId);
-        }
-      } else {
-        newSet.add(columnId);
-      }
-      this.visibleColumns.set(newSet);
-      localStorage.setItem('visible_columns', JSON.stringify(Array.from(newSet)));
+      this.visibleColumns.set(selectedIds);
+      localStorage.setItem('visible_columns', JSON.stringify(Array.from(selectedIds)));
     }
   }
 
-  toggleColumnFilter(event: Event): void {
-    event.stopPropagation();
-    this.showColumnFilter = !this.showColumnFilter;
-  }
-
-  closeColumnFilter(): void {
-    this.showColumnFilter = false;
-  }
 
   private calculateAvgActivity(sections: Section[] = this.sections): void {
     if (sections.length === 0) {
@@ -1776,18 +1753,21 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   sortSections(column: keyof Section, preserveDir: boolean = false) {
-    if (this.sectionSortColumn === column && !preserveDir) {
-      this.sectionSortDir = this.sectionSortDir === 'asc' ? 'desc' : 'asc';
-    } else if (!preserveDir) {
-      this.sectionSortColumn = column;
-      this.sectionSortDir = (column === 'sectionId' || column === 'cityName' || column === 'sectionName' || column === 'regionName') ? 'asc' : 'desc';
+    if (!preserveDir) {
+      if (this.sectionSortColumn === column) {
+        this.sectionSortDir = this.sectionSortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        this.sectionSortColumn = column;
+        const isStringColumn = column === 'sectionId' || column === 'cityName' || column === 'sectionName' || column === 'regionName';
+        this.sectionSortDir = getDefaultSortDirection(column as string, isStringColumn);
+      }
     }
 
-    const valGetter = (s: any) => {
+    const valGetter = (s: Section) => {
       let val = s[this.sectionSortColumn];
       if (this.sectionSortColumn === 'sectionId' && this.groupByCity()) {
         // Sort by the numeric number of sections in the group
-        const match = val.match(/(\d+)/);
+        const match = String(val).match(/(\d+)/);
         return match ? parseInt(match[1], 10) : 0;
       }
       if (this.sectionSortColumn === 'regionName') {
@@ -1797,19 +1777,16 @@ export class ElectionDetailComponent implements OnInit {
       return val;
     };
 
-    this.filteredSections.sort((a, b) => {
-      const valA = valGetter(a);
-      const valB = valGetter(b);
-
-      if (typeof valA === 'string' && typeof valB === 'string') {
-        return this.sectionSortDir === 'asc'
-          ? valA.localeCompare(valB)
-          : valB.localeCompare(valA);
-      }
-
-      return this.sectionSortDir === 'asc'
-        ? (valA as number) - (valB as number)
-        : (valB as number) - (valA as number);
-    });
+    const sorted = sortArray(
+      this.filteredSections,
+      this.sectionSortColumn,
+      this.sectionSortDir,
+      'bg',
+      valGetter
+    );
+    
+    // Update the array in place
+    this.filteredSections.length = 0;
+    this.filteredSections.push(...sorted);
   }
 }
