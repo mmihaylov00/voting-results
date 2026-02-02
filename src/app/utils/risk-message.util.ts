@@ -107,9 +107,9 @@ export function formatRiskMessage(risk: { code: string; details?: any }, context
       const partyName = resolvePartyName(d.partyId, context);
       if (d.avgSectionShare !== undefined && d.avgMunicipalityShare !== undefined) {
         const count = d.sectionsTriggered || 0;
-        return `Доминиране на концентрация (средно от ${count} секции): ${candidateName} (${partyName}) има ${((d.avgSectionShare || 0) * 100).toFixed(1)}% (община: ${((d.avgMunicipalityShare || 0) * 100).toFixed(1)}%)`;
+        return `Доминиране на концентрация (средно от ${count} секции): ${candidateName} (${partyName}) има ${((d.avgSectionShare || 0) * 100).toFixed(1)}% (област: ${((d.avgMunicipalityShare || 0) * 100).toFixed(1)}%)`;
       }
-      return `Доминиране на концентрация: ${candidateName} (${partyName}) има ${((d.sectionShare || 0) * 100).toFixed(1)}% от преференциите (община: ${((d.municipalityShare || 0) * 100).toFixed(1)}%)`;
+      return `Доминиране на концентрация: ${candidateName} (${partyName}) има ${((d.sectionShare || 0) * 100).toFixed(1)}% от преференциите (област: ${((d.municipalityShare || 0) * 100).toFixed(1)}%)`;
     }
     case 'R6.2': {
       const candidateName = resolveCandidateName(d.partyId, d.candidateId, context);

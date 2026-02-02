@@ -333,8 +333,8 @@
                       <span class="text-secondary/70 dark:text-foreground/70">Активност:</span>
                       <div class="flex flex-col items-end">
                         <span class="font-bold" [hlmTooltip]="currentSectionData.comparisons?.['activityPercent']" [currentValue]="currentSectionData.activityPercent" [isPercent]="true">{{ formatActivity(currentSectionData.activityPercent) }}%</span>
-                        @if (currentSectionData.municipalityAvgTurnout) {
-                          <span class="text-[10px] text-muted-foreground">ср. за общината: {{ formatActivity(currentSectionData.municipalityAvgTurnout) }}%</span>
+                        @if (regionAvgTurnout !== null) {
+                          <span class="text-[10px] text-muted-foreground">ср. за общината: {{ formatActivity(regionAvgTurnout) }}%</span>
                         }
                       </div>
                     </div>

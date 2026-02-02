@@ -608,24 +608,8 @@ for (const date of dates) {
   const targetSections = current.sections;
   const parties = current.parties;
 
-  // ----- Region averages (turnout and party percentages) from pre-aggregates -----
-  const regionStats = Object.create(null);
-  for (const [regionId, agg] of current.regionAgg.entries()) {
-    const partyPercents = Object.create(null);
-    for (const pid in agg.partyTotals) {
-      partyPercents[pid] = agg.voted > 0 ? agg.partyTotals[pid] / agg.voted : 0;
-    }
-    regionStats[regionId] = {
-      avgTurnout: agg.total > 0 ? agg.voted / agg.total : 0,
-      partyPercents
-    };
-  }
-
-  // Set region stats for sections (used by enhanced risk detection)
+  // Initialize risk score if missing
   for (const s of targetSections) {
-    const stats = regionStats[s.regionId] || {avgTurnout: 0, partyPercents: Object.create(null)};
-    s.municipalityAvgTurnout = stats.avgTurnout;
-    s.municipalityPartyPercents = stats.partyPercents;
     s.riskScore = s.riskScore || 0;
   }
 
@@ -663,6 +647,14 @@ for (const date of dates) {
         noVotes: agg.noVotes,
         totalPaper: agg.totalPaper,
         totalMachine: agg.totalMachine,
+        avgTurnout: agg.total > 0 ? agg.voted / agg.total : 0,
+        partyPercents: (() => {
+          const partyPercents = Object.create(null);
+          for (const pid in agg.partyTotals) {
+            partyPercents[pid] = agg.voted > 0 ? agg.partyTotals[pid] / agg.voted : 0;
+          }
+          return partyPercents;
+        })(),
         comparisons: Object.create(null)
       };
 
@@ -1573,7 +1565,6 @@ for (const date of dates) {
       section.candidateRiskIndicators = candidateRiskIndicators;
     }
 
-    if (baseline) section.baseline = baseline;
   }
 
   // Calculate R2.4 at region level for candidates (after all sections processed)

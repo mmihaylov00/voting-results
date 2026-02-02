@@ -1,6 +1,10 @@
 import { Section, SectionFilters } from '../models/election.models';
 
-export function filterSections(sections: Section[], filters: SectionFilters): Section[] {
+export function filterSections(
+  sections: Section[],
+  filters: SectionFilters,
+  regionAvgTurnoutById: { [regionId: string]: number } = {}
+): Section[] {
   let result = [...sections];
 
   if (filters.searchTerm) {
@@ -86,7 +90,8 @@ export function filterSections(sections: Section[], filters: SectionFilters): Se
     result = result.filter(s => {
       const ppdb = s.topParties.find(tp => tp.name.includes('ПП-ДБ'));
       if (!ppdb) return false;
-      return ppdb.percent > 0.30 && s.activityPercent < (s.municipalityAvgTurnout || 0);
+      const avgTurnout = regionAvgTurnoutById[s.regionId] || 0;
+      return ppdb.percent > 0.30 && s.activityPercent < avgTurnout;
     });
   } else if (currentTab === 'flip') {
     result = result.filter(s => {

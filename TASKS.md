@@ -65,7 +65,7 @@ Reduce the size of the compiled election artifacts (`public/data/compiled/<date>
 
 ## Phase 3 — Remove Per-Section Repeated Region Stats
 
-- [ ] **T3.1: Stop copying `municipalityPartyPercents` into each section**
+- [x] **T3.1: Stop copying `municipalityPartyPercents` into each section**
   - Currently each section gets:
     - `s.municipalityAvgTurnout`
     - `s.municipalityPartyPercents`
@@ -78,7 +78,7 @@ Reduce the size of the compiled election artifacts (`public/data/compiled/<date>
     - Sections do not contain `municipalityPartyPercents`.
     - UI resolves region averages by looking up `regions` by `regionId`.
 
-- [ ] **T3.2: Remove `baseline` from output (or gate it)**
+- [x] **T3.2: Remove `baseline` from output (or gate it)**
   - Option A (recommended for size): remove `section.baseline` entirely.
   - Option B (debug only): emit baseline only if section has risks AND behind a flag.
   - Acceptance:

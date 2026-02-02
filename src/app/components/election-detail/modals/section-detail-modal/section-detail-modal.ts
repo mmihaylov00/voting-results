@@ -103,6 +103,20 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     return this.section.sectionName.startsWith('Общо за');
   }
 
+  get regionAvgTurnout(): number | null {
+    if (!this.currentSectionData) return null;
+    const regionId = this.currentSectionData.regionId;
+    const regionSections = this.allSections.filter(s => s.regionId === regionId);
+    if (regionSections.length === 0) return null;
+    let total = 0;
+    let voted = 0;
+    regionSections.forEach(s => {
+      total += s.total;
+      voted += s.voted;
+    });
+    return total > 0 ? voted / total : 0;
+  }
+
   constructor(
     public themeService: ThemeService,
     private electionService: ElectionService

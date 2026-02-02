@@ -102,7 +102,7 @@ export class SectionFiltersComponent implements OnInit {
     { id: 'target', label: 'Целеви', description: 'Секции, в които ПП-ДБ е първа политическа сила', icon: 'target' },
     { id: 'swing', label: 'Люлеещи се', description: 'Секции, в които ПП-ДБ е на по-малко от 5% разлика от първия', icon: 'swing' },
     { id: 'outside', label: 'Извън топ 3', description: 'Секции, в които ПП-ДБ е извън челните три места', icon: 'outside' },
-    { id: 'dormant', label: 'Спящи', description: 'Секции с висока подкрепа за ПП-ДБ (>30%), но по-ниска активност от средната за общината', icon: 'dormant' },
+    { id: 'dormant', label: 'Спящи', description: 'Секции с висока подкрепа за ПП-ДБ (>30%), но по-ниска активност от средната за областта', icon: 'dormant' },
     { id: 'flip', label: 'За обръщане', description: 'Секции, които могат да бъдат спечелени с малко допълнителни гласове', icon: 'flip' },
     { id: 'vanishing', label: 'Губещи', description: 'Секции, в които ПП-ДБ губи над 40% от гласовете си спрямо предходните избори', icon: 'vanishing' },
     { id: 'declining', label: 'Намаляващи', description: 'Секции, в които гласовете за ПП-ДБ са по-малко от предходните избори', icon: 'declining' }

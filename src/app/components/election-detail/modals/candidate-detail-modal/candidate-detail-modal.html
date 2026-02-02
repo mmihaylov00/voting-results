@@ -1,12 +1,12 @@
-<app-base-modal 
+<app-base-modal
     [title]="candidate.candidateName"
     [subtitle]="candidate.partyName + ' - Преференция ' + candidate.candidateId"
-    maxWidth="max-w-6xl"
-    zIndex="z-[100]"
+    maxWidth="max-w-4xl"
+    zIndex="z-[110]"
     (close)="closeModal()">
 
-    <div class="flex flex-col gap-4">
-        <div style="max-height: calc(90vh - 300px); overflow: auto;">
+    <div class="flex flex-col gap-4" style="max-height: calc(90vh - 200px); overflow-y: auto;">
+        <div class="overflow-x-auto">
             <table hlmTable class="min-w-full">
                 <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
                     <tr hlmTableRow class="hover:bg-transparent">
@@ -118,8 +118,4 @@
                 [context]="{ candidate: candidate, partiesById: partiesById }" />
         }
     </div>
-
-    <ng-template #footer>
-        <button hlmBtn variant="outline" (click)="closeModal()">Затвори</button>
-    </ng-template>
 </app-base-modal>

@@ -440,6 +440,19 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   applyFilter(): void {
+    const regionTotals: { [regionId: string]: { total: number; voted: number } } = {};
+    this.sections.forEach(s => {
+      if (!regionTotals[s.regionId]) {
+        regionTotals[s.regionId] = { total: 0, voted: 0 };
+      }
+      regionTotals[s.regionId].total += s.total;
+      regionTotals[s.regionId].voted += s.voted;
+    });
+    const regionAvgTurnoutById: { [regionId: string]: number } = {};
+    Object.entries(regionTotals).forEach(([regionId, totals]) => {
+      regionAvgTurnoutById[regionId] = totals.total > 0 ? totals.voted / totals.total : 0;
+    });
+
     const filters: SectionFilters = {
       searchTerm: this.searchTerm,
       activeTab: this.activeTab(),
@@ -451,7 +464,7 @@ export class ElectionDetailComponent implements OnInit {
       isViewingAllSections: this.regionId === 'all' || !this.regionId
     };
 
-    const result = filterSections(this.sections, filters);
+    const result = filterSections(this.sections, filters, regionAvgTurnoutById);
 
     if (this.groupByCity()) {
       const groups = new Map<string, any>();

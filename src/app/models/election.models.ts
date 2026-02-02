@@ -34,6 +34,8 @@ export interface Region {
   noVotes?: number;
   totalPaper?: number;
   totalMachine?: number;
+  avgTurnout?: number;
+  partyPercents?: { [key: string]: number };
   comparisons?: { [key: string]: ComparativeValue[] };
 }
 
@@ -63,15 +65,7 @@ export interface Section {
   riskScore?: number;
   riskIndicators?: Array<{ code: string; category: string; severity: string; details?: any }>;
   votesToFirst?: number;
-  municipalityAvgTurnout?: number;
-  municipalityPartyPercents?: { [key: string]: number };
   comparisons?: { [key: string]: ComparativeValue[] };
-  baseline?: {
-    avgTurnout: number;
-    avgInvalidRate: number;
-    avgPaperMachineRatio: number;
-    partyVoteShares: { [partyId: string]: number };
-  };
 }
 
 export interface PartyResult {
