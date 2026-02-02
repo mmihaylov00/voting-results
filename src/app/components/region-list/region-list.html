@@ -22,20 +22,10 @@
           ЦИК
         </a>
       }
-      <a [routerLink]="['/election', date, 'all']" hlmBtn variant="outline" class="border-primary text-secondary hover:bg-primary/20 hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
-        Всички секции
-      </a>
       <a routerLink="/" hlmBtn variant="default">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-        Назад към изборите
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m3 9 9-7 9 7"/><path d="M9 22V12h6v10"/><path d="M21 22H3"/></svg>
+        Начало
       </a>
-    </div>
-  </div>
-
-  <div class="mb-8 max-w-md">
-    <div class="relative">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-primary dark:text-secondary/50"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      <input hlmInput placeholder="Търсене на район..." [(ngModel)]="searchTerm" (ngModelChange)="applyFilter()" class="pl-10 border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full" />
     </div>
   </div>
 
@@ -74,6 +64,18 @@
         </div>
       </ng-template>
     </app-stat-card>
+  </div>
+
+  <div class="flex justify-between mb-4">
+    <div class="max-w-48 w-full">
+      <app-search-filter
+        placeholder="Търсене на район..."
+        [value]="searchTerm"
+        (valueChange)="searchTerm = $event; applyFilter()" />
+    </div>
+    <a [routerLink]="['/election', date, 'all']" hlmBtn variant="outline" class="w-full sm:w-auto border-primary text-secondary hover:bg-primary/20 hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+      Всички секции
+    </a>
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

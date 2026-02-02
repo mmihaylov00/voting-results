@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RegionCandidate, Section, SECTION_COLUMNS, TableColumn, ViewMode } from '../../../../models/election.models';
 import { getPartyAlias } from '../../../../utils/party-aliases';
 import { formatActivity } from '../../../../utils/common.utils';
+import { loadVisibleColumns } from '../../../../utils/column-visibility';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
 import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-typography.directive';
 import { PartyFilterComponent } from '../../party-filter/party-filter';
@@ -48,20 +49,13 @@ export class ExportCsvModalComponent {
   ngOnInit() {
     this.exportPartyIds = new Set(this.selectedPartyIds);
     this.filteredSections = this.tableSections;
-    const savedColumns = localStorage.getItem('visible_columns');
-    if (savedColumns) {
-      try {
-        const columnsArray = JSON.parse(savedColumns);
-        if (Array.isArray(columnsArray)) {
-          // Only include columns that exist in our availableColumns for CSV
-          const validSavedColumns = columnsArray.filter(id => this.availableColumns.some(ac => ac.id === id));
-          if (validSavedColumns.length > 0) {
-            this.exportColumnIds = new Set(validSavedColumns);
-          }
-        }
-      } catch (e) {
-        console.error('Error parsing saved columns', e);
-      }
+    const visibleColumns = loadVisibleColumns(
+      'visible_columns',
+      this.availableColumns.map(column => column.id),
+      'export columns'
+    );
+    if (visibleColumns) {
+      this.exportColumnIds = visibleColumns;
     }
 
     if (this.initialCandidateColumnIds.size > 0) {

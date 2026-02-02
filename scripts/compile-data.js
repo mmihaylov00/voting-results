@@ -12,9 +12,32 @@ const compactMapping = JSON.parse(
 
 const baseDataDir = path.join(__dirname, '../public/data');
 const outputDir = path.join(baseDataDir, 'compiled');
+const buildTimestamp = new Date().toISOString().replace(/[-:TZ.]/g, '');
 
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, {recursive: true});
+}
+
+const runStart = process.hrtime.bigint();
+
+function nowNs() {
+  return process.hrtime.bigint();
+}
+
+function formatSeconds(ns) {
+  return (Number(ns) / 1e9).toFixed(2);
+}
+
+function logSection(title) {
+  console.log(`\n=== ${title} ===`);
+}
+
+function timeAction(label, fn) {
+  const start = nowNs();
+  const result = fn();
+  const end = nowNs();
+  console.log(`${label} (${formatSeconds(end - start)}s)`);
+  return result;
 }
 
 /**
@@ -627,24 +650,26 @@ const histDatesByDate = Object.fromEntries(
   })
 );
 
-console.log('Loading raw data...');
+logSection('Load Raw Data');
 const rawData = Object.create(null);
 
 for (const {date} of elections) {
-  console.log(`Processing ${date}...`);
+  console.log(`\n-- ${date} --`);
   const baseUrl = path.join(baseDataDir, date);
 
-  const sectionsText = fs.readFileSync(path.join(baseUrl, 'sections.txt'), 'utf8');
-  const protocolsText = fs.readFileSync(path.join(baseUrl, 'protocols.txt'), 'utf8');
-  const votesText = fs.readFileSync(path.join(baseUrl, 'votes.txt'), 'utf8');
-  const partiesText = fs.readFileSync(path.join(baseUrl, 'cik_parties.txt'), 'utf8');
+  const input = timeAction('Read input files', () => ({
+    sectionsText: fs.readFileSync(path.join(baseUrl, 'sections.txt'), 'utf8'),
+    protocolsText: fs.readFileSync(path.join(baseUrl, 'protocols.txt'), 'utf8'),
+    votesText: fs.readFileSync(path.join(baseUrl, 'votes.txt'), 'utf8'),
+    partiesText: fs.readFileSync(path.join(baseUrl, 'cik_parties.txt'), 'utf8')
+  }));
 
-  const parties = parseParties(partiesText);
-  const normByPid = buildPartyNormalization(parties);
+  const parties = timeAction('Parse parties', () => parseParties(input.partiesText));
+  const normByPid = timeAction('Normalize parties', () => buildPartyNormalization(parties));
 
-  const sectionsMap = parseSections(sectionsText);
-  applyProtocols(sectionsMap, protocolsText);
-  applyVotes(sectionsMap, votesText, normByPid);
+  const sectionsMap = timeAction('Parse sections', () => parseSections(input.sectionsText));
+  timeAction('Apply protocols', () => applyProtocols(sectionsMap, input.protocolsText));
+  timeAction('Apply votes', () => applyVotes(sectionsMap, input.votesText, normByPid));
 
   // Parse local candidates and preferences if files exist
   const localCandidatesPath = path.join(baseUrl, 'local_candidates.txt');
@@ -652,43 +677,51 @@ for (const {date} of elections) {
   if (fs.existsSync(localCandidatesPath) && fs.existsSync(preferencesPath)) {
     const localCandidatesText = fs.readFileSync(localCandidatesPath, 'utf8');
     const preferencesText = fs.readFileSync(preferencesPath, 'utf8');
-    const candidatesByRegion = parseLocalCandidates(localCandidatesText);
-    applyPreferences(sectionsMap, preferencesText, candidatesByRegion, parties);
+    const candidatesByRegion = timeAction('Parse local candidates', () =>
+      parseLocalCandidates(localCandidatesText)
+    );
+    timeAction('Apply preferences', () =>
+      applyPreferences(sectionsMap, preferencesText, candidatesByRegion, parties)
+    );
+  } else {
+    console.log('Local candidates/preferences: skipped (0.00s)');
   }
 
   const sections = Object.values(sectionsMap);
 
   // Finalize per-section derived fields + topParties (avoid extra normalization work)
-  for (const section of sections) {
-    section.totalPaper = section.protocolPaperVotes || 0;
-    section.totalMachine = section.protocolMachineVotes || 0;
-    const activityRatio = section.total > 0 ? section.voted / section.total : 0;
-    section.activityBp = Math.round(activityRatio * 10000);
+  timeAction('Finalize sections', () => {
+    for (const section of sections) {
+      section.totalPaper = section.protocolPaperVotes || 0;
+      section.totalMachine = section.protocolMachineVotes || 0;
+      const activityRatio = section.total > 0 ? section.voted / section.total : 0;
+      section.activityBp = Math.round(activityRatio * 10000);
 
-    // Build top parties by raw pid (as before), but normalize name once here.
-    const tps = [];
-    for (const partyId in section.partyVotes) {
-      if (partyId === '0') continue;
-      const votes = section.partyVotes[partyId];
-      if (!votes || votes.total <= 0) continue;
+      // Build top parties by raw pid (as before), but normalize name once here.
+      const tps = [];
+      for (const partyId in section.partyVotes) {
+        if (partyId === '0') continue;
+        const votes = section.partyVotes[partyId];
+        if (!votes || votes.total <= 0) continue;
 
-      const originalName = parties[partyId] || partyId;
-      const name = normalizePartyName(originalName);
+        const originalName = parties[partyId] || partyId;
+        const name = normalizePartyName(originalName);
 
-      tps.push({
-        name,
-        partyId,
-        total: votes.total,
-        percentBp: section.voted > 0 ? Math.round((votes.total / section.voted) * 10000) : 0
-      });
+        tps.push({
+          name,
+          partyId,
+          total: votes.total,
+          percentBp: section.voted > 0 ? Math.round((votes.total / section.voted) * 10000) : 0
+        });
+      }
+
+      tps.sort((a, b) => b.total - a.total);
+      section.topParties = tps.slice(0, 3);
     }
-
-    tps.sort((a, b) => b.total - a.total);
-    section.topParties = tps.slice(0, 3);
-  }
+  });
 
   // Build fast indexes + region aggregates
-  const idx = buildIndexes(sections);
+  const idx = timeAction('Build indexes', () => buildIndexes(sections));
 
   rawData[date] = {
     sections,
@@ -698,232 +731,250 @@ for (const {date} of elections) {
   };
 }
 
-console.log('Calculating comparisons and aggregating regions...');
+logSection('Finalize Outputs');
+
+const manifest = {
+  timestamp: buildTimestamp,
+  files: Object.create(null),
+};
 
 for (const date of dates) {
-  console.log(`Finalizing ${date}...`);
+  console.log(`\n-- ${date} --`);
 
   const current = rawData[date];
   const targetSections = current.sections;
   const parties = current.parties;
 
   // Initialize risk score if missing
-  for (const s of targetSections) {
-    s.riskScore = s.riskScore || 0;
-  }
+  timeAction('Init risk scores', () => {
+    for (const s of targetSections) {
+      s.riskScore = s.riskScore || 0;
+    }
+  });
 
   // ----- Regions list (use current.regionAgg + current.byRegion for sections list) -----
-  const regions = Array.from(current.regionAgg.entries())
-    .map(([id, agg]) => {
-      // Top parties for region
-      const topParties = [];
-      for (const pid in agg.partyTotals) {
-        if (pid === '0') continue;
-        const total = agg.partyTotals[pid];
-        if (!total) continue;
+  const regions = timeAction('Build regions list', () =>
+    Array.from(current.regionAgg.entries())
+      .map(([id, agg]) => {
+        // Top parties for region
+        const topParties = [];
+        for (const pid in agg.partyTotals) {
+          if (pid === '0') continue;
+          const total = agg.partyTotals[pid];
+          if (!total) continue;
 
-        const originalName = parties[pid] || pid;
-        const name = normalizePartyName(originalName);
+          const originalName = parties[pid] || pid;
+          const name = normalizePartyName(originalName);
 
-        topParties.push({
-          name,
-          total,
-          percentBp: agg.voted > 0 ? Math.round((total / agg.voted) * 10000) : 0
-        });
-      }
-      topParties.sort((a, b) => b.total - a.total);
-      const top3 = topParties.slice(0, 3);
+          topParties.push({
+            name,
+            total,
+            percentBp: agg.voted > 0 ? Math.round((total / agg.voted) * 10000) : 0
+          });
+        }
+        topParties.sort((a, b) => b.total - a.total);
+        const top3 = topParties.slice(0, 3);
 
-      const region = {
-        id,
-        name: (current.byRegion.get(id)?.[0]?.regionName) || '',
-        total: agg.total,
-        voted: agg.voted,
-        partyVotes: agg.partyTotals,
-        topParties: top3,
-        discardedVotes: agg.discardedVotes,
-        noVotes: agg.noVotes,
-        totalPaper: agg.totalPaper,
-        totalMachine: agg.totalMachine,
-        avgTurnoutBp: agg.total > 0 ? Math.round((agg.voted / agg.total) * 10000) : 0,
-        partyPercentsBp: (() => {
-          const partyPercents = Object.create(null);
-          for (const pid in agg.partyTotals) {
-            partyPercents[pid] = agg.voted > 0 ? Math.round((agg.partyTotals[pid] / agg.voted) * 10000) : 0;
+        const region = {
+          id,
+          name: (current.byRegion.get(id)?.[0]?.regionName) || '',
+          total: agg.total,
+          voted: agg.voted,
+          partyVotes: agg.partyTotals,
+          topParties: top3,
+          discardedVotes: agg.discardedVotes,
+          noVotes: agg.noVotes,
+          totalPaper: agg.totalPaper,
+          totalMachine: agg.totalMachine,
+          avgTurnoutBp: agg.total > 0 ? Math.round((agg.voted / agg.total) * 10000) : 0,
+          partyPercentsBp: (() => {
+            const partyPercents = Object.create(null);
+            for (const pid in agg.partyTotals) {
+              partyPercents[pid] = agg.voted > 0 ? Math.round((agg.partyTotals[pid] / agg.voted) * 10000) : 0;
+            }
+            return partyPercents;
+          })(),
+          comparisons: Object.create(null)
+        };
+
+        // Comparisons vs other dates (use other.regionAgg, O(1))
+        for (const d of otherDatesByDate[date]) {
+          const other = rawData[d];
+          const otherAgg = other.regionAgg.get(id);
+          if (!otherAgg) continue;
+
+          (region.comparisons.voted ||= []).push({v: otherAgg.voted, d});
+          (region.comparisons.total ||= []).push({v: otherAgg.total, d});
+          (region.comparisons.discardedVotes ||= []).push({v: otherAgg.discardedVotes, d});
+          (region.comparisons.noVotes ||= []).push({v: otherAgg.noVotes, d});
+          (region.comparisons.totalPaper ||= []).push({v: otherAgg.totalPaper, d});
+          (region.comparisons.totalMachine ||= []).push({v: otherAgg.totalMachine, d});
+          (region.comparisons.activityPercent ||= []).push({
+            v: otherAgg.total > 0 ? Math.round((otherAgg.voted / otherAgg.total) * 10000) : 0,
+            d
+          });
+
+          // Party comparisons for regions:
+          // Previously: normalize by name and scan all other sections partyVotes.
+          // Now: use otherAgg.partyTotalsNorm[normalized] directly.
+          const otherAggNorm = otherAgg.partyTotalsNorm;
+          const currentPartiesMap = current.parties; // for normalized target
+          for (const pid in region.partyVotes) {
+            const normalizedTarget = normalizePartyName(currentPartiesMap[pid] || pid);
+            const otherPartyTotal = otherAggNorm[normalizedTarget] || 0;
+            (region.comparisons[`party_${pid}`] ||= []).push({v: otherPartyTotal, d});
           }
-          return partyPercents;
-        })(),
-        comparisons: Object.create(null)
-      };
 
-      // Comparisons vs other dates (use other.regionAgg, O(1))
+          // Top parties comparisons for regions removed
+        }
+
+        return region;
+      })
+      .sort((a, b) => {
+        const idA = parseInt(a.id, 10);
+        const idB = parseInt(b.id, 10);
+        if (!Number.isNaN(idA) && !Number.isNaN(idB)) return idA - idB;
+        return a.id.localeCompare(b.id);
+      })
+  );
+
+  // ----- Section comparisons (use byId instead of find) -----
+  timeAction('Build section comparisons', () => {
+    for (const s of targetSections) {
+      s.comparisons = Object.create(null);
+
       for (const d of otherDatesByDate[date]) {
         const other = rawData[d];
-        const otherAgg = other.regionAgg.get(id);
-        if (!otherAgg) continue;
+        const otherSection = other.byId.get(s.sectionId);
+        if (!otherSection) continue;
 
-        (region.comparisons.voted ||= []).push({v: otherAgg.voted, d});
-        (region.comparisons.total ||= []).push({v: otherAgg.total, d});
-        (region.comparisons.discardedVotes ||= []).push({v: otherAgg.discardedVotes, d});
-        (region.comparisons.noVotes ||= []).push({v: otherAgg.noVotes, d});
-        (region.comparisons.totalPaper ||= []).push({v: otherAgg.totalPaper, d});
-        (region.comparisons.totalMachine ||= []).push({v: otherAgg.totalMachine, d});
-        (region.comparisons.activityPercent ||= []).push({
-          v: otherAgg.total > 0 ? Math.round((otherAgg.voted / otherAgg.total) * 10000) : 0,
+        (s.comparisons.voted ||= []).push({v: otherSection.voted, d});
+        (s.comparisons.total ||= []).push({v: otherSection.total, d});
+        (s.comparisons.discardedVotes ||= []).push({v: otherSection.discardedVotes, d});
+        (s.comparisons.noVotes ||= []).push({v: otherSection.noVotes, d});
+        (s.comparisons.totalPaper ||= []).push({v: otherSection.totalPaper || 0, d});
+        (s.comparisons.totalMachine ||= []).push({v: otherSection.totalMachine || 0, d});
+        (s.comparisons.activityPercent ||= []).push({v: otherSection.activityBp || 0, d});
+        (s.comparisons.noVotesPaper ||= []).push({v: otherSection.noVotesPaper || 0, d});
+        (s.comparisons.noVotesMachine ||= []).push({v: otherSection.noVotesMachine || 0, d});
+        (s.comparisons.noVotesPercent ||= []).push({
+          v: otherSection.voted > 0 ? Math.round((otherSection.noVotes / otherSection.voted) * 10000) : 0,
           d
         });
 
-        // Party comparisons for regions:
-        // Previously: normalize by name and scan all other sections partyVotes.
-        // Now: use otherAgg.partyTotalsNorm[normalized] directly.
-        const otherAggNorm = otherAgg.partyTotalsNorm;
-        const currentPartiesMap = current.parties; // for normalized target
-        for (const pid in region.partyVotes) {
+        // Party comparisons for sections:
+        // Previously: for each pid in s.partyVotes, scan otherSection.partyVotes with normalization.
+        // Now: use otherSection.partyVotesNorm[normalized] (O(#parties in s)).
+        const currentPartiesMap = current.parties;
+        const otherNormMap = otherSection.partyVotesNorm || Object.create(null);
+
+        for (const pid in s.partyVotes) {
           const normalizedTarget = normalizePartyName(currentPartiesMap[pid] || pid);
-          const otherPartyTotal = otherAggNorm[normalizedTarget] || 0;
-          (region.comparisons[`party_${pid}`] ||= []).push({v: otherPartyTotal, d});
+          const otherBucket = otherNormMap[normalizedTarget];
+          if (!otherBucket) continue;
+
+          const otherTotal = otherBucket.total || 0;
+          const otherPaper = otherBucket.paper || 0;
+          const otherMachine = otherBucket.machine || 0;
+
+          const sv = s.partyVotes[pid];
+          (sv.comparisons ||= []).push({v: otherTotal, d});
+
+          const otherPercent = otherSection.voted > 0 ? otherTotal / otherSection.voted : 0;
+          (sv.percentComparisons ||= []).push({v: Math.round(otherPercent * 10000), d});
+
+          (sv.paperComparisons ||= []).push({v: otherPaper, d});
+          (sv.machineComparisons ||= []).push({v: otherMachine, d});
         }
 
-        // Top parties comparisons for regions removed
+        // Top parties comparisons for sections removed
       }
-
-      return region;
-    })
-    .sort((a, b) => {
-      const idA = parseInt(a.id, 10);
-      const idB = parseInt(b.id, 10);
-      if (!Number.isNaN(idA) && !Number.isNaN(idB)) return idA - idB;
-      return a.id.localeCompare(b.id);
-    });
-
-  // ----- Section comparisons (use byId instead of find) -----
-  for (const s of targetSections) {
-    s.comparisons = Object.create(null);
-
-    for (const d of otherDatesByDate[date]) {
-      const other = rawData[d];
-      const otherSection = other.byId.get(s.sectionId);
-      if (!otherSection) continue;
-
-      (s.comparisons.voted ||= []).push({v: otherSection.voted, d});
-      (s.comparisons.total ||= []).push({v: otherSection.total, d});
-      (s.comparisons.discardedVotes ||= []).push({v: otherSection.discardedVotes, d});
-      (s.comparisons.noVotes ||= []).push({v: otherSection.noVotes, d});
-      (s.comparisons.totalPaper ||= []).push({v: otherSection.totalPaper || 0, d});
-      (s.comparisons.totalMachine ||= []).push({v: otherSection.totalMachine || 0, d});
-      (s.comparisons.activityPercent ||= []).push({v: otherSection.activityBp || 0, d});
-      (s.comparisons.noVotesPaper ||= []).push({v: otherSection.noVotesPaper || 0, d});
-      (s.comparisons.noVotesMachine ||= []).push({v: otherSection.noVotesMachine || 0, d});
-      (s.comparisons.noVotesPercent ||= []).push({
-        v: otherSection.voted > 0 ? Math.round((otherSection.noVotes / otherSection.voted) * 10000) : 0,
-        d
-      });
-
-      // Party comparisons for sections:
-      // Previously: for each pid in s.partyVotes, scan otherSection.partyVotes with normalization.
-      // Now: use otherSection.partyVotesNorm[normalized] (O(#parties in s)).
-      const currentPartiesMap = current.parties;
-      const otherNormMap = otherSection.partyVotesNorm || Object.create(null);
-
-      for (const pid in s.partyVotes) {
-        const normalizedTarget = normalizePartyName(currentPartiesMap[pid] || pid);
-        const otherBucket = otherNormMap[normalizedTarget];
-        if (!otherBucket) continue;
-
-        const otherTotal = otherBucket.total || 0;
-        const otherPaper = otherBucket.paper || 0;
-        const otherMachine = otherBucket.machine || 0;
-
-        const sv = s.partyVotes[pid];
-        (sv.comparisons ||= []).push({v: otherTotal, d});
-
-        const otherPercent = otherSection.voted > 0 ? otherTotal / otherSection.voted : 0;
-        (sv.percentComparisons ||= []).push({v: Math.round(otherPercent * 10000), d});
-
-        (sv.paperComparisons ||= []).push({v: otherPaper, d});
-        (sv.machineComparisons ||= []).push({v: otherMachine, d});
-      }
-
-      // Top parties comparisons for sections removed
     }
-  }
+  });
 
   console.log(`Computing enhanced risks for ${date}...`);
 
   // ----- Compute region statistics for risk detection (single pass) -----
-  const regionStatsMap = new Map();
+  const {regionStatsMapFinal, candidateAggByRegion, partyPrefAggByRegion} = timeAction(
+    'Compute region stats + candidate aggregates',
+    () => {
+      const regionStatsMap = new Map();
 
-  for (const s of targetSections) {
-    let stats = regionStatsMap.get(s.regionId);
-    if (!stats) {
-      stats = {
-        sections: [],
-        turnoutChanges: [],
-        paperTotals: 0,
-        machineTotals: 0,
-        invalidTotals: 0,
-        votedTotals: 0,
-        partyPaperTotals: Object.create(null),
-        partyTotals: Object.create(null)
-      };
-      regionStatsMap.set(s.regionId, stats);
-    }
-    stats.sections.push(s);
+      for (const s of targetSections) {
+        let stats = regionStatsMap.get(s.regionId);
+        if (!stats) {
+          stats = {
+            sections: [],
+            turnoutChanges: [],
+            paperTotals: 0,
+            machineTotals: 0,
+            invalidTotals: 0,
+            votedTotals: 0,
+            partyPaperTotals: Object.create(null),
+            partyTotals: Object.create(null)
+          };
+          regionStatsMap.set(s.regionId, stats);
+        }
+        stats.sections.push(s);
 
-    // turnout change (current vs most recent comparison entry you have)
-    if (s.comparisons?.activityPercent && s.comparisons.activityPercent.length > 0) {
-      const currentTurnout = (s.activityBp || 0) / 10000;
-      const previousTurnout = (s.comparisons.activityPercent[0].v || 0) / 10000;
-      if (previousTurnout > 0) stats.turnoutChanges.push((currentTurnout - previousTurnout) / previousTurnout);
-    }
+        // turnout change (current vs most recent comparison entry you have)
+        if (s.comparisons?.activityPercent && s.comparisons.activityPercent.length > 0) {
+          const currentTurnout = (s.activityBp || 0) / 10000;
+          const previousTurnout = (s.comparisons.activityPercent[0].v || 0) / 10000;
+          if (previousTurnout > 0) stats.turnoutChanges.push((currentTurnout - previousTurnout) / previousTurnout);
+        }
 
-    stats.paperTotals += s.totalPaper || 0;
-    stats.machineTotals += s.totalMachine || 0;
-    stats.invalidTotals += s.discardedVotes;
-    stats.votedTotals += s.voted;
+        stats.paperTotals += s.totalPaper || 0;
+        stats.machineTotals += s.totalMachine || 0;
+        stats.invalidTotals += s.discardedVotes;
+        stats.votedTotals += s.voted;
 
-    for (const pid in s.partyVotes) {
-      const votes = s.partyVotes[pid];
-      if (!stats.partyTotals[pid]) {
-        stats.partyTotals[pid] = 0;
-        stats.partyPaperTotals[pid] = 0;
+        for (const pid in s.partyVotes) {
+          const votes = s.partyVotes[pid];
+          if (!stats.partyTotals[pid]) {
+            stats.partyTotals[pid] = 0;
+            stats.partyPaperTotals[pid] = 0;
+          }
+          stats.partyTotals[pid] += votes.total || 0;
+          stats.partyPaperTotals[pid] += votes.paper || 0;
+        }
       }
-      stats.partyTotals[pid] += votes.total || 0;
-      stats.partyPaperTotals[pid] += votes.paper || 0;
+
+      const regionStatsMapFinal = Object.create(null);
+      for (const [key, data] of regionStatsMap.entries()) {
+        let avgTurnoutChange = 0;
+        if (data.turnoutChanges.length > 0) {
+          let sum = 0;
+          for (const c of data.turnoutChanges) sum += c;
+          avgTurnoutChange = sum / data.turnoutChanges.length;
+        }
+
+        const variance = data.turnoutChanges.length > 1 ? calculateVariance(data.turnoutChanges) : 0;
+        const turnoutChangeStdDev = Math.sqrt(variance);
+
+        const paperMachineRatio = data.machineTotals > 0 ? data.paperTotals / data.machineTotals : 0;
+        const invalidRate = data.votedTotals > 0 ? data.invalidTotals / data.votedTotals : 0;
+
+        const partyPaperRatios = Object.create(null);
+        for (const pid in data.partyTotals) {
+          partyPaperRatios[pid] = data.partyTotals[pid] > 0 ? data.partyPaperTotals[pid] / data.partyTotals[pid] : 0;
+        }
+
+        regionStatsMapFinal[key] = {
+          avgTurnoutChange,
+          turnoutChangeStdDev,
+          paperMachineRatio,
+          partyPaperRatios,
+          invalidRate
+        };
+      }
+
+      // Precompute region candidate aggregates ONCE per region (big O(n^2) killer)
+      const {candidateAggByRegion, partyPrefAggByRegion} = buildRegionCandidateAggregates(current.byRegion);
+
+      return {regionStatsMapFinal, candidateAggByRegion, partyPrefAggByRegion};
     }
-  }
-
-  const regionStatsMapFinal = Object.create(null);
-  for (const [key, data] of regionStatsMap.entries()) {
-    let avgTurnoutChange = 0;
-    if (data.turnoutChanges.length > 0) {
-      let sum = 0;
-      for (const c of data.turnoutChanges) sum += c;
-      avgTurnoutChange = sum / data.turnoutChanges.length;
-    }
-
-    const variance = data.turnoutChanges.length > 1 ? calculateVariance(data.turnoutChanges) : 0;
-    const turnoutChangeStdDev = Math.sqrt(variance);
-
-    const paperMachineRatio = data.machineTotals > 0 ? data.paperTotals / data.machineTotals : 0;
-    const invalidRate = data.votedTotals > 0 ? data.invalidTotals / data.votedTotals : 0;
-
-    const partyPaperRatios = Object.create(null);
-    for (const pid in data.partyTotals) {
-      partyPaperRatios[pid] = data.partyTotals[pid] > 0 ? data.partyPaperTotals[pid] / data.partyTotals[pid] : 0;
-    }
-
-    regionStatsMapFinal[key] = {
-      avgTurnoutChange,
-      turnoutChangeStdDev,
-      paperMachineRatio,
-      partyPaperRatios,
-      invalidRate
-    };
-  }
-
-  // Precompute region candidate aggregates ONCE per region (big O(n^2) killer)
-  const {candidateAggByRegion, partyPrefAggByRegion} = buildRegionCandidateAggregates(current.byRegion);
+  );
 
   // ----- Enhanced risks per section -----
   const histDates = histDatesByDate[date];
@@ -933,26 +984,27 @@ for (const date of dates) {
   const r51ByCandidate = new Map(); // key: `${regionKey}_${partyId}_${candidateId}`
   const r61ByCandidate = new Map(); // key: `${regionKey}_${partyId}_${candidateId}`
 
-  for (const section of targetSections) {
-    const regionKey = section.regionId;
-    const regStats = regionStatsMapFinal[regionKey] || {
-      avgTurnoutChange: 0,
-      turnoutChangeStdDev: 0,
-      paperMachineRatio: 0,
-      partyPaperRatios: Object.create(null),
-      invalidRate: 0
-    };
+  timeAction('Compute enhanced section risks', () => {
+    for (const section of targetSections) {
+      const regionKey = section.regionId;
+      const regStats = regionStatsMapFinal[regionKey] || {
+        avgTurnoutChange: 0,
+        turnoutChangeStdDev: 0,
+        paperMachineRatio: 0,
+        partyPaperRatios: Object.create(null),
+        invalidRate: 0
+      };
 
-    // Historical sections: use byId lookups (O(1))
-    const historicalSections = [];
-    for (const d of histDates) {
-      const hs = rawData[d].byId.get(section.sectionId);
-      if (hs) historicalSections.push(hs);
-    }
+      // Historical sections: use byId lookups (O(1))
+      const historicalSections = [];
+      for (const d of histDates) {
+        const hs = rawData[d].byId.get(section.sectionId);
+        if (hs) historicalSections.push(hs);
+      }
 
-    // Neighboring sections: use byRegion once (no global filter)
-    const regionSections = current.byRegion.get(regionKey) || [];
-    const riskIndicators = [];
+      // Neighboring sections: use byRegion once (no global filter)
+      const regionSections = current.byRegion.get(regionKey) || [];
+      const riskIndicators = [];
 
     // Baseline from historical sections (same logic, faster loops)
     let baseline = null;
@@ -1646,120 +1698,30 @@ for (const date of dates) {
     const candidateRiskIndicators = riskIndicators.filter((r) =>
       r.code === 'R5.1' || r.code === 'R6.1' || r.code === 'R6.2' || r.code === 'R4.4' || r.code === 'R2.4' || r.code === 'R5.2' || (r.details && r.details.candidateId)
     );
-    if (candidateRiskIndicators.length > 0) {
-      section.candidateRiskIndicators = candidateRiskIndicators;
+      if (candidateRiskIndicators.length > 0) {
+        section.candidateRiskIndicators = candidateRiskIndicators;
+      }
     }
-
-  }
+  });
 
   // Calculate R2.4 at region level for candidates (after all sections processed)
-  const r24ByCandidate = new Map(); // key: `${regionKey}_${partyId}_${candidateId}`
-  for (const [regionKey, regionSections] of current.byRegion.entries()) {
-    // Aggregate candidate votes across all sections in the region
-    const regionCandidateVotes = new Map(); // key: `${partyId}_${candidateId}` -> {paper, machine, candidateName, partyName, candidateId, partyId}
+  timeAction('Compute R2.4 candidate risks (region)', () => {
+    const r24ByCandidate = new Map(); // key: `${regionKey}_${partyId}_${candidateId}`
+    for (const [regionKey, regionSections] of current.byRegion.entries()) {
+      // Aggregate candidate votes across all sections in the region
+      const regionCandidateVotes = new Map(); // key: `${partyId}_${candidateId}` -> {paper, machine, candidateName, partyName, candidateId, partyId}
 
-    for (const section of regionSections) {
-      if (!section.candidateVotes) continue;
+      for (const section of regionSections) {
+        if (!section.candidateVotes) continue;
 
-      for (const key in section.candidateVotes) {
-        const candidate = section.candidateVotes[key];
-        const candidateKey = `${candidate.partyId}_${candidate.candidateId}`;
-
-        if (!regionCandidateVotes.has(candidateKey)) {
-          regionCandidateVotes.set(candidateKey, {
-            paper: 0,
-            machine: 0,
-            candidateName: candidate.candidateName,
-            partyName: candidate.partyName,
-            candidateId: candidate.candidateId,
-            partyId: candidate.partyId
-          });
-        }
-
-        const agg = regionCandidateVotes.get(candidateKey);
-        agg.paper += candidate.paper;
-        agg.machine += candidate.machine;
-      }
-    }
-
-    // Calculate R2.4 for each candidate at region level
-    for (const [candidateKey, candidate] of regionCandidateVotes.entries()) {
-      const candidateTotal = candidate.paper + candidate.machine;
-      if (candidateTotal < 10) continue;
-
-      const paperShare = candidate.paper / candidateTotal;
-      const machineShare = candidate.machine / candidateTotal;
-      const divergence = Math.abs(paperShare - machineShare);
-
-      if (divergence > 0.3 && paperShare > 0.7) {
-        const r24Key = `${regionKey}_${candidate.partyId}_${candidate.candidateId}`;
-        if (r24ByCandidate.has(r24Key)) continue; // Already added
-
-        const r24Risk = {
-          code: 'R2.4',
-          category: 'R2',
-          severity: divergence > 0.5 ? 'high' : 'medium',
-          details: {
-            candidateId: candidate.candidateId,
-            partyId: candidate.partyId,
-            paperShare,
-            machineShare
-            // No sectionId since this is region-level
-          }
-        };
-
-        // Add R2.4 to candidateRiskIndicators for all sections where this candidate appears
-        for (const section of regionSections) {
-          if (!section.candidateVotes) continue;
-          const sectionCandidateKey = `${candidate.partyId}_${candidate.candidateId}`;
-          const sectionCandidate = section.candidateVotes[sectionCandidateKey];
-
-          if (sectionCandidate && sectionCandidate.total > 0) {
-            if (!section.candidateRiskIndicators) {
-              section.candidateRiskIndicators = [];
-            }
-            // Add with sectionId for this specific section
-            section.candidateRiskIndicators.push({
-              ...r24Risk,
-              details: {
-                ...r24Risk.details,
-                sectionId: section.sectionId
-              }
-            });
-          }
-        }
-
-        r24ByCandidate.set(r24Key, r24Risk);
-      }
-    }
-  }
-
-  // Calculate R5.2 at region level for candidates (after all sections processed)
-  const r52ByCandidate = new Map(); // key: `${regionKey}_${partyId}_${candidateId}`
-  for (const [regionKey, regionSections] of current.byRegion.entries()) {
-    // Aggregate candidate and party votes across all sections in the region for current date
-    const regionCandidateVotes = new Map(); // key: `${partyId}_${candidateId}` -> {total, candidateName, partyName, candidateId, partyId}
-    const regionPartyVotes = new Map(); // key: partyId -> total
-
-    for (const section of regionSections) {
-      // Aggregate party votes
-      if (section.partyVotes) {
-        for (const partyId in section.partyVotes) {
-          const votes = section.partyVotes[partyId];
-          const currentTotal = regionPartyVotes.get(partyId) || 0;
-          regionPartyVotes.set(partyId, currentTotal + (votes.total || 0));
-        }
-      }
-
-      // Aggregate candidate votes
-      if (section.candidateVotes) {
         for (const key in section.candidateVotes) {
           const candidate = section.candidateVotes[key];
           const candidateKey = `${candidate.partyId}_${candidate.candidateId}`;
 
           if (!regionCandidateVotes.has(candidateKey)) {
             regionCandidateVotes.set(candidateKey, {
-              total: 0,
+              paper: 0,
+              machine: 0,
               candidateName: candidate.candidateName,
               partyName: candidate.partyName,
               candidateId: candidate.candidateId,
@@ -1768,263 +1730,372 @@ for (const date of dates) {
           }
 
           const agg = regionCandidateVotes.get(candidateKey);
-          agg.total += candidate.total;
+          agg.paper += candidate.paper;
+          agg.machine += candidate.machine;
+        }
+      }
+
+      // Calculate R2.4 for each candidate at region level
+      for (const [candidateKey, candidate] of regionCandidateVotes.entries()) {
+        const candidateTotal = candidate.paper + candidate.machine;
+        if (candidateTotal < 10) continue;
+
+        const paperShare = candidate.paper / candidateTotal;
+        const machineShare = candidate.machine / candidateTotal;
+        const divergence = Math.abs(paperShare - machineShare);
+
+        if (divergence > 0.3 && paperShare > 0.7) {
+          const r24Key = `${regionKey}_${candidate.partyId}_${candidate.candidateId}`;
+          if (r24ByCandidate.has(r24Key)) continue; // Already added
+
+          const r24Risk = {
+            code: 'R2.4',
+            category: 'R2',
+            severity: divergence > 0.5 ? 'high' : 'medium',
+            details: {
+              candidateId: candidate.candidateId,
+              partyId: candidate.partyId,
+              paperShare,
+              machineShare
+              // No sectionId since this is region-level
+            }
+          };
+
+          // Add R2.4 to candidateRiskIndicators for all sections where this candidate appears
+          for (const section of regionSections) {
+            if (!section.candidateVotes) continue;
+            const sectionCandidateKey = `${candidate.partyId}_${candidate.candidateId}`;
+            const sectionCandidate = section.candidateVotes[sectionCandidateKey];
+
+            if (sectionCandidate && sectionCandidate.total > 0) {
+              if (!section.candidateRiskIndicators) {
+                section.candidateRiskIndicators = [];
+              }
+              // Add with sectionId for this specific section
+              section.candidateRiskIndicators.push({
+                ...r24Risk,
+                details: {
+                  ...r24Risk.details,
+                  sectionId: section.sectionId
+                }
+              });
+            }
+          }
+
+          r24ByCandidate.set(r24Key, r24Risk);
         }
       }
     }
+  });
 
-    // Get historical data for this region
-    const historicalRegionData = [];
-    for (const d of histDates) {
-      const historicalByRegion = rawData[d].byRegion;
-      const historicalRegionSections = historicalByRegion.get(regionKey) || [];
+  // Calculate R5.2 at region level for candidates (after all sections processed)
+  timeAction('Compute R5.2 candidate risks (region)', () => {
+    const r52ByCandidate = new Map(); // key: `${regionKey}_${partyId}_${candidateId}`
+    for (const [regionKey, regionSections] of current.byRegion.entries()) {
+      // Aggregate candidate and party votes across all sections in the region for current date
+      const regionCandidateVotes = new Map(); // key: `${partyId}_${candidateId}` -> {total, candidateName, partyName, candidateId, partyId}
+      const regionPartyVotes = new Map(); // key: partyId -> total
 
-      // Aggregate historical candidate and party votes for this region
-      const histCandidateVotes = new Map();
-      const histPartyVotes = new Map();
-
-      for (const hs of historicalRegionSections) {
-        // Aggregate historical party votes
-        if (hs.partyVotes) {
-          for (const partyId in hs.partyVotes) {
-            const votes = hs.partyVotes[partyId];
-            const currentTotal = histPartyVotes.get(partyId) || 0;
-            histPartyVotes.set(partyId, currentTotal + (votes.total || 0));
+      for (const section of regionSections) {
+        // Aggregate party votes
+        if (section.partyVotes) {
+          for (const partyId in section.partyVotes) {
+            const votes = section.partyVotes[partyId];
+            const currentTotal = regionPartyVotes.get(partyId) || 0;
+            regionPartyVotes.set(partyId, currentTotal + (votes.total || 0));
           }
         }
 
-        // Aggregate historical candidate votes
-        if (hs.candidateVotes) {
-          for (const key in hs.candidateVotes) {
-            const candidate = hs.candidateVotes[key];
+        // Aggregate candidate votes
+        if (section.candidateVotes) {
+          for (const key in section.candidateVotes) {
+            const candidate = section.candidateVotes[key];
             const candidateKey = `${candidate.partyId}_${candidate.candidateId}`;
 
-            if (!histCandidateVotes.has(candidateKey)) {
-              histCandidateVotes.set(candidateKey, {
+            if (!regionCandidateVotes.has(candidateKey)) {
+              regionCandidateVotes.set(candidateKey, {
                 total: 0,
+                candidateName: candidate.candidateName,
+                partyName: candidate.partyName,
                 candidateId: candidate.candidateId,
                 partyId: candidate.partyId
               });
             }
 
-            const agg = histCandidateVotes.get(candidateKey);
+            const agg = regionCandidateVotes.get(candidateKey);
             agg.total += candidate.total;
           }
         }
       }
 
-      historicalRegionData.push({
-        candidateVotes: histCandidateVotes,
-        partyVotes: histPartyVotes
-      });
-    }
+      // Get historical data for this region
+      const historicalRegionData = [];
+      for (const d of histDates) {
+        const historicalByRegion = rawData[d].byRegion;
+        const historicalRegionSections = historicalByRegion.get(regionKey) || [];
 
-    // Calculate R5.2 for each candidate at region level
-    for (const [candidateKey, candidate] of regionCandidateVotes.entries()) {
-      if (candidate.total < 10) continue;
-      if (historicalRegionData.length < 2) continue;
+        // Aggregate historical candidate and party votes for this region
+        const histCandidateVotes = new Map();
+        const histPartyVotes = new Map();
 
-      const partyId = candidate.partyId;
-      const currentPartyTotal = regionPartyVotes.get(partyId) || 0;
-      if (currentPartyTotal === 0) continue;
+        for (const hs of historicalRegionSections) {
+          // Aggregate historical party votes
+          if (hs.partyVotes) {
+            for (const partyId in hs.partyVotes) {
+              const votes = hs.partyVotes[partyId];
+              const currentTotal = histPartyVotes.get(partyId) || 0;
+              histPartyVotes.set(partyId, currentTotal + (votes.total || 0));
+            }
+          }
 
-      const currentRate = candidate.total / currentPartyTotal;
+          // Aggregate historical candidate votes
+          if (hs.candidateVotes) {
+            for (const key in hs.candidateVotes) {
+              const candidate = hs.candidateVotes[key];
+              const candidateKey = `${candidate.partyId}_${candidate.candidateId}`;
 
-      // Calculate historical rates
-      const historicalRates = [];
-      for (const histData of historicalRegionData) {
-        const histCandidate = histData.candidateVotes.get(candidateKey);
-        const histPartyTotal = histData.partyVotes.get(partyId) || 0;
+              if (!histCandidateVotes.has(candidateKey)) {
+                histCandidateVotes.set(candidateKey, {
+                  total: 0,
+                  candidateId: candidate.candidateId,
+                  partyId: candidate.partyId
+                });
+              }
 
-        if (histCandidate && histPartyTotal > 0) {
-          historicalRates.push(histCandidate.total / histPartyTotal);
-        } else {
-          historicalRates.push(0);
+              const agg = histCandidateVotes.get(candidateKey);
+              agg.total += candidate.total;
+            }
+          }
         }
+
+        historicalRegionData.push({
+          candidateVotes: histCandidateVotes,
+          partyVotes: histPartyVotes
+        });
       }
 
-      let sum = 0;
-      for (const r of historicalRates) sum += r;
-      const avgHistoricalRate = historicalRates.length > 0 ? sum / historicalRates.length : 0;
-      if (avgHistoricalRate === 0) continue;
+      // Calculate R5.2 for each candidate at region level
+      for (const [candidateKey, candidate] of regionCandidateVotes.entries()) {
+        if (candidate.total < 10) continue;
+        if (historicalRegionData.length < 2) continue;
 
-      const historicalStdDev = Math.sqrt(calculateVariance(historicalRates));
-      const threshold = avgHistoricalRate + 3 * historicalStdDev;
+        const partyId = candidate.partyId;
+        const currentPartyTotal = regionPartyVotes.get(partyId) || 0;
+        if (currentPartyTotal === 0) continue;
 
-      if (avgHistoricalRate < 0.05 && avgHistoricalRate > 0 && currentRate > threshold && currentRate > 0.1) {
-        const r52Key = `${regionKey}_${candidate.partyId}_${candidate.candidateId}`;
-        if (r52ByCandidate.has(r52Key)) continue; // Already added
+        const currentRate = candidate.total / currentPartyTotal;
 
-        const r52Risk = {
-          code: 'R5.2',
-          category: 'R5',
-          severity: currentRate > threshold * 2 ? 'high' : 'medium',
-          details: {
-            candidateId: candidate.candidateId,
-            partyId: candidate.partyId,
-            avgHistoricalRate,
-            currentRate
-            // No sectionId since this is region-level
+        // Calculate historical rates
+        const historicalRates = [];
+        for (const histData of historicalRegionData) {
+          const histCandidate = histData.candidateVotes.get(candidateKey);
+          const histPartyTotal = histData.partyVotes.get(partyId) || 0;
+
+          if (histCandidate && histPartyTotal > 0) {
+            historicalRates.push(histCandidate.total / histPartyTotal);
+          } else {
+            historicalRates.push(0);
           }
-        };
+        }
 
-        // Add R5.2 to candidateRiskIndicators for all sections where this candidate appears
-        for (const section of regionSections) {
-          if (!section.candidateVotes) continue;
-          const sectionCandidateKey = `${candidate.partyId}_${candidate.candidateId}`;
-          const sectionCandidate = section.candidateVotes[sectionCandidateKey];
+        let sum = 0;
+        for (const r of historicalRates) sum += r;
+        const avgHistoricalRate = historicalRates.length > 0 ? sum / historicalRates.length : 0;
+        if (avgHistoricalRate === 0) continue;
 
-          if (sectionCandidate && sectionCandidate.total > 0) {
-            if (!section.candidateRiskIndicators) {
-              section.candidateRiskIndicators = [];
+        const historicalStdDev = Math.sqrt(calculateVariance(historicalRates));
+        const threshold = avgHistoricalRate + 3 * historicalStdDev;
+
+        if (avgHistoricalRate < 0.05 && avgHistoricalRate > 0 && currentRate > threshold && currentRate > 0.1) {
+          const r52Key = `${regionKey}_${candidate.partyId}_${candidate.candidateId}`;
+          if (r52ByCandidate.has(r52Key)) continue; // Already added
+
+          const r52Risk = {
+            code: 'R5.2',
+            category: 'R5',
+            severity: currentRate > threshold * 2 ? 'high' : 'medium',
+            details: {
+              candidateId: candidate.candidateId,
+              partyId: candidate.partyId,
+              avgHistoricalRate,
+              currentRate
+              // No sectionId since this is region-level
             }
-            // Add with sectionId for this specific section
-            section.candidateRiskIndicators.push({
-              ...r52Risk,
-              details: {
-                ...r52Risk.details,
-                sectionId: section.sectionId
+          };
+
+          // Add R5.2 to candidateRiskIndicators for all sections where this candidate appears
+          for (const section of regionSections) {
+            if (!section.candidateVotes) continue;
+            const sectionCandidateKey = `${candidate.partyId}_${candidate.candidateId}`;
+            const sectionCandidate = section.candidateVotes[sectionCandidateKey];
+
+            if (sectionCandidate && sectionCandidate.total > 0) {
+              if (!section.candidateRiskIndicators) {
+                section.candidateRiskIndicators = [];
               }
+              // Add with sectionId for this specific section
+              section.candidateRiskIndicators.push({
+                ...r52Risk,
+                details: {
+                  ...r52Risk.details,
+                  sectionId: section.sectionId
+                }
+              });
+            }
+          }
+
+          r52ByCandidate.set(r52Key, r52Risk);
+        }
+      }
+    }
+  });
+
+// ---- Candidate-level aggregation (unique R6.1 per candidate) ----
+  const candidates = timeAction('Aggregate candidates', () => {
+    const candidatesMap = new Map(); // candidateKey (partyId_candidateId) -> candidate object
+
+    for (const [regionKey, regionSections] of current.byRegion.entries()) {
+      const r61Agg = aggregateR61ForRegion(regionSections);
+
+      // gather candidate meta from candidateVotes
+      const meta = new Map(); // candidateKey -> {regionId, candidateId, candidateName, partyId, partyName}
+
+      for (const s of regionSections) {
+        const cv = s.candidateVotes;
+        if (!cv) continue;
+
+        for (const k in cv) {
+          const c = cv[k];
+          const candidateKey = `${c.partyId}_${c.candidateId}`;
+          if (!meta.has(candidateKey)) {
+            meta.set(candidateKey, {
+              // regionId is kept, but candidateKey is GLOBAL, so you can pick first or store list
+              regionId: regionKey,
+              candidateId: c.candidateId,
+              candidateName: c.candidateName,
+              partyId: c.partyId,
+              partyName: c.partyName
             });
           }
         }
-
-        r52ByCandidate.set(r52Key, r52Risk);
       }
-    }
-  }
 
-// ---- Candidate-level aggregation (unique R6.1 per candidate) ----
-  const candidatesMap = new Map(); // candidateKey (partyId_candidateId) -> candidate object
+      for (const [candidateKey, m] of meta.entries()) {
+        const r61 = r61Agg.get(candidateKey);
 
-  for (const [regionKey, regionSections] of current.byRegion.entries()) {
-    const r61Agg = aggregateR61ForRegion(regionSections);
+        // If no R6.1 for this region, still create candidate entry (optional).
+        // If you only want candidates that have R6.1, then: if (!r61) continue;
+        const riskIndicators = [];
+        if (r61) riskIndicators.push(r61);
 
-    // gather candidate meta from candidateVotes
-    const meta = new Map(); // candidateKey -> {regionId, candidateId, candidateName, partyId, partyName}
-
-    for (const s of regionSections) {
-      const cv = s.candidateVotes;
-      if (!cv) continue;
-
-      for (const k in cv) {
-        const c = cv[k];
-        const candidateKey = `${c.partyId}_${c.candidateId}`;
-        if (!meta.has(candidateKey)) {
-          meta.set(candidateKey, {
-            // regionId is kept, but candidateKey is GLOBAL, so you can pick first or store list
-            regionId: regionKey,
-            candidateId: c.candidateId,
-            candidateName: c.candidateName,
-            partyId: c.partyId,
-            partyName: c.partyName
+        const existing = candidatesMap.get(candidateKey);
+        if (!existing) {
+          candidatesMap.set(candidateKey, {
+            ...m,
+            riskIndicators
           });
+          continue;
         }
-      }
-    }
 
-    for (const [candidateKey, m] of meta.entries()) {
-      const r61 = r61Agg.get(candidateKey);
-
-      // If no R6.1 for this region, still create candidate entry (optional).
-      // If you only want candidates that have R6.1, then: if (!r61) continue;
-      const riskIndicators = [];
-      if (r61) riskIndicators.push(r61);
-
-      const existing = candidatesMap.get(candidateKey);
-      if (!existing) {
-        candidatesMap.set(candidateKey, {
-          ...m,
-          riskIndicators
-        });
-        continue;
-      }
-
-      // Merge (dedupe) riskIndicators; for R6.1 we also merge/average properly
-      for (const ri of riskIndicators) {
-        if (ri.code !== 'R6.1') {
-          // generic dedupe by code
-          if (!existing.riskIndicators.some(x => x.code === ri.code)) {
-            existing.riskIndicators.push(ri);
+        // Merge (dedupe) riskIndicators; for R6.1 we also merge/average properly
+        for (const ri of riskIndicators) {
+          if (ri.code !== 'R6.1') {
+            // generic dedupe by code
+            if (!existing.riskIndicators.some(x => x.code === ri.code)) {
+              existing.riskIndicators.push(ri);
+            }
+            continue;
           }
-          continue;
+
+          const prev = existing.riskIndicators.find(x => x.code === 'R6.1');
+          if (!prev) {
+            existing.riskIndicators.push(ri);
+            continue;
+          }
+
+          // Weighted merge of R6.1 averages across regions
+          const aCount = prev.details?.sectionsTriggered || 1;
+          const bCount = ri.details?.sectionsTriggered || 1;
+
+          const aAvgS = prev.details?.avgSectionShare || 0;
+          const bAvgS = ri.details?.avgSectionShare || 0;
+
+          const aAvgM = prev.details?.avgMunicipalityShare || 0;
+          const bAvgM = ri.details?.avgMunicipalityShare || 0;
+
+          const mergedCount = aCount + bCount;
+          const mergedAvgSectionShare = mergedCount ? (aAvgS * aCount + bAvgS * bCount) / mergedCount : 0;
+          const mergedAvgMunicipalityShare = mergedCount ? (aAvgM * aCount + bAvgM * bCount) / mergedCount : 0;
+
+          // update prev in-place
+          prev.details.sectionsTriggered = mergedCount;
+          prev.details.avgSectionShare = mergedAvgSectionShare;
+          prev.details.avgMunicipalityShare = mergedAvgMunicipalityShare;
+
+          prev.severity =
+            mergedAvgMunicipalityShare > 0 && mergedAvgSectionShare > mergedAvgMunicipalityShare * 2 ? 'high' : 'medium';
         }
-
-        const prev = existing.riskIndicators.find(x => x.code === 'R6.1');
-        if (!prev) {
-          existing.riskIndicators.push(ri);
-          continue;
-        }
-
-        // Weighted merge of R6.1 averages across regions
-        const aCount = prev.details?.sectionsTriggered || 1;
-        const bCount = ri.details?.sectionsTriggered || 1;
-
-        const aAvgS = prev.details?.avgSectionShare || 0;
-        const bAvgS = ri.details?.avgSectionShare || 0;
-
-        const aAvgM = prev.details?.avgMunicipalityShare || 0;
-        const bAvgM = ri.details?.avgMunicipalityShare || 0;
-
-        const mergedCount = aCount + bCount;
-        const mergedAvgSectionShare = mergedCount ? (aAvgS * aCount + bAvgS * bCount) / mergedCount : 0;
-        const mergedAvgMunicipalityShare = mergedCount ? (aAvgM * aCount + bAvgM * bCount) / mergedCount : 0;
-
-        // update prev in-place
-        prev.details.sectionsTriggered = mergedCount;
-        prev.details.avgSectionShare = mergedAvgSectionShare;
-        prev.details.avgMunicipalityShare = mergedAvgMunicipalityShare;
-
-        prev.severity =
-          mergedAvgMunicipalityShare > 0 && mergedAvgSectionShare > mergedAvgMunicipalityShare * 2 ? 'high' : 'medium';
       }
     }
-  }
 
-  const candidates = Array.from(candidatesMap.values());
+    return Array.from(candidatesMap.values());
+  });
 
-  const finalResult = {
+  const finalResult = timeAction('Build final payload', () => ({
     sections: targetSections.map((s) => compactSection(s, compactMapping)),
     parties,
     regions: regions.map((r) => compactRegion(r, compactMapping)),
     candidates
-  };
+  }));
 
-  const json = JSON.stringify(finalResult);
-  let parsed = null;
-  try {
-    parsed = JSON.parse(json);
-  } catch (err) {
-    throw new Error(`Invalid JSON output for ${date}: ${err && err.message ? err.message : err}`);
-  }
+  const json = timeAction('Serialize JSON', () => JSON.stringify(finalResult));
+  timeAction('Validate JSON', () => {
+    let parsed = null;
+    try {
+      parsed = JSON.parse(json);
+    } catch (err) {
+      throw new Error(`Invalid JSON output for ${date}: ${err && err.message ? err.message : err}`);
+    }
 
-  if (
-    !parsed ||
-    !parsed.sections ||
-    !parsed.parties ||
-    !parsed.regions ||
-    !parsed.candidates
-  ) {
-    throw new Error(`Missing top-level keys in output for ${date}`);
-  }
-
-  const rawBytes = Buffer.byteLength(json);
-  const gzipped = zlib.gzipSync(json, {level: 9});
-  const gzipBytes = gzipped.length;
-  const ratio = rawBytes > 0 ? (gzipBytes / rawBytes).toFixed(3) : '0.000';
-  console.log(`Output size ${date}: rawBytes=${rawBytes} gzipBytes=${gzipBytes} ratio=${ratio}`);
-  fs.writeFileSync(path.join(outputDir, `${date}.json.gz`), gzipped);
-  const brotli = zlib.brotliCompressSync(Buffer.from(json), {
-    params: {[zlib.constants.BROTLI_PARAM_QUALITY]: 11},
+    if (
+      !parsed ||
+      !parsed.sections ||
+      !parsed.parties ||
+      !parsed.regions ||
+      !parsed.candidates
+    ) {
+      throw new Error(`Missing top-level keys in output for ${date}`);
+    }
   });
-  fs.writeFileSync(path.join(outputDir, `${date}.json.br`), brotli);
+
+  timeAction('Write compressed outputs', () => {
+    const rawBytes = Buffer.byteLength(json);
+    const gzipped = zlib.gzipSync(json, {level: 9});
+    const gzipBytes = gzipped.length;
+    const ratio = rawBytes > 0 ? (gzipBytes / rawBytes).toFixed(3) : '0.000';
+    console.log(`Output size ${date}: rawBytes=${rawBytes} gzipBytes=${gzipBytes} ratio=${ratio}`);
+    const gzName = `${date}.${buildTimestamp}.json.gz`;
+    fs.writeFileSync(path.join(outputDir, gzName), gzipped);
+    const brotli = zlib.brotliCompressSync(Buffer.from(json), {
+      params: {[zlib.constants.BROTLI_PARAM_QUALITY]: 11},
+    });
+    const brName = `${date}.${buildTimestamp}.json.br`;
+    fs.writeFileSync(path.join(outputDir, brName), brotli);
+    manifest.files[date] = {gz: gzName, br: brName};
+  });
 }
 
-// Cleanup .json files (kept as-is)
-for (const file of fs.readdirSync(outputDir)) {
-  if (file.endsWith('.json')) {
-    fs.unlinkSync(path.join(outputDir, file));
+logSection('Cleanup');
+timeAction('Remove intermediate .json files', () => {
+  for (const file of fs.readdirSync(outputDir)) {
+    if (file.endsWith('.json')) {
+      fs.unlinkSync(path.join(outputDir, file));
+    }
   }
-}
+});
 
-console.log('Done!');
+timeAction('Write manifest', () => {
+  fs.writeFileSync(path.join(outputDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
+});
+
+console.log(`Done in ${formatSeconds(nowNs() - runStart)}s`);

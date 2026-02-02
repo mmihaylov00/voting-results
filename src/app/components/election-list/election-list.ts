@@ -6,7 +6,7 @@ import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
 import { Region, Section, PartyVotes } from '../../models/election.models';
 import { getPartyAlias } from '../../utils/party-aliases';
-import { formatActivity, getPartyKeywords, findPartyByKeywords } from '../../utils/common.utils';
+import { formatActivity, getPartyKeywords, findPartyByKeywords, getDefaultPartyIds } from '../../utils/common.utils';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmCardContentDirective,
@@ -65,7 +65,6 @@ export class ElectionListComponent implements OnInit {
   // Historical charts multiselect
   selectedHistoricalPartyIds = signal<Set<string>>(new Set());
   allParties: { id: string, name: string }[] = [];
-  private readonly DEFAULT_KEYWORDS = ["ГЕРБ", "ПРОДЪЛЖАВАМЕ", "ВЪЗРАЖДАНЕ", "ДПС", "БСП", "ТАКЪВ НАРОД", "МЕЧ", "ВЕЛИЧИЕ"];
 
   constructor(
     private electionService: ElectionService,
@@ -107,13 +106,7 @@ export class ElectionListComponent implements OnInit {
       this.allParties = Array.from(allPartiesMap.entries()).map(([id, name]) => ({ id, name }));
       
       // Initialize default historical party selection
-      const defaultIds = new Set<string>();
-      this.allParties.forEach(party => {
-        if (this.DEFAULT_KEYWORDS.some(k => party.name.toUpperCase().includes(k))) {
-          defaultIds.add(party.id);
-        }
-      });
-      this.selectedHistoricalPartyIds.set(defaultIds);
+      this.selectedHistoricalPartyIds.set(getDefaultPartyIds(this.allParties));
       
       this.updateHistoricalCharts();
     });

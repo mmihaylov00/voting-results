@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output, effect, signal, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { Section, SectionDetails, PartyResult, ComparativeValue, PartyVotes, CandidateResult, CandidateVotes, RegionCandidate, TableColumn } from '../../../../models/election.models';
@@ -20,7 +19,6 @@ import {
 } from '../../../ui/table-helm/src/lib/hlm-table.directives';
 import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-typography.directive';
 import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
-import { HlmInputDirective } from '../../../ui/input-helm/src/lib/hlm-input.directive';
 import {
   HlmCardDirective,
   HlmCardHeaderDirective,
@@ -32,13 +30,14 @@ import { SortableTableHeaderComponent } from '../../../ui/sortable-table-header/
 import { RiskBadgeComponent } from '../../../ui/risk-badge/risk-badge';
 import { RiskAnalysisSummaryComponent } from '../../../ui/risk-analysis-summary/risk-analysis-summary';
 import { ColumnFilterComponent } from '../../../ui/column-filter/column-filter';
+import { SearchFilterComponent } from '../../../ui/search-filter/search-filter';
+import { loadVisibleColumns, saveVisibleColumns } from '../../../../utils/column-visibility';
 
 @Component({
   selector: 'app-section-detail-modal',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     HighchartsChartComponent,
     HlmButtonDirective,
     HlmTableDirective,
@@ -49,13 +48,13 @@ import { ColumnFilterComponent } from '../../../ui/column-filter/column-filter';
     HlmTableCellDirective,
     HlmTypographyDirective,
     HlmTooltipDirective,
-    HlmInputDirective,
     HlmCardDirective,
     PartyFilterComponent,
     BaseModalComponent,
     SortableTableHeaderComponent,
     RiskAnalysisSummaryComponent,
     ColumnFilterComponent,
+    SearchFilterComponent,
   ],
   templateUrl: './section-detail-modal.html'
 })
@@ -291,12 +290,12 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   onColumnSelectionChange(selectedIds: Set<string>): void {
     if (this.activeTab() === 'parties') {
       this.visiblePartyColumns.set(selectedIds);
-      localStorage.setItem(this.partyColumnsStorageKey, JSON.stringify(Array.from(selectedIds)));
+      saveVisibleColumns(this.partyColumnsStorageKey, selectedIds);
       return;
     }
 
     this.visibleCandidateColumns.set(selectedIds);
-    localStorage.setItem(this.candidateColumnsStorageKey, JSON.stringify(Array.from(selectedIds)));
+    saveVisibleColumns(this.candidateColumnsStorageKey, selectedIds);
   }
 
   get partyVotesMap(): { [partyId: string]: number } {
@@ -331,33 +330,22 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   }
 
   private loadVisibleColumns(): void {
-    const savedPartyColumns = localStorage.getItem(this.partyColumnsStorageKey);
-    if (savedPartyColumns) {
-      try {
-        const columnsArray = JSON.parse(savedPartyColumns);
-        if (Array.isArray(columnsArray)) {
-          const validColumns = columnsArray.filter(id => this.partyColumns.some(column => column.id === id));
-          if (validColumns.length > 0) {
-            this.visiblePartyColumns.set(new Set(validColumns));
-          }
-        }
-      } catch (error) {
-        console.error('Error parsing saved party modal columns', error);
-      }
+    const partyColumns = loadVisibleColumns(
+      this.partyColumnsStorageKey,
+      this.partyColumns.map(column => column.id),
+      'party modal columns'
+    );
+    if (partyColumns) {
+      this.visiblePartyColumns.set(partyColumns);
     }
 
-    const savedCandidateColumns = localStorage.getItem(this.candidateColumnsStorageKey);
-    if (!savedCandidateColumns) return;
-    try {
-      const columnsArray = JSON.parse(savedCandidateColumns);
-      if (Array.isArray(columnsArray)) {
-        const validColumns = columnsArray.filter(id => this.candidateColumns.some(column => column.id === id));
-        if (validColumns.length > 0) {
-          this.visibleCandidateColumns.set(new Set(validColumns));
-        }
-      }
-    } catch (error) {
-      console.error('Error parsing saved candidate modal columns', error);
+    const candidateColumns = loadVisibleColumns(
+      this.candidateColumnsStorageKey,
+      this.candidateColumns.map(column => column.id),
+      'candidate modal columns'
+    );
+    if (candidateColumns) {
+      this.visibleCandidateColumns.set(candidateColumns);
     }
   }
 

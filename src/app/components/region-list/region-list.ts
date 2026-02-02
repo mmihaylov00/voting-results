@@ -1,22 +1,22 @@
 import { Component, OnInit, effect, signal, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
 import { Region } from '../../models/election.models';
 import { getPartyAlias } from '../../utils/party-aliases';
-import { formatActivity } from '../../utils/common.utils';
+import { formatActivity, formatRegionName, getDefaultPartyIds, toBp } from '../../utils/common.utils';
+import { getCikUrl } from '../../utils/election-links';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
 import { HlmCardDirective, HlmCardHeaderDirective, HlmCardTitleDirective, HlmCardDescriptionDirective, HlmCardContentDirective } from '../ui/card-helm/src/lib/hlm-card.directives';
-import { HlmInputDirective } from '../ui/input-helm/src/lib/hlm-input.directive';
 import { HlmTypographyDirective } from '../ui/typography-helm/src/lib/hlm-typography.directive';
 import { HlmTooltipDirective } from '../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { PartyFilterComponent } from '../election-detail/party-filter/party-filter';
 import { StatCardComponent } from '../ui/stat-card/stat-card';
+import { SearchFilterComponent } from '../ui/search-filter/search-filter';
 
 @Component({
   selector: 'app-region-list',
@@ -24,19 +24,18 @@ import { StatCardComponent } from '../ui/stat-card/stat-card';
   imports: [
     CommonModule,
     RouterLink,
-    FormsModule,
     HlmButtonDirective,
     HlmCardDirective,
     HlmCardHeaderDirective,
     HlmCardTitleDirective,
     HlmCardDescriptionDirective,
     HlmCardContentDirective,
-    HlmInputDirective,
     HlmTypographyDirective,
     HlmTooltipDirective,
     HighchartsChartComponent,
     PartyFilterComponent,
-    StatCardComponent
+    StatCardComponent,
+    SearchFilterComponent,
   ],
   templateUrl: './region-list.html'
 })
@@ -64,14 +63,7 @@ export class RegionListComponent implements OnInit, AfterViewInit {
   activeChart = signal<'activity' | 'party'>('activity');
   allParties: { id: string, name: string }[] = [];
   selectedPartyIds = signal<Set<string>>(new Set());
-  private readonly DEFAULT_KEYWORDS = ["ГЕРБ", "ПРОДЪЛЖАВАМЕ", "ВЪЗРАЖДАНЕ", "ДПС", "БСП", "ТАКЪВ НАРОД", "МЕЧ", "ВЕЛИЧИЕ"];
-
-  getCikUrl(): string {
-    if (this.date.startsWith('2023.04')) return 'https://results.cik.bg/ns2023/search/index.html#';
-    if (this.date.startsWith('2024.06')) return 'https://results.cik.bg/europe2024/search/index.html';
-    if (this.date.startsWith('2024.10')) return 'https://results.cik.bg/pe202410/search/index.html';
-    return '';
-  }
+  getCikUrl = () => getCikUrl(this.date);
 
   constructor(
     private route: ActivatedRoute,
@@ -114,14 +106,7 @@ export class RegionListComponent implements OnInit, AfterViewInit {
         });
 
       // Apply default selection based on keywords
-      const defaultIds = new Set<string>();
-      this.allParties.forEach(party => {
-        const name = party.name.toUpperCase();
-        if (this.DEFAULT_KEYWORDS.some(k => name.includes(k))) {
-          defaultIds.add(party.id);
-        }
-      });
-      this.selectedPartyIds.set(defaultIds);
+      this.selectedPartyIds.set(getDefaultPartyIds(this.allParties));
     });
   }
 
@@ -358,17 +343,7 @@ export class RegionListComponent implements OnInit, AfterViewInit {
   }
 
   formatActivity = formatActivity;
+  formatRegionName = formatRegionName;
   getPartyAlias = getPartyAlias;
-  toBp(value: number | null | undefined): number {
-    if (value === null || value === undefined) return 0;
-    return Math.round(value * 10000);
-  }
-
-  formatRegionName(name: string): string {
-    const parts = name.split('.');
-    if (parts.length > 1) {
-      return parts[1].trim().toUpperCase();
-    }
-    return name.toUpperCase();
-  }
+  toBp = toBp;
 }

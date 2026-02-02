@@ -11,6 +11,7 @@ import { formatActivity, getGoogleMapsUrl, copyToClipboard as copyToClipboardUti
 import { sortArray, toggleSort as toggleSortUtil, getDefaultSortDirection } from '../../utils/table-sort.util';
 import { getDateName } from '../../utils/date-name.util';
 import { formatRiskMessage } from '../../utils/risk-message.util';
+import { loadVisibleColumns, saveVisibleColumns } from '../../utils/column-visibility';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
@@ -37,12 +38,12 @@ import { ProtocolErrorModalComponent } from './modals/protocol-error-modal/proto
 import { CandidateDetailModalComponent } from './modals/candidate-detail-modal/candidate-detail-modal';
 import { SectionFiltersComponent } from './section-filters/section-filters';
 import { PartyFilterComponent } from './party-filter/party-filter';
-import {HlmInputDirective} from '../ui/input-helm/src/lib/hlm-input.directive';
 import { RiskBadgeComponent } from '../ui/risk-badge/risk-badge';
 import { ComparisonOperatorInputComponent } from '../ui/comparison-operator-input/comparison-operator-input';
 import { StatCardComponent } from '../ui/stat-card/stat-card';
 import { ColumnFilterComponent } from '../ui/column-filter/column-filter';
 import { RiskFilterDropdownComponent, RiskCategory } from '../ui/risk-filter-dropdown/risk-filter-dropdown';
+import { SearchFilterComponent } from '../ui/search-filter/search-filter';
 
 @Component({
   selector: 'app-election-detail',
@@ -71,11 +72,11 @@ import { RiskFilterDropdownComponent, RiskCategory } from '../ui/risk-filter-dro
     SectionFiltersComponent,
     PartyFilterComponent,
     HighchartsChartComponent,
-    HlmInputDirective,
     ComparisonOperatorInputComponent,
     StatCardComponent,
     ColumnFilterComponent,
     RiskFilterDropdownComponent,
+    SearchFilterComponent,
   ],
   templateUrl: './election-detail.html',
   styleUrl: './election-detail.scss',
@@ -345,37 +346,24 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const savedColumns = localStorage.getItem('visible_columns');
-    if (savedColumns) {
-      try {
-        const columnsArray = JSON.parse(savedColumns);
-        if (Array.isArray(columnsArray)) {
-          this.visibleColumns.set(new Set(columnsArray));
-        }
-      } catch (e) {
-        console.error('Error parsing saved columns', e);
-      }
+    const visibleColumns = loadVisibleColumns(
+      'visible_columns',
+      this.availableColumns.map(column => column.id),
+      'columns'
+    );
+    if (visibleColumns) {
+      this.visibleColumns.set(visibleColumns);
     }
 
     // Load candidate columns visibility
-    const savedCandidateColumns = localStorage.getItem('visible_candidate_columns');
-    if (savedCandidateColumns) {
-      try {
-        const columnsArray = JSON.parse(savedCandidateColumns);
-        if (Array.isArray(columnsArray)) {
-          this.visibleCandidateColumns.set(new Set(columnsArray));
-        } else {
-          // Default: show all candidate columns
-          this.visibleCandidateColumns.set(new Set(this.candidateColumns.map(c => c.id)));
-        }
-      } catch (e) {
-        console.error('Error parsing saved candidate columns', e);
-        this.visibleCandidateColumns.set(new Set(this.candidateColumns.map(c => c.id)));
-      }
-    } else {
-      // Default: show all candidate columns
-      this.visibleCandidateColumns.set(new Set(this.candidateColumns.map(c => c.id)));
-    }
+    const visibleCandidateColumns = loadVisibleColumns(
+      'visible_candidate_columns',
+      this.candidateColumns.map(column => column.id),
+      'candidate columns'
+    );
+    this.visibleCandidateColumns.set(
+      visibleCandidateColumns ?? new Set(this.candidateColumns.map(column => column.id))
+    );
 
     this.date = this.route.snapshot.paramMap.get('date') || '';
     this.regionId = this.route.snapshot.paramMap.get('regionId') || '';
@@ -1282,10 +1270,10 @@ export class ElectionDetailComponent implements OnInit {
   onColumnSelectionChange(selectedIds: Set<string>): void {
     if (this.viewMode() === 'candidates') {
       this.visibleCandidateColumns.set(selectedIds);
-      localStorage.setItem('visible_candidate_columns', JSON.stringify(Array.from(selectedIds)));
+      saveVisibleColumns('visible_candidate_columns', selectedIds);
     } else {
       this.visibleColumns.set(selectedIds);
-      localStorage.setItem('visible_columns', JSON.stringify(Array.from(selectedIds)));
+      saveVisibleColumns('visible_columns', selectedIds);
     }
   }
 

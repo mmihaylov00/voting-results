@@ -10,6 +10,19 @@ export function formatActivity(percent: number): string {
   return Math.min(100, Math.max(0, value)).toFixed(2);
 }
 
+export function toBp(value: number | null | undefined): number {
+  if (value === null || value === undefined) return 0;
+  return Math.round(value * 10000);
+}
+
+export function formatRegionName(name: string): string {
+  const parts = name.split('.');
+  if (parts.length > 1) {
+    return parts[1].trim().toUpperCase();
+  }
+  return name.toUpperCase();
+}
+
 /**
  * Generate Google Maps URL for a location
  */
@@ -64,6 +77,32 @@ export function getPartyKeywords(partyName: string): string[] {
   // Extract main keywords (first significant words, excluding common prefixes)
   const words = upperName.split(/\s+/).filter(w => w.length > 2);
   return words.slice(0, 3); // Take first 3 significant words
+}
+
+export const DEFAULT_PARTY_KEYWORDS = [
+  'ГЕРБ',
+  'ПРОДЪЛЖАВАМЕ',
+  'ВЪЗРАЖДАНЕ',
+  'ДПС',
+  'БСП',
+  'ТАКЪВ НАРОД',
+  'МЕЧ',
+  'ВЕЛИЧИЕ'
+];
+
+export function isDefaultPartyName(partyName: string): boolean {
+  const name = partyName.toUpperCase();
+  return DEFAULT_PARTY_KEYWORDS.some(k => name.includes(k));
+}
+
+export function getDefaultPartyIds(parties: { id: string; name: string }[]): Set<string> {
+  const ids = new Set<string>();
+  parties.forEach(party => {
+    if (isDefaultPartyName(party.name)) {
+      ids.add(party.id);
+    }
+  });
+  return ids;
 }
 
 /**

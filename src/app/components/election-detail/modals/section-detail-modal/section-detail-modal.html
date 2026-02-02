@@ -22,7 +22,7 @@
 
     <div class="flex flex-col" style="max-height: calc(90vh - 200px); overflow-y: auto;">
             <!-- Tabs -->
-            <div class="flex flex-wrap gap-2 border-b border-primary/10 mb-4 flex-shrink-0 px-6 justify-between">
+            <div class="flex flex-wrap gap-2 mb-4 flex-shrink-0 px-6 justify-between">
                 <div class="flex flex-row gap-2">
                   <button hlmBtn [variant]="activeTab() === 'parties' ? 'default' : 'outline'" size="lg" [attr.data-state]="activeTab() === 'parties' ? 'active' : 'inactive'"
                           (click)="activeTab.set('parties')">
@@ -34,12 +34,11 @@
                   </button>
                 </div>
               <div class="flex items-center gap-2">
-                <input
-                  hlmInput
+                <app-search-filter
                   placeholder="Търсене..."
-                  [ngModel]="currentSearchTerm"
-                  (ngModelChange)="onSearchTermChange($event)"
-                  class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full max-w-[220px] h-9" />
+                  [value]="currentSearchTerm"
+                  (valueChange)="onSearchTermChange($event)"
+                  inputClass="w-full max-w-[220px]" />
                 <app-party-filter
                   [parties]="allParties"
                   [selectedPartyIds]="selectedPartyIds"

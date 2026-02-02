@@ -1,12 +1,11 @@
 import { Component, EventEmitter, Input, Output, OnInit, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { SectionTab, SectionFilters } from '../../../models/election.models';
 import { HlmButtonDirective } from '../../ui/button-helm/src/lib/hlm-button.directive';
-import { HlmInputDirective } from '../../ui/input-helm/src/lib/hlm-input.directive';
 import { HlmTooltipDirective } from '../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
 import { ComparisonOperatorInputComponent } from '../../ui/comparison-operator-input/comparison-operator-input';
 import { RiskFilterDropdownComponent, RiskCategory } from '../../ui/risk-filter-dropdown/risk-filter-dropdown';
+import { SearchFilterComponent } from '../../ui/search-filter/search-filter';
 
 @Component({
   selector: 'app-section-filters',
@@ -16,12 +15,11 @@ import { RiskFilterDropdownComponent, RiskCategory } from '../../ui/risk-filter-
   },
   imports: [
     CommonModule,
-    FormsModule,
     HlmButtonDirective,
-    HlmInputDirective,
     HlmTooltipDirective,
     ComparisonOperatorInputComponent,
     RiskFilterDropdownComponent,
+    SearchFilterComponent,
   ],
   templateUrl: './section-filters.html',
 })

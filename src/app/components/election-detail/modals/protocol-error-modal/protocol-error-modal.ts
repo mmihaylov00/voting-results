@@ -18,12 +18,13 @@ import {
 } from '../../../ui/card-helm/src/lib/hlm-card.directives';
 import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-typography.directive';
 import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
-import { HlmInputDirective } from '../../../ui/input-helm/src/lib/hlm-input.directive';
 import { getGoogleMapsUrl, copyToClipboard as copyToClipboardUtil } from '../../../../utils/common.utils';
 import { sortArray, toggleSort as toggleSortUtil, SortState } from '../../../../utils/table-sort.util';
 import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
 import { SortableTableHeaderComponent } from '../../../ui/sortable-table-header/sortable-table-header';
 import { ColumnFilterComponent } from '../../../ui/column-filter/column-filter';
+import { SearchFilterComponent } from '../../../ui/search-filter/search-filter';
+import { loadVisibleColumns, saveVisibleColumns } from '../../../../utils/column-visibility';
 
 @Component({
   selector: 'app-protocol-error-modal',
@@ -37,10 +38,10 @@ import { ColumnFilterComponent } from '../../../ui/column-filter/column-filter';
     HlmTableRowDirective,
     HlmTableCellDirective,
     HlmTooltipDirective,
-    HlmInputDirective,
     BaseModalComponent,
     SortableTableHeaderComponent,
-    ColumnFilterComponent
+    ColumnFilterComponent,
+    SearchFilterComponent,
   ],
   templateUrl: './protocol-error-modal.html'
 })
@@ -85,7 +86,7 @@ export class ProtocolErrorModalComponent {
 
   onColumnSelectionChange(selectedIds: Set<string>): void {
     this.visibleColumns.set(selectedIds);
-    localStorage.setItem(this.visibleColumnsStorageKey, JSON.stringify(Array.from(selectedIds)));
+    saveVisibleColumns(this.visibleColumnsStorageKey, selectedIds);
   }
 
   toggleSort(column: string) {
@@ -118,18 +119,13 @@ export class ProtocolErrorModalComponent {
   }
 
   private loadVisibleColumns(): void {
-    const savedColumns = localStorage.getItem(this.visibleColumnsStorageKey);
-    if (!savedColumns) return;
-    try {
-      const columnsArray = JSON.parse(savedColumns);
-      if (Array.isArray(columnsArray)) {
-        const validColumns = columnsArray.filter(id => this.protocolColumns.some(column => column.id === id));
-        if (validColumns.length > 0) {
-          this.visibleColumns.set(new Set(validColumns));
-        }
-      }
-    } catch (error) {
-      console.error('Error parsing saved protocol modal columns', error);
+    const loaded = loadVisibleColumns(
+      this.visibleColumnsStorageKey,
+      this.protocolColumns.map(column => column.id),
+      'protocol modal columns'
+    );
+    if (loaded) {
+      this.visibleColumns.set(loaded);
     }
   }
 }

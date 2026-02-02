@@ -6,6 +6,16 @@ import elections from '../../assets/elections.json';
 import * as pako from 'pako';
 import compactMapping from '../../assets/compact-mapping.json';
 
+type DataManifest = {
+  timestamp: string;
+  files: {
+    [date: string]: {
+      br?: string;
+      gz?: string;
+    };
+  };
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,6 +28,18 @@ export class ElectionService {
 
   private allDataLoaded = false;
   private loadPromise: Promise<void> | null = null;
+  private manifestPromise: Promise<DataManifest | null> | null = null;
+
+  private loadManifest(): Observable<DataManifest | null> {
+    if (this.manifestPromise) return from(this.manifestPromise);
+    this.manifestPromise = new Promise<DataManifest | null>((resolve) => {
+      this.http
+        .get<DataManifest>(`${this.baseDataUrl}/compiled/manifest.json`)
+        .pipe(catchError(() => of(null)))
+        .subscribe((manifest) => resolve(manifest));
+    });
+    return from(this.manifestPromise);
+  }
 
   constructor(private http: HttpClient) { }
 
@@ -209,24 +231,45 @@ export class ElectionService {
         );
       };
 
-      forkJoin(
-        dates.map((d) =>
-          fetchAndParse(`${this.baseDataUrl}/compiled/${d}.json.br`).pipe(
-            catchError(() => fetchAndParse(`${this.baseDataUrl}/compiled/${d}.json.gz`))
-          )
-        )
-      ).subscribe({
-        next: (allData: any[]) => {
-          dates.forEach((d, i) => {
-            this.cache[d] = allData[i];
-          });
+      const resolveUrls = (date: string, manifest: DataManifest | null) => {
+        const manifestFiles = manifest?.files?.[date];
+        const brFile = manifestFiles?.br || `${date}.json.br`;
+        const gzFile = manifestFiles?.gz || `${date}.json.gz`;
+        return {
+          br: `${this.baseDataUrl}/compiled/${brFile}`,
+          gz: `${this.baseDataUrl}/compiled/${gzFile}`,
+        };
+      };
 
-          this.allDataLoaded = true;
-          this.loadingSubject.next(false);
-          resolve();
+      this.loadManifest().subscribe({
+        next: (manifest) => {
+          forkJoin(
+            dates.map((d) => {
+              const urls = resolveUrls(d, manifest);
+              return fetchAndParse(urls.br).pipe(
+                catchError(() => fetchAndParse(urls.gz))
+              );
+            })
+          ).subscribe({
+            next: (allData: any[]) => {
+              dates.forEach((d, i) => {
+                this.cache[d] = allData[i];
+              });
+
+              this.allDataLoaded = true;
+              this.loadingSubject.next(false);
+              resolve();
+            },
+            error: (err: any) => {
+              console.error('Error loading election data:', err);
+              this.loadingSubject.next(false);
+              this.loadPromise = null;
+              reject(err);
+            },
+          });
         },
         error: (err: any) => {
-          console.error('Error loading election data:', err);
+          console.error('Error loading data manifest:', err);
           this.loadingSubject.next(false);
           this.loadPromise = null;
           reject(err);

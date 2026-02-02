@@ -12,16 +12,17 @@ import {
 } from '../../../ui/table-helm/src/lib/hlm-table.directives';
 import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-typography.directive';
 import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
-import { HlmInputDirective } from '../../../ui/input-helm/src/lib/hlm-input.directive';
 import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
 import { RiskBadgeComponent } from '../../../ui/risk-badge/risk-badge';
 import { RiskAnalysisSummaryComponent } from '../../../ui/risk-analysis-summary/risk-analysis-summary';
 import { SortableTableHeaderComponent } from '../../../ui/sortable-table-header/sortable-table-header';
 import { ColumnFilterComponent } from '../../../ui/column-filter/column-filter';
+import { SearchFilterComponent } from '../../../ui/search-filter/search-filter';
 import { sortArray, getDefaultSortDirection } from '../../../../utils/table-sort.util';
 import { ComparativeValue } from '../../../../models/election.models';
 import { ElectionService } from '../../../../services/election';
 import { getPartyAlias } from '../../../../utils/party-aliases';
+import { loadVisibleColumns, saveVisibleColumns } from '../../../../utils/column-visibility';
 
 export interface CandidateSectionData {
   sectionId: string;
@@ -44,7 +45,6 @@ export interface CandidateSectionData {
   standalone: true,
   imports: [
     CommonModule,
-    HlmButtonDirective,
     HlmTableDirective,
     HlmTableHeaderDirective,
     HlmTableBodyDirective,
@@ -52,12 +52,12 @@ export interface CandidateSectionData {
     HlmTableHeadDirective,
     HlmTableCellDirective,
     HlmTooltipDirective,
-    HlmInputDirective,
     BaseModalComponent,
     RiskBadgeComponent,
     RiskAnalysisSummaryComponent,
     SortableTableHeaderComponent,
     ColumnFilterComponent,
+    SearchFilterComponent,
   ],
   templateUrl: './candidate-detail-modal.html'
 })
@@ -140,32 +140,32 @@ export class CandidateDetailModalComponent implements OnInit {
       const risksToCheck = (section as any).candidateRiskIndicators || section.riskIndicators;
       const candidateRisks = risksToCheck?.filter((risk: any) => {
         if (!risk.details) return false;
-        
+
         // Exclude R6.2 and R2.4 - these are region-level risks, not section-specific
         if (risk.code === 'R6.2' || risk.code === 'R2.4') {
           return false;
         }
-        
+
         // Check if this risk is for this candidate
         if (risk.details.candidateId) {
           const riskCandidateId = String(risk.details.candidateId);
           const candidateId = String(this.candidate.candidateId);
-          const partyIdMatches = risk.details.partyId 
-            ? risk.details.partyId === this.candidate.partyId 
+          const partyIdMatches = risk.details.partyId
+            ? risk.details.partyId === this.candidate.partyId
             : true;
-          
+
           // Also check if the risk is for this specific section
-          const sectionIdMatches = risk.details.sectionId 
-            ? risk.details.sectionId === section.sectionId 
+          const sectionIdMatches = risk.details.sectionId
+            ? risk.details.sectionId === section.sectionId
             : true;
-          
+
           return riskCandidateId === candidateId && partyIdMatches && sectionIdMatches;
         }
-        
+
         // If no candidateId, it's a section-level risk - include it
         return true;
       }) || [];
-      
+
       // Also include section-level risks (not candidate-specific)
       const sectionRisks = section.riskIndicators?.filter((risk: any) => {
         // Exclude candidate-specific risks (they have candidateId in details)
@@ -175,7 +175,7 @@ export class CandidateDetailModalComponent implements OnInit {
         }
         return !risk.details || !risk.details.candidateId;
       }) || [];
-      
+
       // Combine candidate-specific risks for this section and section-level risks
       const allRisks = [...candidateRisks, ...sectionRisks];
 
@@ -194,7 +194,7 @@ export class CandidateDetailModalComponent implements OnInit {
         section,
         risks: allRisks
       };
-      
+
       if (comparisons.total) {
         sectionDataItem.comparisons = comparisons.total;
       }
@@ -204,7 +204,7 @@ export class CandidateDetailModalComponent implements OnInit {
       if (comparisons.machine) {
         sectionDataItem.machineComparisons = comparisons.machine;
       }
-      
+
       data.push(sectionDataItem);
     });
 
@@ -258,22 +258,17 @@ export class CandidateDetailModalComponent implements OnInit {
 
   onColumnSelectionChange(selectedIds: Set<string>): void {
     this.visibleColumns = selectedIds;
-    localStorage.setItem(this.visibleColumnsStorageKey, JSON.stringify(Array.from(selectedIds)));
+    saveVisibleColumns(this.visibleColumnsStorageKey, selectedIds);
   }
 
   private loadVisibleColumns(): void {
-    const savedColumns = localStorage.getItem(this.visibleColumnsStorageKey);
-    if (!savedColumns) return;
-    try {
-      const columnsArray = JSON.parse(savedColumns);
-      if (Array.isArray(columnsArray)) {
-        const validColumns = columnsArray.filter(id => this.candidateColumns.some(column => column.id === id));
-        if (validColumns.length > 0) {
-          this.visibleColumns = new Set(validColumns);
-        }
-      }
-    } catch (error) {
-      console.error('Error parsing saved candidate modal columns', error);
+    const loaded = loadVisibleColumns(
+      this.visibleColumnsStorageKey,
+      this.candidateColumns.map(column => column.id),
+      'candidate modal columns'
+    );
+    if (loaded) {
+      this.visibleColumns = loaded;
     }
   }
 
@@ -301,7 +296,7 @@ export class CandidateDetailModalComponent implements OnInit {
       Object.values(otherSection.candidateVotes).forEach((otherCandidate: any) => {
         const nameMatches = otherCandidate.candidateName.trim().toLowerCase() === this.candidate.candidateName.trim().toLowerCase();
         const partyMatches = otherCandidate.partyName.trim().toLowerCase() === this.candidate.partyName.trim().toLowerCase();
-        
+
         if (nameMatches && partyMatches) {
           foundTotal = otherCandidate.total;
           foundPaper = otherCandidate.paper;
