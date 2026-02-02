@@ -236,7 +236,9 @@
                   </thead>
                   <tbody hlmTableBody>
                           @for (candidate of candidateResults; track candidate.candidateId + candidate.partyId) {
-                              <tr hlmTableRow>
+                              <tr hlmTableRow
+                                  class="hover:bg-primary/10 transition-colors cursor-pointer"
+                                  (click)="onCandidateRowClick(candidate)">
                                   <td hlmTableCell>{{ candidate.candidateName }}</td>
                                   <td hlmTableCell>{{ candidate.candidateId }}</td>
                                   <td hlmTableCell>{{ getPartyAlias(candidate.partyName) }}</td>

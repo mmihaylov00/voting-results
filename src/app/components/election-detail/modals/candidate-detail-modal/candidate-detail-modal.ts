@@ -14,6 +14,9 @@ import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-
 import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
 import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
 import { RiskBadgeComponent } from '../../../ui/risk-badge/risk-badge';
+import { RiskAnalysisSummaryComponent } from '../../../ui/risk-analysis-summary/risk-analysis-summary';
+import { SortableTableHeaderComponent } from '../../../ui/sortable-table-header/sortable-table-header';
+import { sortArray, getDefaultSortDirection } from '../../../../utils/table-sort.util';
 import { ComparativeValue } from '../../../../models/election.models';
 import { ElectionService } from '../../../../services/election';
 
@@ -48,6 +51,8 @@ export interface CandidateSectionData {
     HlmTooltipDirective,
     BaseModalComponent,
     RiskBadgeComponent,
+    RiskAnalysisSummaryComponent,
+    SortableTableHeaderComponent,
   ],
   templateUrl: './candidate-detail-modal.html'
 })
@@ -60,6 +65,9 @@ export class CandidateDetailModalComponent implements OnInit {
 
   sectionData: CandidateSectionData[] = [];
   allData: { [date: string]: { sections: Section[], parties: { [id: string]: string }, regions: any[] } } = {};
+
+  sortColumn: keyof CandidateSectionData = 'total';
+  sortDir: 'asc' | 'desc' = 'desc';
 
   constructor(private electionService: ElectionService) {}
 
@@ -93,17 +101,49 @@ export class CandidateDetailModalComponent implements OnInit {
       const partyPercentInSection = sectionVoted > 0 ? (partyTotal / sectionVoted) * 100 : 0;
 
       // Get risks for this candidate in this section
-      // Use candidateRiskIndicators if available (includes R6.2), otherwise use riskIndicators
+      // Filter by both candidateId/partyId AND sectionId to show only section-specific risks
+      // Exclude R6.2 and R2.4 since they are region-level risks (same for all sections)
       const risksToCheck = (section as any).candidateRiskIndicators || section.riskIndicators;
       const candidateRisks = risksToCheck?.filter((risk: any) => {
-        if (!risk.details || !risk.details.candidateId) return false;
-        const riskCandidateId = String(risk.details.candidateId);
-        const candidateId = String(this.candidate.candidateId);
-        const partyIdMatches = risk.details.partyId 
-          ? risk.details.partyId === this.candidate.partyId 
-          : true;
-        return riskCandidateId === candidateId && partyIdMatches;
+        if (!risk.details) return false;
+        
+        // Exclude R6.2 and R2.4 - these are region-level risks, not section-specific
+        if (risk.code === 'R6.2' || risk.code === 'R2.4') {
+          return false;
+        }
+        
+        // Check if this risk is for this candidate
+        if (risk.details.candidateId) {
+          const riskCandidateId = String(risk.details.candidateId);
+          const candidateId = String(this.candidate.candidateId);
+          const partyIdMatches = risk.details.partyId 
+            ? risk.details.partyId === this.candidate.partyId 
+            : true;
+          
+          // Also check if the risk is for this specific section
+          const sectionIdMatches = risk.details.sectionId 
+            ? risk.details.sectionId === section.sectionId 
+            : true;
+          
+          return riskCandidateId === candidateId && partyIdMatches && sectionIdMatches;
+        }
+        
+        // If no candidateId, it's a section-level risk - include it
+        return true;
       }) || [];
+      
+      // Also include section-level risks (not candidate-specific)
+      const sectionRisks = section.riskIndicators?.filter((risk: any) => {
+        // Exclude candidate-specific risks (they have candidateId in details)
+        // Also exclude R6.2 and R2.4
+        if (risk.code === 'R6.2' || risk.code === 'R2.4') {
+          return false;
+        }
+        return !risk.details || !risk.details.candidateId;
+      }) || [];
+      
+      // Combine candidate-specific risks for this section and section-level risks
+      const allRisks = [...candidateRisks, ...sectionRisks];
 
       // Calculate comparisons for this candidate in this section
       const comparisons = this.calculateCandidateComparisons(section.sectionId, candidateVotes);
@@ -118,7 +158,7 @@ export class CandidateDetailModalComponent implements OnInit {
         percentInSection,
         partyPercentInSection,
         section,
-        risks: candidateRisks
+        risks: allRisks
       };
       
       if (comparisons.total) {
@@ -134,8 +174,31 @@ export class CandidateDetailModalComponent implements OnInit {
       data.push(sectionDataItem);
     });
 
-    // Sort by total votes descending
-    this.sectionData = data.sort((a, b) => b.total - a.total);
+    this.sectionData = data;
+    this.sortSectionData(this.sortColumn, true);
+  }
+
+  toggleSort(column: string): void {
+    const typedColumn = column as keyof CandidateSectionData;
+    if (this.sortColumn === typedColumn) {
+      this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = typedColumn;
+      const isStringColumn = ['sectionId', 'cityName', 'sectionName'].includes(column);
+      this.sortDir = getDefaultSortDirection(column, isStringColumn);
+    }
+    this.sortSectionData(this.sortColumn, true);
+  }
+
+  sortSectionData(column: keyof CandidateSectionData, preserveDir: boolean = false): void {
+    if (!preserveDir) {
+      this.sortDir = this.sortColumn === column && this.sortDir === 'asc' ? 'desc' : 'asc';
+    }
+    this.sortColumn = column;
+
+    const sorted = sortArray(this.sectionData, this.sortColumn, this.sortDir);
+    this.sectionData.length = 0;
+    this.sectionData.push(...sorted);
   }
 
   calculateCandidateComparisons(sectionId: string, candidateVotes: any): { total?: ComparativeValue[], paper?: ComparativeValue[], machine?: ComparativeValue[] } {

@@ -410,6 +410,75 @@ function buildIndexes(sections) {
 
   return {byId, byRegion, regionAgg};
 }
+function aggregateR61ForRegion(regionSections) {
+  // candidateKey = `${partyId}_${candidateId}`
+  const agg = new Map();
+
+  for (const s of regionSections) {
+    const list = s.candidateRiskIndicators;
+    if (!list) continue;
+
+    for (const r of list) {
+      if (r.code !== 'R6.1') continue;
+
+      const d = r.details;
+      if (!d || !d.partyId || !d.candidateId) continue;
+
+      const candidateKey = `${d.partyId}_${d.candidateId}`;
+
+      let a = agg.get(candidateKey);
+      if (!a) {
+        a = {
+          partyId: d.partyId,
+          partyName: d.partyName,
+          candidateId: d.candidateId,
+          candidateName: d.candidateName,
+          count: 0,
+          sumSectionShare: 0,
+          sumMunicipalityShare: 0
+        };
+        agg.set(candidateKey, a);
+      }
+
+      a.count += 1;
+      a.sumSectionShare += d.sectionShare || 0;
+      a.sumMunicipalityShare += d.municipalityShare || 0;
+    }
+  }
+
+  // return Map(candidateKey -> aggregatedRisk)
+  const out = new Map();
+
+  for (const [candidateKey, a] of agg.entries()) {
+    const avgSectionShare = a.count ? a.sumSectionShare / a.count : 0;
+    const avgMunicipalityShare = a.count ? a.sumMunicipalityShare / a.count : 0;
+
+    const severity =
+      avgMunicipalityShare > 0 && avgSectionShare > avgMunicipalityShare * 2 ? 'high' : 'medium';
+
+    out.set(candidateKey, {
+      code: 'R6.1',
+      category: 'R6',
+      severity,
+      message:
+        `Доминиране на концентрация (средно от ${a.count} секции): ` +
+        `${a.candidateName} (${a.partyName || a.partyId}) има ${(avgSectionShare * 100).toFixed(1)}% ` +
+        `(община: ${(avgMunicipalityShare * 100).toFixed(1)}%)`,
+      details: {
+        partyId: a.partyId,
+        partyName: a.partyName,
+        candidateId: a.candidateId,
+        candidateName: a.candidateName,
+        avgSectionShare,
+        avgMunicipalityShare,
+        sectionsTriggered: a.count
+      }
+    });
+  }
+
+  return out;
+}
+
 
 function buildRegionCandidateAggregates(byRegion) {
   const candidateAggByRegion = new Map(); // regionId -> key -> { total,paper,machine,sections,partyId }
@@ -795,6 +864,11 @@ for (const date of dates) {
 
   // ----- Enhanced risks per section -----
   const histDates = histDatesByDate[date];
+
+  // Track R4.4, R5.1, and R6.1 risks per candidate to ensure uniqueness
+  const r44ByCandidate = new Map(); // key: `${regionKey}_${partyId}_${candidateId}`
+  const r51ByCandidate = new Map(); // key: `${regionKey}_${partyId}_${candidateId}`
+  const r61ByCandidate = new Map(); // key: `${regionKey}_${partyId}_${candidateId}`
 
   for (const section of targetSections) {
     const regionKey = section.regionId;
@@ -1246,33 +1320,7 @@ for (const date of dates) {
     const regionCandidateStats = candidateAggByRegion.get(regionKey);
     const regionPartyPreferenceStats = partyPrefAggByRegion.get(regionKey);
 
-    // R2.4: Preference-by-technology divergence
-    if (section.candidateVotes) {
-      for (const key in section.candidateVotes) {
-        const candidate = section.candidateVotes[key];
-        const candidateTotal = candidate.paper + candidate.machine;
-        if (candidateTotal < 10) continue;
-
-        const paperShare = candidate.paper / candidateTotal;
-        const machineShare = candidate.machine / candidateTotal;
-        const divergence = Math.abs(paperShare - machineShare);
-
-        if (divergence > 0.3 && paperShare > 0.7) {
-          riskIndicators.push({
-            code: 'R2.4',
-            category: 'R2',
-            severity: divergence > 0.5 ? 'high' : 'medium',
-            message: `Разлика в преференциите по технология за ${candidate.candidateName} (${candidate.partyName}): ${(paperShare * 100).toFixed(0)}% хартиени, ${(machineShare * 100).toFixed(0)}% машинни`,
-            details: {
-              candidateId: candidate.candidateId,
-              candidateName: candidate.candidateName,
-              partyId: candidate.partyId,
-              sectionId: section.sectionId
-            }
-          });
-        }
-      }
-    }
+    // Note: R2.4 is now calculated at region level after all sections are processed
 
     // R2.5: Party list vs candidate preference inversion
     if (section.candidateVotes && section.partyVotes) {
@@ -1312,11 +1360,15 @@ for (const date of dates) {
       }
     }
 
-    // R4.4: Candidate volatility mismatch
+    // R4.4: Candidate volatility mismatch (unique per candidate)
     if (historicalSections.length >= 2 && section.candidateVotes) {
       for (const key in section.candidateVotes) {
         const candidate = section.candidateVotes[key];
         const partyId = candidate.partyId;
+        const candidateKey = `${regionKey}_${partyId}_${candidate.candidateId}`;
+
+        // Check if R4.4 already exists for this candidate
+        if (r44ByCandidate.has(candidateKey)) continue;
 
         const partyShares = [];
         const candidateShares = [];
@@ -1333,7 +1385,7 @@ for (const date of dates) {
         const candidateVariance = calculateVariance(candidateShares);
 
         if (partyVariance > 0.01 && candidateVariance < partyVariance * 0.3) {
-          riskIndicators.push({
+          const r44Risk = {
             code: 'R4.4',
             category: 'R4',
             severity: 'medium',
@@ -1344,7 +1396,9 @@ for (const date of dates) {
               partyId: candidate.partyId,
               sectionId: section.sectionId
             }
-          });
+          };
+          riskIndicators.push(r44Risk);
+          r44ByCandidate.set(candidateKey, r44Risk);
         }
       }
     }
@@ -1364,62 +1418,30 @@ for (const date of dates) {
         const regionPreferenceRate = regionStats.totalPreferences / regionStats.totalPartyVotes;
 
         if (sectionPreferenceRate > regionPreferenceRate * 1.5 && sectionPreferenceRate > 0.1) {
-          riskIndicators.push({
-            code: 'R5.1',
-            category: 'R5',
-            severity: sectionPreferenceRate > regionPreferenceRate * 2 ? 'high' : 'medium',
-            message: `Аномалия в участието на преференции: ${candidate.candidateName} (${candidate.partyName}) има ${(sectionPreferenceRate * 100).toFixed(1)}% (регион: ${(regionPreferenceRate * 100).toFixed(1)}%)`,
-            details: {
-              candidateId: candidate.candidateId,
-              candidateName: candidate.candidateName,
-              partyId: candidate.partyId,
-              sectionId: section.sectionId
-            }
-          });
+          const candidateKey = `${regionKey}_${candidate.partyId}_${candidate.candidateId}`;
+          
+          // Check if R5.1 already exists for this candidate in this region
+          if (!r51ByCandidate.has(candidateKey)) {
+            const r51Risk = {
+              code: 'R5.1',
+              category: 'R5',
+              severity: sectionPreferenceRate > regionPreferenceRate * 2 ? 'high' : 'medium',
+              message: `Аномалия в участието на преференции: ${candidate.candidateName} (${candidate.partyName}) има ${(sectionPreferenceRate * 100).toFixed(1)}% (регион: ${(regionPreferenceRate * 100).toFixed(1)}%)`,
+              details: {
+                candidateId: candidate.candidateId,
+                candidateName: candidate.candidateName,
+                partyId: candidate.partyId,
+                sectionId: section.sectionId
+              }
+            };
+            riskIndicators.push(r51Risk);
+            r51ByCandidate.set(candidateKey, r51Risk);
+          }
         }
       }
     }
 
-    // R5.2: Sudden preference activation
-    if (historicalSections.length >= 2 && section.candidateVotes) {
-      for (const key in section.candidateVotes) {
-        const candidate = section.candidateVotes[key];
-        const partyId = candidate.partyId;
-
-        const historicalRates = [];
-        for (const hs of historicalSections) {
-          const cv = hs.candidateVotes?.[key];
-          const pv = hs.partyVotes[partyId];
-          historicalRates.push(cv && pv && (pv.total || 0) > 0 ? (cv.total || 0) / (pv.total || 1) : 0);
-        }
-
-        let sum = 0;
-        for (const r of historicalRates) sum += r;
-        const avgHistoricalRate = historicalRates.length > 0 ? sum / historicalRates.length : 0;
-        if (avgHistoricalRate === 0) continue;
-
-        const historicalStdDev = Math.sqrt(calculateVariance(historicalRates));
-
-        const currentPartyVotes = section.partyVotes[partyId];
-        const currentRate = currentPartyVotes && currentPartyVotes.total > 0 ? candidate.total / currentPartyVotes.total : 0;
-
-        const threshold = avgHistoricalRate + 3 * historicalStdDev;
-        if (avgHistoricalRate < 0.05 && avgHistoricalRate > 0 && currentRate > threshold && currentRate > 0.1) {
-          riskIndicators.push({
-            code: 'R5.2',
-            category: 'R5',
-            severity: currentRate > threshold * 2 ? 'high' : 'medium',
-            message: `Внезапна активация на преференции: ${candidate.candidateName} (${candidate.partyName}) от ${(avgHistoricalRate * 100).toFixed(1)}% към ${(currentRate * 100).toFixed(1)}%`,
-            details: {
-              candidateId: candidate.candidateId,
-              candidateName: candidate.candidateName,
-              partyId: candidate.partyId,
-              sectionId: section.sectionId
-            }
-          });
-        }
-      }
-    }
+    // Note: R5.2 is now calculated at region level after all sections are processed
 
     // R6.1: Candidate concentration dominance (use region aggregates instead of per-section recompute)
     if (section.candidateVotes && regionCandidateStats) {
@@ -1451,18 +1473,29 @@ for (const date of dates) {
         const otherCandidatesShare = partyVotes.total > 0 ? otherCandidatesTotal / partyVotes.total : 0;
 
         if (sectionShare > municipalityShare * 1.5 && sectionShare > otherCandidatesShare * 2) {
-          riskIndicators.push({
-            code: 'R6.1',
-            category: 'R6',
-            severity: sectionShare > municipalityShare * 2 ? 'high' : 'medium',
-            message: `Доминиране на концентрация: ${candidate.candidateName} (${candidate.partyName}) има ${(sectionShare * 100).toFixed(1)}% от преференциите (община: ${(municipalityShare * 100).toFixed(1)}%)`,
-            details: {
-              candidateId: candidate.candidateId,
-              candidateName: candidate.candidateName,
-              partyId: candidate.partyId,
-              sectionId: section.sectionId
-            }
-          });
+          const candidateKey = `${regionKey}_${candidate.partyId}_${candidate.candidateId}`;
+          
+          // Check if R6.1 already exists for this candidate in this region
+          if (!r61ByCandidate.has(candidateKey)) {
+            const r61Risk = {
+              code: 'R6.1',
+              category: 'R6',
+              severity: sectionShare > municipalityShare * 2 ? 'high' : 'medium',
+              message: `Доминиране на концентрация: ${candidate.candidateName} (${candidate.partyName}) има ${(sectionShare * 100).toFixed(1)}% от преференциите (община: ${(municipalityShare * 100).toFixed(1)}%)`,
+              details: {
+                candidateId: candidate.candidateId,
+                candidateName: candidate.candidateName,
+                partyId: candidate.partyId,
+                partyName: candidate.partyName,
+                sectionId: section.sectionId,
+                sectionShare,
+                municipalityShare,
+                otherCandidatesShare
+              }
+            };
+            riskIndicators.push(r61Risk);
+            r61ByCandidate.set(candidateKey, r61Risk);
+          }
         }
       }
     }
@@ -1504,7 +1537,8 @@ for (const date of dates) {
     }
 
     // Update section with risk indicators
-    const sectionRiskIndicators = riskIndicators.filter((r) => r.code !== 'R6.2');
+    // Filter out candidate-specific risks (R5.1, R6.1, R6.2, R4.4, R2.4, R5.2) from section risks
+    const sectionRiskIndicators = riskIndicators.filter((r) => r.code !== 'R5.1' && r.code !== 'R6.1' && r.code !== 'R6.2' && r.code !== 'R4.4' && r.code !== 'R2.4' && r.code !== 'R5.2');
 
     if (sectionRiskIndicators.length > 0) {
       section.riskIndicators = sectionRiskIndicators;
@@ -1516,17 +1550,358 @@ for (const date of dates) {
       section.riskScore = (section.riskScore || 0) + sectionRiskIndicators.length;
     }
 
-    if (riskIndicators.length > 0) {
-      section.candidateRiskIndicators = riskIndicators;
+    // Store all candidate risks (including R5.1, R6.1, R6.2, R4.4, R2.4, R5.2) separately
+    const candidateRiskIndicators = riskIndicators.filter((r) =>
+      r.code === 'R5.1' || r.code === 'R6.1' || r.code === 'R6.2' || r.code === 'R4.4' || r.code === 'R2.4' || r.code === 'R5.2' || (r.details && r.details.candidateId)
+    );
+    if (candidateRiskIndicators.length > 0) {
+      section.candidateRiskIndicators = candidateRiskIndicators;
     }
 
     if (baseline) section.baseline = baseline;
   }
 
+  // Calculate R2.4 at region level for candidates (after all sections processed)
+  const r24ByCandidate = new Map(); // key: `${regionKey}_${partyId}_${candidateId}`
+  for (const [regionKey, regionSections] of current.byRegion.entries()) {
+    // Aggregate candidate votes across all sections in the region
+    const regionCandidateVotes = new Map(); // key: `${partyId}_${candidateId}` -> {paper, machine, candidateName, partyName, candidateId, partyId}
+
+    for (const section of regionSections) {
+      if (!section.candidateVotes) continue;
+
+      for (const key in section.candidateVotes) {
+        const candidate = section.candidateVotes[key];
+        const candidateKey = `${candidate.partyId}_${candidate.candidateId}`;
+
+        if (!regionCandidateVotes.has(candidateKey)) {
+          regionCandidateVotes.set(candidateKey, {
+            paper: 0,
+            machine: 0,
+            candidateName: candidate.candidateName,
+            partyName: candidate.partyName,
+            candidateId: candidate.candidateId,
+            partyId: candidate.partyId
+          });
+        }
+
+        const agg = regionCandidateVotes.get(candidateKey);
+        agg.paper += candidate.paper;
+        agg.machine += candidate.machine;
+      }
+    }
+
+    // Calculate R2.4 for each candidate at region level
+    for (const [candidateKey, candidate] of regionCandidateVotes.entries()) {
+      const candidateTotal = candidate.paper + candidate.machine;
+      if (candidateTotal < 10) continue;
+
+      const paperShare = candidate.paper / candidateTotal;
+      const machineShare = candidate.machine / candidateTotal;
+      const divergence = Math.abs(paperShare - machineShare);
+
+      if (divergence > 0.3 && paperShare > 0.7) {
+        const r24Key = `${regionKey}_${candidate.partyId}_${candidate.candidateId}`;
+        if (r24ByCandidate.has(r24Key)) continue; // Already added
+
+        const r24Risk = {
+          code: 'R2.4',
+          category: 'R2',
+          severity: divergence > 0.5 ? 'high' : 'medium',
+          message: `Разлика в преференциите по технология за ${candidate.candidateName} (${candidate.partyName}): ${(paperShare * 100).toFixed(0)}% хартиени, ${(machineShare * 100).toFixed(0)}% машинни`,
+          details: {
+            candidateId: candidate.candidateId,
+            candidateName: candidate.candidateName,
+            partyId: candidate.partyId
+            // No sectionId since this is region-level
+          }
+        };
+
+        // Add R2.4 to candidateRiskIndicators for all sections where this candidate appears
+        for (const section of regionSections) {
+          if (!section.candidateVotes) continue;
+          const sectionCandidateKey = `${candidate.partyId}_${candidate.candidateId}`;
+          const sectionCandidate = section.candidateVotes[sectionCandidateKey];
+
+          if (sectionCandidate && sectionCandidate.total > 0) {
+            if (!section.candidateRiskIndicators) {
+              section.candidateRiskIndicators = [];
+            }
+            // Add with sectionId for this specific section
+            section.candidateRiskIndicators.push({
+              ...r24Risk,
+              details: {
+                ...r24Risk.details,
+                sectionId: section.sectionId
+              }
+            });
+          }
+        }
+
+        r24ByCandidate.set(r24Key, r24Risk);
+      }
+    }
+  }
+
+  // Calculate R5.2 at region level for candidates (after all sections processed)
+  const r52ByCandidate = new Map(); // key: `${regionKey}_${partyId}_${candidateId}`
+  for (const [regionKey, regionSections] of current.byRegion.entries()) {
+    // Aggregate candidate and party votes across all sections in the region for current date
+    const regionCandidateVotes = new Map(); // key: `${partyId}_${candidateId}` -> {total, candidateName, partyName, candidateId, partyId}
+    const regionPartyVotes = new Map(); // key: partyId -> total
+
+    for (const section of regionSections) {
+      // Aggregate party votes
+      if (section.partyVotes) {
+        for (const partyId in section.partyVotes) {
+          const votes = section.partyVotes[partyId];
+          const currentTotal = regionPartyVotes.get(partyId) || 0;
+          regionPartyVotes.set(partyId, currentTotal + (votes.total || 0));
+        }
+      }
+
+      // Aggregate candidate votes
+      if (section.candidateVotes) {
+        for (const key in section.candidateVotes) {
+          const candidate = section.candidateVotes[key];
+          const candidateKey = `${candidate.partyId}_${candidate.candidateId}`;
+
+          if (!regionCandidateVotes.has(candidateKey)) {
+            regionCandidateVotes.set(candidateKey, {
+              total: 0,
+              candidateName: candidate.candidateName,
+              partyName: candidate.partyName,
+              candidateId: candidate.candidateId,
+              partyId: candidate.partyId
+            });
+          }
+
+          const agg = regionCandidateVotes.get(candidateKey);
+          agg.total += candidate.total;
+        }
+      }
+    }
+
+    // Get historical data for this region
+    const historicalRegionData = [];
+    for (const d of histDates) {
+      const historicalByRegion = rawData[d].byRegion;
+      const historicalRegionSections = historicalByRegion.get(regionKey) || [];
+
+      // Aggregate historical candidate and party votes for this region
+      const histCandidateVotes = new Map();
+      const histPartyVotes = new Map();
+
+      for (const hs of historicalRegionSections) {
+        // Aggregate historical party votes
+        if (hs.partyVotes) {
+          for (const partyId in hs.partyVotes) {
+            const votes = hs.partyVotes[partyId];
+            const currentTotal = histPartyVotes.get(partyId) || 0;
+            histPartyVotes.set(partyId, currentTotal + (votes.total || 0));
+          }
+        }
+
+        // Aggregate historical candidate votes
+        if (hs.candidateVotes) {
+          for (const key in hs.candidateVotes) {
+            const candidate = hs.candidateVotes[key];
+            const candidateKey = `${candidate.partyId}_${candidate.candidateId}`;
+
+            if (!histCandidateVotes.has(candidateKey)) {
+              histCandidateVotes.set(candidateKey, {
+                total: 0,
+                candidateId: candidate.candidateId,
+                partyId: candidate.partyId
+              });
+            }
+
+            const agg = histCandidateVotes.get(candidateKey);
+            agg.total += candidate.total;
+          }
+        }
+      }
+
+      historicalRegionData.push({
+        candidateVotes: histCandidateVotes,
+        partyVotes: histPartyVotes
+      });
+    }
+
+    // Calculate R5.2 for each candidate at region level
+    for (const [candidateKey, candidate] of regionCandidateVotes.entries()) {
+      if (candidate.total < 10) continue;
+      if (historicalRegionData.length < 2) continue;
+
+      const partyId = candidate.partyId;
+      const currentPartyTotal = regionPartyVotes.get(partyId) || 0;
+      if (currentPartyTotal === 0) continue;
+
+      const currentRate = candidate.total / currentPartyTotal;
+
+      // Calculate historical rates
+      const historicalRates = [];
+      for (const histData of historicalRegionData) {
+        const histCandidate = histData.candidateVotes.get(candidateKey);
+        const histPartyTotal = histData.partyVotes.get(partyId) || 0;
+
+        if (histCandidate && histPartyTotal > 0) {
+          historicalRates.push(histCandidate.total / histPartyTotal);
+        } else {
+          historicalRates.push(0);
+        }
+      }
+
+      let sum = 0;
+      for (const r of historicalRates) sum += r;
+      const avgHistoricalRate = historicalRates.length > 0 ? sum / historicalRates.length : 0;
+      if (avgHistoricalRate === 0) continue;
+
+      const historicalStdDev = Math.sqrt(calculateVariance(historicalRates));
+      const threshold = avgHistoricalRate + 3 * historicalStdDev;
+
+      if (avgHistoricalRate < 0.05 && avgHistoricalRate > 0 && currentRate > threshold && currentRate > 0.1) {
+        const r52Key = `${regionKey}_${candidate.partyId}_${candidate.candidateId}`;
+        if (r52ByCandidate.has(r52Key)) continue; // Already added
+
+        const r52Risk = {
+          code: 'R5.2',
+          category: 'R5',
+          severity: currentRate > threshold * 2 ? 'high' : 'medium',
+          message: `Внезапна активация на преференции: ${candidate.candidateName} (${candidate.partyName}) от ${(avgHistoricalRate * 100).toFixed(1)}% към ${(currentRate * 100).toFixed(1)}%`,
+          details: {
+            candidateId: candidate.candidateId,
+            candidateName: candidate.candidateName,
+            partyId: candidate.partyId
+            // No sectionId since this is region-level
+          }
+        };
+
+        // Add R5.2 to candidateRiskIndicators for all sections where this candidate appears
+        for (const section of regionSections) {
+          if (!section.candidateVotes) continue;
+          const sectionCandidateKey = `${candidate.partyId}_${candidate.candidateId}`;
+          const sectionCandidate = section.candidateVotes[sectionCandidateKey];
+
+          if (sectionCandidate && sectionCandidate.total > 0) {
+            if (!section.candidateRiskIndicators) {
+              section.candidateRiskIndicators = [];
+            }
+            // Add with sectionId for this specific section
+            section.candidateRiskIndicators.push({
+              ...r52Risk,
+              details: {
+                ...r52Risk.details,
+                sectionId: section.sectionId
+              }
+            });
+          }
+        }
+
+        r52ByCandidate.set(r52Key, r52Risk);
+      }
+    }
+  }
+
+// ---- Candidate-level aggregation (unique R6.1 per candidate) ----
+  const candidatesMap = new Map(); // candidateKey (partyId_candidateId) -> candidate object
+
+  for (const [regionKey, regionSections] of current.byRegion.entries()) {
+    const r61Agg = aggregateR61ForRegion(regionSections);
+
+    // gather candidate meta from candidateVotes
+    const meta = new Map(); // candidateKey -> {regionId, candidateId, candidateName, partyId, partyName}
+
+    for (const s of regionSections) {
+      const cv = s.candidateVotes;
+      if (!cv) continue;
+
+      for (const k in cv) {
+        const c = cv[k];
+        const candidateKey = `${c.partyId}_${c.candidateId}`;
+        if (!meta.has(candidateKey)) {
+          meta.set(candidateKey, {
+            // regionId is kept, but candidateKey is GLOBAL, so you can pick first or store list
+            regionId: regionKey,
+            candidateId: c.candidateId,
+            candidateName: c.candidateName,
+            partyId: c.partyId,
+            partyName: c.partyName
+          });
+        }
+      }
+    }
+
+    for (const [candidateKey, m] of meta.entries()) {
+      const r61 = r61Agg.get(candidateKey);
+
+      // If no R6.1 for this region, still create candidate entry (optional).
+      // If you only want candidates that have R6.1, then: if (!r61) continue;
+      const riskIndicators = [];
+      if (r61) riskIndicators.push(r61);
+
+      const existing = candidatesMap.get(candidateKey);
+      if (!existing) {
+        candidatesMap.set(candidateKey, {
+          ...m,
+          riskIndicators
+        });
+        continue;
+      }
+
+      // Merge (dedupe) riskIndicators; for R6.1 we also merge/average properly
+      for (const ri of riskIndicators) {
+        if (ri.code !== 'R6.1') {
+          // generic dedupe by code
+          if (!existing.riskIndicators.some(x => x.code === ri.code)) {
+            existing.riskIndicators.push(ri);
+          }
+          continue;
+        }
+
+        const prev = existing.riskIndicators.find(x => x.code === 'R6.1');
+        if (!prev) {
+          existing.riskIndicators.push(ri);
+          continue;
+        }
+
+        // Weighted merge of R6.1 averages across regions
+        const aCount = prev.details?.sectionsTriggered || 1;
+        const bCount = ri.details?.sectionsTriggered || 1;
+
+        const aAvgS = prev.details?.avgSectionShare || 0;
+        const bAvgS = ri.details?.avgSectionShare || 0;
+
+        const aAvgM = prev.details?.avgMunicipalityShare || 0;
+        const bAvgM = ri.details?.avgMunicipalityShare || 0;
+
+        const mergedCount = aCount + bCount;
+        const mergedAvgSectionShare = mergedCount ? (aAvgS * aCount + bAvgS * bCount) / mergedCount : 0;
+        const mergedAvgMunicipalityShare = mergedCount ? (aAvgM * aCount + bAvgM * bCount) / mergedCount : 0;
+
+        // update prev in-place
+        prev.details.sectionsTriggered = mergedCount;
+        prev.details.avgSectionShare = mergedAvgSectionShare;
+        prev.details.avgMunicipalityShare = mergedAvgMunicipalityShare;
+
+        prev.severity =
+          mergedAvgMunicipalityShare > 0 && mergedAvgSectionShare > mergedAvgMunicipalityShare * 2 ? 'high' : 'medium';
+
+        prev.message =
+          `Доминиране на концентрация (средно от ${mergedCount} секции): ` +
+          `${prev.details.candidateName} (${existing.partyName || existing.partyId}) има ${(mergedAvgSectionShare * 100).toFixed(1)}% ` +
+          `(община: ${(mergedAvgMunicipalityShare * 100).toFixed(1)}%)`;
+      }
+    }
+  }
+
+  const candidates = Array.from(candidatesMap.values());
+
   const finalResult = {
     sections: targetSections,
     parties,
-    regions
+    regions,
+    candidates
   };
 
   const json = JSON.stringify(finalResult);

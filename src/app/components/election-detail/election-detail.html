@@ -725,7 +725,9 @@
             [allParties]="allParties"
             [selectedPartyIds]="selectedPartyIds"
             [date]="date"
+            [allSections]="sections"
             (close)="closeModal()"
+            (openCandidate)="onSectionCandidateClick($event)"
         ></app-section-detail-modal>
     }
 

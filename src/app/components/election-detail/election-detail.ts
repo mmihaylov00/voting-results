@@ -766,13 +766,13 @@ export class ElectionDetailComponent implements OnInit {
                     candidateMap[key].riskIndicators = [];
                   }
                   
-                  // For R6.2 risks, only add once per candidate (deduplicate by code)
-                  const isR62 = risk.code === 'R6.2';
-                  if (isR62) {
-                    // Check if R6.2 already exists for this candidate
-                    const hasR62 = candidateMap[key].riskIndicators!.some(r => r.code === 'R6.2');
-                    if (hasR62) {
-                      return; // Skip this R6.2 risk, already added
+                  // For R5.1, R6.1, R6.2, R4.4, R2.4, and R5.2 risks, only add once per candidate (deduplicate by code)
+                  const isUniqueRisk = risk.code === 'R5.1' || risk.code === 'R6.1' || risk.code === 'R6.2' || risk.code === 'R4.4' || risk.code === 'R2.4' || risk.code === 'R5.2';
+                  if (isUniqueRisk) {
+                    // Check if this risk code already exists for this candidate
+                    const hasRisk = candidateMap[key].riskIndicators!.some(r => r.code === risk.code);
+                    if (hasRisk) {
+                      return; // Skip this risk, already added
                     }
                   }
                   

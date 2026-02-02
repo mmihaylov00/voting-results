@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
-import { Section, SectionDetails, PartyResult, ComparativeValue, PartyVotes, CandidateResult, CandidateVotes } from '../../../../models/election.models';
+import { Section, SectionDetails, PartyResult, ComparativeValue, PartyVotes, CandidateResult, CandidateVotes, RegionCandidate } from '../../../../models/election.models';
 import { ThemeService } from '../../../../services/theme.service';
 import { ElectionService } from '../../../../services/election';
 import { getPartyAlias } from '../../../../utils/party-aliases';
@@ -60,7 +60,9 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   @Input() currentSectionData?: Section;
   @Input() allParties: { id: string, name: string }[] = [];
   @Input() date: string = '';
+  @Input() allSections: Section[] = []; // All sections in the region for candidate modal
   @Output() close = new EventEmitter<void>();
+  @Output() openCandidate = new EventEmitter<RegionCandidate>();
 
   partySortColumn: keyof PartyResult = 'total';
   partySortDir: 'asc' | 'desc' = 'desc';
