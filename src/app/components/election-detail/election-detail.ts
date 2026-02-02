@@ -62,9 +62,6 @@ import { RiskFilterDropdownComponent, RiskCategory } from '../ui/risk-filter-dro
     HlmTypographyDirective,
     HlmCardDirective,
     HlmTooltipDirective,
-    HlmCardHeaderDirective,
-    HlmCardContentDirective,
-    HlmCardDescriptionDirective,
     SectionDetailModalComponent,
     ExportCsvModalComponent,
     ProtocolErrorModalComponent,
@@ -73,7 +70,6 @@ import { RiskFilterDropdownComponent, RiskCategory } from '../ui/risk-filter-dro
     PartyFilterComponent,
     HighchartsChartComponent,
     HlmInputDirective,
-    RiskBadgeComponent,
     ComparisonOperatorInputComponent,
     StatCardComponent,
     ColumnFilterComponent,
@@ -171,7 +167,7 @@ export class ElectionDetailComponent implements OnInit {
         const sectionRiskIndicators = section.riskIndicators || [];
         const candidateRiskIndicators = (section as any).candidateRiskIndicators || [];
         const allRiskIndicators = [...sectionRiskIndicators, ...candidateRiskIndicators];
-        
+
         if (allRiskIndicators.length > 0) {
           allRiskIndicators.forEach((indicator: any) => {
             // Prefix each risk with section ID
@@ -355,7 +351,7 @@ export class ElectionDetailComponent implements OnInit {
     this.date = this.route.snapshot.paramMap.get('date') || '';
     this.regionId = this.route.snapshot.paramMap.get('regionId') || '';
     this.dateName = this.electionService.getDates().find(d => d.date === this.date)?.name ?? this.date;
-    
+
     // Load all election data for comparisons
     this.electionService.getAllData().subscribe(data => {
       this.allData = data;
@@ -675,7 +671,7 @@ export class ElectionDetailComponent implements OnInit {
           // Match by candidate name and party name (case-insensitive, trimmed)
           const nameMatches = otherCandidate.candidateName.trim().toLowerCase() === candidateNameLower;
           const partyMatches = otherCandidate.partyName.trim().toLowerCase() === candidatePartyLower;
-          
+
           if (nameMatches && partyMatches) {
             foundTotal += otherCandidate.total;
             foundPaper += otherCandidate.paper;
@@ -765,7 +761,7 @@ export class ElectionDetailComponent implements OnInit {
                   if (!candidateMap[key].riskIndicators) {
                     candidateMap[key].riskIndicators = [];
                   }
-                  
+
                   // For R5.1, R6.1, R6.2, R4.4, R2.4, and R5.2 risks, only add once per candidate (deduplicate by code)
                   const isUniqueRisk = risk.code === 'R5.1' || risk.code === 'R6.1' || risk.code === 'R6.2' || risk.code === 'R4.4' || risk.code === 'R2.4' || risk.code === 'R5.2';
                   if (isUniqueRisk) {
@@ -775,7 +771,7 @@ export class ElectionDetailComponent implements OnInit {
                       return; // Skip this risk, already added
                     }
                   }
-                  
+
                   candidateMap[key].riskIndicators!.push({
                     code: risk.code,
                     category: risk.category,
@@ -1904,7 +1900,7 @@ export class ElectionDetailComponent implements OnInit {
       'bg',
       valGetter
     );
-    
+
     // Update the array in place
     this.filteredSections.length = 0;
     this.filteredSections.push(...sorted);
