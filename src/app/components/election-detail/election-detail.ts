@@ -147,12 +147,35 @@ export class ElectionDetailComponent implements OnInit {
 
   visibleCandidateColumns = signal<Set<string>>(new Set());
 
-  getFormattedRisks(section: Section): string {
+  getFormattedRisks(section: Section | any): string {
     const riskLines: string[] = [];
 
     if (section.riskIndicators && section.riskIndicators.length > 0) {
-      section.riskIndicators.forEach(indicator => {
+      section.riskIndicators.forEach((indicator: any) => {
         riskLines.push(`${indicator.code}: ${indicator.message}`);
+      });
+    }
+
+    return riskLines.join('\n');
+  }
+
+  getFormattedCityRisks(groupedSection: any): string {
+    const riskLines: string[] = [];
+
+    // Check if this is a grouped city (has sections array)
+    if (groupedSection.sections && Array.isArray(groupedSection.sections)) {
+      groupedSection.sections.forEach((section: Section) => {
+        // Include both section risk indicators and candidate risk indicators
+        const sectionRiskIndicators = section.riskIndicators || [];
+        const candidateRiskIndicators = (section as any).candidateRiskIndicators || [];
+        const allRiskIndicators = [...sectionRiskIndicators, ...candidateRiskIndicators];
+        
+        if (allRiskIndicators.length > 0) {
+          allRiskIndicators.forEach((indicator: any) => {
+            // Prefix each risk with section ID
+            riskLines.push(`${section.sectionId}: ${indicator.code}: ${indicator.message}`);
+          });
+        }
       });
     }
 
@@ -590,12 +613,21 @@ export class ElectionDetailComponent implements OnInit {
           }
         });
 
+        // Count all risks (including candidate risks) from all sections
+        let totalRiskCount = 0;
+        g.sections.forEach((s: Section) => {
+          const sectionRiskIndicators = s.riskIndicators || [];
+          const candidateRiskIndicators = (s as any).candidateRiskIndicators || [];
+          const allRiskIndicators = [...sectionRiskIndicators, ...candidateRiskIndicators];
+          totalRiskCount += allRiskIndicators.length;
+        });
+
         return {
           ...g,
           sectionId: `${g.sections.length}`,
           sectionName: '',
           regionName: g.regionName,
-          riskScore: g.riskySectionsCount,
+          riskScore: totalRiskCount,
           risks: g.riskySectionsList.length > 0 ? g.riskySectionsList : [],
           activityPercent: g.total > 0 ? g.voted / g.total : 0,
           topParties,

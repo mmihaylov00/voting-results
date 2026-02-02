@@ -737,18 +737,18 @@ for (const date of dates) {
 
     // Helper function to calculate Gini coefficient
     function calculateGini(sortedValues) {
-      if (sortedValues.length === 0) return 0;
       const n = sortedValues.length;
+      if (n === 0) return 0;
+
       const sum = sortedValues.reduce((a, b) => a + b, 0);
       if (sum === 0) return 0;
 
-      let numerator = 0;
+      let weightedSum = 0;
       for (let i = 0; i < n; i++) {
-        for (let j = 0; j < n; j++) {
-          numerator += Math.abs(sortedValues[i] - sortedValues[j]);
-        }
+        weightedSum += (i + 1) * sortedValues[i];
       }
-      return numerator / (2 * n * sum);
+
+      return (2 * weightedSum) / (n * sum) - (n + 1) / n;
     }
 
     // R1.1: Turnout anomaly
@@ -1199,7 +1199,7 @@ for (const date of dates) {
             code: 'R2.4',
             category: 'R2',
             severity: divergence > 0.5 ? 'high' : 'medium',
-            message: `Разлика в преференциите по технология за ${candidate.candidateName}: ${(paperShare * 100).toFixed(0)}% хартиени, ${(machineShare * 100).toFixed(0)}% машинни`,
+            message: `Разлика в преференциите по технология за ${candidate.candidateName} (${candidate.partyName}): ${(paperShare * 100).toFixed(0)}% хартиени, ${(machineShare * 100).toFixed(0)}% машинни`,
             details: { candidateId: candidate.candidateId, candidateName: candidate.candidateName, partyId: candidate.partyId, sectionId: section.sectionId }
           });
         }
@@ -1232,7 +1232,7 @@ for (const date of dates) {
                 code: 'R2.5',
                 category: 'R2',
                 severity: 'medium',
-                message: `Инверсия: ${candidate.candidateName} има ${(candidatePaperRatio * 100).toFixed(0)}% хартиени преференции, докато партията е ${(partyMachineRatio * 100).toFixed(0)}% машинни`,
+                message: `Инверсия: ${candidate.candidateName} (${candidate.partyName}) има ${(candidatePaperRatio * 100).toFixed(0)}% хартиени преференции, докато партията е ${(partyMachineRatio * 100).toFixed(0)}% машинни`,
                 details: { candidateId: candidate.candidateId, candidateName: candidate.candidateName, partyId: candidate.partyId, sectionId: section.sectionId }
               });
             }
@@ -1267,7 +1267,7 @@ for (const date of dates) {
             code: 'R4.4',
             category: 'R4',
             severity: 'medium',
-            message: `Несъответствие волатилност: ${candidate.candidateName} е стабилен докато партията е волатилна`,
+            message: `Несъответствие волатилност: ${candidate.candidateName} (${candidate.partyName}) е стабилен докато партията е волатилна`,
             details: { candidateId: candidate.candidateId, candidateName: candidate.candidateName, partyId: candidate.partyId, sectionId: section.sectionId }
           });
         }
@@ -1293,7 +1293,7 @@ for (const date of dates) {
             code: 'R5.1',
             category: 'R5',
             severity: sectionPreferenceRate > regionPreferenceRate * 2 ? 'high' : 'medium',
-            message: `Аномалия в участието на преференции: ${candidate.candidateName} има ${(sectionPreferenceRate * 100).toFixed(1)}% (регион: ${(regionPreferenceRate * 100).toFixed(1)}%)`,
+            message: `Аномалия в участието на преференции: ${candidate.candidateName} (${candidate.partyName}) има ${(sectionPreferenceRate * 100).toFixed(1)}% (регион: ${(regionPreferenceRate * 100).toFixed(1)}%)`,
             details: { candidateId: candidate.candidateId, candidateName: candidate.candidateName, partyId: candidate.partyId, sectionId: section.sectionId }
           });
         }
@@ -1331,7 +1331,7 @@ for (const date of dates) {
             code: 'R5.2',
             category: 'R5',
             severity: currentRate > threshold * 2 ? 'high' : 'medium',
-            message: `Внезапна активация на преференции: ${candidate.candidateName} от ${(avgHistoricalRate * 100).toFixed(1)}% към ${(currentRate * 100).toFixed(1)}%`,
+            message: `Внезапна активация на преференции: ${candidate.candidateName} (${candidate.partyName}) от ${(avgHistoricalRate * 100).toFixed(1)}% към ${(currentRate * 100).toFixed(1)}%`,
             details: { candidateId: candidate.candidateId, candidateName: candidate.candidateName, partyId: candidate.partyId, sectionId: section.sectionId }
           });
         }
@@ -1378,7 +1378,7 @@ for (const date of dates) {
             code: 'R6.1',
             category: 'R6',
             severity: sectionShare > municipalityShare * 2 ? 'high' : 'medium',
-            message: `Доминиране на концентрация: ${candidate.candidateName} има ${(sectionShare * 100).toFixed(1)}% от преференциите (община: ${(municipalityShare * 100).toFixed(1)}%)`,
+            message: `Доминиране на концентрация: ${candidate.candidateName} (${candidate.partyName}) има ${(sectionShare * 100).toFixed(1)}% от преференциите (община: ${(municipalityShare * 100).toFixed(1)}%)`,
             details: { candidateId: candidate.candidateId, candidateName: candidate.candidateName, partyId: candidate.partyId, sectionId: section.sectionId }
           });
         }
@@ -1402,19 +1402,18 @@ for (const date of dates) {
         if (total < 20) return;
 
         const gini = calculateGini(sectionTotals);
-        const concentrationThreshold = 0.6;
+        const concentrationThreshold = 0.7;
 
         // Flag when highly concentrated in few sections
         if (gini > concentrationThreshold) {
           const sectionsWithVotes = sectionTotals.length;
           const totalSections = regionSections.length;
-          const concentrationRatio = sectionsWithVotes / totalSections;
 
           riskIndicators.push({
             code: 'R6.2',
             category: 'R6',
-            severity: gini > 0.75 ? 'high' : 'medium',
-            message: `Ексклузивност: ${candidate.candidateName} е концентриран в ${sectionsWithVotes} от ${totalSections} секции (Gini: ${gini.toFixed(2)})`,
+            severity: gini > 0.85 ? 'high' : 'medium',
+            message: `Ексклузивност: ${candidate.candidateName} (${candidate.partyName}) е концентриран в ${sectionsWithVotes} от ${totalSections} секции (Gini: ${gini.toFixed(2)})`,
             details: { candidateId: candidate.candidateId, candidateName: candidate.candidateName, partyId: candidate.partyId, sectionId: section.sectionId }
           });
         }
