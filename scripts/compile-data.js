@@ -277,6 +277,167 @@ function compactRegion(region, mapping) {
   return out;
 }
 
+function getDictId(dictArr, dictMap, value) {
+  const key = value || '';
+  const existing = dictMap.get(key);
+  if (existing !== undefined) return existing;
+  const id = dictArr.length;
+  dictArr.push(key);
+  dictMap.set(key, id);
+  return id;
+}
+
+const SECTION_TYPE_CODES = {
+  City: 0,
+  Village: 1,
+  Mobile: 2,
+  Other: 3
+};
+
+function buildColumnarSections(sections) {
+  const cityDict = [];
+  const cityIndex = new Map();
+  const sectionDict = [];
+  const sectionIndex = new Map();
+
+  const col = {
+    count: sections.length,
+    dicts: {
+      cityName: cityDict,
+      sectionName: sectionDict
+    },
+
+    sectionId: [],
+    regionId: [],
+    cityNameId: [],
+    sectionNameId: [],
+    sectionType: [],
+
+    total: [],
+    voted: [],
+    discardedVotes: [],
+    noVotes: [],
+    noVotesPaper: [],
+    noVotesMachine: [],
+    totalPaper: [],
+    totalMachine: [],
+    activityBp: [],
+    riskScore: [],
+    hasProtocolError: [],
+    protocolErrorDiff: [],
+    protocolPaperVotes: [],
+    protocolMachineVotes: [],
+    votesToFirst: [],
+
+    topPartyOffset: [0],
+    topPartyPartyId: [],
+    topPartyName: [],
+    topPartyTotal: [],
+    topPartyPercentBp: [],
+
+    partyVotesOffset: [0],
+    partyVotesPartyId: [],
+    partyVotesTotal: [],
+    partyVotesPaper: [],
+    partyVotesMachine: [],
+
+    candidateVotesOffset: [0],
+    candidateVotesCandidateId: [],
+    candidateVotesCandidateName: [],
+    candidateVotesPartyId: [],
+    candidateVotesTotal: [],
+    candidateVotesPaper: [],
+    candidateVotesMachine: [],
+
+    riskOffset: [0],
+    riskCode: [],
+    riskCategory: [],
+    riskSeverity: [],
+    riskDetails: [],
+
+    candidateRiskOffset: [0],
+    candidateRiskCode: [],
+    candidateRiskCategory: [],
+    candidateRiskSeverity: [],
+    candidateRiskDetails: []
+  };
+
+  for (const s of sections) {
+    col.sectionId.push(s.sectionId || '');
+    col.regionId.push(s.regionId || '');
+    col.cityNameId.push(getDictId(cityDict, cityIndex, s.cityName || ''));
+    col.sectionNameId.push(getDictId(sectionDict, sectionIndex, s.sectionName || ''));
+    col.sectionType.push(SECTION_TYPE_CODES[s.sectionType] ?? SECTION_TYPE_CODES.Other);
+
+    col.total.push(s.total || 0);
+    col.voted.push(s.voted || 0);
+    col.discardedVotes.push(s.discardedVotes || 0);
+    col.noVotes.push(s.noVotes || 0);
+    col.noVotesPaper.push(s.noVotesPaper || 0);
+    col.noVotesMachine.push(s.noVotesMachine || 0);
+    col.totalPaper.push(s.totalPaper || 0);
+    col.totalMachine.push(s.totalMachine || 0);
+    col.activityBp.push(s.activityBp || 0);
+    col.riskScore.push(s.riskScore || 0);
+    col.hasProtocolError.push(s.hasProtocolError ? 1 : 0);
+    col.protocolErrorDiff.push(s.protocolErrorDiff || 0);
+    col.protocolPaperVotes.push(s.protocolPaperVotes || 0);
+    col.protocolMachineVotes.push(s.protocolMachineVotes || 0);
+    col.votesToFirst.push(s.votesToFirst || 0);
+
+    const tps = s.topParties || [];
+    for (const tp of tps) {
+      col.topPartyPartyId.push(tp.partyId || '');
+      col.topPartyName.push(tp.name || '');
+      col.topPartyTotal.push(tp.total || 0);
+      col.topPartyPercentBp.push(tp.percentBp || 0);
+    }
+    col.topPartyOffset.push(col.topPartyPartyId.length);
+
+    const pvs = s.partyVotes || Object.create(null);
+    for (const pid of Object.keys(pvs)) {
+      const pv = pvs[pid];
+      col.partyVotesPartyId.push(pid);
+      col.partyVotesTotal.push(pv.total || 0);
+      col.partyVotesPaper.push(pv.paper || 0);
+      col.partyVotesMachine.push(pv.machine || 0);
+    }
+    col.partyVotesOffset.push(col.partyVotesPartyId.length);
+
+    const cvs = s.candidateVotes || Object.create(null);
+    for (const key of Object.keys(cvs)) {
+      const cv = cvs[key];
+      col.candidateVotesCandidateId.push(cv.candidateId || '');
+      col.candidateVotesCandidateName.push(cv.candidateName || '');
+      col.candidateVotesPartyId.push(cv.partyId || '');
+      col.candidateVotesTotal.push(cv.total || 0);
+      col.candidateVotesPaper.push(cv.paper || 0);
+      col.candidateVotesMachine.push(cv.machine || 0);
+    }
+    col.candidateVotesOffset.push(col.candidateVotesCandidateId.length);
+
+    const risks = s.riskIndicators || [];
+    for (const r of risks) {
+      col.riskCode.push(r.code || '');
+      col.riskCategory.push(r.category || '');
+      col.riskSeverity.push(r.severity || '');
+      col.riskDetails.push(r.details ? JSON.stringify(r.details) : '');
+    }
+    col.riskOffset.push(col.riskCode.length);
+
+    const candidateRisks = s.candidateRiskIndicators || [];
+    for (const r of candidateRisks) {
+      col.candidateRiskCode.push(r.code || '');
+      col.candidateRiskCategory.push(r.category || '');
+      col.candidateRiskSeverity.push(r.severity || '');
+      col.candidateRiskDetails.push(r.details ? JSON.stringify(r.details) : '');
+    }
+    col.candidateRiskOffset.push(col.candidateRiskCode.length);
+  }
+
+  return col;
+}
+
 function parseSections(text, headers) {
   const headerMap = buildHeaderIndex(headers);
   const sectionIdIdx = requireHeaderIndex(headerMap, 'sectionId', 'sections');
@@ -2124,47 +2285,76 @@ for (const date of dates) {
     return Array.from(candidatesMap.values());
   });
 
-  const finalResult = timeAction('Build final payload', () => ({
-    sections: targetSections.map((s) => compactSection(s, compactMapping)),
+  const summaryPayload = timeAction('Build summary payload', () => ({
+    version: 2,
     parties,
-    regions: regions.map((r) => compactRegion(r, compactMapping)),
-    candidates
+    regions: regions.map((r) => compactRegion(r, compactMapping))
   }));
 
-  const json = timeAction('Serialize JSON', () => JSON.stringify(finalResult));
+  const fullPayload = timeAction('Build full payload (columnar)', () => ({
+    version: 2,
+    parties,
+    regions: regions.map((r) => compactRegion(r, compactMapping)),
+    sections: buildColumnarSections(targetSections)
+  }));
+
+  const summaryJson = timeAction('Serialize summary JSON', () => JSON.stringify(summaryPayload));
+  const fullJson = timeAction('Serialize full JSON', () => JSON.stringify(fullPayload));
+
   timeAction('Validate JSON', () => {
     let parsed = null;
     try {
-      parsed = JSON.parse(json);
+      parsed = JSON.parse(summaryJson);
     } catch (err) {
-      throw new Error(`Invalid JSON output for ${date}: ${err && err.message ? err.message : err}`);
+      throw new Error(`Invalid summary JSON output for ${date}: ${err && err.message ? err.message : err}`);
+    }
+    if (!parsed || !parsed.parties || !parsed.regions) {
+      throw new Error(`Missing top-level keys in summary output for ${date}`);
     }
 
-    if (
-      !parsed ||
-      !parsed.sections ||
-      !parsed.parties ||
-      !parsed.regions ||
-      !parsed.candidates
-    ) {
-      throw new Error(`Missing top-level keys in output for ${date}`);
+    try {
+      parsed = JSON.parse(fullJson);
+    } catch (err) {
+      throw new Error(`Invalid full JSON output for ${date}: ${err && err.message ? err.message : err}`);
+    }
+    if (!parsed || !parsed.sections || !parsed.parties || !parsed.regions) {
+      throw new Error(`Missing top-level keys in full output for ${date}`);
     }
   });
 
   timeAction('Write compressed outputs', () => {
-    const rawBytes = Buffer.byteLength(json);
-    const gzipped = zlib.gzipSync(json, {level: 9});
-    const gzipBytes = gzipped.length;
-    const ratio = rawBytes > 0 ? (gzipBytes / rawBytes).toFixed(3) : '0.000';
-    console.log(`Output size ${date}: rawBytes=${rawBytes} gzipBytes=${gzipBytes} ratio=${ratio}`);
-    const gzName = `${date}.${buildTimestamp}.json.gz`;
-    fs.writeFileSync(path.join(outputDir, gzName), gzipped);
-    const brotli = zlib.brotliCompressSync(Buffer.from(json), {
+    const summaryRaw = Buffer.byteLength(summaryJson);
+    const summaryGz = zlib.gzipSync(summaryJson, {level: 9});
+    const summaryGzBytes = summaryGz.length;
+    const summaryRatio = summaryRaw > 0 ? (summaryGzBytes / summaryRaw).toFixed(3) : '0.000';
+    console.log(`Summary size ${date}: rawBytes=${summaryRaw} gzipBytes=${summaryGzBytes} ratio=${summaryRatio}`);
+    const summaryGzName = `${date}.summary.${buildTimestamp}.json.gz`;
+    fs.writeFileSync(path.join(outputDir, summaryGzName), summaryGz);
+    const summaryBr = zlib.brotliCompressSync(Buffer.from(summaryJson), {
       params: {[zlib.constants.BROTLI_PARAM_QUALITY]: 11},
     });
-    const brName = `${date}.${buildTimestamp}.json.br`;
-    fs.writeFileSync(path.join(outputDir, brName), brotli);
-    manifest.files[date] = {gz: gzName, br: brName};
+    const summaryBrName = `${date}.summary.${buildTimestamp}.json.br`;
+    fs.writeFileSync(path.join(outputDir, summaryBrName), summaryBr);
+
+    const fullRaw = Buffer.byteLength(fullJson);
+    const fullGz = zlib.gzipSync(fullJson, {level: 9});
+    const fullGzBytes = fullGz.length;
+    const fullRatio = fullRaw > 0 ? (fullGzBytes / fullRaw).toFixed(3) : '0.000';
+    console.log(`Full size ${date}: rawBytes=${fullRaw} gzipBytes=${fullGzBytes} ratio=${fullRatio}`);
+    const fullGzName = `${date}.full.${buildTimestamp}.json.gz`;
+    fs.writeFileSync(path.join(outputDir, fullGzName), fullGz);
+    const fullBr = zlib.brotliCompressSync(Buffer.from(fullJson), {
+      params: {[zlib.constants.BROTLI_PARAM_QUALITY]: 11},
+    });
+    const fullBrName = `${date}.full.${buildTimestamp}.json.br`;
+    fs.writeFileSync(path.join(outputDir, fullBrName), fullBr);
+
+    manifest.files[date] = {
+      summaryGz: summaryGzName,
+      summaryBr: summaryBrName,
+      fullGz: fullGzName,
+      fullBr: fullBrName
+    };
   });
 }
 

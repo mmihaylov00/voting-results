@@ -216,7 +216,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.loadVisibleColumns();
-    this.electionService.getAllData().subscribe(data => {
+    this.electionService.getAllFullData().subscribe(data => {
       this.allData = data;
       if (this.section) {
         this.calculateCandidateResults();

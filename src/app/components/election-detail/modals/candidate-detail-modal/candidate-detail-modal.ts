@@ -107,7 +107,7 @@ export class CandidateDetailModalComponent implements OnInit {
   ngOnInit(): void {
     this.loadVisibleColumns();
     // Load all election data for comparisons
-    this.electionService.getAllData().subscribe(data => {
+    this.electionService.getAllFullData().subscribe(data => {
       this.allData = data;
       this.calculateSectionData();
     });

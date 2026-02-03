@@ -380,7 +380,7 @@ export class ElectionDetailComponent implements OnInit {
     this.dateName = this.electionService.getDates().find(d => d.date === this.date)?.name ?? this.date;
 
     // Load all election data for comparisons
-    this.electionService.getAllData().subscribe(data => {
+    this.electionService.getAllFullData().subscribe(data => {
       this.allData = data;
     });
 
@@ -392,7 +392,7 @@ export class ElectionDetailComponent implements OnInit {
       // Show processing state for all cases
       this.isProcessingData.set(true);
 
-      this.electionService.getSections(this.date, this.regionId).subscribe({
+      this.electionService.getSections(this.date, this.regionId, true).subscribe({
         next: (sections) => {
           // Use setTimeout to allow UI to update and show loading state
           setTimeout(() => {

@@ -6,37 +6,7 @@
   <base href="/">
   <meta name="robots" content="noindex, nofollow">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script>
-    async function sha256(str) {
-      const enc = new TextEncoder().encode(str);
-      const buf = await crypto.subtle.digest('SHA-256', enc);
-      return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
-    }
-
-    (async () => {
-      const salt = "static-salt-change-me";
-      const expectedHash = "6465c8300318e8d0faba5c26a03a79b560da9568deca4e2988af795f7cb5704c";
-
-      let pw = localStorage.getItem('votes_password');
-      if (pw) {
-        const h = await sha256(salt + pw);
-        if (h === expectedHash) {
-          return;
-        }
-      }
-
-      while (true) {
-        pw = prompt("Password:");
-        const h = await sha256(salt + pw);
-        if (h === expectedHash) {
-          localStorage.setItem('votes_password', pw);
-          return
-        }
-      }
-    })();
-  </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="manifest" href="manifest.webmanifest">
   <link rel="manifest" href="manifest.webmanifest">
 </head>
 <body>
