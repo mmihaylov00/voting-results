@@ -1,4 +1,4 @@
-<span [class]="'flex items-center ' + (align === 'right' ? 'justify-end' : 'justify-between')">
+<span [class]="'flex items-center ' + (align === 'right' ? 'justify-end' : 'justify-between')" [ngClass]="labelClass">
     <span>{{ label }}</span>
     <span class="ml-1 flex items-center">
         @if (isActive) {

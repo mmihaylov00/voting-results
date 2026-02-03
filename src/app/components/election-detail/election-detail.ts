@@ -1,20 +1,32 @@
-import { Component, OnInit, effect, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Observable } from 'rxjs';
-import { ElectionService } from '../../services/election';
-import { ThemeService } from '../../services/theme.service';
-import { PartyResult, Section, SectionDetails, TableColumn, SECTION_COLUMNS, SectionTab, SectionFilters, ComparativeValue, CandidateVotes, ViewMode, RegionCandidate, Region } from '../../models/election.models';
-import { filterSections } from '../../utils/election-utils';
-import { getPartyAlias } from '../../utils/party-aliases';
-import { formatActivity, getGoogleMapsUrl, copyToClipboard as copyToClipboardUtil } from '../../utils/common.utils';
-import { sortArray, toggleSort as toggleSortUtil, getDefaultSortDirection } from '../../utils/table-sort.util';
-import { getDateName } from '../../utils/date-name.util';
-import { formatRiskMessage } from '../../utils/risk-message.util';
-import { loadVisibleColumns, saveVisibleColumns } from '../../utils/column-visibility';
+import {Component, effect, OnInit, signal} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ActivatedRoute, RouterModule} from '@angular/router';
+import {Observable} from 'rxjs';
+import {ElectionService} from '../../services/election';
+import {ThemeService} from '../../services/theme.service';
+import {
+  CandidateVotes,
+  ComparativeValue,
+  PartyResult,
+  Region,
+  RegionCandidate,
+  Section,
+  SECTION_COLUMNS,
+  SectionDetails,
+  SectionFilters,
+  SectionTab,
+  TableColumn,
+  ViewMode
+} from '../../models/election.models';
+import {filterSections} from '../../utils/election-utils';
+import {getPartyAlias} from '../../utils/party-aliases';
+import {copyToClipboard as copyToClipboardUtil, formatActivity, getGoogleMapsUrl} from '../../utils/common.utils';
+import {getDefaultSortDirection, sortArray} from '../../utils/table-sort.util';
+import {formatRiskMessage} from '../../utils/risk-message.util';
+import {loadVisibleColumns, saveVisibleColumns} from '../../utils/column-visibility';
 import * as Highcharts from 'highcharts';
-import { HighchartsChartComponent } from 'highcharts-angular';
-import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
+import {HighchartsChartComponent} from 'highcharts-angular';
+import {HlmButtonDirective} from '../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmTableBodyDirective,
   HlmTableCellDirective,
@@ -23,27 +35,20 @@ import {
   HlmTableHeaderDirective,
   HlmTableRowDirective,
 } from '../ui/table-helm/src/lib/hlm-table.directives';
-import { HlmTypographyDirective } from '../ui/typography-helm/src/lib/hlm-typography.directive';
-import {
-  HlmCardContentDirective,
-  HlmCardDescriptionDirective,
-  HlmCardDirective,
-  HlmCardHeaderDirective
-} from '../ui/card-helm/src/lib/hlm-card.directives';
-import { HlmTooltipDirective } from '../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
-import { FormsModule } from '@angular/forms';
-import { SectionDetailModalComponent } from './modals/section-detail-modal/section-detail-modal';
-import { ExportCsvModalComponent } from './modals/export-csv-modal/export-csv-modal';
-import { ProtocolErrorModalComponent } from './modals/protocol-error-modal/protocol-error-modal';
-import { CandidateDetailModalComponent } from './modals/candidate-detail-modal/candidate-detail-modal';
-import { SectionFiltersComponent } from './section-filters/section-filters';
-import { PartyFilterComponent } from './party-filter/party-filter';
-import { RiskBadgeComponent } from '../ui/risk-badge/risk-badge';
-import { ComparisonOperatorInputComponent } from '../ui/comparison-operator-input/comparison-operator-input';
-import { StatCardComponent } from '../ui/stat-card/stat-card';
-import { ColumnFilterComponent } from '../ui/column-filter/column-filter';
-import { RiskFilterDropdownComponent, RiskCategory } from '../ui/risk-filter-dropdown/risk-filter-dropdown';
-import { SearchFilterComponent } from '../ui/search-filter/search-filter';
+import {HlmTypographyDirective} from '../ui/typography-helm/src/lib/hlm-typography.directive';
+import {HlmCardDirective} from '../ui/card-helm/src/lib/hlm-card.directives';
+import {HlmTooltipDirective} from '../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
+import {FormsModule} from '@angular/forms';
+import {SectionDetailModalComponent} from './modals/section-detail-modal/section-detail-modal';
+import {ExportCsvModalComponent} from './modals/export-csv-modal/export-csv-modal';
+import {ProtocolErrorModalComponent} from './modals/protocol-error-modal/protocol-error-modal';
+import {CandidateDetailModalComponent} from './modals/candidate-detail-modal/candidate-detail-modal';
+import {SectionFiltersComponent} from './section-filters/section-filters';
+import {PartyFilterComponent} from './party-filter/party-filter';
+import {ComparisonOperatorInputComponent} from '../ui/comparison-operator-input/comparison-operator-input';
+import {StatCardComponent} from '../ui/stat-card/stat-card';
+import {RiskCategory, RiskFilterDropdownComponent} from '../ui/risk-filter-dropdown/risk-filter-dropdown';
+import {SearchFilterComponent} from '../ui/search-filter/search-filter';
 
 @Component({
   selector: 'app-election-detail',
@@ -74,7 +79,6 @@ import { SearchFilterComponent } from '../ui/search-filter/search-filter';
     HighchartsChartComponent,
     ComparisonOperatorInputComponent,
     StatCardComponent,
-    ColumnFilterComponent,
     RiskFilterDropdownComponent,
     SearchFilterComponent,
   ],
@@ -163,7 +167,7 @@ export class ElectionDetailComponent implements OnInit {
 
     if (section.riskIndicators && section.riskIndicators.length > 0) {
       section.riskIndicators.forEach((indicator: any) => {
-        const message = formatRiskMessage(indicator, { section, partiesById });
+        const message = formatRiskMessage(indicator, {section, partiesById});
         riskLines.push(`${indicator.code}: ${message}`);
       });
     }
@@ -186,7 +190,7 @@ export class ElectionDetailComponent implements OnInit {
         if (allRiskIndicators.length > 0) {
           allRiskIndicators.forEach((indicator: any) => {
             // Prefix each risk with section ID
-            const message = formatRiskMessage(indicator, { section, partiesById });
+            const message = formatRiskMessage(indicator, {section, partiesById});
             riskLines.push(`${section.sectionId}: ${indicator.code}: ${message}`);
           });
         }
@@ -202,7 +206,7 @@ export class ElectionDetailComponent implements OnInit {
 
     if (candidate.riskIndicators && candidate.riskIndicators.length > 0) {
       candidate.riskIndicators.forEach(indicator => {
-        const message = formatRiskMessage(indicator, { candidate, partiesById });
+        const message = formatRiskMessage(indicator, {candidate, partiesById});
         riskLines.push(`${indicator.code}: ${message}`);
       });
     }
@@ -217,6 +221,7 @@ export class ElectionDetailComponent implements OnInit {
   getLeaderTooltip(partyName: string): string {
     return `Водач на листата на ${getPartyAlias(partyName)}`;
   }
+
   viewMode = signal<ViewMode>('sections');
   groupByCity = signal<boolean>(false);
   groupedSections: any[] = [];
@@ -239,12 +244,16 @@ export class ElectionDetailComponent implements OnInit {
   selectedCandidateRiskCategories = signal<Set<string>>(new Set());
 
   riskCategories: RiskCategory[] = [
-    { code: 'R1', label: 'Аномалии в активността', description: 'R1: Аномалии в активността и улавяне на гласове' },
-    { code: 'R2', label: 'Разлика между хартия/машини', description: 'R2: Отклонения в съотношението хартия/машина' },
-    { code: 'R3', label: 'Аномалии в невалидни гласове', description: 'R3: Аномалии в невалидните гласове' },
-    { code: 'R4', label: 'Волатилност на резултатите', description: 'R4: Волатилност и чувствителност на резултата' },
-    { code: 'R5', label: 'Аномалии в преференциите', description: 'R5: Аномалии в участието и активацията на преференции' },
-    { code: 'R6', label: 'Концентрация на преференции', description: 'R6: Концентрация и ексклузивност на преференции' }
+    {code: 'R1', label: 'Аномалии в активността', description: 'R1: Аномалии в активността и улавяне на гласове'},
+    {code: 'R2', label: 'Разлика между хартия/машини', description: 'R2: Отклонения в съотношението хартия/машина'},
+    {code: 'R3', label: 'Аномалии в невалидни гласове', description: 'R3: Аномалии в невалидните гласове'},
+    {code: 'R4', label: 'Волатилност на резултатите', description: 'R4: Волатилност и чувствителност на резултата'},
+    {
+      code: 'R5',
+      label: 'Аномалии в преференциите',
+      description: 'R5: Аномалии в участието и активацията на преференции'
+    },
+    {code: 'R6', label: 'Концентрация на преференции', description: 'R6: Концентрация и ексклузивност на преференции'}
   ];
 
   onCandidateRiskFilterTypeChange(type: 'any' | 'none' | null): void {
@@ -259,12 +268,12 @@ export class ElectionDetailComponent implements OnInit {
 
 
   candidateColumns: TableColumn[] = [
-    { id: 'candidateId', label: 'Номер' },
-    { id: 'risks', label: 'Рискове' },
-    { id: 'candidateName', label: 'Име' },
-    { id: 'partyName', label: 'Партия' },
-    { id: 'totalInRegion', label: 'Преференции' },
-    { id: 'preferencePercentOfPartyVotes', label: '% от гласовете за партията' }
+    {id: 'candidateId', label: 'Номер'},
+    {id: 'risks', label: 'Рискове'},
+    {id: 'candidateName', label: 'Име'},
+    {id: 'partyName', label: 'Партия'},
+    {id: 'totalInRegion', label: 'Преференции'},
+    {id: 'preferencePercentOfPartyVotes', label: '% от гласовете за партията'}
   ];
 
   getCikUrl(): string {
@@ -323,6 +332,7 @@ export class ElectionDetailComponent implements OnInit {
 
   formatActivity = formatActivity;
   getGoogleMapsUrl = getGoogleMapsUrl;
+
   toBp(value: number | null | undefined): number {
     if (value === null || value === undefined) return 0;
     return Math.round(value * 10000);
@@ -412,7 +422,7 @@ export class ElectionDetailComponent implements OnInit {
       });
       this.electionService.getParties(this.date).subscribe(partiesMap => {
         this.allParties = Object.entries(partiesMap)
-          .map(([id, name]) => ({ id, name }))
+          .map(([id, name]) => ({id, name}))
           .filter(p => p.id !== '0')
           .sort((a, b) => {
             const numA = parseInt(a.id);
@@ -423,7 +433,7 @@ export class ElectionDetailComponent implements OnInit {
 
         // Add Others at the end if it exists
         if (partiesMap['0']) {
-          this.allParties.push({ id: '0', name: partiesMap['0'] });
+          this.allParties.push({id: '0', name: partiesMap['0']});
         }
 
         // Apply default selection
@@ -444,7 +454,7 @@ export class ElectionDetailComponent implements OnInit {
     const regionTotals: { [regionId: string]: { total: number; voted: number } } = {};
     this.sections.forEach(s => {
       if (!regionTotals[s.regionId]) {
-        regionTotals[s.regionId] = { total: 0, voted: 0 };
+        regionTotals[s.regionId] = {total: 0, voted: 0};
       }
       regionTotals[s.regionId].total += s.total;
       regionTotals[s.regionId].voted += s.voted;
@@ -518,7 +528,7 @@ export class ElectionDetailComponent implements OnInit {
               if (partyVotes && partyVotes.comparisons) {
                 partyVotes.comparisons.forEach((c: ComparativeValue) => {
                   if (!comparisonsMap[c.d]) {
-                    comparisonsMap[c.d] = { v: 0, d: c.d };
+                    comparisonsMap[c.d] = {v: 0, d: c.d};
                   }
                   comparisonsMap[c.d].v += c.v;
                 });
@@ -537,7 +547,9 @@ export class ElectionDetailComponent implements OnInit {
           .slice(0, 3);
 
         // Aggregate candidate votes for grouped city
-        const candidateVotesMap: { [key: string]: { candidateName: string, partyId: string, partyName: string, total: number } } = {};
+        const candidateVotesMap: {
+          [key: string]: { candidateName: string, partyId: string, partyName: string, total: number }
+        } = {};
         g.sections.forEach((s: Section) => {
           if (s.candidateVotes) {
             Object.values(s.candidateVotes).forEach(candidate => {
@@ -590,7 +602,7 @@ export class ElectionDetailComponent implements OnInit {
           g.sections.forEach((s: Section) => {
             s.comparisons?.[key]?.forEach((c: any) => {
               if (!aggregated[c.d]) {
-                aggregated[c.d] = { value: 0 };
+                aggregated[c.d] = {value: 0};
               }
               if (key === 'activityPercent') {
                 // Activity percent needs to be handled carefully, we'll calculate it later
@@ -709,9 +721,9 @@ export class ElectionDetailComponent implements OnInit {
       }
 
       if (foundTotal > 0) {
-        comparisons.push({ v: foundTotal, d: dateInfo.date });
-        paperComparisons.push({ v: foundPaper, d: dateInfo.date });
-        machineComparisons.push({ v: foundMachine, d: dateInfo.date });
+        comparisons.push({v: foundTotal, d: dateInfo.date});
+        paperComparisons.push({v: foundPaper, d: dateInfo.date});
+        machineComparisons.push({v: foundMachine, d: dateInfo.date});
       }
     });
 
@@ -1009,7 +1021,7 @@ export class ElectionDetailComponent implements OnInit {
       },
       title: {
         text: 'Разпределение на преференциите',
-        style: { color: textColor }
+        style: {color: textColor}
       },
       tooltip: {
         pointFormat: '{series.name}: <b>{point.y}</b> ({point.percentage:.1f}%)'
@@ -1057,12 +1069,12 @@ export class ElectionDetailComponent implements OnInit {
       },
       title: {
         text: 'Топ 10 кандидати по преференции',
-        style: { color: textColor }
+        style: {color: textColor}
       },
       xAxis: {
         categories: topCandidates.map(c => c.name),
         labels: {
-          style: { color: textColor },
+          style: {color: textColor},
           rotation: -45,
           align: 'right'
         }
@@ -1070,10 +1082,10 @@ export class ElectionDetailComponent implements OnInit {
       yAxis: {
         title: {
           text: 'Преференции',
-          style: { color: textColor }
+          style: {color: textColor}
         },
         labels: {
-          style: { color: textColor }
+          style: {color: textColor}
         }
       },
       tooltip: {
@@ -1125,12 +1137,12 @@ export class ElectionDetailComponent implements OnInit {
       },
       title: {
         text: 'Процент преференции от гласовете за партията',
-        style: { color: textColor }
+        style: {color: textColor}
       },
       xAxis: {
         categories: preferencePercentData.map(p => p.name),
         labels: {
-          style: { color: textColor },
+          style: {color: textColor},
           rotation: -45,
           align: 'right'
         }
@@ -1138,10 +1150,10 @@ export class ElectionDetailComponent implements OnInit {
       yAxis: {
         title: {
           text: 'Процент',
-          style: { color: textColor }
+          style: {color: textColor}
         },
         labels: {
-          style: { color: textColor },
+          style: {color: textColor},
           format: '{value}%'
         }
       },
@@ -1306,7 +1318,7 @@ export class ElectionDetailComponent implements OnInit {
         sections.forEach(s => {
           s.comparisons?.[key]?.forEach(c => {
             if (!aggregated[c.d]) {
-              aggregated[c.d] = { value: 0 };
+              aggregated[c.d] = {value: 0};
             }
             aggregated[c.d].value += c.v;
           });
@@ -1353,7 +1365,11 @@ export class ElectionDetailComponent implements OnInit {
     });
   }
 
-  private updateChartOptions(partyData: { id: string, name: string, total: number }[], sections: Section[] = this.sections): void {
+  private updateChartOptions(partyData: {
+    id: string,
+    name: string,
+    total: number
+  }[], sections: Section[] = this.sections): void {
     const isDark = this.themeService.darkMode();
     const textColor = isDark ? '#f8fafc' : '#020817';
 
@@ -1388,7 +1404,7 @@ export class ElectionDetailComponent implements OnInit {
       },
       title: {
         text: 'Разпределение на гласовете',
-        style: { color: textColor }
+        style: {color: textColor}
       },
       tooltip: {
         pointFormat: '{series.name}: <b>{point.y}</b> ({point.percentage:.1f}%)'
@@ -1418,7 +1434,7 @@ export class ElectionDetailComponent implements OnInit {
         colorByPoint: true,
         data: pieData
       }] as any,
-      credits: { enabled: false }
+      credits: {enabled: false}
     };
 
     // ПП-ДБ Strategic Distribution
@@ -1463,18 +1479,18 @@ export class ElectionDetailComponent implements OnInit {
       },
       title: {
         text: 'Секции по категории (ПП-ДБ)',
-        style: { color: textColor }
+        style: {color: textColor}
       },
       xAxis: {
         categories: ppdbCategories,
-        labels: { style: { color: textColor } }
+        labels: {style: {color: textColor}}
       },
       yAxis: {
-        title: { text: 'Брой секции', style: { color: textColor } },
-        labels: { style: { color: textColor } },
+        title: {text: 'Брой секции', style: {color: textColor}},
+        labels: {style: {color: textColor}},
         allowDecimals: false
       },
-      legend: { enabled: false },
+      legend: {enabled: false},
       tooltip: {
         pointFormat: 'Секции: <b>{point.y}</b>'
       },
@@ -1488,7 +1504,7 @@ export class ElectionDetailComponent implements OnInit {
         name: 'Секции',
         data: ppdbData
       }] as any,
-      credits: { enabled: false }
+      credits: {enabled: false}
     };
 
     // Activity distribution
@@ -1505,17 +1521,17 @@ export class ElectionDetailComponent implements OnInit {
       },
       title: {
         text: 'Разпределение на секциите по активност',
-        style: { color: textColor }
+        style: {color: textColor}
       },
       xAxis: {
         categories: ['0-10%', '10-20%', '20-30%', '30-40%', '40-50%', '50-60%', '60-70%', '70-80%', '80-90%', '90-100%'],
-        labels: { style: { color: textColor } }
+        labels: {style: {color: textColor}}
       },
       yAxis: {
-        title: { text: 'Брой секции', style: { color: textColor } },
-        labels: { style: { color: textColor } }
+        title: {text: 'Брой секции', style: {color: textColor}},
+        labels: {style: {color: textColor}}
       },
-      legend: { enabled: false },
+      legend: {enabled: false},
       tooltip: {
         pointFormat: 'Секции: <b>{point.y}</b>'
       },
@@ -1524,7 +1540,7 @@ export class ElectionDetailComponent implements OnInit {
         data: activityBins,
         color: '#10b981'
       }] as any,
-      credits: { enabled: false }
+      credits: {enabled: false}
     };
   }
 
@@ -1555,7 +1571,9 @@ export class ElectionDetailComponent implements OnInit {
         });
       });
 
-      const partyResults: PartyResult[] = Object.entries(g.partyVotes as { [pid: string]: number }).map(([partyId, total]) => {
+      const partyResults: PartyResult[] = Object.entries(g.partyVotes as {
+        [pid: string]: number
+      }).map(([partyId, total]) => {
         // Find paper and machine votes by summing them from all sections in the group
         let paper = 0;
         let machine = 0;
@@ -1575,28 +1593,28 @@ export class ElectionDetailComponent implements OnInit {
             // Aggregate comparisons
             v.comparisons?.forEach((c: ComparativeValue) => {
               if (!comparisonsMap[c.d]) {
-                comparisonsMap[c.d] = { v: 0, d: c.d };
+                comparisonsMap[c.d] = {v: 0, d: c.d};
               }
               comparisonsMap[c.d].v += c.v;
             });
 
             v.paperComparisons?.forEach((c: ComparativeValue) => {
               if (!paperComparisonsMap[c.d]) {
-                paperComparisonsMap[c.d] = { v: 0, d: c.d };
+                paperComparisonsMap[c.d] = {v: 0, d: c.d};
               }
               paperComparisonsMap[c.d].v += c.v;
             });
 
             v.machineComparisons?.forEach((c: ComparativeValue) => {
               if (!machineComparisonsMap[c.d]) {
-                machineComparisonsMap[c.d] = { v: 0, d: c.d };
+                machineComparisonsMap[c.d] = {v: 0, d: c.d};
               }
               machineComparisonsMap[c.d].v += c.v;
             });
 
             v.percentComparisons?.forEach((c: ComparativeValue) => {
               if (!percentComparisonsMap[c.d]) {
-                percentComparisonsMap[c.d] = { v: 0, d: c.d };
+                percentComparisonsMap[c.d] = {v: 0, d: c.d};
               }
               // For percent comparisons, we need to aggregate differently - calculate from aggregated totals
               // We'll recalculate this after aggregating all sections
@@ -1640,28 +1658,28 @@ export class ElectionDetailComponent implements OnInit {
         g.sections.forEach((s: Section) => {
           s.comparisons?.['noVotes']?.forEach((c: any) => {
             if (!noVotesComparisonsMap[c.d]) {
-              noVotesComparisonsMap[c.d] = { v: 0, d: c.d };
+              noVotesComparisonsMap[c.d] = {v: 0, d: c.d};
             }
             noVotesComparisonsMap[c.d].v += c.v;
           });
 
           s.comparisons?.['noVotesPaper']?.forEach((c: any) => {
             if (!noVotesPaperComparisonsMap[c.d]) {
-              noVotesPaperComparisonsMap[c.d] = { v: 0, d: c.d };
+              noVotesPaperComparisonsMap[c.d] = {v: 0, d: c.d};
             }
             noVotesPaperComparisonsMap[c.d].v += c.v;
           });
 
           s.comparisons?.['noVotesMachine']?.forEach((c: any) => {
             if (!noVotesMachineComparisonsMap[c.d]) {
-              noVotesMachineComparisonsMap[c.d] = { v: 0, d: c.d };
+              noVotesMachineComparisonsMap[c.d] = {v: 0, d: c.d};
             }
             noVotesMachineComparisonsMap[c.d].v += c.v;
           });
 
           s.comparisons?.['noVotesPercent']?.forEach((c: any) => {
             if (!noVotesPercentComparisonsMap[c.d]) {
-              noVotesPercentComparisonsMap[c.d] = { v: 0, d: c.d };
+              noVotesPercentComparisonsMap[c.d] = {v: 0, d: c.d};
             }
             // For percent, we'll recalculate from aggregated values
           });
@@ -1703,7 +1721,9 @@ export class ElectionDetailComponent implements OnInit {
 
       // Aggregate candidate votes from all sections in the group
       const aggregatedCandidateVotes: { [key: string]: CandidateVotes } = {};
-      const votesWithoutPreferencesByParty: { [partyId: string]: { total: number, paper: number, machine: number } } = {};
+      const votesWithoutPreferencesByParty: {
+        [partyId: string]: { total: number, paper: number, machine: number }
+      } = {};
 
       g.sections.forEach((s: Section) => {
         if (s.candidateVotes) {
@@ -1729,7 +1749,7 @@ export class ElectionDetailComponent implements OnInit {
         // Calculate votes without preferences per party
         Object.entries(s.partyVotes).forEach(([partyId, partyVotes]) => {
           if (!votesWithoutPreferencesByParty[partyId]) {
-            votesWithoutPreferencesByParty[partyId] = { total: 0, paper: 0, machine: 0 };
+            votesWithoutPreferencesByParty[partyId] = {total: 0, paper: 0, machine: 0};
           }
 
           // Get total preference votes for this party in this section
@@ -1812,7 +1832,7 @@ export class ElectionDetailComponent implements OnInit {
         g.sections.forEach((s: Section) => {
           s.comparisons?.[key]?.forEach((c: any) => {
             if (!aggregated[c.d]) {
-              aggregated[c.d] = { value: 0 };
+              aggregated[c.d] = {value: 0};
             }
             if (key === 'activityPercent' || key === 'noVotesPercent') {
               // Activity percent and noVotesPercent need to be handled carefully, we'll calculate them later

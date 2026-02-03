@@ -15,6 +15,7 @@ export class SortableTableHeaderComponent {
   @Input() currentSortColumn: string = '';
   @Input() sortDirection: 'asc' | 'desc' = 'asc';
   @Input() align: 'left' | 'right' = 'left';
+  @Input() labelClass: string = '';
   @Output() sortChange = new EventEmitter<string>();
 
   get isActive(): boolean {
