@@ -49,6 +49,7 @@ import {ComparisonOperatorInputComponent} from '../ui/comparison-operator-input/
 import {StatCardComponent} from '../ui/stat-card/stat-card';
 import {RiskCategory, RiskFilterDropdownComponent} from '../ui/risk-filter-dropdown/risk-filter-dropdown';
 import {SearchFilterComponent} from '../ui/search-filter/search-filter';
+import {ColumnFilterComponent} from '../ui/column-filter/column-filter';
 
 @Component({
   selector: 'app-election-detail',
@@ -81,6 +82,7 @@ import {SearchFilterComponent} from '../ui/search-filter/search-filter';
     StatCardComponent,
     RiskFilterDropdownComponent,
     SearchFilterComponent,
+    ColumnFilterComponent,
   ],
   templateUrl: './election-detail.html',
   styleUrl: './election-detail.scss',

@@ -175,6 +175,12 @@
                 </svg>
                 Експорт CSV
               </button>
+              <div class="relative">
+                <app-column-filter
+                  [columns]="filteredAvailableColumns"
+                  [selectedColumnIds]="currentVisibleColumns"
+                  (selectedColumnIdsChange)="onColumnSelectionChange($event)"/>
+              </div>
             </div>
           </div>
           @if (viewMode() !== 'candidates') {
