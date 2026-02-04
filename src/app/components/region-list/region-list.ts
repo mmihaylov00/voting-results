@@ -6,6 +6,7 @@ import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
 import { Region } from '../../models/election.models';
 import { getPartyAlias } from '../../utils/party-aliases';
+import { getPartyColor } from '../../utils/party-colors';
 import { formatActivity, formatRegionName, getDefaultPartyIds, toBp } from '../../utils/common.utils';
 import { getCikUrl } from '../../utils/election-links';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
@@ -244,12 +245,6 @@ export class RegionListComponent implements OnInit, AfterViewInit {
     const selectedIds = this.selectedPartyIds();
     const series: any[] = [];
 
-    // Define a color palette for consistent colors
-    const colorPalette = [
-      '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
-      '#ec4899', '#06b6d4', '#84cc16', '#f97316', '#6366f1'
-    ];
-
     if (selectedIds.size > 0) {
       // Sort selected IDs to ensure consistent color assignment
       const sortedIds = Array.from(selectedIds).sort();
@@ -268,7 +263,7 @@ export class RegionListComponent implements OnInit, AfterViewInit {
             name: getPartyAlias(party.name),
             data: partyData.map(v => v), // New array with new number references
             type: 'column',
-            color: colorPalette[partyIndex % colorPalette.length] // Assign color based on party position, not selection order
+            color: getPartyColor(party.name)
           });
         }
       });

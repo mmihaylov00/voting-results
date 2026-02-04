@@ -86,7 +86,13 @@ export class ExportCsvModalComponent {
   }
 
   downloadCsv() {
-    const filePrefix = this.viewMode === 'candidates' ? 'candidates' : this.viewMode === 'cities' ? 'cities' : 'results';
+    const filePrefix = this.viewMode === 'candidates'
+      ? 'candidates'
+      : this.viewMode === 'cities'
+        ? 'cities'
+        : this.viewMode === 'municipalities'
+          ? 'municipalities'
+          : 'results';
     const csvContent = this.viewMode === 'candidates'
       ? this.generateCandidatesCsv()
       : this.generateCsv(this.buildPartiesMap());
@@ -122,7 +128,9 @@ export class ExportCsvModalComponent {
 
     const headers: string[] = [];
     if (this.exportColumnIds.has('sectionId')) headers.push('Секция');
-    if (this.exportColumnIds.has('cityName')) headers.push('Град');
+    if (this.exportColumnIds.has('cityName')) {
+      headers.push(this.viewMode === 'municipalities' ? 'Община' : 'Град');
+    }
     if (this.exportColumnIds.has('sectionName')) headers.push('Име на секция');
     if (this.exportColumnIds.has('total')) headers.push('Избиратели');
     if (this.exportColumnIds.has('voted')) headers.push('Гласували');
@@ -192,6 +200,7 @@ export class ExportCsvModalComponent {
   get modalTitle(): string {
     if (this.viewMode === 'candidates') return 'Експорт на кандидати';
     if (this.viewMode === 'cities') return 'Експорт на градове';
+    if (this.viewMode === 'municipalities') return 'Експорт на общини';
     return 'Експорт на секции';
   }
 

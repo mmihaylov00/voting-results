@@ -7,6 +7,7 @@ import { ThemeService } from '../../services/theme.service';
 import { Region, Section, PartyVotes } from '../../models/election.models';
 import { getPartyAlias } from '../../utils/party-aliases';
 import { formatActivity, getPartyKeywords, findPartyByKeywords, getDefaultPartyIds } from '../../utils/common.utils';
+import { getPartyColor } from '../../utils/party-colors';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmCardContentDirective,
@@ -194,11 +195,6 @@ export class ElectionListComponent implements OnInit {
     const selectedIds = this.selectedHistoricalPartyIds();
 
     const categories: string[] = [];
-    const colorPalette = [
-      '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', 
-      '#ec4899', '#06b6d4', '#84cc16', '#f97316', '#6366f1'
-    ];
-
     // Sort dates ascending for the chart
     const sortedDates = [...this.dates].sort((a, b) => a.date.localeCompare(b.date));
 
@@ -274,7 +270,7 @@ export class ElectionListComponent implements OnInit {
           name: partyInfo.name,
           data: partyInfo.votesData,
           type: 'line',
-          color: colorPalette[idx % colorPalette.length]
+          color: getPartyColor(partyInfo.name)
         });
       }
     });
@@ -289,7 +285,7 @@ export class ElectionListComponent implements OnInit {
           name: partyInfo.name,
           data: partyInfo.percentData,
           type: 'line',
-          color: colorPalette[idx % colorPalette.length]
+          color: getPartyColor(partyInfo.name)
         });
       }
     });

@@ -11,5 +11,6 @@ export function getPartyAlias(partyName: string): string {
   if (n.includes('ТАКЪВ НАРОД')) return 'ИТН';
   if (n.includes('ВЕЛИЧИЕ')) return 'ВЕЛИЧИЕ';
   if (n.includes('МЕЧ')) return 'МЕЧ';
+  if (n.includes('АЛИАНС ЗА ПРАВА И СВОБОДИ') || n.includes('АПС')) return 'АПС';
   return partyName;
 }

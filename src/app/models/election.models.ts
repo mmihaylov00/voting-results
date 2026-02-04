@@ -151,7 +151,7 @@ export const SECTION_COLUMNS: TableColumn[] = [
 ];
 
 export type SectionTab = 'all' | 'target' | 'swing' | 'risky' | 'outside' | 'declining' | 'dormant' | 'flip' | 'vanishing';
-export type ViewMode = 'sections' | 'cities' | 'candidates';
+export type ViewMode = 'sections' | 'cities' | 'municipalities' | 'candidates';
 
 export interface SectionFilters {
   searchTerm: string;

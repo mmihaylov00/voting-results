@@ -134,6 +134,7 @@
       </div>
       @if (activeChart() === 'party') {
         <app-party-filter
+          position="right"
           [parties]="allParties"
           [selectedPartyIds]="selectedPartyIds()"
           [showVotes]="true"

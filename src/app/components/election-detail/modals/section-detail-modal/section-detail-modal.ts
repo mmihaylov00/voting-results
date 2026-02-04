@@ -6,6 +6,7 @@ import { Section, SectionDetails, PartyResult, ComparativeValue, PartyVotes, Can
 import { ThemeService } from '../../../../services/theme.service';
 import { ElectionService } from '../../../../services/election';
 import { getPartyAlias } from '../../../../utils/party-aliases';
+import { getPartyColor } from '../../../../utils/party-colors';
 import { formatActivity, getGoogleMapsUrl, getPartyKeywords, findPartyByKeywords } from '../../../../utils/common.utils';
 import { sortArray, getDefaultSortDirection } from '../../../../utils/table-sort.util';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
@@ -1032,6 +1033,13 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       return;
     }
 
+    const groupedData = (this.currentSectionData as any)?.sections;
+    const groupMunicipalityCode = (this.currentSectionData as any)?.municipalityCode;
+    const groupNeighborhoodCode = (this.currentSectionData as any)?.neighborhoodCode;
+    const groupCode = groupMunicipalityCode && groupNeighborhoodCode
+      ? `${groupMunicipalityCode}${groupNeighborhoodCode}`
+      : '';
+    const isGrouped = Array.isArray(groupedData) && groupedData.length > 0;
     const isCity = this.section.sectionName.startsWith('Общо за');
     const sectionId = this.section.sectionId;
     const cityName = this.section.cityName;
@@ -1078,7 +1086,22 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       // Collect votes for all parties in this date
       const datePartyVotes: { [partyId: string]: number } = {};
 
-      if (isCity) {
+      if (isGrouped && groupCode) {
+        // Municipality grouping: match by sectionId[2:6] + region (if available)
+        const groupSections = data.sections.filter((s: Section) => {
+          const matchesGroup = s.sectionId.slice(2, 6) === groupCode;
+          const matchesRegion = !regionId || s.regionId === regionId;
+          return matchesGroup && matchesRegion;
+        });
+        groupSections.forEach((section: Section) => {
+          totalVoted += section.voted;
+          totalElectors += section.total;
+          Object.entries(section.partyVotes).forEach(([pid, v]) => {
+            const votesObj = v as PartyVotes;
+            datePartyVotes[pid] = (datePartyVotes[pid] || 0) + votesObj.total;
+          });
+        });
+      } else if (isCity) {
         // For city totals, find all sections in that city (and region if available)
         const citySections = data.sections.filter((s: Section) => {
           const matchesCity = s.cityName === cityName;
@@ -1134,12 +1157,13 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     sortedPartyIds.forEach((partyId, idx) => {
       const partyInfo = partyDataMap[partyId];
       if (partyInfo) {
+        const partyColor = getPartyColor(partyInfo.name) || colorPalette[idx % colorPalette.length];
         votesSeries.push({
           id: `historical-votes-${partyId}`,
           name: partyInfo.name,
           data: partyInfo.votesData,
           type: 'line',
-          color: colorPalette[idx % colorPalette.length]
+          color: partyColor
         });
       }
     });
@@ -1149,12 +1173,13 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     sortedPartyIds.forEach((partyId, idx) => {
       const partyInfo = partyDataMap[partyId];
       if (partyInfo) {
+        const partyColor = getPartyColor(partyInfo.name) || colorPalette[idx % colorPalette.length];
         percentSeries.push({
           id: `historical-percent-${partyId}`,
           name: partyInfo.name,
           data: partyInfo.percentData,
           type: 'line',
-          color: colorPalette[idx % colorPalette.length]
+          color: partyColor
         });
       }
     });

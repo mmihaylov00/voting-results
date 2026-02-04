@@ -1,36 +1,40 @@
 <app-base-modal
-    [title]="modalTitle"
-    [subtitle]="modalSubtitle"
-    zIndex="z-[110]"
-    (close)="close.emit()">
+  [title]="modalTitle"
+  [subtitle]="modalSubtitle"
+  zIndex="z-[110]"
+  (close)="close.emit()">
 
-    <ng-template #headerActions>
-        @if (viewMode !== 'candidates') {
-            <div class="flex flex-row justify-start mt-3">
-                <app-party-filter
-                    [parties]="allParties"
-                    [selectedPartyIds]="exportPartyIds"
-                    (selectedPartyIdsChange)="onExportPartySelectionChange($event)"/>
-            </div>
+  <ng-template #headerActions>
+    @if (viewMode !== 'candidates') {
+      <div class="flex flex-row justify-start mt-3">
+        <app-party-filter
+          position="right"
+          [parties]="allParties"
+          [selectedPartyIds]="exportPartyIds"
+          (selectedPartyIdsChange)="onExportPartySelectionChange($event)"/>
+      </div>
+    }
+  </ng-template>
+
+  <div class="space-y-6">
+    <div>
+      <h4 hlmH4 class="mb-2 text-sm font-semibold uppercase tracking-wider text-secondary/70 dark:text-primary/70">
+        Колони</h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+        @for (column of exportColumns; track column.id) {
+          <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer"
+               (click)="toggleExportColumnSelection(column.id)">
+            <input type="checkbox" [checked]="isColumnSelected(column.id)" class="cursor-pointer"
+                   (click)="$event.stopPropagation(); toggleExportColumnSelection(column.id)"/>
+            <span class="text-sm truncate">{{ column.label }}</span>
+          </div>
         }
-    </ng-template>
-
-    <div class="space-y-6">
-            <div>
-                <h4 hlmH4 class="mb-2 text-sm font-semibold uppercase tracking-wider text-secondary/70 dark:text-primary/70">Колони</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    @for (column of exportColumns; track column.id) {
-                        <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleExportColumnSelection(column.id)">
-                            <input type="checkbox" [checked]="isColumnSelected(column.id)" class="cursor-pointer" (click)="$event.stopPropagation(); toggleExportColumnSelection(column.id)" />
-                            <span class="text-sm truncate">{{ column.label }}</span>
-                        </div>
-                    }
-                </div>
-            </div>
+      </div>
     </div>
+  </div>
 
-    <ng-template #footer>
-        <button hlmBtn variant="outline" (click)="close.emit()">Отказ</button>
-        <button hlmBtn variant="default" (click)="downloadCsv()">Експорт {{ exportCount }} записа</button>
-    </ng-template>
+  <ng-template #footer>
+    <button hlmBtn variant="outline" (click)="close.emit()">Отказ</button>
+    <button hlmBtn variant="default" (click)="downloadCsv()">Експорт {{ exportCount }} записа</button>
+  </ng-template>
 </app-base-modal>

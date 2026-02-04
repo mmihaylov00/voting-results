@@ -74,6 +74,9 @@ export function getPartyKeywords(partyName: string): string[] {
   if (upperName.includes('ПРОДЪЛЖАВАМЕ') || upperName.includes('ПП-ДБ')) {
     return ['ПРОДЪЛЖАВАМЕ', 'ПП-ДБ'];
   }
+  if (upperName.includes('ДПС') || upperName.includes('ДВИЖЕНИЕ ЗА ПРАВА И СВОБОДИ')) {
+    return ['ДПС'];
+  }
   // Extract main keywords (first significant words, excluding common prefixes)
   const words = upperName.split(/\s+/).filter(w => w.length > 2);
   return words.slice(0, 3); // Take first 3 significant words

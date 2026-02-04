@@ -20,6 +20,7 @@ export class PartyFilterComponent implements OnChanges, OnDestroy {
   @Input() parties: { id: string, name: string }[] = [];
   @Input() selectedPartyIds: Set<string> = new Set();
   @Input() showVotes: boolean = false;
+  @Input() position: 'left' | 'right' = 'left';
   @Input() partyVotes?: { [partyId: string]: number };
   @Output() selectedPartyIdsChange = new EventEmitter<Set<string>>();
 
@@ -43,16 +44,16 @@ export class PartyFilterComponent implements OnChanges, OnDestroy {
 
     this.parties.forEach(party => {
       if (party.id === '0') return; // Skip "Others"
-      
+
       const alias = getPartyAlias(party.name).toUpperCase();
       const nameUpper = party.name.toUpperCase();
-      
+
       // Check both alias and original name for matching
       const priorityIndex = priorityOrder.findIndex(p => {
         const pUpper = p.toUpperCase();
         return alias.includes(pUpper) || nameUpper.includes(pUpper);
       });
-      
+
       if (priorityIndex !== -1) {
         priorityParties.push({ party, index: priorityIndex });
       } else {
@@ -62,7 +63,7 @@ export class PartyFilterComponent implements OnChanges, OnDestroy {
 
     // Sort priority parties by their index in the priority order
     priorityParties.sort((a, b) => a.index - b.index);
-    
+
     // Sort other parties alphabetically by alias
     otherParties.sort((a, b) => {
       const aliasA = getPartyAlias(a.name).toUpperCase();

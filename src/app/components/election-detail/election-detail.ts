@@ -20,6 +20,7 @@ import {
 } from '../../models/election.models';
 import {filterSections} from '../../utils/election-utils';
 import {getPartyAlias} from '../../utils/party-aliases';
+import { getPartyColor } from '../../utils/party-colors';
 import {copyToClipboard as copyToClipboardUtil, formatActivity, getGoogleMapsUrl} from '../../utils/common.utils';
 import {getDefaultSortDirection, sortArray} from '../../utils/table-sort.util';
 import {formatRiskMessage} from '../../utils/risk-message.util';
@@ -236,10 +237,37 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   viewMode = signal<ViewMode>('sections');
-  groupByCity = signal<boolean>(false);
+  groupByMode = signal<'none' | 'city' | 'municipality'>('none');
   groupedSections: any[] = [];
   isLoadingAllSections = signal<boolean>(false);
   isProcessingData = signal<boolean>(false);
+  private neighborhoodCodeNameOverrides: { [key: string]: string } = {
+    // Format: sectionId[2:6], e.g. 4602 => municipality 46, neighborhood 02
+    '4601': 'Средец',
+    '4602': 'Красно Село',
+    '4603': 'Възраждане',
+    '4604': 'Оборище',
+    '4605': 'Сердика',
+    '4606': 'Подуяне',
+    '4607': 'Слатина',
+    '4608': 'Изгрев',
+    '4609': 'Лозенец',
+    '4610': 'Триадица',
+    '4611': 'Красна Поляна',
+    '4612': 'Илинден',
+    '4613': 'Надежда',
+    '4614': 'Искър',
+    '4615': 'Младост',
+    '4616': 'Студентски',
+    '4617': 'Витоша',
+    '4618': 'Овча Купел',
+    '4619': 'Люлин',
+    '4620': 'Връбница',
+    '4621': 'Нови Искър',
+    '4622': 'Кремиковци',
+    '4623': 'Панчарево',
+    '4624': 'Банкя',
+  };
 
   // Candidate data
   regionCandidates: RegionCandidate[] = [];
@@ -495,11 +523,24 @@ export class ElectionDetailComponent implements OnInit {
     const result = filterSections(this.sections, filters, regionAvgTurnoutById);
 
     if (this.groupByCity()) {
+      const groupMode = this.groupByMode();
       const groups = new Map<string, any>();
       result.forEach(s => {
-        if (!groups.has(s.cityName)) {
-          groups.set(s.cityName, {
-            cityName: s.cityName,
+        const municipalityCode = this.getMunicipalityCode(s.sectionId);
+        const neighborhoodCode = this.getNeighborhoodCode(s.sectionId);
+        const groupKey = groupMode === 'municipality'
+          ? `${s.regionId}-${municipalityCode}-${neighborhoodCode}`
+          : s.cityName;
+
+        if (!groups.has(groupKey)) {
+          groups.set(groupKey, {
+            cityName: groupMode === 'municipality' ? '' : s.cityName,
+            mainCityName: groupMode === 'municipality' ? undefined : s.cityName,
+            fallbackCityName: groupMode === 'municipality' ? s.cityName : undefined,
+            municipalityCode: groupMode === 'municipality' ? municipalityCode : undefined,
+            neighborhoodCode: groupMode === 'municipality' ? neighborhoodCode : undefined,
+            neighborhoodCounts: groupMode === 'municipality' ? {} : undefined,
+            regionId: s.regionId,
             regionName: s.regionName,
             total: 0,
             voted: 0,
@@ -513,7 +554,20 @@ export class ElectionDetailComponent implements OnInit {
             sections: []
           });
         }
-        const g = groups.get(s.cityName);
+        const g = groups.get(groupKey);
+        if (groupMode === 'municipality' && this.isMunicipalityMainCity(s.sectionId)) {
+          g.mainCityName = s.cityName;
+        }
+        if (groupMode === 'municipality' && !g.fallbackCityName) {
+          g.fallbackCityName = s.cityName;
+        }
+        if (groupMode === 'municipality') {
+          const overrideKey = `${g.municipalityCode ?? ''}${g.neighborhoodCode ?? ''}`;
+          const neighborhood = this.neighborhoodCodeNameOverrides[overrideKey];
+          if (neighborhood) {
+            g.neighborhoodCounts[neighborhood] = (g.neighborhoodCounts[neighborhood] || 0) + 1;
+          }
+        }
         g.total += s.total;
         g.voted += s.voted;
         g.discardedVotes += s.discardedVotes;
@@ -533,6 +587,32 @@ export class ElectionDetailComponent implements OnInit {
       });
 
       this.groupedSections = Array.from(groups.values()).map(g => {
+        if (groupMode === 'municipality') {
+          const mainCityName = g.mainCityName || g.fallbackCityName || g.cityName;
+          g.mainCityName = mainCityName;
+          let baseName = this.formatMunicipalityDisplayName(mainCityName);
+          const overrideKey = `${g.municipalityCode ?? ''}${g.neighborhoodCode ?? ''}`;
+          if (this.neighborhoodCodeNameOverrides[overrideKey]) {
+            baseName = this.neighborhoodCodeNameOverrides[overrideKey];
+          }
+          let neighborhoodName = '';
+          if (g.neighborhoodCounts) {
+            let max = 0;
+            Object.entries(g.neighborhoodCounts).forEach(([name, count]: any) => {
+              if (count > max) {
+                max = count;
+                neighborhoodName = name;
+              }
+            });
+          }
+          if (neighborhoodName) {
+            g.cityName = `${neighborhoodName}`;
+          } else if (g.neighborhoodCode && g.neighborhoodCode !== '00') {
+            g.cityName = `${baseName}`;
+          } else {
+            g.cityName = baseName;
+          }
+        }
         const topParties = Object.entries(g.partyVotes)
           .map(([partyId, total]) => {
             const sectionWithParty = g.sections.find((s: any) => s.partyVotes[partyId]);
@@ -678,8 +758,9 @@ export class ElectionDetailComponent implements OnInit {
     this.sortSections(this.sectionSortColumn, true);
 
     // Update charts and stats based on filtered sections
-    this.calculateAvgActivity(result);
-    this.calculateRegionalStats(result);
+    const statsSource = this.groupByCity() ? this.filteredSections : result;
+    this.calculateAvgActivity(statsSource);
+    this.calculateRegionalStats(statsSource);
 
     // Calculate region candidates if in candidates view
     if (this.viewMode() === 'candidates') {
@@ -1251,19 +1332,23 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   toggleCityGrouping(): void {
-    this.groupByCity.set(!this.groupByCity());
+    this.groupByMode.set(this.groupByMode() === 'city' ? 'none' : 'city');
     this.applyFilter();
   }
 
   setViewMode(mode: ViewMode): void {
     this.viewMode.set(mode);
     if (mode === 'cities') {
-      this.groupByCity.set(true);
+      this.groupByMode.set('city');
+      this.applyFilter();
+    } else if (mode === 'municipalities') {
+      this.groupByMode.set('municipality');
       this.applyFilter();
     } else if (mode === 'sections') {
-      this.groupByCity.set(false);
+      this.groupByMode.set('none');
       this.applyFilter();
     } else if (mode === 'candidates') {
+      this.groupByMode.set('none');
       this.calculateRegionCandidates();
       this.applyCandidateFilter();
     }
@@ -1363,9 +1448,31 @@ export class ElectionDetailComponent implements OnInit {
     const regionalPartyVotes: { [partyId: string]: number } = {};
     sections.forEach(s => {
       Object.entries(s.partyVotes).forEach(([partyId, votes]) => {
-        regionalPartyVotes[partyId] = (regionalPartyVotes[partyId] || 0) + votes.total;
+        const voteTotal = typeof votes === 'number' ? votes : votes.total;
+        regionalPartyVotes[partyId] = (regionalPartyVotes[partyId] || 0) + (voteTotal || 0);
       });
     });
+
+    // Fallback for grouped sections if totals/party votes didn't aggregate as expected
+    if (this.totalElectors === 0) {
+      const nestedSections = sections.flatMap(s => (s as any).sections || []);
+      if (nestedSections.length > 0) {
+        this.totalElectors = nestedSections.reduce((sum, s) => sum + s.total, 0);
+        this.totalVoted = nestedSections.reduce((sum, s) => sum + s.voted, 0);
+        this.totalInvalid = nestedSections.reduce((sum, s) => sum + s.discardedVotes, 0);
+        this.totalNoVotes = nestedSections.reduce((sum, s) => sum + s.noVotes, 0);
+        this.totalRegionMachine = nestedSections.reduce((sum, s) => sum + (s.totalMachine || 0), 0);
+        this.totalRegionPaper = nestedSections.reduce((sum, s) => sum + (s.totalPaper || 0), 0);
+
+        Object.keys(regionalPartyVotes).forEach(k => delete regionalPartyVotes[k]);
+        nestedSections.forEach(s => {
+          Object.entries(s.partyVotes).forEach(([partyId, votes]) => {
+            const voteTotal = typeof votes === 'number' ? votes : (votes as any).total;
+            regionalPartyVotes[partyId] = (regionalPartyVotes[partyId] || 0) + (voteTotal || 0);
+          });
+        });
+      }
+    }
 
     this.electionService.getParties(this.date).subscribe(partiesMap => {
       const partyData = Object.entries(regionalPartyVotes)
@@ -1394,20 +1501,23 @@ export class ElectionDetailComponent implements OnInit {
 
     const pieData = partyData.map(p => ({
       name: getPartyAlias(p.name),
-      y: p.total
+      y: p.total,
+      color: getPartyColor(p.name)
     }));
 
     if (nonVoters > 0) {
       pieData.push({
         name: 'Негласували',
-        y: nonVoters
+        y: nonVoters,
+        color: getPartyColor('Негласували')
       });
     }
 
     if (this.totalNoVotes > 0) {
       pieData.push({
         name: 'Не подкрепя никого',
-        y: this.totalNoVotes
+        y: this.totalNoVotes,
+        color: getPartyColor('Не подкрепя никого')
       });
     }
 
@@ -1567,6 +1677,48 @@ export class ElectionDetailComponent implements OnInit {
       return parts[1].trim().toUpperCase();
     }
     return name.toUpperCase();
+  }
+
+  groupByCity(): boolean {
+    return this.groupByMode() !== 'none';
+  }
+
+  isMunicipalityGrouping(): boolean {
+    return this.groupByMode() === 'municipality';
+  }
+
+  getGroupMapCity(section: Section | any): string {
+    if (!this.groupByCity()) return section.cityName;
+    if (this.isMunicipalityGrouping()) {
+      return section.mainCityName || section.cityName;
+    }
+    return section.cityName;
+  }
+
+  private getMunicipalityCode(sectionId: string): string {
+    if (!sectionId || sectionId.length < 4) return '';
+    return sectionId.slice(2, 4);
+  }
+
+  private getNeighborhoodCode(sectionId: string): string {
+    if (!sectionId || sectionId.length < 6) return '';
+    return sectionId.slice(4, 6);
+  }
+
+  private isMunicipalityMainCity(sectionId: string): boolean {
+    return /001$/.test(sectionId || '');
+  }
+
+  private stripSettlementPrefix(name: string): string {
+    if (!name) return name;
+    return name.replace(/^(гр\.|с\.|кв\.|жк\.)\s*/i, '').trim();
+  }
+
+  private formatMunicipalityDisplayName(mainCityName: string): string {
+    if (!mainCityName) return '';
+    const municipalityName = this.stripSettlementPrefix(mainCityName);
+    if (!municipalityName || municipalityName === mainCityName) return mainCityName;
+    return `${municipalityName}`;
   }
 
   getPartyAlias = getPartyAlias;

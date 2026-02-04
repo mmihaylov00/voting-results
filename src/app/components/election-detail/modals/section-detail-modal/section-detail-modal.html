@@ -1,5 +1,5 @@
 <app-base-modal
-    [title]="'Детайлни резултати за секция ' + section.sectionId"
+    [title]="`Детайлни резултати за ${isGroupedByCity ? '' : 'секция'} ${section.sectionId}`"
     zIndex="z-[110]"
     (close)="closeModal()">
 
@@ -39,6 +39,7 @@
                   (valueChange)="onSearchTermChange($event)"
                   inputClass="w-full max-w-[220px]" />
                 <app-party-filter
+                  position="right"
                   [parties]="allParties"
                   [selectedPartyIds]="selectedPartyIds"
                   [showVotes]="true"
