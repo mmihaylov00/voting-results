@@ -73,3 +73,61 @@ export function filterSectionLevelRisks(risks: any[], excludeCodes?: Set<string>
 export function getRisksForSection(section: Section): any[] {
   return (section as any).candidateRiskIndicators || section.riskIndicators || [];
 }
+
+function approxEqual(a: number, b: number, tolerance: number): boolean {
+  return Math.abs(a - b) <= tolerance;
+}
+
+export function candidateRiskAppliesToSection(risk: any, section?: Section): boolean {
+  if (!section) return false;
+  if (!risk?.details?.candidateId) return false;
+  const sectionId = section.sectionId;
+  const riskSectionId = risk.details?.sectionId;
+  if (sectionId && riskSectionId && String(riskSectionId) !== String(sectionId)) return false;
+  const partyId = risk.details?.partyId;
+  const candidateId = risk.details?.candidateId;
+  if (!partyId || !candidateId) return false;
+  const key = `${partyId}_${candidateId}`;
+  const cv = section.candidateVotes?.[key];
+  if (!cv) return false;
+
+  if (risk.code === 'R2.4') {
+    const total = (cv.paper || 0) + (cv.machine || 0);
+    if (!total) return false;
+    const paperShare = (cv.paper || 0) / total;
+    const machineShare = (cv.machine || 0) / total;
+    if (typeof risk.details?.paperShare !== 'number' || typeof risk.details?.machineShare !== 'number') {
+      return true;
+    }
+    return approxEqual(paperShare, risk.details.paperShare, 0.02)
+      && approxEqual(machineShare, risk.details.machineShare, 0.02);
+  }
+
+  if (risk.code === 'R5.2') {
+    const voted = section.voted || 0;
+    if (!voted) return false;
+    const currentRate = (cv.total || 0) / voted;
+    if (typeof risk.details?.currentRate !== 'number') return true;
+    return approxEqual(currentRate, risk.details.currentRate, 0.02);
+  }
+
+  if (risk.code === 'R6.1') {
+    // If this is an aggregated/region-level risk, don't show per section.
+    if (typeof risk.details?.avgSectionShare === 'number' || typeof risk.details?.avgMunicipalityShare === 'number') {
+      return false;
+    }
+    const totalPreferences = section.candidateVotes
+      ? Object.values(section.candidateVotes).reduce((sum, c) => sum + (c.total || 0), 0)
+      : 0;
+    if (!totalPreferences) return false;
+    const sectionShare = (cv.total || 0) / totalPreferences;
+    if (typeof risk.details?.sectionShare !== 'number') return true;
+    return approxEqual(sectionShare, risk.details.sectionShare, 0.02);
+  }
+
+  if (risk.code === 'R4.4') {
+    return (cv.total || 0) >= 10;
+  }
+
+  return true;
+}

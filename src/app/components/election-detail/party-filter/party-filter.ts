@@ -3,6 +3,7 @@ import { CommonModule, DOCUMENT } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HlmButtonDirective } from '../../ui/button-helm/src/lib/hlm-button.directive';
 import { getPartyAlias } from '../../../utils/party-aliases';
+import { PartyBadgeComponent } from '../../ui/party-badge/party-badge';
 
 @Component({
   selector: 'app-party-filter',
@@ -11,6 +12,7 @@ import { getPartyAlias } from '../../../utils/party-aliases';
     CommonModule,
     FormsModule,
     HlmButtonDirective,
+    PartyBadgeComponent,
   ],
   templateUrl: './party-filter.html'
 })

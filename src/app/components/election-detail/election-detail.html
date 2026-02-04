@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4 py-8">
+<div class="mx-4 px-4 py-8">
   @if (loading$ | async) {
     <div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
       <div class="w-full max-w-md px-8 text-center">
@@ -216,6 +216,7 @@
                 label="Преференции"
                 [min]="0"
                 [step]="1"
+                suffix=""
                 (operatorChange)="candidatePreferenceOperator.set($event); applyCandidateFilter()"
                 (valueChange)="candidatePreferenceThreshold = $event; applyCandidateFilter()"/>
 
@@ -516,7 +517,7 @@
                 }
                 @if (visibleColumns().has('topCandidates')) {
                   <th hlmTableHead class="min-w-[200px] text-secondary dark:text-primary">
-                    Топ 3 кандидати
+                    Топ 3 преференции
                   </th>
                 }
               </tr>
@@ -669,13 +670,13 @@
                           @let alias = getPartyAlias(tp.name);
                           @let partyComparisons = section.partyVotes[tp.partyId]?.comparisons;
                           @let partyPercentComparisons = section.partyVotes[tp.partyId]?.percentComparisons;
-                          <div class="truncate" [class.font-bold]="alias.includes('ПП-ДБ')"
-                               [class.text-ppdb]="alias.includes('ПП-ДБ')"
+                          <div class="flex items-center gap-1.5 min-w-0"
                                [title]="alias + ': ' + tp.total + ' (' + formatActivity((tp.percentBp || 0) / 10000) + '%)'">
-                            {{ alias }}: <strong [hlmTooltip]="partyComparisons"
+                            <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
+                            <span class="whitespace-nowrap">: <strong [hlmTooltip]="partyComparisons"
                                                  [currentValue]="tp.total">{{ tp.total | number }}</strong> (<span
                             [hlmTooltip]="partyPercentComparisons" [currentValue]="tp.percentBp"
-                            [isPercent]="true">{{ formatActivity((tp.percentBp || 0) / 10000) }}%</span>)
+                            [isPercent]="true">{{ formatActivity((tp.percentBp || 0) / 10000) }}%</span>)</span>
                           </div>
                         }
                       </div>
@@ -686,11 +687,10 @@
                       <div class="flex flex-col text-xs">
                         @for (candidate of getTopCandidates(section); track candidate.candidateName + candidate.partyId) {
                           @let alias = getPartyAlias(candidate.partyName);
-                          <div class="flex items-center gap-1 truncate"
+                          <div class="flex items-center gap-1 min-w-0"
                                [title]="candidate.candidateName + ' (' + alias + '): ' + candidate.total + ' преференциални гласа'">
-                                                          <span class="truncate">
-                                                            {{ candidate.candidateName }} ({{ alias }}
-                                                            ): <strong>{{ candidate.total | number }}</strong>
+                                                          <span class="flex items-center gap-1 min-w-0 truncate">
+                                                            {{ candidate.candidateName }} <app-party-badge [partyName]="candidate.partyName" size="xs" extraClass="truncate"></app-party-badge>: <strong>{{ candidate.total | number }}</strong>
                                                           </span>
                             @if (isLeaderCandidate(candidate.candidateId)) {
                               <span
@@ -892,7 +892,9 @@
                       </td>
                     }
                     @if (currentVisibleColumns.has('partyName')) {
-                      <td hlmTableCell>{{ getPartyAlias(candidate.partyName) }}</td>
+                      <td hlmTableCell>
+                        <app-party-badge [partyName]="candidate.partyName" size="xs"></app-party-badge>
+                      </td>
                     }
                     @if (currentVisibleColumns.has('totalInRegion')) {
                       <td hlmTableCell class="text-right flex flex-row justify-between" style="align-items: center">

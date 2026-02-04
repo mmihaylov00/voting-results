@@ -17,11 +17,11 @@
             @for (party of sortedParties; track party.id) {
                 <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleParty(party.id)">
                     <input type="checkbox" [checked]="selectedPartyIds.has(party.id)" class="cursor-pointer" />
-                    <span class="text-sm truncate">
+                    <span class="text-sm truncate flex items-center gap-2 min-w-0">
                         @if (showVotes && partyVotes && partyVotes[party.id] !== undefined) {
-                            ({{ partyVotes[party.id] | number }}) 
+                            <span class="text-muted-foreground">({{ partyVotes[party.id] | number }})</span>
                         }
-                        {{ getPartyAlias(party.name) }}
+                        <app-party-badge [partyName]="party.name" size="xs" extraClass="truncate"></app-party-badge>
                     </span>
                 </div>
             }

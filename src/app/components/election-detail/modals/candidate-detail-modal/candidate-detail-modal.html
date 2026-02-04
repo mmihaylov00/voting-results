@@ -179,14 +179,62 @@
         </tbody>
       </table>
     </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 flex-shrink-0 px-6">
+      <div hlmCard class="p-1 border-primary/10">
+        <highcharts-chart
+          [options]="topSectionsChartOptions"
+          style="height: 420px; display: block;">
+        </highcharts-chart>
+      </div>
+      <div hlmCard class="p-6 border-primary/10">
+        <h4 hlmH4 class="mb-4 text-secondary dark:text-primary">Статистика за кандидата</h4>
 
-    @if (candidate.riskIndicators && candidate.riskIndicators.length > 0) {
-      <app-risk-analysis-summary
-        [riskData]="{
-                    riskScore: candidate.riskIndicators.length,
-                    riskIndicators: candidate.riskIndicators
-                }"
-        [context]="{ candidate: candidate, partiesById: partiesById }"/>
-    }
+        @if (candidate.riskIndicators && candidate.riskIndicators.length > 0) {
+          <app-risk-analysis-summary
+            [riskData]="{
+                        riskScore: candidate.riskIndicators.length,
+                        riskIndicators: candidate.riskIndicators
+                    }"
+            [context]="{ candidate: candidate, partiesById: partiesById }"/>
+        }
+
+        <div class="space-y-4">
+          <div class="flex justify-between items-center border-b border-primary/10 pb-2">
+            <span class="text-secondary/70 dark:text-foreground/70">Общо преференции:</span>
+            <span class="font-bold" [hlmTooltip]="candidate.comparisons" [currentValue]="candidate.total">{{ candidate.total | number }}</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-primary/10 pb-2">
+            <span class="text-secondary/70 dark:text-foreground/70">Хартиени:</span>
+            <span class="font-bold" [hlmTooltip]="candidate.paperComparisons" [currentValue]="candidate.paper">{{ candidate.paper | number }}</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-primary/10 pb-2">
+            <span class="text-secondary/70 dark:text-foreground/70">Машинни:</span>
+            <span class="font-bold" [hlmTooltip]="candidate.machineComparisons" [currentValue]="candidate.machine">{{ candidate.machine | number }}</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-primary/10 pb-2">
+            <span class="text-secondary/70 dark:text-foreground/70">Дял от преференциите на партията:</span>
+            <span class="font-bold">{{ candidate.preferencePercentOfPartyVotes | number:'1.2-2' }}%</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-secondary/70 dark:text-foreground/70">Дял от гласовете в региона:</span>
+            <span class="font-bold">{{ candidate.partyPercentInRegion | number:'1.2-2' }}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-8 border-t border-primary/20 pt-6 flex-shrink-0 px-6">
+      <div class="flex justify-between items-center mb-4">
+        <h4 hlmH4 class="text-secondary dark:text-primary">Исторически трендове</h4>
+      </div>
+      <div hlmCard class="border-primary/10 p-4">
+        @if (historicalPreferencesChartOptions.series) {
+          <highcharts-chart
+            [options]="historicalPreferencesChartOptions"
+            [oneToOne]="true"
+            style="width: 100%; height: 400px; display: block;">
+          </highcharts-chart>
+        }
+      </div>
+    </div>
   </div>
 </app-base-modal>

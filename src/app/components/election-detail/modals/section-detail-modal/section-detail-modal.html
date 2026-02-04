@@ -111,9 +111,15 @@
                   <tbody hlmTableBody>
                           @for (res of filteredPartyResults; track res.partyId) {
                               @let alias = getPartyAlias(res.partyName);
-                              <tr hlmTableRow [class.font-bold]="alias.includes('ПП-ДБ')" [class.text-ppdb]="alias.includes('ПП-ДБ')">
+                              <tr hlmTableRow>
                                   @if (visiblePartyColumns().has('partyName')) {
-                                      <td hlmTableCell [class.text-muted-foreground]="res.isNoVotes" [class.italic]="res.isNoVotes">{{ alias }}</td>
+                                      <td hlmTableCell [class.text-muted-foreground]="res.isNoVotes" [class.italic]="res.isNoVotes">
+                                        @if (res.isNoVotes) {
+                                          {{ alias }}
+                                        } @else {
+                                          <app-party-badge [partyName]="res.partyName" size="xs"></app-party-badge>
+                                        }
+                                      </td>
                                   }
                                   @if (visiblePartyColumns().has('total')) {
                                       <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.comparisons || currentSectionData?.partyVotes?.[res.partyId]?.comparisons" [currentValue]="res.total">{{ res.total }}</td>
@@ -187,6 +193,23 @@
                                   </span>
                               </th>
                           }
+                        @if (visibleCandidateColumns().has('total')) {
+                          <th hlmTableHead (click)="sortCandidates('total')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                  <span class="flex items-center justify-end">
+                                      <span>Общо преференции</span>
+                                      <span class="ml-1 flex items-center">
+                                          @if (candidateSortColumn === 'total') {
+                                            <span class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                          } @else {
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
+                                                <path d="M8 9l4-4 4 4"/>
+                                                <path d="M8 15l4 4 4-4"/>
+                                            </svg>
+                                          }
+                                      </span>
+                                  </span>
+                          </th>
+                        }
                           @if (visibleCandidateColumns().has('paper')) {
                               <th hlmTableHead (click)="sortCandidates('paper')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                   <span class="flex items-center justify-end">
@@ -233,23 +256,6 @@
                                                   <path d="M8 9l4-4 4 4"/>
                                                   <path d="M8 15l4 4 4-4"/>
                                               </svg>
-                                          }
-                                      </span>
-                                  </span>
-                              </th>
-                          }
-                          @if (visibleCandidateColumns().has('total')) {
-                              <th hlmTableHead (click)="sortCandidates('total')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
-                                  <span class="flex items-center justify-end">
-                                      <span>Общо преференции</span>
-                                      <span class="ml-1 flex items-center">
-                                          @if (candidateSortColumn === 'total') {
-                                            <span class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
-                                          } @else {
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
-                                                <path d="M8 9l4-4 4 4"/>
-                                                <path d="M8 15l4 4 4-4"/>
-                                            </svg>
                                           }
                                       </span>
                                   </span>
@@ -330,8 +336,13 @@
                                     <td hlmTableCell>{{ candidate.candidateId }}</td>
                                   }
                                   @if (visibleCandidateColumns().has('partyName')) {
-                                    <td hlmTableCell>{{ getPartyAlias(candidate.partyName) }}</td>
+                                    <td hlmTableCell>
+                                      <app-party-badge [partyName]="candidate.partyName" size="xs"></app-party-badge>
+                                    </td>
                                   }
+                                @if (visibleCandidateColumns().has('total')) {
+                                  <td hlmTableCell class="text-right" [hlmTooltip]="candidate.comparisons" [currentValue]="candidate.total">{{ candidate.total | number }}</td>
+                                }
                                   @if (visibleCandidateColumns().has('paper')) {
                                     <td hlmTableCell class="text-right" [hlmTooltip]="candidate.paperComparisons" [currentValue]="candidate.paper">{{ candidate.paper | number }}</td>
                                   }
@@ -340,9 +351,6 @@
                                   }
                                   @if (visibleCandidateColumns().has('percentInSection')) {
                                     <td hlmTableCell class="text-right">{{ candidate.percentInSection.toFixed(2) }}%</td>
-                                  }
-                                  @if (visibleCandidateColumns().has('total')) {
-                                    <td hlmTableCell class="text-right" [hlmTooltip]="candidate.comparisons" [currentValue]="candidate.total">{{ candidate.total | number }}</td>
                                   }
                                   @if (visibleCandidateColumns().has('partyPercentInSection')) {
                                     <td hlmTableCell class="text-right">{{ candidate.partyPercentInSection | number }}</td>
@@ -369,8 +377,13 @@
                                           <td hlmTableCell></td>
                                       }
                                       @if (visibleCandidateColumns().has('partyName')) {
-                                          <td hlmTableCell class="font-bold">{{ getPartyAlias(data.partyName) }}</td>
+                                          <td hlmTableCell class="font-bold">
+                                            <app-party-badge [partyName]="data.partyName" size="xs"></app-party-badge>
+                                          </td>
                                       }
+                                    @if (visibleCandidateColumns().has('total')) {
+                                      <td hlmTableCell class="text-right font-bold">{{ data.total | number }}</td>
+                                    }
                                       @if (visibleCandidateColumns().has('paper')) {
                                           <td hlmTableCell class="text-right font-bold">{{ data.paper | number }}</td>
                                       }
@@ -379,9 +392,6 @@
                                       }
                                       @if (visibleCandidateColumns().has('percentInSection')) {
                                           <td hlmTableCell class="text-right font-bold">{{ sectionVoted > 0 ? (data.total / sectionVoted * 100).toFixed(2) : '0.00' }}%</td>
-                                      }
-                                      @if (visibleCandidateColumns().has('total')) {
-                                          <td hlmTableCell class="text-right font-bold">{{ data.total | number }}</td>
                                       }
                                       @if (visibleCandidateColumns().has('partyPercentInSection')) {
                                           <td hlmTableCell class="text-right font-bold">{{ partyTotal > 0 ? (data.total / partyTotal * 100).toFixed(2) : '0.00' }}%</td>

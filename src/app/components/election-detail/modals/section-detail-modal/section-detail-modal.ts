@@ -32,6 +32,8 @@ import { RiskAnalysisSummaryComponent } from '../../../ui/risk-analysis-summary/
 import { ColumnFilterComponent } from '../../../ui/column-filter/column-filter';
 import { SearchFilterComponent } from '../../../ui/search-filter/search-filter';
 import { loadVisibleColumns, saveVisibleColumns } from '../../../../utils/column-visibility';
+import { candidateRiskAppliesToSection } from '../../../../utils/risk-utils';
+import { PartyBadgeComponent } from '../../../ui/party-badge/party-badge';
 
 @Component({
   selector: 'app-section-detail-modal',
@@ -55,6 +57,7 @@ import { loadVisibleColumns, saveVisibleColumns } from '../../../../utils/column
     RiskAnalysisSummaryComponent,
     ColumnFilterComponent,
     SearchFilterComponent,
+    PartyBadgeComponent,
   ],
   templateUrl: './section-detail-modal.html'
 })
@@ -105,10 +108,10 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     { id: 'candidateName', label: 'Име' },
     { id: 'candidateId', label: 'Номер' },
     { id: 'partyName', label: 'Партия' },
+    { id: 'total', label: 'Общо преференции' },
     { id: 'paper', label: 'Хартиени' },
     { id: 'machine', label: 'Машинни' },
     { id: 'percentInSection', label: 'Процент от преференциите' },
-    { id: 'total', label: 'Общо преференции' },
     { id: 'totalInRegion', label: 'Общо преференции в региона' },
     { id: 'partyPercentInSection', label: 'Гласове за партия' },
     { id: 'partyPercentInRegion', label: 'Процент от преференциите на партия в региона' },
@@ -163,12 +166,8 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   private getAllRiskIndicators(section?: Section): any[] {
     if (!section) return [];
     const sectionRisks = section.riskIndicators || [];
-    const sectionId = section.sectionId;
-    const candidateRisks = ((section as any).candidateRiskIndicators || []).filter((risk: any) => {
-      if (!sectionId || !risk?.details?.sectionId) return true;
-      return String(risk.details.sectionId) === String(sectionId);
-    });
-    return [...sectionRisks, ...candidateRisks].filter(risk => risk.code !== 'R6.2');
+    const candidateRisks = ((section as any).candidateRiskIndicators || []).filter((risk: any) => candidateRiskAppliesToSection(risk, section));
+    return [...sectionRisks, ...candidateRisks].filter(risk => risk.code !== 'R6.2' && risk.code !== 'R2.4');
   }
 
   get sectionRiskIndicators(): any[] {

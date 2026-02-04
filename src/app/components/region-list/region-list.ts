@@ -17,6 +17,7 @@ import { HighchartsChartComponent } from 'highcharts-angular';
 import { PartyFilterComponent } from '../election-detail/party-filter/party-filter';
 import { StatCardComponent } from '../ui/stat-card/stat-card';
 import { SearchFilterComponent } from '../ui/search-filter/search-filter';
+import { PartyBadgeComponent } from '../ui/party-badge/party-badge';
 
 @Component({
   selector: 'app-region-list',
@@ -36,6 +37,7 @@ import { SearchFilterComponent } from '../ui/search-filter/search-filter';
     PartyFilterComponent,
     StatCardComponent,
     SearchFilterComponent,
+    PartyBadgeComponent,
   ],
   templateUrl: './region-list.html'
 })

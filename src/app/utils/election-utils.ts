@@ -1,4 +1,5 @@
 import { Section, SectionFilters } from '../models/election.models';
+import { candidateRiskAppliesToSection } from './risk-utils';
 
 export function filterSections(
   sections: Section[],
@@ -101,12 +102,8 @@ export function filterSections(
 
   const getAllRiskIndicators = (section: Section | any) => {
     const sectionRisks = section?.riskIndicators || [];
-    const sectionId = section?.sectionId;
-    const candidateRisks = (section?.candidateRiskIndicators || []).filter((risk: any) => {
-      if (!sectionId || !risk?.details?.sectionId) return true;
-      return String(risk.details.sectionId) === String(sectionId);
-    });
-    return [...sectionRisks, ...candidateRisks].filter(risk => risk.code !== 'R6.2');
+    const candidateRisks = (section?.candidateRiskIndicators || []).filter((risk: any) => candidateRiskAppliesToSection(risk, section));
+    return [...sectionRisks, ...candidateRisks].filter(risk => risk.code !== 'R6.2' && risk.code !== 'R2.4');
   };
 
   // Risk filters

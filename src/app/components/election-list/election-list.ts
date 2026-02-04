@@ -19,6 +19,7 @@ import { HlmTypographyDirective } from '../ui/typography-helm/src/lib/hlm-typogr
 import { HighchartsChartComponent } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import { PartyFilterComponent } from '../election-detail/party-filter/party-filter';
+import { PartyBadgeComponent } from '../ui/party-badge/party-badge';
 
 interface ElectionData {
   date: string;
@@ -44,6 +45,7 @@ interface ElectionData {
     HlmTypographyDirective,
     HighchartsChartComponent,
     PartyFilterComponent,
+    PartyBadgeComponent,
   ],
   templateUrl: './election-list.html',
   styleUrl: './election-list.scss',

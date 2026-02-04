@@ -23,6 +23,7 @@ import {getPartyAlias} from '../../utils/party-aliases';
 import {copyToClipboard as copyToClipboardUtil, formatActivity, getGoogleMapsUrl} from '../../utils/common.utils';
 import {getDefaultSortDirection, sortArray} from '../../utils/table-sort.util';
 import {formatRiskMessage} from '../../utils/risk-message.util';
+import {candidateRiskAppliesToSection} from '../../utils/risk-utils';
 import {loadVisibleColumns, saveVisibleColumns} from '../../utils/column-visibility';
 import * as Highcharts from 'highcharts';
 import {HighchartsChartComponent} from 'highcharts-angular';
@@ -50,6 +51,7 @@ import {StatCardComponent} from '../ui/stat-card/stat-card';
 import {RiskCategory, RiskFilterDropdownComponent} from '../ui/risk-filter-dropdown/risk-filter-dropdown';
 import {SearchFilterComponent} from '../ui/search-filter/search-filter';
 import {ColumnFilterComponent} from '../ui/column-filter/column-filter';
+import { PartyBadgeComponent } from '../ui/party-badge/party-badge';
 
 @Component({
   selector: 'app-election-detail',
@@ -83,6 +85,7 @@ import {ColumnFilterComponent} from '../ui/column-filter/column-filter';
     RiskFilterDropdownComponent,
     SearchFilterComponent,
     ColumnFilterComponent,
+    PartyBadgeComponent,
   ],
   templateUrl: './election-detail.html',
   styleUrl: './election-detail.scss',
@@ -165,12 +168,8 @@ export class ElectionDetailComponent implements OnInit {
 
   private getSectionAllRiskIndicators(section: any): Array<{ code: string; category: string; severity: string; details?: any }> {
     const sectionRisks = section?.riskIndicators || [];
-    const sectionId = section?.sectionId;
-    const candidateRisks = (section?.candidateRiskIndicators || []).filter((risk: any) => {
-      if (!sectionId || !risk?.details?.sectionId) return true;
-      return String(risk.details.sectionId) === String(sectionId);
-    });
-    return [...sectionRisks, ...candidateRisks].filter(risk => risk.code !== 'R6.2');
+    const candidateRisks = (section?.candidateRiskIndicators || []).filter((risk: any) => candidateRiskAppliesToSection(risk, section));
+    return [...sectionRisks, ...candidateRisks].filter(risk => risk.code !== 'R6.2' && risk.code !== 'R2.4');
   }
 
   getSectionRiskScore(section: any): number {
@@ -200,11 +199,7 @@ export class ElectionDetailComponent implements OnInit {
     // Check if this is a grouped city (has sections array)
     if (groupedSection.sections && Array.isArray(groupedSection.sections)) {
       groupedSection.sections.forEach((section: Section) => {
-        // Include both section risk indicators and candidate risk indicators
-        const sectionRiskIndicators = section.riskIndicators || [];
-        const candidateRiskIndicators = (section as any).candidateRiskIndicators || [];
-        const allRiskIndicators = [...sectionRiskIndicators, ...candidateRiskIndicators];
-
+        const allRiskIndicators = this.getSectionAllRiskIndicators(section as any);
         if (allRiskIndicators.length > 0) {
           allRiskIndicators.forEach((indicator: any) => {
             // Prefix each risk with section ID

@@ -1768,19 +1768,25 @@ for (const date of dates) {
 
         const partyShares = [];
         const candidateShares = [];
+        let candidateHistoryCount = 0;
 
         for (const hs of historicalSections) {
           const pv = hs.partyVotes[partyId];
           partyShares.push(pv && hs.voted > 0 ? (pv.total || 0) / hs.voted : 0);
 
           const cv = hs.candidateVotes?.[key];
-          candidateShares.push(cv && pv && (pv.total || 0) > 0 ? (cv.total || 0) / (pv.total || 1) : 0);
+          if (cv && pv && (pv.total || 0) > 0) {
+            candidateShares.push((cv.total || 0) / (pv.total || 1));
+            if ((cv.total || 0) > 0) candidateHistoryCount++;
+          } else {
+            candidateShares.push(0);
+          }
         }
 
         const partyVariance = calculateVariance(partyShares);
         const candidateVariance = calculateVariance(candidateShares);
 
-        if (partyVariance > 0.01 && candidateVariance < partyVariance * 0.3) {
+        if (candidateHistoryCount >= 2 && partyVariance > 0.01 && candidateVariance < partyVariance * 0.3) {
           const r44Risk = {
             code: 'R4.4',
             category: 'R4',

@@ -147,7 +147,7 @@ export const SECTION_COLUMNS: TableColumn[] = [
   { id: 'typeVotes', label: 'Гласове по тип' },
   { id: 'votesToFirst', label: 'Нужни' },
   { id: 'topParties', label: 'Топ 3 партии' },
-  { id: 'topCandidates', label: 'Топ 3 кандидати' },
+  { id: 'topCandidates', label: 'Топ 3 преференции' },
 ];
 
 export type SectionTab = 'all' | 'target' | 'swing' | 'risky' | 'outside' | 'declining' | 'dormant' | 'flip' | 'vanishing';

@@ -45,14 +45,6 @@
   }
 }
 
-.text-ppdb {
-  color: hsl(var(--secondary));
-
-  .dark & {
-    color: hsl(var(--primary));
-  }
-}
-
 body {
   @apply bg-background text-foreground;
   font-family: 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;

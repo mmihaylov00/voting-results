@@ -28,8 +28,11 @@
             <div class="flex flex-col text-xs mb-4 space-y-1">
               @for (tp of electionData.topParties; let i = $index; track tp.name) {
                 @let alias = getPartyAlias(tp.name);
-                <div class="flex justify-between items-center gap-2" [class.font-bold]="alias.includes('ПП-ДБ')" [class.text-ppdb]="alias.includes('ПП-ДБ')" [title]="alias + ': ' + tp.total + ' (' + formatActivity(tp.percent) + '%)'">
-                  <span class="truncate">{{ $index + 1 }}. {{ alias }}</span>
+                <div class="flex justify-between items-center gap-2" [title]="alias + ': ' + tp.total + ' (' + formatActivity(tp.percent) + '%)'">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span class="text-muted-foreground">{{ $index + 1 }}.</span>
+                    <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
+                  </div>
                   <span class="whitespace-nowrap"><strong class="me-1">{{ tp.total | number }}</strong> <span class="text-[10px] opacity-70">({{ formatActivity(tp.percent) }}%)</span></span>
                 </div>
               }

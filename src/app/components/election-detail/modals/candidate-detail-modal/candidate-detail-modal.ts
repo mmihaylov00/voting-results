@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import * as Highcharts from 'highcharts';
+import { HighchartsChartComponent } from 'highcharts-angular';
 import { Section, RegionCandidate, TableColumn } from '../../../../models/election.models';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
 import {
@@ -21,8 +23,10 @@ import { SearchFilterComponent } from '../../../ui/search-filter/search-filter';
 import { sortArray, getDefaultSortDirection } from '../../../../utils/table-sort.util';
 import { ComparativeValue } from '../../../../models/election.models';
 import { ElectionService } from '../../../../services/election';
+import { ThemeService } from '../../../../services/theme.service';
 import { getPartyAlias } from '../../../../utils/party-aliases';
 import { loadVisibleColumns, saveVisibleColumns } from '../../../../utils/column-visibility';
+import { HlmCardDirective } from '../../../ui/card-helm/src/lib/hlm-card.directives';
 
 export interface CandidateSectionData {
   sectionId: string;
@@ -45,6 +49,7 @@ export interface CandidateSectionData {
   standalone: true,
   imports: [
     CommonModule,
+    HighchartsChartComponent,
     HlmTableDirective,
     HlmTableHeaderDirective,
     HlmTableBodyDirective,
@@ -52,6 +57,8 @@ export interface CandidateSectionData {
     HlmTableHeadDirective,
     HlmTableCellDirective,
     HlmTooltipDirective,
+    HlmTypographyDirective,
+    HlmCardDirective,
     BaseModalComponent,
     RiskBadgeComponent,
     RiskAnalysisSummaryComponent,
@@ -76,6 +83,10 @@ export class CandidateDetailModalComponent implements OnInit {
 
   sortColumn: keyof CandidateSectionData = 'total';
   sortDir: 'asc' | 'desc' = 'desc';
+  Highcharts: typeof Highcharts = Highcharts;
+  topSectionsChartOptions: Highcharts.Options = {};
+  historicalPreferencesChartOptions: Highcharts.Options = {};
+  dates: { date: string; name: string }[] = [];
 
   candidateColumns: TableColumn[] = [
     { id: 'sectionId', label: 'Секция' },
@@ -90,7 +101,17 @@ export class CandidateDetailModalComponent implements OnInit {
   ];
   visibleColumns: Set<string> = new Set(this.candidateColumns.map(column => column.id));
 
-  constructor(private electionService: ElectionService) {}
+  constructor(
+    private electionService: ElectionService,
+    public themeService: ThemeService
+  ) {
+    this.dates = this.electionService.getDates();
+    effect(() => {
+      this.themeService.darkMode();
+      this.updateTopSectionsChart();
+      this.updateHistoricalPreferencesChart();
+    });
+  }
 
   isLeaderCandidate(candidateId: string | number | null | undefined): boolean {
     return String(candidateId ?? '') === this.leaderCandidateId;
@@ -110,6 +131,7 @@ export class CandidateDetailModalComponent implements OnInit {
     this.electionService.getAllFullData().subscribe(data => {
       this.allData = data;
       this.calculateSectionData();
+      this.updateHistoricalPreferencesChart();
     });
   }
 
@@ -210,6 +232,7 @@ export class CandidateDetailModalComponent implements OnInit {
 
     this.sectionData = data;
     this.sortSectionData(this.sortColumn, true);
+    this.updateTopSectionsChart();
   }
 
   get visibleColumnCount(): number {
@@ -270,6 +293,146 @@ export class CandidateDetailModalComponent implements OnInit {
     if (loaded) {
       this.visibleColumns = loaded;
     }
+  }
+
+  private updateTopSectionsChart(): void {
+    if (!this.sectionData || this.sectionData.length === 0) {
+      this.topSectionsChartOptions = { chart: { type: 'bar' }, series: [] };
+      return;
+    }
+
+    const isDark = this.themeService.darkMode();
+    const textColor = isDark ? '#f8fafc' : '#1e293b';
+
+    const topSections = [...this.sectionData]
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 10);
+
+    const categories = topSections.map(section => `${section.sectionId} - ${section.cityName}`);
+    const paperData = topSections.map(section => section.paper);
+    const machineData = topSections.map(section => section.machine);
+
+    this.topSectionsChartOptions = {
+      chart: {
+        type: 'bar',
+        backgroundColor: 'transparent'
+      },
+      title: {
+        text: 'Топ 10 секции за кандидата',
+        style: { color: textColor }
+      },
+      xAxis: {
+        categories,
+        labels: { style: { color: textColor }, rotation: -45, align: 'right' }
+      },
+      yAxis: {
+        title: {
+          text: 'Преференции',
+          style: { color: textColor }
+        },
+        labels: { style: { color: textColor } },
+        gridLineColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+      },
+      legend: {
+        itemStyle: { color: textColor }
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+          borderWidth: 0
+        }
+      },
+      series: [
+        {
+          name: 'Хартиени',
+          type: 'bar',
+          data: paperData,
+          color: '#fbbf24'
+        },
+        {
+          name: 'Машинни',
+          type: 'bar',
+          data: machineData,
+          color: '#3b82f6'
+        }
+      ],
+      credits: { enabled: false }
+    };
+  }
+
+  private updateHistoricalPreferencesChart(): void {
+    if (!this.candidate || !this.allData || Object.keys(this.allData).length === 0) {
+      this.historicalPreferencesChartOptions = { chart: { type: 'line' }, series: [] };
+      return;
+    }
+
+    const isDark = this.themeService.darkMode();
+    const textColor = isDark ? '#f8fafc' : '#1e293b';
+
+    const categories: string[] = [];
+    const preferenceTotals: number[] = [];
+    const sectionIds = new Set(this.sections.map(section => section.sectionId));
+    const fallbackRegionId = this.sections[0]?.regionId;
+    const targetName = this.candidate.candidateName.trim().toLowerCase();
+    const targetParty = this.candidate.partyName.trim().toLowerCase();
+
+    const sortedDates = [...this.dates].sort((a, b) => a.date.localeCompare(b.date));
+
+    sortedDates.forEach(dateInfo => {
+      const data = this.allData[dateInfo.date];
+      if (!data?.sections) return;
+
+      categories.push(dateInfo.name);
+      let totalPreferences = 0;
+
+      data.sections.forEach((section: Section) => {
+        if (sectionIds.size > 0 && !sectionIds.has(section.sectionId)) return;
+        if (sectionIds.size === 0 && fallbackRegionId && section.regionId !== fallbackRegionId) return;
+        if (!section.candidateVotes) return;
+
+        const directKey = `${this.candidate.partyId}_${this.candidate.candidateId}`;
+        let candidateVotes = section.candidateVotes[directKey];
+
+        if (!candidateVotes) {
+          for (const otherCandidate of Object.values(section.candidateVotes)) {
+            if (!otherCandidate) continue;
+            const nameMatches = otherCandidate.candidateName?.trim().toLowerCase() === targetName;
+            const partyMatches = otherCandidate.partyName?.trim().toLowerCase() === targetParty;
+            if (nameMatches && partyMatches) {
+              candidateVotes = otherCandidate as any;
+              break;
+            }
+          }
+        }
+
+        if (candidateVotes?.total) {
+          totalPreferences += candidateVotes.total;
+        }
+      });
+
+      preferenceTotals.push(totalPreferences);
+    });
+
+    this.historicalPreferencesChartOptions = {
+      chart: { type: 'line', backgroundColor: 'transparent' },
+      title: { text: 'Исторически преференции', style: { color: textColor } },
+      xAxis: { categories, labels: { style: { color: textColor } } },
+      yAxis: {
+        title: { text: 'Преференции', style: { color: textColor } },
+        labels: { style: { color: textColor } }
+      },
+      legend: { enabled: false },
+      series: [
+        {
+          name: 'Преференции',
+          data: preferenceTotals,
+          type: 'line',
+          color: '#0ea5e9'
+        }
+      ],
+      credits: { enabled: false },
+      tooltip: { shared: true }
+    };
   }
 
   calculateCandidateComparisons(sectionId: string, candidateVotes: any): { total?: ComparativeValue[], paper?: ComparativeValue[], machine?: ComparativeValue[] } {
