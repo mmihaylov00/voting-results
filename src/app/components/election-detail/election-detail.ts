@@ -1070,6 +1070,16 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   getTopCandidates(section: Section) {
+    const groupedTop = (section as any).topCandidates as Array<{ candidateId?: string; candidateName: string; partyId: string; partyName: string; total: number }> | undefined;
+    if (groupedTop && groupedTop.length > 0) {
+      return groupedTop.map(c => ({
+        candidateId: c.candidateId ?? '',
+        candidateName: c.candidateName,
+        partyId: c.partyId,
+        partyName: c.partyName,
+        total: c.total
+      }));
+    }
     // Calculate top 3 candidates
     if (section.candidateVotes) {
       return Object.values(section.candidateVotes)
