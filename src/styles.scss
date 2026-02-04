@@ -67,3 +67,13 @@ body {
 .animate-progress {
   animation: progress-animation 2s infinite linear;
 }
+
+.section-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}

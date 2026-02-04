@@ -19,7 +19,6 @@ import { HlmTypographyDirective } from '../typography-helm/src/lib/hlm-typograph
 export class BaseModalComponent {
   @Input() title: string = '';
   @Input() subtitle: string = '';
-  @Input() maxWidth: string = 'max-w-6xl';
   @Input() zIndex: string = 'z-[100]';
   @Output() close = new EventEmitter<void>();
 

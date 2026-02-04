@@ -1,7 +1,6 @@
 <app-base-modal
   [title]="candidate.candidateName"
   [subtitle]="candidate.partyName + ' - Преференция ' + candidate.candidateId"
-  maxWidth="max-w-4xl"
   zIndex="z-[110]"
   (close)="closeModal()">
 
@@ -131,7 +130,9 @@
                 <td hlmTableCell>{{ data.cityName }}</td>
               }
               @if (visibleColumns.has('sectionName')) {
-                <td hlmTableCell>{{ data.sectionName }}</td>
+                <td hlmTableCell>
+                  <span class="section-name">{{ data.sectionName }}</span>
+                </td>
               }
               @if (visibleColumns.has('paper')) {
                 <td hlmTableCell class="text-right" [hlmTooltip]="data.paperComparisons"

@@ -69,6 +69,6 @@ export class HlmTableCellDirective {
   @Input() class: string = '';
   @HostBinding('class')
   get columnClass() {
-    return hlm('p-4 align-middle [&:has([role=checkbox])]:pr-0', this.class);
+    return hlm('px-2 py-1 align-middle [&:has([role=checkbox])]:pr-0', this.class);
   }
 }

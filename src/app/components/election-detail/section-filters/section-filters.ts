@@ -137,11 +137,11 @@ export class SectionFiltersComponent implements OnInit {
 
   getSectionTypesLabel(): string {
     const selected = Array.from(this.sectionTypes());
-    if (selected.length === 0) return 'Тип';
+    if (selected.length === 0) return 'Тип секция';
     if (selected.length === this.availableSectionTypes.length) return 'Всички типове';
     if (selected.length === 1) {
       const type = this.availableSectionTypes.find(t => t.id === selected[0]);
-      return type?.label || 'Тип';
+      return type?.label || 'Тип секция';
     }
     return `Тип (${selected.length})`;
   }
@@ -150,6 +150,7 @@ export class SectionFiltersComponent implements OnInit {
   getQuickFilterLabel(): string {
     const tab = this.activeTab();
     const tabInfo = this.quickFilterTabs.find(t => t.id === tab);
+    if (tabInfo?.id == 'all') return 'Бързи филтри';
     return tabInfo?.label || 'Филтри';
   }
 

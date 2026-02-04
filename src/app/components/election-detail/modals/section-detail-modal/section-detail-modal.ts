@@ -160,6 +160,25 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     return map;
   }
 
+  private getAllRiskIndicators(section?: Section): any[] {
+    if (!section) return [];
+    const sectionRisks = section.riskIndicators || [];
+    const sectionId = section.sectionId;
+    const candidateRisks = ((section as any).candidateRiskIndicators || []).filter((risk: any) => {
+      if (!sectionId || !risk?.details?.sectionId) return true;
+      return String(risk.details.sectionId) === String(sectionId);
+    });
+    return [...sectionRisks, ...candidateRisks].filter(risk => risk.code !== 'R6.2');
+  }
+
+  get sectionRiskIndicators(): any[] {
+    return this.getAllRiskIndicators(this.currentSectionData);
+  }
+
+  get sectionRiskScore(): number {
+    return this.sectionRiskIndicators.length;
+  }
+
   get isGroupedByCity(): boolean {
     return this.section.sectionName.startsWith('Общо за');
   }

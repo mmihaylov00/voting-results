@@ -1,10 +1,9 @@
-<app-base-modal 
+<app-base-modal
     [title]="'Секции със сгрешени протоколи (' + sectionsWithError.length + ')'"
     [subtitle]="'Списък на секциите, при които Общ брой гласове ≠ Хартиени гласове + Машинни гласове'"
-    maxWidth="max-w-5xl"
     zIndex="z-50"
     (close)="close.emit()">
-    
+
     <div style="max-height: calc(90vh - 200px); overflow: auto;">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-3">
                 <app-search-filter
@@ -23,7 +22,7 @@
                 <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
                     <tr hlmTableRow>
                         @if (visibleColumns().has('sectionId')) {
-                            <th hlmTableHead 
+                            <th hlmTableHead
                                 app-sortable-table-header
                                 columnKey="sectionId"
                                 label="Секция"
@@ -32,7 +31,7 @@
                                 (sortChange)="toggleSort($event)"></th>
                         }
                         @if (visibleColumns().has('cityName')) {
-                            <th hlmTableHead 
+                            <th hlmTableHead
                                 app-sortable-table-header
                                 columnKey="cityName"
                                 label="Град"
@@ -41,7 +40,7 @@
                                 (sortChange)="toggleSort($event)"></th>
                         }
                         @if (visibleColumns().has('voted')) {
-                            <th hlmTableHead 
+                            <th hlmTableHead
                                 app-sortable-table-header
                                 columnKey="voted"
                                 label="Подписи"
@@ -51,7 +50,7 @@
                                 (sortChange)="toggleSort($event)"></th>
                         }
                         @if (visibleColumns().has('protocolPaperVotes')) {
-                            <th hlmTableHead 
+                            <th hlmTableHead
                                 app-sortable-table-header
                                 columnKey="protocolPaperVotes"
                                 label="Хартиени"
@@ -61,7 +60,7 @@
                                 (sortChange)="toggleSort($event)"></th>
                         }
                         @if (visibleColumns().has('protocolMachineVotes')) {
-                            <th hlmTableHead 
+                            <th hlmTableHead
                                 app-sortable-table-header
                                 columnKey="protocolMachineVotes"
                                 label="Машинни"
@@ -71,7 +70,7 @@
                                 (sortChange)="toggleSort($event)"></th>
                         }
                         @if (visibleColumns().has('protocolErrorDiff')) {
-                            <th hlmTableHead 
+                            <th hlmTableHead
                                 app-sortable-table-header
                                 columnKey="protocolErrorDiff"
                                 label="Разлика"

@@ -1,6 +1,5 @@
 <app-base-modal
     [title]="'Детайлни резултати за секция ' + section.sectionId"
-    maxWidth="max-w-4xl"
     zIndex="z-[110]"
     (close)="closeModal()">
 
@@ -483,8 +482,8 @@
 
                   <app-risk-analysis-summary
                     [riskData]="{
-                      riskScore: currentSectionData.riskScore,
-                      riskIndicators: currentSectionData.riskIndicators
+                      riskScore: sectionRiskScore,
+                      riskIndicators: sectionRiskIndicators
                     }"
                     [context]="{ section: currentSectionData, partiesById: partiesById }" />
 

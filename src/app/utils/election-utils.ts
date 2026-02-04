@@ -99,27 +99,34 @@ export function filterSections(
     result = result.filter(s => filters.sectionTypes.has(s.sectionType));
   }
 
+  const getAllRiskIndicators = (section: Section | any) => {
+    const sectionRisks = section?.riskIndicators || [];
+    const sectionId = section?.sectionId;
+    const candidateRisks = (section?.candidateRiskIndicators || []).filter((risk: any) => {
+      if (!sectionId || !risk?.details?.sectionId) return true;
+      return String(risk.details.sectionId) === String(sectionId);
+    });
+    return [...sectionRisks, ...candidateRisks].filter(risk => risk.code !== 'R6.2');
+  };
+
   // Risk filters
   if (filters.riskFilterType === 'any') {
     result = result.filter(s => {
-      const hasRiskIndicators = s.riskIndicators && s.riskIndicators.length > 0;
-      const hasRiskScore = (s.riskScore || 0) > 0;
-      return hasRiskIndicators || hasRiskScore;
+      return getAllRiskIndicators(s).length > 0;
     });
   } else if (filters.riskFilterType === 'none') {
     result = result.filter(s => {
-      const hasRiskIndicators = s.riskIndicators && s.riskIndicators.length > 0;
-      const hasRiskScore = (s.riskScore || 0) > 0;
-      return !hasRiskIndicators && !hasRiskScore;
+      return getAllRiskIndicators(s).length === 0;
     });
   }
 
-  // Filter by risk categories (R1, R2, R3, R4)
+  // Filter by risk categories (R1, R2, R3, R4, R5, R6)
   if (filters.selectedRiskCategories && filters.selectedRiskCategories.size > 0) {
     result = result.filter(s => {
-      if (!s.riskIndicators || s.riskIndicators.length === 0) return false;
+      const allIndicators = getAllRiskIndicators(s);
+      if (allIndicators.length === 0) return false;
 
-      const sectionCategories = new Set(s.riskIndicators.map(ri => ri.category));
+      const sectionCategories = new Set(allIndicators.map(ri => ri.category));
       // Check if section has at least one of the selected categories
       return Array.from(filters.selectedRiskCategories || []).some(cat => sectionCategories.has(cat));
     });

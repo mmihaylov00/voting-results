@@ -163,16 +163,32 @@ export class ElectionDetailComponent implements OnInit {
     return map;
   }
 
+  private getSectionAllRiskIndicators(section: any): Array<{ code: string; category: string; severity: string; details?: any }> {
+    const sectionRisks = section?.riskIndicators || [];
+    const sectionId = section?.sectionId;
+    const candidateRisks = (section?.candidateRiskIndicators || []).filter((risk: any) => {
+      if (!sectionId || !risk?.details?.sectionId) return true;
+      return String(risk.details.sectionId) === String(sectionId);
+    });
+    return [...sectionRisks, ...candidateRisks].filter(risk => risk.code !== 'R6.2');
+  }
+
+  getSectionRiskScore(section: any): number {
+    if (section?.sections && Array.isArray(section.sections)) {
+      return section.sections.reduce((total: number, s: any) => total + this.getSectionAllRiskIndicators(s).length, 0);
+    }
+    return this.getSectionAllRiskIndicators(section).length || 0;
+  }
+
   getFormattedRisks(section: Section | any): string {
     const riskLines: string[] = [];
     const partiesById = this.getPartiesById();
 
-    if (section.riskIndicators && section.riskIndicators.length > 0) {
-      section.riskIndicators.forEach((indicator: any) => {
-        const message = formatRiskMessage(indicator, {section, partiesById});
-        riskLines.push(`${indicator.code}: ${message}`);
-      });
-    }
+    const allRiskIndicators = this.getSectionAllRiskIndicators(section);
+    allRiskIndicators.forEach((indicator: any) => {
+      const message = formatRiskMessage(indicator, {section, partiesById});
+      riskLines.push(`${indicator.code}: ${message}`);
+    });
 
     return riskLines.join('\n');
   }
@@ -257,6 +273,10 @@ export class ElectionDetailComponent implements OnInit {
     },
     {code: 'R6', label: 'Концентрация на преференции', description: 'R6: Концентрация и ексклузивност на преференции'}
   ];
+
+  get candidateRiskCategories(): RiskCategory[] {
+    return this.riskCategories.filter(category => category.code !== 'R1' && category.code !== 'R3');
+  }
 
   onCandidateRiskFilterTypeChange(type: 'any' | 'none' | null): void {
     this.candidateRiskFilterType.set(type);
@@ -1944,6 +1964,9 @@ export class ElectionDetailComponent implements OnInit {
         // Sort by the numeric number of sections in the group
         const match = String(val).match(/(\d+)/);
         return match ? parseInt(match[1], 10) : 0;
+      }
+      if (this.sectionSortColumn === 'riskScore') {
+        return this.getSectionRiskScore(s as any);
       }
       if (this.sectionSortColumn === 'regionName') {
         // Handle undefined regionName

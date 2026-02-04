@@ -528,11 +528,15 @@ export class ElectionService {
     if (crEnd > crStart) {
       (section as any).candidateRiskIndicators = [];
       for (let i = crStart; i < crEnd; i++) {
+        const rawDetails = this.parseRiskDetails(s.candidateRiskDetails[i]);
+        const details = (rawDetails && typeof rawDetails === 'object')
+          ? { ...rawDetails, sectionId: (rawDetails as any).sectionId ?? section.sectionId }
+          : { sectionId: section.sectionId };
         (section as any).candidateRiskIndicators.push({
           code: s.candidateRiskCode[i] || '',
           category: s.candidateRiskCategory[i] || '',
           severity: s.candidateRiskSeverity[i] || '',
-          details: this.parseRiskDetails(s.candidateRiskDetails[i])
+          details
         });
       }
     }
