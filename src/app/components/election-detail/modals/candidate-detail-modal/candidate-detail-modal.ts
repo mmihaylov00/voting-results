@@ -90,7 +90,7 @@ export class CandidateDetailModalComponent implements OnInit {
 
   candidateColumns: TableColumn[] = [
     { id: 'sectionId', label: 'Секция' },
-    { id: 'cityName', label: 'Град' },
+    { id: 'cityName', label: 'Населено място' },
     { id: 'sectionName', label: 'Име на секция' },
     { id: 'paper', label: 'Хартиени' },
     { id: 'machine', label: 'Машинни' },

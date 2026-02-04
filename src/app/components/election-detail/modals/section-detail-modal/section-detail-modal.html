@@ -1,8 +1,8 @@
 <app-base-modal
-    [title]="`Детайлни резултати за ${isGroupedByCity ? '' : 'секция'} ${section.sectionId}`"
+    [title]="`Детайлни резултати за ${isGroupedByCity ? isMunicipalityDetail ? 'община' : '' : 'секция'} ${section.sectionId}`"
+    [subtitle]="detailSubtitle"
     zIndex="z-[110]"
     (close)="closeModal()">
-
     <ng-template #headerActions>
         <div class="flex flex-row items-center gap-2 mt-3">
             <a [href]="getGoogleMapsUrl(section.cityName, section.sectionName)" target="_blank" hlmBtn variant="outline" size="sm" hlmTooltip="Виж в Google Maps" class="border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">

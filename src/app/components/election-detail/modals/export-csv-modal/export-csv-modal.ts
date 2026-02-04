@@ -129,7 +129,7 @@ export class ExportCsvModalComponent {
     const headers: string[] = [];
     if (this.exportColumnIds.has('sectionId')) headers.push('Секция');
     if (this.exportColumnIds.has('cityName')) {
-      headers.push(this.viewMode === 'municipalities' ? 'Община' : 'Град');
+      headers.push(this.viewMode === 'municipalities' ? 'Община' : 'Населено място');
     }
     if (this.exportColumnIds.has('sectionName')) headers.push('Име на секция');
     if (this.exportColumnIds.has('total')) headers.push('Избиратели');

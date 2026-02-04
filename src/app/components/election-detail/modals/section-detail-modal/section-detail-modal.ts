@@ -183,6 +183,63 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     return this.section.sectionName.startsWith('Общо за');
   }
 
+  get isMunicipalityDetail(): boolean {
+    const current = this.currentSectionData as any;
+    return !!(current?.municipalityCode && current?.neighborhoodCode);
+  }
+
+  private getMunicipalityNameByCode(): Map<string, string> {
+    const map = new Map<string, string>();
+    this.allSections.forEach(s => {
+      if (/001$/.test(s.sectionId)) {
+        const code = s.sectionId.slice(2, 4);
+        if (code && !map.has(code)) {
+          map.set(code, s.cityName);
+        }
+      }
+    });
+    return map;
+  }
+
+  get municipalityName(): string {
+    const current = this.currentSectionData as any;
+    if (current?.sections && Array.isArray(current.sections) && current.sections.length > 0) {
+      const firstSectionId = current.sections[0]?.sectionId || '';
+      if (firstSectionId.length >= 4) {
+        const code = firstSectionId.slice(2, 4);
+        const map = this.getMunicipalityNameByCode();
+        const name = map.get(code) || current.sections[0]?.cityName || '';
+        return name.replace(/^(гр\.|с\.|кв\.|жк\.)\s*/i, '').trim();
+      }
+    }
+    if (current?.municipalityCode && current?.cityName) {
+      return current.cityName.replace(/^(гр\.|с\.|кв\.|жк\.)\s*/i, '').trim();
+    }
+    const fallbackSectionId = this.section?.sectionId || current?.sectionId || '';
+    if (!fallbackSectionId || fallbackSectionId.length < 4) return (this.section?.cityName || '').replace(/^(гр\.|с\.|кв\.|жк\.)\s*/i, '').trim();
+    const code = fallbackSectionId.slice(2, 4);
+    const map = this.getMunicipalityNameByCode();
+    const name = map.get(code) || this.section?.cityName || '';
+    return name.replace(/^(гр\.|с\.|кв\.|жк\.)\s*/i, '').trim();
+  }
+
+  get detailSubtitle(): string {
+    if (this.isMunicipalityDetail) {
+      return this.section.sectionName;
+    }
+    const parts = [];
+    if (this.municipalityName) {
+      parts.push('община ' + this.municipalityName);
+    }
+    if (!this.isGroupedByCity && this.section?.cityName) {
+      parts.push(this.section.cityName);
+    }
+    if (this.section?.sectionName) {
+      parts.push(this.section.sectionName);
+    }
+    return parts.join(', ');
+  }
+
   isLeaderCandidate(candidateId: string | number | null | undefined): boolean {
     return String(candidateId ?? '') === this.leaderCandidateId;
   }

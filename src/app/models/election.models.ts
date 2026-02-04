@@ -43,6 +43,7 @@ export interface Section {
   sectionId: string;
   regionId: string;
   regionName?: string;
+  municipalityName?: string;
   cityName: string;
   sectionName: string;
   sectionType: string;
@@ -137,7 +138,8 @@ export const SECTION_COLUMNS: TableColumn[] = [
   { id: 'sectionId', label: 'Секция' },
   { id: 'riskScore', label: 'Рискове' },
   { id: 'regionName', label: 'Регион' },
-  { id: 'cityName', label: 'Град' },
+  { id: 'municipalityName', label: 'Община' },
+  { id: 'cityName', label: 'Населено място' },
   { id: 'sectionName', label: 'Име на секция' },
   { id: 'total', label: 'Избиратели' },
   { id: 'voted', label: 'Гласували' },

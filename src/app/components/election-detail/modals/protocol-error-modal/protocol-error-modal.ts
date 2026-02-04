@@ -56,7 +56,7 @@ export class ProtocolErrorModalComponent {
   searchTerm = signal<string>('');
   protocolColumns: TableColumn[] = [
     { id: 'sectionId', label: 'Секция' },
-    { id: 'cityName', label: 'Град' },
+    { id: 'cityName', label: 'Населено място' },
     { id: 'voted', label: 'Подписи' },
     { id: 'protocolPaperVotes', label: 'Хартиени' },
     { id: 'protocolMachineVotes', label: 'Машинни' },

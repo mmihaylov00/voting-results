@@ -13,9 +13,10 @@ export function filterSections(
     result = result.filter(s => {
       const matchesSectionId = s.sectionId.toLowerCase().includes(term);
       const matchesCityName = s.cityName.toLowerCase().includes(term);
+      const matchesMunicipalityName = (s.municipalityName || '').toLowerCase().includes(term);
       const matchesSectionName = s.sectionName.toLowerCase().includes(term);
       const matchesRegionName = filters.isViewingAllSections && s.regionName && s.regionName.toLowerCase().includes(term);
-      return matchesSectionId || matchesCityName || matchesSectionName || matchesRegionName;
+      return matchesSectionId || matchesCityName || matchesMunicipalityName || matchesSectionName || matchesRegionName;
     });
   }
 

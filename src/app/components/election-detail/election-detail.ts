@@ -520,10 +520,22 @@ export class ElectionDetailComponent implements OnInit {
       isViewingAllSections: this.regionId === 'all' || !this.regionId
     };
 
+    const municipalityByCode = this.getMunicipalityNameByCode();
+    this.sections.forEach(s => {
+      if (!s.municipalityName) {
+        const code = this.getMunicipalityCode(s.sectionId);
+        const name = municipalityByCode.get(code);
+        if (name) {
+          s.municipalityName = this.stripSettlementPrefix(name);
+        }
+      }
+    });
+
     const result = filterSections(this.sections, filters, regionAvgTurnoutById);
 
     if (this.groupByCity()) {
       const groupMode = this.groupByMode();
+      const municipalityByCode = this.getMunicipalityNameByCode();
       const groups = new Map<string, any>();
       result.forEach(s => {
         const municipalityCode = this.getMunicipalityCode(s.sectionId);
@@ -540,6 +552,7 @@ export class ElectionDetailComponent implements OnInit {
             municipalityCode: groupMode === 'municipality' ? municipalityCode : undefined,
             neighborhoodCode: groupMode === 'municipality' ? neighborhoodCode : undefined,
             neighborhoodCounts: groupMode === 'municipality' ? {} : undefined,
+            municipalityName: this.stripSettlementPrefix(municipalityByCode.get(municipalityCode) || ''),
             regionId: s.regionId,
             regionName: s.regionName,
             total: 0,
@@ -1715,6 +1728,32 @@ export class ElectionDetailComponent implements OnInit {
     return sectionId.slice(4, 6);
   }
 
+  private getMunicipalityNameByCode(): Map<string, string> {
+    const map = new Map<string, string>();
+    this.sections.forEach(s => {
+      if (this.isMunicipalityMainCity(s.sectionId)) {
+        const code = this.getMunicipalityCode(s.sectionId);
+        if (code && !map.has(code)) {
+          map.set(code, s.cityName);
+        }
+      }
+    });
+    return map;
+  }
+
+  getMunicipalityName(section: Section | any): string {
+    if (section?.municipalityName) return section.municipalityName;
+    if (section?.sections && Array.isArray(section.sections) && section.sections.length > 0) {
+      const first = section.sections[0] as Section;
+      return this.getMunicipalityName(first);
+    }
+    if (!section?.sectionId) return '';
+    const code = this.getMunicipalityCode(section.sectionId);
+    const municipalityByCode = this.getMunicipalityNameByCode();
+    const name = municipalityByCode.get(code) || section.cityName || '';
+    return this.stripSettlementPrefix(name);
+  }
+
   private isMunicipalityMainCity(sectionId: string): boolean {
     return /001$/.test(sectionId || '');
   }
@@ -2128,6 +2167,9 @@ export class ElectionDetailComponent implements OnInit {
       if (this.sectionSortColumn === 'regionName') {
         // Handle undefined regionName
         return val || '';
+      }
+      if (this.sectionSortColumn === 'municipalityName') {
+        return this.getMunicipalityName(s as any) || '';
       }
       return val;
     };

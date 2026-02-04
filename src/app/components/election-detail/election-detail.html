@@ -317,11 +317,33 @@
                                         </span>
                   </th>
                 }
+                @if (visibleColumns().has('municipalityName') && viewMode() !== 'municipalities') {
+                  <th hlmTableHead (click)="sortSections('municipalityName')"
+                      class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                      <span class="flex items-center justify-between">
+                        <span>Община</span>
+                        <span class="ml-1 flex items-center">
+                            @if (sectionSortColumn === 'municipalityName') {
+                              <span
+                                class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                            } @else {
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                   class="opacity-40 group-hover:opacity-70">
+                                    <path d="M8 9l4-4 4 4"/>
+                                    <path d="M8 15l4 4 4-4"/>
+                                </svg>
+                            }
+                        </span>
+                    </span>
+                  </th>
+                }
                 @if (visibleColumns().has('cityName')) {
                   <th hlmTableHead (click)="sortSections('cityName')"
                       class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                       <span class="flex items-center justify-between">
-                        <span>{{ isMunicipalityGrouping() ? 'Община' : 'Град' }}</span>
+                        <span>{{ isMunicipalityGrouping() ? 'Община' : 'Населено място' }}</span>
                         <span class="ml-1 flex items-center">
                             @if (sectionSortColumn === 'cityName') {
                               <span
@@ -587,6 +609,11 @@
                   @if (visibleColumns().has('regionName') && (regionId === 'all' || !regionId)) {
                     <td hlmTableCell>
                       {{ section.regionName || '-' }}
+                    </td>
+                  }
+                  @if (visibleColumns().has('municipalityName') && viewMode() !== 'municipalities') {
+                    <td hlmTableCell>
+                      {{ getMunicipalityName(section) || '-' }}
                     </td>
                   }
                   @if (visibleColumns().has('cityName')) {
