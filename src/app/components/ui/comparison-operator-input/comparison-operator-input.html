@@ -4,15 +4,16 @@
           [hlmTooltip]="tooltipText">
     {{ label }} {{ operatorSymbol }}
   </button>
-  <input hlmInput 
-         type="number" 
-         [placeholder]="placeholder" 
+  <input hlmInput
+         type="number"
+         [placeholder]="placeholder"
          [ngModel]="value"
-         (ngModelChange)="onValueChange($event)" 
-         [min]="min" 
-         [max]="max" 
+         (ngModelChange)="onValueChange($event)"
+         [min]="min"
+         [max]="max"
          [step]="step"
-         class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full h-9 pr-8 pl-24 text-right"/>
+         [class.pr-8]="!!suffix"
+         class="border-primary/50 focus:border-primary dark:border-secondary/50 dark:focus:border-secondary w-full h-9 pl-24 text-left"/>
   @if (suffix) {
     <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">{{ suffix }}</span>
   }

@@ -1214,7 +1214,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     sortedPartyIds.forEach((partyId, idx) => {
       const partyInfo = partyDataMap[partyId];
       if (partyInfo) {
-        const partyColor = getPartyColor(partyInfo.name) || colorPalette[idx % colorPalette.length];
+        const partyColor = getPartyColor(partyInfo.name, isDark) || colorPalette[idx % colorPalette.length];
         votesSeries.push({
           id: `historical-votes-${partyId}`,
           name: partyInfo.name,
@@ -1230,7 +1230,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     sortedPartyIds.forEach((partyId, idx) => {
       const partyInfo = partyDataMap[partyId];
       if (partyInfo) {
-        const partyColor = getPartyColor(partyInfo.name) || colorPalette[idx % colorPalette.length];
+        const partyColor = getPartyColor(partyInfo.name, isDark) || colorPalette[idx % colorPalette.length];
         percentSeries.push({
           id: `historical-percent-${partyId}`,
           name: partyInfo.name,

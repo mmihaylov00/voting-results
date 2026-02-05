@@ -270,7 +270,7 @@ export class ElectionListComponent implements OnInit {
           name: partyInfo.name,
           data: partyInfo.votesData,
           type: 'line',
-          color: getPartyColor(partyInfo.name)
+          color: getPartyColor(partyInfo.name, isDark)
         });
       }
     });
@@ -285,7 +285,7 @@ export class ElectionListComponent implements OnInit {
           name: partyInfo.name,
           data: partyInfo.percentData,
           type: 'line',
-          color: getPartyColor(partyInfo.name)
+          color: getPartyColor(partyInfo.name, isDark)
         });
       }
     });

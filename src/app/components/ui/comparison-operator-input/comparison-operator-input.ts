@@ -24,7 +24,7 @@ export class ComparisonOperatorInputComponent {
   @Input() min: number = 0;
   @Input() max: number = 100;
   @Input() step: number | string = 0.01;
-  @Input() suffix: string = '%';
+  @Input() suffix: string | undefined;
   @Input() label: string = 'Активност';
   @Output() operatorChange = new EventEmitter<'lte' | 'gte'>();
   @Output() valueChange = new EventEmitter<number | null>();
@@ -34,8 +34,8 @@ export class ComparisonOperatorInputComponent {
   }
 
   get tooltipText(): string {
-    return this.operator === 'lte' 
-      ? 'Превключи към по-голямо или равно' 
+    return this.operator === 'lte'
+      ? 'Превключи към по-голямо или равно'
       : 'Превключи към по-малко или равно';
   }
 

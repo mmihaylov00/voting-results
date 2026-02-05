@@ -345,6 +345,13 @@ export class ElectionService {
     return name;
   }
 
+  private resolvePartyName(partyId: string, name: string | undefined, parties?: { [id: string]: string }): string {
+    const raw = (name || '').trim();
+    const looksLikeId = !raw || raw === partyId || /^\d+$/.test(raw);
+    const resolved = looksLikeId ? (parties?.[partyId] || raw || partyId) : raw;
+    return this.normalizePartyName(resolved);
+  }
+
   private getOtherDates(date: string): string[] {
     return this.electionDates.map((d) => d.date).filter((d) => d !== date);
   }
@@ -468,9 +475,10 @@ export class ElectionService {
     const tpStart = s.topPartyOffset[index] || 0;
     const tpEnd = s.topPartyOffset[index + 1] ?? tpStart;
     for (let i = tpStart; i < tpEnd; i++) {
+      const partyId = s.topPartyPartyId[i] || '';
       section.topParties.push({
-        partyId: s.topPartyPartyId[i] || '',
-        name: s.topPartyName[i] || '',
+        partyId,
+        name: this.resolvePartyName(partyId, s.topPartyName[i], full.parties),
         total: s.topPartyTotal[i] || 0,
         percentBp: s.topPartyPercentBp[i] || 0
       });
@@ -767,9 +775,15 @@ export class ElectionService {
 
   getRegions(date: string): Observable<Region[]> {
     if (this.fullCache[date]) {
-      return of(this.fullCache[date]?.regions || []);
+      const regions = this.fullCache[date]?.regions || [];
+      const parties = this.fullCache[date]?.parties || {};
+      return of(this.normalizeRegionsTopParties(regions, parties));
     }
-    return this.ensureSummariesLoaded().pipe(map(() => this.summaryCache[date]?.regions || []));
+    return this.ensureSummariesLoaded().pipe(map(() => {
+      const regions = this.summaryCache[date]?.regions || [];
+      const parties = this.summaryCache[date]?.parties || {};
+      return this.normalizeRegionsTopParties(regions, parties);
+    }));
   }
 
   getSections(date: string, regionId?: string, withComparisons = false): Observable<Section[]> {
@@ -838,5 +852,17 @@ export class ElectionService {
         };
       })
     );
+  }
+
+  private normalizeRegionsTopParties(regions: Region[], parties: { [id: string]: string }): Region[] {
+    if (!regions || regions.length === 0) return regions;
+    return regions.map(region => {
+      if (!region.topParties || region.topParties.length === 0) return region;
+      const topParties = region.topParties.map(tp => ({
+        ...tp,
+        name: this.resolvePartyName(tp.partyId, tp.name, parties)
+      }));
+      return { ...region, topParties };
+    });
   }
 }

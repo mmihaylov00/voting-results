@@ -629,7 +629,9 @@ export class ElectionDetailComponent implements OnInit {
         const topParties = Object.entries(g.partyVotes)
           .map(([partyId, total]) => {
             const sectionWithParty = g.sections.find((s: any) => s.partyVotes[partyId]);
-            const name = sectionWithParty?.topParties.find((tp: any) => tp.partyId === partyId)?.name || partyId;
+            const nameFromSections = sectionWithParty?.topParties.find((tp: any) => tp.partyId === partyId)?.name;
+            const nameFromAllParties = this.allParties.find(p => p.id === partyId)?.name;
+            const name = nameFromSections || nameFromAllParties || partyId;
 
             // Aggregate comparisons for this party from all sections
             const comparisonsMap: { [date: string]: ComparativeValue } = {};
@@ -1525,14 +1527,14 @@ export class ElectionDetailComponent implements OnInit {
     const pieData = partyData.map(p => ({
       name: getPartyAlias(p.name),
       y: p.total,
-      color: getPartyColor(p.name)
+      color: getPartyColor(p.name, isDark)
     }));
 
     if (nonVoters > 0) {
       pieData.push({
         name: 'Негласували',
         y: nonVoters,
-        color: getPartyColor('Негласували')
+        color: getPartyColor('Негласували', isDark)
       });
     }
 
@@ -1540,7 +1542,7 @@ export class ElectionDetailComponent implements OnInit {
       pieData.push({
         name: 'Не подкрепя никого',
         y: this.totalNoVotes,
-        color: getPartyColor('Не подкрепя никого')
+        color: getPartyColor('Не подкрепя никого', isDark)
       });
     }
 

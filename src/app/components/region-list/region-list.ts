@@ -263,7 +263,7 @@ export class RegionListComponent implements OnInit, AfterViewInit {
             name: getPartyAlias(party.name),
             data: partyData.map(v => v), // New array with new number references
             type: 'column',
-            color: getPartyColor(party.name)
+            color: getPartyColor(party.name, isDark)
           });
         }
       });

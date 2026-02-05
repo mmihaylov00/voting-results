@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ThemeService } from '../../../services/theme.service';
 import { getPartyBadgeLabel, getPartyColor } from '../../../utils/party-colors';
 
 @Component({
@@ -13,12 +14,14 @@ export class PartyBadgeComponent {
   @Input() size: 'xs' | 'sm' | 'md' = 'sm';
   @Input() extraClass = '';
 
+  constructor(private themeService: ThemeService) {}
+
   get label(): string {
     return getPartyBadgeLabel(this.partyName);
   }
 
   get color(): string {
-    return getPartyColor(this.partyName);
+    return getPartyColor(this.partyName, this.themeService.darkMode());
   }
 
   get backgroundColor(): string {
