@@ -30,25 +30,16 @@ import { HlmPaginationPrevious } from './hlm-pagination-previous';
 		HlmPaginationNext,
 		HlmPaginationLink,
 		HlmPaginationEllipsis,
-    HlmInputDirective,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<div class="flex items-center justify-between gap-2 px-4 py-2">
-			<div class="flex items-center gap-1 text-sm text-nowrap text-gray-600">
-				<b>{{ totalItems() }}</b>
-				total items |
-				<b>{{ _lastPageNumber() }}</b>
-				pages
-			</div>
 
 			<nav hlmPagination>
 				<ul hlmPaginationContent>
-					@if (showEdges() && !_isFirstPageActive()) {
-						<li hlmPaginationItem (click)="goToPrevious()">
-							<hlm-pagination-previous />
-						</li>
-					}
+          <li [class.disabled]="!_isFirstPageActive()" hlmPaginationItem (click)="goToPrevious()">
+            <hlm-pagination-previous iconOnly />
+          </li>
 
 					@for (page of _pages(); track page) {
 						<li hlmPaginationItem>
@@ -62,25 +53,11 @@ import { HlmPaginationPrevious } from './hlm-pagination-previous';
 						</li>
 					}
 
-					@if (showEdges() && !_isLastPageActive()) {
-						<li hlmPaginationItem (click)="goToNext()">
-							<hlm-pagination-next />
-						</li>
-					}
+          <li [class.disabled]="!_isLastPageActive()" hlmPaginationItem (click)="goToNext()">
+            <hlm-pagination-next iconOnly />
+          </li>
 				</ul>
 			</nav>
-
-			<!-- Show Page Size selector -->
-      <select
-        hlmInput
-        class="ml-auto w-fit h-9"
-        [ngModel]="itemsPerPage()"
-        (ngModelChange)="itemsPerPage.set(+$event)"
-      >
-        @for (pageSize of _pageSizesWithCurrent(); track pageSize) {
-          <option [value]="pageSize">{{ pageSize }} / page</option>
-        }
-      </select>
 		</div>
 	`,
 })

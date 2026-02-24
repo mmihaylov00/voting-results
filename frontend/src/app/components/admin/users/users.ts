@@ -9,7 +9,7 @@ import { HlmCardDirective, HlmCardHeaderDirective, HlmCardTitleDirective, HlmCar
 import { BaseModalComponent } from '../../ui/base-modal/base-modal';
 import { SearchFilterComponent } from '../../ui/search-filter/search-filter';
 import { SortableTableHeaderComponent } from '../../ui/sortable-table-header/sortable-table-header';
-import { HlmNumberedPagination } from '../../ui/pagination/src/lib/hlm-numbered-pagination';
+import { HlmNumberedPagination } from '../../ui/pagination/src';
 import {
   HlmTableBodyDirective,
   HlmTableCellDirective,

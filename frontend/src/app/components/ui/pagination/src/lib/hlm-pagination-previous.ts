@@ -18,7 +18,7 @@ import { HlmPaginationLink } from './hlm-pagination-link';
 			[attr.aria-label]="ariaLabel()"
       class="inline-flex items-center gap-1 px-2.5"
 		>
-			<span aria-hidden="true">‹</span>
+			<span aria-hidden="true">❮</span>
 			<span [class]="_labelClass()">{{ text() }}</span>
 		</a>
 	`,

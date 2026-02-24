@@ -19,7 +19,7 @@ import { HlmPaginationLink } from './hlm-pagination-link';
       class="inline-flex items-center gap-1 px-2.5"
 		>
 			<span [class]="_labelClass()">{{ text() }}</span>
-			<span aria-hidden="true">›</span>
+			<span aria-hidden="true">❯</span>
 		</a>
 	`,
 })

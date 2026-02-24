@@ -14,7 +14,7 @@
     <p hlmLead class="mt-4 text-secondary/80 dark:text-foreground/80">Изберете дата на избори, за да прегледате детайлна статистика</p>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
     @for (date of dates; track date.date) {
       @if (getElectionData(date.date)) {
         @let electionData = getElectionData(date.date)!;
