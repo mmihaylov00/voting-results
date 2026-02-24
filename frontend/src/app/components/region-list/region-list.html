@@ -1,0 +1,197 @@
+<div class="mx-4 px-4 py-8">
+  @if (loading$ | async) {
+    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
+      <div class="w-full max-w-md px-8 text-center">
+        <p hlmMuted class="mb-4">Зареждане на данните...</p>
+        <div class="h-2 w-full overflow-hidden rounded-full bg-secondary">
+          <div class="h-full w-full origin-left animate-progress bg-primary"></div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+    <div>
+      <h1 hlmH2 class="border-b-0 pb-0 text-secondary dark:text-primary">Избор на район</h1>
+      <p hlmLead class="text-secondary/80 dark:text-foreground/80">Изберете многомандатен изборен район (МИР) за {{ dateName }}</p>
+    </div>
+    <div class="flex gap-2">
+      @if (getCikUrl()) {
+        <a [href]="getCikUrl()" target="_blank" hlmBtn variant="outline" hlmTooltip="Отвори официалните резултати в сайта на ЦИК">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          ЦИК
+        </a>
+      }
+      <a routerLink="/" hlmBtn variant="default">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m3 9 9-7 9 7"/><path d="M9 22V12h6v10"/><path d="M21 22H3"/></svg>
+        Начало
+      </a>
+    </div>
+  </div>
+
+  @if (bannerType()) {
+    <div class="mb-6 rounded-md border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm">
+      <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div class="text-destructive">
+          @if (bannerType() === 'sections') {
+            Няма импортирани секции за този избор. Качете файл със секции.
+          } @else {
+            Няма импортирани доброволци за този избор. Качете файл с доброволци.
+          }
+        </div>
+        <button hlmBtn type="button" class="w-full md:w-auto" (click)="openImportModal()">
+          @if (bannerType() === 'sections') { Импорт на секции } @else { Импорт на доброволци }
+        </button>
+      </div>
+    </div>
+  }
+
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
+    <app-stat-card
+      label="Активност"
+      [value]="avgActivity"
+      [isPercent]="true"
+      [tooltipData]="globalComparisons['activityPercent']"
+      [currentValue]="toBp(avgActivity)" />
+    <app-stat-card
+      label="Общо избиратели"
+      [value]="totalElectors"
+      [tooltipData]="globalComparisons['total']"
+      [currentValue]="totalElectors" />
+    <app-stat-card
+      label="Общо гласували"
+      [value]="totalVoted"
+      [tooltipData]="globalComparisons['voted']"
+      [currentValue]="totalVoted" />
+    <app-stat-card
+      label="Общо невалидни"
+      [value]="totalInvalid"
+      [tooltipData]="globalComparisons['discardedVotes']"
+      [currentValue]="totalInvalid" />
+    <app-stat-card
+      label="Общо не подкрепя никого"
+      [value]="totalNoVotes"
+      [tooltipData]="globalComparisons['noVotes']"
+      [currentValue]="totalNoVotes" />
+    <app-stat-card label="Гласове по тип">
+      <ng-template #customContent>
+        <div class="flex flex-col text-sm whitespace-nowrap">
+          <span class="text-secondary/70 dark:text-foreground/70">машинни: <strong class="text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['totalMachine']" [currentValue]="totalMachine">{{ totalMachine | number }}</strong></span>
+          <span class="text-secondary/70 dark:text-foreground/70">хартиени: <strong class="text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['totalPaper']" [currentValue]="totalPaper">{{ totalPaper | number }}</strong></span>
+        </div>
+      </ng-template>
+    </app-stat-card>
+  </div>
+
+  <div class="flex justify-between mb-4 gap-4">
+    <div class="max-w-48 w-full">
+      <app-search-filter
+        placeholder="Търсене на район..."
+        [value]="searchTerm"
+        (valueChange)="searchTerm = $event; applyFilter()" />
+    </div>
+    <a [routerLink]="['/election', date, 'all']" hlmBtn variant="outline" class="w-full sm:w-auto border-primary text-secondary hover:bg-primary/20 hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+      Всички секции
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    @for (region of filteredRegions; track region.id) {
+      <div hlmCard class="flex flex-col h-full transition-all hover:shadow-xl border-primary/20 hover:border-primary/50 group">
+        <div hlmCardHeader>
+          <h3 hlmCardTitle class="text-secondary dark:text-primary transition-colors">{{ formatRegionName(region.name) }}</h3>
+          <p hlmCardDescription hlmMuted class="text-secondary/60 dark:text-foreground/60">МИР {{ region.id }}</p>
+        </div>
+        <div class="flex-grow"></div>
+        <div hlmCardContent class="pt-0 flex-grow">
+          <div class="flex flex-col text-xs mb-4 space-y-1">
+            @for (tp of region.topParties; let i = $index; track tp.name) {
+              @let alias = getPartyAlias(tp.name);
+              <div class="flex justify-between items-center gap-2" [title]="alias + ': ' + tp.total + ' (' + formatActivity((tp.percentBp || 0) / 10000) + '%)'">
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="text-muted-foreground">{{ $index + 1 }}.</span>
+                  <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
+                </div>
+                <span class="whitespace-nowrap"><strong class="me-1">{{ tp.total | number }}</strong> <span class="text-[10px] opacity-70">({{ formatActivity((tp.percentBp || 0) / 10000) }}%)</span></span>
+              </div>
+            }
+          </div>
+          <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-muted-foreground mb-4">
+            <div class="flex justify-between">
+              <span>Активност:</span>
+              <span class="font-medium text-foreground" [hlmTooltip]="region.comparisons?.['activityPercent']" [currentValue]="region.total > 0 ? toBp(region.voted / region.total) : 0" [isPercent]="true">{{ formatActivity(region.voted / region.total) }}%</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Гласували:</span>
+              <span class="font-medium text-foreground" [hlmTooltip]="region.comparisons?.['voted']" [currentValue]="region.voted">{{ region.voted | number }}</span>
+            </div>
+          </div>
+          <a [routerLink]="['/election', date, 'region', region.id]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground mt-auto">
+            Виж резултати
+          </a>
+        </div>
+      </div>
+    }
+    @if (filteredRegions.length === 0 && ! (loading$ | async)) {
+      <div class="col-span-full py-20 text-center">
+        <p hlmMuted>Няма намерени райони, съвпадащи с търсенето.</p>
+      </div>
+    }
+  </div>
+
+  <div hlmCard class="border-primary/20 p-6 mb-12">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+      <div class="flex flex-wrap gap-2">
+        <button hlmBtn [variant]="activeChart() === 'activity' ? 'default' : 'outline'" size="sm" (click)="activeChart.set('activity')">
+          Активност и негласували
+        </button>
+        <button hlmBtn [variant]="activeChart() === 'party' ? 'default' : 'outline'" size="sm" (click)="activeChart.set('party')">
+          Резултати за партия
+        </button>
+      </div>
+      @if (activeChart() === 'party') {
+        <app-party-filter
+          position="right"
+          [parties]="allParties"
+          [selectedPartyIds]="selectedPartyIds()"
+          [showVotes]="true"
+          [partyVotes]="partyVotesMap"
+          (selectedPartyIdsChange)="onPartySelectionChange($event)" />
+      }
+    </div>
+
+    <div class="w-full">
+      @switch (activeChart()) {
+        @case ('activity') {
+          @if (activityChartOptions.series) {
+            <highcharts-chart [options]="activityChartOptions" style="width: 100%; height: 300px; display: block;"></highcharts-chart>
+          }
+        }
+        @case ('party') {
+          @if (partyChartOptions.series) {
+            <highcharts-chart #partyChart [options]="partyChartOptions" [oneToOne]="true" style="width: 100%; height: 600px; display: block;"></highcharts-chart>
+          }
+        }
+      }
+    </div>
+  </div>
+
+  @if (uploadModalOpen()) {
+    <app-base-modal
+      size="half"
+      [title]="uploadMode() === 'sections' ? 'Импорт на секции' : 'Импорт на доброволци'"
+      (close)="closeImportModal()"
+    >
+      <div class="grid gap-4">
+        <input hlmInput type="file" (change)="onUploadFileSelected($event)" />
+        @if (uploadError()) {
+          <p class="text-destructive">{{ uploadError() }}</p>
+        }
+        <div class="flex justify-end gap-2">
+          <button hlmBtn type="button" variant="outline" (click)="closeImportModal()">Отказ</button>
+          <button hlmBtn type="button" [disabled]="!uploadFile()" (click)="runUploadImport()">Качи</button>
+        </div>
+      </div>
+    </app-base-modal>
+  }
+</div>

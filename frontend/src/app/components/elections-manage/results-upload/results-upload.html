@@ -1,0 +1,72 @@
+<div class="p-6">
+  <div hlmCard class="mx-auto max-w-[900px]">
+    <div hlmCardHeader>
+      <h2 hlmCardTitle>Качване на резултати</h2>
+    </div>
+    <div hlmCardContent>
+      <label class="mb-3 flex flex-col gap-1.5">
+        <span>Дата на изборите (YYYY.MM.DD)</span>
+        <input hlmInput type="text" [(ngModel)]="electionDate" />
+      </label>
+      <input type="file" (change)="onFileSelected($any($event.target).files[0] || null)" />
+      <div class="mt-3 flex gap-3">
+        <button hlmBtn type="button" (click)="onPreview()" [disabled]="!selectedFile()">Преглед</button>
+        <button hlmBtn type="button" (click)="onUpload()" [disabled]="!selectedFile()">Импортирай</button>
+      </div>
+
+      @if (error()) {
+        <p class="text-destructive">{{ error() }}</p>
+      }
+
+      @if (validationErrors().length > 0) {
+        <div class="mt-4 overflow-x-auto">
+          <table hlmTable>
+            <thead hlmTableHeader>
+            <tr hlmTableRow>
+              <th hlmTableHead>Ред</th>
+              <th hlmTableHead>Съобщение</th>
+            </tr>
+            </thead>
+            <tbody hlmTableBody>
+              @for (item of validationErrors(); track item.line + '-' + item.message) {
+                <tr hlmTableRow>
+                  <td hlmTableCell>{{ item.line }}</td>
+                  <td hlmTableCell>{{ item.message }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+      @if (preview()) {
+        <div class="mt-4 grid gap-2 md:grid-cols-3">
+          <div class="rounded-md border border-border/70 px-3 py-2"><strong>Общо:</strong> {{ preview()!.total }}</div>
+          <div class="rounded-md border border-border/70 px-3 py-2"><strong>Валидни:</strong> {{ preview()!.valid }}</div>
+          <div class="rounded-md border border-border/70 px-3 py-2"><strong>Невалидни:</strong> {{ preview()!.invalid }}</div>
+        </div>
+
+        @if (preview()!.samples.length > 0) {
+          <div class="mt-4 overflow-x-auto">
+            <table hlmTable>
+              <thead hlmTableHeader>
+              <tr hlmTableRow>
+                <th hlmTableHead>Секция</th>
+                <th hlmTableHead>Допълнителни полета</th>
+              </tr>
+              </thead>
+              <tbody hlmTableBody>
+                @for (sample of preview()!.samples; track sample.sectionId) {
+                  <tr hlmTableRow>
+                    <td hlmTableCell>{{ sample.sectionId }}</td>
+                    <td hlmTableCell>{{ sample.data['extras'] ? (sample.data['extras'] | json) : '-' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      }
+    </div>
+  </div>
+</div>

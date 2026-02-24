@@ -1,338 +1,217 @@
-# Build Output Size Reduction — Tasks
 
-## Description
-Reduce the size of the compiled election artifacts (`public/data/compiled/<date>.json.gz`) by eliminating repeated strings/objects, removing duplicated representations, and improving compression. Changes focus on: (1) removing redundant fields, (2) moving “lookup data” to shared dictionaries, (3) storing compact numeric/enum representations, and (4) using stronger compression settings.
+# Backend + Election System — Tasks
 
----
+Date format: `YYYY.MM.DD`
 
-## Phase 0 — Baseline & Guardrails
+## Status Legend
+- [ ] Not started
+- [~] In progress
+- [x] Done
 
-- [x] **T0.1: Add build size report**
-  - Print size of each output file (raw JSON bytes + gzipped bytes).
-  - Output per date: `rawBytes`, `gzipBytes`, `ratio`.
-  - Acceptance: build logs show sizes for each generated artifact.
-
-- [x] **T0.2: Add smoke validation**
-  - Ensure output JSON parses and contains expected top-level keys.
-  - Acceptance: build fails if output is invalid JSON before compression.
+## Scope Decisions
+- Existing elections are imported once into the DB and treated as **read-only**.
+- Assignment conflicts are **hard-blocked** (one person -> one section -> one role).
+- Roles are **global** (not per election).
 
 ---
 
-## Phase 1 — Remove High-Duplication Strings
+## Milestone 1: Backend Skeleton + Auth
+- [x] Initialize NestJS backend structure
+- [x] Add module: `auth`
+- [x] Add module: `users`
+- [x] Add module: `elections-manage`
+- [x] Add module: `sections`
+- [x] Add module: `people`
+- [x] Add module: `roles`
+- [x] Add module: `assignments`
+- [x] Add module: `elections`
+- [x] Add module: `uploads`
+- [x] Select ORM and configure DB connection
+- [x] Create migration baseline
+- [x] Define `users` table
+- [x] Define auth role enum on `users` (`admin`, `campaign_manager`, `viewer`)
+- [x] Remove auth `user_roles` relation table
+- [x] Define managed election table shape in `elections`
+- [x] Define `election_sections` table for managed election sections
+- [x] Define `people` table
+- [x] Define `assignments` table with unique constraint for (person_id, role_id) and (section_id, role_id)
+- [x] Define `elections` table
+- [x] Define `election_sections` table (read-only stats)
+- [x] Define `election_results` table (managed election result uploads)
+- [x] Implement RBAC guard for `admin` routes
+- [x] Implement RBAC guard for `campaign_manager` routes
+- [x] Implement RBAC guard for `viewer` routes (read-only)
+- [x] Implement auth endpoints: `POST /auth/login`
+- [x] Implement auth endpoints: `POST /auth/logout` (if session-based) or token revoke
+- [x] Implement password hashing
+- [x] Add JWT auth strategy
+- [x] Implement users CRUD endpoints (admin-only)
+- [x] Add seed for initial admin user
+- [x] Add seed for default roles
 
-- [x] **T1.1: Remove `dateName` from all comparison entries**
-  - Everywhere you do `{ value, date: d, dateName }` replace with a compact shape:
-    - `{ v: value, d }`
-  - Do this for:
-    - `region.comparisons.*`
-    - `section.comparisons.*`
-    - per-party comparisons (`partyVotes[pid].comparisons`, `.percentComparisons`, `.paperComparisons`, `.machineComparisons`)
-    - `topParties[*].comparisons`
-  - Acceptance:
-    - No `dateName` field exists anywhere in output.
-    - UI resolves date name via `elections.json` (or a small `dateNameByDate` map).
+## Milestone 2: Election Data Import (Read-only)
+- [x] Move raw election data from `frontend/public/data` to `backend/data`
+- [x] Define import CLI entry point
+- [x] Define canonical election schema in DB tables (normalized fields)
+- [ ] Parse `sections.txt` into section metadata
+- [ ] Parse `protocols.txt` into totals (voted, paper, machine, invalid)
+- [ ] Parse `votes.txt` into party vote totals
+- [ ] Parse `preferences.txt` into candidate preference totals
+- [ ] Parse `local_candidates.txt` into candidate metadata
+- [ ] Parse `cik_parties.txt` into party dictionary
+- [ ] Normalize and merge all sources into election DTOs
+- [x] Store elections and read-only section stats in DB using explicit columns/tables
+- [x] Add import idempotency (skip if date already imported)
+- [ ] Add import validation errors with line numbers
+- [x] Expose read-only API: elections list
+- [x] Expose read-only API: election summary
+- [x] Expose read-only API: election sections list
+- [x] Expose read-only API: election section detail
+- [x] Import raw election `.txt` files and store parsed election payloads into `Election` records
+- [x] Import pipeline uses raw files + database only (no persisted generated artifacts)
+- [x] Remove persisted `backend/data/compiled` artifacts
 
-- [x] **T1.2: Stop emitting `section.risks` (string array)**
-  - Keep only structured `riskIndicators` / `candidateRiskIndicators`.
-  - Remove the logic that builds/merges `section.risks` from indicator messages.
-  - Acceptance:
-    - `section.risks` does not exist in output.
-    - UI shows risk text from `riskIndicators` (see Phase 2).
+## Milestone 3: Election Creation + CSV Upload
+- [x] Managed elections list endpoint
+- [x] Managed elections create endpoint
+- [x] Managed elections update endpoint
+- [x] Managed elections delete endpoint
+- [x] Managed elections detail endpoint
+- [x] Sections CSV upload endpoint
+- [x] Sections CSV validation + preview DTO
+- [x] Sections CSV mapping and persist
+- [x] People CSV upload endpoint
+- [x] People CSV validation + preview DTO
+- [x] People CSV mapping and persist
+- [x] Define import interface for CRM (placeholder)
+- [x] Define import interface for CSV (implementation)
 
----
+## Milestone 4: Assignment + Filtering
+- [x] Global roles list endpoint
+- [x] Global roles create endpoint
+- [x] Global roles update endpoint
+- [x] Global roles delete endpoint
+- [x] Assignments create endpoint with hard-block validation
+- [x] Assignments update endpoint with hard-block validation
+- [x] Assignments delete endpoint
+- [x] Filter: people without section (by role)
+- [x] Filter: sections missing person for role
+- [ ] Bulk assignment endpoint (optional)
 
-## Phase 2 — Stop Shipping Long Text Messages
+## Milestone 5: Results Upload + Stats
+- [x] Results CSV upload endpoint
+- [x] Results CSV validation + preview DTO
+- [x] Store results under election + election date
+- [x] Compute and persist stats for UI widgets
+- [x] Expose API for election results view
 
-- [x] **T2.1: Replace `riskIndicators[].message` with template-friendly data**
-  - For each risk, output:
-    - `code`, `category`, `severity`
-    - `details` containing only numbers/ids needed to render the message
-  - Example direction (do not ship as string):
-    - `R6.1`: `{ avgSectionShareBp, avgMunicipalityShareBp, sectionsTriggered }`
-    - `R1.1`: `{ turnoutChangeBp, sigma10 }` (or similar compact representation)
-  - Acceptance:
-    - No `message` property exists in any risk indicator in the output.
-    - UI renders Bulgarian messages using a per-code template table.
+## Milestone 6: Frontend Integration
+- [x] Add auth flow (login/logout)
+- [x] Add protected route guard
+- [x] Add user CRUD screen
+- [x] Add managed elections list screen
+- [x] Add managed elections create/edit screen
+- [x] Add sections upload screen
+- [x] Add people upload screen
+- [x] Add assignments management screen
+- [x] Add results upload screen
+- [x] Add election results stats screen
+- [x] Replace asset-based election loading with backend API calls
+- [x] Remove frontend `elections.json` dependency and use DB-backed elections list only
+- [x] Serve compact mapping from backend API and consume it in frontend
+- [x] Add API base URL configuration support
+- [x] Improve upload screens file handling UX
+- [x] Protect election routes behind auth
+- [x] Add post-login redirect to originally requested route
+- [x] Enable backend CORS for frontend and point FE API URL to backend
+- [x] Fix CORS for localhost `4200*` (with credentials) and localhost:3200
+- [x] Add explicit backend startup/CORS logs for local debugging
+- [x] Fully replace campaign naming with election naming in backend/frontend APIs and models
 
-- [x] **T2.2: Create UI risk message templates**
-  - Map: `code -> (details) => message`
-  - Must support all existing risk codes used by the build.
-  - Consider a fallback for unknown codes.
-  - Acceptance:
-    - UI shows identical (or intentionally improved) text vs previous implementation.
+## Milestone 7: Docker Compose + Env
+- [x] Add `docker-compose.yml` with `api`, `db`, `frontend`
+- [x] Configure Postgres volume
+- [x] Add `.env.example`
+- [x] Document local run steps
+- [x] Recreate baseline migration for election schema and run with `prisma migrate deploy`
 
----
+## Milestone 8: QA
+- [x] Backend build passes (`npm run build`)
+- [x] Extract shared CSV base service for sections/people imports
+- [x] CSV validators unit tests
+- [x] Import pipeline tests for a sample election
+- [x] Auth/RBAC tests (admin, campaign_manager, viewer)
+- [x] Stats regression checks vs current frontend output
+- [x] Create shared package for enums/DTOs reused by frontend and backend
+- [x] Replace hardcoded auth RBAC role strings with shared role constants
 
-## Phase 3 — Remove Per-Section Repeated Region Stats
-
-- [x] **T3.1: Stop copying `municipalityPartyPercents` into each section**
-  - Currently each section gets:
-    - `s.municipalityAvgTurnout`
-    - `s.municipalityPartyPercents`
-  - Move these to the region object once, e.g.:
-    - `regions[].avgTurnout`
-    - `regions[].partyPercents`
-  - Keep only a reference in section:
-    - `section.regionId`
-  - Acceptance:
-    - Sections do not contain `municipalityPartyPercents`.
-    - UI resolves region averages by looking up `regions` by `regionId`.
-
-- [x] **T3.2: Remove `baseline` from output (or gate it)**
-  - Option A (recommended for size): remove `section.baseline` entirely.
-  - Option B (debug only): emit baseline only if section has risks AND behind a flag.
-  - Acceptance:
-    - `baseline` not present in normal builds (default).
-    - If debug flag exists, it’s off by default.
-
----
-
-## Phase 5 — Compact Numeric Encoding
-
-- [x] **T5.1: Quantize percent floats to integers (basis points)**
-  - Replace floats such as:
-    - `activityPercent`, `percent`, `noVotesPercent`
-  - With integers:
-    - `activityBp = round(activityPercent * 10000)`
-    - `percentBp = round(percent * 10000)`
-  - Acceptance:
-    - No percent floats are emitted (or only where strictly necessary).
-    - UI divides by 10000 when displaying.
-
-- [x] **T5.2: Shorten key names for hot-path repeated structures (optional)**
-  - For comparison entries:
-    - `{ v, d }` already covered
-  - For common numeric fields:
-    - `voted -> v`, `total -> t`, `discardedVotes -> inv` (example mapping)
-  - Acceptance:
-    - Document a single mapping table used by both build + UI.
-    - UI reads new keys correctly.
-
----
-
-## Phase 6 — Stronger Compression
-
-- [x] **T6.1: Gzip max compression**
-  - Change gzip call to:
-    - `zlib.gzipSync(json, { level: 9 })`
-  - Acceptance:
-    - Output file sizes decrease measurably vs baseline.
-
-- [x] **T6.2: Add Brotli output (optional, best size)**
-  - Produce:
-    - `${date}.json.br` alongside `.gz`
-  - Acceptance:
-    - Hosting can serve `.br` when supported.
-    - UI fetch prefers `.br` and falls back to `.gz`.
-
----
-
-## Phase 7 — Split Stable Dictionaries (Bigger Refactor, Biggest Gains)
-
-- [ ] **T7.1: Extract section metadata to a shared file**
-  - Create `compiled/sections_meta.json.(gz|br)` containing:
-    - `sectionId -> { regionId, regionName, cityName, sectionName, sectionType }`
-  - Then date files contain only:
-    - `sectionId -> numeric fields + risk codes + series`
-  - Acceptance:
-    - Per-date artifacts shrink substantially.
-    - UI loads meta once and joins by `sectionId`.
-
-- [ ] **T7.2: Extract candidate metadata to a shared file**
-  - Create `compiled/candidates_meta_<date>.json.(gz|br)`:
-    - `candidateKey -> { candidateId, partyId, candidateName, partyName, regionId }`
-  - Date file contains only numeric/risk data keyed by candidateKey.
-  - Acceptance:
-    - Candidate names are no longer repeated across many sections.
-
-## Phase 8 — Binary Format Migration (No Backward Compatibility)
-
-### Decision
-- Replace JSON entirely with **Protocol Buffers**
-- Remove all JSON outputs, loaders, and compatibility code paths.
-
----
-
-## Phase 8.1 — Hard Switch: Protobuf Only
-
-- [ ] **T8.1: Delete JSON emission**
-  - Remove:
-    - `const json = JSON.stringify(finalResult)`
-    - `.json.gz` writes
-    - JSON cleanup that deletes `.json` files
-  - Acceptance:
-    - build produces **no** JSON artifacts.
-
-- [ ] **T8.2: Rename output to protobuf artifacts**
-  - Output file name:
-    - `compiled/<date>.pb` + compression variant
-  - Recommended:
-    - `compiled/<date>.pb.br` (primary)
-    - optionally `compiled/<date>.pb.gz` (fallback if your hosting isn’t brotli-friendly)
-  - Acceptance:
-    - compiled directory contains only protobuf artifacts.
-
----
-
-## Phase 8.2 — Schema First: Make It Compact
-
-- [ ] **T8.3: Design proto schema to avoid maps-of-objects where possible**
-  - Prefer:
-    - repeated arrays with implicit ordering for dense data
-  - Example:
-    - `repeated Section sections = 1;`
-    - store `region_index` instead of `regionId` string if you build region dictionary
-  - Acceptance:
-    - schema minimizes string usage and nested maps.
-
-- [ ] **T8.4: Convert enums**
-  - Replace strings with enums:
-    - `Severity`
-    - `SectionType`
-    - `RiskCode` (optional but recommended)
-  - Acceptance:
-    - output contains no repeated textual enums.
-
-- [ ] **T8.5: Quantize floats**
-  - Replace float ratios with integer basis points:
-    - `uint32 activity_bp`
-    - `uint32 percent_bp`
-  - Acceptance:
-    - proto has no floats unless unavoidable.
-
----
-
-## Phase 8.3 — Split Meta vs Per-Date Payload (Largest Size Win)
-
-- [ ] **T8.6: Emit `meta.pb.br` once**
-  - Create `compiled/meta.pb.br` containing:
-    - `regions`: `{ regionId, regionName }`
-    - `sections`: `{ sectionId, regionId, cityName, sectionName, sectionType }`
-  - Remove these fields from per-date output.
-  - Acceptance:
-    - per-date files contain **no** names, only ids + numbers.
-
-- [ ] **T8.7: Emit `parties_<date>.pb.br`**
-  - Parties can change per election, so keep it per-date:
-    - `partyId -> partyName`
-    - optionally also store `normalized_party_id` mapping for comparisons
-  - Acceptance:
-    - per-date payload doesn’t embed party names anywhere else.
-
-- [ ] **T8.8: Emit `candidates_<date>.pb.br`**
-  - Candidate lists are date-specific:
-    - candidateKey -> `{ candidateId, partyId, name }`
-  - Per-date section data stores only candidateKey + numeric votes/risk flags.
-  - Acceptance:
-    - candidateName/partyName not repeated per section.
+## Milestone 9: Frontend Page Parity with Backend
+- [x] Managed election create/edit page: no date prompt in UI; creation uses auto-generated date/name flow
+- [x] Managed elections list: create flow moved to modal with auto-generated date/name (no manual input)
+- [x] Managed election detail page: add delete action wired to `DELETE /elections/manage/:id` and remove date editing UI
+- [x] Managed elections list: add delete action for campaigns
+- [x] Sections upload page: show backend validation errors table (line + message), not only generic error
+- [x] People upload page: show backend validation errors table (line + message), not only generic error
+- [x] Assignments page: implement create assignment form (person, section, role) wired to `POST /elections/manage/:id/assignments`
+- [x] Assignments page: implement assignment edit flow wired to `PATCH /elections/manage/:id/assignments/:assignmentId`
+- [x] Assignments page: implement assignment delete action wired to `DELETE /elections/manage/:id/assignments/:assignmentId`
+- [x] Assignments page: implement filters for `people-without-section` and `sections-missing-role` endpoints
+- [x] Results upload page: show parsed preview rows before submit and backend row-level validation errors
+- [x] Results stats page: add actionable views for missing/extra sections from stats response
+- [x] Read-only election list page: surface backend election `name` consistently in cards/links/tooltips
+- [x] Read-only election detail page: ensure compact mapping endpoint failure fallback is visibly handled (warning + degraded mode)
+- [x] Read-only election detail page: load current election first, then background historical data, with no blocking loader after current load
+- [x] App shell: add role-based sidebar navigation with only visible tabs for the current user
+- [x] App shell: hide sidebar for `viewer` role
+- [x] App shell: keep sidebar fixed to viewport (100% height) and non-scrollable
+- [x] Roles admin page: add CRUD UI for global roles (`GET/POST/PATCH/DELETE /roles`)
+- [x] Viewer role UX: verify all manage pages are strictly read-only or hidden for `viewer`
+- [x] Users admin page: reuse existing shared UI components (table/card/input/button) for listing and actions
+- [x] Users admin page: move user creation flow into modal
+- [x] Users admin page: add sorting, name/role filters, and pagination
+- [x] Users admin page: switch pagination controls to shared Spartan-style pagination component
+- [x] Optimize election listing requests: backend managed list returns minimal fields (`id`, `date`, `name`)
+- [x] Optimize read-only election cards loading: fetch per-election summaries with request deduplication (no global blocking summary preload)
+- [x] Re-verify backend/frontend builds after listing performance optimizations
+- [x] Remove standalone elections list page and move admin election create/delete controls to home cards (`+` card and trash action)
+- [x] Add admin import-state danger banners on election open screens with modal upload actions (sections first, then people)
+- [x] Add volunteers management view in election detail (`Доброволци`) with assign/unassign actions and manual person creation
+- [x] Add volunteer assignment support in section detail modal with shared assign flow and prefilled section
+- [x] Add sections table positions summary column and quick filters for missing assignments by specific/any position
+- [x] Add backend endpoint for manual person creation (`POST /elections/manage/:electionId/people`)
+- [x] Add modal size variants (`full`/`half`) and use `half` for creation modals
+- [x] Move missing-position section filters into the existing quick filters dropdown
+- [x] Improve election detail UX: quick filter selection parity, conditional assignee UI visibility, volunteer import CTA, autocomplete assignment inputs, and resilient historical modal data usage
+- [x] Replace native assignment selectors with reusable autocomplete inputs (clear button + scrollable dropdown)
+- [x] Volunteers table: add dedicated assignment filters dropdown (only unassigned + by position)
+- [x] Volunteers table: split position into separate column and render colored position badges
+- [x] Keep section details modal open while opening assignment modal on top
+- [x] Grouped section/municipality volunteer views: show assignment section details and allow unassign actions
+- [x] Avoid redundant managed-data refetch on volunteers tab switch; reload only on explicit refresh actions
+- [x] Fix assignment payload mapping (`roleId` -> `positionId`) to restore correct position counts and quick filters
+- [x] Restrict assignment modal section options to current selected region (when region filter is active)
+- [x] Fix autocomplete dropdown close behavior (toggle on input click + close on select/outside click)
+- [x] Add missing action icons to volunteer actions and filters, and render section position counts as colored position badges
+- [x] Optimize assign/unassign flow to update local managed state (no full refetch of sections/people/positions/assignments)
+- [x] Volunteers assignment filter: switch "Само неразпределени" from checkbox to button-style toggle
+- [x] Fix autocomplete typing filter (stable input while typing + match by label/description)
+- [x] Unassign updates volunteer status/position immediately in local state (including duplicate-person safety)
+- [x] Move "Само неразпределени" toggle next to the other assignment filter buttons
+- [x] Add assignment-modal selection validation and disable submit until person/section/position are valid
+- [x] Make unassign UI update optimistic on first click with rollback on API failure
+- [x] Reorder volunteers assignment filter buttons: place "Само неразпределени" as second option (after "Всички")
+- [x] Guard autocomplete output emits after component destroy (fix NG0953)
+- [x] Stabilize election header date-name initialization/update to avoid NG0100 in dev mode
+- [x] Sidebar UX: closed by default and opens fullscreen on mobile, with floating open button and mobile auto-close on nav click
+- [x] Volunteers: align "Нов доброволец" modal layout with other creation modals (labeled fields, subtitle, grid actions)
+- [x] Volunteers: add dedicated edit-person modal and API integration (`PATCH /elections/manage/:electionId/people/:personId`)
+- [x] Creation modal validation: disable submit until required fields are filled (`election-list`, `elections-manage/list`, `admin/users`, `admin/positions`, `election-detail` create person)
+- [x] Volunteers: add delete-person action (backend `DELETE /elections/manage/:electionId/people/:personId` + optimistic frontend removal with rollback)
+- [x] Docker: include `shared/` package in backend/frontend image builds (root build context + Dockerfile path updates)
 
 ---
 
-## Phase 8.4 — Remove Verbose Runtime Text from Output
-
-- [ ] **T8.9: Remove all human-readable risk messages from build output**
-  - Risks become:
-    - `code`, `severity`, `details` (numbers + ids only)
-  - UI renders Bulgarian message templates.
-  - Acceptance:
-    - protobuf contains **zero** Bulgarian long strings.
-
-- [ ] **T8.10: Remove duplicated risk containers**
-  - Keep exactly:
-    - `section.risk_indicators` (section-level)
-    - `section.candidate_risk_indicators` (candidate-level events, keyed)
-  - Delete:
-    - `section.risks` (strings)
-    - any duplicated message arrays
-  - Acceptance:
-    - each risk exists in exactly one canonical place.
-
----
-
-## Phase 8.5 — Rework Comparisons for Size
-
-- [ ] **T8.11: Compact comparisons shape**
-  - Replace:
-    - `{ value, date }` objects
-  - With:
-    - `repeated uint32 date_index`
-    - `repeated sint32 values` (same ordering)
-  - Or:
-    - `repeated ComparisonPoint { uint32 d; sint32 v; }` (still smaller than JSON)
-  - Acceptance:
-    - comparisons no longer allocate repeated object wrappers.
-
-- [ ] **T8.12: Remove per-party comparisons stored under every partyVotes entry**
-  - Keep comparisons only at:
-    - section-level + region-level
-  - UI derives party series from:
-    - baseline partyVotes + comparison sections
-  - Acceptance:
-    - `partyVotes[*].comparisons` removed from output.
-
----
-
-## Phase 8.6 — Frontend: Protobuf-Only Loader
-
-- [ ] **T8.13: Replace JSON fetch/decode with protobuf decode**
-  - Load order:
-    1) `meta.pb.br`
-    2) `parties_<date>.pb.br`
-    3) `candidates_<date>.pb.br`
-    4) `<date>.pb.br`
-  - Acceptance:
-    - app renders successfully with protobuf only.
-
-- [ ] **T8.14: Add “schema_version mismatch” fatal error**
-  - If UI schema doesn’t match output schema:
-    - fail fast with a clear dev error
-  - Acceptance:
-    - broken schema changes are caught immediately.
-
----
-
-## Phase 8.7 — Compression & Hosting
-
-- [ ] **T8.15: Switch primary compression to Brotli**
-  - Use `zlib.brotliCompressSync(buffer, { params: { [BROTLI_PARAM_QUALITY]: 11 } })`
-  - Keep gzip only if needed.
-  - Acceptance:
-    - `.br` is the primary artifact and is smallest.
-
-- [ ] **T8.16: Verify server serves `.br` with correct content-encoding**
-  - Ensure:
-    - `Content-Type: application/octet-stream` (or `application/x-protobuf`)
-    - `Content-Encoding: br`
-  - Acceptance:
-    - browser loads `.br` without manual decompression.
-
----
-
-## Phase 8.8 — Build Output Audit
-
-- [ ] **T8.17: Add build output size report (protobuf only)**
-  - Print:
-    - meta.pb.br bytes
-    - parties_<date>.pb.br bytes
-    - candidates_<date>.pb.br bytes
-    - <date>.pb.br bytes
-  - Acceptance:
-    - size regressions are visible in logs.
-
-- [ ] **T8.18: Add “size budget” guard (optional)**
-  - Example:
-    - fail build if any `<date>.pb.br` exceeds X MB
-  - Acceptance:
-    - prevents accidental bloat (e.g. reintroducing messages).
-
-
----
-
-## Definition of Done
-- [ ] Build artifacts are smaller (report shows per-date gz bytes reduced).
-- [ ] UI loads and renders the same views without missing data.
-- [ ] No duplicated “risk messages” arrays exist in output.
-- [ ] Risks are rendered from templates using compact `details`.
-- [ ] Comparisons store no `dateName` strings and use compact entries.
-
----
+## Open Questions (Resolved)
+- [x] Existing elections: import once, read-only
+- [x] Assignment conflicts: hard block
+- [x] Date format: `YYYY.MM.DD`

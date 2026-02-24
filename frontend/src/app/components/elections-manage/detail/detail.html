@@ -1,0 +1,40 @@
+<div class="p-6">
+  <div hlmCard class="mx-auto max-w-[900px]">
+    <div hlmCardHeader>
+      <h2 hlmCardTitle>Кампания</h2>
+    </div>
+    <div hlmCardContent>
+      @if (error()) {
+        <p class="text-destructive">{{ error() }}</p>
+      }
+
+      @if (election()) {
+        <p><strong>Дата:</strong> {{ election()!.date }}</p>
+        <p><strong>Име:</strong> {{ election()!.name || '-' }}</p>
+
+        @if (isAdmin()) {
+          <div class="mt-3 flex gap-3">
+            <button
+              hlmBtn
+              type="button"
+              variant="outline"
+              class="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground"
+              (click)="remove()"
+              [disabled]="loading()"
+            >
+              Изтрий
+            </button>
+          </div>
+        }
+
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a hlmBtn [routerLink]="['/elections', election()!.id, 'sections']">Секции</a>
+          <a hlmBtn [routerLink]="['/elections', election()!.id, 'people']">Хора</a>
+          <a hlmBtn [routerLink]="['/elections', election()!.id, 'assignments']">Разпределения</a>
+          <a hlmBtn [routerLink]="['/elections', election()!.id, 'results']">Резултати</a>
+          <a hlmBtn [routerLink]="['/elections', election()!.id, 'results-stats']">Статистика</a>
+        </div>
+      }
+    </div>
+  </div>
+</div>

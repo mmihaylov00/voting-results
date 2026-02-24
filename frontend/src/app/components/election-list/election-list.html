@@ -1,0 +1,180 @@
+<div class="container mx-auto py-12 px-4">
+  @if (loading$ | async) {
+    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
+      <div class="w-full max-w-md px-8 text-center">
+        <p hlmMuted class="mb-4">Зареждане на данните...</p>
+        <div class="h-2 w-full overflow-hidden rounded-full bg-secondary">
+          <div class="h-full w-full origin-left animate-progress bg-primary"></div>
+        </div>
+      </div>
+    </div>
+  }
+  <div class="text-center mb-12">
+    <h1 hlmH1 class="text-secondary dark:text-primary">Изборни резултати</h1>
+    <p hlmLead class="mt-4 text-secondary/80 dark:text-foreground/80">Изберете дата на избори, за да прегледате детайлна статистика</p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+    @for (date of dates; track date.date) {
+      @if (getElectionData(date.date)) {
+        @let electionData = getElectionData(date.date)!;
+        <div hlmCard class="group relative flex h-full flex-col border-primary/20 transition-all hover:border-primary/50 hover:shadow-xl">
+          @if (isAdmin() && date.id) {
+            <button
+              type="button"
+              hlmBtn
+              variant="ghost"
+              size="icon"
+              class="absolute right-2 top-2 z-10 text-destructive hover:bg-destructive hover:text-destructive-foreground"
+              [disabled]="deletingDate() === date.date"
+              (click)="removeElection(date)"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6h18"/>
+                <path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                <path d="M10 11v6"/>
+                <path d="M14 11v6"/>
+              </svg>
+            </button>
+          }
+          <div hlmCardHeader>
+            <h3 hlmCardTitle class="text-secondary dark:text-primary transition-colors">{{ date.name }}</h3>
+            <p hlmCardDescription hlmMuted class="text-secondary/60 dark:text-foreground/60">{{ date.date }}</p>
+          </div>
+          <div class="flex-grow"></div>
+          <div hlmCardContent class="pt-0 flex-grow">
+            @if (electionData.hasData) {
+              <div class="mb-4 flex flex-col space-y-1 text-xs">
+                @for (tp of electionData.topParties; let i = $index; track tp.name) {
+                  @let alias = getPartyAlias(tp.name);
+                  <div class="flex items-center justify-between gap-2" [title]="alias + ': ' + tp.total + ' (' + formatActivity(tp.percent) + '%)'">
+                    <div class="flex min-w-0 items-center gap-2">
+                      <span class="text-muted-foreground">{{ $index + 1 }}.</span>
+                      <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
+                    </div>
+                    <span class="whitespace-nowrap"><strong class="me-1">{{ tp.total | number }}</strong> <span class="text-[10px] opacity-70">({{ formatActivity(tp.percent) }}%)</span></span>
+                  </div>
+                }
+              </div>
+
+              <div class="mb-4 grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-muted-foreground">
+                <div class="flex justify-between">
+                  <span>Активност:</span>
+                  <span class="font-medium text-foreground">{{ formatActivity(electionData.avgActivity) }}%</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Гласували:</span>
+                  <span class="font-medium text-foreground">{{ electionData.totalVoted | number }}</span>
+                </div>
+              </div>
+            } @else {
+              <p hlmMuted class="mb-4 text-lg text-center text-destructive">Няма данни</p>
+            }
+
+            <a [routerLink]="['/election', date.date]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground mt-auto">
+              Разгледай
+            </a>
+          </div>
+        </div>
+      } @else {
+        <div hlmCard class="flex flex-col h-full transition-all hover:shadow-xl border-primary/20 hover:border-primary/50 group">
+          <div hlmCardHeader>
+            <h3 hlmCardTitle class="text-secondary dark:text-primary transition-colors">{{ date.name }}</h3>
+            <p hlmCardDescription hlmMuted class="text-secondary/60 dark:text-foreground/60">{{ date.date }}</p>
+          </div>
+          <div hlmCardContent class="text-center">
+            <p hlmMuted class="text-sm mb-4">Зареждане...</p>
+            <a [routerLink]="['/election', date.date]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary/20 hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+              Разгледай
+            </a>
+          </div>
+        </div>
+      }
+    }
+    @if (isAdmin()) {
+      <button
+        type="button"
+        hlmCard
+        class="flex h-full min-h-[240px] flex-col items-center justify-center border-dashed border-primary/40 text-primary transition-all hover:border-primary hover:bg-primary/5 hover:shadow-xl"
+        (click)="openCreateModal()"
+      >
+        <span class="mb-2 text-5xl leading-none">+</span>
+        <span class="text-sm font-medium">Нова кампания</span>
+      </button>
+    }
+  </div>
+
+  @if (createModalOpen()) {
+    <app-base-modal size="half" title="Нова кампания" subtitle="Името се генерира автоматично от датата." (close)="closeCreateModal()">
+      <form (ngSubmit)="createElection()" class="grid gap-4">
+        <label class="flex flex-col gap-1.5">
+          <span>Дата</span>
+          <input hlmInput type="date" name="date" [(ngModel)]="form.date" required/>
+        </label>
+
+        @if (createError()) {
+          <p class="text-destructive">{{ createError() }}</p>
+        }
+
+        <div class="flex justify-end gap-3">
+          <button hlmBtn type="button" variant="outline" (click)="closeCreateModal()">Отказ</button>
+          <button hlmBtn type="submit" [disabled]="!canSubmitCreate()">Създай</button>
+        </div>
+      </form>
+    </app-base-modal>
+  }
+
+  <!-- Historical Trends Section -->
+  <div id="historical-trends" class="mt-16 scroll-mt-8">
+    <div class="mb-8">
+      <h2 hlmH2 class="border-b-0 pb-0 text-secondary dark:text-primary">Исторически трендове</h2>
+      <p hlmLead class="text-secondary/80 dark:text-foreground/80">Проследете представянето на партиите във времето</p>
+    </div>
+
+    <div hlmCard class="p-4 md:p-6 border-primary/20">
+      <div class="flex flex-col md:flex-row gap-4 items-end mb-6">
+        <div class="w-full md:w-auto">
+          <label class="text-xs font-semibold text-muted-foreground uppercase mb-1 block">Ниво на анализ</label>
+          <div class="flex gap-2">
+            <button hlmBtn [variant]="level() === 'national' ? 'default' : 'outline'" size="sm" (click)="level.set('national')">Национално</button>
+            <button hlmBtn [variant]="level() === 'region' ? 'default' : 'outline'" size="sm" (click)="level.set('region')">Район</button>
+          </div>
+        </div>
+
+        @if (level() === 'region') {
+          <div class="w-full md:w-64">
+            <label class="text-xs font-semibold text-muted-foreground uppercase mb-1 block">Избери район</label>
+            <select [ngModel]="selectedRegionId()" (ngModelChange)="selectedRegionId.set($event)" class="w-full h-9 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+              <option value="">-- Избери район --</option>
+              @for (region of regions; track region.id) {
+                <option [value]="region.id">{{ region.name }} ({{ region.id }})</option>
+              }
+            </select>
+          </div>
+        }
+
+        <div class="ml-auto">
+          <app-party-filter
+            [parties]="allParties"
+            [selectedPartyIds]="selectedHistoricalPartyIds()"
+            (selectedPartyIdsChange)="onHistoricalPartySelectionChange($event)" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="border-primary/10 p-4 rounded-lg border">
+          @if (chartOptions.series) {
+            <highcharts-chart [options]="chartOptions" [oneToOne]="true" style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+          }
+        </div>
+        <div class="border-primary/10 p-4 rounded-lg border">
+          @if (percentChartOptions.series) {
+            <highcharts-chart [options]="percentChartOptions" [oneToOne]="true" style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

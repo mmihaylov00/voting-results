@@ -1,0 +1,43 @@
+{
+  "name": "votes-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Votes backend (NestJS + Prisma)",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start:dev": "nest start --watch",
+    "build": "nest build",
+    "lint": "eslint \"src/**/*.ts\"",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "ts-node scripts/seed.ts && ts-node scripts/import-elections.ts",
+    "test:csv": "ts-node test/csv-validators.test.ts",
+    "test:import": "ts-node test/import-pipeline.test.ts",
+    "test:auth": "ts-node test/auth-rbac.test.ts",
+    "test:stats": "ts-node test/stats-regression.test.ts"
+  },
+  "dependencies": {
+    "@votes/shared": "file:../shared",
+    "@nestjs/common": "^10.4.0",
+    "@nestjs/core": "^10.4.0",
+    "@nestjs/platform-express": "^10.4.0",
+    "@nestjs/jwt": "^10.2.0",
+    "@nestjs/passport": "^10.0.2",
+    "@prisma/client": "^5.21.1",
+    "bcryptjs": "^2.4.3",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.4.0",
+    "@nestjs/schematics": "^10.1.2",
+    "@nestjs/testing": "^10.4.0",
+    "@types/node": "^22.7.0",
+    "eslint": "^9.10.0",
+    "prisma": "^5.21.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
+  }
+}
