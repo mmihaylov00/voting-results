@@ -1,0 +1,1405 @@
+<div class="mx-4 px-4 py-8">
+  @if (loading$ | async) {
+    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
+      <div class="w-full max-w-md px-8 text-center">
+        <p hlmMuted class="mb-4">Зареждане на данните...</p>
+        <div class="h-2 w-full overflow-hidden rounded-full bg-secondary">
+          <div class="h-full w-full origin-left animate-progress bg-primary"></div>
+        </div>
+      </div>
+    </div>
+  }
+  @if (isLoadingAllSections()) {
+    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
+      <div class="w-full max-w-md px-8 text-center">
+        <p hlmMuted class="mb-4">Зареждане на всички секции...</p>
+        <div class="h-2 w-full overflow-hidden rounded-full bg-secondary">
+          <div class="h-full w-full origin-left animate-progress bg-primary"></div>
+        </div>
+      </div>
+    </div>
+  }
+  @if (isProcessingData() && !isLoadingAllSections()) {
+    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
+      <div class="w-full max-w-md px-8 text-center">
+        <p hlmMuted class="mb-4">Обработване на данните...</p>
+        <div class="h-2 w-full overflow-hidden rounded-full bg-secondary">
+          <div class="h-full w-full origin-left animate-progress bg-primary"></div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="flex flex-col md:flex-row md:justify-between items-center md:items-center gap-4 mb-8">
+    <div>
+      <h1 hlmH2 class="border-b-0 pb-0 text-secondary dark:text-primary">Резултати за {{ dateName }}</h1>
+      <p hlmLead class="text-secondary/80 dark:text-foreground/80">{{ regionName }}@if (regionId) {
+        (МИР {{ regionId }})
+      }</p>
+    </div>
+    <div class="flex gap-2 flex-col">
+      <div class="flex gap-2 flex-row flex-wrap justify-end">
+        @if (getCikUrl()) {
+          <a [href]="getCikUrl()" target="_blank" hlmBtn variant="outline"
+             hlmTooltip="Отвори официалните резултати в сайта на ЦИК">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15 3 21 3 21 9"/>
+              <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+            ЦИК
+          </a>
+        }
+        <a [routerLink]="['/election', date]" hlmBtn variant="default">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <path d="m12 19-7-7 7-7"/>
+            <path d="M19 12H5"/>
+          </svg>
+          Назад
+        </a>
+        <a routerLink="/" hlmBtn variant="default">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <path d="m3 9 9-7 9 7"/>
+            <path d="M9 22V12h6v10"/>
+            <path d="M21 22H3"/>
+          </svg>
+          Начало
+        </a>
+      </div>
+      <div class="flex gap-2 flex-row justify-end">
+        @if (sectionsWithError.length > 0) {
+          <button hlmBtn variant="outline" (click)="openErrorModal()"
+                  class="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            Сгрешени протоколи ({{ sectionsWithError.length }})
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  @if (compactMappingFallback()) {
+    <div class="mb-6 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-950/50 dark:text-amber-200">
+      Зареден е резервен режим за колонните ключове. Данните са видими, но част от разширените сравнения може да са непълни.
+    </div>
+  }
+
+  @if (bannerType()) {
+    <div class="mb-6 rounded-md border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm">
+      <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div class="text-destructive">
+          @if (bannerType() === 'sections') {
+            Няма импортирани секции за този избор. Качете файл със секции, за да продължите.
+          } @else {
+            Няма импортирани доброволци за този избор. Качете файл с доброволци, за да продължите.
+          }
+        </div>
+        <button hlmBtn type="button" class="w-full md:w-auto" (click)="openImportModal()">
+          @if (bannerType() === 'sections') {
+            Импорт на секции
+          } @else {
+            Импорт на доброволци
+          }
+        </button>
+      </div>
+    </div>
+  }
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div class="lg:col-span-12">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+        @if (viewMode() !== 'candidates') {
+          <app-stat-card
+            label="Активност"
+            [value]="avgRegionActivity"
+            [isPercent]="true"
+            [tooltipData]="globalComparisons['activityPercent']"
+            [currentValue]="toBp(avgRegionActivity)"/>
+        }
+        <app-stat-card
+          [label]="viewMode() === 'candidates' ? 'Общо валидни гласове за партиите' : 'Общо избиратели'"
+          [value]="totalElectors"
+          [tooltipData]="globalComparisons['total']"
+          [currentValue]="totalElectors"/>
+        <app-stat-card
+          [label]="viewMode() === 'candidates' ? 'Общо преференции' : 'Общо валидни гласове'"
+          [value]="totalVoted"
+          [tooltipData]="globalComparisons['voted']"
+          [currentValue]="totalVoted"/>
+        @if (viewMode() !== 'candidates') {
+          <app-stat-card
+            label="Общо невалидни гласове"
+            [value]="totalInvalid"
+            [tooltipData]="globalComparisons['discardedVotes']"
+            [currentValue]="totalInvalid"/>
+        }
+        <app-stat-card [label]="viewMode() === 'candidates' ? 'Преференции по тип' : 'Гласове по тип'">
+          <ng-template #customContent>
+            <div class="flex flex-col gap-1 ms-1 text-xs whitespace-nowrap">
+              <span class="text-secondary/70 dark:text-foreground/70" [hlmTooltip]="globalComparisons['totalPaper']"
+                    [currentValue]="totalRegionPaper">хартиени: <strong
+                class="text-secondary dark:text-primary">{{ totalRegionPaper | number }}</strong></span>
+              <span class="text-secondary/70 dark:text-foreground/70" [hlmTooltip]="globalComparisons['totalMachine']"
+                    [currentValue]="totalRegionMachine">машинни: <strong
+                class="text-secondary dark:text-primary">{{ totalRegionMachine | number }}</strong></span>
+            </div>
+          </ng-template>
+        </app-stat-card>
+        @if (viewMode() === 'candidates') {
+          <app-stat-card
+            label="Гласували без преференции"
+            [value]="candidateVotesWithoutPreferences"
+            [tooltipData]="globalComparisons['voted']"
+            [currentValue]="candidateVotesWithoutPreferences"/>
+        }
+        @if (viewMode() !== 'candidates') {
+          <app-stat-card
+            label="Общо не подкрепя никого"
+            [value]="totalNoVotes"
+            [tooltipData]="globalComparisons['noVotes']"
+            [currentValue]="totalNoVotes"/>
+        }
+      </div>
+
+      <div hlmCard class="p-4 md:p-6 border-primary/20">
+        <div class="flex flex-col gap-6 mb-6">
+          <div class="flex flex-wrap justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <span
+                class="inline-flex items-center justify-center px-3 py-1.5 rounded-full text-sm font-semibold bg-primary/10 text-primary-foreground dark:text-primary border border-primary/20 min-w-[3rem]">
+                Редове: {{ viewMode() === 'candidates' ? filteredCandidates.length : (viewMode() === 'volunteers' ? volunteersData.length : filteredSections.length) }}
+              </span>
+              <div class="flex flex-wrap gap-2 border-b border-primary/10 align-baseline">
+                <button hlmBtn [variant]="'line'" [attr.data-state]="viewMode() === 'sections' ? 'active' : 'inactive'"
+                        (click)="setViewMode('sections')">
+                  Секции
+                </button>
+                <button hlmBtn [variant]="'line'" [attr.data-state]="viewMode() === 'cities' ? 'active' : 'inactive'"
+                        (click)="setViewMode('cities')">
+                  Населени места
+                </button>
+                <button hlmBtn [variant]="'line'"
+                        [attr.data-state]="viewMode() === 'municipalities' ? 'active' : 'inactive'"
+                        (click)="setViewMode('municipalities')">
+                  Общини
+                </button>
+                <button hlmBtn [variant]="'line'"
+                        [attr.data-state]="viewMode() === 'candidates' ? 'active' : 'inactive'"
+                        (click)="setViewMode('candidates')">
+                  Кандидати
+                </button>
+                @if (canManageVolunteers()) {
+                  <button hlmBtn [variant]="'line'"
+                          [attr.data-state]="viewMode() === 'volunteers' ? 'active' : 'inactive'"
+                          (click)="setViewMode('volunteers')">
+                    Доброволци
+                  </button>
+                }
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              @if (viewMode() === 'volunteers') {
+                <button hlmBtn variant="outline" (click)="openPeopleImportModal()"
+                        class="border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                  </svg>
+                  Импорт доброволци
+                </button>
+              } @else {
+                <button hlmBtn variant="outline" (click)="openExportModal()"
+                        class="border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  Експорт CSV
+                </button>
+              }
+              <div class="relative">
+                <app-column-filter
+                  [columns]="filteredAvailableColumns"
+                  [selectedColumnIds]="currentVisibleColumns"
+                  (selectedColumnIdsChange)="onColumnSelectionChange($event)"/>
+              </div>
+            </div>
+          </div>
+          @if (viewMode() === 'sections' || viewMode() === 'cities' || viewMode() === 'municipalities') {
+            <app-section-filters
+              [date]="date"
+              [showMissingPositionQuickFilters]="canManageVolunteers() && managedPeople().length > 0 && viewMode() === 'sections'"
+              [positions]="managedPositions()"
+              [initialFilters]="{searchTerm: searchTerm, activeTab: activeTab(), activityOperator: activityOperator(), lowActivityThreshold: lowActivityThreshold, sectionTypes: selectedSectionTypes(), riskFilterType: riskFilterType(), selectedRiskCategories: selectedRiskCategories(), quickMissingPositionId: quickFilterPositionId, quickMissingAnyPosition: quickFilterAnyMissingPosition}"
+              (filterChange)="onFilterChange($event)"/>
+          } @else if (viewMode() === 'candidates') {
+            <!-- Candidate Filters -->
+            <div class="grid grid-cols-1 md:grid-cols-2 md:grid-rows-3 lg:grid-cols-4 lg:grid-rows-1 gap-3 w-full">
+              <!-- Leaders Filter -->
+              <div class="flex flex-row gap-2" style="align-content: center">
+                <!-- Party Filter -->
+                <app-party-filter
+                  [parties]="allParties"
+                  [selectedPartyIds]="selectedCandidatePartyIds()"
+                  (selectedPartyIdsChange)="onCandidatePartySelectionChange($event)"/>
+
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" [(ngModel)]="showLeadersOnly"
+                         (ngModelChange)="showLeadersOnly.set($event); applyCandidateFilter()"
+                         class="cursor-pointer"/>
+                  <span class="text-sm font-medium">Само водачи (101)</span>
+                </label>
+              </div>
+
+              <!-- Preference Filter (Number) -->
+              <app-comparison-operator-input
+                [operator]="candidatePreferenceOperator()"
+                [value]="candidatePreferenceThreshold"
+                label="Преференции"
+                [min]="0"
+                [step]="1"
+                suffix=""
+                (operatorChange)="candidatePreferenceOperator.set($event); applyCandidateFilter()"
+                (valueChange)="candidatePreferenceThreshold = $event; applyCandidateFilter()"/>
+
+              <!-- Risk Filter -->
+              <app-risk-filter-dropdown
+                [riskCategories]="candidateRiskCategories"
+                [riskFilterType]="candidateRiskFilterType()"
+                [selectedRiskCategories]="selectedCandidateRiskCategories()"
+                [radioName]="'candidateRiskType'"
+                (riskFilterTypeChange)="onCandidateRiskFilterTypeChange($event)"
+                (selectedRiskCategoriesChange)="onCandidateRiskCategoriesChange($event)"
+              />
+
+              <!-- Search -->
+              <div class="w-full">
+                <app-search-filter
+                  placeholder="Търсене..."
+                  [value]="candidateSearchTerm"
+                  (valueChange)="candidateSearchTerm = $event; applyCandidateFilter()"/>
+              </div>
+            </div>
+          } @else {
+            <div class="grid grid-cols-1 gap-3 md:grid-cols-3">
+              <div>
+                <app-search-filter
+                  placeholder="Търсене на доброволец..."
+                  [value]="volunteerSearchTerm"
+                  (valueChange)="volunteerSearchTerm = $event"/>
+              </div>
+              <div class="relative">
+                <button hlmBtn type="button" variant="outline" (click)="toggleVolunteerFiltersDropdown()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                  </svg>
+                  Филтри на разпределяне
+                </button>
+                @if (showAssignmentFilterDropdown()) {
+                  <div class="absolute z-[120] mt-2 w-[300px] rounded-md border border-border bg-popover p-3 shadow-md">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm font-medium">Филтри</span>
+                      <button hlmBtn type="button" variant="ghost" size="sm" (click)="clearVolunteerFilters()">Изчисти</button>
+                    </div>
+                    <div class="mt-3 grid gap-2 text-sm">
+                      <div class="space-y-1">
+                        <p class="text-muted-foreground">Позиция</p>
+                        <div class="flex flex-wrap gap-2">
+                          <button
+                            hlmBtn
+                            type="button"
+                            size="sm"
+                            [variant]="!volunteerPositionFilterId ? 'default' : 'outline'"
+                            (click)="volunteerPositionFilterId = ''"
+                          >
+                            Всички
+                          </button>
+                          <button
+                            hlmBtn
+                            type="button"
+                            size="sm"
+                            [variant]="volunteerOnlyUnassigned ? 'default' : 'outline'"
+                            (click)="volunteerOnlyUnassigned = !volunteerOnlyUnassigned"
+                          >
+                            Само неразпределени
+                          </button>
+                          @for (position of managedPositions(); track position.id) {
+                            <button
+                              hlmBtn
+                              type="button"
+                              size="sm"
+                              [variant]="volunteerPositionFilterId === position.id ? 'default' : 'outline'"
+                              [style.border-color]="position.color || '#64748b'"
+                              [style.background-color]="volunteerPositionFilterId === position.id ? (position.color || '#64748b') : 'transparent'"
+                              [style.color]="volunteerPositionFilterId === position.id ? '#ffffff' : (position.color || '#64748b')"
+                              (click)="volunteerPositionFilterId = position.id"
+                            >
+                              {{ position.name }}
+                            </button>
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+              <div class="flex justify-start md:justify-end">
+                <button hlmBtn type="button" (click)="openAddPersonModal()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                  </svg>
+                  Добави доброволец
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+
+        @if (viewMode() !== 'candidates' && viewMode() !== 'volunteers') {
+          <div class="overflow-auto max-h-[70vh]">
+            <table hlmTable>
+              <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
+              <tr hlmTableRow class="hover:bg-transparent">
+                @if (visibleColumns().has('sectionId')) {
+                  <th hlmTableHead (click)="sortSections('sectionId')"
+                      class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                        <span class="flex items-center justify-between">
+                                            <span>{{ groupByCity() ? 'Секции' : 'Секция' }}</span>
+                                            <span class="ml-1 flex items-center">
+                                                @if (sectionSortColumn === 'sectionId') {
+                                                  <span
+                                                    class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                } @else {
+                                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                                       viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                       stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                       class="opacity-40 group-hover:opacity-70">
+                                                        <path d="M8 9l4-4 4 4"/>
+                                                        <path d="M8 15l4 4 4-4"/>
+                                                    </svg>
+                                                }
+                                            </span>
+                                        </span>
+                  </th>
+                }
+                @if (visibleColumns().has('riskScore')) {
+                  <th hlmTableHead (click)="sortSections('riskScore')"
+                      class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                        <span class="flex items-center justify-end">
+                                            <span>Рискове</span>
+                                            <span class="ml-1 flex items-center">
+                                                @if (sectionSortColumn === 'riskScore') {
+                                                  <span
+                                                    class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                } @else {
+                                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                                       viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                       stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                       class="opacity-40 group-hover:opacity-70">
+                                                        <path d="M8 9l4-4 4 4"/>
+                                                        <path d="M8 15l4 4 4-4"/>
+                                                    </svg>
+                                                }
+                                            </span>
+                                        </span>
+                  </th>
+                }
+                @if (visibleColumns().has('regionName') && (regionId === 'all' || !regionId)) {
+                  <th hlmTableHead (click)="sortSections('regionName')"
+                      class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                        <span class="flex items-center justify-between">
+                                            <span>Регион</span>
+                                            <span class="ml-1 flex items-center">
+                                                @if (sectionSortColumn === 'regionName') {
+                                                  <span
+                                                    class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                } @else {
+                                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                                       viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                       stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                       class="opacity-40 group-hover:opacity-70">
+                                                        <path d="M8 9l4-4 4 4"/>
+                                                        <path d="M8 15l4 4 4-4"/>
+                                                    </svg>
+                                                }
+                                            </span>
+                                        </span>
+                  </th>
+                }
+                @if (visibleColumns().has('municipalityName') && viewMode() !== 'municipalities') {
+                  <th hlmTableHead (click)="sortSections('municipalityName')"
+                      class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                      <span class="flex items-center justify-between">
+                        <span>Община</span>
+                        <span class="ml-1 flex items-center">
+                            @if (sectionSortColumn === 'municipalityName') {
+                              <span
+                                class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                            } @else {
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                   class="opacity-40 group-hover:opacity-70">
+                                    <path d="M8 9l4-4 4 4"/>
+                                    <path d="M8 15l4 4 4-4"/>
+                                </svg>
+                            }
+                        </span>
+                    </span>
+                  </th>
+                }
+                @if (visibleColumns().has('cityName')) {
+                  <th hlmTableHead (click)="sortSections('cityName')"
+                      class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                      <span class="flex items-center justify-between">
+                        <span>{{ isMunicipalityGrouping() ? 'Община' : 'Населено място' }}</span>
+                        <span class="ml-1 flex items-center">
+                            @if (sectionSortColumn === 'cityName') {
+                              <span
+                                class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                            } @else {
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                   class="opacity-40 group-hover:opacity-70">
+                                    <path d="M8 9l4-4 4 4"/>
+                                    <path d="M8 15l4 4 4-4"/>
+                                </svg>
+                            }
+                        </span>
+                    </span>
+                  </th>
+                }
+                @if (visibleColumns().has('sectionName') && !groupByCity()) {
+                  <th hlmTableHead (click)="sortSections('sectionName')"
+                      class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                    <span class="flex items-center justify-between">
+                        <span>Име на секция</span>
+                        <span class="ml-1 flex items-center">
+                            @if (sectionSortColumn === 'sectionName') {
+                              <span
+                                class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                            } @else {
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                   class="opacity-40 group-hover:opacity-70">
+                                    <path d="M8 9l4-4 4 4"/>
+                                    <path d="M8 15l4 4 4-4"/>
+                                </svg>
+                            }
+                        </span>
+                    </span>
+                  </th>
+                }
+                @if (visibleColumns().has('total')) {
+                  <th hlmTableHead (click)="sortSections('total')"
+                      class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                      <span class="flex items-center justify-end">
+                          <span>Избиратели</span>
+                          <span class="ml-1 flex items-center">
+                              @if (sectionSortColumn === 'total') {
+                                <span
+                                  class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                              } @else {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                     class="opacity-40 group-hover:opacity-70">
+                                      <path d="M8 9l4-4 4 4"/>
+                                      <path d="M8 15l4 4 4-4"/>
+                                  </svg>
+                              }
+                          </span>
+                      </span>
+                  </th>
+                }
+                @if (visibleColumns().has('voted')) {
+                  <th hlmTableHead (click)="sortSections('voted')"
+                      class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                        <span class="flex items-center justify-end">
+                                            <span>Гласували</span>
+                                            <span class="ml-1 flex items-center">
+                                                @if (sectionSortColumn === 'voted') {
+                                                  <span
+                                                    class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                } @else {
+                                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                                       viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                       stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                       class="opacity-40 group-hover:opacity-70">
+                                                        <path d="M8 9l4-4 4 4"/>
+                                                        <path d="M8 15l4 4 4-4"/>
+                                                    </svg>
+                                                }
+                                            </span>
+                                        </span>
+                  </th>
+                }
+                @if (visibleColumns().has('activityBp')) {
+                  <th hlmTableHead (click)="sortSections('activityBp')"
+                      class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                      <span class="flex items-center justify-end">
+                          <span>Активност</span>
+                          <span class="ml-1 flex items-center">
+                              @if (sectionSortColumn === 'activityBp') {
+                                <span
+                                  class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                              } @else {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                     class="opacity-40 group-hover:opacity-70">
+                                      <path d="M8 9l4-4 4 4"/>
+                                      <path d="M8 15l4 4 4-4"/>
+                                  </svg>
+                              }
+                          </span>
+                      </span>
+                  </th>
+                }
+                @if (visibleColumns().has('discardedVotes')) {
+                  <th hlmTableHead (click)="sortSections('discardedVotes')"
+                      class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                      <span class="flex items-center justify-end">
+                          <span>Невалидни</span>
+                          <span class="ml-1 flex items-center">
+                              @if (sectionSortColumn === 'discardedVotes') {
+                                <span
+                                  class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                              } @else {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                     class="opacity-40 group-hover:opacity-70">
+                                      <path d="M8 9l4-4 4 4"/>
+                                      <path d="M8 15l4 4 4-4"/>
+                                  </svg>
+                              }
+                          </span>
+                      </span>
+                  </th>
+                }
+                @if (visibleColumns().has('noVotes')) {
+                  <th hlmTableHead (click)="sortSections('noVotes')"
+                      class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                      <span class="flex items-center justify-end">
+                          <span>Не подкрепя никого</span>
+                          <span class="ml-1 flex items-center">
+                              @if (sectionSortColumn === 'noVotes') {
+                                <span
+                                  class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                              } @else {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                     class="opacity-40 group-hover:opacity-70">
+                                      <path d="M8 9l4-4 4 4"/>
+                                      <path d="M8 15l4 4 4-4"/>
+                                  </svg>
+                              }
+                          </span>
+                      </span>
+                  </th>
+                }
+                @if (visibleColumns().has('typeVotes')) {
+                  <th hlmTableHead (click)="sortSections('totalMachine')"
+                      class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                      <span class="flex items-center justify-between">
+                          <span>Гласове по тип</span>
+                          <span class="ml-1 flex items-center">
+                              @if (sectionSortColumn === 'totalMachine' || sectionSortColumn === 'totalPaper') {
+                                <span
+                                  class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                              } @else {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                     class="opacity-40 group-hover:opacity-70">
+                                      <path d="M8 9l4-4 4 4"/>
+                                      <path d="M8 15l4 4 4-4"/>
+                                  </svg>
+                              }
+                          </span>
+                      </span>
+                  </th>
+                }
+                @if (visibleColumns().has('votesToFirst')) {
+                  <th hlmTableHead (click)="sortSections('votesToFirst')"
+                      class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                      <span class="flex items-center justify-end">
+                          <span>Нужни</span>
+                          <span class="ml-1 flex items-center">
+                              @if (sectionSortColumn === 'votesToFirst') {
+                                <span
+                                  class="text-primary dark:text-secondary font-bold">{{ sectionSortDir === 'asc' ? '↑' : '↓' }}</span>
+                              } @else {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                     class="opacity-40 group-hover:opacity-70">
+                                      <path d="M8 9l4-4 4 4"/>
+                                      <path d="M8 15l4 4 4-4"/>
+                                  </svg>
+                              }
+                          </span>
+                      </span>
+                  </th>
+                }
+                @if (visibleColumns().has('positions') && canManageVolunteers() && managedPeople().length > 0 && !groupByCity()) {
+                  <th hlmTableHead class="min-w-[220px] text-secondary dark:text-primary">
+                    Позиции
+                  </th>
+                }
+                @if (visibleColumns().has('topParties')) {
+                  <th hlmTableHead class="min-w-[200px] text-secondary dark:text-primary">
+                    Топ 3 партии
+                  </th>
+                }
+                @if (visibleColumns().has('topCandidates')) {
+                  <th hlmTableHead class="min-w-[200px] text-secondary dark:text-primary">
+                    Топ 3 преференции
+                  </th>
+                }
+              </tr>
+              </thead>
+              <tbody hlmTableBody>
+                @for (section of filteredSections; track section.sectionId + section.cityName) {
+                  <tr hlmTableRow
+                      class="cursor-pointer hover:bg-primary/10 active:bg-primary/20 transition-colors group relative"
+                      [class.bg-muted]="selectedSection?.sectionId === section.sectionId"
+                      [class.bg-primary/5]="selectedSection?.sectionId === section.sectionId"
+                    (click)="loadSectionDetails(section)">
+                  @if (visibleColumns().has('sectionId')) {
+                    <td hlmTableCell class="font-medium relative pr-6">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                           class="absolute right-2 top-1/2 -translate-y-1/2 opacity-30 group-hover:opacity-70 transition-opacity text-primary dark:text-secondary pointer-events-none">
+                        <path d="m9 18 6-6-6-6"/>
+                      </svg>
+                      @if (groupByCity()) {
+                        <span class="text-muted-foreground">{{ section.sectionId }}</span>
+                      } @else {
+                        <div class="flex items-center gap-1 group">
+                          <button hlmBtn variant="ghost" size="icon" class="h-6 `w-6` transition-opacity"
+                                  (click)="copyToClipboard(section.sectionId, $event)"
+                                  [hlmTooltip]="copiedId() === section.sectionId ? 'Копирано!' : 'Копирай ID на секцията'">
+                            @if (copiedId() === section.sectionId) {
+                              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                   fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                   stroke-linejoin="round" class="text-green-500">
+                                <polyline points="20 6 9 17 4 12"/>
+                              </svg>
+                            } @else {
+                              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                   fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                   stroke-linejoin="round">
+                                <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+                                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+                              </svg>
+                            }
+                          </button>
+                          <span>{{ section.sectionId }}</span>
+                        </div>
+                      }
+                    </td>
+                  }
+                  @if (visibleColumns().has('riskScore')) {
+                    <td hlmTableCell class="text-right">
+                      <div class="flex justify-end">
+                        @if (getSectionRiskScore(section)) {
+                          <span
+                            class="inline-flex items-center px-2 py-1 rounded-full text-s font-bold bg-destructive/10 text-destructive"
+                            [hlmTooltip]="groupByCity() ? getFormattedCityRisks(section) : getFormattedRisks(section)">
+                                                            {{ getSectionRiskScore(section) }}
+                          </span>
+                        } @else {
+                          <span
+                            class="inline-flex items-center px-2 py-1 rounded-full text-s font-bold bg-green-500 text-white">0</span>
+                        }
+                      </div>
+                    </td>
+                  }
+                  @if (visibleColumns().has('regionName') && (regionId === 'all' || !regionId)) {
+                    <td hlmTableCell>
+                      {{ section.regionName || '-' }}
+                    </td>
+                  }
+                  @if (visibleColumns().has('municipalityName') && viewMode() !== 'municipalities') {
+                    <td hlmTableCell>
+                      {{ getMunicipalityName(section) || '-' }}
+                    </td>
+                  }
+                  @if (visibleColumns().has('cityName')) {
+                    <td hlmTableCell>
+                      @if (groupByCity()) {
+                        <div class="flex items-center gap-1 group">
+                          <a [href]="getGoogleMapsUrl(getGroupMapCity(section), section.sectionName)" target="_blank"
+                             hlmBtn
+                             variant="ghost" size="icon" class="h-6 pl-1 pr-1 w-6 transition-opacity"
+                             (click)="$event.stopPropagation()" hlmTooltip="Виж в Google Maps">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round">
+                              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                              <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                          </a>
+                          <span>{{ section.cityName }}</span>
+                        </div>
+                      } @else {
+                        <span>{{ section.cityName }}</span>
+                      }
+                    </td>
+                  }
+                  @if (visibleColumns().has('sectionName') && !groupByCity()) {
+                    <td hlmTableCell>
+                      <div class="flex items-center gap-1 group">
+                        <a [href]="getGoogleMapsUrl(section.cityName, section.sectionName)" target="_blank" hlmBtn
+                           variant="ghost" size="icon" class="h-6 pl-1 pr-1 w-6 transition-opacity"
+                           (click)="$event.stopPropagation()" hlmTooltip="Виж в Google Maps">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                          </svg>
+                        </a>
+                        <span class="section-name">{{ section.sectionName }}</span>
+                      </div>
+                    </td>
+                  }
+                  @if (visibleColumns().has('total')) {
+                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['total']"
+                        [currentValue]="section.total">{{ section.total | number }}
+                    </td>
+                  }
+                  @if (visibleColumns().has('voted')) {
+                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['voted']"
+                        [currentValue]="section.voted">{{ section.voted | number }}
+                    </td>
+                  }
+                  @if (visibleColumns().has('activityBp')) {
+                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['activityPercent']"
+                        [currentValue]="section.activityBp"
+                        [isPercent]="true">{{ formatActivity((section.activityBp || 0) / 10000) }}%
+                    </td>
+                  }
+                  @if (visibleColumns().has('discardedVotes')) {
+                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['discardedVotes']"
+                        [currentValue]="section.discardedVotes">{{ section.discardedVotes | number }}
+                    </td>
+                  }
+                  @if (visibleColumns().has('noVotes')) {
+                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['noVotes']"
+                        [currentValue]="section.noVotes">{{ section.noVotes | number }}
+                    </td>
+                  }
+                  @if (visibleColumns().has('typeVotes')) {
+                    <td hlmTableCell>
+                      <div class="flex flex-col gap-1 ms-1 text-xs whitespace-nowrap">
+                        <span class="text-secondary/70 dark:text-foreground/70"
+                              [hlmTooltip]="section.comparisons?.['totalPaper']" [currentValue]="section.totalPaper">хартиени: <strong>{{ section.totalPaper | number }}</strong></span>
+                        <span class="text-secondary/70 dark:text-foreground/70"
+                              [hlmTooltip]="section.comparisons?.['totalMachine']"
+                              [currentValue]="section.totalMachine">машинни: <strong>{{ section.totalMachine | number }}</strong></span>
+                      </div>
+                    </td>
+                  }
+                  @if (visibleColumns().has('votesToFirst')) {
+                    <td hlmTableCell class="text-right">
+                      {{ section.votesToFirst !== undefined ? (section.votesToFirst | number) : '-' }}
+                    </td>
+                  }
+                  @if (visibleColumns().has('positions') && canManageVolunteers() && managedPeople().length > 0 && !groupByCity()) {
+                    <td hlmTableCell>
+                      <div class="flex flex-wrap gap-1">
+                        @for (position of managedPositions(); track position.id) {
+                          @let count = getSectionPositionCounts(section.sectionId)[position.id] || 0;
+                          <span class="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs"
+                                [style.border-color]="position.color || '#64748b'"
+                                [style.background-color]="(position.color || '#64748b') + '22'"
+                                [style.color]="position.color || '#64748b'">
+                            {{ position.name }}
+                            <strong [class.text-destructive]="count === 0">{{ count }}</strong>
+                          </span>
+                        }
+                      </div>
+                    </td>
+                  }
+                  @if (visibleColumns().has('topParties')) {
+                    <td hlmTableCell>
+                      <div class="flex flex-col text-xs">
+                        @for (tp of section.topParties; track tp.name) {
+                          @let alias = getPartyAlias(tp.name);
+                          @let partyComparisons = section.partyVotes[tp.partyId]?.comparisons;
+                          @let partyPercentComparisons = section.partyVotes[tp.partyId]?.percentComparisons;
+                          <div class="flex items-center gap-1.5 min-w-0"
+                               [title]="alias + ': ' + tp.total + ' (' + formatActivity((tp.percentBp || 0) / 10000) + '%)'">
+                            <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
+                            <span class="whitespace-nowrap">: <strong [hlmTooltip]="partyComparisons"
+                                                                      [currentValue]="tp.total">{{ tp.total | number }}</strong> (<span
+                              [hlmTooltip]="partyPercentComparisons" [currentValue]="tp.percentBp"
+                              [isPercent]="true">{{ formatActivity((tp.percentBp || 0) / 10000) }}%</span>)</span>
+                          </div>
+                        }
+                      </div>
+                    </td>
+                  }
+                  @if (visibleColumns().has('topCandidates')) {
+                    <td hlmTableCell>
+                      <div class="flex flex-col text-xs">
+                        @for (candidate of getTopCandidates(section); track candidate.candidateName + candidate.partyId) {
+                          @let alias = getPartyAlias(candidate.partyName);
+                          <div class="flex items-center gap-1 min-w-0"
+                               [title]="candidate.candidateName + ' (' + alias + '): ' + candidate.total + ' преференциални гласа'">
+                                                          <span class="flex items-center gap-1 min-w-0 truncate">
+                                                            {{ candidate.candidateName }}
+                                                            <app-party-badge [partyName]="candidate.partyName" size="xs"
+                                                                             extraClass="truncate"></app-party-badge>: <strong>{{ candidate.total | number }}</strong>
+                                                          </span>
+                            @if (isLeaderCandidate(candidate.candidateId)) {
+                              <span
+                                class="inline-flex items-center rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary"
+                                [hlmTooltip]="getLeaderTooltip(candidate.partyName)">
+                                                              Водач
+                                                            </span>
+                            }
+                          </div>
+                        }
+                      </div>
+                    </td>
+                  }
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else if (viewMode() === 'candidates') {
+          <!-- Candidates Table -->
+          <div class="overflow-auto max-h-[70vh]">
+            <table hlmTable>
+              <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
+              <tr hlmTableRow class="hover:bg-transparent">
+                @if (currentVisibleColumns.has('candidateId')) {
+                  <th hlmTableHead (click)="sortCandidates('candidateId')"
+                      class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                            <span class="flex items-center justify-between">
+                                                <span>Номер</span>
+                                                <span class="ml-1 flex items-center">
+                                                    @if (candidateSortColumn === 'candidateId') {
+                                                      <span
+                                                        class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                    } @else {
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                                           viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                           stroke-width="2" stroke-linecap="round"
+                                                           stroke-linejoin="round"
+                                                           class="opacity-40 group-hover:opacity-70">
+                                                            <path d="M8 9l4-4 4 4"/>
+                                                            <path d="M8 15l4 4 4-4"/>
+                                                        </svg>
+                                                    }
+                                                </span>
+                                            </span>
+                  </th>
+                }
+                @if (currentVisibleColumns.has('risks')) {
+                  <th hlmTableHead (click)="sortCandidates('risks')"
+                      class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                            <span class="flex items-center justify-between">
+                                                <span>Рискове</span>
+                                                <span class="ml-1 flex items-center">
+                                                    @if (candidateSortColumn === 'risks') {
+                                                      <span
+                                                        class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                    } @else {
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                                           viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                           stroke-width="2" stroke-linecap="round"
+                                                           stroke-linejoin="round"
+                                                           class="opacity-40 group-hover:opacity-70">
+                                                            <path d="M8 9l4-4 4 4"/>
+                                                            <path d="M8 15l4 4 4-4"/>
+                                                        </svg>
+                                                    }
+                                                </span>
+                                            </span>
+                  </th>
+                }
+                @if (currentVisibleColumns.has('candidateName')) {
+                  <th hlmTableHead (click)="sortCandidates('candidateName')"
+                      class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                            <span class="flex items-center justify-between">
+                                                <span>Име</span>
+                                                <span class="ml-1 flex items-center">
+                                                    @if (candidateSortColumn === 'candidateName') {
+                                                      <span
+                                                        class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                    } @else {
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                                           viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                           stroke-width="2" stroke-linecap="round"
+                                                           stroke-linejoin="round"
+                                                           class="opacity-40 group-hover:opacity-70">
+                                                            <path d="M8 9l4-4 4 4"/>
+                                                            <path d="M8 15l4 4 4-4"/>
+                                                        </svg>
+                                                    }
+                                                </span>
+                                            </span>
+                  </th>
+                }
+                @if (currentVisibleColumns.has('partyName')) {
+                  <th hlmTableHead (click)="sortCandidates('partyName')"
+                      class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                            <span class="flex items-center justify-between">
+                                                <span>Партия</span>
+                                                <span class="ml-1 flex items-center">
+                                                    @if (candidateSortColumn === 'partyName') {
+                                                      <span
+                                                        class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                    } @else {
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                                           viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                           stroke-width="2" stroke-linecap="round"
+                                                           stroke-linejoin="round"
+                                                           class="opacity-40 group-hover:opacity-70">
+                                                            <path d="M8 9l4-4 4 4"/>
+                                                            <path d="M8 15l4 4 4-4"/>
+                                                        </svg>
+                                                    }
+                                                </span>
+                                            </span>
+                  </th>
+                }
+                @if (currentVisibleColumns.has('totalInRegion')) {
+                  <th hlmTableHead (click)="sortCandidates('totalInRegion')"
+                      class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                        <span class="flex items-center justify-between">
+                            <span>Преференции</span>
+                            <span class="ml-1 flex items-center">
+                                @if (candidateSortColumn === 'totalInRegion') {
+                                  <span
+                                    class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                } @else {
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                       viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                       stroke-width="2" stroke-linecap="round"
+                                       stroke-linejoin="round"
+                                       class="opacity-40 group-hover:opacity-70">
+                                        <path d="M8 9l4-4 4 4"/>
+                                        <path d="M8 15l4 4 4-4"/>
+                                    </svg>
+                                }
+                            </span>
+                        </span>
+                  </th>
+                }
+                @if (currentVisibleColumns.has('preferencePercentOfPartyVotes')) {
+                  <th hlmTableHead (click)="sortCandidates('preferencePercentOfPartyVotes')"
+                      class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                                            <span class="flex items-center justify-end">
+                                                <span>% от гласовете за партията</span>
+                                                <span class="ml-1 flex items-center">
+                                                    @if (candidateSortColumn === 'preferencePercentOfPartyVotes') {
+                                                      <span
+                                                        class="text-primary dark:text-secondary font-bold">{{ candidateSortDir === 'asc' ? '↑' : '↓' }}</span>
+                                                    } @else {
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                                           viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                           stroke-width="2" stroke-linecap="round"
+                                                           stroke-linejoin="round"
+                                                           class="opacity-40 group-hover:opacity-70">
+                                                            <path d="M8 9l4-4 4 4"/>
+                                                            <path d="M8 15l4 4 4-4"/>
+                                                        </svg>
+                                                    }
+                                                </span>
+                                            </span>
+                  </th>
+                }
+              </tr>
+              </thead>
+              <tbody hlmTableBody>
+                @for (candidate of filteredCandidates; track candidate.partyId + candidate.candidateId) {
+                  <tr hlmTableRow
+                      class="hover:bg-primary/10 transition-colors cursor-pointer"
+                      (click)="openCandidateModal(candidate)">
+                    @if (currentVisibleColumns.has('candidateId')) {
+                      <td hlmTableCell>{{ candidate.candidateId }}</td>
+                    }
+                    @if (currentVisibleColumns.has('risks')) {
+                      <td hlmTableCell>
+                        @if (candidate.riskIndicators && candidate.riskIndicators.length > 0) {
+                          <span
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-destructive/10 text-destructive cursor-help"
+                            [hlmTooltip]="getFormattedCandidateRisks(candidate)">
+                                              {{ candidate.riskIndicators.length }}
+                                            </span>
+                        } @else {
+                          <span
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-green-500/20 text-green-600 dark:text-green-400">0</span>
+                        }
+                      </td>
+                    }
+                    @if (currentVisibleColumns.has('candidateName')) {
+                      <td hlmTableCell class="font-medium">
+                                              <span class="inline-flex items-center gap-2">
+                                                <span>{{ candidate.candidateName }}</span>
+                                                @if (isLeaderCandidate(candidate.candidateId)) {
+                                                  <span
+                                                    class="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary"
+                                                    [hlmTooltip]="getLeaderTooltip(candidate.partyName)">
+                                                    Водач
+                                                  </span>
+                                                }
+                                              </span>
+                      </td>
+                    }
+                    @if (currentVisibleColumns.has('partyName')) {
+                      <td hlmTableCell>
+                        <app-party-badge [partyName]="candidate.partyName" size="xs"></app-party-badge>
+                      </td>
+                    }
+                    @if (currentVisibleColumns.has('totalInRegion')) {
+                      <td hlmTableCell class="text-right flex flex-row justify-between" style="align-items: center">
+                        <span [hlmTooltip]="candidate.comparisons ?? 'Не е участвал в други избори'"
+                              [currentValue]="candidate.totalInRegion">{{ candidate.totalInRegion | number }}</span>
+                        <div class="flex flex-col gap-1 ms-1 text-xs whitespace-nowrap">
+                          <span class="text-secondary/70 dark:text-foreground/70"
+                                [hlmTooltip]="candidate.paperComparisons ?? 'Не е участвал в други избори'"
+                                [currentValue]="candidate.paper">хартиени: <strong>{{ candidate.paper | number }}</strong></span>
+                          <span class="text-secondary/70 dark:text-foreground/70"
+                                [hlmTooltip]="candidate.machineComparisons ?? 'Не е участвал в други избори'"
+                                [currentValue]="candidate.machine">машинни: <strong>{{ candidate.machine | number }}</strong></span>
+                        </div>
+                      </td>
+                    }
+                    @if (currentVisibleColumns.has('preferencePercentOfPartyVotes')) {
+                      <td hlmTableCell class="text-right">{{ candidate.preferencePercentOfPartyVotes.toFixed(2) }}%</td>
+                    }
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="overflow-auto max-h-[70vh]">
+            <table hlmTable>
+              <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
+                <tr hlmTableRow class="hover:bg-transparent">
+                  <th hlmTableHead>Доброволец</th>
+                  <th hlmTableHead>Контакт</th>
+                  <th hlmTableHead>Позиция</th>
+                  <th hlmTableHead>Статус</th>
+                  <th hlmTableHead class="text-right">Действия</th>
+                </tr>
+              </thead>
+              <tbody hlmTableBody>
+                @for (person of volunteersData; track person.id) {
+                  @let assignment = getAssignmentForPerson(person.id);
+                  <tr hlmTableRow>
+                    <td hlmTableCell>{{ person.fullName }}</td>
+                    <td hlmTableCell>
+                      <div class="flex flex-col text-xs">
+                        <span>{{ person.email || '-' }}</span>
+                        <span>{{ person.phone || '-' }}</span>
+                      </div>
+                    </td>
+                    <td hlmTableCell>
+                      @if (assignment) {
+                        <span class="inline-flex items-center rounded-full border px-2 py-0.5 text-xs"
+                              [style.border-color]="assignment.position?.color || '#64748b'"
+                              [style.background-color]="(assignment.position?.color || '#64748b') + '22'"
+                              [style.color]="assignment.position?.color || '#64748b'">
+                          {{ assignment.position?.name || '-' }}
+                        </span>
+                      } @else {
+                        <span class="text-muted-foreground">-</span>
+                      }
+                    </td>
+                    <td hlmTableCell>
+                      @if (assignment) {
+                        <div class="flex flex-col text-xs">
+                          <span [title]="assignment.section?.sectionName || ''">
+                            {{ assignment.section?.sectionId }} - {{ assignment.section?.cityName || '-' }}
+                          </span>
+                          <span [title]="assignment.section?.sectionName || ''">{{ assignment.section?.sectionName || '-' }}</span>
+                        </div>
+                      } @else {
+                        <span class="text-muted-foreground">Не е разпределен</span>
+                      }
+                    </td>
+                    <td hlmTableCell class="text-right">
+                      <button hlmBtn variant="outline" size="sm" class="mr-2" (click)="openEditPersonModal(person)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                          <path d="M12 20h9"/>
+                          <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                        </svg>
+                        Редакция
+                      </button>
+                      @if (assignment) {
+                        <button hlmBtn variant="outline" size="sm"
+                                class="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                                (click)="unassignPerson(person.id)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                          </svg>
+                          Освободи
+                        </button>
+                      } @else {
+                        <button hlmBtn variant="outline" size="sm" (click)="openAssignModal(person.id)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                          </svg>
+                          Разпредели
+                        </button>
+                      }
+                      <button hlmBtn variant="outline" size="sm"
+                              class="ml-2 border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                              (click)="deletePerson(person)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6l-1 14H6L5 6"></path>
+                          <path d="M10 11v6"></path>
+                          <path d="M14 11v6"></path>
+                          <path d="M9 6V4h6v2"></path>
+                        </svg>
+                        Изтрий
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+    <div hlmCard class="border-primary/20 p-4">
+      @if (regionalChartOptions.series) {
+        <highcharts-chart [options]="regionalChartOptions"
+                          style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+      }
+    </div>
+    <div hlmCard class="border-primary/20 p-4">
+      @if (ppdbChartOptions.series) {
+        <highcharts-chart [options]="ppdbChartOptions"
+                          style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+      }
+    </div>
+    <div hlmCard class="border-primary/20 p-4">
+      @if (activityChartOptions.series) {
+        <highcharts-chart [options]="activityChartOptions"
+                          style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+      }
+    </div>
+  </div>
+
+  @if (isModalOpen() && selectedSection) {
+    <app-section-detail-modal
+      [section]="selectedSection"
+      [currentSectionData]="currentSectionData"
+      [allParties]="allParties"
+      [selectedPartyIds]="selectedPartyIds"
+      [date]="date"
+      [allSections]="sections"
+      [historicalData]="allData"
+      [volunteers]="selectedSectionVolunteerEntries"
+      [showVolunteersTab]="canManageVolunteers()"
+      [canManageVolunteers]="canManageVolunteers()"
+      (close)="closeModal()"
+      (openCandidate)="onSectionCandidateClick($event)"
+      (assignVolunteer)="onAssignFromSectionModal()"
+      (unassignVolunteer)="unassignByAssignmentId($event)"
+    ></app-section-detail-modal>
+  }
+
+  @if (isCandidateModalOpen() && selectedCandidate) {
+    <app-candidate-detail-modal
+      [candidate]="selectedCandidate"
+      [sections]="sections"
+      [currentDate]="date"
+      (close)="closeCandidateModal()"
+      (openSection)="onCandidateSectionClick($event)"
+    />
+  }
+
+  @if (isExportModalOpen()) {
+    <app-export-csv-modal
+      [tableSections]="filteredSections"
+      [filteredCandidates]="filteredCandidates"
+      [allParties]="allParties"
+      [selectedPartyIds]="selectedPartyIds"
+      [initialCandidateColumnIds]="visibleCandidateColumns()"
+      [viewMode]="viewMode()"
+      [date]="date"
+      [regionName]="regionName"
+      (close)="closeExportModal()"
+    ></app-export-csv-modal>
+  }
+
+  <!-- Error Sections Modal -->
+  @if (isErrorModalOpen()) {
+    <app-protocol-error-modal
+      [sectionsWithError]="sectionsWithError"
+      (close)="closeErrorModal()"
+    ></app-protocol-error-modal>
+  }
+
+  @if (uploadModalOpen()) {
+    <app-base-modal
+      size="half"
+      [title]="uploadMode() === 'sections' ? 'Импорт на секции' : 'Импорт на доброволци'"
+      (close)="closeImportModal()"
+    >
+      <div class="grid gap-4">
+        <input hlmInput type="file" (change)="onUploadFileSelected($event)" />
+        @if (uploadError()) {
+          <p class="text-destructive">{{ uploadError() }}</p>
+        }
+        <div class="flex justify-end gap-2">
+          <button hlmBtn type="button" variant="outline" (click)="closeImportModal()">Отказ</button>
+          <button hlmBtn type="button" [disabled]="!uploadFile()" (click)="runUploadImport()">Качи</button>
+        </div>
+      </div>
+    </app-base-modal>
+  }
+
+  @if (addPersonModalOpen()) {
+    <app-base-modal size="half" title="Нов доброволец" subtitle="Добавяне на доброволец за изборите." (close)="closeAddPersonModal()">
+      <form class="grid grid-cols-12 gap-4" (ngSubmit)="createPerson()">
+        <label class="flex flex-col col-span-12 gap-1.5">
+          <span>Име</span>
+          <input hlmInput type="text" name="fullName" [(ngModel)]="addPersonForm.fullName" required />
+        </label>
+        <label class="flex flex-col col-span-6 gap-1.5">
+          <span>Имейл</span>
+          <input hlmInput type="email" name="email" [(ngModel)]="addPersonForm.email" required />
+        </label>
+        <label class="flex flex-col col-span-6 gap-1.5">
+          <span>Телефон</span>
+          <input hlmInput type="text" name="phone" [(ngModel)]="addPersonForm.phone" required />
+        </label>
+        @if (addPersonError()) {
+          <p class="text-destructive col-span-12">{{ addPersonError() }}</p>
+        }
+        <div class="flex justify-end col-span-12 gap-3">
+          <button hlmBtn type="button" variant="outline" (click)="closeAddPersonModal()">Отказ</button>
+          <button hlmBtn type="submit" [disabled]="!canSubmitAddPerson()">Добави</button>
+        </div>
+      </form>
+    </app-base-modal>
+  }
+
+  @if (editPersonModalOpen()) {
+    <app-base-modal size="half" title="Редакция на доброволец" subtitle="Промяна на данните на доброволец." (close)="closeEditPersonModal()">
+      <form class="grid grid-cols-12 gap-4" (ngSubmit)="savePersonDetails()">
+        <label class="flex flex-col col-span-12 gap-1.5">
+          <span>Име</span>
+          <input hlmInput type="text" name="editFullName" [(ngModel)]="editPersonForm.fullName" required />
+        </label>
+        <label class="flex flex-col col-span-6 gap-1.5">
+          <span>Имейл</span>
+          <input hlmInput type="email" name="editEmail" [(ngModel)]="editPersonForm.email" required />
+        </label>
+        <label class="flex flex-col col-span-6 gap-1.5">
+          <span>Телефон</span>
+          <input hlmInput type="text" name="editPhone" [(ngModel)]="editPersonForm.phone" required />
+        </label>
+        @if (editPersonError()) {
+          <p class="text-destructive col-span-12">{{ editPersonError() }}</p>
+        }
+        <div class="flex justify-end col-span-12 gap-3">
+          <button hlmBtn type="button" variant="outline" (click)="closeEditPersonModal()">Отказ</button>
+          <button hlmBtn type="submit" [disabled]="!canSubmitEditPerson()">Запази</button>
+        </div>
+      </form>
+    </app-base-modal>
+  }
+
+  @if (assignModalOpen()) {
+    <app-base-modal size="half" zIndex="z-[130]" title="Разпределяне на доброволец" (close)="closeAssignModal()">
+      <form class="grid gap-3" (ngSubmit)="submitAssignment()">
+        <label class="flex flex-col gap-1.5">
+          <span>Доброволец</span>
+          <app-autocomplete
+            inputName="personInput"
+            placeholder="Търси и избери доброволец"
+            [required]="true"
+            [selectedId]="assignForm.personId"
+            [options]="personAutocompleteOptions"
+            (selectedIdChange)="onAssignPersonInput($event)"
+          />
+        </label>
+
+        <label class="flex flex-col gap-1.5">
+          <span>Секция</span>
+          <app-autocomplete
+            inputName="sectionInput"
+            placeholder="Търси и избери секция"
+            [required]="true"
+            [selectedId]="assignForm.electionSectionId"
+            [options]="sectionAutocompleteOptions"
+            (selectedIdChange)="onAssignSectionInput($event)"
+          />
+        </label>
+
+        <label class="flex flex-col gap-1.5">
+          <span>Позиция</span>
+          <div class="max-h-28 overflow-auto rounded-md border border-border p-2">
+            <div class="flex flex-wrap gap-2">
+              @for (position of assignablePositions; track position.id) {
+                <button
+                  type="button"
+                  hlmBtn
+                  size="sm"
+                  [variant]="assignForm.positionId === position.id ? 'default' : 'outline'"
+                  class="rounded-full border"
+                  [style.border-color]="position.color || '#64748b'"
+                  [style.background-color]="assignForm.positionId === position.id ? (position.color || '#64748b') : 'transparent'"
+                  [style.color]="assignForm.positionId === position.id ? '#ffffff' : (position.color || '#64748b')"
+                  (click)="selectAssignmentPosition(position.id)"
+                >
+                  {{ position.name }}
+                </button>
+              }
+            </div>
+          </div>
+        </label>
+
+        @if (assignError()) {
+          <p class="text-destructive">{{ assignError() }}</p>
+        }
+        <div class="flex justify-end gap-2">
+          <button hlmBtn type="button" variant="outline" (click)="closeAssignModal()">Отказ</button>
+          <button hlmBtn type="submit" [disabled]="!canSubmitAssignment()">Разпредели</button>
+        </div>
+      </form>
+    </app-base-modal>
+  }
+</div>

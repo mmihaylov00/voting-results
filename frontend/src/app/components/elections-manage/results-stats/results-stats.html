@@ -1,0 +1,74 @@
+<div class="p-6">
+  <div hlmCard class="mx-auto max-w-[900px]">
+    <div hlmCardHeader>
+      <h2 hlmCardTitle>Статистика</h2>
+    </div>
+    <div hlmCardContent>
+      <label class="mb-3 flex flex-col gap-1.5">
+        <span>Дата на изборите (YYYY.MM.DD)</span>
+        <input hlmInput type="text" [(ngModel)]="electionDate" />
+      </label>
+      <button hlmBtn (click)="load()">Зареди</button>
+
+      @if (error()) {
+        <p class="text-destructive">{{ error() }}</p>
+      }
+
+      @if (stats()) {
+        <div class="mt-4 grid gap-2 md:grid-cols-3">
+          <div class="rounded-md border border-border/70 px-3 py-2"><strong>Секции:</strong> {{ stats()!.totalSections }}</div>
+          <div class="rounded-md border border-border/70 px-3 py-2"><strong>Резултати:</strong> {{ stats()!.resultsCount }}</div>
+          <div class="rounded-md border border-border/70 px-3 py-2"><strong>Дата:</strong> {{ stats()!.electionDate }}</div>
+        </div>
+
+        <div class="mt-4 grid gap-4 lg:grid-cols-2">
+          <div class="overflow-x-auto">
+            <h3 class="mb-2 text-[0.95rem]">Липсващи секции ({{ stats()!.missingSectionIds.length }})</h3>
+            <table hlmTable>
+              <thead hlmTableHeader>
+              <tr hlmTableRow>
+                <th hlmTableHead>Section ID</th>
+              </tr>
+              </thead>
+              <tbody hlmTableBody>
+                @for (id of stats()!.missingSectionIds; track id) {
+                  <tr hlmTableRow>
+                    <td hlmTableCell>{{ id }}</td>
+                  </tr>
+                }
+                @if (stats()!.missingSectionIds.length === 0) {
+                  <tr hlmTableRow>
+                    <td hlmTableCell>Няма липсващи секции.</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <div class="overflow-x-auto">
+            <h3 class="mb-2 text-[0.95rem]">Излишни секции ({{ stats()!.extraSectionIds.length }})</h3>
+            <table hlmTable>
+              <thead hlmTableHeader>
+              <tr hlmTableRow>
+                <th hlmTableHead>Section ID</th>
+              </tr>
+              </thead>
+              <tbody hlmTableBody>
+                @for (id of stats()!.extraSectionIds; track id) {
+                  <tr hlmTableRow>
+                    <td hlmTableCell>{{ id }}</td>
+                  </tr>
+                }
+                @if (stats()!.extraSectionIds.length === 0) {
+                  <tr hlmTableRow>
+                    <td hlmTableCell>Няма излишни секции.</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

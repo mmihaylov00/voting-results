@@ -1,0 +1,172 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  passwordHash String
+  name         String?
+  role         AppRole    @default(viewer)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+enum AppRole {
+  admin
+  campaign_manager
+  viewer
+}
+
+model Role {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  color     String     @default("#64748b")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  assignments Assignment[]
+}
+
+model Election {
+  id        String   @id @default(uuid())
+  date      String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  parties     ElectionParty[]
+  regions     ElectionRegion[]
+  sections    ElectionSection[]
+  people      Person[]
+  assignments Assignment[]
+  results     ElectionResult[]
+}
+
+model ElectionParty {
+  id         String   @id @default(uuid())
+  electionId String
+  partyId    String
+  name       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  election Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+
+  @@index([electionId])
+  @@unique([electionId, partyId])
+}
+
+model ElectionRegion {
+  id         String   @id @default(uuid())
+  electionId String
+  regionId   String
+  name       String
+  data       Json?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  election Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+
+  @@index([electionId])
+  @@unique([electionId, regionId])
+}
+
+model ElectionSection {
+  id             String   @id @default(uuid())
+  electionId     String
+  sectionId      String
+  regionId       String
+  regionName     String
+  municipalityId String?
+  cityName       String
+  sectionName    String
+  sectionType    String?
+  total          Int?
+  voted          Int?
+  discardedVotes Int?
+  noVotes        Int?
+  noVotesPaper   Int?
+  noVotesMachine Int?
+  totalPaper     Int?
+  totalMachine   Int?
+  activityBp     Int?
+  riskScore      Int?
+  hasProtocolError Boolean?
+  protocolErrorDiff Int?
+  protocolPaperVotes Int?
+  protocolMachineVotes Int?
+  votesToFirst      Int?
+  topParties        Json?
+  partyVotes        Json?
+  candidateVotes    Json?
+  riskIndicators    Json?
+  candidateRiskIndicators Json?
+  meta           Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  election    Election     @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  assignments Assignment[]
+  results     ElectionResult[]
+
+  @@index([electionId])
+  @@unique([electionId, sectionId])
+}
+
+model Person {
+  id         String   @id @default(uuid())
+  electionId String
+  fullName   String
+  email      String?
+  phone      String?
+  externalId String?
+  meta       Json?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  election    Election     @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  assignments Assignment[]
+
+  @@index([electionId])
+}
+
+model Assignment {
+  id                String   @id @default(uuid())
+  electionId        String
+  personId          String
+  electionSectionId String
+  roleId            String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  election Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  person   Person   @relation(fields: [personId], references: [id], onDelete: Cascade)
+  section  ElectionSection @relation(fields: [electionSectionId], references: [id], onDelete: Cascade)
+  role     Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([electionId, personId])
+  @@unique([electionId, electionSectionId, roleId])
+  @@index([electionId])
+}
+
+model ElectionResult {
+  id                String   @id @default(uuid())
+  electionId        String
+  electionSectionId String
+  electionDate      String
+  data              Json
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  election Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  section  ElectionSection @relation(fields: [electionSectionId], references: [id], onDelete: Cascade)
+
+  @@index([electionId])
+  @@index([electionDate])
+  @@unique([electionId, electionSectionId, electionDate])
+}

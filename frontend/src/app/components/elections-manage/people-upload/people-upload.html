@@ -1,0 +1,43 @@
+<div class="p-6">
+  <div hlmCard class="mx-auto max-w-[900px]">
+    <div hlmCardHeader>
+      <h2 hlmCardTitle>Качване на хора</h2>
+    </div>
+    <div hlmCardContent>
+      <input type="file" (change)="onFileSelected($any($event.target).files[0] || null)" />
+      <div class="mt-3 flex gap-3">
+        <button hlmBtn type="button" (click)="onPreview()" [disabled]="!selectedFile()">Преглед</button>
+        <button hlmBtn type="button" (click)="onUpload()" [disabled]="!selectedFile()">Импортирай</button>
+      </div>
+
+      @if (error()) {
+        <p class="text-destructive">{{ error() }}</p>
+      }
+
+      @if (validationErrors().length > 0) {
+        <div class="mt-4 overflow-x-auto">
+          <table hlmTable>
+            <thead hlmTableHeader>
+            <tr hlmTableRow>
+              <th hlmTableHead>Ред</th>
+              <th hlmTableHead>Съобщение</th>
+            </tr>
+            </thead>
+            <tbody hlmTableBody>
+              @for (item of validationErrors(); track item.line + '-' + item.message) {
+                <tr hlmTableRow>
+                  <td hlmTableCell>{{ item.line }}</td>
+                  <td hlmTableCell>{{ item.message }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+      @if (preview()) {
+        <pre class="mt-4 rounded-md bg-muted p-3">{{ preview() | json }}</pre>
+      }
+    </div>
+  </div>
+</div>

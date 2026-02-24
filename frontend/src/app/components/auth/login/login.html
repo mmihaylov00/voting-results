@@ -1,0 +1,23 @@
+<div class="min-h-[70vh] flex items-center justify-center p-8">
+  <div hlmCard class="w-full max-w-[420px]">
+    <div hlmCardHeader>
+      <h2 hlmCardTitle>Вход</h2>
+    </div>
+    <div hlmCardContent>
+      <form (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+        <label class="flex flex-col gap-1.5">
+          <span>Имейл</span>
+          <input hlmInput type="email" name="email" [(ngModel)]="email" required />
+        </label>
+        <label class="flex flex-col gap-1.5">
+          <span>Парола</span>
+          <input hlmInput type="password" name="password" [(ngModel)]="password" required />
+        </label>
+        <button hlmBtn type="submit" [disabled]="loading()">Вход</button>
+        @if (error()) {
+          <p class="text-destructive text-sm">{{ error() }}</p>
+        }
+      </form>
+    </div>
+  </div>
+</div>

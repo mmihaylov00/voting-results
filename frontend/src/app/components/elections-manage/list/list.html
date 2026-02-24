@@ -1,0 +1,56 @@
+<div class="p-6">
+  <div hlmCard class="mx-auto max-w-[900px]">
+    <div hlmCardHeader>
+      <div class="flex items-center justify-between gap-4">
+        <h2 hlmCardTitle>Избори</h2>
+        <button hlmBtn type="button" (click)="openCreateModal()">Нова кампания</button>
+      </div>
+    </div>
+    <div hlmCardContent>
+      @if (error()) {
+        <p class="text-destructive">{{ error() }}</p>
+      }
+
+      <div class="flex flex-col gap-3">
+        @for (election of elections(); track election.id) {
+          <div class="flex items-center justify-between border-b border-border/60 py-3">
+            <div class="flex flex-col gap-1">
+              <div class="title font-bold">{{ election.name || election.date }}</div>
+              <div class="subtitle">{{ election.date }}</div>
+            </div>
+            <div class="flex items-center">
+              <a hlmBtn [routerLink]="['/elections', election.id]">Управление</a>
+              @if (isAdmin()) {
+                <button hlmBtn variant="outline"
+                        class="border-destructive ml-2 text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                        (click)="remove(election.id)">Изтрий
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  @if (createModalOpen()) {
+    <app-base-modal size="half" title="Нова кампания" subtitle="Името се генерира автоматично от датата."
+                    (close)="closeCreateModal()">
+      <form (ngSubmit)="create()" class="grid gap-4">
+        <label class="flex flex-col gap-1.5">
+          <span>Дата</span>
+          <input hlmInput type="date" name="date" [(ngModel)]="form.date" required/>
+        </label>
+
+        @if (createError()) {
+          <p class="text-destructive">{{ createError() }}</p>
+        }
+
+        <div class="flex justify-end gap-3">
+          <button hlmBtn type="button" variant="outline" (click)="closeCreateModal()">Отказ</button>
+          <button hlmBtn type="submit" [disabled]="loading() || !canSubmitCreate()">Създай</button>
+        </div>
+      </form>
+    </app-base-modal>
+  }
+</div>
