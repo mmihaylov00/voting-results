@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-if [ -f /app/prisma/schema.prisma ]; then
+if [ -f /app/backend/prisma/schema.prisma ]; then
   echo "Running prisma generate..."
   npx prisma generate
 

@@ -1,7 +1,3 @@
-declare global {
-  interface Window {
-    __API_BASE__?: string;
-  }
-}
+import { environment } from '../../environments/environment';
 
-export const API_BASE_URL = (typeof window !== 'undefined' && window.__API_BASE__) || 'http://localhost:3000/api';
+export const API_BASE_URL = environment.apiBaseUrl;

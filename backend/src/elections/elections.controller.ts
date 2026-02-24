@@ -7,7 +7,7 @@ import { ElectionsService } from './elections.service';
 
 @Controller('elections')
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(APP_ROLE.ADMIN, APP_ROLE.VIEWER)
+@Roles(APP_ROLE.ADMIN, APP_ROLE.VIEWER, APP_ROLE.CAMPAIGN_MANAGER)
 export class ElectionsController {
   constructor(private readonly electionsService: ElectionsService) {}
 
