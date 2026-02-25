@@ -72,10 +72,11 @@ export class ElectionsManageListComponent {
     }
 
     this.electionsManageService.create({ date: formattedDate }).subscribe({
-      next: () => {
+      next: (createdElection) => {
+        this.elections.update((current) => this.insertElection(current, createdElection));
         this.form = { date: '' };
         this.createModalOpen.set(false);
-        this.load();
+        this.loading.set(false);
       },
       error: (err) => {
         this.createError.set(err?.error?.message || 'Failed to create election');
@@ -124,5 +125,10 @@ export class ElectionsManageListComponent {
     if (/^\d{4}\.\d{2}\.\d{2}$/.test(date)) return date;
     if (/^\d{4}-\d{2}-\d{2}$/.test(date)) return date.replaceAll('-', '.');
     return null;
+  }
+
+  private insertElection(current: ElectionManageDto[], createdElection: ElectionManageDto): ElectionManageDto[] {
+    const withoutDuplicate = current.filter((election) => election.id !== createdElection.id);
+    return [...withoutDuplicate, createdElection].sort((a, b) => b.date.localeCompare(a.date));
   }
 }
