@@ -4,6 +4,8 @@ import { RegionCandidate, Section, SECTION_COLUMNS, TableColumn, ViewMode } from
 import { getPartyAlias } from '../../../../utils/party-aliases';
 import { formatActivity } from '../../../../utils/common.utils';
 import { loadVisibleColumns } from '../../../../utils/column-visibility';
+import { formatRiskMessage } from '../../../../utils/risk-message.util';
+import { candidateRiskAppliesToSection } from '../../../../utils/risk-utils';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
 import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-typography.directive';
 import { PartyFilterComponent } from '../../party-filter/party-filter';
@@ -70,6 +72,35 @@ export class ExportCsvModalComponent {
   formatActivity = formatActivity;
   getPartyAlias = getPartyAlias;
 
+  private getPartiesById(): { [id: string]: string } {
+    const map: { [id: string]: string } = {};
+    this.allParties.forEach(p => {
+      map[p.id] = p.name;
+    });
+    return map;
+  }
+
+  private getSectionAllRiskIndicators(section: Section | any): Array<{ code: string; category: string; severity: string; details?: any }> {
+    const sectionRisks = section?.riskIndicators || [];
+    const candidateRisks = ((section as any)?.candidateRiskIndicators || [])
+      .filter((risk: any) => candidateRiskAppliesToSection(risk, section));
+    return [...sectionRisks, ...candidateRisks].filter(risk => risk.code !== 'R6.2' && risk.code !== 'R2.4');
+  }
+
+  private getRisksForExport(section: Section | any): string {
+    const partiesById = this.getPartiesById();
+    if (section?.sections && Array.isArray(section.sections)) {
+      return section.sections
+        .flatMap((groupedSection: Section) => this.getSectionAllRiskIndicators(groupedSection)
+          .map(indicator => `${groupedSection.sectionId}: ${indicator.code}: ${formatRiskMessage(indicator, { section: groupedSection, partiesById })}`))
+        .join('; ');
+    }
+
+    return this.getSectionAllRiskIndicators(section)
+      .map(indicator => `${indicator.code}: ${formatRiskMessage(indicator, { section, partiesById })}`)
+      .join('; ');
+  }
+
   toggleExportColumnSelection(columnId: string) {
     const selection = this.viewMode === 'candidates' ? this.exportCandidateColumnIds : this.exportColumnIds;
     if (selection.has(columnId)) {
@@ -128,6 +159,9 @@ export class ExportCsvModalComponent {
 
     const headers: string[] = [];
     if (this.exportColumnIds.has('sectionId')) headers.push('Секция');
+    if (this.exportColumnIds.has('riskScore')) headers.push('Рискове');
+    if (this.exportColumnIds.has('regionName')) headers.push('Регион');
+    if (this.exportColumnIds.has('municipalityName')) headers.push('Община');
     if (this.exportColumnIds.has('cityName')) {
       headers.push(this.viewMode === 'municipalities' ? 'Община' : 'Населено място');
     }
@@ -143,6 +177,9 @@ export class ExportCsvModalComponent {
     const rows = this.filteredSections.map(section => {
       const rowData: (string | number)[] = [];
       if (this.exportColumnIds.has('sectionId')) rowData.push(section.sectionId);
+      if (this.exportColumnIds.has('riskScore')) rowData.push(this.getRisksForExport(section));
+      if (this.exportColumnIds.has('regionName')) rowData.push(section.regionName || '');
+      if (this.exportColumnIds.has('municipalityName')) rowData.push(section.municipalityName || '');
       if (this.exportColumnIds.has('cityName')) rowData.push(section.cityName);
       if (this.exportColumnIds.has('sectionName')) rowData.push(section.sectionName);
       if (this.exportColumnIds.has('total')) rowData.push(section.total);
