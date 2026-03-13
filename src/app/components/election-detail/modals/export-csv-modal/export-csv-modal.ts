@@ -180,7 +180,11 @@ export class ExportCsvModalComponent {
       if (this.exportColumnIds.has('riskScore')) rowData.push(this.getRisksForExport(section));
       if (this.exportColumnIds.has('regionName')) rowData.push(section.regionName || '');
       if (this.exportColumnIds.has('municipalityName')) rowData.push(section.municipalityName || '');
-      if (this.exportColumnIds.has('cityName')) rowData.push(section.cityName);
+      if (this.exportColumnIds.has('cityName')) {
+        rowData.push(this.viewMode === 'municipalities'
+          ? (section.municipalityName || '')
+          : section.cityName);
+      }
       if (this.exportColumnIds.has('sectionName')) rowData.push(section.sectionName);
       if (this.exportColumnIds.has('total')) rowData.push(section.total);
       if (this.exportColumnIds.has('voted')) rowData.push(section.voted);
