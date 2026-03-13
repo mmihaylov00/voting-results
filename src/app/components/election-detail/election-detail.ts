@@ -523,7 +523,7 @@ export class ElectionDetailComponent implements OnInit {
     const municipalityByCode = this.getMunicipalityNameByCode();
     this.sections.forEach(s => {
       if (!s.municipalityName) {
-        const code = this.getMunicipalityCode(s.sectionId);
+        const code = this.getMunicipalityLookupKey(s.regionId, s.sectionId);
         const name = municipalityByCode.get(code);
         if (name) {
           s.municipalityName = this.stripSettlementPrefix(name);
@@ -539,6 +539,7 @@ export class ElectionDetailComponent implements OnInit {
       const groups = new Map<string, any>();
       result.forEach(s => {
         const municipalityCode = this.getMunicipalityCode(s.sectionId);
+        const municipalityLookupKey = this.getMunicipalityLookupKey(s.regionId, s.sectionId);
         const neighborhoodCode = this.getNeighborhoodCode(s.sectionId);
         const groupKey = groupMode === 'municipality'
           ? `${s.regionId}-${municipalityCode}-${neighborhoodCode}`
@@ -552,7 +553,7 @@ export class ElectionDetailComponent implements OnInit {
             municipalityCode: groupMode === 'municipality' ? municipalityCode : undefined,
             neighborhoodCode: groupMode === 'municipality' ? neighborhoodCode : undefined,
             neighborhoodCounts: groupMode === 'municipality' ? {} : undefined,
-            municipalityName: this.stripSettlementPrefix(municipalityByCode.get(municipalityCode) || ''),
+            municipalityName: this.stripSettlementPrefix(municipalityByCode.get(municipalityLookupKey) || ''),
             regionId: s.regionId,
             regionName: s.regionName,
             total: 0,
@@ -1730,11 +1731,17 @@ export class ElectionDetailComponent implements OnInit {
     return sectionId.slice(4, 6);
   }
 
+  private getMunicipalityLookupKey(regionId: string | undefined, sectionId: string): string {
+    const municipalityCode = this.getMunicipalityCode(sectionId);
+    if (!municipalityCode) return '';
+    return `${regionId || ''}-${municipalityCode}`;
+  }
+
   private getMunicipalityNameByCode(): Map<string, string> {
     const map = new Map<string, string>();
     this.sections.forEach(s => {
       if (this.isMunicipalityMainCity(s.sectionId)) {
-        const code = this.getMunicipalityCode(s.sectionId);
+        const code = this.getMunicipalityLookupKey(s.regionId, s.sectionId);
         if (code && !map.has(code)) {
           map.set(code, s.cityName);
         }
@@ -1750,7 +1757,7 @@ export class ElectionDetailComponent implements OnInit {
       return this.getMunicipalityName(first);
     }
     if (!section?.sectionId) return '';
-    const code = this.getMunicipalityCode(section.sectionId);
+    const code = this.getMunicipalityLookupKey(section.regionId, section.sectionId);
     const municipalityByCode = this.getMunicipalityNameByCode();
     const name = municipalityByCode.get(code) || section.cityName || '';
     return this.stripSettlementPrefix(name);
