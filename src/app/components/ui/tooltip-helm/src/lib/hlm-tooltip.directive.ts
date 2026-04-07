@@ -147,11 +147,11 @@ export class HlmTooltipDirective implements OnDestroy {
     }
 
     if (this.currentValue > prev) {
-      this.renderer.setProperty(this.trendIndicator, 'innerHTML', '↑');
-      this.renderer.addClass(this.trendIndicator, 'text-green-500');
-    } else {
       this.renderer.setProperty(this.trendIndicator, 'innerHTML', '↓');
       this.renderer.addClass(this.trendIndicator, 'text-red-500');
+    } else {
+      this.renderer.setProperty(this.trendIndicator, 'innerHTML', '↑');
+      this.renderer.addClass(this.trendIndicator, 'text-green-500');
     }
   }
 
@@ -182,9 +182,9 @@ export class HlmTooltipDirective implements OnDestroy {
       let arrow = '';
       if (this.currentValue !== undefined) {
         if (this.currentValue > c.v) {
-          arrow = '<span class="text-green-500 ml-1">↑</span>';
-        } else if (this.currentValue < c.v) {
           arrow = '<span class="text-red-500 ml-1">↓</span>';
+        } else if (this.currentValue < c.v) {
+          arrow = '<span class="text-green-500 ml-1">↑</span>';
         }
       }
 
