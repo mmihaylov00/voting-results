@@ -801,6 +801,7 @@ export class ElectionDetailComponent implements OnInit {
     const candidateNameLower = candidate.candidateName.trim().toLowerCase();
     const candidatePartyLower = candidate.partyName.trim().toLowerCase();
 
+    // Collect comparisons for all other dates
     dates.forEach(dateInfo => {
       if (dateInfo.date === this.date) return; // Skip current date
 
@@ -842,9 +843,16 @@ export class ElectionDetailComponent implements OnInit {
       }
     });
 
-    candidate.comparisons = comparisons.length > 0 ? comparisons : [];
-    candidate.paperComparisons = paperComparisons.length > 0 ? paperComparisons : [];
-    candidate.machineComparisons = machineComparisons.length > 0 ? machineComparisons : [];
+    // Ensure comparisons are sorted by date (newest first)
+    // The `dates` array is already newest first, so they should be in order, but let's be safe
+    const sortByDate = (a: ComparativeValue, b: ComparativeValue) => b.d.localeCompare(a.d);
+    comparisons.sort(sortByDate);
+    paperComparisons.sort(sortByDate);
+    machineComparisons.sort(sortByDate);
+
+    candidate.comparisons = comparisons.length > 0 ? comparisons : 'Не е участвал в други избори';
+    candidate.paperComparisons = paperComparisons.length > 0 ? paperComparisons : 'Не е участвал в други избори';
+    candidate.machineComparisons = machineComparisons.length > 0 ? machineComparisons : 'Не е участвал в други избори';
   }
 
   calculateRegionCandidates(): void {

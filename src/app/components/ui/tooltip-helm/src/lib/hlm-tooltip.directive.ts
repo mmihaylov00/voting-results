@@ -32,7 +32,7 @@ export class HlmTooltipDirective implements OnDestroy {
 
   @HostListener('mouseenter')
   onMouseEnter() {
-    if (this.isLoading || !this.comparisons) return;
+    if (this.isLoading || !this.comparisons || (Array.isArray(this.comparisons) && this.comparisons.length === 0)) return;
     this.showTooltip();
   }
 
@@ -113,22 +113,33 @@ export class HlmTooltipDirective implements OnDestroy {
     }
 
     const currentIndex = elections.findIndex(e => e.date === currentDate);
-    if (currentIndex === -1 || currentIndex === elections.length - 1) {
-      // No previous election possible
+    if (currentIndex === -1) {
+      // Current date not found in the list, can't reliably find previous
       this.removeTrendIndicator();
       return;
     }
 
-    const previousDate = elections[currentIndex + 1].date;
-    const prevComp = (this.comparisons as ComparativeValue[]).find(c => c.d === previousDate);
+    // Try to find the most recent available comparison from an election that occurred BEFORE the current one
+    const availableDates = (this.comparisons as ComparativeValue[]).map(c => c.d);
 
-    if (!prevComp) {
+    // Elections are sorted newest to oldest, so dates with index > currentIndex are older
+    let bestPrevComp: ComparativeValue | undefined;
+    for (let i = currentIndex + 1; i < elections.length; i++) {
+      const dateToCheck = elections[i].date;
+      const comp = (this.comparisons as ComparativeValue[]).find(c => c.d === dateToCheck);
+      if (comp) {
+        bestPrevComp = comp;
+        break; // Found the most recent participation before the current election
+      }
+    }
+
+    if (!bestPrevComp) {
       this.renderer.setProperty(this.trendIndicator, 'innerHTML', '–');
       this.renderer.addClass(this.trendIndicator, 'text-muted-foreground');
       return;
     }
 
-    const prev = prevComp.v;
+    const prev = bestPrevComp.v;
     if (this.currentValue === prev) {
       this.renderer.setProperty(this.trendIndicator, 'innerHTML', '–');
       this.renderer.addClass(this.trendIndicator, 'text-muted-foreground');

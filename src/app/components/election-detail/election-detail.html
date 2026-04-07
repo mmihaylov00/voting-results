@@ -958,14 +958,14 @@
                     }
                     @if (currentVisibleColumns.has('totalInRegion')) {
                       <td hlmTableCell class="text-right flex flex-row justify-between" style="align-items: center">
-                        <span [hlmTooltip]="candidate.comparisons ?? 'Не е участвал в други избори'"
+                        <span [hlmTooltip]="candidate.comparisons"
                               [currentValue]="candidate.totalInRegion" [showTrend]="true" [isLoading]="!!(loading$ | async)" class="flex items-center">{{ candidate.totalInRegion | number }}</span>
                         <div class="flex flex-col gap-1 ms-1 text-xs whitespace-nowrap">
                           <span class="text-secondary/70 dark:text-foreground/70 flex items-center"
-                                [hlmTooltip]="candidate.paperComparisons ?? 'Не е участвал в други избори'"
+                                [hlmTooltip]="candidate.paperComparisons"
                                 [currentValue]="candidate.paper" [showTrend]="true" [isLoading]="!!(loading$ | async)">хартиени: <strong class="ms-1">{{ candidate.paper | number }}</strong></span>
                           <span class="text-secondary/70 dark:text-foreground/70 flex items-center"
-                                [hlmTooltip]="candidate.machineComparisons ?? 'Не е участвал в други избори'"
+                                [hlmTooltip]="candidate.machineComparisons"
                                 [currentValue]="candidate.machine" [showTrend]="true" [isLoading]="!!(loading$ | async)">машинни: <strong class="ms-1">{{ candidate.machine | number }}</strong></span>
                         </div>
                       </td>
