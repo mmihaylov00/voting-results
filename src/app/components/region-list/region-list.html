@@ -35,32 +35,42 @@
       [value]="avgActivity"
       [isPercent]="true"
       [tooltipData]="globalComparisons['activityPercent']"
-      [currentValue]="toBp(avgActivity)" />
+      [currentValue]="toBp(avgActivity)"
+      [showTrend]="true"
+      [isLoading]="!!(loading$ | async)" />
     <app-stat-card
       label="Общо избиратели"
       [value]="totalElectors"
       [tooltipData]="globalComparisons['total']"
-      [currentValue]="totalElectors" />
+      [currentValue]="totalElectors"
+      [showTrend]="true"
+      [isLoading]="!!(loading$ | async)" />
     <app-stat-card
       label="Общо гласували"
       [value]="totalVoted"
       [tooltipData]="globalComparisons['voted']"
-      [currentValue]="totalVoted" />
+      [currentValue]="totalVoted"
+      [showTrend]="true"
+      [isLoading]="!!(loading$ | async)" />
     <app-stat-card
       label="Общо невалидни"
       [value]="totalInvalid"
       [tooltipData]="globalComparisons['discardedVotes']"
-      [currentValue]="totalInvalid" />
+      [currentValue]="totalInvalid"
+      [showTrend]="true"
+      [isLoading]="!!(loading$ | async)" />
     <app-stat-card
       label="Общо не подкрепя никого"
       [value]="totalNoVotes"
       [tooltipData]="globalComparisons['noVotes']"
-      [currentValue]="totalNoVotes" />
+      [currentValue]="totalNoVotes"
+      [showTrend]="true"
+      [isLoading]="!!(loading$ | async)" />
     <app-stat-card label="Гласове по тип">
       <ng-template #customContent>
         <div class="flex flex-col text-sm whitespace-nowrap">
-          <span class="text-secondary/70 dark:text-foreground/70">машинни: <strong class="text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['totalMachine']" [currentValue]="totalMachine">{{ totalMachine | number }}</strong></span>
-          <span class="text-secondary/70 dark:text-foreground/70">хартиени: <strong class="text-secondary dark:text-primary" [hlmTooltip]="globalComparisons['totalPaper']" [currentValue]="totalPaper">{{ totalPaper | number }}</strong></span>
+          <span class="text-secondary/70 dark:text-foreground/70 flex items-center">машинни: <strong class="text-secondary dark:text-primary ms-1" [hlmTooltip]="globalComparisons['totalMachine']" [currentValue]="totalMachine" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ totalMachine | number }}</strong></span>
+          <span class="text-secondary/70 dark:text-foreground/70 flex items-center">хартиени: <strong class="text-secondary dark:text-primary ms-1" [hlmTooltip]="globalComparisons['totalPaper']" [currentValue]="totalPaper" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ totalPaper | number }}</strong></span>
         </div>
       </ng-template>
     </app-stat-card>
@@ -100,13 +110,13 @@
             }
           </div>
           <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-muted-foreground mb-4">
-            <div class="flex justify-between">
+            <div class="flex justify-between items-center">
               <span>Активност:</span>
-              <span class="font-medium text-foreground" [hlmTooltip]="region.comparisons?.['activityPercent']" [currentValue]="region.total > 0 ? toBp(region.voted / region.total) : 0" [isPercent]="true">{{ formatActivity(region.voted / region.total) }}%</span>
+              <span class="font-medium text-foreground flex items-center" [hlmTooltip]="region.comparisons?.['activityPercent']" [currentValue]="region.total > 0 ? toBp(region.voted / region.total) : 0" [isPercent]="true" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ formatActivity(region.voted / region.total) }}%</span>
             </div>
-            <div class="flex justify-between">
+            <div class="flex justify-between items-center">
               <span>Гласували:</span>
-              <span class="font-medium text-foreground" [hlmTooltip]="region.comparisons?.['voted']" [currentValue]="region.voted">{{ region.voted | number }}</span>
+              <span class="font-medium text-foreground flex items-center" [hlmTooltip]="region.comparisons?.['voted']" [currentValue]="region.voted" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ region.voted | number }}</span>
             </div>
           </div>
           <a [routerLink]="['/election', date, 'region', region.id]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground mt-auto">

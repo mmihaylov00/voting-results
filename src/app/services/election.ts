@@ -830,7 +830,8 @@ export class ElectionService {
           total: votes.total,
           paper: votes.paper,
           machine: votes.machine,
-          percent: section.voted > 0 ? votes.total / section.voted : 0
+          percent: section.voted > 0 ? votes.total / section.voted : 0,
+          percentBp: section.voted > 0 ? Math.round((votes.total / section.voted) * 10000) : 0
         })).sort((a, b) => b.total - a.total);
 
         if (section.noVotes > 0) {
@@ -840,7 +841,8 @@ export class ElectionService {
             total: section.noVotes,
             paper: section.noVotesPaper || 0,
             machine: section.noVotesMachine || 0,
-            percent: section.voted > 0 ? section.noVotes / section.voted : 0
+            percent: section.voted > 0 ? section.noVotes / section.voted : 0,
+            percentBp: section.voted > 0 ? Math.round((section.noVotes / section.voted) * 10000) : 0
           });
         }
 

@@ -76,6 +76,7 @@ export interface PartyResult {
   paper: number;
   machine: number;
   percent: number;
+  percentBp: number;
   isOthers?: boolean;
   isNoVotes?: boolean;
   comparisons?: ComparativeValue[];

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, effect, signal, OnInit, OnChang
 import { CommonModule } from '@angular/common';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
+import { Observable } from 'rxjs';
 import { Section, SectionDetails, PartyResult, ComparativeValue, PartyVotes, CandidateResult, CandidateVotes, RegionCandidate, TableColumn } from '../../../../models/election.models';
 import { ThemeService } from '../../../../services/theme.service';
 import { ElectionService } from '../../../../services/election';
@@ -80,6 +81,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   candidateSortDir: 'asc' | 'desc' = 'desc';
   @Input() selectedPartyIds: Set<string> = new Set();
   activeTab = signal<'parties' | 'candidates'>('parties');
+  loading$: Observable<boolean>;
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
   historicalVotesChartOptions: Highcharts.Options = {};
@@ -141,6 +143,8 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     const region = String(regionRaw).padStart(2, '0');
 
     switch (date) {
+      case '2026.04.19':
+        return `https://results.cik.bg/pi2026/rezultati/${region}.html#section/${sectionId}`;
       case '2024.10.27':
         return `https://evideo.bg/pe202410/${region}.html#${sectionId}`;
       case '2024.06.09':
@@ -267,6 +271,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     private electionService: ElectionService
   ) {
     this.dates = this.electionService.getDates();
+    this.loading$ = this.electionService.loading$;
 
     effect(() => {
       this.themeService.darkMode();
@@ -512,6 +517,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       paper,
       machine,
       percent,
+      percentBp: Math.round(percent * 10000),
       isOthers: true,
       comparisons: Object.values(comparisons),
       paperComparisons: Object.values(paperComparisons),
@@ -784,7 +790,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   calculateCandidateComparisons(candidate: CandidateVotes, sectionId: string): { total?: ComparativeValue[], paper?: ComparativeValue[], machine?: ComparativeValue[] } {
     // Skip if allData is not loaded yet
     if (Object.keys(this.allData).length === 0) {
-      return { total: undefined, paper: undefined, machine: undefined };
+      return { total: [], paper: [], machine: [] };
     }
 
     const dates = this.dates;
@@ -832,16 +838,16 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     });
 
     return {
-      total: comparisons.length > 0 ? comparisons : undefined,
-      paper: paperComparisons.length > 0 ? paperComparisons : undefined,
-      machine: machineComparisons.length > 0 ? machineComparisons : undefined
+      total: comparisons.length > 0 ? comparisons : [],
+      paper: paperComparisons.length > 0 ? paperComparisons : [],
+      machine: machineComparisons.length > 0 ? machineComparisons : []
     };
   }
 
   calculateCandidateComparisonsForCity(candidate: CandidateVotes, cityName: string, regionId: string): { total?: ComparativeValue[], paper?: ComparativeValue[], machine?: ComparativeValue[] } {
     // Skip if allData is not loaded yet
     if (Object.keys(this.allData).length === 0) {
-      return { total: undefined, paper: undefined, machine: undefined };
+      return { total: [], paper: [], machine: [] };
     }
 
     const dates = this.dates;
@@ -893,9 +899,9 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     });
 
     return {
-      total: comparisons.length > 0 ? comparisons : undefined,
-      paper: paperComparisons.length > 0 ? paperComparisons : undefined,
-      machine: machineComparisons.length > 0 ? machineComparisons : undefined
+      total: comparisons.length > 0 ? comparisons : [],
+      paper: paperComparisons.length > 0 ? paperComparisons : [],
+      machine: machineComparisons.length > 0 ? machineComparisons : []
     };
   }
 

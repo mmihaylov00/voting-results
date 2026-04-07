@@ -30,6 +30,8 @@ export class StatCardComponent {
   @Input() isPercent: boolean = false;
   @Input() tooltipData?: any;
   @Input() currentValue?: number;
+  @Input() showTrend: boolean = false;
+  @Input() isLoading: boolean = false;
   @ContentChild('customContent') customContent?: TemplateRef<any>;
 
   formatActivity = formatActivity;

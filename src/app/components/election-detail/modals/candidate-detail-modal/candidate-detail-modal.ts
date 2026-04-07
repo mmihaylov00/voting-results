@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { Section, RegionCandidate, TableColumn } from '../../../../models/election.models';
@@ -83,6 +84,7 @@ export class CandidateDetailModalComponent implements OnInit {
 
   sortColumn: keyof CandidateSectionData = 'total';
   sortDir: 'asc' | 'desc' = 'desc';
+  loading$: Observable<boolean>;
   Highcharts: typeof Highcharts = Highcharts;
   topSectionsChartOptions: Highcharts.Options = {};
   historicalPreferencesChartOptions: Highcharts.Options = {};
@@ -106,6 +108,7 @@ export class CandidateDetailModalComponent implements OnInit {
     public themeService: ThemeService
   ) {
     this.dates = this.electionService.getDates();
+    this.loading$ = this.electionService.loading$;
     effect(() => {
       this.themeService.darkMode();
       this.updateTopSectionsChart();
@@ -475,9 +478,9 @@ export class CandidateDetailModalComponent implements OnInit {
     });
 
     return {
-      total: comparisons.length > 0 ? comparisons : undefined,
-      paper: paperComparisons.length > 0 ? paperComparisons : undefined,
-      machine: machineComparisons.length > 0 ? machineComparisons : undefined
+      total: comparisons.length > 0 ? comparisons : [],
+      paper: paperComparisons.length > 0 ? paperComparisons : [],
+      machine: machineComparisons.length > 0 ? machineComparisons : []
     };
   }
 

@@ -872,6 +872,9 @@ function buildRegionCandidateAggregates(byRegion) {
 const dates = elections.map((e) => e.date);
 const dateNameByDate = Object.fromEntries(elections.map((e) => [e.date, e.name]));
 const otherDatesByDate = Object.fromEntries(dates.map((dt) => [dt, dates.filter((d) => d !== dt)]));
+const previousDateByDate = Object.fromEntries(
+  dates.map((dt, idx) => [dt, idx < dates.length - 1 ? dates[idx + 1] : null])
+);
 // For risk baseline, you were taking latest 3 other dates (by lexicographic sort). Keep same behavior but cached.
 const histDatesByDate = Object.fromEntries(
   dates.map((dt) => {
@@ -887,12 +890,19 @@ for (const {date} of elections) {
   console.log(`\n-- ${date} --`);
   const baseUrl = path.join(baseDataDir, date);
 
-  const input = timeAction('Read input files', () => ({
-    sections: readFileWithHeaders(path.join(baseUrl, 'sections.txt')),
-    protocols: readFileWithHeaders(path.join(baseUrl, 'protocols.txt')),
-    votes: readFileWithHeaders(path.join(baseUrl, 'votes.txt')),
-    parties: readFileWithHeaders(path.join(baseUrl, 'cik_parties.txt'))
-  }));
+  const input = timeAction('Read input files', () => {
+    const sectionsPath = path.join(baseUrl, 'sections.txt');
+    const protocolsPath = path.join(baseUrl, 'protocols.txt');
+    const votesPath = path.join(baseUrl, 'votes.txt');
+    const partiesPath = path.join(baseUrl, 'cik_parties.txt');
+
+    return {
+      sections: readFileWithHeaders(sectionsPath),
+      protocols: fs.existsSync(protocolsPath) ? readFileWithHeaders(protocolsPath) : { headers: [], body: '' },
+      votes: fs.existsSync(votesPath) ? readFileWithHeaders(votesPath) : { headers: [], body: '' },
+      parties: readFileWithHeaders(partiesPath)
+    };
+  });
 
   const parties = timeAction('Parse parties', () =>
     parseParties(input.parties.body, input.parties.headers)
@@ -902,33 +912,80 @@ for (const {date} of elections) {
   const sectionsMap = timeAction('Parse sections', () =>
     parseSections(input.sections.body, input.sections.headers)
   );
-  timeAction('Apply protocols', () =>
-    applyProtocols(sectionsMap, input.protocols.body, input.protocols.headers)
-  );
-  timeAction('Apply votes', () =>
-    applyVotes(sectionsMap, input.votes.body, input.votes.headers, normByPid)
-  );
+
+  if (input.protocols.body) {
+    timeAction('Apply protocols', () =>
+      applyProtocols(sectionsMap, input.protocols.body, input.protocols.headers)
+    );
+  } else {
+    console.log('Apply protocols: skipped (0.00s)');
+  }
+
+  if (input.votes.body) {
+    timeAction('Apply votes', () =>
+      applyVotes(sectionsMap, input.votes.body, input.votes.headers, normByPid)
+    );
+  } else {
+    console.log('Apply votes: skipped (0.00s)');
+  }
 
   // Parse local candidates and preferences if files exist
   const localCandidatesPath = path.join(baseUrl, 'local_candidates.txt');
   const preferencesPath = path.join(baseUrl, 'preferences.txt');
-  if (fs.existsSync(localCandidatesPath) && fs.existsSync(preferencesPath)) {
+  if (fs.existsSync(localCandidatesPath)) {
     const localCandidates = readFileWithHeaders(localCandidatesPath);
-    const preferences = readFileWithHeaders(preferencesPath);
     const candidatesByRegion = timeAction('Parse local candidates', () =>
       parseLocalCandidates(localCandidates.body, localCandidates.headers)
     );
-    timeAction('Apply preferences', () =>
-      applyPreferences(
-        sectionsMap,
-        preferences.body,
-        preferences.headers,
-        candidatesByRegion,
-        parties
-      )
-    );
+
+    if (fs.existsSync(preferencesPath)) {
+      const preferences = readFileWithHeaders(preferencesPath);
+      timeAction('Apply preferences', () =>
+        applyPreferences(
+          sectionsMap,
+          preferences.body,
+          preferences.headers,
+          candidatesByRegion,
+          parties
+        )
+      );
+    } else {
+      console.log('Apply preferences: skipped (0.00s)');
+      // If no preferences but we have local candidates, at least attach them with 0 votes
+      // so they show up in the UI
+      timeAction('Attach candidates (0 votes)', () => {
+        for (const sectionId in sectionsMap) {
+          const section = sectionsMap[sectionId];
+          const regionId = section.regionId;
+          const regionCandidates = candidatesByRegion[regionId];
+          if (!regionCandidates) continue;
+
+          for (const partyId in regionCandidates) {
+            const partyCandidates = regionCandidates[partyId];
+            const partyName = parties[partyId] || partyId;
+
+            for (const candidateId in partyCandidates) {
+              const candidate = partyCandidates[candidateId];
+              if (!section.candidateVotes) section.candidateVotes = Object.create(null);
+              const key = `${partyId}_${candidateId}`;
+              if (!section.candidateVotes[key]) {
+                section.candidateVotes[key] = {
+                  candidateId: candidate.candidateId,
+                  candidateName: candidate.candidateName,
+                  partyId,
+                  partyName,
+                  total: 0,
+                  paper: 0,
+                  machine: 0
+                };
+              }
+            }
+          }
+        }
+      });
+    }
   } else {
-    console.log('Local candidates/preferences: skipped (0.00s)');
+    console.log('Local candidates: skipped (0.00s)');
   }
 
   const sections = Object.values(sectionsMap);
@@ -1819,7 +1876,7 @@ for (const date of dates) {
 
         if (sectionPreferenceRate > regionPreferenceRate * 1.5 && sectionPreferenceRate > 0.1) {
           const candidateKey = `${regionKey}_${candidate.partyId}_${candidate.candidateId}`;
-          
+
           // Check if R5.1 already exists for this candidate in this region
           if (!r51ByCandidate.has(candidateKey)) {
             const r51Risk = {
@@ -1874,7 +1931,7 @@ for (const date of dates) {
 
         if (sectionShare > municipalityShare * 1.5 && sectionShare > otherCandidatesShare * 2) {
           const candidateKey = `${regionKey}_${candidate.partyId}_${candidate.candidateId}`;
-          
+
           // Check if R6.1 already exists for this candidate in this region
           if (!r61ByCandidate.has(candidateKey)) {
             const r61Risk = {

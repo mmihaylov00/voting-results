@@ -1,7 +1,14 @@
-import { Directive, Input, ElementRef, HostListener, Renderer2, OnDestroy } from '@angular/core';
+import { Directive, Input, ElementRef, HostListener, Renderer2, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import { ComparativeValue } from '../../../../../models/election.models';
 import { DecimalPipe } from '@angular/common';
 import { getDateName } from '../../../../../utils/date-name.util';
+
+const elections = [
+  {"date": "2026.04.19", "name": "Април 2026"},
+  {"date": "2024.10.27", "name": "Октомври 2024"},
+  {"date": "2024.06.09", "name": "Юни 2024"},
+  {"date": "2023.04.02", "name": "Април 2023"}
+];
 
 @Directive({
   selector: '[hlmTooltip]',
@@ -12,6 +19,8 @@ export class HlmTooltipDirective implements OnDestroy {
   @Input('hlmTooltip') comparisons: ComparativeValue[] | string | undefined;
   @Input() currentValue: number | undefined;
   @Input() isPercent: boolean = false;
+  @Input() showTrend: boolean = false;
+  @Input() isLoading: boolean = false;
 
   private tooltipElement: HTMLElement | null = null;
 
@@ -23,13 +32,123 @@ export class HlmTooltipDirective implements OnDestroy {
 
   @HostListener('mouseenter')
   onMouseEnter() {
-    if (!this.comparisons) return;
+    if (this.isLoading || !this.comparisons) return;
     this.showTooltip();
   }
 
   @HostListener('mouseleave')
   onMouseLeave() {
     this.hideTooltip();
+  }
+
+  private trendIndicator: HTMLElement | null = null;
+
+  private ngOnInit() {
+    this.updateTrendIndicator();
+  }
+
+  private ngOnChanges() {
+    this.updateTrendIndicator();
+  }
+
+  private updateTrendIndicator() {
+    if (!this.showTrend || this.currentValue === undefined) {
+      this.removeTrendIndicator();
+      return;
+    }
+
+    if (!this.trendIndicator) {
+      this.trendIndicator = this.renderer.createElement('span');
+      this.renderer.addClass(this.trendIndicator, 'ml-1');
+      this.renderer.addClass(this.trendIndicator, 'inline-flex');
+      this.renderer.addClass(this.trendIndicator, 'items-center');
+      this.renderer.addClass(this.trendIndicator, 'font-bold');
+      this.renderer.appendChild(this.el.nativeElement, this.trendIndicator);
+    }
+
+    // Clear previous classes and text/content
+    this.renderer.removeClass(this.trendIndicator, 'text-green-500');
+    this.renderer.removeClass(this.trendIndicator, 'text-red-500');
+    this.renderer.removeClass(this.trendIndicator, 'text-muted-foreground');
+    this.renderer.removeClass(this.trendIndicator, 'text-primary');
+    this.renderer.removeClass(this.trendIndicator, 'bg-primary/10');
+    this.renderer.removeClass(this.trendIndicator, 'px-1');
+    this.renderer.removeClass(this.trendIndicator, 'rounded');
+    this.renderer.removeClass(this.trendIndicator, 'text-[10px]');
+    this.renderer.setProperty(this.trendIndicator, 'innerHTML', '');
+
+    if (this.isLoading || this.comparisons === undefined) {
+      this.renderer.setProperty(this.trendIndicator, 'innerHTML', '⌛');
+      this.renderer.addClass(this.trendIndicator, 'text-muted-foreground');
+      return;
+    }
+
+    const hasNoComparisons = !Array.isArray(this.comparisons) || this.comparisons.length === 0;
+
+    if (hasNoComparisons || typeof this.comparisons === 'string') {
+      if (hasNoComparisons) {
+        this.renderer.setProperty(this.trendIndicator, 'innerHTML', `
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" class="text-primary">
+            <path d="M4 19V5h2v14H4zm4 0V5h2v14H8zm4 0V5h2v14h-2zm4 0V5h2v14h-2zm4 0V5h2v14h-2z" opacity="0"/>
+            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="10" font-weight="bold">NEW</text>
+          </svg>
+        `);
+        this.renderer.addClass(this.trendIndicator, 'text-primary');
+      } else {
+        this.removeTrendIndicator();
+      }
+      return;
+    }
+
+    // Find the current election date from the URL or state
+    // For simplicity, we can try to find which election date we are currently viewing
+    // and then find its predecessor.
+    const currentPath = window.location.pathname;
+    const dateMatch = currentPath.match(/(\d{4}\.\d{2}\.\d{2})/);
+    const currentDate = dateMatch ? dateMatch[1] : null;
+
+    if (!currentDate) {
+      this.removeTrendIndicator();
+      return;
+    }
+
+    const currentIndex = elections.findIndex(e => e.date === currentDate);
+    if (currentIndex === -1 || currentIndex === elections.length - 1) {
+      // No previous election possible
+      this.removeTrendIndicator();
+      return;
+    }
+
+    const previousDate = elections[currentIndex + 1].date;
+    const prevComp = (this.comparisons as ComparativeValue[]).find(c => c.d === previousDate);
+
+    if (!prevComp) {
+      this.renderer.setProperty(this.trendIndicator, 'innerHTML', '–');
+      this.renderer.addClass(this.trendIndicator, 'text-muted-foreground');
+      return;
+    }
+
+    const prev = prevComp.v;
+    if (this.currentValue === prev) {
+      this.renderer.setProperty(this.trendIndicator, 'innerHTML', '–');
+      this.renderer.addClass(this.trendIndicator, 'text-muted-foreground');
+      return;
+    }
+
+    if (this.currentValue > prev) {
+      this.renderer.setProperty(this.trendIndicator, 'innerHTML', '↑');
+      this.renderer.addClass(this.trendIndicator, 'text-green-500');
+    } else {
+      this.renderer.setProperty(this.trendIndicator, 'innerHTML', '↓');
+      this.renderer.addClass(this.trendIndicator, 'text-red-500');
+    }
+  }
+
+  private removeTrendIndicator() {
+    if (this.trendIndicator) {
+      this.renderer.removeChild(this.el.nativeElement, this.trendIndicator);
+      this.trendIndicator = null;
+    }
   }
 
   private showTooltip() {
@@ -52,9 +171,9 @@ export class HlmTooltipDirective implements OnDestroy {
       let arrow = '';
       if (this.currentValue !== undefined) {
         if (this.currentValue > c.v) {
-          arrow = '<span class="text-red-500 ml-1">↓</span>';
-        } else if (this.currentValue < c.v) {
           arrow = '<span class="text-green-500 ml-1">↑</span>';
+        } else if (this.currentValue < c.v) {
+          arrow = '<span class="text-red-500 ml-1">↓</span>';
         }
       }
 

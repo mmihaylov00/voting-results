@@ -123,16 +123,32 @@
                                       </td>
                                   }
                                   @if (visiblePartyColumns().has('total')) {
-                                      <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.comparisons || currentSectionData?.partyVotes?.[res.partyId]?.comparisons" [currentValue]="res.total">{{ res.total }}</td>
+                                      <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes">
+                                        <div class="flex items-center justify-end">
+                                          <span [hlmTooltip]="res.comparisons || currentSectionData?.partyVotes?.[res.partyId]?.comparisons" [currentValue]="res.total" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ res.total }}</span>
+                                        </div>
+                                      </td>
                                   }
                                   @if (visiblePartyColumns().has('paper')) {
-                                      <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.paperComparisons || currentSectionData?.partyVotes?.[res.partyId]?.paperComparisons" [currentValue]="res.paper">{{ res.paper }}</td>
+                                      <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes">
+                                        <div class="flex items-center justify-end">
+                                          <span [hlmTooltip]="res.paperComparisons || currentSectionData?.partyVotes?.[res.partyId]?.paperComparisons" [currentValue]="res.paper" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ res.paper }}</span>
+                                        </div>
+                                      </td>
                                   }
                                   @if (visiblePartyColumns().has('machine')) {
-                                      <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.machineComparisons || currentSectionData?.partyVotes?.[res.partyId]?.machineComparisons" [currentValue]="res.machine">{{ res.machine }}</td>
+                                      <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes">
+                                        <div class="flex items-center justify-end">
+                                          <span [hlmTooltip]="res.machineComparisons || currentSectionData?.partyVotes?.[res.partyId]?.machineComparisons" [currentValue]="res.machine" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ res.machine }}</span>
+                                        </div>
+                                      </td>
                                   }
                                   @if (visiblePartyColumns().has('percent')) {
-                                      <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes" [hlmTooltip]="res.percentComparisons || currentSectionData?.partyVotes?.[res.partyId]?.percentComparisons" [currentValue]="toBp(res.percent)" [isPercent]="true">{{ formatActivity(res.percent) }}%</td>
+                                      <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes">
+                                        <div class="flex items-center justify-end">
+                                          <span [hlmTooltip]="res.percentComparisons || currentSectionData?.partyVotes?.[res.partyId]?.percentComparisons" [currentValue]="res.percentBp" [isPercent]="true" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ res.percentBp / 100 }}%</span>
+                                        </div>
+                                      </td>
                                   }
                               </tr>
                           }
@@ -342,13 +358,25 @@
                                     </td>
                                   }
                                 @if (visibleCandidateColumns().has('total')) {
-                                  <td hlmTableCell class="text-right" [hlmTooltip]="candidate.comparisons" [currentValue]="candidate.total">{{ candidate.total | number }}</td>
+                                  <td hlmTableCell class="text-right">
+                                    <div class="flex items-center justify-end">
+                                      <span [hlmTooltip]="candidate.comparisons" [currentValue]="candidate.total" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ candidate.total | number }}</span>
+                                    </div>
+                                  </td>
                                 }
                                   @if (visibleCandidateColumns().has('paper')) {
-                                    <td hlmTableCell class="text-right" [hlmTooltip]="candidate.paperComparisons" [currentValue]="candidate.paper">{{ candidate.paper | number }}</td>
+                                    <td hlmTableCell class="text-right">
+                                      <div class="flex items-center justify-end">
+                                        <span [hlmTooltip]="candidate.paperComparisons" [currentValue]="candidate.paper" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ candidate.paper | number }}</span>
+                                      </div>
+                                    </td>
                                   }
                                   @if (visibleCandidateColumns().has('machine')) {
-                                    <td hlmTableCell class="text-right" [hlmTooltip]="candidate.machineComparisons" [currentValue]="candidate.machine">{{ candidate.machine | number }}</td>
+                                    <td hlmTableCell class="text-right">
+                                      <div class="flex items-center justify-end">
+                                        <span [hlmTooltip]="candidate.machineComparisons" [currentValue]="candidate.machine" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ candidate.machine | number }}</span>
+                                      </div>
+                                    </td>
                                   }
                                   @if (visibleCandidateColumns().has('percentInSection')) {
                                     <td hlmTableCell class="text-right">{{ candidate.percentInSection.toFixed(2) }}%</td>
@@ -501,16 +529,16 @@
                   <div class="space-y-4">
                     <div class="flex justify-between items-center border-b border-primary/10 pb-2">
                       <span class="text-secondary/70 dark:text-foreground/70">Избиратели:</span>
-                      <span class="font-bold" [hlmTooltip]="currentSectionData.comparisons?.['total']" [currentValue]="currentSectionData.total">{{ currentSectionData.total }}</span>
+                      <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['total']" [currentValue]="currentSectionData.total" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ currentSectionData.total }}</span>
                     </div>
                     <div class="flex justify-between items-center border-b border-primary/10 pb-2">
                       <span class="text-secondary/70 dark:text-foreground/70">Гласували:</span>
-                      <span class="font-bold" [hlmTooltip]="currentSectionData.comparisons?.['voted']" [currentValue]="currentSectionData.voted">{{ currentSectionData.voted }}</span>
+                      <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['voted']" [currentValue]="currentSectionData.voted" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ currentSectionData.voted }}</span>
                     </div>
                     <div class="flex justify-between items-center border-b border-primary/10 pb-2">
                       <span class="text-secondary/70 dark:text-foreground/70">Активност:</span>
                       <div class="flex flex-col items-end">
-                        <span class="font-bold" [hlmTooltip]="currentSectionData.comparisons?.['activityPercent']" [currentValue]="currentSectionData.activityBp" [isPercent]="true">{{ formatActivity((currentSectionData.activityBp || 0) / 10000) }}%</span>
+                        <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['activityPercent']" [currentValue]="currentSectionData.activityBp" [isPercent]="true" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ formatActivity((currentSectionData.activityBp || 0) / 10000) }}%</span>
                         @if (regionAvgTurnout !== null) {
                           <span class="text-[10px] text-muted-foreground">ср. за общината: {{ formatActivity((regionAvgTurnout || 0) / 10000) }}%</span>
                         }
@@ -518,7 +546,7 @@
                     </div>
                     <div class="flex justify-between items-center">
                       <span class="text-secondary/70 dark:text-foreground/70">Недействителни:</span>
-                      <span class="font-bold" [hlmTooltip]="currentSectionData.comparisons?.['discardedVotes']" [currentValue]="currentSectionData.discardedVotes">{{ currentSectionData.discardedVotes }}</span>
+                      <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['discardedVotes']" [currentValue]="currentSectionData.discardedVotes" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ currentSectionData.discardedVotes }}</span>
                     </div>
                   </div>
                 </div>

@@ -109,13 +109,25 @@
                                 </td>
                             }
                             @if (visibleColumns().has('voted')) {
-                                <td hlmTableCell class="text-right font-medium" [hlmTooltip]="section.comparisons?.['voted']" [currentValue]="section.voted">{{ section.voted }}</td>
+                                <td hlmTableCell class="text-right font-medium">
+                                    <div class="flex items-center justify-end">
+                                        <span [hlmTooltip]="section.comparisons?.['voted']" [currentValue]="section.voted" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ section.voted }}</span>
+                                    </div>
+                                </td>
                             }
                             @if (visibleColumns().has('protocolPaperVotes')) {
-                                <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['totalPaper']" [currentValue]="section.protocolPaperVotes">{{ section.protocolPaperVotes }}</td>
+                                <td hlmTableCell class="text-right">
+                                    <div class="flex items-center justify-end">
+                                        <span [hlmTooltip]="section.comparisons?.['totalPaper']" [currentValue]="section.protocolPaperVotes" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ section.protocolPaperVotes }}</span>
+                                    </div>
+                                </td>
                             }
                             @if (visibleColumns().has('protocolMachineVotes')) {
-                                <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['totalMachine']" [currentValue]="section.protocolMachineVotes">{{ section.protocolMachineVotes }}</td>
+                                <td hlmTableCell class="text-right">
+                                    <div class="flex items-center justify-end">
+                                        <span [hlmTooltip]="section.comparisons?.['totalMachine']" [currentValue]="section.protocolMachineVotes" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ section.protocolMachineVotes }}</span>
+                                    </div>
+                                </td>
                             }
                             @if (visibleColumns().has('protocolErrorDiff')) {
                                 <td hlmTableCell class="text-right">

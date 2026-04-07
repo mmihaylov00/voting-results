@@ -95,33 +95,41 @@
             [value]="avgRegionActivity"
             [isPercent]="true"
             [tooltipData]="globalComparisons['activityPercent']"
-            [currentValue]="toBp(avgRegionActivity)"/>
+            [currentValue]="toBp(avgRegionActivity)"
+            [showTrend]="true"
+            [isLoading]="!!(loading$ | async)"/>
         }
         <app-stat-card
           [label]="viewMode() === 'candidates' ? 'Общо валидни гласове за партиите' : 'Общо избиратели'"
           [value]="totalElectors"
           [tooltipData]="globalComparisons['total']"
-          [currentValue]="totalElectors"/>
+          [currentValue]="totalElectors"
+          [showTrend]="true"
+          [isLoading]="!!(loading$ | async)"/>
         <app-stat-card
           [label]="viewMode() === 'candidates' ? 'Общо преференции' : 'Общо валидни гласове'"
           [value]="totalVoted"
           [tooltipData]="globalComparisons['voted']"
-          [currentValue]="totalVoted"/>
+          [currentValue]="totalVoted"
+          [showTrend]="true"
+          [isLoading]="!!(loading$ | async)"/>
         @if (viewMode() !== 'candidates') {
           <app-stat-card
             label="Общо невалидни гласове"
             [value]="totalInvalid"
             [tooltipData]="globalComparisons['discardedVotes']"
-            [currentValue]="totalInvalid"/>
+            [currentValue]="totalInvalid"
+            [showTrend]="true"
+            [isLoading]="!!(loading$ | async)"/>
         }
         <app-stat-card [label]="viewMode() === 'candidates' ? 'Преференции по тип' : 'Гласове по тип'">
           <ng-template #customContent>
             <div class="flex flex-col gap-1 ms-1 text-xs whitespace-nowrap">
               <span class="text-secondary/70 dark:text-foreground/70" [hlmTooltip]="globalComparisons['totalPaper']"
-                    [currentValue]="totalRegionPaper">хартиени: <strong
+                    [currentValue]="totalRegionPaper" [showTrend]="true" [isLoading]="!!(loading$ | async)">хартиени: <strong
                 class="text-secondary dark:text-primary">{{ totalRegionPaper | number }}</strong></span>
               <span class="text-secondary/70 dark:text-foreground/70" [hlmTooltip]="globalComparisons['totalMachine']"
-                    [currentValue]="totalRegionMachine">машинни: <strong
+                    [currentValue]="totalRegionMachine" [showTrend]="true" [isLoading]="!!(loading$ | async)">машинни: <strong
                 class="text-secondary dark:text-primary">{{ totalRegionMachine | number }}</strong></span>
             </div>
           </ng-template>
@@ -131,6 +139,7 @@
             label="Гласували без преференции"
             [value]="candidateVotesWithoutPreferences"
             [tooltipData]="globalComparisons['voted']"
+            [showTrend]="true"
             [currentValue]="candidateVotesWithoutPreferences"/>
         }
         @if (viewMode() !== 'candidates') {
@@ -138,6 +147,7 @@
             label="Общо не подкрепя никого"
             [value]="totalNoVotes"
             [tooltipData]="globalComparisons['noVotes']"
+            [showTrend]="true"
             [currentValue]="totalNoVotes"/>
         }
       </div>
@@ -555,7 +565,7 @@
                       class="cursor-pointer hover:bg-primary/10 active:bg-primary/20 transition-colors group relative"
                       [class.bg-muted]="selectedSection?.sectionId === section.sectionId"
                       [class.bg-primary/5]="selectedSection?.sectionId === section.sectionId"
-                    (click)="loadSectionDetails(section)">
+                      (click)="loadSectionDetails(section)">
                   @if (visibleColumns().has('sectionId')) {
                     <td hlmTableCell class="font-medium relative pr-6">
                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
@@ -655,39 +665,54 @@
                     </td>
                   }
                   @if (visibleColumns().has('total')) {
-                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['total']"
-                        [currentValue]="section.total">{{ section.total | number }}
+                    <td hlmTableCell class="text-right">
+                      <div class="flex items-center justify-end">
+                        <span [hlmTooltip]="section.comparisons?.['total']"
+                              [currentValue]="section.total" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ section.total | number }}</span>
+                      </div>
                     </td>
                   }
                   @if (visibleColumns().has('voted')) {
-                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['voted']"
-                        [currentValue]="section.voted">{{ section.voted | number }}
+                    <td hlmTableCell class="text-right">
+                      <div class="flex items-center justify-end">
+                        <span [hlmTooltip]="section.comparisons?.['voted']"
+                              [currentValue]="section.voted" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ section.voted | number }}</span>
+                      </div>
                     </td>
                   }
                   @if (visibleColumns().has('activityBp')) {
-                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['activityPercent']"
-                        [currentValue]="section.activityBp"
-                        [isPercent]="true">{{ formatActivity((section.activityBp || 0) / 10000) }}%
+                    <td hlmTableCell class="text-right">
+                      <div class="flex items-center justify-end">
+                        <span [hlmTooltip]="section.comparisons?.['activityPercent']"
+                              [currentValue]="section.activityBp"
+                              [isPercent]="true" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ formatActivity((section.activityBp || 0) / 10000) }}%</span>
+                      </div>
                     </td>
                   }
                   @if (visibleColumns().has('discardedVotes')) {
-                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['discardedVotes']"
-                        [currentValue]="section.discardedVotes">{{ section.discardedVotes | number }}
+                    <td hlmTableCell class="text-right">
+                      <div class="flex items-center justify-end">
+                        <span [hlmTooltip]="section.comparisons?.['discardedVotes']"
+                              [currentValue]="section.discardedVotes" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ section.discardedVotes | number }}</span>
+                      </div>
                     </td>
                   }
                   @if (visibleColumns().has('noVotes')) {
-                    <td hlmTableCell class="text-right" [hlmTooltip]="section.comparisons?.['noVotes']"
-                        [currentValue]="section.noVotes">{{ section.noVotes | number }}
+                    <td hlmTableCell class="text-right">
+                      <div class="flex items-center justify-end">
+                        <span [hlmTooltip]="section.comparisons?.['noVotes']"
+                              [currentValue]="section.noVotes" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ section.noVotes | number }}</span>
+                      </div>
                     </td>
                   }
                   @if (visibleColumns().has('typeVotes')) {
                     <td hlmTableCell>
                       <div class="flex flex-col gap-1 ms-1 text-xs whitespace-nowrap">
-                        <span class="text-secondary/70 dark:text-foreground/70"
-                              [hlmTooltip]="section.comparisons?.['totalPaper']" [currentValue]="section.totalPaper">хартиени: <strong>{{ section.totalPaper | number }}</strong></span>
-                        <span class="text-secondary/70 dark:text-foreground/70"
+                        <span class="text-secondary/70 dark:text-foreground/70 flex items-center"
+                              [hlmTooltip]="section.comparisons?.['totalPaper']" [currentValue]="section.totalPaper" [showTrend]="true" [isLoading]="!!(loading$ | async)">хартиени: <strong class="ms-1">{{ section.totalPaper | number }}</strong></span>
+                        <span class="text-secondary/70 dark:text-foreground/70 flex items-center"
                               [hlmTooltip]="section.comparisons?.['totalMachine']"
-                              [currentValue]="section.totalMachine">машинни: <strong>{{ section.totalMachine | number }}</strong></span>
+                              [currentValue]="section.totalMachine" [showTrend]="true" [isLoading]="!!(loading$ | async)">машинни: <strong class="ms-1">{{ section.totalMachine | number }}</strong></span>
                       </div>
                     </td>
                   }
@@ -706,10 +731,10 @@
                           <div class="flex items-center gap-1.5 min-w-0"
                                [title]="alias + ': ' + tp.total + ' (' + formatActivity((tp.percentBp || 0) / 10000) + '%)'">
                             <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
-                            <span class="whitespace-nowrap">: <strong [hlmTooltip]="partyComparisons"
-                                                                      [currentValue]="tp.total">{{ tp.total | number }}</strong> (<span
-                              [hlmTooltip]="partyPercentComparisons" [currentValue]="tp.percentBp"
-                              [isPercent]="true">{{ formatActivity((tp.percentBp || 0) / 10000) }}%</span>)</span>
+                            <span class="whitespace-nowrap flex items-center">: <strong class="flex items-center" [hlmTooltip]="partyComparisons"
+                                                                      [currentValue]="tp.total" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ tp.total | number }}</strong> (<span
+                              class="flex items-center" [hlmTooltip]="partyPercentComparisons" [currentValue]="tp.percentBp"
+                              [isPercent]="true" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ formatActivity((tp.percentBp || 0) / 10000) }}%</span>)</span>
                           </div>
                         }
                       </div>
@@ -934,14 +959,14 @@
                     @if (currentVisibleColumns.has('totalInRegion')) {
                       <td hlmTableCell class="text-right flex flex-row justify-between" style="align-items: center">
                         <span [hlmTooltip]="candidate.comparisons ?? 'Не е участвал в други избори'"
-                              [currentValue]="candidate.totalInRegion">{{ candidate.totalInRegion | number }}</span>
+                              [currentValue]="candidate.totalInRegion" [showTrend]="true" [isLoading]="!!(loading$ | async)" class="flex items-center">{{ candidate.totalInRegion | number }}</span>
                         <div class="flex flex-col gap-1 ms-1 text-xs whitespace-nowrap">
-                          <span class="text-secondary/70 dark:text-foreground/70"
+                          <span class="text-secondary/70 dark:text-foreground/70 flex items-center"
                                 [hlmTooltip]="candidate.paperComparisons ?? 'Не е участвал в други избори'"
-                                [currentValue]="candidate.paper">хартиени: <strong>{{ candidate.paper | number }}</strong></span>
-                          <span class="text-secondary/70 dark:text-foreground/70"
+                                [currentValue]="candidate.paper" [showTrend]="true" [isLoading]="!!(loading$ | async)">хартиени: <strong class="ms-1">{{ candidate.paper | number }}</strong></span>
+                          <span class="text-secondary/70 dark:text-foreground/70 flex items-center"
                                 [hlmTooltip]="candidate.machineComparisons ?? 'Не е участвал в други избори'"
-                                [currentValue]="candidate.machine">машинни: <strong>{{ candidate.machine | number }}</strong></span>
+                                [currentValue]="candidate.machine" [showTrend]="true" [isLoading]="!!(loading$ | async)">машинни: <strong class="ms-1">{{ candidate.machine | number }}</strong></span>
                         </div>
                       </td>
                     }

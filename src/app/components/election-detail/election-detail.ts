@@ -274,7 +274,7 @@ export class ElectionDetailComponent implements OnInit {
   filteredCandidates: RegionCandidate[] = [];
   candidateSearchTerm: string = '';
   candidatePreferenceOperator = signal<'lte' | 'gte'>('gte');
-  candidatePreferenceThreshold: number | null = 1;
+  candidatePreferenceThreshold: number | null = 0;
   selectedCandidatePartyIds = signal<Set<string>>(new Set());
   showLeadersOnly = signal<boolean>(false);
   candidateSortColumn: keyof RegionCandidate | 'risks' = 'total';
@@ -325,6 +325,7 @@ export class ElectionDetailComponent implements OnInit {
     if (this.date.startsWith('2023.04')) return 'https://results.cik.bg/ns2023/search/index.html#';
     if (this.date.startsWith('2024.06')) return 'https://results.cik.bg/europe2024/search/index.html';
     if (this.date.startsWith('2024.10')) return 'https://results.cik.bg/pe202410/search/index.html';
+    if (this.date.startsWith('2026.04')) return 'https://results.cik.bg/pi2026/search/index.html';
     return '';
   }
 
@@ -841,9 +842,9 @@ export class ElectionDetailComponent implements OnInit {
       }
     });
 
-    candidate.comparisons = comparisons.length > 0 ? comparisons : undefined;
-    candidate.paperComparisons = paperComparisons.length > 0 ? paperComparisons : undefined;
-    candidate.machineComparisons = machineComparisons.length > 0 ? machineComparisons : undefined;
+    candidate.comparisons = comparisons.length > 0 ? comparisons : [];
+    candidate.paperComparisons = paperComparisons.length > 0 ? paperComparisons : [];
+    candidate.machineComparisons = machineComparisons.length > 0 ? machineComparisons : [];
   }
 
   calculateRegionCandidates(): void {
@@ -1740,11 +1741,17 @@ export class ElectionDetailComponent implements OnInit {
   private getMunicipalityNameByCode(): Map<string, string> {
     const map = new Map<string, string>();
     this.sections.forEach(s => {
+      const code = this.getMunicipalityLookupKey(s.regionId, s.sectionId);
+      if (!code) {
+        return;
+      }
+
+      if (!map.has(code)) {
+        map.set(code, s.cityName);
+      }
+
       if (this.isMunicipalityMainCity(s.sectionId)) {
-        const code = this.getMunicipalityLookupKey(s.regionId, s.sectionId);
-        if (code && !map.has(code)) {
-          map.set(code, s.cityName);
-        }
+        map.set(code, s.cityName);
       }
     });
     return map;
@@ -1868,6 +1875,7 @@ export class ElectionDetailComponent implements OnInit {
           paper,
           machine,
           percent: g.voted > 0 ? total / g.voted : 0,
+          percentBp: g.voted > 0 ? Math.round((total / g.voted) * 10000) : 0,
           comparisons: Object.values(comparisonsMap),
           paperComparisons: Object.values(paperComparisonsMap),
           machineComparisons: Object.values(machineComparisonsMap),
@@ -1939,6 +1947,7 @@ export class ElectionDetailComponent implements OnInit {
           paper: noVotesPaper,
           machine: noVotesMachine,
           percent: g.voted > 0 ? g.noVotes / g.voted : 0,
+          percentBp: g.voted > 0 ? Math.round((g.noVotes / g.voted) * 10000) : 0,
           comparisons: Object.values(noVotesComparisonsMap),
           paperComparisons: Object.values(noVotesPaperComparisonsMap),
           machineComparisons: Object.values(noVotesMachineComparisonsMap),

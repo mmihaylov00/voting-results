@@ -135,18 +135,27 @@
                 </td>
               }
               @if (visibleColumns.has('paper')) {
-                <td hlmTableCell class="text-right" [hlmTooltip]="data.paperComparisons"
-                    [currentValue]="data.paper">{{ data.paper | number }}
+                <td hlmTableCell class="text-right">
+                  <div class="flex items-center justify-end">
+                    <span [hlmTooltip]="data.paperComparisons"
+                        [currentValue]="data.paper" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ data.paper | number }}</span>
+                  </div>
                 </td>
               }
               @if (visibleColumns.has('machine')) {
-                <td hlmTableCell class="text-right" [hlmTooltip]="data.machineComparisons"
-                    [currentValue]="data.machine">{{ data.machine | number }}
+                <td hlmTableCell class="text-right">
+                  <div class="flex items-center justify-end">
+                    <span [hlmTooltip]="data.machineComparisons"
+                        [currentValue]="data.machine" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ data.machine | number }}</span>
+                  </div>
                 </td>
               }
               @if (visibleColumns.has('total')) {
-                <td hlmTableCell class="text-right font-semibold" [hlmTooltip]="data.comparisons"
-                    [currentValue]="data.total">{{ data.total | number }}
+                <td hlmTableCell class="text-right font-semibold">
+                  <div class="flex items-center justify-end">
+                    <span [hlmTooltip]="data.comparisons"
+                        [currentValue]="data.total" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ data.total | number }}</span>
+                  </div>
                 </td>
               }
               @if (visibleColumns.has('percentInSection')) {

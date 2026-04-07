@@ -6,11 +6,13 @@
     @if (customContent) {
       <ng-container [ngTemplateOutlet]="customContent"></ng-container>
     } @else {
-      <p hlmH4 
-         class="m-0 text-secondary dark:text-primary"
+      <p hlmH4
+         class="m-0 text-secondary dark:text-primary flex items-center"
          [hlmTooltip]="tooltipData"
          [currentValue]="currentValue"
-         [isPercent]="isPercent">
+         [isPercent]="isPercent"
+         [showTrend]="showTrend"
+         [isLoading]="isLoading">
         {{ displayValue }}
       </p>
     }
