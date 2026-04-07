@@ -119,9 +119,6 @@ export class HlmTooltipDirective implements OnDestroy {
       return;
     }
 
-    // Try to find the most recent available comparison from an election that occurred BEFORE the current one
-    const availableDates = (this.comparisons as ComparativeValue[]).map(c => c.d);
-
     // Elections are sorted newest to oldest, so dates with index > currentIndex are older
     let bestPrevComp: ComparativeValue | undefined;
     for (let i = currentIndex + 1; i < elections.length; i++) {
@@ -147,11 +144,11 @@ export class HlmTooltipDirective implements OnDestroy {
     }
 
     if (this.currentValue > prev) {
-      this.renderer.setProperty(this.trendIndicator, 'innerHTML', '↓');
-      this.renderer.addClass(this.trendIndicator, 'text-red-500');
-    } else {
       this.renderer.setProperty(this.trendIndicator, 'innerHTML', '↑');
       this.renderer.addClass(this.trendIndicator, 'text-green-500');
+    } else {
+      this.renderer.setProperty(this.trendIndicator, 'innerHTML', '↓');
+      this.renderer.addClass(this.trendIndicator, 'text-red-500');
     }
   }
 
