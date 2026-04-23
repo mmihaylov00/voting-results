@@ -226,7 +226,10 @@ export class HlmTooltipDirective implements OnDestroy {
       });
       content += `</div>`;
     } else if (Array.isArray(this.comparisons)) {
-      content = '<div class="flex flex-col gap-1">';
+      const formattedValue = this.isPercent
+        ? ((this.currentValue || 0) / 100).toFixed(2) + '%'
+        : this.decimalPipe.transform(this.currentValue, '1.0-0');
+      content = `<div class="flex flex-col gap-1">`;
       this.comparisons.forEach(c => {
         const formattedValue = this.isPercent
           ? (c.v / 100).toFixed(2) + '%'
@@ -234,7 +237,7 @@ export class HlmTooltipDirective implements OnDestroy {
 
         let deltaMarkup = '';
         if (this.currentValue !== undefined) {
-          deltaMarkup = this.getPercentageDeltaMarkup(this.currentValue, c.v, 'ml-1').markup;
+          deltaMarkup = this.getPercentageDeltaMarkup(this.currentValue, c.v, 'ml-1 text-[8px]').markup;
         }
 
         content += `
@@ -244,7 +247,7 @@ export class HlmTooltipDirective implements OnDestroy {
           </div>
         `;
       });
-      content += '</div>';
+      content += `<span class="opacity-70 text-[8px]">Процентът е спрямо текущата стойност <span class="font-bold">(${formattedValue})</span></span></div>`;
     }
 
     this.renderer.setProperty(this.tooltipElement, 'innerHTML', content);
