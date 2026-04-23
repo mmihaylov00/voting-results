@@ -95,18 +95,21 @@ export class ElectionListComponent implements OnInit {
     this.electionService.getAllData().subscribe(data => {
       this.allData = data;
       
-      // Collect all unique parties across all dates
-      const allPartiesMap = new Map<string, string>();
+      // Deduplicate parties by display alias so historical charts don't render
+      // separate series for the same party under different election-specific names/ids.
+      const allPartiesMap = new Map<string, { id: string; name: string }>();
       Object.values(data).forEach((electionData: any) => {
         if (electionData.parties) {
           Object.entries(electionData.parties).forEach(([id, name]) => {
-            if (!allPartiesMap.has(id)) {
-              allPartiesMap.set(id, name as string);
+            const partyName = name as string;
+            const alias = getPartyAlias(partyName);
+            if (!allPartiesMap.has(alias)) {
+              allPartiesMap.set(alias, { id, name: partyName });
             }
           });
         }
       });
-      this.allParties = Array.from(allPartiesMap.entries()).map(([id, name]) => ({ id, name }));
+      this.allParties = Array.from(allPartiesMap.values());
       
       // Initialize default historical party selection
       this.selectedHistoricalPartyIds.set(getDefaultPartyIds(this.allParties));
