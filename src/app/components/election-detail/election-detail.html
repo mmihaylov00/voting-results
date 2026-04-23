@@ -667,8 +667,8 @@
                     </td>
                   }
                   @if (visibleColumns().has('total')) {
-                    <td hlmTableCell class="text-right">
-                      <div class="flex items-center justify-end">
+                    <td hlmTableCell class="text-center">
+                      <div class="flex items-center justify-center">
                         <span [hlmTooltip]="section.comparisons?.['total']"
                               [trendNewLine]="true"
                               [currentValue]="section.total" [showTrend]="true"
@@ -677,8 +677,8 @@
                     </td>
                   }
                   @if (visibleColumns().has('voted')) {
-                    <td hlmTableCell class="text-right">
-                      <div class="flex items-center justify-end">
+                    <td hlmTableCell class="text-center">
+                      <div class="flex items-center justify-center">
                         <span [hlmTooltip]="section.comparisons?.['voted']"
                               [trendNewLine]="true"
                               [currentValue]="section.voted" [showTrend]="true"
@@ -687,8 +687,8 @@
                     </td>
                   }
                   @if (visibleColumns().has('activityBp')) {
-                    <td hlmTableCell class="text-right">
-                      <div class="flex items-center justify-end">
+                    <td hlmTableCell class="text-center">
+                      <div class="flex items-center justify-center">
                         <span [hlmTooltip]="section.comparisons?.['activityPercent']"
                               [trendNewLine]="true"
                               [currentValue]="section.activityBp"
@@ -699,8 +699,8 @@
                     </td>
                   }
                   @if (visibleColumns().has('discardedVotes')) {
-                    <td hlmTableCell class="text-right">
-                      <div class="flex items-center justify-end">
+                    <td hlmTableCell class="text-center">
+                      <div class="flex items-center justify-center">
                         <span [hlmTooltip]="section.comparisons?.['discardedVotes']"
                               [trendNewLine]="true"
                               [currentValue]="section.discardedVotes" [showTrend]="true"
@@ -709,8 +709,8 @@
                     </td>
                   }
                   @if (visibleColumns().has('noVotes')) {
-                    <td hlmTableCell class="text-right">
-                      <div class="flex items-center justify-end">
+                    <td hlmTableCell class="text-center">
+                      <div class="flex items-center justify-center">
                         <span [hlmTooltip]="section.comparisons?.['noVotes']"
                               [trendNewLine]="true"
                               [currentValue]="section.noVotes" [showTrend]="true"
@@ -744,7 +744,6 @@
                         @for (tp of section.topParties; track tp.name) {
                           @let alias = getPartyAlias(tp.name);
                           @let partyComparisons = section.partyVotes[tp.partyId]?.comparisons;
-                          @let partyPercentComparisons = section.partyVotes[tp.partyId]?.percentComparisons;
                           <div class="flex items-center gap-1.5 min-w-0"
                                [title]="alias + ': ' + tp.total + ' (' + formatActivity((tp.percentBp || 0) / 10000) + '%)'">
                             <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>

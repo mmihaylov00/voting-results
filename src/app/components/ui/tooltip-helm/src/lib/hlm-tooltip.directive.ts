@@ -21,6 +21,7 @@ export class HlmTooltipDirective implements OnDestroy {
   @Input() isPercent: boolean = false;
   @Input() showTrend: boolean = false;
   @Input() isLoading: boolean = false;
+  @Input() trendNewLine: boolean = false;
 
   private tooltipElement: HTMLElement | null = null;
 
@@ -44,11 +45,24 @@ export class HlmTooltipDirective implements OnDestroy {
   private trendIndicator: HTMLElement | null = null;
 
   private ngOnInit() {
+    this.updateHostLayout();
     this.updateTrendIndicator();
   }
 
   private ngOnChanges() {
+    this.updateHostLayout();
     this.updateTrendIndicator();
+  }
+
+  private updateHostLayout() {
+    if (this.trendNewLine) {
+      this.renderer.addClass(this.el.nativeElement, 'inline-flex');
+      this.renderer.addClass(this.el.nativeElement, 'flex-col');
+      return;
+    }
+
+    this.renderer.removeClass(this.el.nativeElement, 'inline-flex');
+    this.renderer.removeClass(this.el.nativeElement, 'flex-col');
   }
 
   private getPercentageDelta(current: number, compared: number): number | null {
@@ -67,21 +81,21 @@ export class HlmTooltipDirective implements OnDestroy {
     const delta = this.getPercentageDelta(current, compared);
 
     if (delta === null) {
-      return { markup: '<span class="text-[12px]">–</span>', colorClass: 'text-muted-foreground' };
+      return { markup: '<span class="text-[10px]">–</span>', colorClass: 'text-muted-foreground' };
     }
 
     if (delta === 0) {
-      return { markup: '<span class="text-[12px]">0.00%</span>', colorClass: 'text-muted-foreground' };
+      return { markup: '<span class="text-[10px]">0.00%</span>', colorClass: 'text-muted-foreground' };
     }
 
     const formattedDelta = `${delta < 0 ? '-' : ''}${Math.abs(delta).toFixed(2)}%`;
-    const arrow = delta > 0 ? '↑' : '↓';
-    const classes = [className, 'text-[12px]', 'font-bold', delta > 0 ? 'text-green-500' : 'text-red-500']
+    const arrow = delta > 0 ? '⬆' : '⬇';
+    const classes = [className, 'text-[10px]', delta > 0 ? 'text-green-500' : 'text-red-500']
       .filter(Boolean)
       .join(' ');
 
     return {
-      markup: `<span class="${classes}">${formattedDelta}<span class="font-bold text-[14px]">${arrow}</span></span>`,
+      markup: `<span class="${classes}">${arrow}${formattedDelta}</span>`,
       colorClass: null,
     };
   }
@@ -97,8 +111,7 @@ export class HlmTooltipDirective implements OnDestroy {
       this.renderer.addClass(this.trendIndicator, 'ml-1');
       this.renderer.addClass(this.trendIndicator, 'inline-flex');
       this.renderer.addClass(this.trendIndicator, 'items-center');
-      this.renderer.addClass(this.trendIndicator, 'text-[12px]');
-      this.renderer.addClass(this.trendIndicator, 'font-bold');
+      this.renderer.addClass(this.trendIndicator, 'text-[120x]');
       this.renderer.appendChild(this.el.nativeElement, this.trendIndicator);
     }
 
@@ -110,8 +123,18 @@ export class HlmTooltipDirective implements OnDestroy {
     this.renderer.removeClass(this.trendIndicator, 'bg-primary/10');
     this.renderer.removeClass(this.trendIndicator, 'px-1');
     this.renderer.removeClass(this.trendIndicator, 'rounded');
-    this.renderer.removeClass(this.trendIndicator, 'text-[12px]');
+    this.renderer.removeClass(this.trendIndicator, 'text-[10px]');
+    this.renderer.removeClass(this.trendIndicator, 'ml-0');
+    this.renderer.removeClass(this.trendIndicator, 'mt-0.5');
     this.renderer.setProperty(this.trendIndicator, 'innerHTML', '');
+
+    if (this.trendNewLine) {
+      this.renderer.removeClass(this.trendIndicator, 'ml-1');
+      this.renderer.addClass(this.trendIndicator, 'ml-0');
+      this.renderer.addClass(this.trendIndicator, 'mt-0.5');
+    } else {
+      this.renderer.addClass(this.trendIndicator, 'ml-1');
+    }
 
     if (this.isLoading) {
       this.renderer.setProperty(this.trendIndicator, 'innerHTML', '⌛');
