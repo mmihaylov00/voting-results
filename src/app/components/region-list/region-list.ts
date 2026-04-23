@@ -123,7 +123,10 @@ export class RegionListComponent implements OnInit, AfterViewInit {
   }
 
   private calculateGlobalStats() {
-    this.totalElectors = this.regions.reduce((sum, r) => sum + r.total, 0);
+    const officialTotalElectors = this.electionService.getOfficialNationalElectors(this.date);
+    const aggregatedTotalElectors = this.regions.reduce((sum, r) => sum + r.total, 0);
+
+    this.totalElectors = officialTotalElectors ?? aggregatedTotalElectors;
     this.totalVoted = this.regions.reduce((sum, r) => sum + r.voted, 0);
     this.totalInvalid = this.regions.reduce((sum, r) => sum + (r.discardedVotes || 0), 0);
     this.totalNoVotes = this.regions.reduce((sum, r) => sum + (r.noVotes || 0), 0);
@@ -157,6 +160,17 @@ export class RegionListComponent implements OnInit, AfterViewInit {
         r.comparisons?.['total']?.forEach(c => electorsAggr[c.d] = (electorsAggr[c.d] || 0) + c.v);
         r.comparisons?.['voted']?.forEach(c => votedAggr[c.d] = (votedAggr[c.d] || 0) + c.v);
       });
+
+      for (const date of Object.keys(electorsAggr)) {
+        electorsAggr[date] = this.electionService.getOfficialNationalElectors(date) ?? electorsAggr[date];
+      }
+
+      if (this.globalComparisons['total']) {
+        this.globalComparisons['total'] = this.globalComparisons['total'].map(entry => ({
+          ...entry,
+          v: this.electionService.getOfficialNationalElectors(entry.d) ?? entry.v,
+        }));
+      }
 
       this.globalComparisons['activityPercent'] = Object.keys(electorsAggr).map(date => ({
         d: date,

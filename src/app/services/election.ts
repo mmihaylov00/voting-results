@@ -99,6 +99,13 @@ type FullDataV2 = {
   providedIn: 'root'
 })
 export class ElectionService {
+  private readonly officialNationalElectorsByDate: Record<string, number> = {
+    '2026.04.19': 6575151,
+    '2024.10.27': 6601262,
+    '2024.06.09': 6138050,
+    '2023.04.02': 6594593,
+  };
+
   private baseDataUrl = '/data';
   private electionDates = elections;
   private summaryCache: { [date: string]: SummaryData } = {};
@@ -342,6 +349,7 @@ export class ElectionService {
     if (n.includes('ТАКЪВ НАРОД')) return 'ИТН';
     if (n.includes('ВЕЛИЧИЕ')) return 'ВЕЛИЧИЕ';
     if (n.includes('МЕЧ')) return 'МЕЧ';
+    if (n.includes('ПРОГРЕСИВНА')) return 'ПБ';
     return name;
   }
 
@@ -755,6 +763,10 @@ export class ElectionService {
 
   getDates() {
     return this.electionDates;
+  }
+
+  getOfficialNationalElectors(date: string): number | null {
+    return this.officialNationalElectorsByDate[date] ?? null;
   }
 
   getAllData(): Observable<{ [date: string]: SummaryData }> {

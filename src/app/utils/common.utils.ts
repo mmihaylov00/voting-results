@@ -74,6 +74,9 @@ export function getPartyKeywords(partyName: string): string[] {
   if (upperName.includes('ПРОДЪЛЖАВАМЕ') || upperName.includes('ПП-ДБ')) {
     return ['ПРОДЪЛЖАВАМЕ', 'ПП-ДБ'];
   }
+  if (upperName.includes('ПРОГРЕСИВНА') || upperName.includes('ПБ')) {
+    return ['ПРОГРЕСИВНА', 'ПБ'];
+  }
   if (upperName.includes('ДПС') || upperName.includes('ДВИЖЕНИЕ ЗА ПРАВА И СВОБОДИ')) {
     return ['ДПС'];
   }
@@ -85,6 +88,8 @@ export function getPartyKeywords(partyName: string): string[] {
 export const DEFAULT_PARTY_KEYWORDS = [
   'ГЕРБ',
   'ПРОДЪЛЖАВАМЕ',
+  'ПРОГРЕСИВНА',
+  'ПБ',
   'ВЪЗРАЖДАНЕ',
   'ДПС',
   'БСП',

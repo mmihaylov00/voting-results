@@ -325,11 +325,11 @@ export class ElectionDetailComponent implements OnInit {
     if (this.date.startsWith('2023.04')) return 'https://results.cik.bg/ns2023/search/index.html#';
     if (this.date.startsWith('2024.06')) return 'https://results.cik.bg/europe2024/search/index.html';
     if (this.date.startsWith('2024.10')) return 'https://results.cik.bg/pe202410/search/index.html';
-    if (this.date.startsWith('2026.04')) return 'https://results.cik.bg/pi2026/search/index.html';
+    if (this.date.startsWith('2026.04')) return 'https://results.cik.bg/pe202604/search/index.html';
     return '';
   }
 
-  private readonly DEFAULT_KEYWORDS = ["ГЕРБ", "ПРОДЪЛЖАВАМЕ", "ВЪЗРАЖДАНЕ", "ДПС", "БСП", "ТАКЪВ НАРОД", "МЕЧ", "ВЕЛИЧИЕ"];
+  private readonly DEFAULT_KEYWORDS = ["ГЕРБ", "ПРОДЪЛЖАВАМЕ", "ПРОГРЕСИВНА", "ПБ", "ВЪЗРАЖДАНЕ", "ДПС", "БСП", "ТАКЪВ НАРОД", "МЕЧ", "ВЕЛИЧИЕ"];
 
   get sectionsWithError(): Section[] {
     return this.sections.filter(s => s.hasProtocolError);
@@ -382,6 +382,25 @@ export class ElectionDetailComponent implements OnInit {
   toBp(value: number | null | undefined): number {
     if (value === null || value === undefined) return 0;
     return Math.round(value * 10000);
+  }
+
+  private isNationalView(): boolean {
+    return !this.regionId || this.regionId === 'all';
+  }
+
+  private getEffectiveTotalElectors(sections: Section[]): number {
+    const aggregatedTotal = sections.reduce((sum, s) => sum + s.total, 0);
+    if (!this.isNationalView()) {
+      return aggregatedTotal;
+    }
+    return this.electionService.getOfficialNationalElectors(this.date) ?? aggregatedTotal;
+  }
+
+  private getEffectiveComparisonTotalElectors(date: string, fallbackTotal: number): number {
+    if (!this.isNationalView()) {
+      return fallbackTotal;
+    }
+    return this.electionService.getOfficialNationalElectors(date) ?? fallbackTotal;
   }
 
   async copyToClipboard(text: string, event: Event): Promise<void> {
@@ -1433,14 +1452,14 @@ export class ElectionDetailComponent implements OnInit {
       return;
     }
     const totalVoted = sections.reduce((sum, s) => sum + s.voted, 0);
-    const totalElectors = sections.reduce((sum, s) => sum + s.total, 0);
+    const totalElectors = this.getEffectiveTotalElectors(sections);
     this.avgRegionActivity = totalElectors > 0 ? totalVoted / totalElectors : 0;
   }
 
   private calculateRegionalStats(sections: Section[] = this.sections): void {
     if (sections.length === 0) return;
 
-    this.totalElectors = sections.reduce((sum, s) => sum + s.total, 0);
+    this.totalElectors = this.getEffectiveTotalElectors(sections);
     this.totalVoted = sections.reduce((sum, s) => sum + s.voted, 0);
     this.totalInvalid = sections.reduce((sum, s) => sum + s.discardedVotes, 0);
     this.totalNoVotes = sections.reduce((sum, s) => sum + s.noVotes, 0);
@@ -1474,6 +1493,17 @@ export class ElectionDetailComponent implements OnInit {
         s.comparisons?.['voted']?.forEach(c => votedAggr[c.d] = (votedAggr[c.d] || 0) + c.v);
       });
 
+      for (const date of Object.keys(electorsAggr)) {
+        electorsAggr[date] = this.getEffectiveComparisonTotalElectors(date, electorsAggr[date]);
+      }
+
+      if (this.globalComparisons['total']) {
+        this.globalComparisons['total'] = this.globalComparisons['total'].map(entry => ({
+          ...entry,
+          v: this.getEffectiveComparisonTotalElectors(entry.d, entry.v),
+        }));
+      }
+
       this.globalComparisons['activityPercent'] = Object.keys(electorsAggr).map(date => ({
         d: date,
         v: electorsAggr[date] > 0 ? Math.round((votedAggr[date] / electorsAggr[date]) * 10000) : 0
@@ -1492,7 +1522,7 @@ export class ElectionDetailComponent implements OnInit {
     if (this.totalElectors === 0) {
       const nestedSections = sections.flatMap(s => (s as any).sections || []);
       if (nestedSections.length > 0) {
-        this.totalElectors = nestedSections.reduce((sum, s) => sum + s.total, 0);
+        this.totalElectors = this.getEffectiveTotalElectors(nestedSections);
         this.totalVoted = nestedSections.reduce((sum, s) => sum + s.voted, 0);
         this.totalInvalid = nestedSections.reduce((sum, s) => sum + s.discardedVotes, 0);
         this.totalNoVotes = nestedSections.reduce((sum, s) => sum + s.noVotes, 0);

@@ -31,6 +31,7 @@ export class PartyFilterComponent implements OnChanges, OnDestroy {
     const priorityOrder = [
       'ПП-ДБ',
       'ГЕРБ',
+      'ПБ',
       'ДПС',
       'БСП',
       'ВЪЗРАЖДАНЕ',

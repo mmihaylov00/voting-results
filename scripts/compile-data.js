@@ -124,6 +124,7 @@ function normalizePartyName(name) {
   if (n.includes('ТАКЪВ НАРОД')) return 'ИТН';
   if (n.includes('ВЕЛИЧИЕ')) return 'ВЕЛИЧИЕ';
   if (n.includes('МЕЧ')) return 'МЕЧ';
+  if (n.includes('ПРОГРЕСИВНА')) return 'ПБ';
   return name;
 }
 

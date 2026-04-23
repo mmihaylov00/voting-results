@@ -10,6 +10,7 @@ const PARTY_COLOR_RULES: { match: string[]; color: string }[] = [
   { match: ['МЕЧ'], color: '#BE0034' }, // navy blue
   { match: ['ВЕЛИЧИЕ'], color: '#C13334' }, // red
   { match: ['АПС', 'АЛИАНС'], color: '#21A1DF' }, // red
+  { match: ['ПБ', 'ПРОГРЕСИВНА'], color: '#024A3E' }, // dark green
 ];
 
 const DARK_PARTY_COLOR_OVERRIDES: { match: string[]; color: string }[] = [

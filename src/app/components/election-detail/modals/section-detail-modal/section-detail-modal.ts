@@ -144,7 +144,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
     switch (date) {
       case '2026.04.19':
-        return `https://results.cik.bg/pi2026/rezultati/${region}.html#section/${sectionId}`;
+        return `https://results.cik.bg/pe202604/rezultati/${region}.html#section/${sectionId}`;
       case '2024.10.27':
         return `https://evideo.bg/pe202410/${region}.html#${sectionId}`;
       case '2024.06.09':

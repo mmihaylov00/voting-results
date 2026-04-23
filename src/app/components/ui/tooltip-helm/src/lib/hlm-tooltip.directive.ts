@@ -51,6 +51,41 @@ export class HlmTooltipDirective implements OnDestroy {
     this.updateTrendIndicator();
   }
 
+  private getPercentageDelta(current: number, compared: number): number | null {
+    if (compared === 0) {
+      return current === 0 ? 0 : null;
+    }
+
+    return ((current - compared) / compared) * 100;
+  }
+
+  private getPercentageDeltaMarkup(
+    current: number,
+    compared: number,
+    className: string = ''
+  ): { markup: string; colorClass: string | null } {
+    const delta = this.getPercentageDelta(current, compared);
+
+    if (delta === null) {
+      return { markup: '<span class="text-[12px]">–</span>', colorClass: 'text-muted-foreground' };
+    }
+
+    if (delta === 0) {
+      return { markup: '<span class="text-[12px]">0.00%</span>', colorClass: 'text-muted-foreground' };
+    }
+
+    const formattedDelta = `${delta < 0 ? '-' : ''}${Math.abs(delta).toFixed(2)}%`;
+    const arrow = delta > 0 ? '↑' : '↓';
+    const classes = [className, 'text-[12px]', 'font-bold', delta > 0 ? 'text-green-500' : 'text-red-500']
+      .filter(Boolean)
+      .join(' ');
+
+    return {
+      markup: `<span class="${classes}">${formattedDelta}<span class="font-bold text-[14px]">${arrow}</span></span>`,
+      colorClass: null,
+    };
+  }
+
   private updateTrendIndicator() {
     if (!this.showTrend || this.currentValue === undefined) {
       this.removeTrendIndicator();
@@ -62,6 +97,7 @@ export class HlmTooltipDirective implements OnDestroy {
       this.renderer.addClass(this.trendIndicator, 'ml-1');
       this.renderer.addClass(this.trendIndicator, 'inline-flex');
       this.renderer.addClass(this.trendIndicator, 'items-center');
+      this.renderer.addClass(this.trendIndicator, 'text-[12px]');
       this.renderer.addClass(this.trendIndicator, 'font-bold');
       this.renderer.appendChild(this.el.nativeElement, this.trendIndicator);
     }
@@ -74,12 +110,17 @@ export class HlmTooltipDirective implements OnDestroy {
     this.renderer.removeClass(this.trendIndicator, 'bg-primary/10');
     this.renderer.removeClass(this.trendIndicator, 'px-1');
     this.renderer.removeClass(this.trendIndicator, 'rounded');
-    this.renderer.removeClass(this.trendIndicator, 'text-[10px]');
+    this.renderer.removeClass(this.trendIndicator, 'text-[12px]');
     this.renderer.setProperty(this.trendIndicator, 'innerHTML', '');
 
-    if (this.isLoading || this.comparisons === undefined) {
+    if (this.isLoading) {
       this.renderer.setProperty(this.trendIndicator, 'innerHTML', '⌛');
       this.renderer.addClass(this.trendIndicator, 'text-muted-foreground');
+      return;
+    }
+
+    if (this.comparisons === undefined) {
+      this.removeTrendIndicator();
       return;
     }
 
@@ -137,18 +178,10 @@ export class HlmTooltipDirective implements OnDestroy {
     }
 
     const prev = bestPrevComp.v;
-    if (this.currentValue === prev) {
-      this.renderer.setProperty(this.trendIndicator, 'innerHTML', '–');
-      this.renderer.addClass(this.trendIndicator, 'text-muted-foreground');
-      return;
-    }
-
-    if (this.currentValue > prev) {
-      this.renderer.setProperty(this.trendIndicator, 'innerHTML', '↑');
-      this.renderer.addClass(this.trendIndicator, 'text-green-500');
-    } else {
-      this.renderer.setProperty(this.trendIndicator, 'innerHTML', '↓');
-      this.renderer.addClass(this.trendIndicator, 'text-red-500');
+    const { markup, colorClass } = this.getPercentageDeltaMarkup(this.currentValue, prev);
+    this.renderer.setProperty(this.trendIndicator, 'innerHTML', markup);
+    if (colorClass) {
+      this.renderer.addClass(this.trendIndicator, colorClass);
     }
   }
 
@@ -172,27 +205,23 @@ export class HlmTooltipDirective implements OnDestroy {
     } else if (Array.isArray(this.comparisons)) {
       content = '<div class="flex flex-col gap-1">';
       this.comparisons.forEach(c => {
-      const formattedValue = this.isPercent
-        ? (c.v / 100).toFixed(2) + '%'
-        : this.decimalPipe.transform(c.v, '1.0-0');
+        const formattedValue = this.isPercent
+          ? (c.v / 100).toFixed(2) + '%'
+          : this.decimalPipe.transform(c.v, '1.0-0');
 
-      let arrow = '';
-      if (this.currentValue !== undefined) {
-        if (this.currentValue > c.v) {
-          arrow = '<span class="text-red-500 ml-1">↓</span>';
-        } else if (this.currentValue < c.v) {
-          arrow = '<span class="text-green-500 ml-1">↑</span>';
+        let deltaMarkup = '';
+        if (this.currentValue !== undefined) {
+          deltaMarkup = this.getPercentageDeltaMarkup(this.currentValue, c.v, 'ml-1').markup;
         }
-      }
 
-      content += `
-        <div class="flex justify-between gap-4 text-[10px] whitespace-nowrap items-center">
-          <span class="opacity-70">${getDateName(c.d)}:</span>
-          <span class="font-bold flex items-center">${formattedValue}${arrow}</span>
-        </div>
-      `;
-    });
-    content += '</div>';
+        content += `
+          <div class="flex justify-between gap-4 text-[10px] whitespace-nowrap items-center">
+            <span class="opacity-70">${getDateName(c.d)}:</span>
+            <span class="font-bold flex items-center">${formattedValue}${deltaMarkup}</span>
+          </div>
+        `;
+      });
+      content += '</div>';
     }
 
     this.renderer.setProperty(this.tooltipElement, 'innerHTML', content);
