@@ -1,16 +1,16 @@
 import { getPartyAlias } from './party-aliases';
 
 const PARTY_COLOR_RULES: { match: string[]; color: string }[] = [
-  { match: ['ПП-ДБ', 'ПРОДЪЛЖАВАМЕ'], color: '#0015FF' }, // indigo
-  { match: ['ГЕРБ'], color: '#0C4587' }, // blue
-  { match: ['ВЪЗРАЖДАНЕ'], color: '#333333' }, // gold
-  { match: ['ДПС'], color: '#217DDF' }, // blue
-  { match: ['БСП'], color: '#ED1C24' }, // red
-  { match: ['ИТН', 'ТАКЪВ НАРОД'], color: '#4BB9DE' }, // light blue
-  { match: ['МЕЧ'], color: '#BE0034' }, // navy blue
-  { match: ['ВЕЛИЧИЕ'], color: '#C13334' }, // red
-  { match: ['АПС', 'АЛИАНС'], color: '#21A1DF' }, // red
-  { match: ['ПБ', 'ПРОГРЕСИВНА'], color: '#024A3E' }, // dark green
+  { match: ['ПП-ДБ', 'ПРОДЪЛЖАВАМЕ'], color: '#0015FF' },
+  { match: ['ГЕРБ'], color: '#0C4587' },
+  { match: ['ВЪЗРАЖДАНЕ'], color: '#57a561' },
+  { match: ['ДПС'], color: '#217DDF' },
+  { match: ['БСП'], color: '#ED1C24' },
+  { match: ['ИТН', 'ТАКЪВ НАРОД'], color: '#4BB9DE' },
+  { match: ['МЕЧ'], color: '#BE0034' },
+  { match: ['ВЕЛИЧИЕ'], color: '#C13334' },
+  { match: ['АПС', 'АЛИАНС'], color: '#21A1DF' },
+  { match: ['ПБ', 'ПРОГРЕСИВНА'], color: '#037260' },
 ];
 
 const DARK_PARTY_COLOR_OVERRIDES: { match: string[]; color: string }[] = [

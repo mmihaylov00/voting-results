@@ -93,6 +93,7 @@ import { PartyBadgeComponent } from '../ui/party-badge/party-badge';
 })
 export class ElectionDetailComponent implements OnInit {
   private readonly leaderCandidateId = '101';
+  private isAllRegionsRoute = false;
   loading$: Observable<boolean>;
   date: string = '';
   regionId: string = '';
@@ -385,7 +386,7 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   private isNationalView(): boolean {
-    return !this.regionId || this.regionId === 'all';
+    return this.isAllRegionsRoute;
   }
 
   private getEffectiveTotalElectors(sections: Section[]): number {
@@ -442,6 +443,7 @@ export class ElectionDetailComponent implements OnInit {
 
     this.date = this.route.snapshot.paramMap.get('date') || '';
     this.regionId = this.route.snapshot.paramMap.get('regionId') || '';
+    this.isAllRegionsRoute = this.route.snapshot.routeConfig?.path === 'election/:date/all';
     this.dateName = this.electionService.getDates().find(d => d.date === this.date)?.name ?? this.date;
 
     // Load all election data for comparisons
@@ -1163,7 +1165,8 @@ export class ElectionDetailComponent implements OnInit {
       .sort((a, b) => b.total - a.total)
       .map(p => ({
         name: p.name,
-        y: p.total
+        y: p.total,
+        color: getPartyColor(p.name, isDark)
       }));
 
     this.regionalChartOptions = {
@@ -1200,7 +1203,6 @@ export class ElectionDetailComponent implements OnInit {
       },
       series: [{
         name: 'Преференции',
-        colorByPoint: true,
         data: pieData
       }] as any
     };
@@ -1211,7 +1213,8 @@ export class ElectionDetailComponent implements OnInit {
       .slice(0, 10)
       .map(c => ({
         name: `${c.candidateName} (${getPartyAlias(c.partyName)})`,
-        y: c.total
+        y: c.total,
+        color: getPartyColor(c.partyName, isDark)
       }));
 
     this.ppdbChartOptions = {
@@ -1245,8 +1248,7 @@ export class ElectionDetailComponent implements OnInit {
       },
       series: [{
         name: 'Преференции',
-        data: topCandidates.map(c => c.y),
-        color: '#0ea5e9'
+        data: topCandidates
       }] as any
     };
 
