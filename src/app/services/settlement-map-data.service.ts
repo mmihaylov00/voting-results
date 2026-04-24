@@ -8,6 +8,7 @@ import { SettlementGeometryCollection, SettlementLookup } from '../utils/settlem
 })
 export class SettlementMapDataService {
   private settlementGeometry$?: Observable<SettlementGeometryCollection>;
+  private regionGeometry$?: Observable<any>;
   private settlementsLookup$?: Observable<SettlementLookup[]>;
 
   constructor(private http: HttpClient) {}
@@ -19,6 +20,15 @@ export class SettlementMapDataService {
         .pipe(shareReplay(1));
     }
     return this.settlementGeometry$;
+  }
+
+  getRegionGeometry(): Observable<any> {
+    if (!this.regionGeometry$) {
+      this.regionGeometry$ = this.http
+        .get<any>('/maps/regions.json')
+        .pipe(shareReplay(1));
+    }
+    return this.regionGeometry$;
   }
 
   getSettlementsLookup(): Observable<SettlementLookup[]> {

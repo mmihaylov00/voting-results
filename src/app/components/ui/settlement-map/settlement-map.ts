@@ -19,6 +19,7 @@ import {
   SettlementAggregate,
   SettlementGeometryCollection,
   SettlementGeometryFeature,
+  SettlementLookup,
   SettlementMapMetric,
   stripSettlementPrefix,
 } from '../../../utils/settlement-map.util';
@@ -75,8 +76,13 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
   private map?: L.Map;
   private tileLayer?: L.TileLayer;
   private geoJsonLayer?: L.GeoJSON;
+  private regionLayer?: L.GeoJSON;
   private geometry?: SettlementGeometryCollection;
+  private regionGeometry?: any;
+  private settlementLookupMap = new Map<string, string>();
   private geometrySub?: Subscription;
+  private regionGeometrySub?: Subscription;
+  private lookupSub?: Subscription;
   private hasFittedForKey = '';
 
   isEmpty = false;
@@ -96,15 +102,46 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
     });
     this.tileLayer.addTo(this.map);
 
+    this.lookupSub = this.settlementMapData.getSettlementsLookup().subscribe((lookup) => {
+      this.settlementLookupMap.clear();
+      lookup.forEach((item) => {
+        if (item.ekatte && item.name) {
+          this.settlementLookupMap.set(item.ekatte, item.name);
+        }
+      });
+      this.renderMap();
+    });
+
     this.geometrySub = this.settlementMapData.getSettlementGeometry().subscribe((geometry) => {
       this.geometry = geometry;
       this.renderMap();
     });
+
+    if (!this.regionCode) {
+      this.regionGeometrySub = this.settlementMapData.getRegionGeometry().subscribe((geometry) => {
+        this.regionGeometry = geometry;
+        this.renderMap();
+      });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['fitKey'] && !changes['fitKey'].firstChange) {
       this.hasFittedForKey = '';
+    }
+
+    if (changes['regionCode'] && this.map) {
+      if (this.regionCode) {
+        this.regionGeometrySub?.unsubscribe();
+        this.regionLayer?.removeFrom(this.map);
+        this.regionLayer = undefined;
+        this.regionGeometry = undefined;
+      } else if (!this.regionGeometrySub) {
+        this.regionGeometrySub = this.settlementMapData.getRegionGeometry().subscribe((geometry) => {
+          this.regionGeometry = geometry;
+          this.renderMap();
+        });
+      }
     }
 
     if (this.map && this.geometry) {
@@ -114,6 +151,8 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
 
   ngOnDestroy(): void {
     this.geometrySub?.unsubscribe();
+    this.regionGeometrySub?.unsubscribe();
+    this.lookupSub?.unsubscribe();
     this.map?.remove();
   }
 
@@ -121,6 +160,7 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
     if (!this.map || !this.geometry) return;
 
     this.geoJsonLayer?.removeFrom(this.map);
+    this.regionLayer?.removeFrom(this.map);
 
     const isDark = this.themeService.darkMode();
     const settlementByGeometryKey = new Map(this.settlements.map((settlement) => [settlement.geometryKey, settlement]));
@@ -154,6 +194,18 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
       }
     );
     this.geoJsonLayer.addTo(this.map);
+
+    if (this.regionGeometry && !this.regionCode) {
+      this.regionLayer = L.geoJSON(this.regionGeometry, {
+        style: {
+          color: isDark ? '#f8fafc' : '#475569',
+          weight: 1.5,
+          fillOpacity: 0,
+          interactive: false,
+        },
+      });
+      this.regionLayer.addTo(this.map);
+    }
 
     window.requestAnimationFrame(() => {
       this.map?.invalidateSize();
@@ -198,7 +250,10 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
     feature: SettlementGeometryFeature,
     settlement: SettlementAggregate | undefined
   ): string {
-    const name = settlement?.displayName || stripSettlementPrefix(settlement?.cityName) || feature.properties.ekatte;
+    const ekatte = feature.properties.ekatte;
+    const lookupName = this.settlementLookupMap.get(ekatte);
+    const name = settlement?.displayName || stripSettlementPrefix(settlement?.cityName) || stripSettlementPrefix(lookupName) || ekatte;
+
     if (!settlement) {
       return `<strong>${name}</strong><br/>Няма налични изборни данни за визуализация.`;
     }
