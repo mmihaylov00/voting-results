@@ -1,10 +1,10 @@
 import { Component, OnInit, effect, signal, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
-import { Region } from '../../models/election.models';
+import { Region, Section } from '../../models/election.models';
 import { getPartyAlias } from '../../utils/party-aliases';
 import { getPartyColor } from '../../utils/party-colors';
 import { formatActivity, formatRegionName, getDefaultPartyIds, toBp } from '../../utils/common.utils';
@@ -19,6 +19,9 @@ import { PartyFilterComponent } from '../election-detail/party-filter/party-filt
 import { StatCardComponent } from '../ui/stat-card/stat-card';
 import { SearchFilterComponent } from '../ui/search-filter/search-filter';
 import { PartyBadgeComponent } from '../ui/party-badge/party-badge';
+import { SettlementMapComponent } from '../ui/settlement-map/settlement-map';
+import { AbroadWorldMapModalComponent } from '../ui/abroad-world-map-modal/abroad-world-map-modal';
+import { SettlementAggregate, aggregateSectionsBySettlement } from '../../utils/settlement-map.util';
 
 @Component({
   selector: 'app-region-list',
@@ -39,6 +42,8 @@ import { PartyBadgeComponent } from '../ui/party-badge/party-badge';
     StatCardComponent,
     SearchFilterComponent,
     PartyBadgeComponent,
+    SettlementMapComponent,
+    AbroadWorldMapModalComponent,
   ],
   templateUrl: './region-list.html'
 })
@@ -64,13 +69,28 @@ export class RegionListComponent implements OnInit, AfterViewInit {
   partyChartOptions: Highcharts.Options = {};
 
   activeChart = signal<'activity' | 'party'>('activity');
+  overviewMode = signal<'cards' | 'map'>('cards');
+  mapMode = signal<'bulgaria' | 'world'>('bulgaria');
   allParties: { id: string, name: string }[] = [];
   selectedPartyIds = signal<Set<string>>(new Set());
+  mapSectionsLoaded = false;
+  mapSections: Section[] = [];
+  settlementMapData: SettlementAggregate[] = [];
+  abroadSections: Section[] = [];
+  isWorldMapLoading = signal(false);
   getCikUrl = () => getCikUrl(this.date);
+
+  get partiesById(): { [id: string]: string } {
+    return this.allParties.reduce((acc, party) => {
+      acc[party.id] = party.name;
+      return acc;
+    }, {} as { [id: string]: string });
+  }
 
   constructor(
     private route: ActivatedRoute,
     private electionService: ElectionService,
+    private router: Router,
     public themeService: ThemeService
   ) {
     this.loading$ = this.electionService.loading$;
@@ -110,6 +130,7 @@ export class RegionListComponent implements OnInit, AfterViewInit {
 
       // Apply default selection based on keywords
       this.selectedPartyIds.set(getDefaultPartyIds(this.allParties));
+      this.updateSettlementMapData();
     });
   }
 
@@ -181,6 +202,46 @@ export class RegionListComponent implements OnInit, AfterViewInit {
 
   onPartySelectionChange(selectedIds: Set<string>): void {
     this.selectedPartyIds.set(selectedIds);
+  }
+
+  setOverviewMode(mode: 'cards' | 'map'): void {
+    const wasMapMode = this.overviewMode() === 'map';
+    this.overviewMode.set(mode);
+    if (mode === 'map') {
+      if (!wasMapMode) {
+        this.mapMode.set('bulgaria');
+      }
+      this.loadMapSectionsIfNeeded();
+    }
+  }
+
+  openWorldMap(): void {
+    this.overviewMode.set('map');
+    this.mapMode.set('world');
+    this.loadMapSectionsIfNeeded();
+    this.loadAbroadSectionsIfNeeded();
+  }
+
+  showBulgariaMap(): void {
+    this.mapMode.set('bulgaria');
+  }
+
+  private loadAbroadSectionsIfNeeded(): void {
+    if (this.abroadSections.length > 0 || this.isWorldMapLoading()) {
+      return;
+    }
+
+    this.isWorldMapLoading.set(true);
+    this.electionService.getSections(this.date, '32', true).subscribe({
+      next: (sections) => {
+        this.abroadSections = sections;
+        this.isWorldMapLoading.set(false);
+      },
+      error: (error) => {
+        console.error('Error loading abroad sections:', error);
+        this.isWorldMapLoading.set(false);
+      },
+    });
   }
 
   ngAfterViewInit() {
@@ -357,4 +418,29 @@ export class RegionListComponent implements OnInit, AfterViewInit {
   formatRegionName = formatRegionName;
   getPartyAlias = getPartyAlias;
   toBp = toBp;
+
+  private loadMapSectionsIfNeeded(): void {
+    if (this.mapSectionsLoaded || !this.date) return;
+
+    this.electionService.getSections(this.date).subscribe((sections) => {
+      this.mapSections = sections;
+      this.mapSectionsLoaded = true;
+      this.updateSettlementMapData();
+    });
+  }
+
+  private updateSettlementMapData(): void {
+    if (!this.mapSectionsLoaded) return;
+
+    const partiesById = this.allParties.reduce((acc, party) => {
+      acc[party.id] = party.name;
+      return acc;
+    }, {} as { [id: string]: string });
+
+    this.settlementMapData = aggregateSectionsBySettlement(this.mapSections, partiesById);
+  }
+
+  onSettlementSelect(settlement: SettlementAggregate): void {
+    this.router.navigate(['/election', this.date, 'region', settlement.regionId]);
+  }
 }

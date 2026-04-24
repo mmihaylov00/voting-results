@@ -44,6 +44,7 @@ export interface Section {
   regionId: string;
   regionName?: string;
   municipalityName?: string;
+  settlementEkatte?: string;
   cityName: string;
   sectionName: string;
   sectionType: string;
@@ -154,7 +155,7 @@ export const SECTION_COLUMNS: TableColumn[] = [
 ];
 
 export type SectionTab = 'all' | 'target' | 'swing' | 'risky' | 'outside' | 'declining' | 'dormant' | 'flip' | 'vanishing';
-export type ViewMode = 'sections' | 'cities' | 'municipalities' | 'candidates';
+export type ViewMode = 'sections' | 'cities' | 'municipalities' | 'candidates' | 'map';
 
 export interface SectionFilters {
   searchTerm: string;

@@ -53,6 +53,14 @@ import {RiskCategory, RiskFilterDropdownComponent} from '../ui/risk-filter-dropd
 import {SearchFilterComponent} from '../ui/search-filter/search-filter';
 import {ColumnFilterComponent} from '../ui/column-filter/column-filter';
 import { PartyBadgeComponent } from '../ui/party-badge/party-badge';
+import { SettlementMapComponent } from '../ui/settlement-map/settlement-map';
+import { AbroadWorldMapModalComponent } from '../ui/abroad-world-map-modal/abroad-world-map-modal';
+import {
+  SettlementAggregate,
+  SettlementMapMetric,
+  aggregateSectionsBySettlement,
+  getGeometryRegionCode,
+} from '../../utils/settlement-map.util';
 
 @Component({
   selector: 'app-election-detail',
@@ -87,6 +95,8 @@ import { PartyBadgeComponent } from '../ui/party-badge/party-badge';
     SearchFilterComponent,
     ColumnFilterComponent,
     PartyBadgeComponent,
+    SettlementMapComponent,
+    AbroadWorldMapModalComponent,
   ],
   templateUrl: './election-detail.html',
   styleUrl: './election-detail.scss',
@@ -132,6 +142,8 @@ export class ElectionDetailComponent implements OnInit {
   isErrorModalOpen = signal<boolean>(false);
   copiedId = signal<string | null>(null);
   currentSectionData?: Section;
+  settlementMapMetric = signal<SettlementMapMetric>('leading-party');
+  settlementMapData: SettlementAggregate[] = [];
   regionalChartOptions: Highcharts.Options = {};
   activityChartOptions: Highcharts.Options = {};
   ppdbChartOptions: Highcharts.Options = {};
@@ -160,7 +172,7 @@ export class ElectionDetailComponent implements OnInit {
 
   visibleCandidateColumns = signal<Set<string>>(new Set());
 
-  private getPartiesById(): { [id: string]: string } {
+  getPartiesById(): { [id: string]: string } {
     const map: { [id: string]: string } = {};
     this.allParties.forEach(p => {
       map[p.id] = p.name;
@@ -302,6 +314,35 @@ export class ElectionDetailComponent implements OnInit {
     return this.riskCategories.filter(category => category.code !== 'R1' && category.code !== 'R3');
   }
 
+  get currentRowCount(): number {
+    if (this.viewMode() === 'candidates') {
+      return this.filteredCandidates.length;
+    }
+    if (this.viewMode() === 'map') {
+      if (this.isAbroadRegion) {
+        return this.abroadMapContinentCount;
+      }
+      return this.settlementMapData.length;
+    }
+    return this.filteredSections.length;
+  }
+
+  get isAbroadRegion(): boolean {
+    return this.regionId === '32';
+  }
+
+  get canShowMap(): boolean {
+    return !!this.regionId && this.regionId !== 'all';
+  }
+
+  get abroadMapContinentCount(): number {
+    return 6;
+  }
+
+  get settlementMapRegionCode(): string {
+    return getGeometryRegionCode(this.regionId);
+  }
+
   onCandidateRiskFilterTypeChange(type: 'any' | 'none' | null): void {
     this.candidateRiskFilterType.set(type);
     this.applyCandidateFilter();
@@ -359,6 +400,7 @@ export class ElectionDetailComponent implements OnInit {
         document.body.classList.remove('overflow-hidden');
       }
     });
+
   }
 
   openErrorModal(): void {
@@ -477,6 +519,7 @@ export class ElectionDetailComponent implements OnInit {
               this.calculateRegionCandidates();
               this.applyCandidateFilter();
             }
+            this.updateSettlementMapData();
             this.isLoadingAllSections.set(false);
             this.isProcessingData.set(false);
           }, 0);
@@ -513,6 +556,7 @@ export class ElectionDetailComponent implements OnInit {
           }
         });
         this.selectedCandidatePartyIds.set(defaultCandidateParties);
+        this.updateSettlementMapData();
       });
     }
   }
@@ -805,6 +849,8 @@ export class ElectionDetailComponent implements OnInit {
       this.calculateRegionCandidates();
       this.applyCandidateFilter();
     }
+
+    this.updateSettlementMapData();
   }
 
   allData: { [date: string]: { sections: Section[], parties: { [id: string]: string }, regions: Region[] } } = {};
@@ -1407,7 +1453,14 @@ export class ElectionDetailComponent implements OnInit {
       this.groupByMode.set('none');
       this.calculateRegionCandidates();
       this.applyCandidateFilter();
+    } else if (mode === 'map') {
+      this.groupByMode.set('none');
+      this.updateSettlementMapData();
     }
+  }
+
+  setSettlementMapMetric(metric: SettlementMapMetric): void {
+    this.settlementMapMetric.set(metric);
   }
 
   onFilterChange(filters: SectionFilters): void {
@@ -1830,24 +1883,39 @@ export class ElectionDetailComponent implements OnInit {
 
   loadSectionDetails(section: Section): void {
     if (this.groupByCity()) {
-      const g = section as any;
-      // Build a complete parties map from allParties (not just topParties)
-      const partiesMap: { [id: string]: string } = {};
-      this.allParties.forEach(p => {
-        partiesMap[p.id] = p.name;
-      });
+      this.openGroupedSectionDetails(section as any, section);
+      return;
+    }
+    this.electionService.getSectionDetails(this.date, section.sectionId).subscribe(details => {
+      this.selectedSection = details;
+      this.currentSectionData = section;
+      this.isModalOpen.set(true);
+    });
+  }
+
+  onMapSettlementSelect(settlement: SettlementAggregate): void {
+    const groupedSection = this.buildGroupedSectionFromSections(settlement.displayName, settlement.sections);
+    this.openGroupedSectionDetails(groupedSection, settlement.sections[0]);
+  }
+
+  private openGroupedSectionDetails(groupedSection: any, baseSection?: Section): void {
+    const g = groupedSection as any;
+    const partiesMap: { [id: string]: string } = {};
+    this.allParties.forEach(p => {
+      partiesMap[p.id] = p.name;
+    });
 
       // Aggregate voted comparisons for all dates (needed for percent calculations)
-      const votedComparisonsMap: { [date: string]: number } = {};
-      g.sections.forEach((s: Section) => {
-        s.comparisons?.['voted']?.forEach((c: any) => {
-          votedComparisonsMap[c.d] = (votedComparisonsMap[c.d] || 0) + c.v;
-        });
+    const votedComparisonsMap: { [date: string]: number } = {};
+    g.sections.forEach((s: Section) => {
+      s.comparisons?.['voted']?.forEach((c: any) => {
+        votedComparisonsMap[c.d] = (votedComparisonsMap[c.d] || 0) + c.v;
       });
+    });
 
-      const partyResults: PartyResult[] = Object.entries(g.partyVotes as {
-        [pid: string]: number
-      }).map(([partyId, total]) => {
+    const partyResults: PartyResult[] = Object.entries(g.partyVotes as {
+      [pid: string]: number
+    }).map(([partyId, total]) => {
         // Find paper and machine votes by summing them from all sections in the group
         let paper = 0;
         let machine = 0;
@@ -1921,9 +1989,9 @@ export class ElectionDetailComponent implements OnInit {
           machineComparisons: Object.values(machineComparisonsMap),
           percentComparisons: percentComparisons
         };
-      }).sort((a, b) => b.total - a.total);
+    }).sort((a, b) => b.total - a.total);
 
-      if (g.noVotes > 0) {
+    if (g.noVotes > 0) {
         // Aggregate noVotes comparisons
         const noVotesComparisonsMap: { [date: string]: ComparativeValue } = {};
         const noVotesPaperComparisonsMap: { [date: string]: ComparativeValue } = {};
@@ -1993,34 +2061,34 @@ export class ElectionDetailComponent implements OnInit {
           machineComparisons: Object.values(noVotesMachineComparisonsMap),
           percentComparisons: noVotesPercentComparisons
         });
-      }
+    }
 
       // Aggregate candidate votes from all sections in the group
-      const aggregatedCandidateVotes: { [key: string]: CandidateVotes } = {};
-      const votesWithoutPreferencesByParty: {
-        [partyId: string]: { total: number, paper: number, machine: number }
-      } = {};
+    const aggregatedCandidateVotes: { [key: string]: CandidateVotes } = {};
+    const votesWithoutPreferencesByParty: {
+      [partyId: string]: { total: number, paper: number, machine: number }
+    } = {};
 
-      g.sections.forEach((s: Section) => {
-        if (s.candidateVotes) {
-          Object.values(s.candidateVotes).forEach(candidate => {
-            const key = `${candidate.partyId}_${candidate.candidateId}`;
-            if (!aggregatedCandidateVotes[key]) {
-              aggregatedCandidateVotes[key] = {
-                candidateId: candidate.candidateId,
-                candidateName: candidate.candidateName,
-                partyId: candidate.partyId,
-                partyName: candidate.partyName,
-                total: 0,
-                paper: 0,
-                machine: 0
-              };
-            }
-            aggregatedCandidateVotes[key].total += candidate.total;
-            aggregatedCandidateVotes[key].paper += candidate.paper;
-            aggregatedCandidateVotes[key].machine += candidate.machine;
-          });
-        }
+    g.sections.forEach((s: Section) => {
+      if (s.candidateVotes) {
+        Object.values(s.candidateVotes).forEach(candidate => {
+          const key = `${candidate.partyId}_${candidate.candidateId}`;
+          if (!aggregatedCandidateVotes[key]) {
+            aggregatedCandidateVotes[key] = {
+              candidateId: candidate.candidateId,
+              candidateName: candidate.candidateName,
+              partyId: candidate.partyId,
+              partyName: candidate.partyName,
+              total: 0,
+              paper: 0,
+              machine: 0
+            };
+          }
+          aggregatedCandidateVotes[key].total += candidate.total;
+          aggregatedCandidateVotes[key].paper += candidate.paper;
+          aggregatedCandidateVotes[key].machine += candidate.machine;
+        });
+      }
 
         // Calculate votes without preferences per party
         Object.entries(s.partyVotes).forEach(([partyId, partyVotes]) => {
@@ -2048,117 +2116,147 @@ export class ElectionDetailComponent implements OnInit {
           votesWithoutPreferencesByParty[partyId].paper += partyVotes.paper - partyPreferencePaper;
           votesWithoutPreferencesByParty[partyId].machine += partyVotes.machine - partyPreferenceMachine;
         });
-      });
+    });
 
       // Calculate total votes without preferences
-      const totalVotesWithoutPreferences = Object.values(votesWithoutPreferencesByParty).reduce((sum, v) => sum + v.total, 0);
+    const totalVotesWithoutPreferences = Object.values(votesWithoutPreferencesByParty).reduce((sum, v) => sum + v.total, 0);
 
-      const details: SectionDetails = {
-        sectionId: g.cityName,
-        cityName: g.cityName,
-        sectionName: `Общо за ${g.sections.length} секции`,
-        partyResults,
-        candidateVotes: Object.keys(aggregatedCandidateVotes).length > 0 ? aggregatedCandidateVotes : undefined,
-        votesWithoutPreferences: totalVotesWithoutPreferences,
-        votesWithoutPreferencesByParty: Object.keys(votesWithoutPreferencesByParty).length > 0 ? votesWithoutPreferencesByParty : undefined
-      };
+    const details: SectionDetails = {
+      sectionId: g.cityName,
+      cityName: g.cityName,
+      sectionName: `Общо за ${g.sections.length} секции`,
+      partyResults,
+      candidateVotes: Object.keys(aggregatedCandidateVotes).length > 0 ? aggregatedCandidateVotes : undefined,
+      votesWithoutPreferences: totalVotesWithoutPreferences,
+      votesWithoutPreferencesByParty: Object.keys(votesWithoutPreferencesByParty).length > 0 ? votesWithoutPreferencesByParty : undefined
+    };
 
       // Aggregate risks from all sections (section-level + candidate-level)
-      const aggregatedRiskIndicators: any[] = [];
-      g.sections.forEach((s: Section) => {
-        const sectionRisks = s.riskIndicators || [];
-        sectionRisks.forEach((risk: any) => {
-          aggregatedRiskIndicators.push({
-            ...risk,
-            details: {
-              ...(risk.details || {}),
-              sectionId: s.sectionId
-            }
-          });
-        });
-
-        const candidateRisks = (s as any).candidateRiskIndicators || [];
-        candidateRisks.forEach((risk: any) => {
-          aggregatedRiskIndicators.push({
-            ...risk,
-            details: {
-              ...(risk.details || {}),
-              sectionId: s.sectionId
-            }
-          });
+    const aggregatedRiskIndicators: any[] = [];
+    g.sections.forEach((s: Section) => {
+      const sectionRisks = s.riskIndicators || [];
+      sectionRisks.forEach((risk: any) => {
+        aggregatedRiskIndicators.push({
+          ...risk,
+          details: {
+            ...(risk.details || {}),
+            sectionId: s.sectionId
+          }
         });
       });
+
+      const candidateRisks = (s as any).candidateRiskIndicators || [];
+      candidateRisks.forEach((risk: any) => {
+        aggregatedRiskIndicators.push({
+          ...risk,
+          details: {
+            ...(risk.details || {}),
+            sectionId: s.sectionId
+          }
+        });
+      });
+    });
 
       // Create a virtual Section object for comparisons with aggregated candidate votes
       // Get regionId from the first section in the group
-      const firstSection = g.sections[0] as Section;
-      const currentSectionData: Section = {
-        ...section,
-        regionId: firstSection.regionId, // Ensure regionId is set from the first section
-        comparisons: {},
-        candidateVotes: Object.keys(aggregatedCandidateVotes).length > 0 ? aggregatedCandidateVotes : undefined,
-        riskIndicators: aggregatedRiskIndicators,
-        riskScore: aggregatedRiskIndicators.length
-      };
+    const firstSection = g.sections[0] as Section;
+    const currentSectionData: Section = {
+      ...(baseSection || firstSection),
+      regionId: firstSection.regionId,
+      comparisons: {},
+      candidateVotes: Object.keys(aggregatedCandidateVotes).length > 0 ? aggregatedCandidateVotes : undefined,
+      riskIndicators: aggregatedRiskIndicators,
+      riskScore: aggregatedRiskIndicators.length
+    };
 
       // Aggregate comparisons
-      const comparisonKeys = ['total', 'voted', 'discardedVotes', 'noVotes', 'totalPaper', 'totalMachine', 'activityPercent', 'noVotesPaper', 'noVotesMachine', 'noVotesPercent'];
-      comparisonKeys.forEach(key => {
-        const aggregated: { [date: string]: { value: number } } = {};
-        g.sections.forEach((s: Section) => {
-          s.comparisons?.[key]?.forEach((c: any) => {
-            if (!aggregated[c.d]) {
-              aggregated[c.d] = {value: 0};
-            }
-            if (key === 'activityPercent' || key === 'noVotesPercent') {
-              // Activity percent and noVotesPercent need to be handled carefully, we'll calculate them later
-            } else {
-              aggregated[c.d].value += c.v;
-            }
-          });
+    const comparisonKeys = ['total', 'voted', 'discardedVotes', 'noVotes', 'totalPaper', 'totalMachine', 'activityPercent', 'noVotesPaper', 'noVotesMachine', 'noVotesPercent'];
+    comparisonKeys.forEach(key => {
+      const aggregated: { [date: string]: { value: number } } = {};
+      g.sections.forEach((s: Section) => {
+        s.comparisons?.[key]?.forEach((c: any) => {
+          if (!aggregated[c.d]) {
+            aggregated[c.d] = {value: 0};
+          }
+          if (key !== 'activityPercent' && key !== 'noVotesPercent') {
+            aggregated[c.d].value += c.v;
+          }
         });
-
-        if (key === 'activityPercent') {
-          const electorsAggr: { [date: string]: number } = {};
-          const votedAggr: { [date: string]: number } = {};
-          g.sections.forEach((s: Section) => {
-            s.comparisons?.['total']?.forEach((c: any) => electorsAggr[c.d] = (electorsAggr[c.d] || 0) + c.v);
-            s.comparisons?.['voted']?.forEach((c: any) => votedAggr[c.d] = (votedAggr[c.d] || 0) + c.v);
-          });
-          currentSectionData.comparisons![key] = Object.keys(electorsAggr).map(date => ({
-            d: date,
-            v: electorsAggr[date] > 0 ? Math.round((votedAggr[date] / electorsAggr[date]) * 10000) : 0
-          }));
-        } else if (key === 'noVotesPercent') {
-          const noVotesAggr: { [date: string]: number } = {};
-          const votedAggr: { [date: string]: number } = {};
-          g.sections.forEach((s: Section) => {
-            s.comparisons?.['noVotes']?.forEach((c: any) => noVotesAggr[c.d] = (noVotesAggr[c.d] || 0) + c.v);
-            s.comparisons?.['voted']?.forEach((c: any) => votedAggr[c.d] = (votedAggr[c.d] || 0) + c.v);
-          });
-          // Store as decimal (0-1) since tooltip will multiply by 100
-          currentSectionData.comparisons![key] = Object.keys(noVotesAggr).map(date => ({
-            d: date,
-            v: votedAggr[date] > 0 ? Math.round((noVotesAggr[date] / votedAggr[date]) * 10000) : 0
-          }));
-        } else {
-          currentSectionData.comparisons![key] = Object.entries(aggregated).map(([date, data]) => ({
-            d: date,
-            v: data.value
-          }));
-        }
       });
 
-      this.selectedSection = details;
-      this.currentSectionData = currentSectionData;
-      this.isModalOpen.set(true);
+      if (key === 'activityPercent') {
+        const electorsAggr: { [date: string]: number } = {};
+        const votedAggr: { [date: string]: number } = {};
+        g.sections.forEach((s: Section) => {
+          s.comparisons?.['total']?.forEach((c: any) => electorsAggr[c.d] = (electorsAggr[c.d] || 0) + c.v);
+          s.comparisons?.['voted']?.forEach((c: any) => votedAggr[c.d] = (votedAggr[c.d] || 0) + c.v);
+        });
+        currentSectionData.comparisons![key] = Object.keys(electorsAggr).map(date => ({
+          d: date,
+          v: electorsAggr[date] > 0 ? Math.round((votedAggr[date] / electorsAggr[date]) * 10000) : 0
+        }));
+      } else if (key === 'noVotesPercent') {
+        const noVotesAggr: { [date: string]: number } = {};
+        const votedAggr: { [date: string]: number } = {};
+        g.sections.forEach((s: Section) => {
+          s.comparisons?.['noVotes']?.forEach((c: any) => noVotesAggr[c.d] = (noVotesAggr[c.d] || 0) + c.v);
+          s.comparisons?.['voted']?.forEach((c: any) => votedAggr[c.d] = (votedAggr[c.d] || 0) + c.v);
+        });
+        currentSectionData.comparisons![key] = Object.keys(noVotesAggr).map(date => ({
+          d: date,
+          v: votedAggr[date] > 0 ? Math.round((noVotesAggr[date] / votedAggr[date]) * 10000) : 0
+        }));
+      } else {
+        currentSectionData.comparisons![key] = Object.entries(aggregated).map(([date, data]) => ({
+          d: date,
+          v: data.value
+        }));
+      }
+    });
+
+    this.selectedSection = details;
+    this.currentSectionData = currentSectionData;
+    this.isModalOpen.set(true);
+  }
+
+  private buildGroupedSectionFromSections(cityName: string, sections: Section[]): Section & { sections: Section[]; partyVotes: { [pid: string]: number } } {
+    const partyVotes: { [pid: string]: number } = {};
+
+    sections.forEach((section) => {
+      Object.entries(section.partyVotes).forEach(([partyId, votes]) => {
+        partyVotes[partyId] = (partyVotes[partyId] || 0) + (votes.total || 0);
+      });
+    });
+
+    return {
+      sectionId: `Група (${sections.length})`,
+      regionId: sections[0]?.regionId || '',
+      regionName: sections[0]?.regionName,
+      cityName,
+      settlementEkatte: sections[0]?.settlementEkatte,
+      sectionName: '',
+      sectionType: 'City',
+      total: sections.reduce((sum, section) => sum + (section.total || 0), 0),
+      voted: sections.reduce((sum, section) => sum + (section.voted || 0), 0),
+      discardedVotes: sections.reduce((sum, section) => sum + (section.discardedVotes || 0), 0),
+      noVotes: sections.reduce((sum, section) => sum + (section.noVotes || 0), 0),
+      noVotesPaper: sections.reduce((sum, section) => sum + (section.noVotesPaper || 0), 0),
+      noVotesMachine: sections.reduce((sum, section) => sum + (section.noVotesMachine || 0), 0),
+      totalPaper: sections.reduce((sum, section) => sum + (section.totalPaper || 0), 0),
+      totalMachine: sections.reduce((sum, section) => sum + (section.totalMachine || 0), 0),
+      partyVotes: partyVotes as any,
+      topParties: [],
+      activityBp: 0,
+      sections,
+    } as Section & { sections: Section[]; partyVotes: { [pid: string]: number } };
+  }
+
+  private updateSettlementMapData(): void {
+    if (!this.canShowMap || this.isAbroadRegion || this.sections.length === 0) {
+      this.settlementMapData = [];
       return;
     }
-    this.electionService.getSectionDetails(this.date, section.sectionId).subscribe(details => {
-      this.selectedSection = details;
-      this.currentSectionData = section;
-      this.isModalOpen.set(true);
-    });
+    this.settlementMapData = aggregateSectionsBySettlement(this.sections, this.getPartiesById());
   }
 
   openCandidateModal(candidate: RegionCandidate): void {

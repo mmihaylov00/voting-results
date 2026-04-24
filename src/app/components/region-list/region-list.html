@@ -76,6 +76,15 @@
     </app-stat-card>
   </div>
 
+  <div class="mb-4 flex flex-wrap items-center gap-2 border-b border-primary/10">
+    <button hlmBtn [variant]="'line'" [attr.data-state]="overviewMode() === 'cards' ? 'active' : 'inactive'" (click)="setOverviewMode('cards')">
+      Карти
+    </button>
+    <button hlmBtn [variant]="'line'" [attr.data-state]="overviewMode() === 'map' ? 'active' : 'inactive'" (click)="setOverviewMode('map')">
+      Карта
+    </button>
+  </div>
+
   <div class="flex justify-between mb-4 gap-4">
     <div class="max-w-48 w-full">
       <app-search-filter
@@ -88,49 +97,85 @@
     </a>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-    @for (region of filteredRegions; track region.id) {
-      <div hlmCard class="flex flex-col h-full transition-all hover:shadow-xl border-primary/20 hover:border-primary/50 group">
-        <div hlmCardHeader>
-          <h3 hlmCardTitle class="text-secondary dark:text-primary transition-colors">{{ formatRegionName(region.name) }}</h3>
-          <p hlmCardDescription hlmMuted class="text-secondary/60 dark:text-foreground/60">МИР {{ region.id }}</p>
-        </div>
-        <div class="flex-grow"></div>
-        <div hlmCardContent class="pt-0 flex-grow">
-          <div class="flex flex-col text-xs mb-4 space-y-1">
-            @for (tp of region.topParties; let i = $index; track tp.name) {
-              @let alias = getPartyAlias(tp.name);
-              <div class="flex justify-between items-center gap-2" [title]="alias + ': ' + tp.total + ' (' + formatActivity((tp.percentBp || 0) / 10000) + '%)'">
-                <div class="flex items-center gap-2 min-w-0">
-                  <span class="text-muted-foreground">{{ $index + 1 }}.</span>
-                  <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
+  @if (overviewMode() === 'cards') {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      @for (region of filteredRegions; track region.id) {
+        <div hlmCard class="flex flex-col h-full transition-all hover:shadow-xl border-primary/20 hover:border-primary/50 group">
+          <div hlmCardHeader>
+            <h3 hlmCardTitle class="text-secondary dark:text-primary transition-colors">{{ formatRegionName(region.name) }}</h3>
+            <p hlmCardDescription hlmMuted class="text-secondary/60 dark:text-foreground/60">МИР {{ region.id }}</p>
+          </div>
+          <div class="flex-grow"></div>
+          <div hlmCardContent class="pt-0 flex-grow">
+            <div class="flex flex-col text-xs mb-4 space-y-1">
+              @for (tp of region.topParties; let i = $index; track tp.name) {
+                @let alias = getPartyAlias(tp.name);
+                <div class="flex justify-between items-center gap-2" [title]="alias + ': ' + tp.total + ' (' + formatActivity((tp.percentBp || 0) / 10000) + '%)'">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span class="text-muted-foreground">{{ $index + 1 }}.</span>
+                    <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
+                  </div>
+                  <span class="whitespace-nowrap"><strong class="me-1">{{ tp.total | number }}</strong> <span class="text-[10px] opacity-70">({{ formatActivity((tp.percentBp || 0) / 10000) }}%)</span></span>
                 </div>
-                <span class="whitespace-nowrap"><strong class="me-1">{{ tp.total | number }}</strong> <span class="text-[10px] opacity-70">({{ formatActivity((tp.percentBp || 0) / 10000) }}%)</span></span>
+              }
+            </div>
+            <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-muted-foreground mb-4 ps-4 pe-4">
+              <div class="flex justify-between items-start flex-col">
+                <span>Активност:</span>
+                <span class="font-medium text-foreground flex items-center" [hlmTooltip]="region.comparisons?.['activityPercent']" [currentValue]="region.total > 0 ? toBp(region.voted / region.total) : 0" [isPercent]="true" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ formatActivity(region.voted / region.total) }}%</span>
               </div>
-            }
-          </div>
-          <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-muted-foreground mb-4 ps-4 pe-4">
-            <div class="flex justify-between items-start flex-col">
-              <span>Активност:</span>
-              <span class="font-medium text-foreground flex items-center" [hlmTooltip]="region.comparisons?.['activityPercent']" [currentValue]="region.total > 0 ? toBp(region.voted / region.total) : 0" [isPercent]="true" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ formatActivity(region.voted / region.total) }}%</span>
+              <div class="flex justify-between items-end flex-col">
+                <span>Гласували:</span>
+                <span class="font-medium text-foreground flex items-center" [hlmTooltip]="region.comparisons?.['voted']" [currentValue]="region.voted" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ region.voted | number }}</span>
+              </div>
             </div>
-            <div class="flex justify-between items-end flex-col">
-              <span>Гласували:</span>
-              <span class="font-medium text-foreground flex items-center" [hlmTooltip]="region.comparisons?.['voted']" [currentValue]="region.voted" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ region.voted | number }}</span>
-            </div>
+            <a [routerLink]="['/election', date, 'region', region.id]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground mt-auto">
+              Виж резултати
+            </a>
           </div>
-          <a [routerLink]="['/election', date, 'region', region.id]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground mt-auto">
-            Виж резултати
-          </a>
         </div>
+      }
+      @if (filteredRegions.length === 0 && ! (loading$ | async)) {
+        <div class="col-span-full py-20 text-center">
+          <p hlmMuted>Няма намерени райони, съвпадащи с търсенето.</p>
+        </div>
+      }
+    </div>
+  } @else {
+    <div hlmCard class="border-primary/20 p-4 md:p-6">
+      <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+        @if (mapMode() === 'world') {
+          <p hlmMuted>
+            Световната карта показва секциите извън страната, групирани по континенти за избраната дата.
+          </p>
+          <button hlmBtn variant="outline" size="sm" (click)="showBulgariaMap()">
+            България
+          </button>
+        } @else {
+          <p hlmMuted>
+            Картата оцветява всяко населено място според партията с най-много гласове. Натискането върху населено място отваря съответния район.
+          </p>
+        }
       </div>
-    }
-    @if (filteredRegions.length === 0 && ! (loading$ | async)) {
-      <div class="col-span-full py-20 text-center">
-        <p hlmMuted>Няма намерени райони, съвпадащи с търсенето.</p>
-      </div>
-    }
-  </div>
+
+      @if (mapMode() === 'world') {
+        <app-abroad-world-map-modal
+          [sections]="abroadSections"
+          [partiesById]="partiesById"
+          [loading]="isWorldMapLoading()"
+          [embedded]="true" />
+      } @else {
+        <app-settlement-map
+          [settlements]="settlementMapData"
+          metric="leading-party"
+          [fitKey]="date"
+          [allowUnresolvedFeatures]="true"
+          [showWorldButton]="true"
+          (worldButtonClick)="openWorldMap()"
+          (settlementSelect)="onSettlementSelect($event)" />
+      }
+    </div>
+  }
 
   <div hlmCard class="border-primary/20 p-6 mb-12">
     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">

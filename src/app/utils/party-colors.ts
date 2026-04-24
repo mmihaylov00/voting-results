@@ -1,7 +1,8 @@
 import { getPartyAlias } from './party-aliases';
 
 const PARTY_COLOR_RULES: { match: string[]; color: string }[] = [
-  { match: ['ПП-ДБ', 'ПРОДЪЛЖАВАМЕ'], color: '#0015FF' },
+  { match: ['ПП-ДБ', 'ПРОДЪЛЖАВАМЕ'], color: '#F5C542' },
+  { match: ['ПБ', 'ПРОГРЕСИВНА'], color: '#037260' },
   { match: ['ГЕРБ'], color: '#0C4587' },
   { match: ['ВЪЗРАЖДАНЕ'], color: '#57a561' },
   { match: ['ДПС'], color: '#217DDF' },
@@ -10,13 +11,10 @@ const PARTY_COLOR_RULES: { match: string[]; color: string }[] = [
   { match: ['МЕЧ'], color: '#BE0034' },
   { match: ['ВЕЛИЧИЕ'], color: '#C13334' },
   { match: ['АПС', 'АЛИАНС'], color: '#21A1DF' },
-  { match: ['ПБ', 'ПРОГРЕСИВНА'], color: '#037260' },
 ];
 
 const DARK_PARTY_COLOR_OVERRIDES: { match: string[]; color: string }[] = [
-  { match: ['ПП-ДБ', 'ПРОДЪЛЖАВАМЕ'], color: '#5B7CFF' },
   { match: ['ГЕРБ'], color: '#3BC5E0' },
-  { match: ['ВЪЗРАЖДАНЕ'], color: '#F5C542' },
 ];
 
 const DEFAULT_PARTY_COLOR = '#64748B'; // slate

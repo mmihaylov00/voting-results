@@ -39,6 +39,7 @@ type ColumnarSections = {
   };
   sectionId: string[];
   regionId: string[];
+  settlementEkatte: string[];
   cityNameId: number[];
   sectionNameId: number[];
   sectionType: number[];
@@ -458,6 +459,7 @@ export class ElectionService {
       sectionId: s.sectionId[index] || '',
       regionId,
       regionName: full.regionNameById.get(regionId),
+      settlementEkatte: s.settlementEkatte[index] || '',
       cityName,
       sectionName,
       sectionType: sectionTypeMap[s.sectionType[index]] || 'Other',

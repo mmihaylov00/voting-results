@@ -19,7 +19,7 @@ import { HlmTypographyDirective } from '../typography-helm/src/lib/hlm-typograph
 export class BaseModalComponent {
   @Input() title: string = '';
   @Input() subtitle: string = '';
-  @Input() zIndex: string = 'z-[100]';
+  @Input() zIndex: string = 'z-[1200]';
   @Output() close = new EventEmitter<void>();
 
   @ContentChild('headerActions') headerActions?: TemplateRef<any>;

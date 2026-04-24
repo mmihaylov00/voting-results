@@ -1,18 +1,42 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHighcharts } from 'highcharts-angular';
+import * as Highcharts from 'highcharts';
+import { of } from 'rxjs';
 
-import { ElectionList } from './election-list';
+import { ElectionListComponent } from './election-list';
+import { ElectionService } from '../../services/election';
+import { ThemeService } from '../../services/theme.service';
 
-describe('ElectionList', () => {
-  let component: ElectionList;
-  let fixture: ComponentFixture<ElectionList>;
+describe('ElectionListComponent', () => {
+  let component: ElectionListComponent;
+  let fixture: ComponentFixture<ElectionListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ElectionList]
+      imports: [ElectionListComponent],
+      providers: [
+        provideHighcharts({
+          instance: () => Promise.resolve(Highcharts as any),
+        }),
+        {
+          provide: ElectionService,
+          useValue: {
+            loading$: of(false),
+            getDates: () => [],
+            getAllData: () => of({}),
+          },
+        },
+        {
+          provide: ThemeService,
+          useValue: {
+            darkMode: () => false,
+          },
+        },
+      ],
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ElectionList);
+    fixture = TestBed.createComponent(ElectionListComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -160,7 +160,15 @@
             <div class="flex items-center gap-3">
               <span
                 class="inline-flex items-center justify-center px-3 py-1.5 rounded-full text-sm font-semibold bg-primary/10 text-primary-foreground dark:text-primary border border-primary/20 min-w-[3rem]">
-                Редове: {{ viewMode() === 'candidates' ? filteredCandidates.length : filteredSections.length }}
+                @if (viewMode() === 'map') {
+                  @if (isAbroadRegion) {
+                    Континенти: {{ currentRowCount }}
+                  } @else {
+                    Населени места: {{ currentRowCount }}
+                  }
+                } @else {
+                  Редове: {{ currentRowCount }}
+                }
               </span>
               <div class="flex flex-wrap gap-2 border-b border-primary/10 align-baseline">
                 <button hlmBtn [variant]="'line'" [attr.data-state]="viewMode() === 'sections' ? 'active' : 'inactive'"
@@ -181,28 +189,73 @@
                         (click)="setViewMode('candidates')">
                   Кандидати
                 </button>
+                @if (canShowMap) {
+                  <button hlmBtn [variant]="'line'"
+                          [attr.data-state]="viewMode() === 'map' ? 'active' : 'inactive'"
+                          (click)="setViewMode('map')">
+                    Карта
+                  </button>
+                }
               </div>
             </div>
-            <div class="flex items-center gap-2">
-              <button hlmBtn variant="outline" (click)="openExportModal()"
-                      class="border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                  <polyline points="7 10 12 15 17 10"/>
-                  <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                Експорт CSV
-              </button>
-              <div class="relative">
-                <app-column-filter
-                  [columns]="filteredAvailableColumns"
-                  [selectedColumnIds]="currentVisibleColumns"
-                  (selectedColumnIdsChange)="onColumnSelectionChange($event)"/>
+            @if (viewMode() !== 'map') {
+              <div class="flex items-center gap-2">
+                <button hlmBtn variant="outline" (click)="openExportModal()"
+                        class="border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  Експорт CSV
+                </button>
+                <div class="relative">
+                  <app-column-filter
+                    [columns]="filteredAvailableColumns"
+                    [selectedColumnIds]="currentVisibleColumns"
+                    (selectedColumnIdsChange)="onColumnSelectionChange($event)"/>
+                </div>
               </div>
-            </div>
+            }
           </div>
-          @if (viewMode() !== 'candidates') {
+          @if (viewMode() === 'map') {
+            <div class="flex flex-col gap-4">
+              <div class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-primary/10 bg-muted/20 px-4 py-3">
+                @if (isAbroadRegion) {
+                  <p class="text-sm text-muted-foreground">
+                    Световната карта групира секциите извън страната по континенти и показва агрегираните резултати за избраната дата.
+                  </p>
+                } @else {
+                  <p class="text-sm text-muted-foreground">
+                    Картата показва най-силната партия или най-силната преференция във всяко населено място. Натискането върху населено място отваря детайли за него.
+                  </p>
+                  <div class="flex gap-2">
+                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-party' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-party')">
+                      Партии
+                    </button>
+                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-preference' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-preference')">
+                      Преференции
+                    </button>
+                  </div>
+                }
+              </div>
+              @if (isAbroadRegion) {
+                <app-abroad-world-map-modal
+                  [sections]="sections"
+                  [partiesById]="getPartiesById()"
+                  [embedded]="true" />
+              } @else {
+                <app-settlement-map
+                  [settlements]="settlementMapData"
+                  [regionCode]="settlementMapRegionCode"
+                  [metric]="settlementMapMetric()"
+                  [fitKey]="date + '-' + regionId"
+                  [allowUnresolvedFeatures]="true"
+                  (settlementSelect)="onMapSettlementSelect($event)" />
+              }
+            </div>
+          } @else if (viewMode() !== 'candidates') {
             <app-section-filters
               [date]="date"
               [initialFilters]="{searchTerm: searchTerm, activeTab: activeTab(), activityOperator: activityOperator(), lowActivityThreshold: lowActivityThreshold, sectionTypes: selectedSectionTypes(), riskFilterType: riskFilterType(), selectedRiskCategories: selectedRiskCategories()}"
@@ -258,7 +311,7 @@
           }
         </div>
 
-        @if (viewMode() !== 'candidates') {
+        @if (viewMode() !== 'map' && viewMode() !== 'candidates') {
           <div class="overflow-auto max-h-[70vh]">
             <table hlmTable>
               <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
@@ -790,7 +843,7 @@
               </tbody>
             </table>
           </div>
-        } @else {
+        } @else if (viewMode() === 'candidates') {
           <!-- Candidates Table -->
           <div class="overflow-auto max-h-[70vh]">
             <table hlmTable>
@@ -998,7 +1051,7 @@
                     }
                     @if (currentVisibleColumns.has('preferencePercentOfPartyVotes')) {
                       <td hlmTableCell class="text-right">{{ candidate.preferencePercentOfPartyVotes.toFixed(2) }}%</td>
-                    }
+                  }
                   </tr>
                 }
               </tbody>

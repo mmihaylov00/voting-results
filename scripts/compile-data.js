@@ -310,6 +310,7 @@ function buildColumnarSections(sections) {
 
     sectionId: [],
     regionId: [],
+    settlementEkatte: [],
     cityNameId: [],
     sectionNameId: [],
     sectionType: [],
@@ -366,6 +367,7 @@ function buildColumnarSections(sections) {
   for (const s of sections) {
     col.sectionId.push(s.sectionId || '');
     col.regionId.push(s.regionId || '');
+    col.settlementEkatte.push(s.settlementEkatte || '');
     col.cityNameId.push(getDictId(cityDict, cityIndex, s.cityName || ''));
     col.sectionNameId.push(getDictId(sectionDict, sectionIndex, s.sectionName || ''));
     col.sectionType.push(SECTION_TYPE_CODES[s.sectionType] ?? SECTION_TYPE_CODES.Other);
@@ -444,6 +446,7 @@ function parseSections(text, headers) {
   const sectionIdIdx = requireHeaderIndex(headerMap, 'sectionId', 'sections');
   const regionIdIdx = requireHeaderIndex(headerMap, 'regionId', 'sections');
   const regionNameIdx = requireHeaderIndex(headerMap, 'regionName', 'sections');
+  const settlementEkatteIdx = requireHeaderIndex(headerMap, 'municipalityId', 'sections');
   const cityNameIdx = requireHeaderIndex(headerMap, 'cityName', 'sections');
   const sectionNameIdx = requireHeaderIndex(headerMap, 'sectionName', 'sections');
   const sections = Object.create(null);
@@ -460,6 +463,7 @@ function parseSections(text, headers) {
 
     const regionId = (parts[regionIdIdx] || '').trim();
     const regionName = (parts[regionNameIdx] || '').trim();
+    const settlementEkatte = (parts[settlementEkatteIdx] || '').trim();
     const cityName = (parts[cityNameIdx] || '').trim();
 
     // Cheap cleanup: remove spaces before punctuation
@@ -488,6 +492,7 @@ function parseSections(text, headers) {
       sectionId,
       regionId,
       regionName,
+      settlementEkatte,
       cityName,
       sectionName,
       sectionType,
