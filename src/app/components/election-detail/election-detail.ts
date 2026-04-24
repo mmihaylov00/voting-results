@@ -143,6 +143,8 @@ export class ElectionDetailComponent implements OnInit {
   copiedId = signal<string | null>(null);
   currentSectionData?: Section;
   settlementMapMetric = signal<SettlementMapMetric>('leading-party');
+  mapSelectedPartyId = signal<string | null>(null);
+  regionalStats = signal<{ id: string, name: string, total: number }[]>([]);
   settlementMapData: SettlementAggregate[] = [];
   regionalChartOptions: Highcharts.Options = {};
   activityChartOptions: Highcharts.Options = {};
@@ -1461,6 +1463,19 @@ export class ElectionDetailComponent implements OnInit {
 
   setSettlementMapMetric(metric: SettlementMapMetric): void {
     this.settlementMapMetric.set(metric);
+    if (metric === 'party-votes' && !this.mapSelectedPartyId()) {
+      // Prefer ПП-ДБ as default, otherwise pick first party
+      const stats = this.regionalStats();
+      if (stats.length > 0) {
+        const ppdb = stats.find(s => s.name.toUpperCase().includes('ПП-ДБ') || s.name.toUpperCase().includes('ПРОДЪЛЖАВАМЕ'));
+        this.mapSelectedPartyId.set(ppdb ? ppdb.id : stats[0].id);
+      }
+    }
+  }
+
+  setMapSelectedPartyId(partyId: string): void {
+    this.mapSelectedPartyId.set(partyId);
+    this.settlementMapMetric.set('party-votes');
   }
 
   onFilterChange(filters: SectionFilters): void {
@@ -1604,6 +1619,7 @@ export class ElectionDetailComponent implements OnInit {
         .sort((a, b) => b.total - a.total);
 
       this.totalTop3Votes = partyData.slice(0, 3).reduce((sum, p) => sum + p.total, 0);
+      this.regionalStats.set(partyData);
 
       this.updateChartOptions(partyData, sections);
     });
@@ -2278,6 +2294,14 @@ export class ElectionDetailComponent implements OnInit {
     this.closeModal();
     this.selectedCandidate = candidate;
     this.isCandidateModalOpen.set(true);
+  }
+
+  asSet(val: string | null): Set<string> {
+    return val ? new Set([val]) : new Set();
+  }
+
+  asArray(val: Set<string>): string[] {
+    return Array.from(val);
   }
 
   handleEscape(): void {

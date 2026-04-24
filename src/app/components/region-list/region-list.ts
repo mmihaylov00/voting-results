@@ -21,7 +21,7 @@ import { SearchFilterComponent } from '../ui/search-filter/search-filter';
 import { PartyBadgeComponent } from '../ui/party-badge/party-badge';
 import { SettlementMapComponent } from '../ui/settlement-map/settlement-map';
 import { AbroadWorldMapModalComponent } from '../ui/abroad-world-map-modal/abroad-world-map-modal';
-import { SettlementAggregate, aggregateSectionsBySettlement } from '../../utils/settlement-map.util';
+import { SettlementAggregate, aggregateSectionsBySettlement, SettlementMapMetric } from '../../utils/settlement-map.util';
 
 @Component({
   selector: 'app-region-list',
@@ -73,12 +73,26 @@ export class RegionListComponent implements OnInit, AfterViewInit {
   mapMode = signal<'bulgaria' | 'world'>('bulgaria');
   allParties: { id: string, name: string }[] = [];
   selectedPartyIds = signal<Set<string>>(new Set());
+  settlementMapMetric = signal<SettlementMapMetric>('leading-party');
+  mapSelectedPartyId = signal<string | null>(null);
   mapSectionsLoaded = false;
   mapSections: Section[] = [];
   settlementMapData: SettlementAggregate[] = [];
   abroadSections: Section[] = [];
   isWorldMapLoading = signal(false);
   getCikUrl = () => getCikUrl(this.date);
+
+  get regionalStats(): { id: string, name: string, total: number }[] {
+    const votesMap = this.partyVotesMap;
+    return this.allParties
+      .map(p => ({
+        id: p.id,
+        name: p.name,
+        total: votesMap[p.id] || 0
+      }))
+      .filter(p => p.total > 0 || this.selectedPartyIds().has(p.id))
+      .sort((a, b) => b.total - a.total);
+  }
 
   get partiesById(): { [id: string]: string } {
     return this.allParties.reduce((acc, party) => {
@@ -442,5 +456,30 @@ export class RegionListComponent implements OnInit, AfterViewInit {
 
   onSettlementSelect(settlement: SettlementAggregate): void {
     this.router.navigate(['/election', this.date, 'region', settlement.regionId]);
+  }
+
+  setSettlementMapMetric(metric: SettlementMapMetric): void {
+    this.settlementMapMetric.set(metric);
+    if (metric === 'party-votes' && !this.mapSelectedPartyId()) {
+      // Prefer ПП-ДБ as default, otherwise pick first party
+      const stats = this.regionalStats;
+      if (stats.length > 0) {
+        const ppdb = stats.find(s => s.name.toUpperCase().includes('ПП-ДБ') || s.name.toUpperCase().includes('ПРОДЪЛЖАВАМЕ'));
+        this.mapSelectedPartyId.set(ppdb ? ppdb.id : stats[0].id);
+      }
+    }
+  }
+
+  setMapSelectedPartyId(partyId: string): void {
+    this.mapSelectedPartyId.set(partyId);
+    this.settlementMapMetric.set('party-votes');
+  }
+
+  asSet(val: string | null): Set<string> {
+    return val ? new Set([val]) : new Set();
+  }
+
+  asArray(val: Set<string>): string[] {
+    return Array.from(val);
   }
 }

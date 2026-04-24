@@ -22,10 +22,19 @@ export class PartyFilterComponent implements OnChanges, OnDestroy {
   @Input() showVotes: boolean = false;
   @Input() position: 'left' | 'right' = 'left';
   @Input() partyVotes?: { [partyId: string]: number };
+  @Input() singleSelect: boolean = false;
   @Output() selectedPartyIdsChange = new EventEmitter<Set<string>>();
 
   showDropdown = signal<boolean>(false);
   private readonly onDocumentClick: (event: MouseEvent) => void;
+
+  get selectedPartyName(): string | null {
+    if (this.selectedPartyIds.size !== 1) return null;
+    const selectedId = Array.from(this.selectedPartyIds)[0];
+    const party = this.parties.find(p => p.id === selectedId);
+    if (!party) return null;
+    return getPartyAlias(party.name);
+  }
 
   get sortedParties(): { id: string, name: string }[] {
     const priorityOrder = [
@@ -84,6 +93,11 @@ export class PartyFilterComponent implements OnChanges, OnDestroy {
   }
 
   toggleParty(partyId: string): void {
+    if (this.singleSelect) {
+      this.selectedPartyIdsChange.emit(new Set([partyId]));
+      this.closeDropdown();
+      return;
+    }
     const newSet = new Set(this.selectedPartyIds);
     if (newSet.has(partyId)) {
       newSet.delete(partyId);

@@ -227,16 +227,44 @@
                     Световната карта групира секциите извън страната по континенти и показва агрегираните резултати за избраната дата.
                   </p>
                 } @else {
-                  <p class="text-sm text-muted-foreground">
-                    Картата показва най-силната партия или най-силната преференция във всяко населено място. Натискането върху населено място отваря детайли за него.
-                  </p>
-                  <div class="flex gap-2">
+                  <div class="flex flex-wrap gap-2">
                     <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-party' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-party')">
                       Партии
                     </button>
                     <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-preference' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-preference')">
                       Преференции
                     </button>
+                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'activity' ? 'default' : 'outline'" (click)="setSettlementMapMetric('activity')">
+                      Активност
+                    </button>
+                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'risks' ? 'default' : 'outline'" (click)="setSettlementMapMetric('risks')">
+                      Риск
+                    </button>
+                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'invalid-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('invalid-votes')">
+                      Недействителни
+                    </button>
+                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'no-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('no-votes')">
+                      Не подкрепям
+                    </button>
+                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'machine-vs-paper' ? 'default' : 'outline'" (click)="setSettlementMapMetric('machine-vs-paper')">
+                      Машини vs Хартия
+                    </button>
+                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'winner-margin' ? 'default' : 'outline'" (click)="setSettlementMapMetric('winner-margin')">
+                      Разлика
+                    </button>
+                    <div class="flex items-center gap-2">
+                      <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'party-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('party-votes')">
+                        Гласове за партия
+                      </button>
+                      @if (settlementMapMetric() === 'party-votes') {
+                        <app-party-filter
+                          [parties]="regionalStats()"
+                          [selectedPartyIds]="asSet(mapSelectedPartyId())"
+                          [singleSelect]="true"
+                          (selectedPartyIdsChange)="setMapSelectedPartyId(asArray($event)[0])"
+                        />
+                      }
+                    </div>
                   </div>
                 }
               </div>
@@ -250,6 +278,7 @@
                   [settlements]="settlementMapData"
                   [regionCode]="settlementMapRegionCode"
                   [metric]="settlementMapMetric()"
+                  [selectedPartyId]="mapSelectedPartyId()"
                   [fitKey]="date + '-' + regionId"
                   [allowUnresolvedFeatures]="true"
                   (settlementSelect)="onMapSettlementSelect($event)" />
@@ -620,7 +649,7 @@
                       class="cursor-pointer hover:bg-primary/10 active:bg-primary/20 transition-colors group relative"
                       [class.bg-muted]="selectedSection?.sectionId === section.sectionId"
                       [class.bg-primary/5]="selectedSection?.sectionId === section.sectionId"
-                    (click)="loadSectionDetails(section)">
+                      (click)="loadSectionDetails(section)">
                   @if (visibleColumns().has('sectionId')) {
                     <td hlmTableCell class="font-medium relative pr-6">
                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
@@ -838,8 +867,8 @@
                       </div>
                     </td>
                   }
-                  </tr>
-                }
+                </tr>
+              }
               </tbody>
             </table>
           </div>

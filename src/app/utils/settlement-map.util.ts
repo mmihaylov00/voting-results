@@ -35,7 +35,55 @@ export const REGION_ID_TO_GEOMETRY_CODE: Record<string, string> = {
   '32': '32',
 };
 
-export type SettlementMapMetric = 'leading-party' | 'leading-preference';
+export const REGION_ID_TO_NAME: Record<string, string> = {
+  '1': 'БЛАГОЕВГРАД',
+  '2': 'БУРГАС',
+  '3': 'ВАРНА',
+  '4': 'ВЕЛИКО ТЪРНОВО',
+  '5': 'ВИДИН',
+  '6': 'ВРАЦА',
+  '7': 'ГАБРОВО',
+  '8': 'ДОБРИЧ',
+  '9': 'КЪРДЖАЛИ',
+  '10': 'КЮСТЕНДИЛ',
+  '11': 'ЛОВЕЧ',
+  '12': 'МОНТАНА',
+  '13': 'ПАЗАРДЖИК',
+  '14': 'ПЕРНИК',
+  '15': 'ПЛЕВЕН',
+  '16': 'ПЛОВДИВ-ГРАД',
+  '17': 'ПЛОВДИВ-ОБЛАСТ',
+  '18': 'РАЗГРАД',
+  '19': 'РУСЕ',
+  '20': 'СИЛИСТРА',
+  '21': 'СЛИВЕН',
+  '22': 'СМОЛЯН',
+  '23': 'СОФИЯ 23 МИР',
+  '24': 'СОФИЯ 24 МИР',
+  '25': 'СОФИЯ 25 МИР',
+  '26': 'СОФИЯ-ОБЛАСТ',
+  '27': 'СТАРА ЗАГОРА',
+  '28': 'ТЪРГОВИЩЕ',
+  '29': 'ХАСКОВО',
+  '30': 'ШУМЕН',
+  '31': 'ЯМБОЛ',
+  '32': 'ИЗВЪН СТРАНАТА',
+};
+
+export const GEOMETRY_CODE_TO_REGION_ID: Record<string, string> = Object.fromEntries(
+  Object.entries(REGION_ID_TO_GEOMETRY_CODE).map(([id, code]) => [code, id])
+);
+
+export type SettlementMapMetric =
+  | 'leading-party'
+  | 'leading-preference'
+  | 'activity'
+  | 'risks'
+  | 'party-votes'
+  | 'invalid-votes'
+  | 'no-votes'
+  | 'machine-vs-paper'
+  | 'winner-margin';
 
 export interface SettlementLookup {
   ekatte?: string;
@@ -93,6 +141,8 @@ export interface SettlementAggregate {
   noVotes: number;
   totalPaper: number;
   totalMachine: number;
+  totalElectors: number;
+  riskScore: number;
   partyTotals: Record<string, number>;
   leadingParty?: SettlementPartyLeader;
   leadingPreference?: SettlementPreferenceLeader;
@@ -178,6 +228,15 @@ function rankPreferenceLeaders(a: SettlementPreferenceLeader, b: SettlementPrefe
     || a.candidateId.localeCompare(b.candidateId, 'bg');
 }
 
+function getSectionAllRiskIndicators(section: Section): Array<{ code: string; category: string; severity: string; details?: any }> {
+  const sectionRisks = section?.riskIndicators || [];
+  const candidateRisks = ((section as any)?.candidateRiskIndicators || []).filter((risk: any) => {
+    if (!risk.details?.sectionId) return true;
+    return risk.details.sectionId === section.sectionId;
+  });
+  return [...sectionRisks, ...candidateRisks].filter(risk => risk.code !== 'R6.2' && risk.code !== 'R2.4');
+}
+
 export function aggregateSectionsBySettlement(
   sections: Section[],
   partiesById: { [id: string]: string }
@@ -212,6 +271,8 @@ export function aggregateSectionsBySettlement(
         noVotes: 0,
         totalPaper: 0,
         totalMachine: 0,
+        totalElectors: 0,
+        riskScore: 0,
         partyTotals: Object.create(null),
       };
       groups.set(geometryKey, aggregate);
@@ -224,6 +285,8 @@ export function aggregateSectionsBySettlement(
     aggregate.noVotes += section.noVotes || 0;
     aggregate.totalPaper += section.totalPaper || 0;
     aggregate.totalMachine += section.totalMachine || 0;
+    aggregate.totalElectors += section.total || 0;
+    aggregate.riskScore += getSectionAllRiskIndicators(section).length;
 
     for (const [partyId, votes] of Object.entries(section.partyVotes || {})) {
       aggregate.partyTotals[partyId] = (aggregate.partyTotals[partyId] || 0) + (votes.total || 0);

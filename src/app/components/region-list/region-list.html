@@ -78,7 +78,7 @@
 
   <div class="mb-4 flex flex-wrap items-center gap-2 border-b border-primary/10">
     <button hlmBtn [variant]="'line'" [attr.data-state]="overviewMode() === 'cards' ? 'active' : 'inactive'" (click)="setOverviewMode('cards')">
-      Карти
+      Списък
     </button>
     <button hlmBtn [variant]="'line'" [attr.data-state]="overviewMode() === 'map' ? 'active' : 'inactive'" (click)="setOverviewMode('map')">
       Карта
@@ -153,7 +153,7 @@
           </button>
         } @else {
           <p hlmMuted>
-            Картата оцветява всяко населено място според партията с най-много гласове. Натискането върху населено място отваря съответния район.
+            Натискането върху населено място отваря съответния район.
           </p>
         }
       </div>
@@ -165,9 +165,51 @@
           [loading]="isWorldMapLoading()"
           [embedded]="true" />
       } @else {
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-primary/10 bg-muted/20 px-4 py-3">
+          <div class="flex flex-wrap gap-2">
+            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-party' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-party')">
+              Партии
+            </button>
+            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-preference' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-preference')">
+              Преференции
+            </button>
+            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'activity' ? 'default' : 'outline'" (click)="setSettlementMapMetric('activity')">
+              Активност
+            </button>
+            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'risks' ? 'default' : 'outline'" (click)="setSettlementMapMetric('risks')">
+              Риск
+            </button>
+            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'invalid-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('invalid-votes')">
+              Недействителни
+            </button>
+            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'no-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('no-votes')">
+              Не подкрепям
+            </button>
+            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'machine-vs-paper' ? 'default' : 'outline'" (click)="setSettlementMapMetric('machine-vs-paper')">
+              Машини vs Хартия
+            </button>
+            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'winner-margin' ? 'default' : 'outline'" (click)="setSettlementMapMetric('winner-margin')">
+              Разлика
+            </button>
+            <div class="flex items-center gap-2">
+              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'party-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('party-votes')">
+                Гласове за партия
+              </button>
+              @if (settlementMapMetric() === 'party-votes') {
+                <app-party-filter
+                  [parties]="regionalStats"
+                  [selectedPartyIds]="asSet(mapSelectedPartyId())"
+                  [singleSelect]="true"
+                  (selectedPartyIdsChange)="setMapSelectedPartyId(asArray($event)[0])"
+                />
+              }
+            </div>
+          </div>
+        </div>
         <app-settlement-map
           [settlements]="settlementMapData"
-          metric="leading-party"
+          [metric]="settlementMapMetric()"
+          [selectedPartyId]="mapSelectedPartyId()"
           [fitKey]="date"
           [allowUnresolvedFeatures]="true"
           [showWorldButton]="true"
