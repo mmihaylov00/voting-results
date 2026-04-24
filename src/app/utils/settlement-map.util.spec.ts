@@ -12,6 +12,16 @@ describe('settlement-map util', () => {
     expect(getGeometryRegionCode('25')).toBe('S25');
   });
 
+  it('maps Plovdiv regions correctly', () => {
+    expect(getGeometryRegionCode('16')).toBe('PDV-00');
+    expect(getGeometryRegionCode('17')).toBe('PDV');
+  });
+
+  it('maps later regions correctly', () => {
+    expect(getGeometryRegionCode('18')).toBe('RAZ');
+    expect(getGeometryRegionCode('31')).toBe('JAM');
+  });
+
   it('aggregates sections by settlement and picks deterministic leaders', () => {
     const sections: Section[] = [
       {
@@ -20,6 +30,7 @@ describe('settlement-map util', () => {
         regionName: '01. БЛАГОЕВГРАД',
         settlementEkatte: '02676',
         cityName: 'гр.Банско',
+        municipalityName: 'БАНСКО',
         sectionName: 'A',
         sectionType: 'City',
         total: 100,
@@ -87,6 +98,7 @@ describe('settlement-map util', () => {
 
     expect(aggregates).toHaveLength(1);
     expect(aggregates[0].displayName).toBe('Банско');
+    expect(aggregates[0].municipalityName).toBe('БАНСКО');
     expect(aggregates[0].geometryKey).toBe('02676');
     expect(aggregates[0].leadingParty?.partyId).toBe('2');
     expect(aggregates[0].leadingParty?.total).toBe(75);

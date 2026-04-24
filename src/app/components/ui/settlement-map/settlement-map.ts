@@ -79,10 +79,12 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
   private regionLayer?: L.GeoJSON;
   private geometry?: SettlementGeometryCollection;
   private regionGeometry?: any;
-  private settlementLookupMap = new Map<string, string>();
+  private settlementLookupMap = new Map<string, SettlementLookup>();
+  private municipalityLookupMap = new Map<string, any>();
   private geometrySub?: Subscription;
   private regionGeometrySub?: Subscription;
   private lookupSub?: Subscription;
+  private municipalitySub?: Subscription;
   private hasFittedForKey = '';
 
   isEmpty = false;
@@ -105,8 +107,18 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
     this.lookupSub = this.settlementMapData.getSettlementsLookup().subscribe((lookup) => {
       this.settlementLookupMap.clear();
       lookup.forEach((item) => {
-        if (item.ekatte && item.name) {
-          this.settlementLookupMap.set(item.ekatte, item.name);
+        if (item.ekatte) {
+          this.settlementLookupMap.set(item.ekatte, item);
+        }
+      });
+      this.renderMap();
+    });
+
+    this.municipalitySub = this.settlementMapData.getMunicipalitiesLookup().subscribe((municipalities) => {
+      this.municipalityLookupMap.clear();
+      municipalities.forEach((item) => {
+        if (item.obshtina) {
+          this.municipalityLookupMap.set(item.obshtina, item);
         }
       });
       this.renderMap();
@@ -153,6 +165,7 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
     this.geometrySub?.unsubscribe();
     this.regionGeometrySub?.unsubscribe();
     this.lookupSub?.unsubscribe();
+    this.municipalitySub?.unsubscribe();
     this.map?.remove();
   }
 
@@ -251,21 +264,41 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
     settlement: SettlementAggregate | undefined
   ): string {
     const ekatte = feature.properties.ekatte;
-    const lookupName = this.settlementLookupMap.get(ekatte);
-    const name = settlement?.displayName || stripSettlementPrefix(settlement?.cityName) || stripSettlementPrefix(lookupName) || ekatte;
+    const lookupItem = this.lookupByEkatte(ekatte);
+    const displayName = settlement?.displayName || stripSettlementPrefix(settlement?.cityName) || stripSettlementPrefix(lookupItem?.name) || ekatte;
+
+    let header = '';
+    if (this.regionCode) {
+      header = `<strong>${displayName}</strong>`;
+    } else {
+      const regionId = settlement?.regionId || lookupItem?.oblast || '';
+      const regionName = this.formatRegionName(settlement?.regionName || lookupItem?.oblast || '');
+      const municipalityCode = settlement?.geometryMunicipalityCode || lookupItem?.obshtina || '';
+      const municipalityName = settlement?.municipalityName || this.municipalityLookupMap.get(municipalityCode)?.name || municipalityCode;
+      header = `${regionId ? regionId + '. ' : ''}${regionName}${municipalityName ? ', ' + municipalityName : ''}, <strong>${displayName}</strong>`;
+    }
 
     if (!settlement) {
-      return `<strong>${name}</strong><br/>Няма налични изборни данни за визуализация.`;
+      return `${header}<br/>Няма налични изборни данни за визуализация.`;
     }
 
     if (this.metric === 'leading-preference' && settlement.leadingPreference) {
-      return `<strong>${name}</strong><br/>Води преференция: ${settlement.leadingPreference.candidateName}<br/>${settlement.leadingPreference.partyName} • ${settlement.leadingPreference.total.toLocaleString('bg-BG')} гласа`;
+      return `${header}<br/>Води преференция: ${settlement.leadingPreference.candidateName}<br/>${settlement.leadingPreference.partyName} • ${settlement.leadingPreference.total.toLocaleString('bg-BG')} гласа`;
     }
 
     if (settlement.leadingParty) {
-      return `<strong>${name}</strong><br/>Води партия: ${settlement.leadingParty.partyName}<br/>${settlement.leadingParty.total.toLocaleString('bg-BG')} гласа`;
+      return `${header}<br/>Води партия: ${settlement.leadingParty.partyName}<br/>${settlement.leadingParty.total.toLocaleString('bg-BG')} гласа`;
     }
 
-    return `<strong>${name}</strong><br/>Няма налични резултати.`;
+    return `${header}<br/>Няма налични резултати.`;
+  }
+
+  private lookupByEkatte(ekatte: string): SettlementLookup | undefined {
+    return this.settlementLookupMap.get(ekatte);
+  }
+
+  private formatRegionName(name: string): string {
+    if (!name) return '';
+    return name.replace(/^\d+\.\s*/, '').trim();
   }
 }

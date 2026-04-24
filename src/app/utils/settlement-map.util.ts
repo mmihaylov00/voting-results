@@ -16,22 +16,22 @@ export const REGION_ID_TO_GEOMETRY_CODE: Record<string, string> = {
   '13': 'PAZ',
   '14': 'PER',
   '15': 'PVN',
-  '16': 'PDV',
-  '17': 'RAZ',
-  '18': 'RSE',
-  '19': 'SLS',
-  '20': 'SLV',
-  '21': 'SML',
-  '22': 'SFO',
+  '16': 'PDV-00',
+  '17': 'PDV',
+  '18': 'RAZ',
+  '19': 'RSE',
+  '20': 'SLS',
+  '21': 'SLV',
+  '22': 'SML',
   '23': 'S23',
   '24': 'S24',
   '25': 'S25',
-  '26': 'SZR',
-  '27': 'TGV',
-  '28': 'HKV',
-  '29': 'SHU',
-  '30': 'JAM',
-  '31': 'PDV-00',
+  '26': 'SFO',
+  '27': 'SZR',
+  '28': 'TGV',
+  '29': 'HKV',
+  '30': 'SHU',
+  '31': 'JAM',
   '32': '32',
 };
 
@@ -81,6 +81,7 @@ export interface SettlementAggregate {
   geometryKey: string;
   regionId: string;
   regionName?: string;
+  municipalityName?: string;
   geometryRegionCode: string;
   geometryMunicipalityCode?: string;
   cityName: string;
@@ -199,6 +200,7 @@ export function aggregateSectionsBySettlement(
         geometryKey,
         regionId: section.regionId,
         regionName: section.regionName,
+        municipalityName: section.municipalityName,
         geometryRegionCode,
         geometryMunicipalityCode: geometryKey.startsWith('68134-') ? `S${geometryKey.slice('68134-'.length)}` : undefined,
         cityName: section.cityName,

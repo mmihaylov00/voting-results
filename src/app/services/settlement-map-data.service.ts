@@ -10,6 +10,7 @@ export class SettlementMapDataService {
   private settlementGeometry$?: Observable<SettlementGeometryCollection>;
   private regionGeometry$?: Observable<any>;
   private settlementsLookup$?: Observable<SettlementLookup[]>;
+  private municipalitiesLookup$?: Observable<any[]>;
 
   constructor(private http: HttpClient) {}
 
@@ -38,5 +39,14 @@ export class SettlementMapDataService {
         .pipe(shareReplay(1));
     }
     return this.settlementsLookup$;
+  }
+
+  getMunicipalitiesLookup(): Observable<any[]> {
+    if (!this.municipalitiesLookup$) {
+      this.municipalitiesLookup$ = this.http
+        .get<any[]>('/municipalities.json')
+        .pipe(shareReplay(1));
+    }
+    return this.municipalitiesLookup$;
   }
 }
