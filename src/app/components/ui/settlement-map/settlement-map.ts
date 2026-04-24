@@ -80,12 +80,15 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
   private tileLayer?: L.TileLayer;
   private geoJsonLayer?: L.GeoJSON;
   private regionLayer?: L.GeoJSON;
+  private municipalityLayer?: L.GeoJSON;
   private geometry?: SettlementGeometryCollection;
   private regionGeometry?: any;
+  private municipalityGeometry?: any;
   private settlementLookupMap = new Map<string, SettlementLookup>();
   private municipalityLookupMap = new Map<string, any>();
   private geometrySub?: Subscription;
   private regionGeometrySub?: Subscription;
+  private municipalityGeometrySub?: Subscription;
   private lookupSub?: Subscription;
   private municipalitySub?: Subscription;
   private hasFittedForKey = '';
@@ -149,12 +152,7 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
       this.renderMap();
     });
 
-    if (!this.regionCode) {
-      this.regionGeometrySub = this.settlementMapData.getRegionGeometry().subscribe((geometry) => {
-        this.regionGeometry = geometry;
-        this.renderMap();
-      });
-    }
+    this.loadAdditionalGeometries();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -163,17 +161,7 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
     }
 
     if (changes['regionCode'] && this.map) {
-      if (this.regionCode) {
-        this.regionGeometrySub?.unsubscribe();
-        this.regionLayer?.removeFrom(this.map);
-        this.regionLayer = undefined;
-        this.regionGeometry = undefined;
-      } else if (!this.regionGeometrySub) {
-        this.regionGeometrySub = this.settlementMapData.getRegionGeometry().subscribe((geometry) => {
-          this.regionGeometry = geometry;
-          this.renderMap();
-        });
-      }
+      this.renderMap();
     }
 
     if (this.map && this.geometry) {
@@ -181,9 +169,25 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
     }
   }
 
+  private loadAdditionalGeometries(): void {
+    if (!this.regionGeometrySub) {
+      this.regionGeometrySub = this.settlementMapData.getRegionGeometry().subscribe((geometry) => {
+        this.regionGeometry = geometry;
+        this.renderMap();
+      });
+    }
+    if (!this.municipalityGeometrySub) {
+      this.municipalityGeometrySub = this.settlementMapData.getMunicipalityGeometry().subscribe((geometry) => {
+        this.municipalityGeometry = geometry;
+        this.renderMap();
+      });
+    }
+  }
+
   ngOnDestroy(): void {
     this.geometrySub?.unsubscribe();
     this.regionGeometrySub?.unsubscribe();
+    this.municipalityGeometrySub?.unsubscribe();
     this.lookupSub?.unsubscribe();
     this.municipalitySub?.unsubscribe();
     if (this.map) {
@@ -215,6 +219,7 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
     try {
       this.geoJsonLayer?.removeFrom(this.map);
       this.regionLayer?.removeFrom(this.map);
+      this.municipalityLayer?.removeFrom(this.map);
     } catch (e) {
       console.warn('Failed to remove layers from map:', e);
     }
@@ -264,19 +269,42 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
       console.warn('Failed to add GeoJSON layer:', e);
     }
 
-    if (this.regionGeometry && !this.regionCode) {
+    if (this.regionGeometry) {
       try {
-        this.regionLayer = L.geoJSON(this.regionGeometry, {
+        const filteredMunicipalityGeometry = this.regionCode
+          ? {
+              ...this.municipalityGeometry,
+              features: this.municipalityGeometry.features.filter(
+                (f: any) => f.properties.nuts3 === this.regionCode
+              ),
+            }
+          : this.municipalityGeometry;
+
+        this.municipalityLayer = L.geoJSON(filteredMunicipalityGeometry, {
           style: {
-            color: isDark ? '#f8fafc' : '#475569',
-            weight: 1.5,
+            color: '#fff',
+            weight: this.regionCode ? 1.1 : 0.5,
             fillOpacity: 0,
             interactive: false,
+            opacity: 1,
           },
         });
-        this.regionLayer.addTo(this.map);
+        this.municipalityLayer.addTo(this.map);
+
+        if (!this.regionCode) {
+          this.regionLayer = L.geoJSON(this.regionGeometry, {
+            style: {
+              color: '#fff',
+              weight: 1.1,
+              fillOpacity: 0,
+              interactive: false,
+              opacity: 1,
+            },
+          });
+          this.regionLayer.addTo(this.map);
+        }
       } catch (e) {
-        console.warn('Failed to add region layer:', e);
+        console.warn('Failed to add geometry layers:', e);
       }
     }
 
@@ -315,8 +343,9 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
     }
 
     return {
-      color: isDark ? '#0f172a' : '#cbd5e1',
-      weight: this.regionCode ? 1 : 0.5,
+      color: '#fff',
+      weight: 0.2,
+      opacity: 0.6,
       fillColor,
       fillOpacity,
     };

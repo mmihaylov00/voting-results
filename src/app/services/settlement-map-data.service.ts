@@ -9,6 +9,7 @@ import { SettlementGeometryCollection, SettlementLookup } from '../utils/settlem
 export class SettlementMapDataService {
   private settlementGeometry$?: Observable<SettlementGeometryCollection>;
   private regionGeometry$?: Observable<any>;
+  private municipalityGeometry$?: Observable<any>;
   private settlementsLookup$?: Observable<SettlementLookup[]>;
   private municipalitiesLookup$?: Observable<any[]>;
 
@@ -30,6 +31,15 @@ export class SettlementMapDataService {
         .pipe(shareReplay(1));
     }
     return this.regionGeometry$;
+  }
+
+  getMunicipalityGeometry(): Observable<any> {
+    if (!this.municipalityGeometry$) {
+      this.municipalityGeometry$ = this.http
+        .get<any>('/maps/municipalities.json')
+        .pipe(shareReplay(1));
+    }
+    return this.municipalityGeometry$;
   }
 
   getSettlementsLookup(): Observable<SettlementLookup[]> {
