@@ -15,6 +15,9 @@ const PARTY_COLOR_RULES: { match: string[]; color: string }[] = [
 
 const DARK_PARTY_COLOR_OVERRIDES: { match: string[]; color: string }[] = [
   { match: ['ГЕРБ'], color: '#3BC5E0' },
+  { match: ['ДПС'], color: '#0555b8' },
+  { match: ['ПБ', 'ПРОГРЕСИВНА'], color: '#1caa93' },
+  { match: ['ПП-ДБ', 'ПРОДЪЛЖАВАМЕ'], color: '#F5C542' },
 ];
 
 const DEFAULT_PARTY_COLOR = '#64748B';

@@ -86,6 +86,7 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
   private lookupSub?: Subscription;
   private municipalitySub?: Subscription;
   private hasFittedForKey = '';
+  private renderQueued = false;
 
   isEmpty = false;
 
@@ -103,6 +104,22 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
       attribution: '&copy; OpenStreetMap contributors',
     });
     this.tileLayer.addTo(this.map);
+
+    const closeTooltips = () => {
+      if (this.map && this.map.getContainer()) {
+        try {
+          setTimeout(() => this.map!.eachLayer((layer) => {
+            if ((layer as any).closeTooltip) {
+              (layer as any).closeTooltip();
+            }
+          }), 100)
+        } catch (e) {
+          // Ignore transient tooltip errors
+        }
+      }
+    }
+
+    this.map.on('movestart dragstart zoomstart mousedown touchstart move zoom', closeTooltips);
 
     this.lookupSub = this.settlementMapData.getSettlementsLookup().subscribe((lookup) => {
       this.settlementLookupMap.clear();
@@ -166,14 +183,38 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
     this.regionGeometrySub?.unsubscribe();
     this.lookupSub?.unsubscribe();
     this.municipalitySub?.unsubscribe();
-    this.map?.remove();
+    if (this.map) {
+      try {
+        this.map.off();
+        this.map.remove();
+      } catch (e) {
+        console.warn('Error during map removal:', e);
+      } finally {
+        this.map = undefined;
+      }
+    }
   }
 
   private renderMap(): void {
-    if (!this.map || !this.geometry) return;
+    if (!this.map || !this.geometry || !this.map.getContainer()) return;
+    if (this.renderQueued) return;
 
-    this.geoJsonLayer?.removeFrom(this.map);
-    this.regionLayer?.removeFrom(this.map);
+    this.renderQueued = true;
+    window.requestAnimationFrame(() => {
+      this.renderQueued = false;
+      this.executeRender();
+    });
+  }
+
+  private executeRender(): void {
+    if (!this.map || !this.geometry || !this.map.getContainer()) return;
+
+    try {
+      this.geoJsonLayer?.removeFrom(this.map);
+      this.regionLayer?.removeFrom(this.map);
+    } catch (e) {
+      console.warn('Failed to remove layers from map:', e);
+    }
 
     const isDark = this.themeService.darkMode();
     const settlementByGeometryKey = new Map(this.settlements.map((settlement) => [settlement.geometryKey, settlement]));
@@ -187,46 +228,69 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
     this.isEmpty = features.length === 0;
     if (this.isEmpty) return;
 
-    this.geoJsonLayer = L.geoJSON(
-      {
-        type: 'FeatureCollection',
-        features,
-      } as any,
-      {
-        style: (feature: any) => this.getStyle(feature as SettlementGeometryFeature, settlementByGeometryKey, isDark),
-        onEachFeature: (feature: any, layer: L.Layer) => {
-          const typedFeature = feature as unknown as SettlementGeometryFeature;
-          const settlement = settlementByGeometryKey.get(typedFeature.properties.ekatte);
-          const tooltip = this.buildTooltip(typedFeature, settlement);
-          layer.bindTooltip(tooltip, { sticky: true });
+    try {
+      this.geoJsonLayer = L.geoJSON(
+        {
+          type: 'FeatureCollection',
+          features,
+        } as any,
+        {
+          style: (feature: any) => this.getStyle(feature as SettlementGeometryFeature, settlementByGeometryKey, isDark),
+          onEachFeature: (feature: any, layer: L.Layer) => {
+            const typedFeature = feature as unknown as SettlementGeometryFeature;
+            const settlement = settlementByGeometryKey.get(typedFeature.properties.ekatte);
+            const tooltip = this.buildTooltip(typedFeature, settlement);
+            layer.bindTooltip(tooltip, {
+              sticky: false,
+              opacity: 0.9,
+              offset: L.point(10, 10),
+              interactive: false,
+            });
 
-          if (settlement) {
-            layer.on('click', () => this.settlementSelect.emit(settlement));
-          }
-        },
-      }
-    );
-    this.geoJsonLayer.addTo(this.map);
+            if (settlement) {
+              layer.on('click', (e: L.LeafletMouseEvent) => {
+                L.DomEvent.stopPropagation(e);
+                this.settlementSelect.emit(settlement);
+              });
+            }
+          },
+        }
+      );
+      this.geoJsonLayer.addTo(this.map);
+    } catch (e) {
+      console.warn('Failed to add GeoJSON layer:', e);
+    }
 
     if (this.regionGeometry && !this.regionCode) {
-      this.regionLayer = L.geoJSON(this.regionGeometry, {
-        style: {
-          color: isDark ? '#f8fafc' : '#475569',
-          weight: 1.5,
-          fillOpacity: 0,
-          interactive: false,
-        },
-      });
-      this.regionLayer.addTo(this.map);
+      try {
+        this.regionLayer = L.geoJSON(this.regionGeometry, {
+          style: {
+            color: isDark ? '#f8fafc' : '#475569',
+            weight: 1.5,
+            fillOpacity: 0,
+            interactive: false,
+          },
+        });
+        this.regionLayer.addTo(this.map);
+      } catch (e) {
+        console.warn('Failed to add region layer:', e);
+      }
     }
 
     window.requestAnimationFrame(() => {
-      this.map?.invalidateSize();
-      if (this.fitKey && this.hasFittedForKey === this.fitKey) return;
-      const bounds = this.geoJsonLayer?.getBounds();
-      if (bounds?.isValid()) {
-        this.map?.fitBounds(bounds, { padding: [24, 24] });
-        this.hasFittedForKey = this.fitKey;
+      if (!this.map || !this.geoJsonLayer || !this.map.getContainer()) return;
+      try {
+        if (this.map.getContainer()) {
+          this.map.invalidateSize();
+          if (this.fitKey && this.hasFittedForKey === this.fitKey) return;
+          const bounds = this.geoJsonLayer.getBounds();
+          if (bounds?.isValid()) {
+            this.map.fitBounds(bounds, { padding: [24, 24] });
+            this.hasFittedForKey = this.fitKey;
+          }
+        }
+      } catch (e) {
+        console.warn('Map interaction failed in animation frame:', e);
       }
     });
   }

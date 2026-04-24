@@ -62,6 +62,14 @@ body {
   animation: progress-animation 2s infinite linear;
 }
 
+.leaflet-dragging .leaflet-tooltip-pane {
+  display: none !important;
+}
+
+.leaflet-zoom-anim .leaflet-tooltip-pane {
+  display: none !important;
+}
+
 .section-name {
   display: -webkit-box;
   -webkit-line-clamp: 2;
