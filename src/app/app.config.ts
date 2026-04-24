@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import * as Highcharts from 'highcharts';
@@ -16,7 +16,7 @@ export const appConfig: ApplicationConfig = {
       instance: async () => Highcharts
     }),
     provideServiceWorker('ngsw-worker.js', {
-      enabled: !isDevMode(),
+      enabled: false,
       registrationStrategy: 'registerWhenStable:30000'
     })
   ]

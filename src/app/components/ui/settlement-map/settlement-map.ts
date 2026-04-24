@@ -25,8 +25,8 @@ import {
   GEOMETRY_CODE_TO_REGION_ID,
   REGION_ID_TO_NAME,
 } from '../../../utils/settlement-map.util';
-import { getPartyColor } from '../../../utils/party-colors';
 import { ThemeService } from '../../../services/theme.service';
+import { MapMetricHelper } from '../../../utils/map-metric.helper';
 
 @Component({
   selector: 'app-settlement-map',
@@ -282,10 +282,8 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
 
         this.municipalityLayer = L.geoJSON(filteredMunicipalityGeometry, {
           style: {
-            color: '#fff',
+            ...MapMetricHelper.getBackgroundStyle(),
             weight: this.regionCode ? 1.1 : 0.5,
-            fillOpacity: 0,
-            interactive: false,
             opacity: 1,
           },
         });
@@ -294,10 +292,7 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
         if (!this.regionCode) {
           this.regionLayer = L.geoJSON(this.regionGeometry, {
             style: {
-              color: '#fff',
-              weight: 1.1,
-              fillOpacity: 0,
-              interactive: false,
+              ...MapMetricHelper.getBackgroundStyle(),
               opacity: 1,
             },
           });
@@ -332,126 +327,11 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
     isDark: boolean
   ): L.PathOptions {
     const settlement = settlementByGeometryKey.get(feature.properties.ekatte);
-    const fillColor = this.getFillColor(settlement, isDark);
-
-    let fillOpacity = settlement ? 0.9 : 0.45;
-    if (settlement && this.metric === 'party-votes') {
-      const votes = this.selectedPartyId ? (settlement.partyTotals[this.selectedPartyId] || 0) : 0;
-      const total = settlement.total || 0;
-      const share = total > 0 ? votes / total : 0;
-      fillOpacity = 0.6 + share * 0.4;
-    }
-
-    return {
-      color: '#fff',
-      weight: 0.2,
-      opacity: 0.6,
-      fillColor,
-      fillOpacity,
-    };
+    return MapMetricHelper.getAggregateStyle(this.metric, settlement, isDark, this.selectedPartyId);
   }
 
   private getFillColor(settlement: SettlementAggregate | undefined, isDark: boolean): string {
-    if (!settlement) {
-      return isDark ? '#334155' : '#cbd5e1';
-    }
-
-    if (this.metric === 'leading-preference') {
-      return getPartyColor(settlement.leadingPreference?.partyName, isDark);
-    }
-
-    if (this.metric === 'activity') {
-      const activity = settlement.totalElectors > 0 ? (settlement.voted / settlement.totalElectors) : 0;
-      // Increasingly green where more activity
-      if (activity > 0.6) return '#166534'; // green-800
-      if (activity > 0.5) return '#15803d'; // green-700
-      if (activity > 0.4) return '#16a34a'; // green-600
-      if (activity > 0.3) return '#22c55e'; // green-500
-      if (activity > 0.2) return '#4ade80'; // green-400
-      if (activity > 0.1) return '#86efac'; // green-300
-      return '#bbf7d0'; // green-200
-    }
-
-    if (this.metric === 'risks') {
-      const riskScore = settlement.riskScore || 0;
-      // Increasingly red where more risks
-      if (riskScore > 20) return '#991b1b'; // red-800
-      if (riskScore > 15) return '#b91c1c'; // red-700
-      if (riskScore > 10) return '#dc2626'; // red-600
-      if (riskScore > 5) return '#ef4444'; // red-500
-      if (riskScore > 2) return '#f87171'; // red-400
-      if (riskScore > 0) return '#fca5a5'; // red-300
-      return isDark ? '#334155' : '#cbd5e1';
-    }
-
-    if (this.metric === 'invalid-votes') {
-      const invalidShare = settlement.total > 0 ? (settlement.discardedVotes / settlement.total) : 0;
-      // Increasingly red where more invalid
-      if (invalidShare > 0.15) return '#991b1b'; // red-800
-      if (invalidShare > 0.10) return '#b91c1c'; // red-700
-      if (invalidShare > 0.07) return '#dc2626'; // red-600
-      if (invalidShare > 0.05) return '#ef4444'; // red-500
-      if (invalidShare > 0.03) return '#f87171'; // red-400
-      if (invalidShare > 0.01) return '#fca5a5'; // red-300
-      return isDark ? '#334155' : '#cbd5e1';
-    }
-
-    if (this.metric === 'no-votes') {
-      const noVotesShare = settlement.total > 0 ? (settlement.noVotes / settlement.total) : 0;
-      // Increasingly purple where more "No support for anyone"
-      if (noVotesShare > 0.10) return '#6b21a8'; // purple-800
-      if (noVotesShare > 0.07) return '#86198f'; // fuchsia-800
-      if (noVotesShare > 0.05) return '#a21caf'; // fuchsia-700
-      if (noVotesShare > 0.03) return '#c026d3'; // fuchsia-600
-      if (noVotesShare > 0.02) return '#d946ef'; // fuchsia-500
-      if (noVotesShare > 0.01) return '#e879f9'; // fuchsia-400
-      return isDark ? '#334155' : '#cbd5e1';
-    }
-
-    if (this.metric === 'machine-vs-paper') {
-      const machine = settlement.totalMachine || 0;
-      const paper = settlement.totalPaper || 0;
-      const total = machine + paper;
-      if (total === 0) return isDark ? '#334155' : '#cbd5e1';
-
-      const machineShare = machine / total;
-      // Blue for machine dominance, Orange for paper dominance
-      if (machineShare > 0.9) return '#1e3a8a'; // blue-900
-      if (machineShare > 0.7) return '#1d4ed8'; // blue-700
-      if (machineShare > 0.55) return '#3b82f6'; // blue-500
-      if (machineShare > 0.45) return '#94a3b8'; // slate-400 (balanced)
-      if (machineShare > 0.3) return '#f97316'; // orange-500
-      if (machineShare > 0.1) return '#c2410c'; // orange-700
-      return '#7c2d12'; // orange-900
-    }
-
-    if (this.metric === 'winner-margin') {
-      const parties = Object.entries(settlement.partyTotals)
-        .sort((a, b) => b[1] - a[1]);
-      if (parties.length < 2 || settlement.total === 0) return isDark ? '#334155' : '#cbd5e1';
-
-      const margin = (parties[0][1] - parties[1][1]) / settlement.total;
-      const winnerColor = getPartyColor(settlement.leadingParty?.partyName, isDark);
-
-      // We can't easily do a gradient of ANY party color here without complex logic,
-      // so let's use a neutral "Competition Intensity" scale (Indigo)
-      // High margin = dark indigo, Low margin = light indigo
-      if (margin > 0.4) return '#312e81'; // indigo-900
-      if (margin > 0.3) return '#3730a3'; // indigo-800
-      if (margin > 0.2) return '#4338ca'; // indigo-700
-      if (margin > 0.1) return '#4f46e5'; // indigo-600
-      if (margin > 0.05) return '#6366f1'; // indigo-500
-      return '#818cf8'; // indigo-400
-    }
-
-    if (this.metric === 'party-votes' && this.selectedPartyId) {
-      const party = settlement.leadingParty?.partyId === this.selectedPartyId
-        ? settlement.leadingParty
-        : { partyName: this.selectedPartyId }; // Fallback to id if name not available, getPartyColor handles it
-      return getPartyColor(party.partyName, isDark);
-    }
-
-    return getPartyColor(settlement.leadingParty?.partyName, isDark);
+    return MapMetricHelper.getFillColor(this.metric, settlement, isDark, this.selectedPartyId);
   }
 
   private buildTooltip(
@@ -490,59 +370,7 @@ export class SettlementMapComponent implements AfterViewInit, OnChanges, OnDestr
       return `${header}<br/>Няма налични изборни данни за визуализация.`;
     }
 
-    if (this.metric === 'leading-preference' && settlement.leadingPreference) {
-      return `${header}<br/>Води преференция: ${settlement.leadingPreference.candidateName}<br/>${settlement.leadingPreference.partyName} • ${settlement.leadingPreference.total.toLocaleString('bg-BG')} гласа`;
-    }
-
-    if (this.metric === 'activity') {
-      const activity = settlement.totalElectors > 0 ? (settlement.voted / settlement.totalElectors * 100) : 0;
-      return `${header}<br/>Активност: ${activity.toFixed(2)}%<br/>${settlement.voted.toLocaleString('bg-BG')} от ${settlement.totalElectors.toLocaleString('bg-BG')} избиратели`;
-    }
-
-    if (this.metric === 'risks') {
-      return `${header}<br/>Рисков рейтинг: ${settlement.riskScore}<br/>${settlement.sections.length} секции`;
-    }
-
-    if (this.metric === 'invalid-votes') {
-      const invalidShare = settlement.total > 0 ? (settlement.discardedVotes / settlement.total * 100) : 0;
-      return `${header}<br/>Недействителни гласове: ${invalidShare.toFixed(2)}%<br/>${settlement.discardedVotes.toLocaleString('bg-BG')} от ${settlement.total.toLocaleString('bg-BG')} гласа`;
-    }
-
-    if (this.metric === 'no-votes') {
-      const noVotesShare = settlement.total > 0 ? (settlement.noVotes / settlement.total * 100) : 0;
-      return `${header}<br/>Не подкрепям никого: ${noVotesShare.toFixed(2)}%<br/>${settlement.noVotes.toLocaleString('bg-BG')} от ${settlement.total.toLocaleString('bg-BG')} гласа`;
-    }
-
-    if (this.metric === 'machine-vs-paper') {
-      const machine = settlement.totalMachine || 0;
-      const paper = settlement.totalPaper || 0;
-      const total = machine + paper;
-      const machineShare = total > 0 ? (machine / total * 100) : 0;
-      const paperShare = total > 0 ? (paper / total * 100) : 0;
-      return `${header}<br/>Машинно: ${machineShare.toFixed(1)}% (${machine.toLocaleString('bg-BG')})<br/>Хартиено: ${paperShare.toFixed(1)}% (${paper.toLocaleString('bg-BG')})`;
-    }
-
-    if (this.metric === 'winner-margin') {
-      const parties = Object.entries(settlement.partyTotals)
-        .sort((a, b) => b[1] - a[1]);
-      if (parties.length >= 2) {
-        const margin = settlement.total > 0 ? ((parties[0][1] - parties[1][1]) / settlement.total * 100) : 0;
-        const winner = settlement.leadingParty?.partyName || parties[0][0];
-        return `${header}<br/>Победител: ${winner}<br/>Разлика спрямо втория: ${margin.toFixed(2)}%`;
-      }
-    }
-
-    if (this.metric === 'party-votes' && this.selectedPartyId) {
-      const votes = settlement.partyTotals[this.selectedPartyId] || 0;
-      const share = settlement.total > 0 ? (votes / settlement.total * 100) : 0;
-      return `${header}<br/>Гласове за избраната партия: ${share.toFixed(2)}%<br/>${votes.toLocaleString('bg-BG')} от ${settlement.total.toLocaleString('bg-BG')} гласа`;
-    }
-
-    if (settlement.leadingParty) {
-      return `${header}<br/>Води партия: ${settlement.leadingParty.partyName}<br/>${settlement.leadingParty.total.toLocaleString('bg-BG')} гласа`;
-    }
-
-    return `${header}<br/>Няма налични резултати.`;
+    return MapMetricHelper.buildMetricTooltip(this.metric, settlement, header);
   }
 
   private lookupByEkatte(ekatte: string): SettlementLookup | undefined {

@@ -146,11 +146,8 @@
       <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
         @if (mapMode() === 'world') {
           <p hlmMuted>
-            Световната карта показва секциите извън страната, групирани по континенти за избраната дата.
+            Световната карта показва градовете извън страната. Натискането върху град превключва към картата на съответната държава.
           </p>
-          <button hlmBtn variant="outline" size="sm" (click)="showBulgariaMap()">
-            България
-          </button>
         } @else {
           <p hlmMuted>
             Натискането върху населено място отваря съответния район.
@@ -159,11 +156,66 @@
       </div>
 
       @if (mapMode() === 'world') {
-        <app-abroad-world-map-modal
-          [sections]="abroadSections"
-          [partiesById]="partiesById"
-          [loading]="isWorldMapLoading()"
-          [embedded]="true" />
+        <div class="relative">
+          <div class="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-primary/10 bg-muted/20 px-4 py-3">
+            <div class="flex flex-wrap gap-2">
+              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-party' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-party')">
+                Партии
+              </button>
+              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'activity' ? 'default' : 'outline'" (click)="setSettlementMapMetric('activity')">
+                Активност
+              </button>
+              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'risks' ? 'default' : 'outline'" (click)="setSettlementMapMetric('risks')">
+                Риск
+              </button>
+              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'invalid-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('invalid-votes')">
+                Недействителни
+              </button>
+              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'no-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('no-votes')">
+                Не подкрепям
+              </button>
+              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'machine-vs-paper' ? 'default' : 'outline'" (click)="setSettlementMapMetric('machine-vs-paper')">
+                Машини vs Хартия
+              </button>
+              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'winner-margin' ? 'default' : 'outline'" (click)="setSettlementMapMetric('winner-margin')">
+                Разлика
+              </button>
+              <div class="flex items-center gap-2">
+                <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'party-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('party-votes')">
+                  Гласове за партия
+                </button>
+                @if (settlementMapMetric() === 'party-votes') {
+                  <app-party-filter
+                    [parties]="regionalStats"
+                    [selectedPartyIds]="asSet(mapSelectedPartyId())"
+                    [singleSelect]="true"
+                    (selectedPartyIdsChange)="setMapSelectedPartyId(asArray($event)[0])"
+                  />
+                }
+              </div>
+            </div>
+          </div>
+          <app-abroad-map
+            [sections]="abroadSections"
+            [partiesById]="partiesById"
+            [metric]="settlementMapMetric()"
+            [selectedPartyId]="mapSelectedPartyId()"
+            [loading]="isWorldMapLoading()"
+            [embedded]="true"
+            (citySelect)="onAbroadCitySelect($event)"
+            (countrySelect)="onAbroadCountrySelect($event)" />
+          <button
+            type="button"
+            class="absolute bottom-4 right-4 z-[500] inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-background/95 text-foreground shadow-lg transition-colors hover:bg-accent"
+            title="България"
+            (click)="showBulgariaMap()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m15 18-6-6 6-6"></path>
+              <path d="M21 12H9"></path>
+            </svg>
+          </button>
+        </div>
       } @else {
         <div class="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-primary/10 bg-muted/20 px-4 py-3">
           <div class="flex flex-wrap gap-2">

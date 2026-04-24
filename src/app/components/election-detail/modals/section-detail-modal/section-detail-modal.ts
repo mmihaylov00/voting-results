@@ -72,6 +72,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   @Input() allParties: { id: string, name: string }[] = [];
   @Input() date: string = '';
   @Input() allSections: Section[] = []; // All sections in the region for candidate modal
+  @Input() isAbroadRegion = false;
   @Output() close = new EventEmitter<void>();
   @Output() openCandidate = new EventEmitter<RegionCandidate>();
 
@@ -227,13 +228,17 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     return name.replace(/^(гр\.|с\.|кв\.|жк\.)\s*/i, '').trim();
   }
 
+  get municipalityLabelLowercase(): string {
+    return this.isAbroadRegion ? 'държава' : 'община';
+  }
+
   get detailSubtitle(): string {
     if (this.isMunicipalityDetail) {
       return this.section.sectionName;
     }
     const parts = [];
     if (this.municipalityName) {
-      parts.push('община ' + this.municipalityName);
+      parts.push(this.municipalityLabelLowercase + ' ' + this.municipalityName);
     }
     if (!this.isGroupedByCity && this.section?.cityName) {
       parts.push(this.section.cityName);

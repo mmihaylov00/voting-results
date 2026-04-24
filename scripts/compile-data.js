@@ -114,6 +114,12 @@ function parseLongSafe(s) {
   return Number.isFinite(n) ? n : 0;
 }
 
+function parseFloatSafe(s) {
+  if (!s) return 0;
+  const n = parseFloat(s);
+  return Number.isFinite(n) ? n : 0;
+}
+
 function normalizePartyName(name) {
   const n = (name || '').toUpperCase();
   if (n.includes('ПРОДЪЛЖАВАМЕ')) return 'ПП-ДБ';
@@ -311,6 +317,8 @@ function buildColumnarSections(sections) {
     sectionId: [],
     regionId: [],
     settlementEkatte: [],
+    longitude: [],
+    latitude: [],
     cityNameId: [],
     sectionNameId: [],
     sectionType: [],
@@ -368,6 +376,8 @@ function buildColumnarSections(sections) {
     col.sectionId.push(s.sectionId || '');
     col.regionId.push(s.regionId || '');
     col.settlementEkatte.push(s.settlementEkatte || '');
+    col.longitude.push(Number.isFinite(s.longitude) ? s.longitude : 0);
+    col.latitude.push(Number.isFinite(s.latitude) ? s.latitude : 0);
     col.cityNameId.push(getDictId(cityDict, cityIndex, s.cityName || ''));
     col.sectionNameId.push(getDictId(sectionDict, sectionIndex, s.sectionName || ''));
     col.sectionType.push(SECTION_TYPE_CODES[s.sectionType] ?? SECTION_TYPE_CODES.Other);
@@ -449,6 +459,8 @@ function parseSections(text, headers) {
   const settlementEkatteIdx = requireHeaderIndex(headerMap, 'municipalityId', 'sections');
   const cityNameIdx = requireHeaderIndex(headerMap, 'cityName', 'sections');
   const sectionNameIdx = requireHeaderIndex(headerMap, 'sectionName', 'sections');
+  const longitudeIdx = headerMap.lat;
+  const latitudeIdx = headerMap.lan;
   const sections = Object.create(null);
 
   forEachLine(text, (raw) => {
@@ -465,6 +477,8 @@ function parseSections(text, headers) {
     const regionName = (parts[regionNameIdx] || '').trim();
     const settlementEkatte = (parts[settlementEkatteIdx] || '').trim();
     const cityName = (parts[cityNameIdx] || '').trim();
+    const longitude = longitudeIdx !== undefined ? parseFloatSafe(parts[longitudeIdx]) : 0;
+    const latitude = latitudeIdx !== undefined ? parseFloatSafe(parts[latitudeIdx]) : 0;
 
     // Cheap cleanup: remove spaces before punctuation
     let sectionName = (parts[sectionNameIdx] || '').trim().replace(/\s+([,.:;!?])/g, '$1');
@@ -493,6 +507,8 @@ function parseSections(text, headers) {
       regionId,
       regionName,
       settlementEkatte,
+      longitude,
+      latitude,
       cityName,
       sectionName,
       sectionType,

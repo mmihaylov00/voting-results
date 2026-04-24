@@ -1,108 +1,103 @@
 import { Section } from '../models/election.models';
 
-export type AbroadContinentId =
-  | 'europe'
-  | 'asia'
-  | 'africa'
-  | 'north-america'
-  | 'south-america'
-  | 'oceania';
+import { MapMetric, MapPartyLeader, MapPreferenceLeader, MapAggregate } from './map-metric.helper';
 
-export interface AbroadContinentDefinition {
-  id: AbroadContinentId;
-  label: string;
-  center: [number, number];
+export interface AbroadCountryManifestItem {
+  name: string;
+  code: string;
+  capitalLocation: string | null;
 }
 
-export interface AbroadPartyLeader {
-  partyId: string;
-  partyName: string;
-  total: number;
+export interface AbroadCountryGeometryFeature {
+  type: 'Feature';
+  properties: {
+    name: string;
+    iso2: string;
+    iso3: string;
+  };
+  geometry: any;
 }
 
-export interface AbroadContinentAggregate extends AbroadContinentDefinition {
+export interface AbroadCountryGeometryCollection {
+  type: 'FeatureCollection';
+  features: AbroadCountryGeometryFeature[];
+}
+
+export type AbroadPartyLeader = MapPartyLeader;
+
+export type AbroadPreferenceLeader = MapPreferenceLeader;
+
+export interface AbroadCountryAggregate extends MapAggregate {
+  id: string;
+  countryName: string;
+  countryCode: string | null;
+  normalizedCountryName: string;
   sections: Section[];
-  countries: string[];
-  cities: string[];
-  total: number;
-  voted: number;
-  discardedVotes: number;
-  noVotes: number;
-  partyTotals: Record<string, number>;
-  leadingParty?: AbroadPartyLeader;
 }
 
-export const ABROAD_CONTINENTS: AbroadContinentDefinition[] = [
-  { id: 'europe', label: 'Европа', center: [54, 18] },
-  { id: 'asia', label: 'Азия', center: [34, 95] },
-  { id: 'africa', label: 'Африка', center: [2, 20] },
-  { id: 'north-america', label: 'Северна Америка', center: [42, -98] },
-  { id: 'south-america', label: 'Южна Америка', center: [-18, -60] },
-  { id: 'oceania', label: 'Австралия и Океания', center: [-24, 134] },
-];
+export interface AbroadCityAggregate extends MapAggregate {
+  id: string;
+  countryName: string;
+  countryCode: string | null;
+  cityName: string;
+  displayName: string;
+  normalizedCountryName: string;
+  normalizedCityName: string;
+  longitude: number | null;
+  latitude: number | null;
+  sections: Section[];
+}
 
-const COUNTRY_TO_CONTINENT: Record<string, AbroadContinentId> = {
-  'австралия': 'oceania',
-  'австрия': 'europe',
-  'азербайджан': 'asia',
-  'албания': 'europe',
-  'алжир': 'africa',
-  'аржентина': 'south-america',
-  'армения': 'asia',
-  'беларус': 'europe',
-  'белгия': 'europe',
-  'босна и херцеговина': 'europe',
-  'бразилия': 'south-america',
-  'германия': 'europe',
-  'германия фр': 'europe',
-  'грузия': 'asia',
-  'гърция': 'europe',
-  'дания': 'europe',
-  'египет': 'africa',
-  'ирландия': 'europe',
-  'исландия': 'europe',
-  'испания': 'europe',
-  'италия': 'europe',
-  'канада': 'north-america',
-  'кипър': 'asia',
-  'китай': 'asia',
-  'косово': 'europe',
-  'люксембург': 'europe',
-  'малта': 'europe',
-  'мароко': 'africa',
-  'молдова': 'europe',
-  'нидерландия': 'europe',
-  'нова зеландия': 'oceania',
-  'норвегия': 'europe',
-  'обединено кралство': 'europe',
-  'полша': 'europe',
-  'португалия': 'europe',
-  'република корея': 'asia',
-  'румъния': 'europe',
-  'русия': 'europe',
-  'северна македония': 'europe',
-  'сингапур': 'asia',
-  'словакия': 'europe',
-  'словения': 'europe',
-  'сърбия': 'europe',
-  'сащ': 'north-america',
-  'тунис': 'africa',
-  'турция': 'asia',
-  'унгария': 'europe',
-  'финландия': 'europe',
-  'франция': 'europe',
-  'хърватия': 'europe',
-  'черна гора': 'europe',
-  'чехия': 'europe',
-  'швейцария': 'europe',
-  'швеция': 'europe',
-  'южна африка': 'africa',
-  'република южна африка': 'africa',
-  'япония': 'asia',
+export interface AbroadMapSummary extends MapAggregate {
+  label: string;
+  countryCount: number;
+  cityCount: number;
+  sectionCount: number;
+}
+
+type AbroadCityGroup = AbroadCityAggregate & {
+  longitudeSum: number;
+  latitudeSum: number;
+  coordinateCount: number;
 };
 
-function normalizeCountryName(country: string): string {
-  return country.trim().toLowerCase().replace(/\s+/g, ' ');
+const COUNTRY_NAME_ALIASES: Record<string, string> = {
+  'германия фр': 'германия',
+  'фр германия': 'германия',
+  'великобритания': 'обединено кралство',
+  'англия': 'обединено кралство',
+  'обединено кралство великобритания и северна ирландия': 'обединено кралство',
+  'великобритания и северна ирландия': 'обединено кралство',
+  'република македония': 'северна македония',
+  'македония': 'северна македония',
+  'чешка република': 'чехия',
+  'република южна африка': 'южна африка',
+  'корея': 'република корея',
+  'съединени американски щати': 'сащ',
+  'американски съединени щати': 'сащ',
+  'обединени американски щати': 'сащ',
+};
+
+export const GEOMETRY_ISO_ALIASES: Record<string, string> = {
+  FR: 'France',
+  NO: 'Norway',
+  XK: 'Kosovo',
+};
+
+function normalizeAbroadName(value: string | undefined | null): string {
+  return (value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, ' ');
+}
+
+function normalizeCountryName(countryName: string): string {
+  const normalized = normalizeAbroadName(countryName);
+  return COUNTRY_NAME_ALIASES[normalized] || normalized;
+}
+
+function normalizeCityName(cityName: string): string {
+  return normalizeAbroadName(cityName);
 }
 
 function rankPartyLeaders(a: AbroadPartyLeader, b: AbroadPartyLeader): number {
@@ -111,59 +106,171 @@ function rankPartyLeaders(a: AbroadPartyLeader, b: AbroadPartyLeader): number {
     || a.partyId.localeCompare(b.partyId, 'bg');
 }
 
+function rankPreferenceLeaders(a: AbroadPreferenceLeader, b: AbroadPreferenceLeader): number {
+  return b.total - a.total
+    || a.candidateName.localeCompare(b.candidateName, 'bg')
+    || a.partyName.localeCompare(b.partyName, 'bg')
+    || a.candidateId.localeCompare(b.candidateId, 'bg');
+}
+
+function isValidCoordinate(longitude: number | undefined, latitude: number | undefined): boolean {
+  return Number.isFinite(longitude)
+    && Number.isFinite(latitude)
+    && Math.abs(longitude || 0) <= 180
+    && Math.abs(latitude || 0) <= 90
+    && !((longitude || 0) === 0 && (latitude || 0) === 0);
+}
+
+export function getAbroadNameParts(cityName: string): {
+  countryName: string;
+  cityName: string;
+  displayName: string;
+} {
+  const parts = cityName
+    .split(',')
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  const countryName = parts[0] || cityName.trim();
+  const parsedCityName = parts.length > 1 ? (parts[parts.length - 1] || countryName) : countryName;
+  const displayName = countryName === parsedCityName ? countryName : `${countryName}, ${parsedCityName}`;
+
+  return {
+    countryName,
+    cityName: parsedCityName,
+    displayName,
+  };
+}
+
 export function getAbroadCountryName(cityName: string): string {
-  return cityName.split(',')[0]?.trim() || cityName.trim();
+  return getAbroadNameParts(cityName).countryName;
 }
 
-export function getAbroadContinentId(cityName: string): AbroadContinentId | null {
-  const country = normalizeCountryName(getAbroadCountryName(cityName));
-  return COUNTRY_TO_CONTINENT[country] || null;
+export function getAbroadCityName(cityName: string): string {
+  return getAbroadNameParts(cityName).cityName;
 }
 
-export function aggregateAbroadSectionsByContinent(
+export function buildAbroadCountryCodeMap(
+  manifest: AbroadCountryManifestItem[]
+): Map<string, AbroadCountryManifestItem> {
+  const map = new Map<string, AbroadCountryManifestItem>();
+
+  manifest.forEach((item) => {
+    map.set(normalizeCountryName(item.name), item);
+  });
+
+  Object.entries(COUNTRY_NAME_ALIASES).forEach(([alias, canonical]) => {
+    const match = map.get(canonical);
+    if (match) {
+      map.set(alias, match);
+    }
+  });
+
+  return map;
+}
+
+function resolveManifestCountry(
+  rawCountryName: string,
+  manifestByName: Map<string, AbroadCountryManifestItem>,
+  manifest: AbroadCountryManifestItem[]
+): AbroadCountryManifestItem | null {
+  const normalized = normalizeCountryName(rawCountryName);
+  const direct = manifestByName.get(normalized);
+  if (direct) {
+    return direct;
+  }
+
+  return manifest.find((item) => {
+    const itemName = normalizeCountryName(item.name);
+    return normalized.startsWith(itemName)
+      || itemName.startsWith(normalized)
+      || normalized.includes(itemName);
+  }) || null;
+}
+
+export function resolveAbroadSectionLocation(
+  section: Pick<Section, 'cityName' | 'sectionName'>,
+  countryManifest: AbroadCountryManifestItem[] = []
+): {
+  countryName: string;
+  cityName: string;
+  displayName: string;
+  countryCode: string | null;
+  normalizedCountryName: string;
+  normalizedCityName: string;
+} {
+  const manifestByName = buildAbroadCountryCodeMap(countryManifest);
+  const parsedCity = getAbroadNameParts(section.cityName);
+  const parsedSection = getAbroadNameParts(section.sectionName || '');
+
+  let manifestItem = resolveManifestCountry(parsedCity.countryName, manifestByName, countryManifest);
+  let countryName = manifestItem?.name || parsedCity.countryName;
+  let cityName = parsedCity.cityName;
+
+  if (!manifestItem && section.sectionName) {
+    manifestItem = resolveManifestCountry(parsedSection.countryName, manifestByName, countryManifest);
+    if (manifestItem) {
+      countryName = manifestItem.name;
+      cityName = parsedCity.countryName === parsedCity.cityName ? parsedSection.cityName || parsedCity.cityName : parsedCity.cityName;
+    }
+  }
+
+  const normalizedCountryName = normalizeCountryName(countryName);
+  const normalizedCityName = normalizeCityName(cityName);
+  const displayName = countryName === cityName ? countryName : `${countryName}, ${cityName}`;
+
+  return {
+    countryName,
+    cityName,
+    displayName,
+    countryCode: manifestItem?.code || null,
+    normalizedCountryName,
+    normalizedCityName,
+  };
+}
+
+export function aggregateAbroadSectionsByCity(
   sections: Section[],
-  partiesById: Record<string, string>
-): AbroadContinentAggregate[] {
-  const definitionsById = new Map(ABROAD_CONTINENTS.map((continent) => [continent.id, continent]));
-  const groups = new Map<AbroadContinentId, AbroadContinentAggregate>();
+  partiesById: Record<string, string>,
+  countryManifest: AbroadCountryManifestItem[] = []
+): AbroadCityAggregate[] {
+  const groups = new Map<string, AbroadCityGroup>();
 
   for (const section of sections) {
     if (section.regionId !== '32') {
       continue;
     }
 
-    const continentId = getAbroadContinentId(section.cityName);
-    if (!continentId) {
-      continue;
-    }
+    const resolved = resolveAbroadSectionLocation(section, countryManifest);
+    const groupKey = `${resolved.countryCode || resolved.normalizedCountryName}::${resolved.normalizedCityName}`;
 
-    const definition = definitionsById.get(continentId);
-    if (!definition) {
-      continue;
-    }
-
-    let aggregate = groups.get(continentId);
+    let aggregate = groups.get(groupKey);
     if (!aggregate) {
       aggregate = {
-        ...definition,
+        id: groupKey,
+        countryName: resolved.countryName,
+        countryCode: resolved.countryCode,
+        cityName: resolved.cityName,
+        displayName: resolved.displayName,
+        normalizedCountryName: resolved.normalizedCountryName,
+        normalizedCityName: resolved.normalizedCityName,
+        longitude: null,
+        latitude: null,
         sections: [],
-        countries: [],
-        cities: [],
         total: 0,
         voted: 0,
         discardedVotes: 0,
         noVotes: 0,
+        totalPaper: 0,
+        totalMachine: 0,
+        totalElectors: 0,
+        riskScore: 0,
         partyTotals: Object.create(null),
+        longitudeSum: 0,
+        latitudeSum: 0,
+        coordinateCount: 0,
       };
-      groups.set(continentId, aggregate);
-    }
-
-    const country = getAbroadCountryName(section.cityName);
-    if (!aggregate.countries.includes(country)) {
-      aggregate.countries.push(country);
-    }
-    if (!aggregate.cities.includes(section.cityName)) {
-      aggregate.cities.push(section.cityName);
+      groups.set(groupKey, aggregate);
     }
 
     aggregate.sections.push(section);
@@ -171,41 +278,120 @@ export function aggregateAbroadSectionsByContinent(
     aggregate.voted += section.voted || 0;
     aggregate.discardedVotes += section.discardedVotes || 0;
     aggregate.noVotes += section.noVotes || 0;
+    aggregate.totalPaper += section.totalPaper || 0;
+    aggregate.totalMachine += section.totalMachine || 0;
+    aggregate.totalElectors += section.total || 0;
+    aggregate.riskScore += section.riskScore || section.riskIndicators?.length || 0;
+
+    if (isValidCoordinate(section.longitude, section.latitude)) {
+      aggregate.longitudeSum += section.longitude as number;
+      aggregate.latitudeSum += section.latitude as number;
+      aggregate.coordinateCount += 1;
+    }
 
     Object.entries(section.partyVotes || {}).forEach(([partyId, votes]) => {
       aggregate!.partyTotals[partyId] = (aggregate!.partyTotals[partyId] || 0) + (votes.total || 0);
     });
   }
 
-  return ABROAD_CONTINENTS.map((continent) => {
-    const aggregate = groups.get(continent.id);
-    if (!aggregate) {
+  return Array.from(groups.values())
+    .map((aggregate) => {
+      const partyLeaders = Object.entries(aggregate.partyTotals)
+        .map(([partyId, total]) => ({
+          partyId,
+          partyName: partiesById[partyId] || partyId,
+          total,
+        }))
+        .sort(rankPartyLeaders);
+
+      const preferenceTotals = new Map<string, AbroadPreferenceLeader>();
+      aggregate.sections.forEach((section) => {
+        Object.values(section.candidateVotes || {}).forEach((candidate) => {
+          const key = `${candidate.partyId}_${candidate.candidateId}`;
+          const existing = preferenceTotals.get(key);
+          if (existing) {
+            existing.total += candidate.total || 0;
+            return;
+          }
+
+          preferenceTotals.set(key, {
+            candidateId: candidate.candidateId,
+            candidateName: candidate.candidateName,
+            partyId: candidate.partyId,
+            partyName: candidate.partyName || partiesById[candidate.partyId] || candidate.partyId,
+            total: candidate.total || 0,
+          });
+        });
+      });
+
       return {
-        ...continent,
-        sections: [],
-        countries: [],
-        cities: [],
-        total: 0,
-        voted: 0,
-        discardedVotes: 0,
-        noVotes: 0,
-        partyTotals: Object.create(null),
+        ...aggregate,
+        longitude: aggregate.coordinateCount > 0 ? aggregate.longitudeSum / aggregate.coordinateCount : null,
+        latitude: aggregate.coordinateCount > 0 ? aggregate.latitudeSum / aggregate.coordinateCount : null,
+        leadingParty: partyLeaders[0],
+        leadingPreference: Array.from(preferenceTotals.values()).sort(rankPreferenceLeaders)[0],
       };
-    }
+    })
+    .sort((a, b) =>
+      a.countryName.localeCompare(b.countryName, 'bg')
+      || a.cityName.localeCompare(b.cityName, 'bg')
+    );
+}
 
-    const partyLeaders = Object.entries(aggregate.partyTotals)
-      .map(([partyId, total]) => ({
-        partyId,
-        partyName: partiesById[partyId] || partyId,
-        total,
-      }))
-      .sort(rankPartyLeaders);
+export function buildAbroadSummary(
+  cities: AbroadCityAggregate[],
+  label: string
+): AbroadMapSummary {
+  const partyTotals: Record<string, number> = Object.create(null);
+  const countries = new Set<string>();
+  let total = 0;
+  let voted = 0;
+  let discardedVotes = 0;
+  let noVotes = 0;
+  let totalPaper = 0;
+  let totalMachine = 0;
+  let totalElectors = 0;
+  let riskScore = 0;
+  let sectionCount = 0;
 
-    return {
-      ...aggregate,
-      countries: [...aggregate.countries].sort((a, b) => a.localeCompare(b, 'bg')),
-      cities: [...aggregate.cities].sort((a, b) => a.localeCompare(b, 'bg')),
-      leadingParty: partyLeaders[0],
-    };
+  cities.forEach((city) => {
+    countries.add(city.countryName);
+    total += city.total;
+    voted += city.voted;
+    discardedVotes += city.discardedVotes;
+    noVotes += city.noVotes;
+    totalPaper += city.totalPaper;
+    totalMachine += city.totalMachine;
+    totalElectors += city.totalElectors;
+    riskScore += city.riskScore;
+    sectionCount += city.sections.length;
+    Object.entries(city.partyTotals).forEach(([partyId, votes]) => {
+      partyTotals[partyId] = (partyTotals[partyId] || 0) + votes;
+    });
   });
+
+  const leadingParty = Object.entries(partyTotals)
+    .map(([partyId, totalVotes]) => ({
+      partyId,
+      partyName: cities.find((city) => city.leadingParty?.partyId === partyId)?.leadingParty?.partyName || partyId,
+      total: totalVotes,
+    }))
+    .sort(rankPartyLeaders)[0];
+
+  return {
+    label,
+    countryCount: countries.size,
+    cityCount: cities.length,
+    sectionCount,
+    voted,
+    total,
+    discardedVotes,
+    noVotes,
+    totalPaper,
+    totalMachine,
+    totalElectors,
+    riskScore,
+    partyTotals,
+    leadingParty,
+  };
 }

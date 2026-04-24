@@ -162,7 +162,7 @@
                 class="inline-flex items-center justify-center px-3 py-1.5 rounded-full text-sm font-semibold bg-primary/10 text-primary-foreground dark:text-primary border border-primary/20 min-w-[3rem]">
                 @if (viewMode() === 'map') {
                   @if (isAbroadRegion) {
-                    Континенти: {{ currentRowCount }}
+                    Градове: {{ currentRowCount }}
                   } @else {
                     Населени места: {{ currentRowCount }}
                   }
@@ -182,7 +182,7 @@
                 <button hlmBtn [variant]="'line'"
                         [attr.data-state]="viewMode() === 'municipalities' ? 'active' : 'inactive'"
                         (click)="setViewMode('municipalities')">
-                  Общини
+                  {{ municipalityPluralLabel }}
                 </button>
                 <button hlmBtn [variant]="'line'"
                         [attr.data-state]="viewMode() === 'candidates' ? 'active' : 'inactive'"
@@ -220,20 +220,17 @@
             }
           </div>
           @if (viewMode() === 'map') {
-            <div class="flex flex-col gap-4">
-              <div class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-primary/10 bg-muted/20 px-4 py-3">
-                @if (isAbroadRegion) {
-                  <p class="text-sm text-muted-foreground">
-                    Световната карта групира секциите извън страната по континенти и показва агрегираните резултати за избраната дата.
-                  </p>
-                } @else {
+              <div class="flex flex-col gap-4">
+                <div class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-primary/10 bg-muted/20 px-4 py-3">
                   <div class="flex flex-wrap gap-2">
                     <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-party' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-party')">
                       Партии
                     </button>
-                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-preference' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-preference')">
-                      Преференции
-                    </button>
+                    @if (isAbroadRegion) {
+                      <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-preference' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-preference')">
+                        Преференции
+                      </button>
+                    }
                     <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'activity' ? 'default' : 'outline'" (click)="setSettlementMapMetric('activity')">
                       Активност
                     </button>
@@ -266,13 +263,16 @@
                       }
                     </div>
                   </div>
-                }
-              </div>
+                </div>
               @if (isAbroadRegion) {
-                <app-abroad-world-map-modal
+                <app-abroad-map
                   [sections]="sections"
                   [partiesById]="getPartiesById()"
-                  [embedded]="true" />
+                  [metric]="settlementMapMetric()"
+                  [selectedPartyId]="mapSelectedPartyId()"
+                  [embedded]="true"
+                  (citySelect)="onAbroadCitySelect($event)"
+                  (countrySelect)="onAbroadCountrySelect($event)" />
               } @else {
                 <app-settlement-map
                   [settlements]="settlementMapData"
@@ -415,7 +415,7 @@
                   <th hlmTableHead (click)="sortSections('municipalityName')"
                       class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                       <span class="flex items-center justify-between">
-                        <span>Община</span>
+                        <span>{{ municipalityLabel }}</span>
                         <span class="ml-1 flex items-center">
                             @if (sectionSortColumn === 'municipalityName') {
                               <span
@@ -437,7 +437,7 @@
                   <th hlmTableHead (click)="sortSections('cityName')"
                       class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                       <span class="flex items-center justify-between">
-                        <span>{{ isMunicipalityGrouping() ? 'Община' : 'Населено място' }}</span>
+                        <span>{{ isMunicipalityGrouping() ? municipalityLabel : 'Населено място' }}</span>
                         <span class="ml-1 flex items-center">
                             @if (sectionSortColumn === 'cityName') {
                               <span
@@ -648,7 +648,7 @@
                   <tr hlmTableRow
                       class="cursor-pointer hover:bg-primary/10 active:bg-primary/20 transition-colors group relative"
                       [class.bg-muted]="selectedSection?.sectionId === section.sectionId"
-                      [class.bg-primary/5]="selectedSection?.sectionId === section.sectionId"
+                      [class.bg-primary-5]="selectedSection?.sectionId === section.sectionId"
                       (click)="loadSectionDetails(section)">
                   @if (visibleColumns().has('sectionId')) {
                     <td hlmTableCell class="font-medium relative pr-6">
@@ -661,7 +661,7 @@
                         <span class="text-muted-foreground">{{ section.sectionId }}</span>
                       } @else {
                         <div class="flex items-center gap-1 group">
-                          <button hlmBtn variant="ghost" size="icon" class="h-6 `w-6` transition-opacity"
+                          <button hlmBtn variant="ghost" size="icon" class="h-6 w-6 transition-opacity"
                                   (click)="copyToClipboard(section.sectionId, $event)"
                                   [hlmTooltip]="copiedId() === section.sectionId ? 'Копирано!' : 'Копирай ID на секцията'">
                             @if (copiedId() === section.sectionId) {
@@ -1120,6 +1120,7 @@
       [selectedPartyIds]="selectedPartyIds"
       [date]="date"
       [allSections]="sections"
+      [isAbroadRegion]="isAbroadRegion"
       (close)="closeModal()"
       (openCandidate)="onSectionCandidateClick($event)"
     ></app-section-detail-modal>
@@ -1145,6 +1146,7 @@
       [viewMode]="viewMode()"
       [date]="date"
       [regionName]="regionName"
+      [isAbroadRegion]="isAbroadRegion"
       (close)="closeExportModal()"
     ></app-export-csv-modal>
   }

@@ -5,6 +5,7 @@ import { Section, SectionDetails, Region } from '../models/election.models';
 import elections from '../../assets/elections.json';
 import * as pako from 'pako';
 import compactMapping from '../../assets/compact-mapping.json';
+import { normalizeAbroadSection } from '../utils/abroad-section.util';
 
 type DataManifest = {
   timestamp: string;
@@ -40,6 +41,8 @@ type ColumnarSections = {
   sectionId: string[];
   regionId: string[];
   settlementEkatte: string[];
+  longitude: number[];
+  latitude: number[];
   cityNameId: number[];
   sectionNameId: number[];
   sectionType: number[];
@@ -460,6 +463,8 @@ export class ElectionService {
       regionId,
       regionName: full.regionNameById.get(regionId),
       settlementEkatte: s.settlementEkatte[index] || '',
+      longitude: Number.isFinite(s.longitude[index]) && s.longitude[index] !== 0 ? s.longitude[index] : undefined,
+      latitude: Number.isFinite(s.latitude[index]) && s.latitude[index] !== 0 ? s.latitude[index] : undefined,
       cityName,
       sectionName,
       sectionType: sectionTypeMap[s.sectionType[index]] || 'Other',
@@ -559,7 +564,7 @@ export class ElectionService {
       }
     }
 
-    return section;
+    return normalizeAbroadSection(section);
   }
 
   private materializeSections(full: FullDataV2, indexes: number[], date?: string, withComparisons?: boolean): Section[] {
@@ -592,10 +597,8 @@ export class ElectionService {
 
   private fetchAndParse(url: string, opts?: { includeSections?: boolean }): Observable<any> {
     const start = performance.now();
-    console.log(`[data] fetching ${url}`);
     return this.http.get(url, { responseType: 'arraybuffer' }).pipe(
       map((data: ArrayBuffer) => {
-        console.log(`[data] downloaded ${url} (${data.byteLength} bytes, ${Math.round(performance.now() - start)}ms)`);
         const uint8 = new Uint8Array(data);
         const firstNonWhitespace = (() => {
           for (let i = 0; i < uint8.length && i < 64; i++) {
@@ -612,22 +615,15 @@ export class ElectionService {
 
           // Check for gzip magic numbers: 0x1f 0x8b
           if (uint8.length > 2 && uint8[0] === 0x1f && uint8[1] === 0x8b) {
-            console.log(`[data] ungzip ${url}`);
             decompressed = pako.ungzip(uint8);
           } else {
             // Data is not gzipped or already decompressed by the browser (Content-Encoding: gzip/br)
-            console.log(`[data] raw decode ${url}`);
             decompressed = uint8;
           }
 
-          console.log(`[data] decompressed ${url} (${decompressed.byteLength} bytes)`);
           const jsonString = new TextDecoder().decode(decompressed);
-          console.log(`[data] decoded ${url} (${jsonString.length} chars)`);
           const parsed = JSON.parse(jsonString);
-          console.log(`[data] parsed ${url}`);
-          const expanded = this.normalizePayload(parsed, opts);
-          console.log(`[data] expanded ${url}`);
-          return expanded;
+          return this.normalizePayload(parsed, opts);
         } catch (e) {
           const firstBytes = Array.from(uint8.slice(0, 16)).map(b => b.toString(16).padStart(2, '0')).join(' ');
           console.error(`Error decompressing/parsing data from ${url}. First bytes: ${firstBytes}`, e);
@@ -659,12 +655,10 @@ export class ElectionService {
     this.summaryLoadPromise = new Promise<void>(async (resolve, reject) => {
       try {
         const manifest = await firstValueFrom(this.loadManifest());
-        console.log('[data] manifest loaded', manifest);
 
         for (const d of dates) {
           if (this.summaryCache[d]) continue;
           const urls = this.resolveUrls(d, manifest, 'summary');
-          console.log(`[data] resolve summary ${d}`, urls);
           const data = await firstValueFrom(
             this.fetchAndParse(urls.gz, { includeSections: false }).pipe(
               catchError(() => this.fetchAndParse(urls.br, { includeSections: false }))
@@ -674,15 +668,12 @@ export class ElectionService {
             regions: data?.regions || [],
             parties: data?.parties || {}
           };
-          console.log(`[data] summary cached ${d}`);
         }
 
         this.summariesLoaded = true;
         this.loadingSubject.next(false);
-        console.log('[data] summary load complete');
         resolve();
       } catch (err) {
-        console.error('Error loading election summaries:', err);
         this.loadingSubject.next(false);
         this.summaryLoadPromise = null;
         reject(err);
@@ -702,7 +693,6 @@ export class ElectionService {
       try {
         const manifest = await firstValueFrom(this.loadManifest());
         const urls = this.resolveUrls(date, manifest, 'full');
-        console.log(`[data] resolve full ${date}`, urls);
         const data = await firstValueFrom(
           this.fetchAndParse(urls.gz).pipe(catchError(() => this.fetchAndParse(urls.br)))
         );
@@ -713,7 +703,6 @@ export class ElectionService {
             parties: data?.parties || {}
           };
         }
-        console.log(`[data] full cached ${date}`);
         this.loadingSubject.next(false);
         resolve();
       } catch (err) {
@@ -738,7 +727,6 @@ export class ElectionService {
         const manifest = await firstValueFrom(this.loadManifest());
         for (const d of pending) {
           const urls = this.resolveUrls(d, manifest, 'full');
-          console.log(`[data] resolve full ${d}`, urls);
           const data = await firstValueFrom(
             this.fetchAndParse(urls.gz).pipe(catchError(() => this.fetchAndParse(urls.br)))
           );
@@ -749,7 +737,6 @@ export class ElectionService {
               parties: data?.parties || {}
             };
           }
-          console.log(`[data] full cached ${d}`);
         }
         this.loadingSubject.next(false);
         resolve();

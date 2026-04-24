@@ -1,0 +1,442 @@
+[
+  {
+    "name": "Австралия",
+    "code": "AU",
+    "capitalLocation": "149.1281,-35.2835"
+  },
+  {
+    "name": "Австрия",
+    "code": "AT",
+    "capitalLocation": "16.3707,48.2064"
+  },
+  {
+    "name": "Азербайджан",
+    "code": "AZ",
+    "capitalLocation": "49.8920,40.3777"
+  },
+  {
+    "name": "Албания",
+    "code": "AL",
+    "capitalLocation": "19.8189,41.3275"
+  },
+  {
+    "name": "Алжир",
+    "code": "DZ",
+    "capitalLocation": "3.0420,36.7525"
+  },
+  {
+    "name": "Ангола",
+    "code": "AO",
+    "capitalLocation": "13.23432,-8.83682"
+  },
+  {
+    "name": "Аржентина",
+    "code": "AR",
+    "capitalLocation": "-58.4004,-34.6051"
+  },
+  {
+    "name": "Армения",
+    "code": "AM",
+    "capitalLocation": "44.5146,40.1820"
+  },
+  {
+    "name": "Афганистан",
+    "code": "AF",
+    "capitalLocation": "69.1725,34.5289"
+  },
+  {
+    "name": "Бахрейн",
+    "code": "BH",
+    "capitalLocation": "50.607,26.201"
+  },
+  {
+    "name": "Беларус",
+    "code": "BY",
+    "capitalLocation": "27.5667,53.9000"
+  },
+  {
+    "name": "Белгия",
+    "code": "BE",
+    "capitalLocation": "4.3499,50.8467"
+  },
+  {
+    "name": "Босна и Херцеговина",
+    "code": "BA",
+    "capitalLocation": "18.3564,43.8486"
+  },
+  {
+    "name": "Бразилия",
+    "code": "BR",
+    "capitalLocation": "-47.9297,-15.7797"
+  },
+  {
+    "name": "България",
+    "code": "BG",
+    "capitalLocation": "23.3242,42.6975"
+  },
+  {
+    "name": "Венецуела",
+    "code": "VE",
+    "capitalLocation": "-66.9166,10.5000"
+  },
+  {
+    "name": "Виетнам",
+    "code": "VN",
+    "capitalLocation": null
+  },
+  {
+    "name": "Германия",
+    "code": "DE",
+    "capitalLocation": "13.4105,52.5244"
+  },
+  {
+    "name": "Грузия",
+    "code": "GE",
+    "capitalLocation": "44.8337,41.6941"
+  },
+  {
+    "name": "Гърция",
+    "code": "GR",
+    "capitalLocation": "23.7490,37.9534"
+  },
+  {
+    "name": "Дания",
+    "code": "DK",
+    "capitalLocation": "12.5655,55.6759"
+  },
+  {
+    "name": "Доминиканска Република",
+    "code": "DO",
+    "capitalLocation": "-69.9018,18.4896"
+  },
+  {
+    "name": "Египет",
+    "code": "EG",
+    "capitalLocation": "31.2394,30.0392"
+  },
+  {
+    "name": "Зимбабве",
+    "code": "ZW",
+    "capitalLocation": "31.0530,-17.8249"
+  },
+  {
+    "name": "Израел",
+    "code": "IL",
+    "capitalLocation": "35.2163,31.7690"
+  },
+  {
+    "name": "Индия",
+    "code": "IN",
+    "capitalLocation": "77.2167,28.6667"
+  },
+  {
+    "name": "Ирак",
+    "code": "IQ",
+    "capitalLocation": "44.354321,33.303257"
+  },
+  {
+    "name": "Иран",
+    "code": "IR",
+    "capitalLocation": null
+  },
+  {
+    "name": "Ирландия",
+    "code": "IE",
+    "capitalLocation": "-6.2489,53.3331"
+  },
+  {
+    "name": "Исландия",
+    "code": "IS",
+    "capitalLocation": "-21.8954,64.1355"
+  },
+  {
+    "name": "Испания",
+    "code": "ES",
+    "capitalLocation": "-3.7026,40.4165"
+  },
+  {
+    "name": "Италия",
+    "code": "IT",
+    "capitalLocation": "12.4811,41.8947"
+  },
+  {
+    "name": "Йемен",
+    "code": "YE",
+    "capitalLocation": "44.2002,15.3567"
+  },
+  {
+    "name": "Йордания",
+    "code": "JO",
+    "capitalLocation": "35.9450,31.9552"
+  },
+  {
+    "name": "Казахстан",
+    "code": "KZ",
+    "capitalLocation": "71.4460,51.1801"
+  },
+  {
+    "name": "Канада",
+    "code": "CA",
+    "capitalLocation": "-75.6980,45.4166"
+  },
+  {
+    "name": "Катар",
+    "code": "QA",
+    "capitalLocation": "51.5245,25.2747"
+  },
+  {
+    "name": "Кипър",
+    "code": "CY",
+    "capitalLocation": "33.3669,35.1595"
+  },
+  {
+    "name": "Китай",
+    "code": "CN",
+    "capitalLocation": "116.3972,39.9075"
+  },
+  {
+    "name": "Косово",
+    "code": "XK",
+    "capitalLocation": null
+  },
+  {
+    "name": "Куба",
+    "code": "CU",
+    "capitalLocation": "-82.3785,23.1195"
+  },
+  {
+    "name": "Кувейт",
+    "code": "KW",
+    "capitalLocation": "47.9783,29.3697"
+  },
+  {
+    "name": "Либия",
+    "code": "LY",
+    "capitalLocation": "13.1801,32.8853"
+  },
+  {
+    "name": "Ливан",
+    "code": "LB",
+    "capitalLocation": "35.4833,33.9000"
+  },
+  {
+    "name": "Литва",
+    "code": "LT",
+    "capitalLocation": "25.2796,54.6871"
+  },
+  {
+    "name": "Люксембург",
+    "code": "LU",
+    "capitalLocation": "6.1300,49.6117"
+  },
+  {
+    "name": "Малайзия",
+    "code": "MY",
+    "capitalLocation": "101.6865,3.1412"
+  },
+  {
+    "name": "Малта",
+    "code": "MT",
+    "capitalLocation": "14.5147,35.8997"
+  },
+  {
+    "name": "Мароко",
+    "code": "MA",
+    "capitalLocation": "-6.8326,34.0133"
+  },
+  {
+    "name": "Мексико",
+    "code": "MX",
+    "capitalLocation": "-99.1419,19.4273"
+  },
+  {
+    "name": "Молдова",
+    "code": "MD",
+    "capitalLocation": null
+  },
+  {
+    "name": "Нигерия",
+    "code": "NG",
+    "capitalLocation": "7.4898,9.0574"
+  },
+  {
+    "name": "Нидерландия",
+    "code": "NL",
+    "capitalLocation": "4.8897,52.3740"
+  },
+  {
+    "name": "Нова Зеландия",
+    "code": "NZ",
+    "capitalLocation": "174.7756,-41.2866"
+  },
+  {
+    "name": "Норвегия",
+    "code": "NO",
+    "capitalLocation": "10.7461,59.9127"
+  },
+  {
+    "name": "ОАЕ",
+    "code": "AE",
+    "capitalLocation": null
+  },
+  {
+    "name": "Обединено кралство",
+    "code": "GB",
+    "capitalLocation": "-0.1257,51.5085"
+  },
+  {
+    "name": "Палестинска власт",
+    "code": "PS",
+    "capitalLocation": null
+  },
+  {
+    "name": "Полша",
+    "code": "PL",
+    "capitalLocation": "21.0118,52.2298"
+  },
+  {
+    "name": "Португалия",
+    "code": "PT",
+    "capitalLocation": "-9.1399,38.7169"
+  },
+  {
+    "name": "Република Корея",
+    "code": "KR",
+    "capitalLocation": null
+  },
+  {
+    "name": "Румъния",
+    "code": "RO",
+    "capitalLocation": "26.1043,44.4328"
+  },
+  {
+    "name": "Русия",
+    "code": "RU",
+    "capitalLocation": null
+  },
+  {
+    "name": "Саудитска Арабия",
+    "code": "SA",
+    "capitalLocation": "46.7096,24.6905"
+  },
+  {
+    "name": "САЩ",
+    "code": "US",
+    "capitalLocation": "-77.0364,38.8951"
+  },
+  {
+    "name": "Северна Македония",
+    "code": "MK",
+    "capitalLocation": null
+  },
+  {
+    "name": "Сингапур",
+    "code": "SG",
+    "capitalLocation": "103.8501,1.2897"
+  },
+  {
+    "name": "Сирия",
+    "code": "SY",
+    "capitalLocation": "36.2783,33.5104"
+  },
+  {
+    "name": "Словакия",
+    "code": "SK",
+    "capitalLocation": "17.1067,48.1482"
+  },
+  {
+    "name": "Словения",
+    "code": "SI",
+    "capitalLocation": "14.5051,46.0511"
+  },
+  {
+    "name": "Судан",
+    "code": "SD",
+    "capitalLocation": "32.559898,15.500654"
+  },
+  {
+    "name": "Сърбия",
+    "code": "RS",
+    "capitalLocation": "20.4633,44.8176"
+  },
+  {
+    "name": "Тайланд",
+    "code": "TH",
+    "capitalLocation": "100.5231,13.7367"
+  },
+  {
+    "name": "Тунис",
+    "code": "TN",
+    "capitalLocation": "10.1658,36.8190"
+  },
+  {
+    "name": "Турция",
+    "code": "TR",
+    "capitalLocation": "32.8543,39.9199"
+  },
+  {
+    "name": "Узбекистан",
+    "code": "UZ",
+    "capitalLocation": "69.2163,41.2647"
+  },
+  {
+    "name": "Украйна",
+    "code": "UA",
+    "capitalLocation": "30.5186,50.4454"
+  },
+  {
+    "name": "Унгария",
+    "code": "HU",
+    "capitalLocation": "19.0399,47.4980"
+  },
+  {
+    "name": "Финландия",
+    "code": "FI",
+    "capitalLocation": "24.9572,60.1868"
+  },
+  {
+    "name": "Франция",
+    "code": "FR",
+    "capitalLocation": "2.3488,48.8534"
+  },
+  {
+    "name": "Хърватия",
+    "code": "HR",
+    "capitalLocation": "15.9780,45.8144"
+  },
+  {
+    "name": "Черна гора",
+    "code": "ME",
+    "capitalLocation": "19.2636,42.4411"
+  },
+  {
+    "name": "Чехия",
+    "code": "CZ",
+    "capitalLocation": "50.0737,14.4185"
+  },
+  {
+    "name": "Чили",
+    "code": "CL",
+    "capitalLocation": "-70.6737,-33.4475"
+  },
+  {
+    "name": "Швейцария",
+    "code": "CH",
+    "capitalLocation": "7.4474,46.9481"
+  },
+  {
+    "name": "Швеция",
+    "code": "SE",
+    "capitalLocation": "18.0649,59.3326"
+  },
+  {
+    "name": "Южна Африка",
+    "code": "ZA",
+    "capitalLocation": "18.4232,-33.9258"
+  },
+  {
+    "name": "Япония",
+    "code": "JP",
+    "capitalLocation": "139.6917,35.6895"
+  }
+]

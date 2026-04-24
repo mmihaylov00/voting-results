@@ -20,7 +20,8 @@ import { StatCardComponent } from '../ui/stat-card/stat-card';
 import { SearchFilterComponent } from '../ui/search-filter/search-filter';
 import { PartyBadgeComponent } from '../ui/party-badge/party-badge';
 import { SettlementMapComponent } from '../ui/settlement-map/settlement-map';
-import { AbroadWorldMapModalComponent } from '../ui/abroad-world-map-modal/abroad-world-map-modal';
+import { AbroadMapComponent } from '../ui/abroad-map/abroad-map';
+import { AbroadCityAggregate, AbroadCountryAggregate } from '../../utils/abroad-map.util';
 import { SettlementAggregate, aggregateSectionsBySettlement, SettlementMapMetric } from '../../utils/settlement-map.util';
 
 @Component({
@@ -43,7 +44,7 @@ import { SettlementAggregate, aggregateSectionsBySettlement, SettlementMapMetric
     SearchFilterComponent,
     PartyBadgeComponent,
     SettlementMapComponent,
-    AbroadWorldMapModalComponent,
+    AbroadMapComponent,
   ],
   templateUrl: './region-list.html'
 })
@@ -456,6 +457,14 @@ export class RegionListComponent implements OnInit, AfterViewInit {
 
   onSettlementSelect(settlement: SettlementAggregate): void {
     this.router.navigate(['/election', this.date, 'region', settlement.regionId]);
+  }
+
+  onAbroadCitySelect(_city: AbroadCityAggregate): void {
+    this.router.navigate(['/election', this.date, 'region', '32']);
+  }
+
+  onAbroadCountrySelect(_country: AbroadCountryAggregate): void {
+    this.router.navigate(['/election', this.date, 'region', '32']);
   }
 
   setSettlementMapMetric(metric: SettlementMapMetric): void {

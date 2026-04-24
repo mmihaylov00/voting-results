@@ -45,6 +45,8 @@ export interface Section {
   regionName?: string;
   municipalityName?: string;
   settlementEkatte?: string;
+  longitude?: number;
+  latitude?: number;
   cityName: string;
   sectionName: string;
   sectionType: string;

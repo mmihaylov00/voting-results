@@ -1,4 +1,5 @@
 import { Section } from '../models/election.models';
+import { MapMetric, MapPartyLeader, MapPreferenceLeader, MapAggregate } from './map-metric.helper';
 
 export const REGION_ID_TO_GEOMETRY_CODE: Record<string, string> = {
   '1': 'BLG',
@@ -74,16 +75,7 @@ export const GEOMETRY_CODE_TO_REGION_ID: Record<string, string> = Object.fromEnt
   Object.entries(REGION_ID_TO_GEOMETRY_CODE).map(([id, code]) => [code, id])
 );
 
-export type SettlementMapMetric =
-  | 'leading-party'
-  | 'leading-preference'
-  | 'activity'
-  | 'risks'
-  | 'party-votes'
-  | 'invalid-votes'
-  | 'no-votes'
-  | 'machine-vs-paper'
-  | 'winner-margin';
+export type SettlementMapMetric = MapMetric;
 
 export interface SettlementLookup {
   ekatte?: string;
@@ -110,21 +102,11 @@ export interface SettlementGeometryCollection {
   features: SettlementGeometryFeature[];
 }
 
-export interface SettlementPartyLeader {
-  partyId: string;
-  partyName: string;
-  total: number;
-}
+export type SettlementPartyLeader = MapPartyLeader;
 
-export interface SettlementPreferenceLeader {
-  candidateId: string;
-  candidateName: string;
-  partyId: string;
-  partyName: string;
-  total: number;
-}
+export type SettlementPreferenceLeader = MapPreferenceLeader;
 
-export interface SettlementAggregate {
+export interface SettlementAggregate extends MapAggregate {
   ekatte: string;
   geometryKey: string;
   regionId: string;
@@ -135,17 +117,6 @@ export interface SettlementAggregate {
   cityName: string;
   displayName: string;
   sections: Section[];
-  total: number;
-  voted: number;
-  discardedVotes: number;
-  noVotes: number;
-  totalPaper: number;
-  totalMachine: number;
-  totalElectors: number;
-  riskScore: number;
-  partyTotals: Record<string, number>;
-  leadingParty?: SettlementPartyLeader;
-  leadingPreference?: SettlementPreferenceLeader;
 }
 
 export function getGeometryRegionCode(regionId: string | undefined | null): string {

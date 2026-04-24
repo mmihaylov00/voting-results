@@ -32,11 +32,12 @@ export class ExportCsvModalComponent {
   @Input() viewMode: ViewMode = 'sections';
   @Input() date: string = '';
   @Input() regionName: string = '';
+  @Input() isAbroadRegion = false;
   @Output() close = new EventEmitter<void>();
 
   filteredSections: Section[] = [];
   exportPartyIds: Set<string> = new Set();
-  availableColumns = SECTION_COLUMNS.filter(c => c.id !== 'typeVotes' && c.id !== 'topParties');
+  baseAvailableColumns = SECTION_COLUMNS.filter(c => c.id !== 'typeVotes' && c.id !== 'topParties');
   exportColumnIds: Set<string> = new Set(this.availableColumns.map(c => c.id));
   candidateAvailableColumns: TableColumn[] = [
     { id: 'candidateId', label: 'Номер' },
@@ -47,6 +48,18 @@ export class ExportCsvModalComponent {
     { id: 'preferencePercentOfPartyVotes', label: '% от гласовете за партията' },
   ];
   exportCandidateColumnIds: Set<string> = new Set(this.candidateAvailableColumns.map(c => c.id));
+
+  get municipalityLabel(): string {
+    return this.isAbroadRegion ? 'Държава' : 'Община';
+  }
+
+  get availableColumns(): TableColumn[] {
+    return this.baseAvailableColumns.map((column) => (
+      column.id === 'municipalityName'
+        ? { ...column, label: this.municipalityLabel }
+        : column
+    ));
+  }
 
   ngOnInit() {
     this.exportPartyIds = new Set(this.selectedPartyIds);
@@ -161,9 +174,9 @@ export class ExportCsvModalComponent {
     if (this.exportColumnIds.has('sectionId')) headers.push('Секция');
     if (this.exportColumnIds.has('riskScore')) headers.push('Рискове');
     if (this.exportColumnIds.has('regionName')) headers.push('Регион');
-    if (this.exportColumnIds.has('municipalityName')) headers.push('Община');
+    if (this.exportColumnIds.has('municipalityName')) headers.push(this.municipalityLabel);
     if (this.exportColumnIds.has('cityName')) {
-      headers.push(this.viewMode === 'municipalities' ? 'Община' : 'Населено място');
+      headers.push(this.viewMode === 'municipalities' ? this.municipalityLabel : 'Населено място');
     }
     if (this.exportColumnIds.has('sectionName')) headers.push('Име на секция');
     if (this.exportColumnIds.has('total')) headers.push('Избиратели');

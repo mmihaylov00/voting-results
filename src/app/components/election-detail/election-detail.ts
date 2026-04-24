@@ -54,13 +54,15 @@ import {SearchFilterComponent} from '../ui/search-filter/search-filter';
 import {ColumnFilterComponent} from '../ui/column-filter/column-filter';
 import { PartyBadgeComponent } from '../ui/party-badge/party-badge';
 import { SettlementMapComponent } from '../ui/settlement-map/settlement-map';
-import { AbroadWorldMapModalComponent } from '../ui/abroad-world-map-modal/abroad-world-map-modal';
+import { AbroadMapComponent } from '../ui/abroad-map/abroad-map';
+import { AbroadCityAggregate, AbroadCountryAggregate, aggregateAbroadSectionsByCity } from '../../utils/abroad-map.util';
 import {
   SettlementAggregate,
   SettlementMapMetric,
   aggregateSectionsBySettlement,
   getGeometryRegionCode,
 } from '../../utils/settlement-map.util';
+import { ABROAD_REGION_ID, splitAbroadLocation } from '../../utils/abroad-section.util';
 
 @Component({
   selector: 'app-election-detail',
@@ -96,7 +98,7 @@ import {
     ColumnFilterComponent,
     PartyBadgeComponent,
     SettlementMapComponent,
-    AbroadWorldMapModalComponent,
+    AbroadMapComponent,
   ],
   templateUrl: './election-detail.html',
   styleUrl: './election-detail.scss',
@@ -154,14 +156,20 @@ export class ElectionDetailComponent implements OnInit {
   visibleColumns = signal<Set<string>>(new Set(SECTION_COLUMNS.map(c => c.id)));
 
   get filteredAvailableColumns(): TableColumn[] {
+    const columns = this.availableColumns.map((column) => (
+      column.id === 'municipalityName'
+        ? { ...column, label: this.municipalityLabel }
+        : column
+    ));
+
     if (this.viewMode() === 'candidates') {
       return this.candidateColumns;
     }
     // Hide regionName column when not viewing all sections
     if (this.regionId && this.regionId !== 'all') {
-      return this.availableColumns.filter(c => c.id !== 'regionName');
+      return columns.filter(c => c.id !== 'regionName');
     }
-    return this.availableColumns;
+    return columns;
   }
 
   get currentVisibleColumns(): Set<string> {
@@ -322,7 +330,7 @@ export class ElectionDetailComponent implements OnInit {
     }
     if (this.viewMode() === 'map') {
       if (this.isAbroadRegion) {
-        return this.abroadMapContinentCount;
+        return this.abroadMapCityCount;
       }
       return this.settlementMapData.length;
     }
@@ -330,15 +338,27 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   get isAbroadRegion(): boolean {
-    return this.regionId === '32';
+    return this.regionId === ABROAD_REGION_ID;
+  }
+
+  get municipalityLabel(): string {
+    return this.isAbroadRegion ? 'Държава' : 'Община';
+  }
+
+  get municipalityLabelLowercase(): string {
+    return this.isAbroadRegion ? 'държава' : 'община';
+  }
+
+  get municipalityPluralLabel(): string {
+    return this.isAbroadRegion ? 'Държави' : 'Общини';
   }
 
   get canShowMap(): boolean {
     return !!this.regionId && this.regionId !== 'all';
   }
 
-  get abroadMapContinentCount(): number {
-    return 6;
+  get abroadMapCityCount(): number {
+    return aggregateAbroadSectionsByCity(this.sections, this.getPartiesById()).length;
   }
 
   get settlementMapRegionCode(): string {
@@ -493,6 +513,9 @@ export class ElectionDetailComponent implements OnInit {
     // Load all election data for comparisons
     this.electionService.getAllFullData().subscribe(data => {
       this.allData = data;
+      if (this.sections.length > 0) {
+        this.applyFilter();
+      }
     });
 
     if (this.date) {
@@ -621,7 +644,9 @@ export class ElectionDetailComponent implements OnInit {
             municipalityCode: groupMode === 'municipality' ? municipalityCode : undefined,
             neighborhoodCode: groupMode === 'municipality' ? neighborhoodCode : undefined,
             neighborhoodCounts: groupMode === 'municipality' ? {} : undefined,
-            municipalityName: this.stripSettlementPrefix(municipalityByCode.get(municipalityLookupKey) || ''),
+            municipalityName: this.isAbroadRegion
+              ? (s.municipalityName || '')
+              : this.stripSettlementPrefix(municipalityByCode.get(municipalityLookupKey) || ''),
             regionId: s.regionId,
             regionName: s.regionName,
             total: 0,
@@ -670,31 +695,38 @@ export class ElectionDetailComponent implements OnInit {
 
       this.groupedSections = Array.from(groups.values()).map(g => {
         if (groupMode === 'municipality') {
-          const mainCityName = g.mainCityName || g.fallbackCityName || g.cityName;
-          g.mainCityName = mainCityName;
-          let baseName = this.formatMunicipalityDisplayName(mainCityName);
-          const overrideKey = `${g.municipalityCode ?? ''}${g.neighborhoodCode ?? ''}`;
-          if (this.neighborhoodCodeNameOverrides[overrideKey]) {
-            baseName = this.neighborhoodCodeNameOverrides[overrideKey];
-          }
-          let neighborhoodName = '';
-          if (g.neighborhoodCounts) {
-            let max = 0;
-            Object.entries(g.neighborhoodCounts).forEach(([name, count]: any) => {
-              if (count > max) {
-                max = count;
-                neighborhoodName = name;
-              }
-            });
-          }
-          if (neighborhoodName) {
-            g.cityName = `${neighborhoodName}`;
-          } else if (g.neighborhoodCode && g.neighborhoodCode !== '00') {
-            g.cityName = `${baseName}`;
+          if (this.isAbroadRegion) {
+            g.cityName = g.municipalityName || g.mainCityName || g.fallbackCityName || g.cityName;
           } else {
-            g.cityName = baseName;
+            const mainCityName = g.mainCityName || g.fallbackCityName || g.cityName;
+            g.mainCityName = mainCityName;
+            let baseName = this.formatMunicipalityDisplayName(mainCityName);
+            const overrideKey = `${g.municipalityCode ?? ''}${g.neighborhoodCode ?? ''}`;
+            if (this.neighborhoodCodeNameOverrides[overrideKey]) {
+              baseName = this.neighborhoodCodeNameOverrides[overrideKey];
+            }
+            let neighborhoodName = '';
+            if (g.neighborhoodCounts) {
+              let max = 0;
+              Object.entries(g.neighborhoodCounts).forEach(([name, count]: any) => {
+                if (count > max) {
+                  max = count;
+                  neighborhoodName = name;
+                }
+              });
+            }
+            if (neighborhoodName) {
+              g.cityName = `${neighborhoodName}`;
+            } else if (g.neighborhoodCode && g.neighborhoodCode !== '00') {
+              g.cityName = `${baseName}`;
+            } else {
+              g.cityName = baseName;
+            }
           }
         }
+        const abroadCountryComparisons = this.isAbroadRegion && groupMode === 'municipality'
+          ? this.buildAbroadCountryComparisons(g.municipalityName || g.cityName)
+          : null;
         const topParties = Object.entries(g.partyVotes)
           .map(([partyId, total]) => {
             const sectionWithParty = g.sections.find((s: any) => s.partyVotes[partyId]);
@@ -721,7 +753,7 @@ export class ElectionDetailComponent implements OnInit {
               name,
               total: total as number,
               percentBp: g.voted > 0 ? Math.round(((total as number) / g.voted) * 10000) : 0,
-              comparisons: Object.values(comparisonsMap)
+              comparisons: abroadCountryComparisons?.partyComparisons[partyId] || this.sortComparisons(Object.values(comparisonsMap))
             };
           })
           .sort((a, b) => b.total - a.total)
@@ -812,6 +844,8 @@ export class ElectionDetailComponent implements OnInit {
           }
         });
 
+        const finalComparisons = abroadCountryComparisons?.comparisons || comparisons;
+
         // Count all risks (including candidate risks) from all sections
         let totalRiskCount = 0;
         g.sections.forEach((s: Section) => {
@@ -831,7 +865,7 @@ export class ElectionDetailComponent implements OnInit {
           topParties,
           topCandidates,
           votesToFirst,
-          comparisons
+          comparisons: finalComparisons
         };
       });
       this.filteredSections = this.groupedSections;
@@ -1855,8 +1889,17 @@ export class ElectionDetailComponent implements OnInit {
         return;
       }
 
+      const displayName = this.isAbroadRegion ? (s.municipalityName || s.cityName) : s.cityName;
+
       if (!map.has(code)) {
-        map.set(code, s.cityName);
+        map.set(code, displayName);
+      }
+
+      if (this.isAbroadRegion) {
+        if (s.municipalityName) {
+          map.set(code, s.municipalityName);
+        }
+        return;
       }
 
       if (this.isMunicipalityMainCity(s.sectionId)) {
@@ -1864,6 +1907,95 @@ export class ElectionDetailComponent implements OnInit {
       }
     });
     return map;
+  }
+
+  private sortComparisons(values: ComparativeValue[]): ComparativeValue[] {
+    return values.sort((a, b) => b.d.localeCompare(a.d));
+  }
+
+  private getAbroadCountryKey(countryName: string | undefined): string {
+    return (countryName || '')
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, ' ');
+  }
+
+  private getAbroadCountryName(section: Section): string {
+    return section.municipalityName || splitAbroadLocation(section.cityName).countryName || '';
+  }
+
+  private buildAbroadCountryComparisons(countryName: string): {
+    comparisons: { [key: string]: ComparativeValue[] };
+    partyComparisons: { [partyId: string]: ComparativeValue[] };
+  } {
+    const comparisons: { [key: string]: ComparativeValue[] } = {};
+    const partyComparisons: { [partyId: string]: ComparativeValue[] } = {};
+
+    const countryKey = this.getAbroadCountryKey(countryName);
+
+    if (!countryKey || Object.keys(this.allData).length === 0) {
+      return { comparisons, partyComparisons };
+    }
+
+    this.electionService.getDates().forEach(dateInfo => {
+      if (dateInfo.date === this.date) return;
+
+      const otherDateData = this.allData[dateInfo.date];
+      if (!otherDateData?.sections?.length) return;
+
+      const countrySections = otherDateData.sections.filter(section =>
+        section.regionId === ABROAD_REGION_ID
+        && this.getAbroadCountryKey(this.getAbroadCountryName(section)) === countryKey
+      );
+      if (countrySections.length === 0) return;
+
+      const totals = {
+        total: 0,
+        voted: 0,
+        discardedVotes: 0,
+        noVotes: 0,
+        totalPaper: 0,
+        totalMachine: 0,
+      };
+      const partyTotals: { [partyId: string]: number } = {};
+
+      countrySections.forEach(section => {
+        totals.total += section.total || 0;
+        totals.voted += section.voted || 0;
+        totals.discardedVotes += section.discardedVotes || 0;
+        totals.noVotes += section.noVotes || 0;
+        totals.totalPaper += section.totalPaper || 0;
+        totals.totalMachine += section.totalMachine || 0;
+
+        Object.entries(section.partyVotes || {}).forEach(([partyId, votes]) => {
+          partyTotals[partyId] = (partyTotals[partyId] || 0) + (votes.total || 0);
+        });
+      });
+
+      (comparisons['total'] ||= []).push({ d: dateInfo.date, v: totals.total });
+      (comparisons['voted'] ||= []).push({ d: dateInfo.date, v: totals.voted });
+      (comparisons['discardedVotes'] ||= []).push({ d: dateInfo.date, v: totals.discardedVotes });
+      (comparisons['noVotes'] ||= []).push({ d: dateInfo.date, v: totals.noVotes });
+      (comparisons['totalPaper'] ||= []).push({ d: dateInfo.date, v: totals.totalPaper });
+      (comparisons['totalMachine'] ||= []).push({ d: dateInfo.date, v: totals.totalMachine });
+      (comparisons['activityPercent'] ||= []).push({
+        d: dateInfo.date,
+        v: totals.total > 0 ? Math.round((totals.voted / totals.total) * 10000) : 0
+      });
+
+      Object.entries(partyTotals).forEach(([partyId, total]) => {
+        (partyComparisons[partyId] ||= []).push({ d: dateInfo.date, v: total });
+      });
+    });
+
+    Object.keys(comparisons).forEach((key) => {
+      comparisons[key] = this.sortComparisons(comparisons[key]);
+    });
+    Object.keys(partyComparisons).forEach((partyId) => {
+      partyComparisons[partyId] = this.sortComparisons(partyComparisons[partyId]);
+    });
+
+    return { comparisons, partyComparisons };
   }
 
   getMunicipalityName(section: Section | any): string {
@@ -1912,6 +2044,16 @@ export class ElectionDetailComponent implements OnInit {
   onMapSettlementSelect(settlement: SettlementAggregate): void {
     const groupedSection = this.buildGroupedSectionFromSections(settlement.displayName, settlement.sections);
     this.openGroupedSectionDetails(groupedSection, settlement.sections[0]);
+  }
+
+  onAbroadCitySelect(city: AbroadCityAggregate): void {
+    const groupedSection = this.buildGroupedSectionFromSections(city.displayName, city.sections);
+    this.openGroupedSectionDetails(groupedSection, city.sections[0]);
+  }
+
+  onAbroadCountrySelect(country: AbroadCountryAggregate): void {
+    const groupedSection = this.buildGroupedSectionFromSections(country.countryName, country.sections);
+    this.openGroupedSectionDetails(groupedSection, country.sections[0]);
   }
 
   private openGroupedSectionDetails(groupedSection: any, baseSection?: Section): void {

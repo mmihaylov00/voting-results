@@ -1,5 +1,5 @@
 <app-base-modal
-    [title]="`Детайлни резултати за ${isGroupedByCity ? isMunicipalityDetail ? 'община' : '' : 'секция'} ${section.sectionId}`"
+    [title]="`Детайлни резултати за ${isGroupedByCity ? isMunicipalityDetail ? municipalityLabelLowercase : '' : 'секция'} ${section.sectionId}`"
     [subtitle]="detailSubtitle"
     zIndex="z-[1200]"
     (close)="closeModal()">
@@ -540,7 +540,7 @@
                       <div class="flex flex-col items-end">
                         <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['activityPercent']" [currentValue]="currentSectionData.activityBp" [isPercent]="true" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ formatActivity((currentSectionData.activityBp || 0) / 10000) }}%</span>
                         @if (regionAvgTurnout !== null) {
-                          <span class="text-[10px] text-muted-foreground">ср. за общината: {{ formatActivity((regionAvgTurnout || 0) / 10000) }}%</span>
+                          <span class="text-[10px] text-muted-foreground">ср. за {{ municipalityLabelLowercase }}та: {{ formatActivity((regionAvgTurnout || 0) / 10000) }}%</span>
                         }
                       </div>
                     </div>
