@@ -1,0 +1,9 @@
+.election-type-card {
+  &:is(.is-available) {
+    &:hover {
+      border-color: hsl(var(--primary) / 0.55);
+      box-shadow: 0 16px 40px hsl(var(--secondary) / 0.1);
+      transform: translateY(-2px);
+    }
+  }
+}

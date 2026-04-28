@@ -4,6 +4,7 @@ import * as L from 'leaflet';
 export type MapMetric =
   | 'leading-party'
   | 'leading-preference'
+  | 'summary'
   | 'activity'
   | 'risks'
   | 'party-votes'
@@ -142,9 +143,14 @@ export class MapMetricHelper {
     metric: MapMetric,
     aggregate: MapAggregate | undefined,
     header: string,
-    showPreferences: boolean = true
+    showPreferences: boolean = true,
+    partiesById: Record<string, string> = {}
   ): string {
     if (!aggregate) return header;
+
+    if (metric === 'summary') {
+      return this.buildSummaryTooltip(aggregate, header, partiesById);
+    }
 
     if (metric === 'leading-preference' && aggregate.leadingPreference) {
       return `${header}<br/>Води преференция: ${aggregate.leadingPreference.candidateName}<br/>${aggregate.leadingPreference.partyName} • ${aggregate.leadingPreference.total.toLocaleString('bg-BG')} гласа`;
@@ -181,8 +187,19 @@ export class MapMetricHelper {
         .sort((a, b) => b[1] - a[1]);
       if (parties.length < 2 || aggregate.total === 0) return header;
 
-      const margin = (parties[0][1] - parties[1][1]) / aggregate.total * 100;
-      return `${header}<br/>Разлика: ${margin.toFixed(2)}%<br/>${parties[0][1].toLocaleString('bg-BG')} срещу ${parties[1][1].toLocaleString('bg-BG')} гласа`;
+      const [winnerPartyId, winnerVotes] = parties[0];
+      const [runnerUpPartyId, runnerUpVotes] = parties[1];
+      const voteDifference = winnerVotes - runnerUpVotes;
+      const margin = voteDifference / aggregate.total * 100;
+      const winnerName = partiesById[winnerPartyId] || winnerPartyId;
+      const runnerUpName = partiesById[runnerUpPartyId] || runnerUpPartyId;
+      return [
+        header,
+        `Преднина на победителя: ${margin.toFixed(2)}% от избирателите`,
+        `Разлика в гласове: ${voteDifference.toLocaleString('bg-BG')}`,
+        `Първи: ${this.escapeHtml(winnerName)} (${winnerVotes.toLocaleString('bg-BG')})`,
+        `Втори: ${this.escapeHtml(runnerUpName)} (${runnerUpVotes.toLocaleString('bg-BG')})`,
+      ].join('<br/>');
     }
 
     if (metric === 'party-votes' && aggregate.leadingParty) {
@@ -221,6 +238,69 @@ export class MapMetricHelper {
       fillColor,
       fillOpacity,
     };
+  }
+
+  private static buildSummaryTooltip(
+    aggregate: MapAggregate,
+    header: string,
+    partiesById: Record<string, string>
+  ): string {
+    const partyRows = Object.entries(aggregate.partyTotals)
+      .map(([partyId, total]) => ({
+        partyId,
+        partyName: partiesById[partyId] || (aggregate.leadingParty?.partyId === partyId ? aggregate.leadingParty.partyName : partyId),
+        total,
+      }))
+      .sort((a, b) => b.total - a.total || a.partyName.localeCompare(b.partyName, 'bg') || a.partyId.localeCompare(b.partyId, 'bg'))
+      .slice(0, 3);
+
+    const partySummary = partyRows.length > 0
+      ? partyRows
+        .map((party, index) => {
+          const percent = this.formatPercent(this.percentOf(party.total, aggregate.voted));
+          return `${index + 1}. ${this.escapeHtml(party.partyName)}: ${this.formatNumber(party.total)} (${percent})`;
+        })
+        .join('<br/>')
+      : 'Няма гласове за партии';
+
+    const turnoutPercent = this.formatPercent(this.percentOf(aggregate.voted, aggregate.totalElectors));
+    const invalidPercent = this.formatPercent(this.percentOf(aggregate.discardedVotes, aggregate.voted));
+    const noVotesPercent = this.formatPercent(this.percentOf(aggregate.noVotes, aggregate.voted));
+    const votingTypeTotal = aggregate.totalPaper + aggregate.totalMachine;
+    const machinePercent = this.formatPercent(this.percentOf(aggregate.totalMachine, votingTypeTotal));
+    const paperPercent = this.formatPercent(this.percentOf(aggregate.totalPaper, votingTypeTotal));
+
+    return [
+      header,
+      '<strong>Топ 3 партии</strong>',
+      partySummary,
+      `Активност: ${turnoutPercent} (${this.formatNumber(aggregate.voted)} от ${this.formatNumber(aggregate.totalElectors)})`,
+      `Недействителни: ${this.formatNumber(aggregate.discardedVotes)} (${invalidPercent})`,
+      `Не подкрепям никого: ${this.formatNumber(aggregate.noVotes)} (${noVotesPercent})`,
+      `Машинно: ${this.formatNumber(aggregate.totalMachine)} (${machinePercent})`,
+      `Хартия: ${this.formatNumber(aggregate.totalPaper)} (${paperPercent})`,
+    ].join('<br/>');
+  }
+
+  private static percentOf(value: number, total: number): number {
+    return total > 0 ? value / total * 100 : 0;
+  }
+
+  private static formatPercent(value: number): string {
+    return `${value.toFixed(2)}%`;
+  }
+
+  private static formatNumber(value: number): string {
+    return value.toLocaleString('bg-BG');
+  }
+
+  private static escapeHtml(value: string): string {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   static getBackgroundStyle(): L.PathOptions {

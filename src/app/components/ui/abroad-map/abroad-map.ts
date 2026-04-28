@@ -509,7 +509,7 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
   }
 
   private buildMetricTooltip(aggregate: AbroadMetricAggregate, header: string): string {
-    return MapMetricHelper.buildMetricTooltip(this.metric(), aggregate, header, true);
+    return MapMetricHelper.buildMetricTooltip(this.metric(), aggregate, header, true, this.partiesById());
   }
 
   private buildTooltip(city: AbroadCityAggregate): string {

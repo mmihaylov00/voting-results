@@ -22,7 +22,7 @@ import { PartyBadgeComponent } from '../ui/party-badge/party-badge';
 import { SettlementMapComponent } from '../ui/settlement-map/settlement-map';
 import { AbroadMapComponent } from '../ui/abroad-map/abroad-map';
 import { AbroadCityAggregate, AbroadCountryAggregate } from '../../utils/abroad-map.util';
-import { SettlementAggregate, aggregateSectionsBySettlement, SettlementMapMetric } from '../../utils/settlement-map.util';
+import { SettlementAggregate, SettlementMapAreaSelect, aggregateSectionsBySettlement, SettlementMapMetric } from '../../utils/settlement-map.util';
 
 @Component({
   selector: 'app-region-list',
@@ -100,6 +100,10 @@ export class RegionListComponent implements OnInit, AfterViewInit {
       acc[party.id] = party.name;
       return acc;
     }, {} as { [id: string]: string });
+  }
+
+  getPartiesById(): { [id: string]: string } {
+    return this.partiesById;
   }
 
   constructor(
@@ -456,15 +460,23 @@ export class RegionListComponent implements OnInit, AfterViewInit {
   }
 
   onSettlementSelect(settlement: SettlementAggregate): void {
-    this.router.navigate(['/election', this.date, 'region', settlement.regionId]);
+    this.router.navigate(['/governmental/election', this.date, 'region', settlement.regionId]);
+  }
+
+  onSettlementMapAreaSelect(area: SettlementMapAreaSelect): void {
+    this.router.navigate(['/governmental/election', this.date, 'region', area.regionId]);
+  }
+
+  onSettlementMapSectionSelect(section: Section): void {
+    this.router.navigate(['/governmental/election', this.date, 'region', section.regionId]);
   }
 
   onAbroadCitySelect(_city: AbroadCityAggregate): void {
-    this.router.navigate(['/election', this.date, 'region', '32']);
+    this.router.navigate(['/governmental/election', this.date, 'region', '32']);
   }
 
   onAbroadCountrySelect(_country: AbroadCountryAggregate): void {
-    this.router.navigate(['/election', this.date, 'region', '32']);
+    this.router.navigate(['/governmental/election', this.date, 'region', '32']);
   }
 
   setSettlementMapMetric(metric: SettlementMapMetric): void {

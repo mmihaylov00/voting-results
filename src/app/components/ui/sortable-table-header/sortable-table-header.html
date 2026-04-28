@@ -2,7 +2,13 @@
     <span>{{ label }}</span>
     <span class="ml-1 flex items-center">
         @if (isActive) {
-            <span class="text-primary dark:text-secondary font-bold">{{ sortIcon }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-primary dark:text-secondary">
+                @if (sortDirection === 'asc') {
+                    <path d="M8 15l4-4 4 4"/>
+                } @else {
+                    <path d="M8 9l4 4 4-4"/>
+                }
+            </svg>
         } @else {
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-40 group-hover:opacity-70">
                 <path d="M8 9l4-4 4 4"/>

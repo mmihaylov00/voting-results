@@ -30,14 +30,14 @@
     </div>
   }
 
-  <div class="flex flex-col md:flex-row md:justify-between items-center md:items-center gap-4 mb-8">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
     <div>
       <h1 hlmH2 class="border-b-0 pb-0 text-secondary dark:text-primary">Резултати за {{ dateName }}</h1>
       <p hlmLead class="text-secondary/80 dark:text-foreground/80">{{ regionName }}@if (regionId) {
         (МИР {{ regionId }})
       }</p>
     </div>
-    <div class="flex gap-2 flex-col">
+    <div class="flex gap-2 flex-col items-end self-end">
       <div class="flex gap-2 flex-row flex-wrap justify-end">
         @if (getCikUrl()) {
           <a [href]="getCikUrl()" target="_blank" hlmBtn variant="outline"
@@ -51,7 +51,7 @@
             ЦИК
           </a>
         }
-        <a [routerLink]="['/election', date]" hlmBtn variant="default">
+        <a [routerLink]="['/governmental/election', date]" hlmBtn variant="default">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
             <path d="m12 19-7-7 7-7"/>
@@ -226,6 +226,9 @@
                     <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-party' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-party')">
                       Партии
                     </button>
+                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'summary' ? 'default' : 'outline'" (click)="setSettlementMapMetric('summary')">
+                      Обобщение
+                    </button>
                     @if (isAbroadRegion) {
                       <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-preference' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-preference')">
                         Преференции
@@ -246,8 +249,13 @@
                     <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'machine-vs-paper' ? 'default' : 'outline'" (click)="setSettlementMapMetric('machine-vs-paper')">
                       Машини vs Хартия
                     </button>
-                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'winner-margin' ? 'default' : 'outline'" (click)="setSettlementMapMetric('winner-margin')">
-                      Разлика
+                    <button
+                      hlmBtn
+                      size="sm"
+                      title="Разлика между първата и втората партия като дял от избирателите"
+                      [variant]="settlementMapMetric() === 'winner-margin' ? 'default' : 'outline'"
+                      (click)="setSettlementMapMetric('winner-margin')">
+                      Преднина на победителя
                     </button>
                     <div class="flex items-center gap-2">
                       <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'party-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('party-votes')">

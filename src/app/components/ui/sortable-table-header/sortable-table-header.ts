@@ -22,13 +22,6 @@ export class SortableTableHeaderComponent {
     return this.currentSortColumn === this.columnKey;
   }
 
-  get sortIcon(): string {
-    if (this.isActive) {
-      return this.sortDirection === 'asc' ? '↑' : '↓';
-    }
-    return '';
-  }
-
   @HostBinding('class')
   get hostClasses(): string {
     const baseClasses = 'cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative';

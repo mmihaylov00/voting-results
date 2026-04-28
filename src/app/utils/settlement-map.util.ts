@@ -76,6 +76,7 @@ export const GEOMETRY_CODE_TO_REGION_ID: Record<string, string> = Object.fromEnt
 );
 
 export type SettlementMapMetric = MapMetric;
+export type SettlementMapView = 'cities' | 'municipalities' | 'regions' | 'sections';
 
 export interface SettlementLookup {
   ekatte?: string;
@@ -102,6 +103,23 @@ export interface SettlementGeometryCollection {
   features: SettlementGeometryFeature[];
 }
 
+export interface SofiaPrecinctGeometryProperties {
+  id: string;
+  address?: string;
+  [key: string]: any;
+}
+
+export interface SofiaPrecinctGeometryFeature {
+  type: 'Feature';
+  properties: SofiaPrecinctGeometryProperties;
+  geometry: any;
+}
+
+export interface SofiaPrecinctGeometryCollection {
+  type: 'FeatureCollection';
+  features: SofiaPrecinctGeometryFeature[];
+}
+
 export type SettlementPartyLeader = MapPartyLeader;
 
 export type SettlementPreferenceLeader = MapPreferenceLeader;
@@ -117,6 +135,17 @@ export interface SettlementAggregate extends MapAggregate {
   cityName: string;
   displayName: string;
   sections: Section[];
+  precinctId?: string;
+  precinctAddress?: string;
+}
+
+export interface SettlementMapAreaSelect {
+  view: Exclude<SettlementMapView, 'cities' | 'sections'>;
+  regionId: string;
+  regionName: string;
+  municipalityCode?: string;
+  municipalityName?: string;
+  settlements: SettlementAggregate[];
 }
 
 export function getGeometryRegionCode(regionId: string | undefined | null): string {
@@ -128,7 +157,8 @@ export function stripSettlementPrefix(name: string | undefined | null): string {
   return name.replace(/^(гр\.|с\.|кв\.|жк\.)\s*/i, '').trim();
 }
 
-const SOFIA_REGION_IDS = new Set(['23', '24', '25']);
+export const SOFIA_REGION_IDS = new Set(['23', '24', '25']);
+export const SOFIA_REGION_CODES = new Set(['S23', 'S24', 'S25']);
 
 const SOFIA_DISTRICT_NAMES: Record<string, string> = {
   S2302: 'Красно село',
@@ -157,6 +187,10 @@ const SOFIA_DISTRICT_NAMES: Record<string, string> = {
   S2524: 'Банкя',
 };
 
+const SOFIA_SETTLEMENT_EKATTE_TO_DISTRICT_CODE: Record<string, string> = {
+  '98114': 'S2422', // кв. Кремиковци
+};
+
 function getSofiaDistrictCode(sectionId: string | undefined): string | null {
   if (!sectionId || sectionId.length < 6) {
     return null;
@@ -167,6 +201,11 @@ function getSofiaDistrictCode(sectionId: string | undefined): string | null {
 }
 
 function buildGeometryKey(section: Section, ekatte: string): string {
+  const aliasedDistrictCode = SOFIA_SETTLEMENT_EKATTE_TO_DISTRICT_CODE[ekatte];
+  if (aliasedDistrictCode && SOFIA_REGION_IDS.has(section.regionId)) {
+    return `68134-${aliasedDistrictCode.slice(1)}`;
+  }
+
   if (ekatte === '68134' && SOFIA_REGION_IDS.has(section.regionId)) {
     const districtCode = getSofiaDistrictCode(section.sectionId);
     if (districtCode) {
@@ -206,6 +245,64 @@ function getSectionAllRiskIndicators(section: Section): Array<{ code: string; ca
     return risk.details.sectionId === section.sectionId;
   });
   return [...sectionRisks, ...candidateRisks].filter(risk => risk.code !== 'R6.2' && risk.code !== 'R2.4');
+}
+
+function addSectionToAggregate(aggregate: SettlementAggregate, section: Section): void {
+  aggregate.sections.push(section);
+  aggregate.total += section.total || 0;
+  aggregate.voted += section.voted || 0;
+  aggregate.discardedVotes += section.discardedVotes || 0;
+  aggregate.noVotes += section.noVotes || 0;
+  aggregate.totalPaper += section.totalPaper || 0;
+  aggregate.totalMachine += section.totalMachine || 0;
+  aggregate.totalElectors += section.total || 0;
+  aggregate.riskScore += getSectionAllRiskIndicators(section).length;
+
+  for (const [partyId, votes] of Object.entries(section.partyVotes || {})) {
+    aggregate.partyTotals[partyId] = (aggregate.partyTotals[partyId] || 0) + (votes.total || 0);
+  }
+}
+
+function finalizeAggregates(
+  aggregates: Iterable<SettlementAggregate>,
+  partiesById: { [id: string]: string }
+): SettlementAggregate[] {
+  return Array.from(aggregates).map((aggregate) => {
+    const partyLeaders = Object.entries(aggregate.partyTotals)
+      .map(([partyId, total]) => ({
+        partyId,
+        partyName: partiesById[partyId] || partyId,
+        total,
+      }))
+      .sort(rankPartyLeaders);
+
+    const preferenceTotals = new Map<string, SettlementPreferenceLeader>();
+    aggregate.sections.forEach((section) => {
+      Object.values(section.candidateVotes || {}).forEach((candidate) => {
+        const key = `${candidate.partyId}_${candidate.candidateId}`;
+        const existing = preferenceTotals.get(key);
+        if (existing) {
+          existing.total += candidate.total || 0;
+          return;
+        }
+        preferenceTotals.set(key, {
+          candidateId: candidate.candidateId,
+          candidateName: candidate.candidateName,
+          partyId: candidate.partyId,
+          partyName: candidate.partyName || partiesById[candidate.partyId] || candidate.partyId,
+          total: candidate.total || 0,
+        });
+      });
+    });
+
+    const preferenceLeaders = Array.from(preferenceTotals.values()).sort(rankPreferenceLeaders);
+
+    return {
+      ...aggregate,
+      leadingParty: partyLeaders[0],
+      leadingPreference: preferenceLeaders[0],
+    };
+  }).sort((a, b) => a.displayName.localeCompare(b.displayName, 'bg'));
 }
 
 export function aggregateSectionsBySettlement(
@@ -249,55 +346,53 @@ export function aggregateSectionsBySettlement(
       groups.set(geometryKey, aggregate);
     }
 
-    aggregate.sections.push(section);
-    aggregate.total += section.total || 0;
-    aggregate.voted += section.voted || 0;
-    aggregate.discardedVotes += section.discardedVotes || 0;
-    aggregate.noVotes += section.noVotes || 0;
-    aggregate.totalPaper += section.totalPaper || 0;
-    aggregate.totalMachine += section.totalMachine || 0;
-    aggregate.totalElectors += section.total || 0;
-    aggregate.riskScore += getSectionAllRiskIndicators(section).length;
-
-    for (const [partyId, votes] of Object.entries(section.partyVotes || {})) {
-      aggregate.partyTotals[partyId] = (aggregate.partyTotals[partyId] || 0) + (votes.total || 0);
-    }
+    addSectionToAggregate(aggregate, section);
   }
 
-  return Array.from(groups.values()).map((aggregate) => {
-    const partyLeaders = Object.entries(aggregate.partyTotals)
-      .map(([partyId, total]) => ({
-        partyId,
-        partyName: partiesById[partyId] || partyId,
-        total,
-      }))
-      .sort(rankPartyLeaders);
+  return finalizeAggregates(groups.values(), partiesById);
+}
 
-    const preferenceTotals = new Map<string, SettlementPreferenceLeader>();
-    aggregate.sections.forEach((section) => {
-      Object.values(section.candidateVotes || {}).forEach((candidate) => {
-        const key = `${candidate.partyId}_${candidate.candidateId}`;
-        const existing = preferenceTotals.get(key);
-        if (existing) {
-          existing.total += candidate.total || 0;
-          return;
-        }
-        preferenceTotals.set(key, {
-          candidateId: candidate.candidateId,
-          candidateName: candidate.candidateName,
-          partyId: candidate.partyId,
-          partyName: candidate.partyName || partiesById[candidate.partyId] || candidate.partyId,
-          total: candidate.total || 0,
-        });
-      });
-    });
+export function aggregateSectionsBySofiaPrecinct(
+  sections: Section[],
+  partiesById: { [id: string]: string }
+): SettlementAggregate[] {
+  const groups = new Map<string, SettlementAggregate>();
 
-    const preferenceLeaders = Array.from(preferenceTotals.values()).sort(rankPreferenceLeaders);
+  for (const section of sections) {
+    if (!SOFIA_REGION_IDS.has(section.regionId) || !section.sectionId) continue;
 
-    return {
-      ...aggregate,
-      leadingParty: partyLeaders[0],
-      leadingPreference: preferenceLeaders[0],
-    };
-  }).sort((a, b) => a.displayName.localeCompare(b.displayName, 'bg'));
+    const precinctId = section.sectionId.trim();
+    const geometryRegionCode = getGeometryRegionCode(section.regionId);
+    if (!precinctId || !geometryRegionCode) continue;
+
+    let aggregate = groups.get(precinctId);
+    if (!aggregate) {
+      aggregate = {
+        ekatte: section.settlementEkatte?.trim() || '68134',
+        geometryKey: precinctId,
+        precinctId,
+        regionId: section.regionId,
+        regionName: section.regionName,
+        municipalityName: section.municipalityName,
+        geometryRegionCode,
+        cityName: section.cityName,
+        displayName: precinctId,
+        sections: [],
+        total: 0,
+        voted: 0,
+        discardedVotes: 0,
+        noVotes: 0,
+        totalPaper: 0,
+        totalMachine: 0,
+        totalElectors: 0,
+        riskScore: 0,
+        partyTotals: Object.create(null),
+      };
+      groups.set(precinctId, aggregate);
+    }
+
+    addSectionToAggregate(aggregate, section);
+  }
+
+  return finalizeAggregates(groups.values(), partiesById);
 }

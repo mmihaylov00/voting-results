@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  aggregateSectionsBySofiaPrecinct,
   aggregateSectionsBySettlement,
   getGeometryRegionCode,
 } from './settlement-map.util';
@@ -133,6 +134,100 @@ describe('settlement-map util', () => {
     expect(aggregates[0].geometryKey).toBe('68134-2401');
     expect(aggregates[0].displayName).toBe('Средец');
     expect(aggregates[0].geometryMunicipalityCode).toBe('S2401');
+  });
+
+  it('maps Kremikovci quarter sections to the Sofia district geometry', () => {
+    const sections: Section[] = [
+      {
+        sectionId: '244622014',
+        regionId: '24',
+        regionName: '24. СОФИЯ 24 МИР',
+        settlementEkatte: '98114',
+        cityName: 'гр. София,Кв. Кремиковци',
+        municipalityName: 'КРЕМИКОВЦИ',
+        sectionName: 'A',
+        sectionType: 'City',
+        total: 100,
+        voted: 80,
+        discardedVotes: 1,
+        noVotes: 0,
+        partyVotes: {
+          '1': { total: 40, paper: 20, machine: 20 },
+        },
+        topParties: [],
+        activityBp: 8000,
+      },
+    ];
+
+    const aggregates = aggregateSectionsBySettlement(sections, { '1': 'Партия А' });
+
+    expect(aggregates).toHaveLength(1);
+    expect(aggregates[0].geometryKey).toBe('68134-2422');
+    expect(aggregates[0].displayName).toBe('Кремиковци');
+    expect(aggregates[0].geometryMunicipalityCode).toBe('S2422');
+  });
+
+  it('aggregates Sofia sections by precinct id for precinct maps', () => {
+    const sections: Section[] = [
+      {
+        sectionId: '244601001',
+        regionId: '24',
+        regionName: '24. СОФИЯ 24 МИР',
+        settlementEkatte: '68134',
+        cityName: 'гр.София',
+        sectionName: 'A',
+        sectionType: 'City',
+        total: 100,
+        voted: 80,
+        discardedVotes: 1,
+        noVotes: 0,
+        partyVotes: {
+          '1': { total: 30, paper: 10, machine: 20 },
+          '2': { total: 45, paper: 20, machine: 25 },
+        },
+        candidateVotes: {
+          '2_102': {
+            candidateId: '102',
+            candidateName: 'Б',
+            partyId: '2',
+            partyName: 'Партия Б',
+            total: 8,
+            paper: 3,
+            machine: 5,
+          },
+        },
+        topParties: [],
+        activityBp: 8000,
+      },
+      {
+        sectionId: '010100001',
+        regionId: '1',
+        regionName: '01. БЛАГОЕВГРАД',
+        settlementEkatte: '02676',
+        cityName: 'гр.Банско',
+        sectionName: 'B',
+        sectionType: 'City',
+        total: 10,
+        voted: 10,
+        discardedVotes: 0,
+        noVotes: 0,
+        partyVotes: {},
+        topParties: [],
+        activityBp: 10000,
+      },
+    ];
+
+    const aggregates = aggregateSectionsBySofiaPrecinct(sections, {
+      '1': 'Партия А',
+      '2': 'Партия Б',
+    });
+
+    expect(aggregates).toHaveLength(1);
+    expect(aggregates[0].geometryKey).toBe('244601001');
+    expect(aggregates[0].precinctId).toBe('244601001');
+    expect(aggregates[0].geometryRegionCode).toBe('S24');
+    expect(aggregates[0].leadingParty?.partyId).toBe('2');
+    expect(aggregates[0].leadingPreference?.candidateId).toBe('102');
   });
 
   it('skips abroad and sections without settlement geometry keys', () => {

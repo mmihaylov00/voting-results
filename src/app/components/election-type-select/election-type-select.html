@@ -1,0 +1,125 @@
+<main class="container mx-auto min-h-svh px-4 py-10 md:py-16">
+  <section class="mx-auto max-w-5xl">
+    <div class="mb-10 max-w-3xl">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+        Изборни резултати
+      </p>
+      <h1 hlmH1 class="text-secondary dark:text-primary">Изберете тип избори</h1>
+      <p hlmLead class="mt-4 text-secondary/80 dark:text-foreground/80">
+        Данните са разделени по изборен процес, за да могат бъдещите президентски, европейски и
+        местни резултати да се развиват независимо от парламентарните.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      @for (electionType of electionTypes; track electionType.id) {
+        <article
+          hlmCard
+          class="election-type-card flex min-h-72 flex-col border-primary/20 transition-all"
+          [class.is-available]="electionType.available"
+          [class.opacity-75]="!electionType.available"
+        >
+          <div hlmCardHeader>
+            <div
+              class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-secondary"
+            >
+              @switch (electionType.id) {
+                @case ('presidential') {
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 3 4 7l8 4 8-4-8-4Z" />
+                    <path d="M4 10.5 12 15l8-4.5" />
+                    <path d="M4 14.5 12 19l8-4.5" />
+                  </svg>
+                }
+                @case ('governmental') {
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M3 21h18" />
+                    <path d="M5 21V8l7-5 7 5v13" />
+                    <path d="M9 21v-7h6v7" />
+                  </svg>
+                }
+                @case ('mayoral') {
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z" />
+                    <circle cx="12" cy="10" r="2.5" />
+                  </svg>
+                }
+                @case ('european') {
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M3 12h18" />
+                    <path d="M12 3a13.5 13.5 0 0 1 0 18" />
+                    <path d="M12 3a13.5 13.5 0 0 0 0 18" />
+                  </svg>
+                }
+              }
+            </div>
+            <h2 hlmCardTitle class="text-secondary dark:text-primary">{{ electionType.title }}</h2>
+            <p hlmCardDescription hlmMuted class="text-secondary/70 dark:text-foreground/70">
+              {{ electionType.description }}
+            </p>
+          </div>
+
+          <div hlmCardContent class="mt-auto">
+            @if (electionType.available) {
+              <a
+                [routerLink]="electionType.route"
+                hlmBtn
+                variant="outline"
+                class="w-full border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground"
+              >
+                Избери
+              </a>
+            } @else {
+              <button hlmBtn variant="outline" class="w-full" disabled>Очаквайте</button>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+</main>

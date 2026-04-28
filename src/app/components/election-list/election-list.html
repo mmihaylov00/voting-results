@@ -9,6 +9,16 @@
       </div>
     </div>
   }
+  <div class="mb-8 flex justify-end">
+    <a routerLink="/" hlmBtn variant="default">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+        <path d="m12 19-7-7 7-7"/>
+        <path d="M19 12H5"/>
+      </svg>
+      Назад
+    </a>
+  </div>
   <div class="text-center mb-12">
     <h1 hlmH1 class="text-secondary dark:text-primary">Изборни резултати</h1>
     <p hlmLead class="mt-4 text-secondary/80 dark:text-foreground/80">Изберете дата на избори, за да прегледате детайлна статистика</p>
@@ -47,7 +57,7 @@
                 <span class="font-medium text-foreground">{{ electionData.totalVoted | number }}</span>
               </div>
             </div>
-            <a [routerLink]="['/election', date.date]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground mt-auto">
+            <a [routerLink]="['/governmental/election', date.date]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground mt-auto">
               Разгледай
             </a>
           </div>
@@ -60,7 +70,7 @@
           </div>
           <div hlmCardContent class="text-center">
             <p hlmMuted class="text-sm mb-4">Зареждане...</p>
-            <a [routerLink]="['/election', date.date]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary/20 hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+            <a [routerLink]="['/governmental/election', date.date]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary/20 hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
               Разгледай
             </a>
           </div>

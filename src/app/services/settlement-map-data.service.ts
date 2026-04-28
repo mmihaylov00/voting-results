@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, shareReplay } from 'rxjs';
-import { SettlementGeometryCollection, SettlementLookup } from '../utils/settlement-map.util';
+import {
+  SettlementGeometryCollection,
+  SettlementLookup,
+  SofiaPrecinctGeometryCollection,
+} from '../utils/settlement-map.util';
 import {
   AbroadCountryGeometryCollection,
   AbroadCountryManifestItem,
@@ -14,6 +18,7 @@ export class SettlementMapDataService {
   private settlementGeometry$?: Observable<SettlementGeometryCollection>;
   private regionGeometry$?: Observable<any>;
   private municipalityGeometry$?: Observable<any>;
+  private sofiaPrecinctGeometry$?: Observable<SofiaPrecinctGeometryCollection>;
   private settlementsLookup$?: Observable<SettlementLookup[]>;
   private municipalitiesLookup$?: Observable<any[]>;
   private abroadCountryGeometry$?: Observable<AbroadCountryGeometryCollection>;
@@ -46,6 +51,15 @@ export class SettlementMapDataService {
         .pipe(shareReplay(1));
     }
     return this.municipalityGeometry$;
+  }
+
+  getSofiaPrecinctGeometry(): Observable<SofiaPrecinctGeometryCollection> {
+    if (!this.sofiaPrecinctGeometry$) {
+      this.sofiaPrecinctGeometry$ = this.http
+        .get<SofiaPrecinctGeometryCollection>('/assets/precincts.geojson')
+        .pipe(shareReplay(1));
+    }
+    return this.sofiaPrecinctGeometry$;
   }
 
   getSettlementsLookup(): Observable<SettlementLookup[]> {
