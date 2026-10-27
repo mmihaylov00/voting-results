@@ -73,8 +73,10 @@
         }
       }
     </nav>
-  <div class="grid grid-cols-1 gap-6 lg:items-start" [class.lg:grid-cols-2]="!widePanel" data-map-workspace>
-    <section class="min-w-0">
+  <div class="grid grid-cols-1 gap-6 lg:items-start lg:gap-0"
+    [class.map-workspace-split]="!widePanel" [attr.data-layout]="workspaceLayout()" data-map-workspace>
+    <section class="min-w-0" [class.hidden]="!widePanel && isLaptopLayout() && workspaceLayout() === 'map'"
+      [attr.inert]="!widePanel && isLaptopLayout() && workspaceLayout() === 'map' ? '' : null">
       <div [class.hidden]="!isLaptopLayout() && overviewMode() === 'map'">
         <div [class.hidden]="leftPanel() !== 'cards'">
   <div class="flex justify-between mb-4 gap-4">
@@ -89,7 +91,7 @@
     </a>
   </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6" [class.lg:grid-cols-4]="workspaceLayout() === 'list'">
       @for (region of filteredRegions; track region.id) {
         <div hlmCard class="flex flex-col h-full transition-all hover:shadow-xl border-primary/20 hover:border-primary/50 group">
           <div hlmCardHeader>
@@ -189,7 +191,9 @@
       </div>
       <app-election-tools [panel]="leftPanel()" [national]="electionType === 'governmental'" />
     </section>
-    <aside class="min-w-0 lg:sticky lg:top-4" [class.hidden]="widePanel || !isLaptopLayout() && overviewMode() !== 'map'" aria-label="Карта на резултатите">
+    <app-split-view-controls class="hidden self-stretch" [class.lg:block]="!widePanel" [(layout)]="workspaceLayout" />
+    <aside class="min-w-0 lg:sticky lg:top-4" [class.hidden]="widePanel || (isLaptopLayout() ? workspaceLayout() === 'list' : overviewMode() !== 'map')"
+      [attr.inert]="isLaptopLayout() && workspaceLayout() === 'list' ? '' : null" aria-label="Карта на резултатите">
       @if (isLaptopLayout() || overviewMode() === 'map') {
     <div id="overview-map" hlmCard class="border-primary/20 p-3 scroll-mt-4">
       @if (mapLoadError) {

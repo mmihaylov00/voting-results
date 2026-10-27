@@ -37,6 +37,7 @@ import { ElectionToolsComponent } from '../ui/election-tools/election-tools';
 import { ElectionComparisonComponent } from '../ui/election-comparison/election-comparison';
 import { ContestantDetailModalComponent } from '../contestant-detail-modal/contestant-detail-modal';
 import { ContestantPreviewDirective } from '../ui/contestant-preview/contestant-preview.directive';
+import { SplitViewControlsComponent, SplitViewLayout } from '../ui/split-view-controls/split-view-controls';
 
 @Component({
   selector: 'app-region-list',
@@ -66,6 +67,7 @@ import { ContestantPreviewDirective } from '../ui/contestant-preview/contestant-
     ElectionComparisonComponent,
     ContestantDetailModalComponent,
     ContestantPreviewDirective,
+    SplitViewControlsComponent,
   ],
   templateUrl: './region-list.html'
 })
@@ -99,6 +101,7 @@ export class RegionListComponent implements OnInit, AfterViewInit {
   activeChart = signal<'activity' | 'party'>('activity');
   readonly visitedCharts = signal(new Set<'activity' | 'party'>());
   overviewMode = signal<'cards' | 'map'>('cards');
+  readonly workspaceLayout = signal<SplitViewLayout>('split');
   leftPanel = signal<Exclude<ElectionPanel, 'results'> | 'cards'>('cards');
   readonly comparisonMode = signal<'elections' | 'parties'>('elections');
   get widePanel(): boolean {
@@ -337,6 +340,7 @@ export class RegionListComponent implements OnInit, AfterViewInit {
     const wasMapMode = this.overviewMode() === 'map';
     this.overviewMode.set(mode);
     if (mode === 'map') {
+      if (this.workspaceLayout() === 'list') this.workspaceLayout.set('split');
       if (!wasMapMode) {
         this.mapMode.set('bulgaria');
       }
@@ -357,6 +361,7 @@ export class RegionListComponent implements OnInit, AfterViewInit {
   }
 
   selectContentTab(panel: Exclude<ElectionPanel, 'results'> | 'cards'): void {
+    if (panel === 'cards' && this.workspaceLayout() === 'map') this.workspaceLayout.set('split');
     this.setLeftPanel(panel);
     void this.router.navigate([], { relativeTo: this.route,
       queryParams: { panel: panel === 'cards' ? null : panel }, queryParamsHandling: 'merge', replaceUrl: true });
@@ -665,6 +670,7 @@ export class RegionListComponent implements OnInit, AfterViewInit {
 
   focusAnalysisSection(section: Section): void {
     this.selectContentTab('cards');
+    if (this.workspaceLayout() === 'list') this.workspaceLayout.set('split');
     this.overviewMode.set('map');
     this.mapMode.set(section.regionId === '32' ? 'world' : 'bulgaria');
     this.mapFocusSectionId = section.sectionId;

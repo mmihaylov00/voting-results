@@ -2,7 +2,8 @@ import { Component, Input } from '@angular/core';
 import { MapMetric } from '../../../utils/map-metric.helper';
 
 export type MapIconName = MapMetric | 'download' | 'download-table' | 'history' | 'fullscreen' | 'loading' | 'settlement' | 'municipality' | 'neighborhood' | 'section' | 'region'
-  | 'calendar' | 'parliament' | 'person' | 'users' | 'globe' | 'percent' | 'education' | 'economy' | 'religion' | 'check' | 'reset' | 'target' | 'swing' | 'declining' | 'filter' | 'mobile' | 'share' | 'square-check';
+  | 'calendar' | 'parliament' | 'person' | 'users' | 'globe' | 'percent' | 'education' | 'economy' | 'religion' | 'check' | 'reset' | 'target' | 'swing' | 'declining' | 'filter' | 'mobile' | 'share' | 'square-check'
+  | 'chevron-left' | 'chevron-right';
 
 @Component({
   selector: 'app-map-icon',
@@ -34,6 +35,8 @@ export class MapIconComponent {
     'download-table': 'M13 21H3V3h18v6M3 9h18M3 15h10M9 3v18M18 12v9M14 17l4 4 4-4',
     history: 'M3 12a9 9 0 1 0 2.6-6.4L3 8M3 3v5h5M12 7v5l3 2',
     fullscreen: 'M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5',
+    'chevron-left': 'm15 18-6-6 6-6',
+    'chevron-right': 'm9 18 6-6-6-6',
     loading: 'M21 12a9 9 0 1 1-6.2-8.6',
     settlement: 'M3 10l9-7 9 7v11h-6v-7H9v7H3z',
     municipality: 'M3 21V7h8v14M11 21V3h10v18M1 21h22M6 11h2M6 15h2M14 7h4M14 11h4M14 15h4',

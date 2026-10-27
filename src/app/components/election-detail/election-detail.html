@@ -122,8 +122,10 @@
           }
         </nav>
       }
-  <div class="grid grid-cols-1 gap-6 lg:items-start" [class.lg:grid-cols-2]="!widePanel" data-map-workspace>
-    <section class="min-w-0">
+  <div class="grid grid-cols-1 gap-6 lg:items-start lg:gap-0"
+    [class.map-workspace-split]="!widePanel" [attr.data-layout]="workspaceLayout()" data-map-workspace>
+    <section class="min-w-0" [class.hidden]="!widePanel && isLaptopLayout() && workspaceLayout() === 'map'"
+      [attr.inert]="!widePanel && isLaptopLayout() && workspaceLayout() === 'map' ? '' : null">
             @if (mapSelection && !isElectionTool(leftPanel())) {
               <div class="flex flex-wrap items-center gap-3 text-sm" role="status">
                 <span>Избрано място: <strong>{{ mapSelection.label }}</strong> · {{ analysisSections.length }} секции</span>
@@ -1061,7 +1063,9 @@
       </div>
       <app-election-tools [panel]="leftPanel()" [national]="!regionId && electionType === 'governmental'" />
     </section>
-    <aside class="min-w-0 lg:sticky lg:top-4" [class.hidden]="widePanel || !isLaptopLayout() && !mobileMapVisible()" aria-label="Карта на резултатите">
+    <app-split-view-controls class="hidden self-stretch" [class.lg:block]="!widePanel" [(layout)]="workspaceLayout" />
+    <aside class="min-w-0 lg:sticky lg:top-4" [class.hidden]="widePanel || (isLaptopLayout() ? workspaceLayout() === 'list' : !mobileMapVisible())"
+      [attr.inert]="isLaptopLayout() && workspaceLayout() === 'list' ? '' : null" aria-label="Карта на резултатите">
       @if (isLaptopLayout() || mobileMapVisible()) {
 <div id="election-map" class="flex flex-col gap-4 scroll-mt-4">
               @if (settlementMapMetric() === 'party-change') {

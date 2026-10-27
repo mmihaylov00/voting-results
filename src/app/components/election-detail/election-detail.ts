@@ -87,6 +87,7 @@ import { ShareButtonComponent } from '../ui/share-button/share-button';
 import { VirtualTableDirective } from '../ui/virtual-table/virtual-table';
 import { ContestantDetailModalComponent } from '../contestant-detail-modal/contestant-detail-modal';
 import { ContestantPreviewDirective } from '../ui/contestant-preview/contestant-preview.directive';
+import { SplitViewControlsComponent, SplitViewLayout } from '../ui/split-view-controls/split-view-controls';
 
 @Component({
   selector: 'app-election-detail',
@@ -133,6 +134,7 @@ import { ContestantPreviewDirective } from '../ui/contestant-preview/contestant-
     VirtualTableDirective,
     ContestantDetailModalComponent,
     ContestantPreviewDirective,
+    SplitViewControlsComponent,
   ],
   templateUrl: './election-detail.html',
   styleUrl: './election-detail.scss',
@@ -150,6 +152,7 @@ export class ElectionDetailComponent implements OnInit {
   regionName: string = '';
   sections: Section[] = [];
   leftPanel = signal<ElectionPanel>('results');
+  readonly workspaceLayout = signal<SplitViewLayout>('split');
   readonly comparisonMode = signal<'elections' | 'parties'>('elections');
   readonly isElectionTool = isElectionTool;
   get widePanel(): boolean {
@@ -170,6 +173,7 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   selectContentTab(tab: ViewMode | Exclude<ElectionPanel, 'results'>): void {
+    if (tab === 'sections' && this.workspaceLayout() === 'map') this.workspaceLayout.set('split');
     if (tab === 'stats' || tab === 'history' || tab === 'comparison' || isElectionTool(tab)) this.setLeftPanel(tab);
     else this.setViewMode(tab);
     void this.router.navigate([], { relativeTo: this.route,
@@ -1690,6 +1694,7 @@ export class ElectionDetailComponent implements OnInit {
 
   setViewMode(mode: ViewMode): void {
     if (mode === 'map') {
+      if (this.workspaceLayout() === 'list') this.workspaceLayout.set('split');
       const mapLevel = this.mapView();
       this.setViewMode('sections');
       this.mapView.set(mapLevel);

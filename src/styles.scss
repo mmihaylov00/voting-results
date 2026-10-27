@@ -94,6 +94,39 @@ body {
   max-width: 100%;
 }
 
+@media (min-width: 1024px) {
+  .map-workspace-split {
+    grid-template-columns: minmax(0, 1fr) 2rem minmax(0, 1fr);
+    transition: grid-template-columns 280ms cubic-bezier(.22, 1, .36, 1);
+
+    &[data-layout='map'] { grid-template-columns: minmax(0, 0fr) 2rem minmax(0, 1fr); }
+    &[data-layout='list'] { grid-template-columns: minmax(0, 1fr) 2rem minmax(0, 0fr); }
+
+    > section { grid-column: 1; }
+    > app-split-view-controls { grid-column: 2; }
+    > aside { grid-column: 3; }
+
+    > :is(section, aside) {
+      transition: opacity 180ms ease, display 280ms;
+      transition-behavior: allow-discrete;
+
+      // Keep wrapping content from stretching the page as its column shrinks.
+      &.hidden { opacity: 0; overflow: clip; max-height: 100dvh; }
+    }
+  }
+
+  @starting-style {
+    .map-workspace-split > :is(section, aside) { opacity: 0; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-workspace-split,
+  .map-workspace-split > :is(section, aside) {
+    transition: none;
+  }
+}
+
 @media (max-width: 1023px) {
   .app-tabs {
     flex-wrap: nowrap;
