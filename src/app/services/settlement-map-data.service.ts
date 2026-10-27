@@ -10,6 +10,7 @@ import {
   AbroadCountryGeometryCollection,
   AbroadCountryManifestItem,
 } from '../utils/abroad-map.util';
+import { NeighborhoodGeometryCollection } from '../utils/neighborhood-map.util';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,7 @@ export class SettlementMapDataService {
   private municipalitiesLookup$?: Observable<any[]>;
   private abroadCountryGeometry$?: Observable<AbroadCountryGeometryCollection>;
   private abroadCountryManifest$?: Observable<AbroadCountryManifestItem[]>;
+  private neighborhoodGeometry$?: Observable<NeighborhoodGeometryCollection>;
 
   constructor(private http: HttpClient) {}
 
@@ -60,6 +62,15 @@ export class SettlementMapDataService {
         .pipe(shareReplay(1));
     }
     return this.sofiaPrecinctGeometry$;
+  }
+
+  getNeighborhoodGeometry(): Observable<NeighborhoodGeometryCollection> {
+    if (!this.neighborhoodGeometry$) {
+      this.neighborhoodGeometry$ = this.http
+        .get<NeighborhoodGeometryCollection>('/maps/neighborhoods.geojson')
+        .pipe(shareReplay(1));
+    }
+    return this.neighborhoodGeometry$;
   }
 
   getSettlementsLookup(): Observable<SettlementLookup[]> {

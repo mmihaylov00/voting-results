@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
+import { DestroyRef, Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map, of, BehaviorSubject, from, catchError, firstValueFrom } from 'rxjs';
-import { Section, SectionDetails, Region } from '../models/election.models';
+import { Observable, map, of, from, catchError, firstValueFrom, switchMap } from 'rxjs';
+import { CandidateVotes, ComparativeValue, PartyVotes, Section, SectionDetails, Region } from '../models/election.models';
 import elections from '../../assets/elections.json';
-import * as pako from 'pako';
+import { decodeElectionData } from './election-data-parser';
+import { ElectionDataWorker, ElectionWorkerUnavailableError } from './election-data-worker';
 import compactMapping from '../../assets/compact-mapping.json';
 import { normalizeAbroadSection } from '../utils/abroad-section.util';
+import { ELECTION_TYPE } from '../utils/election-type';
 
 type DataManifest = {
   timestamp: string;
@@ -41,49 +43,49 @@ type ColumnarSections = {
   sectionId: string[];
   regionId: string[];
   settlementEkatte: string[];
-  longitude: number[];
-  latitude: number[];
-  cityNameId: number[];
-  sectionNameId: number[];
-  sectionType: number[];
-  total: number[];
-  voted: number[];
-  discardedVotes: number[];
-  noVotes: number[];
-  noVotesPaper: number[];
-  noVotesMachine: number[];
-  totalPaper: number[];
-  totalMachine: number[];
-  activityBp: number[];
-  riskScore: number[];
-  hasProtocolError: number[];
-  protocolErrorDiff: number[];
-  protocolPaperVotes: number[];
-  protocolMachineVotes: number[];
-  votesToFirst: number[];
-  topPartyOffset: number[];
+  longitude: ArrayLike<number>;
+  latitude: ArrayLike<number>;
+  cityNameId: ArrayLike<number>;
+  sectionNameId: ArrayLike<number>;
+  sectionType: ArrayLike<number>;
+  total: ArrayLike<number>;
+  voted: ArrayLike<number>;
+  discardedVotes: ArrayLike<number>;
+  noVotes: ArrayLike<number>;
+  noVotesPaper: ArrayLike<number>;
+  noVotesMachine: ArrayLike<number>;
+  totalPaper: ArrayLike<number>;
+  totalMachine: ArrayLike<number>;
+  activityBp: ArrayLike<number>;
+  riskScore: ArrayLike<number>;
+  hasProtocolError: ArrayLike<number>;
+  protocolErrorDiff: ArrayLike<number>;
+  protocolPaperVotes: ArrayLike<number>;
+  protocolMachineVotes: ArrayLike<number>;
+  votesToFirst: ArrayLike<number>;
+  topPartyOffset: ArrayLike<number>;
   topPartyPartyId: string[];
   topPartyName: string[];
-  topPartyTotal: number[];
-  topPartyPercentBp: number[];
-  partyVotesOffset: number[];
+  topPartyTotal: ArrayLike<number>;
+  topPartyPercentBp: ArrayLike<number>;
+  partyVotesOffset: ArrayLike<number>;
   partyVotesPartyId: string[];
-  partyVotesTotal: number[];
-  partyVotesPaper: number[];
-  partyVotesMachine: number[];
-  candidateVotesOffset: number[];
+  partyVotesTotal: ArrayLike<number>;
+  partyVotesPaper: ArrayLike<number>;
+  partyVotesMachine: ArrayLike<number>;
+  candidateVotesOffset: ArrayLike<number>;
   candidateVotesCandidateId: string[];
   candidateVotesCandidateName: string[];
   candidateVotesPartyId: string[];
-  candidateVotesTotal: number[];
-  candidateVotesPaper: number[];
-  candidateVotesMachine: number[];
-  riskOffset: number[];
+  candidateVotesTotal: ArrayLike<number>;
+  candidateVotesPaper: ArrayLike<number>;
+  candidateVotesMachine: ArrayLike<number>;
+  riskOffset: ArrayLike<number>;
   riskCode: string[];
   riskCategory: string[];
   riskSeverity: string[];
   riskDetails: string[];
-  candidateRiskOffset: number[];
+  candidateRiskOffset: ArrayLike<number>;
   candidateRiskCode: string[];
   candidateRiskCategory: string[];
   candidateRiskSeverity: string[];
@@ -97,13 +99,18 @@ type FullDataV2 = {
   sectionIdToIndex: Map<string, number>;
   sectionsByRegion: Map<string, number[]>;
   regionNameById: Map<string, string>;
+  partyIdsByName: Map<string, Set<string>>;
+  candidateVotesCache?: { index: number; votes: Record<string, CandidateVotes> };
+  candidateRiskCache?: { index: number; indicators: NonNullable<Section['riskIndicators']> };
 };
 
 @Injectable({
   providedIn: 'root'
 })
 export class ElectionService {
+  readonly electionType = inject(ELECTION_TYPE);
   private readonly officialNationalElectorsByDate: Record<string, number> = {
+    '2026.10.25': 6637238,
     '2026.04.19': 6575151,
     '2024.10.27': 6601262,
     '2024.06.09': 6138050,
@@ -111,17 +118,20 @@ export class ElectionService {
   };
 
   private baseDataUrl = '/data';
-  private electionDates = elections;
+  private electionDates = elections.filter(e => e.type === this.electionType);
   private summaryCache: { [date: string]: SummaryData } = {};
   private fullCache: { [date: string]: FullDataV2 } = {};
   private materializedFullCache: { [date: string]: FullData } = {};
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-  public loading$ = this.loadingSubject.asObservable();
+  private materializedFullLoadPromises: { [date: string]: Promise<FullData> | undefined } = {};
+  private riskHistoryCache: { [date: string]: FullData } = {};
+  private riskHistoryLoadPromises: { [date: string]: Promise<FullData> | undefined } = {};
 
   private summariesLoaded = false;
   private summaryLoadPromise: Promise<void> | null = null;
+  private summaryLoadPromises: { [date: string]: Promise<void> | undefined } = {};
   private fullLoadPromises: { [date: string]: Promise<void> | undefined } = {};
   private manifestPromise: Promise<DataManifest | null> | null = null;
+  private readonly dataWorker = new ElectionDataWorker();
 
   private loadManifest(): Observable<DataManifest | null> {
     if (this.manifestPromise) return from(this.manifestPromise);
@@ -134,7 +144,9 @@ export class ElectionService {
     return from(this.manifestPromise);
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    inject(DestroyRef).onDestroy(() => this.dataWorker.destroy());
+  }
 
   private expandPartyVotesMap(partyVotes: any): any {
     if (!partyVotes) return partyVotes;
@@ -305,8 +317,17 @@ export class ElectionService {
     const sectionIdToIndex = new Map<string, number>();
     const sectionsByRegion = new Map<string, number[]>();
     const regionNameById = new Map<string, string>();
+    const partyIdsByName = new Map<string, Set<string>>();
 
     (data.regions || []).forEach((r: Region) => regionNameById.set(r.id, r.name));
+    const partyIds = new Set<string>(Object.keys(data.parties || {}));
+    for (const id of sections.partyVotesPartyId || []) if (id) partyIds.add(id);
+    for (const id of partyIds) {
+      const normalized = this.normalizePartyName(data.parties?.[id] || id);
+      const ids = partyIdsByName.get(normalized) ?? new Set<string>();
+      ids.add(id);
+      partyIdsByName.set(normalized, ids);
+    }
 
     for (let i = 0; i < sections.count; i++) {
       const sectionId = sections.sectionId[i];
@@ -330,7 +351,8 @@ export class ElectionService {
       regions: data.regions || [],
       sectionIdToIndex,
       sectionsByRegion,
-      regionNameById
+      regionNameById,
+      partyIdsByName
     };
   }
 
@@ -365,93 +387,126 @@ export class ElectionService {
   }
 
   private getOtherDates(date: string): string[] {
-    return this.electionDates.map((d) => d.date).filter((d) => d !== date);
+    return this.electionDates.filter(d => d.date !== date && !('provisional' in d && d.provisional)).map(d => d.date);
   }
 
-  private buildOtherSectionPartyTotals(full: FullDataV2, index: number) {
+  private attachComparisons(date: string, section: Section): void {
+    const others = this.getOtherDates(date).flatMap(d => {
+      const full = this.fullCache[d];
+      const index = full?.sectionIdToIndex.get(section.sectionId);
+      return full && index !== undefined ? [{ date: d, full, index }] : [];
+    });
+    if (!others.length) return;
+
+    const columns = {
+      total: 'total', voted: 'voted', discardedVotes: 'discardedVotes', noVotes: 'noVotes',
+      totalPaper: 'totalPaper', totalMachine: 'totalMachine', activityPercent: 'activityBp',
+      noVotesPaper: 'noVotesPaper', noVotesMachine: 'noVotesMachine', noVotesPercent: 'noVotes',
+    } as const;
+    const comparisons: Record<string, ComparativeValue[]> = {};
+    for (const [metric, column] of Object.entries(columns)) {
+      Object.defineProperty(comparisons, metric, {
+        enumerable: true,
+        get: () => others.map(({ date: d, full, index }) => {
+          const value = full.sections[column][index] || 0;
+          const voted = full.sections.voted[index] || 0;
+          return { d, v: metric === 'noVotesPercent' ? (voted > 0 ? Math.round(value / voted * 10000) : 0) : value };
+        }),
+      });
+    }
+    section.comparisons = comparisons;
+
+    const names = new WeakMap<PartyVotes, string>();
+    const descriptors: PropertyDescriptorMap = {};
+    for (const metric of ['total', 'paper', 'machine', 'percent'] as const) {
+      const field = metric === 'total' ? 'comparisons' : `${metric}Comparisons`;
+      descriptors[field] = {
+        enumerable: true,
+        get(this: PartyVotes): ComparativeValue[] | undefined {
+          const name = names.get(this)!;
+          const values: ComparativeValue[] = [];
+          for (const { date: d, full, index } of others) {
+            const partyIds = full.partyIdsByName.get(name);
+            if (!partyIds) continue;
+            const s = full.sections;
+            const start = s.partyVotesOffset[index] || 0;
+            const end = s.partyVotesOffset[index + 1] ?? start;
+            let matched = false;
+            let value = 0;
+            for (let i = start; i < end; i++) {
+              if (!partyIds.has(s.partyVotesPartyId[i])) continue;
+              matched = true;
+              value += (metric === 'paper' ? s.partyVotesPaper[i] : metric === 'machine' ? s.partyVotesMachine[i] : s.partyVotesTotal[i]) || 0;
+            }
+            if (!matched) continue;
+            const voted = s.voted[index] || 0;
+            values.push({ d, v: metric === 'percent' ? (voted > 0 ? Math.round(value / voted * 10000) : 0) : value });
+          }
+          return values.length ? values : undefined;
+        },
+      };
+    }
+    for (const [id, votes] of Object.entries(section.partyVotes)) {
+      names.set(votes, this.normalizePartyName(this.fullCache[date]?.parties[id] || id));
+      Object.defineProperties(votes, descriptors);
+    }
+  }
+
+  private materializeCandidateVotes(full: FullDataV2, index: number): Record<string, CandidateVotes> {
+    if (full.candidateVotesCache?.index === index) return full.candidateVotesCache.votes;
+    const s = full.sections;
+    const start = s.candidateVotesOffset[index] || 0;
+    const end = s.candidateVotesOffset[index + 1] ?? start;
+    const votes: Record<string, CandidateVotes> = Object.create(null);
+    for (let i = start; i < end; i++) {
+      const candidateId = s.candidateVotesCandidateId[i] || '';
+      const partyId = s.candidateVotesPartyId[i] || '';
+      if (!candidateId || !partyId) continue;
+      votes[`${partyId}_${candidateId}`] = {
+        candidateId, partyId, candidateName: s.candidateVotesCandidateName[i] || '',
+        partyName: full.parties[partyId] || partyId,
+        total: s.candidateVotesTotal[i] || 0, paper: s.candidateVotesPaper[i] || 0, machine: s.candidateVotesMachine[i] || 0,
+      };
+    }
+    // One section per election stays expanded for repeated reads, rather than the entire archive.
+    full.candidateVotesCache = { index, votes };
+    return votes;
+  }
+
+  private materializePartyVotes(full: FullDataV2, index: number): Record<string, PartyVotes> {
     const s = full.sections;
     const start = s.partyVotesOffset[index] || 0;
     const end = s.partyVotesOffset[index + 1] ?? start;
-    const map: { [norm: string]: { total: number; paper: number; machine: number } } = Object.create(null);
+    const votes: Record<string, PartyVotes> = Object.create(null);
     for (let i = start; i < end; i++) {
-      const pid = s.partyVotesPartyId[i] || '';
-      if (!pid) continue;
-      const name = full.parties[pid] || pid;
-      const norm = this.normalizePartyName(name);
-      const bucket = map[norm] || (map[norm] = { total: 0, paper: 0, machine: 0 });
-      bucket.total += s.partyVotesTotal[i] || 0;
-      bucket.paper += s.partyVotesPaper[i] || 0;
-      bucket.machine += s.partyVotesMachine[i] || 0;
+      const id = s.partyVotesPartyId[i];
+      if (id) votes[id] = { total: s.partyVotesTotal[i] || 0, paper: s.partyVotesPaper[i] || 0, machine: s.partyVotesMachine[i] || 0 };
     }
-    return map;
+    return votes;
   }
 
-  private attachComparisons(date: string, sectionIndex: number, section: Section): void {
-    const others = this.getOtherDates(date);
-    if (others.length === 0) return;
-
-    const comparisons: { [key: string]: { v: number; d: string }[] } = Object.create(null);
-    const partyVoteComparisons: { [pid: string]: { total: { v: number; d: string }[]; paper: { v: number; d: string }[]; machine: { v: number; d: string }[]; percent: { v: number; d: string }[] } } = Object.create(null);
-
-    for (const d of others) {
-      const otherFull = this.fullCache[d];
-      if (!otherFull) continue;
-      const otherIndex = otherFull.sectionIdToIndex.get(section.sectionId);
-      if (otherIndex === undefined) continue;
-
-      const os = otherFull.sections;
-      const otherVoted = os.voted[otherIndex] || 0;
-      const otherTotal = os.total[otherIndex] || 0;
-      const otherDiscarded = os.discardedVotes[otherIndex] || 0;
-      const otherNoVotes = os.noVotes[otherIndex] || 0;
-      const otherNoVotesPaper = os.noVotesPaper[otherIndex] || 0;
-      const otherNoVotesMachine = os.noVotesMachine[otherIndex] || 0;
-      const otherTotalPaper = os.totalPaper[otherIndex] || 0;
-      const otherTotalMachine = os.totalMachine[otherIndex] || 0;
-      const otherActivity = os.activityBp[otherIndex] || 0;
-      const otherNoVotesPercent = otherVoted > 0 ? Math.round((otherNoVotes / otherVoted) * 10000) : 0;
-
-      (comparisons['total'] ||= []).push({ v: otherTotal, d });
-      (comparisons['voted'] ||= []).push({ v: otherVoted, d });
-      (comparisons['discardedVotes'] ||= []).push({ v: otherDiscarded, d });
-      (comparisons['noVotes'] ||= []).push({ v: otherNoVotes, d });
-      (comparisons['totalPaper'] ||= []).push({ v: otherTotalPaper, d });
-      (comparisons['totalMachine'] ||= []).push({ v: otherTotalMachine, d });
-      (comparisons['activityPercent'] ||= []).push({ v: otherActivity, d });
-      (comparisons['noVotesPaper'] ||= []).push({ v: otherNoVotesPaper, d });
-      (comparisons['noVotesMachine'] ||= []).push({ v: otherNoVotesMachine, d });
-      (comparisons['noVotesPercent'] ||= []).push({ v: otherNoVotesPercent, d });
-
-      const otherPartyTotals = this.buildOtherSectionPartyTotals(otherFull, otherIndex);
-      for (const pid of Object.keys(section.partyVotes || {})) {
-        const partyName = this.normalizePartyName(this.fullCache[date]?.parties?.[pid] || pid);
-        const otherBucket = otherPartyTotals[partyName];
-        if (!otherBucket) continue;
-        const entry = partyVoteComparisons[pid] || (partyVoteComparisons[pid] = { total: [], paper: [], machine: [], percent: [] });
-        entry.total.push({ v: otherBucket.total, d });
-        entry.paper.push({ v: otherBucket.paper, d });
-        entry.machine.push({ v: otherBucket.machine, d });
-        const percent = otherVoted > 0 ? Math.round((otherBucket.total / otherVoted) * 10000) : 0;
-        entry.percent.push({ v: percent, d });
-      }
+  private materializeCandidateRisks(full: FullDataV2, index: number): NonNullable<Section['riskIndicators']> {
+    if (full.candidateRiskCache?.index === index) return full.candidateRiskCache.indicators;
+    const s = full.sections;
+    const start = s.candidateRiskOffset[index] || 0;
+    const end = s.candidateRiskOffset[index + 1] ?? start;
+    const sectionId = s.sectionId[index] || '';
+    const indicators: NonNullable<Section['riskIndicators']> = [];
+    for (let i = start; i < end; i++) {
+      const rawDetails = this.parseRiskDetails(s.candidateRiskDetails[i]);
+      const details = (rawDetails && typeof rawDetails === 'object')
+        ? { ...rawDetails, sectionId: (rawDetails as any).sectionId ?? sectionId }
+        : { sectionId };
+      indicators.push({
+        code: s.candidateRiskCode[i] || '', category: s.candidateRiskCategory[i] || '',
+        severity: s.candidateRiskSeverity[i] || '', details,
+      });
     }
-
-    if (Object.keys(comparisons).length > 0) {
-      section.comparisons = comparisons;
-    }
-
-    for (const pid of Object.keys(partyVoteComparisons)) {
-      const entry = partyVoteComparisons[pid];
-      const pv = (section.partyVotes as any)[pid];
-      if (!pv) continue;
-      pv.comparisons = entry.total.length > 0 ? entry.total : undefined;
-      pv.paperComparisons = entry.paper.length > 0 ? entry.paper : undefined;
-      pv.machineComparisons = entry.machine.length > 0 ? entry.machine : undefined;
-      pv.percentComparisons = entry.percent.length > 0 ? entry.percent : undefined;
-    }
+    full.candidateRiskCache = { index, indicators };
+    return indicators;
   }
 
-  private materializeSection(full: FullDataV2, index: number): Section {
+  private materializeSection(full: FullDataV2, index: number, projection: 'full' | 'risk' | 'history' = 'full'): Section {
     const s = full.sections;
     const regionId = s.regionId[index] || '';
     const cityName = s.dicts.cityName[s.cityNameId[index]] || '';
@@ -501,9 +556,16 @@ export class ElectionService {
 
     const pvStart = s.partyVotesOffset[index] || 0;
     const pvEnd = s.partyVotesOffset[index + 1] ?? pvStart;
-    for (let i = pvStart; i < pvEnd; i++) {
+    let winningVotes = 0;
+    if (projection === 'risk') {
+      for (let i = pvStart; i < pvEnd; i++) {
+        if (s.partyVotesPartyId[i] !== '0') winningVotes = Math.max(winningVotes, s.partyVotesTotal[i] || 0);
+      }
+    }
+    for (let i = pvStart; projection !== 'history' && i < pvEnd; i++) {
       const pid = s.partyVotesPartyId[i] || '';
       if (!pid) continue;
+      if (projection === 'risk' && (pid === '0' || !winningVotes || s.partyVotesTotal[i] !== winningVotes)) continue;
       (section.partyVotes as any)[pid] = {
         total: s.partyVotesTotal[i] || 0,
         paper: s.partyVotesPaper[i] || 0,
@@ -511,29 +573,9 @@ export class ElectionService {
       };
     }
 
-    const cvStart = s.candidateVotesOffset[index] || 0;
-    const cvEnd = s.candidateVotesOffset[index + 1] ?? cvStart;
-    if (cvEnd > cvStart) {
-      section.candidateVotes = Object.create(null);
-      for (let i = cvStart; i < cvEnd; i++) {
-        const candidateId = s.candidateVotesCandidateId[i] || '';
-        const partyId = s.candidateVotesPartyId[i] || '';
-        if (!candidateId || !partyId) continue;
-        const key = `${partyId}_${candidateId}`;
-        (section.candidateVotes as any)[key] = {
-          candidateId,
-          candidateName: s.candidateVotesCandidateName[i] || '',
-          partyId,
-          partyName: full.parties[partyId] || partyId,
-          total: s.candidateVotesTotal[i] || 0,
-          paper: s.candidateVotesPaper[i] || 0,
-          machine: s.candidateVotesMachine[i] || 0
-        };
-      }
-    }
-
     const riskStart = s.riskOffset[index] || 0;
     const riskEnd = s.riskOffset[index + 1] ?? riskStart;
+    if (projection === 'risk') section.riskIndicators = [];
     if (riskEnd > riskStart) {
       section.riskIndicators = [];
       for (let i = riskStart; i < riskEnd; i++) {
@@ -546,90 +588,71 @@ export class ElectionService {
       }
     }
 
-    const crStart = s.candidateRiskOffset[index] || 0;
-    const crEnd = s.candidateRiskOffset[index + 1] ?? crStart;
-    if (crEnd > crStart) {
-      (section as any).candidateRiskIndicators = [];
-      for (let i = crStart; i < crEnd; i++) {
-        const rawDetails = this.parseRiskDetails(s.candidateRiskDetails[i]);
-        const details = (rawDetails && typeof rawDetails === 'object')
-          ? { ...rawDetails, sectionId: (rawDetails as any).sectionId ?? section.sectionId }
-          : { sectionId: section.sectionId };
-        (section as any).candidateRiskIndicators.push({
-          code: s.candidateRiskCode[i] || '',
-          category: s.candidateRiskCategory[i] || '',
-          severity: s.candidateRiskSeverity[i] || '',
-          details
-        });
-      }
-    }
-
-    return normalizeAbroadSection(section);
-  }
-
-  private materializeSections(full: FullDataV2, indexes: number[], date?: string, withComparisons?: boolean): Section[] {
-    if (withComparisons && date) {
-      return indexes.map((i) => {
-        const section = this.materializeSection(full, i);
-        this.attachComparisons(date, i, section);
-        return section;
+    const normalized = normalizeAbroadSection(section);
+    if (projection !== 'risk' && (s.candidateRiskOffset[index + 1] || 0) > (s.candidateRiskOffset[index] || 0)) {
+      Object.defineProperty(normalized, 'candidateRiskIndicators', {
+        enumerable: true, get: () => this.materializeCandidateRisks(full, index),
       });
     }
-    return indexes.map((i) => this.materializeSection(full, i));
+    if (projection === 'history') {
+      Object.defineProperty(normalized, 'partyVotes', {
+        enumerable: true, get: () => this.materializePartyVotes(full, index),
+      });
+    }
+    if (projection !== 'risk' && (s.candidateVotesOffset[index + 1] || 0) > (s.candidateVotesOffset[index] || 0)) {
+      Object.defineProperty(normalized, 'candidateVotes', {
+        enumerable: true, get: () => this.materializeCandidateVotes(full, index),
+      });
+    }
+    return normalized;
   }
 
-  private materializeFullData(date: string): FullData {
+  private async materializeSections(
+    full: FullDataV2, indexes: number[], date?: string, withComparisons = false,
+    projection: 'full' | 'risk' | 'history' = 'full',
+  ): Promise<Section[]> {
+    const sections: Section[] = [];
+    for (let start = 0; start < indexes.length; start += 200) {
+      for (const index of indexes.slice(start, start + 200)) {
+        const section = this.materializeSection(full, index, projection);
+        if (withComparisons && date) this.attachComparisons(date, section);
+        sections.push(section);
+      }
+      if (start + 200 < indexes.length) await new Promise<void>(resolve => setTimeout(resolve, 0));
+    }
+    return sections;
+  }
+
+  private materializeFullData(date: string): Promise<FullData> {
     const cached = this.materializedFullCache[date];
-    if (cached) return cached;
+    if (cached) return Promise.resolve(cached);
+    const pending = this.materializedFullLoadPromises[date];
+    if (pending) return pending;
     const full = this.fullCache[date];
-    const sections = this.materializeSections(
-      full,
-      Array.from({ length: full.sections.count }, (_, i) => i)
-    );
-    const materialized = {
-      sections,
-      parties: full.parties,
-      regions: full.regions
-    };
-    this.materializedFullCache[date] = materialized;
-    return materialized;
+    const load = this.materializeSections(
+      full, Array.from({ length: full.sections.count }, (_, i) => i), undefined, false, 'history',
+    ).then(sections => {
+      const materialized = { sections, parties: full.parties, regions: full.regions };
+      this.materializedFullCache[date] = materialized;
+      return materialized;
+    }).finally(() => { delete this.materializedFullLoadPromises[date]; });
+    this.materializedFullLoadPromises[date] = load;
+    return load;
   }
 
   private fetchAndParse(url: string, opts?: { includeSections?: boolean }): Observable<any> {
-    const start = performance.now();
-    return this.http.get(url, { responseType: 'arraybuffer' }).pipe(
-      map((data: ArrayBuffer) => {
-        const uint8 = new Uint8Array(data);
-        const firstNonWhitespace = (() => {
-          for (let i = 0; i < uint8.length && i < 64; i++) {
-            const c = uint8[i];
-            if (c !== 0x20 && c !== 0x0a && c !== 0x0d && c !== 0x09) return c;
-          }
-          return null;
-        })();
-        if (firstNonWhitespace === 0x3c) {
-          throw new Error(`HTML response from ${url}`);
-        }
-        try {
-          let decompressed: Uint8Array;
-
-          // Check for gzip magic numbers: 0x1f 0x8b
-          if (uint8.length > 2 && uint8[0] === 0x1f && uint8[1] === 0x8b) {
-            decompressed = pako.ungzip(uint8);
-          } else {
-            // Data is not gzipped or already decompressed by the browser (Content-Encoding: gzip/br)
-            decompressed = uint8;
-          }
-
-          const jsonString = new TextDecoder().decode(decompressed);
-          const parsed = JSON.parse(jsonString);
-          return this.normalizePayload(parsed, opts);
-        } catch (e) {
-          const firstBytes = Array.from(uint8.slice(0, 16)).map(b => b.toString(16).padStart(2, '0')).join(' ');
-          console.error(`Error decompressing/parsing data from ${url}. First bytes: ${firstBytes}`, e);
-          throw e;
-        }
-      })
+    const download = () => this.http.get(url, { responseType: 'arraybuffer' });
+    return download().pipe(
+      switchMap(buffer => {
+        const parsed = this.dataWorker.parse(buffer, url);
+        if (!parsed) return of(decodeElectionData(buffer, url));
+        return from(parsed).pipe(catchError((error: unknown) => {
+          if (!(error instanceof ElectionWorkerUnavailableError)) throw error;
+          // The worker owns the transferred buffer, so retry the download before the fallback parser.
+          return download().pipe(map(data => decodeElectionData(data, url)));
+        }));
+      }),
+      map(payload => this.normalizePayload(payload, opts)),
     );
   }
 
@@ -649,32 +672,17 @@ export class ElectionService {
     if (this.summariesLoaded) return of(undefined);
     if (this.summaryLoadPromise) return from(this.summaryLoadPromise);
 
-    this.loadingSubject.next(true);
     const dates = this.electionDates.map((d) => d.date);
 
     this.summaryLoadPromise = new Promise<void>(async (resolve, reject) => {
       try {
-        const manifest = await firstValueFrom(this.loadManifest());
-
         for (const d of dates) {
-          if (this.summaryCache[d]) continue;
-          const urls = this.resolveUrls(d, manifest, 'summary');
-          const data = await firstValueFrom(
-            this.fetchAndParse(urls.gz, { includeSections: false }).pipe(
-              catchError(() => this.fetchAndParse(urls.br, { includeSections: false }))
-            )
-          );
-          this.summaryCache[d] = {
-            regions: data?.regions || [],
-            parties: data?.parties || {}
-          };
+          await firstValueFrom(this.ensureSummaryLoaded(d));
         }
 
         this.summariesLoaded = true;
-        this.loadingSubject.next(false);
         resolve();
       } catch (err) {
-        this.loadingSubject.next(false);
         this.summaryLoadPromise = null;
         reject(err);
       }
@@ -683,11 +691,32 @@ export class ElectionService {
     return from(this.summaryLoadPromise);
   }
 
+  private ensureSummaryLoaded(date: string): Observable<void> {
+    if (this.summaryCache[date] || !this.electionDates.some(election => election.date === date)) return of(undefined);
+    if (this.summaryLoadPromises[date]) return from(this.summaryLoadPromises[date]);
+
+    const load = (async () => {
+      const manifest = await firstValueFrom(this.loadManifest());
+      const urls = this.resolveUrls(date, manifest, 'summary');
+      const data = await firstValueFrom(
+        this.fetchAndParse(urls.gz, { includeSections: false }).pipe(
+          catchError(() => this.fetchAndParse(urls.br, { includeSections: false }))
+        )
+      );
+      this.summaryCache[date] = {
+        regions: data?.regions || [],
+        parties: data?.parties || {}
+      };
+    })().finally(() => {
+      delete this.summaryLoadPromises[date];
+    });
+    this.summaryLoadPromises[date] = load;
+    return from(load);
+  }
+
   private ensureFullDataLoaded(date: string): Observable<void> {
     if (this.fullCache[date]) return of(undefined);
     if (this.fullLoadPromises[date]) return from(this.fullLoadPromises[date]);
-
-    this.loadingSubject.next(true);
 
     this.fullLoadPromises[date] = new Promise<void>(async (resolve, reject) => {
       try {
@@ -703,11 +732,9 @@ export class ElectionService {
             parties: data?.parties || {}
           };
         }
-        this.loadingSubject.next(false);
         resolve();
       } catch (err) {
         console.error(`Error loading full election data for ${date}:`, err);
-        this.loadingSubject.next(false);
         delete this.fullLoadPromises[date];
         reject(err);
       }
@@ -721,28 +748,14 @@ export class ElectionService {
     const pending = dates.filter((d) => !this.fullCache[d]);
     if (pending.length === 0) return of(undefined);
 
-    this.loadingSubject.next(true);
     const promise = new Promise<void>(async (resolve, reject) => {
       try {
-        const manifest = await firstValueFrom(this.loadManifest());
         for (const d of pending) {
-          const urls = this.resolveUrls(d, manifest, 'full');
-          const data = await firstValueFrom(
-            this.fetchAndParse(urls.gz).pipe(catchError(() => this.fetchAndParse(urls.br)))
-          );
-          this.fullCache[d] = this.buildFullData(data);
-          if (!this.summaryCache[d]) {
-            this.summaryCache[d] = {
-              regions: data?.regions || [],
-              parties: data?.parties || {}
-            };
-          }
+          await firstValueFrom(this.ensureFullDataLoaded(d));
         }
-        this.loadingSubject.next(false);
         resolve();
       } catch (err) {
         console.error('Error loading full election data:', err);
-        this.loadingSubject.next(false);
         reject(err);
       }
     });
@@ -764,14 +777,58 @@ export class ElectionService {
 
   getAllFullData(): Observable<{ [date: string]: FullData }> {
     return this.ensureAllFullDataLoaded().pipe(
-      map(() => {
+      switchMap(async () => {
         const out: { [date: string]: FullData } = {};
-        for (const date of Object.keys(this.fullCache)) {
-          out[date] = this.materializeFullData(date);
-        }
+        for (const date of Object.keys(this.fullCache)) out[date] = await this.materializeFullData(date);
         return out;
       })
     );
+  }
+
+  private loadRiskHistoryElection(date: string): Promise<FullData> {
+    const cached = this.riskHistoryCache[date];
+    if (cached) return Promise.resolve(cached);
+    const pending = this.riskHistoryLoadPromises[date];
+    if (pending) return pending;
+
+    const load = (async (): Promise<FullData> => {
+      let full = this.fullCache[date];
+      if (!full) {
+        const manifest = await firstValueFrom(this.loadManifest());
+        const urls = this.resolveUrls(date, manifest, 'full');
+        const data = await firstValueFrom(this.fetchAndParse(urls.gz).pipe(catchError(() => this.fetchAndParse(urls.br))));
+        full = this.buildFullData(data);
+      }
+      return {
+        sections: await this.materializeSections(full, Array.from({ length: full.sections.count }, (_, index) => index), undefined, false, 'risk'),
+        parties: full.parties,
+        regions: full.regions,
+      };
+    })();
+    const result = load.then((data) => {
+      this.riskHistoryCache[date] = data;
+      delete this.riskHistoryLoadPromises[date];
+      return data;
+    }, (error: unknown) => {
+      delete this.riskHistoryLoadPromises[date];
+      throw error;
+    });
+    this.riskHistoryLoadPromises[date] = result;
+    return result;
+  }
+
+  /** Compact risk snapshots contain winner votes only and omit candidate detail. */
+  getRiskHistoryData(date: string): Observable<{ [date: string]: FullData }> {
+    const current = this.electionDates.find((election) => election.date === date);
+    if (!current) return of({});
+    const dates = this.electionDates.filter((election) => election.type === current.type
+      && election.round === current.round && election.date <= date);
+    return from((async () => {
+      const history: { [date: string]: FullData } = {};
+      // Keep one raw election in memory at a time instead of retaining all candidate arrays.
+      for (const election of dates) history[election.date] = await this.loadRiskHistoryElection(election.date);
+      return history;
+    })());
   }
 
   getRegions(date: string): Observable<Region[]> {
@@ -780,7 +837,7 @@ export class ElectionService {
       const parties = this.fullCache[date]?.parties || {};
       return of(this.normalizeRegionsTopParties(regions, parties));
     }
-    return this.ensureSummariesLoaded().pipe(map(() => {
+    return this.ensureSummaryLoaded(date).pipe(map(() => {
       const regions = this.summaryCache[date]?.regions || [];
       const parties = this.summaryCache[date]?.parties || {};
       return this.normalizeRegionsTopParties(regions, parties);
@@ -790,7 +847,7 @@ export class ElectionService {
   getSections(date: string, regionId?: string, withComparisons = false): Observable<Section[]> {
     const ensure$ = withComparisons ? this.ensureAllFullDataLoaded() : this.ensureFullDataLoaded(date);
     return ensure$.pipe(
-      map(() => {
+      switchMap(async () => {
         const full = this.fullCache[date];
         if (!full) return [];
         if (!regionId || regionId === 'all') {
@@ -811,7 +868,7 @@ export class ElectionService {
     if (this.fullCache[date]) {
       return of(this.fullCache[date]?.parties || {});
     }
-    return this.ensureSummariesLoaded().pipe(map(() => this.summaryCache[date]?.parties || {}));
+    return this.ensureSummaryLoaded(date).pipe(map(() => this.summaryCache[date]?.parties || {}));
   }
 
   getSectionDetails(date: string, sectionId: string): Observable<SectionDetails> {

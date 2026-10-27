@@ -1,0 +1,364 @@
+[
+  {
+    "id": "party-progressive-bulgaria",
+    "type": "governmental",
+    "names": [
+      "ПРОГРЕСИВНА БЪЛГАРИЯ"
+    ],
+    "src": "/images/contestants/party-progressive-bulgaria.svg",
+    "alt": "Лого на ПРОГРЕСИВНА БЪЛГАРИЯ",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Progressive_Bulgaria.svg",
+    "author": "Прогресивна България",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-textlogo"
+  },
+  {
+    "id": "party-gerb",
+    "type": "governmental",
+    "names": [
+      "ГЕРБ-СДС",
+      "ГЕРБ – СДС",
+      "ПП ГЕРБ",
+      "ГЕРБ",
+      "КОАЛИЦИЯ ГЕРБ-СДС"
+    ],
+    "src": "/images/contestants/party-gerb.svg",
+    "alt": "Лого на ГЕРБ-СДС",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Logo_of_GERB.svg",
+    "author": "CIN I&II",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-textlogo"
+  },
+  {
+    "id": "party-ppdb",
+    "type": "governmental",
+    "names": [
+      "КОАЛИЦИЯ ПРОДЪЛЖАВАМЕ ПРОМЯНАТА – ДЕМОКРАТИЧНА БЪЛГАРИЯ",
+      "КОАЛИЦИЯ ПРОДЪЛЖАВАМЕ ПРОМЯНАТА-ДЕМОКРАТИЧНА БЪЛГАРИЯ",
+      "ПРОДЪЛЖАВАМЕ ПРОМЯНАТА-ДЕМОКРАТИЧНА БЪЛГАРИЯ",
+      "ПП-ДБ"
+    ],
+    "src": "/images/contestants/party-ppdb.svg",
+    "alt": "Лого на КОАЛИЦИЯ ПРОДЪЛЖАВАМЕ ПРОМЯНАТА – ДЕМОКРАТИЧНА БЪЛГАРИЯ",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:PP%E2%80%93DB_logo.svg",
+    "author": "Продължаваме промяната – Демократична България",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-textlogo"
+  },
+  {
+    "id": "party-bsp-united-left",
+    "type": "governmental",
+    "names": [
+      "БСП – ОБЕДИНЕНА ЛЕВИЦА",
+      "БСП - ОБЕДИНЕНА ЛЕВИЦА"
+    ],
+    "src": "/images/contestants/party-bsp-united-left.svg",
+    "alt": "Лого на БСП – ОБЕДИНЕНА ЛЕВИЦА",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Logo_of_the_BSP_%E2%80%93_United_Left.svg",
+    "author": "Българска социалистическа партия",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-textlogo"
+  },
+  {
+    "id": "party-bsp-for-bulgaria",
+    "type": "governmental",
+    "names": [
+      "БСП за БЪЛГАРИЯ",
+      "БСП ЗА БЪЛГАРИЯ"
+    ],
+    "src": "/images/contestants/party-bsp-for-bulgaria.svg",
+    "alt": "Лого на БСП за БЪЛГАРИЯ",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Logo_of_the_BSP_for_Bulgaria.svg",
+    "author": "БСП за България",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-textlogo"
+  },
+  {
+    "id": "party-there-is-such-a-people",
+    "type": "governmental",
+    "names": [
+      "ПП ИМА ТАКЪВ НАРОД",
+      "ИМА ТАКЪВ НАРОД"
+    ],
+    "src": "/images/contestants/party-there-is-such-a-people.svg",
+    "alt": "Лого на ПП ИМА ТАКЪВ НАРОД",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:There_Is_Such_A_People_logo.svg",
+    "author": "There Is Such A People party",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  },
+  {
+    "id": "party-vazrazhdane",
+    "type": "governmental",
+    "names": [
+      "ВЪЗРАЖДАНЕ",
+      "ПП ВЪЗРАЖДАНЕ"
+    ],
+    "src": "/images/contestants/party-vazrazhdane.png",
+    "alt": "Лого на Възраждане",
+    "sourceUrl": "https://vazrazhdane.bg/",
+    "author": "Възраждане",
+    "license": "Официално лого",
+    "licenseUrl": "https://vazrazhdane.bg/"
+  },
+  {
+    "id": "party-dps",
+    "type": "governmental",
+    "names": [
+      "Движение за права и свободи - ДПС",
+      "Движение за права и свободи – ДПС",
+      "ДВИЖЕНИЕ ЗА ПРАВА И СВОБОДИ - ДПС",
+      "ДВИЖЕНИЕ ЗА ПРАВА И СВОБОДИ – ДПС",
+      "ДПС"
+    ],
+    "src": "/images/contestants/party-dps.png",
+    "alt": "Лого на Движение за права и свободи",
+    "sourceUrl": "https://www.dpsbg.eu/",
+    "author": "Движение за права и свободи",
+    "license": "Официално лого",
+    "licenseUrl": "https://www.dpsbg.eu/"
+  },
+  {
+    "id": "party-dps-new-beginning",
+    "type": "governmental",
+    "names": [
+      "ДПС-Ново начало",
+      "ДПС - Ново начало",
+      "ДПС – Ново начало",
+      "ДПС-НОВО НАЧАЛО",
+      "ДПС - НОВО НАЧАЛО"
+    ],
+    "src": "/images/contestants/party-dps.png",
+    "alt": "Лого на ДПС, използвано от ДПС - Ново начало",
+    "sourceUrl": "https://www.dpsbg.eu/",
+    "author": "Движение за права и свободи",
+    "license": "Официално лого",
+    "licenseUrl": "https://www.dpsbg.eu/"
+  },
+  {
+    "id": "party-we-continue-the-change",
+    "type": "governmental",
+    "names": [
+      "Продължаваме Промяната",
+      "ПРОДЪЛЖАВАМЕ ПРОМЯНАТА"
+    ],
+    "src": "/images/contestants/party-we-continue-the-change.svg",
+    "alt": "Лого на Продължаваме Промяната",
+    "sourceUrl": "https://promeni.bg/",
+    "author": "Продължаваме Промяната",
+    "license": "Официално лого",
+    "licenseUrl": "https://promeni.bg/"
+  },
+  {
+    "id": "party-democratic-bulgaria",
+    "type": "governmental",
+    "names": [
+      "ДЕМОКРАТИЧНА БЪЛГАРИЯ – ОБЕДИНЕНИЕ (ДА България, ДСБ, Зелено движение)",
+      "ДЕМОКРАТИЧНА БЪЛГАРИЯ - ОБЕДИНЕНИЕ (ДА България, ДСБ, Зелено движение)",
+      "ДЕМОКРАТИЧНА БЪЛГАРИЯ – ОБЕДИНЕНИЕ",
+      "ДЕМОКРАТИЧНА БЪЛГАРИЯ - ОБЕДИНЕНИЕ"
+    ],
+    "src": "/images/contestants/party-democratic-bulgaria.svg",
+    "alt": "Лого на Демократична България",
+    "sourceUrl": "https://demokrati.bg/",
+    "author": "Демократична България",
+    "license": "Официално лого",
+    "licenseUrl": "https://demokrati.bg/"
+  },
+  {
+    "id": "party-united-patriots",
+    "type": "governmental",
+    "names": [
+      "ОБЕДИНЕНИ ПАТРИОТИ – НФСБ, АТАКА и ВМРО",
+      "ОБЕДИНЕНИ ПАТРИОТИ - НФСБ, АТАКА и ВМРО"
+    ],
+    "src": "/images/contestants/party-united-patriots.png",
+    "alt": "Лого на ОБЕДИНЕНИ ПАТРИОТИ – НФСБ, АТАКА и ВМРО",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Logo_of_the_United_Patriots.svg",
+    "author": "United Patriots",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-textlogo"
+  },
+  {
+    "id": "party-volya",
+    "type": "governmental",
+    "names": [
+      "ВОЛЯ"
+    ],
+    "src": "/images/contestants/party-volya.png",
+    "alt": "Лого на ВОЛЯ",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Volya_text_logo.svg",
+    "author": "Political party Volya",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-textlogo"
+  },
+  {
+    "id": "anastas-gerdzhikov",
+    "type": "presidential",
+    "names": [
+      "Анастас Георгиев Герджиков"
+    ],
+    "src": "/images/contestants/person-anastas-gerdzhikov.jpg",
+    "alt": "Портрет на Анастас Георгиев Герджиков",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Anastas_Gerdzhikov_(cropped).jpg",
+    "author": "EU2018BG Bulgarian Presidency",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+  },
+  {
+    "id": "andrey-gyurov",
+    "type": "presidential",
+    "names": [
+      "Андрей Атанасов Гюров"
+    ],
+    "src": "/images/contestants/person-andrey-gyurov.jpg",
+    "alt": "Портрет на Андрей Атанасов Гюров",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Andrey_Gyurov_(cropped).jpg",
+    "author": "Government.bg (photographer not identified)",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0"
+  },
+  {
+    "id": "iliana-iotova",
+    "type": "presidential",
+    "names": [
+      "Илияна Малинова Йотова"
+    ],
+    "src": "/images/contestants/person-iliana-iotova.jpg",
+    "alt": "Портрет на Илияна Малинова Йотова",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:President_Iliana_Iotova_(close_crop).jpg",
+    "author": "President.bg (photographer not identified)",
+    "license": "CC BY 2.5 bg",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5/bg/deed.en"
+  },
+  {
+    "id": "radostin-vasilev",
+    "type": "presidential",
+    "names": [
+      "Радостин Петев Василев"
+    ],
+    "src": "/images/contestants/person-radostin-vasilev.png",
+    "alt": "Портрет на Радостин Петев Василев",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Radostin_Vasilev_51NS.png",
+    "author": "Juli KRIVOSHIEV / Parliament.bg",
+    "license": "CC BY 2.5 bg",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5/bg/deed.en"
+  },
+  {
+    "id": "rumen-radev",
+    "type": "presidential",
+    "names": [
+      "Румен Георгиев Радев"
+    ],
+    "src": "/images/contestants/person-rumen-radev.jpg",
+    "alt": "Портрет на Румен Георгиев Радев",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rumen_Radev_official_portrait_(3x4_cropped).jpg",
+    "author": "Bulgarian Presidency / President.bg",
+    "license": "CC BY 2.5 bg",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5/bg/deed.en"
+  },
+  {
+    "id": "kostadin-kostadinov",
+    "type": "presidential",
+    "names": [
+      "Костадин Тодоров Костадинов"
+    ],
+    "src": "/images/contestants/person-kostadin-kostadinov.jpg",
+    "alt": "Портрет на Костадин Тодоров Костадинов",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:%D0%9A%D0%BE%D1%81%D1%82%D0%B0%D0%B4%D0%B8%D0%BD_%D0%9A%D0%BE%D1%81%D1%82%D0%B0%D0%B4%D0%B8%D0%BD%D0%BE%D0%B2_%D1%81%D0%BD%D0%B8%D0%BC%D0%BA%D0%B0_(cropped).jpg",
+    "author": "Владимир Ладев",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  },
+  {
+    "id": "ivelin-mihaylov",
+    "type": "presidential",
+    "names": [
+      "Ивелин Людмилов Михайлов"
+    ],
+    "src": "/images/contestants/person-ivelin-mihaylov.png",
+    "alt": "Портрет на Ивелин Людмилов Михайлов",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ivelin_Mihaylov_(51NS).png",
+    "author": "Juli KRIVOSHIEV / Parliament.bg",
+    "license": "CC BY 2.5 bg",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5/bg/deed.en"
+  },
+  {
+    "id": "krasimir-karakachanov",
+    "type": "presidential",
+    "names": [
+      "Красимир Дончев Каракачанов"
+    ],
+    "src": "/images/contestants/person-krasimir-karakachanov.jpg",
+    "alt": "Портрет на Красимир Дончев Каракачанов",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Krasimir_Karakachanov_2017-12-18.jpg",
+    "author": "EU2018BG Bulgarian Presidency",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+  },
+  {
+    "id": "plamen-oresharski",
+    "type": "presidential",
+    "names": [
+      "Пламен Василев Орешарски"
+    ],
+    "src": "/images/contestants/person-plamen-oresharski.jpg",
+    "alt": "Портрет на Пламен Василев Орешарски",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plamen_Oresharski_2013_(cropped).jpg",
+    "author": "Georges Boulougouris / European Union, 2013 / EC - Audiovisual Service",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0"
+  },
+  {
+    "id": "tsetska-tsacheva",
+    "type": "presidential",
+    "names": [
+      "Цецка Цачева Данговска"
+    ],
+    "src": "/images/contestants/person-tsetska-tsacheva.jpg",
+    "alt": "Портрет на Цецка Цачева Данговска",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tsetska_Tsacheva_-_2017_(cropped).jpg",
+    "author": "EU2018BG Bulgarian Presidency",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+  },
+  {
+    "id": "veselin-mareshki",
+    "type": "presidential",
+    "names": [
+      "Веселин Найденов Марешки"
+    ],
+    "src": "/images/contestants/person-veselin-mareshki.png",
+    "alt": "Портрет на Веселин Найденов Марешки",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Veselin_Mareshki_(44NS).png",
+    "author": "Unknown photographer / National Assembly of Bulgaria",
+    "license": "Public domain (Commons PD-Bulgarian-official)",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-Bulgarian-official"
+  },
+  {
+    "id": "mustafa-karadayi",
+    "type": "presidential",
+    "names": [
+      "Мустафа Сали Карадайъ"
+    ],
+    "src": "/images/contestants/person-mustafa-karadayi.jpg",
+    "alt": "Портрет на Мустафа Сали Карадайъ",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:%D0%9C%D1%83%D1%81%D1%82%D0%B0%D1%84%D0%B0_%D0%9A%D0%B0%D1%80%D0%B0%D0%B4%D0%B0%D0%B9%D1%8B.jpg",
+    "author": "UltimateGnome",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  },
+  {
+    "id": "lozan-panov",
+    "type": "presidential",
+    "names": [
+      "Лозан Йорданов Панов"
+    ],
+    "src": "/images/contestants/person-lozan-panov.jpg",
+    "alt": "Портрет на Лозан Йорданов Панов",
+    "sourceUrl": "https://nij.bg/wp-content/uploads/2023/02/Almanah-15-years_NIP.pdf#page=123",
+    "author": "National Institute of Justice (publisher); photographer not identified",
+    "license": "Official source; reuse license not specified",
+    "licenseUrl": "https://nij.bg/wp-content/uploads/2023/02/Almanah-15-years_NIP.pdf#page=123"
+  }
+]

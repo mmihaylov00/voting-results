@@ -2,7 +2,7 @@
  * Maps party names to their aliases for display
  */
 export function getPartyAlias(partyName: string): string {
-  const n = partyName.toUpperCase();
+  const n = partyName.trim().toUpperCase();
   if (n.includes('ПРОДЪЛЖАВАМЕ')) return 'ПП-ДБ';
   if (n.includes('ГЕРБ')) return 'ГЕРБ-СДС';
   if (n.includes('ВЪЗРАЖДАНЕ')) return 'ВЪЗРАЖДАНЕ';
@@ -12,6 +12,6 @@ export function getPartyAlias(partyName: string): string {
   if (n.includes('ВЕЛИЧИЕ')) return 'ВЕЛИЧИЕ';
   if (n.includes('МЕЧ')) return 'МЕЧ';
   if (n.includes('АЛИАНС ЗА ПРАВА И СВОБОДИ') || n.includes('АПС')) return 'АПС';
-  if (n.includes('ПРОГРЕСИВНА')) return 'ПБ';
+  if (n === 'ПРБ' || n.includes('ПРОГРЕСИВНА')) return 'ПБ';
   return partyName;
 }

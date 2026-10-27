@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, signal, HostListener } from '@a
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HlmButtonDirective } from '../button-helm/src/lib/hlm-button.directive';
+import { MapIconComponent, MapIconName } from '../map-icon/map-icon';
 
 export interface RiskCategory {
   code: string;
@@ -16,6 +17,7 @@ export interface RiskCategory {
     CommonModule,
     FormsModule,
     HlmButtonDirective,
+    MapIconComponent,
   ],
   templateUrl: './risk-filter-dropdown.html',
   host: {
@@ -32,6 +34,10 @@ export class RiskFilterDropdownComponent {
   @Output() selectedRiskCategoriesChange = new EventEmitter<Set<string>>();
 
   showDropdown = signal<boolean>(false);
+  readonly categoryIcons: Record<string, MapIconName> = {
+    R1: 'activity', R2: 'machine-vs-paper', R3: 'invalid-votes',
+    R4: 'party-change', R5: 'leading-preference', R6: 'target',
+  };
 
   toggleDropdown(event: Event): void {
     event.stopPropagation();

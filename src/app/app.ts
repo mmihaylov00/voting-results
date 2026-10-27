@@ -1,7 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { ThemeService } from './services/theme.service';
-import { HlmButtonDirective } from './components/ui/button-helm/src/lib/hlm-button.directive';
+import { AppHeaderComponent } from './components/app-header/app-header';
+import { ModalPageService } from './services/modal-page.service';
 
 const SALT = 'static-salt-change-me';
 const EXPECTED_HASH = '6465c8300318e8d0faba5c26a03a79b560da9568deca4e2988af795f7cb5704c';
@@ -10,19 +12,14 @@ const STORAGE_KEY = 'votes_password';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HlmButtonDirective],
+  imports: [RouterOutlet, AppHeaderComponent, NgTemplateOutlet],
   template: `
     @if (unlocked()) {
-      <div class="fixed bottom-4 right-4 z-[200]">
-        <button hlmBtn variant="ghost" size="icon" (click)="themeService.toggleDarkMode()" class="rounded-full bg-background/50 backdrop-blur-sm border border-primary/20 group hover:bg-primary dark:hover:bg-secondary">
-          @if (themeService.darkMode()) {
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary transition-colors group-hover:text-primary-foreground"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-          } @else {
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-          }
-        </button>
-      </div>
-      <router-outlet></router-outlet>
+      <app-header />
+      <main id="main-content" tabindex="-1">
+        <div [hidden]="!!modalPages.pageTemplate()"><router-outlet /></div>
+        <ng-container [ngTemplateOutlet]="modalPages.pageTemplate()" />
+      </main>
     } @else {
       <div class="fixed inset-0 z-[500] flex items-center justify-center bg-slate-950 text-slate-100">
         <div class="w-full max-w-sm rounded-xl border border-slate-800 bg-slate-900/80 p-6 shadow-2xl backdrop-blur">
@@ -60,6 +57,7 @@ const STORAGE_KEY = 'votes_password';
   `
 })
 export class App {
+  readonly modalPages = inject(ModalPageService);
   public themeService = inject(ThemeService);
   public unlocked = signal(false);
   public password = signal('');

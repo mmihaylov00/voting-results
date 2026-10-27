@@ -1,0 +1,4 @@
+:host { display: contents; }
+.profile-image { width: 64px; height: 64px; border-radius: .375rem; object-fit: cover; object-position: center 20%; }
+.profile-logo { padding: .375rem; background: white; object-fit: contain; object-position: center; }
+@media (max-width: 639px) { .profile-image { width: 56px; height: 56px; } }

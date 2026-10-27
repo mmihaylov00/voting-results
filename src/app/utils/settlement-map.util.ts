@@ -1,5 +1,8 @@
 import { Section } from '../models/election.models';
 import { MapMetric, MapPartyLeader, MapPreferenceLeader, MapAggregate } from './map-metric.helper';
+import { REGION_ID_TO_NAME } from './region-names';
+
+export { REGION_ID_TO_NAME };
 
 export const REGION_ID_TO_GEOMETRY_CODE: Record<string, string> = {
   '1': 'BLG',
@@ -36,40 +39,7 @@ export const REGION_ID_TO_GEOMETRY_CODE: Record<string, string> = {
   '32': '32',
 };
 
-export const REGION_ID_TO_NAME: Record<string, string> = {
-  '1': 'БЛАГОЕВГРАД',
-  '2': 'БУРГАС',
-  '3': 'ВАРНА',
-  '4': 'ВЕЛИКО ТЪРНОВО',
-  '5': 'ВИДИН',
-  '6': 'ВРАЦА',
-  '7': 'ГАБРОВО',
-  '8': 'ДОБРИЧ',
-  '9': 'КЪРДЖАЛИ',
-  '10': 'КЮСТЕНДИЛ',
-  '11': 'ЛОВЕЧ',
-  '12': 'МОНТАНА',
-  '13': 'ПАЗАРДЖИК',
-  '14': 'ПЕРНИК',
-  '15': 'ПЛЕВЕН',
-  '16': 'ПЛОВДИВ-ГРАД',
-  '17': 'ПЛОВДИВ-ОБЛАСТ',
-  '18': 'РАЗГРАД',
-  '19': 'РУСЕ',
-  '20': 'СИЛИСТРА',
-  '21': 'СЛИВЕН',
-  '22': 'СМОЛЯН',
-  '23': 'СОФИЯ 23 МИР',
-  '24': 'СОФИЯ 24 МИР',
-  '25': 'СОФИЯ 25 МИР',
-  '26': 'СОФИЯ-ОБЛАСТ',
-  '27': 'СТАРА ЗАГОРА',
-  '28': 'ТЪРГОВИЩЕ',
-  '29': 'ХАСКОВО',
-  '30': 'ШУМЕН',
-  '31': 'ЯМБОЛ',
-  '32': 'ИЗВЪН СТРАНАТА',
-};
+
 
 export const GEOMETRY_CODE_TO_REGION_ID: Record<string, string> = Object.fromEntries(
   Object.entries(REGION_ID_TO_GEOMETRY_CODE).map(([id, code]) => [code, id])

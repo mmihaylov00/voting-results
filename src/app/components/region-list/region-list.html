@@ -1,4 +1,4 @@
-<div class="mx-4 px-4 py-8">
+<div class="mx-auto max-w-[1800px] px-4 py-8 sm:px-8">
   @if (loading$ | async) {
     <div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
       <div class="w-full max-w-md px-8 text-center">
@@ -12,8 +12,8 @@
 
   <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
     <div>
-      <h1 hlmH2 class="border-b-0 pb-0 text-secondary dark:text-primary">Избор на район</h1>
-      <p hlmLead class="text-secondary/80 dark:text-foreground/80">Изберете многомандатен изборен район (МИР) за {{ dateName }}</p>
+      <h1 hlmH2 class="border-b-0 pb-0 text-secondary dark:text-primary">Резултати за {{ dateName }}</h1>
+      <p hlmLead class="text-secondary/80 dark:text-foreground/80">Цялата страна и чужбина</p>
     </div>
     <div class="flex flex-wrap justify-end gap-2 self-end">
       @if (getCikUrl()) {
@@ -22,22 +22,10 @@
           ЦИК
         </a>
       }
-      <a routerLink="/governmental" hlmBtn variant="default">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-          <path d="m12 19-7-7 7-7"/>
-          <path d="M19 12H5"/>
-        </svg>
-        Назад
-      </a>
-      <a routerLink="/" hlmBtn variant="default">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m3 9 9-7 9 7"/><path d="M9 22V12h6v10"/><path d="M21 22H3"/></svg>
-        Начало
-      </a>
     </div>
   </div>
 
-  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6" data-summary-cards>
     <app-stat-card
       label="Активност"
       [value]="avgActivity"
@@ -84,15 +72,23 @@
     </app-stat-card>
   </div>
 
-  <div class="mb-4 flex flex-wrap items-center gap-2 border-b border-primary/10">
-    <button hlmBtn [variant]="'line'" [attr.data-state]="overviewMode() === 'cards' ? 'active' : 'inactive'" (click)="setOverviewMode('cards')">
-      Списък
-    </button>
-    <button hlmBtn [variant]="'line'" [attr.data-state]="overviewMode() === 'map' ? 'active' : 'inactive'" (click)="setOverviewMode('map')">
-      Карта
-    </button>
-  </div>
-
+    <nav class="mb-6 flex flex-wrap gap-1 border-b border-border" aria-label="Изглед на резултатите">
+      @for (tab of overviewTabs; track tab.id) {
+        <button hlmBtn variant="line" class="gap-2" [attr.data-state]="leftPanel() === tab.id ? 'active' : 'inactive'"
+          [attr.aria-pressed]="leftPanel() === tab.id"
+          (click)="selectContentTab(tab.id)"><app-map-icon [name]="tab.icon" />{{ tab.label }}</button>
+      }
+    </nav>
+    @if (leftPanel() === 'cards') {
+      <nav aria-label="Изглед на списъка" class="mb-6 flex flex-wrap gap-1 border-b border-border lg:hidden">
+        <button hlmBtn variant="line" type="button" class="gap-2" [attr.data-state]="overviewMode() === 'cards' ? 'active' : 'inactive'" [attr.aria-pressed]="overviewMode() === 'cards'" (click)="setOverviewMode('cards')"><app-map-icon name="summary" />Списък</button>
+        <button hlmBtn variant="line" type="button" class="gap-2" [attr.data-state]="overviewMode() === 'map' ? 'active' : 'inactive'" [attr.aria-pressed]="overviewMode() === 'map'" (click)="setOverviewMode('map')"><app-map-icon name="region" />Карта</button>
+      </nav>
+    }
+  <div class="grid grid-cols-1 gap-6 lg:items-start" [class.lg:grid-cols-2]="!widePanel" data-map-workspace>
+    <section class="min-w-0">
+      <div [class.hidden]="!isLaptopLayout() && overviewMode() === 'map'">
+        <div [class.hidden]="leftPanel() !== 'cards'">
   <div class="flex justify-between mb-4 gap-4">
     <div class="max-w-48 w-full">
       <app-search-filter
@@ -100,13 +96,12 @@
         [value]="searchTerm"
         (valueChange)="searchTerm = $event; applyFilter()" />
     </div>
-    <a [routerLink]="['/governmental/election', date, 'all']" hlmBtn variant="outline" class="w-full sm:w-auto border-primary text-secondary hover:bg-primary/20 hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+    <a [routerLink]="['/' + electionType + '/election', date, 'all']" hlmBtn variant="outline" class="w-full sm:w-auto border-primary text-secondary hover:bg-primary/20 hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
       Всички секции
     </a>
   </div>
 
-  @if (overviewMode() === 'cards') {
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6">
       @for (region of filteredRegions; track region.id) {
         <div hlmCard class="flex flex-col h-full transition-all hover:shadow-xl border-primary/20 hover:border-primary/50 group">
           <div hlmCardHeader>
@@ -117,11 +112,18 @@
           <div hlmCardContent class="pt-0 flex-grow">
             <div class="flex flex-col text-xs mb-4 space-y-1">
               @for (tp of region.topParties; let i = $index; track tp.name) {
-                @let alias = getPartyAlias(tp.name);
-                <div class="flex justify-between items-center gap-2" [title]="alias + ': ' + tp.total + ' (' + formatActivity((tp.percentBp || 0) / 10000) + '%)'">
+                <div class="flex justify-between items-center gap-2">
                   <div class="flex items-center gap-2 min-w-0">
                     <span class="text-muted-foreground">{{ $index + 1 }}.</span>
-                    <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
+                    @if (tp.partyId !== '0' && tp.name !== 'Други') {
+                      <button type="button" class="min-w-0 rounded-sm text-left hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" [attr.aria-label]="'Отвори профил: ' + tp.name"
+                        [appContestantPreview]="partiesById[tp.partyId] || tp.name" [contestantPreviewDate]="date" [contestantPreviewPartyId]="tp.partyId"
+                        (click)="$event.stopPropagation(); openContestant(tp.name, tp.partyId)">
+                        <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
+                      </button>
+                    } @else {
+                      <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
+                    }
                   </div>
                   <span class="whitespace-nowrap"><strong class="me-1">{{ tp.total | number }}</strong> <span class="text-[10px] opacity-70">({{ formatActivity((tp.percentBp || 0) / 10000) }}%)</span></span>
                 </div>
@@ -137,7 +139,7 @@
                 <span class="font-medium text-foreground flex items-center" [hlmTooltip]="region.comparisons?.['voted']" [currentValue]="region.voted" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ region.voted | number }}</span>
               </div>
             </div>
-            <a [routerLink]="['/governmental/election', date, 'region', region.id]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground mt-auto">
+            <a [routerLink]="['/' + electionType + '/election', date, 'region', region.id]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground mt-auto">
               Виж резултати
             </a>
           </div>
@@ -149,77 +151,107 @@
         </div>
       }
     </div>
-  } @else {
-    <div hlmCard class="border-primary/20 p-4 md:p-6">
-      <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+
+        </div>
+        <div [class.hidden]="leftPanel() !== 'stats'">
+          <nav aria-label="Статистически графики" class="mb-6 flex flex-wrap gap-1 border-b border-border">
+            <button hlmBtn variant="line" type="button" [attr.data-state]="activeChart() === 'activity' ? 'active' : 'inactive'" [attr.aria-pressed]="activeChart() === 'activity'" (click)="setActiveChart('activity')">Активност и негласували</button>
+            <button hlmBtn variant="line" type="button" [attr.data-state]="activeChart() === 'party' ? 'active' : 'inactive'" [attr.aria-pressed]="activeChart() === 'party'" (click)="setActiveChart('party')">Резултати за {{ electionType === 'presidential' ? 'кандидат' : 'партия' }}</button>
+          </nav>
+          @if (activeChart() === 'party') {
+            <div class="mb-4 flex justify-end">
+              <app-party-filter [label]="electionType === 'presidential' ? 'Кандидат' : 'Партия'" position="right"
+                [parties]="allParties" [selectedPartyIds]="selectedPartyIds()" [showVotes]="true" [partyVotes]="partyVotesMap"
+                (selectedPartyIdsChange)="onPartySelectionChange($event)" />
+            </div>
+          }
+          <div hlmCard class="border-primary/20 p-4">
+            @if (visitedCharts().has('activity') && activityChartOptions.series) {
+              <div [class.hidden]="activeChart() !== 'activity'"><highcharts-chart [options]="activityChartOptions" style="width: 100%; height: 300px; display: block;" /></div>
+            }
+            @if (visitedCharts().has('party') && partyChartOptions.series) {
+              <div [class.hidden]="activeChart() !== 'party'"><highcharts-chart #partyChart [options]="partyChartOptions" [oneToOne]="true" style="width: 100%; height: 600px; display: block;" /></div>
+            }
+          </div>
+        </div>
+        <div [class.hidden]="leftPanel() !== 'history' && leftPanel() !== 'comparison'">
+  @if (analysisVisited()) {
+  <app-election-comparison [active]="leftPanel() === 'comparison'" [(mode)]="comparisonMode"
+    [sections]="mapSelection ? analysisSections : null"
+    [showAnalysis]="leftPanel() === 'history' || leftPanel() === 'comparison' && comparisonMode() === 'elections' || settlementMapMetric() === 'party-change'">
+  <ng-template>
+  <app-election-analysis
+    [view]="leftPanel() === 'comparison' ? 'comparison' : 'history'"
+    [date]="date"
+    [regionId]="mapSelection ? 'all' : null"
+    [sections]="analysisSections"
+    [parentSections]="mapSectionsLoaded ? mapSections : null"
+    [parties]="partiesById"
+    [selectedPartyId]="mapSelectedPartyId()"
+    [scopeLabel]="mapSelection?.label || 'Цялата страна и чужбина'"
+    (partyChange)="onAnalysisPartyChange($event)"
+    (comparisonChange)="mapComparison = $event"
+    (electionChange)="changeAnalysisElection($event)"
+    (sectionSelect)="focusAnalysisSection($event)"
+    (regionSelect)="focusAnalysisRegion($event)" />
+  </ng-template>
+  </app-election-comparison>
+  }
+        </div>
+      </div>
+      <app-election-tools [panel]="leftPanel()" [national]="electionType === 'governmental'" />
+    </section>
+    <aside class="min-w-0 lg:sticky lg:top-4" [class.hidden]="widePanel || !isLaptopLayout() && overviewMode() !== 'map'" aria-label="Карта на резултатите">
+      @if (isLaptopLayout() || overviewMode() === 'map') {
+    <div id="overview-map" hlmCard class="border-primary/20 p-3 scroll-mt-4">
+      @if (mapLoadError) {
+        <div role="alert" class="mb-4 flex flex-wrap items-center gap-3 text-sm text-destructive">
+          <span>{{ mapLoadError }}</span>
+          <button hlmBtn variant="outline" size="sm" (click)="loadMapSectionsIfNeeded()">Опитайте отново</button>
+        </div>
+      }
+      <div class="sr-only">
         @if (mapMode() === 'world') {
           <p hlmMuted>
             Световната карта показва градовете извън страната. Натискането върху град превключва към картата на съответната държава.
           </p>
         } @else {
           <p hlmMuted>
-            Натискането върху елемент от картата отваря съответния район.
+            Изберете място от картата, за да разгледате неговата статистика и история.
           </p>
         }
       </div>
 
+      @if (mapSelection) {
+        <div class="mb-4 flex flex-wrap items-center gap-3 text-sm" role="status">
+          <span>Избрано място: <strong>{{ mapSelection.label }}</strong> · {{ analysisSections?.length }} секции</span>
+          <a hlmBtn variant="outline" size="sm" [routerLink]="['/' + electionType + '/election', date, 'all']">Всички секции</a>
+          <button hlmBtn variant="outline" size="sm" (click)="clearMapSelection()">Изчисти избора</button>
+        </div>
+      }
+      @if (settlementMapMetric() === 'party-change') {
+        <p class="mb-4 text-sm text-muted-foreground">Промяна спрямо {{ mapComparison?.date || 'изборите, избрани в сравнението по-долу' }} в процентни пункта. Сиво: липсва съпоставима секция или партия.</p>
+      }
+
       @if (mapMode() === 'world') {
         <div class="relative">
-          <div class="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-primary/10 bg-muted/20 px-4 py-3">
-            <div class="flex flex-wrap gap-2">
-              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-party' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-party')">
-                Партии
-              </button>
-              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'summary' ? 'default' : 'outline'" (click)="setSettlementMapMetric('summary')">
-                Обобщение
-              </button>
-              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'activity' ? 'default' : 'outline'" (click)="setSettlementMapMetric('activity')">
-                Активност
-              </button>
-              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'risks' ? 'default' : 'outline'" (click)="setSettlementMapMetric('risks')">
-                Риск
-              </button>
-              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'invalid-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('invalid-votes')">
-                Недействителни
-              </button>
-              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'no-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('no-votes')">
-                Не подкрепям
-              </button>
-              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'machine-vs-paper' ? 'default' : 'outline'" (click)="setSettlementMapMetric('machine-vs-paper')">
-                Машини vs Хартия
-              </button>
-              <button
-                hlmBtn
-                size="sm"
-                title="Разлика между първата и втората партия като дял от избирателите"
-                [variant]="settlementMapMetric() === 'winner-margin' ? 'default' : 'outline'"
-                (click)="setSettlementMapMetric('winner-margin')">
-                Преднина на победителя
-              </button>
-              <div class="flex items-center gap-2">
-                <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'party-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('party-votes')">
-                  Гласове за партия
-                </button>
-                @if (settlementMapMetric() === 'party-votes') {
-                  <app-party-filter
-                    [parties]="regionalStats"
-                    [selectedPartyIds]="asSet(mapSelectedPartyId())"
-                    [singleSelect]="true"
-                    (selectedPartyIdsChange)="setMapSelectedPartyId(asArray($event)[0])"
-                  />
-                }
-              </div>
-            </div>
-          </div>
           <app-abroad-map
-            [sections]="abroadSections"
+            [belowThresholdPartyIds]="belowThresholdPartyIds"
+            [sections]="analysisSections ?? abroadSections"
             [partiesById]="partiesById"
             [metric]="settlementMapMetric()"
             [selectedPartyId]="mapSelectedPartyId()"
             [loading]="isWorldMapLoading()"
             [embedded]="true"
-            (citySelect)="onAbroadCitySelect($event)"
-            (countrySelect)="onAbroadCountrySelect($event)" />
+            [focusSectionId]="mapFocusSectionId"
+            [comparisonSections]="mapComparison?.sections ?? null"
+            [comparisonPartyId]="mapComparison?.partyId ?? null"
+            [exportContext]="{election: dateName, metricLabel: settlementMapMetric() === 'party-change' ? 'Промяна спрямо ' + (mapComparison?.date || '-') : undefined, place: mapSelection?.label || 'Извън страната'}"
+            (selectionChange)="onMapSelection($event)">
+            <app-map-metric-controls [metric]="settlementMapMetric()" [selectedPartyId]="mapSelectedPartyId()"
+              [parties]="allParties" [partyVotes]="partyVotesMap" [presidential]="electionType === 'presidential'"
+              (metricChange)="setSettlementMapMetric($event)" (partyChange)="setMapSelectedPartyId($event)" />
+          </app-abroad-map>
           <button
             type="button"
             class="absolute bottom-4 right-4 z-[500] inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-background/95 text-foreground shadow-lg transition-colors hover:bg-accent"
@@ -233,56 +265,8 @@
           </button>
         </div>
       } @else {
-        <div class="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-primary/10 bg-muted/20 px-4 py-3">
-          <div class="flex flex-wrap gap-2">
-            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-party' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-party')">
-              Партии
-            </button>
-            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'summary' ? 'default' : 'outline'" (click)="setSettlementMapMetric('summary')">
-              Обобщение
-            </button>
-            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-preference' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-preference')">
-              Преференции
-            </button>
-            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'activity' ? 'default' : 'outline'" (click)="setSettlementMapMetric('activity')">
-              Активност
-            </button>
-            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'risks' ? 'default' : 'outline'" (click)="setSettlementMapMetric('risks')">
-              Риск
-            </button>
-            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'invalid-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('invalid-votes')">
-              Недействителни
-            </button>
-            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'no-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('no-votes')">
-              Не подкрепям
-            </button>
-            <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'machine-vs-paper' ? 'default' : 'outline'" (click)="setSettlementMapMetric('machine-vs-paper')">
-              Машини vs Хартия
-            </button>
-            <button
-              hlmBtn
-              size="sm"
-              title="Разлика между първата и втората партия като дял от избирателите"
-              [variant]="settlementMapMetric() === 'winner-margin' ? 'default' : 'outline'"
-              (click)="setSettlementMapMetric('winner-margin')">
-              Преднина на победителя
-            </button>
-            <div class="flex items-center gap-2">
-              <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'party-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('party-votes')">
-                Гласове за партия
-              </button>
-              @if (settlementMapMetric() === 'party-votes') {
-                <app-party-filter
-                  [parties]="regionalStats"
-                  [selectedPartyIds]="asSet(mapSelectedPartyId())"
-                  [singleSelect]="true"
-                  (selectedPartyIdsChange)="setMapSelectedPartyId(asArray($event)[0])"
-                />
-              }
-            </div>
-          </div>
-        </div>
-        <app-settlement-map
+          <app-settlement-map
+          [belowThresholdPartyIds]="belowThresholdPartyIds"
           [settlements]="settlementMapData"
           [metric]="settlementMapMetric()"
           [selectedPartyId]="mapSelectedPartyId()"
@@ -291,48 +275,31 @@
           [allowUnresolvedFeatures]="true"
           [showWorldButton]="true"
           [showViewTabs]="true"
+          [selectedView]="mapView()"
+          (viewChange)="mapView.set($event)"
+          [focusSectionId]="mapFocusSectionId"
+          [comparisonSections]="mapComparison?.sections ?? null"
+          [comparisonPartyId]="mapComparison?.partyId ?? null"
+          [exportContext]="{election: dateName, metricLabel: settlementMapMetric() === 'party-change' ? 'Промяна спрямо ' + (mapComparison?.date || '-') : undefined, place: mapSelection?.label || 'България'}"
           (worldButtonClick)="openWorldMap()"
-          (areaSelect)="onSettlementMapAreaSelect($event)"
-          (sectionSelect)="onSettlementMapSectionSelect($event)"
-          (settlementSelect)="onSettlementSelect($event)" />
+          (selectionChange)="onMapSelection($event)">
+            <app-map-metric-controls [metric]="settlementMapMetric()" [selectedPartyId]="mapSelectedPartyId()"
+              [parties]="allParties" [partyVotes]="partyVotesMap" [presidential]="electionType === 'presidential'"
+              (metricChange)="setSettlementMapMetric($event)" (partyChange)="setMapSelectedPartyId($event)" />
+          </app-settlement-map>
       }
     </div>
-  }
-
-  <div hlmCard class="border-primary/20 p-6 mb-12">
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
-      <div class="flex flex-wrap gap-2">
-        <button hlmBtn [variant]="activeChart() === 'activity' ? 'default' : 'outline'" size="sm" (click)="activeChart.set('activity')">
-          Активност и негласували
-        </button>
-        <button hlmBtn [variant]="activeChart() === 'party' ? 'default' : 'outline'" size="sm" (click)="activeChart.set('party')">
-          Резултати за партия
-        </button>
-      </div>
-      @if (activeChart() === 'party') {
-        <app-party-filter
-          position="right"
-          [parties]="allParties"
-          [selectedPartyIds]="selectedPartyIds()"
-          [showVotes]="true"
-          [partyVotes]="partyVotesMap"
-          (selectedPartyIdsChange)="onPartySelectionChange($event)" />
       }
-    </div>
-
-    <div class="w-full">
-      @switch (activeChart()) {
-        @case ('activity') {
-          @if (activityChartOptions.series) {
-            <highcharts-chart [options]="activityChartOptions" style="width: 100%; height: 300px; display: block;"></highcharts-chart>
-          }
-        }
-        @case ('party') {
-          @if (partyChartOptions.series) {
-            <highcharts-chart #partyChart [options]="partyChartOptions" [oneToOne]="true" style="width: 100%; height: 600px; display: block;"></highcharts-chart>
-          }
-        }
-      }
-    </div>
+    </aside>
   </div>
 </div>
+
+@defer (when selectedContestant() || modalPages.isActive('contestant')) {
+  @if (selectedContestant() || modalPages.isActive('contestant')) {
+    <app-contestant-detail-modal
+      [partyName]="selectedContestant()?.partyName ?? ''"
+      [partyId]="selectedContestant()?.partyId ?? ''"
+      [currentDate]="date"
+      (close)="selectedContestant.set(null)" />
+  }
+}

@@ -1,0 +1,73 @@
+<div class="space-y-6">
+  <div class="flex flex-wrap items-center gap-4" role="group" aria-label="Филтри за преференции">
+    <div class="w-full sm:w-80">
+      <label class="sr-only" for="preference-directory-search">Търсене на кандидат или район</label>
+      <app-search-filter inputId="preference-directory-search" [value]="search()" (valueChange)="search.set($event)" placeholder="Кандидат или район..." />
+    </div>
+    <app-select class="w-full sm:w-64" label="Избори за преференции" icon="calendar" [value]="selectedDate()" [options]="dateOptions" (valueChange)="changeDate($event)" />
+    <app-select class="w-full sm:w-64" label="Партия за преференции" icon="users" [value]="selectedParty()" [options]="partyOptions()" [disabled]="loading()" (valueChange)="selectedParty.set($event)" />
+    <label class="flex shrink-0 cursor-pointer items-center gap-2 whitespace-nowrap text-sm">
+      <input #leaderFilter type="checkbox" class="h-4 w-4 accent-primary" [checked]="leadersOnly()" (change)="leadersOnly.set(leaderFilter.checked)" />
+      Само водачи на листата
+    </label>
+    @if (!loading() && !error()) {
+      <p class="ml-auto text-sm text-muted-foreground" aria-live="polite">{{ filteredCards().length | number }} от {{ entries().length | number }} профила</p>
+    }
+  </div>
+
+  @if (loading()) {
+    <p role="status" class="py-12 text-center text-muted-foreground">Зареждане на преференциите... {{ processed() }} / {{ dates.length }} избора</p>
+  } @else if (error()) {
+    <div role="alert" class="space-y-3 py-8">
+      <p>{{ error() }}</p>
+      <button hlmBtn variant="outline" type="button" (click)="load()">Опитай отново</button>
+    </div>
+  } @else {
+    <app-virtual-cards [items]="filteredCards()" label="Кандидати с преференции" emptyMessage="Няма профили за избраните избори и филтри.">
+      <ng-template let-entry>
+        <button hlmCard type="button" class="group flex h-full w-full flex-col gap-5 border-primary/20 p-5 text-left transition-colors hover:border-primary/50 hover:bg-muted/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          [attr.aria-label]="'Отвори профил: ' + entry.name" [appContestantPreview]="entry.name" [contestantPreviewDate]="entry.date"
+          [contestantPreviewPartyId]="entry.partyId" [contestantPreviewCandidate]="entry.candidate" [contestantPreviewRegion]="entry.regionLabel"
+          (click)="selectedCandidate.set(entry)">
+          <span class="flex w-full items-start gap-4">
+            <span class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md bg-muted text-lg font-semibold" aria-hidden="true">
+              @let image = imageFor(entry.name);
+              @if (image && !failedImages().has(image.src)) {
+                <img [src]="image.src" alt="" width="64" height="64" loading="lazy" decoding="async"
+                  [title]="image.author + ' · ' + image.license" class="h-full w-full object-cover object-[center_20%]" (error)="imageFailed(image.src)" />
+              } @else { {{ entry.initials }} }
+            </span>
+            <span class="min-w-0 space-y-2">
+              <span class="block break-words text-base font-semibold leading-snug">{{ entry.name }}</span>
+              <app-party-badge [partyName]="entry.partyName" size="xs" />
+              <span class="block text-xs text-muted-foreground">{{ entry.participationCount }} {{ entry.participationCount === 1 ? 'участие' : 'участия' }} в архива</span>
+            </span>
+          </span>
+          <span class="mt-auto block w-full space-y-3">
+            <span class="block text-xs text-muted-foreground">{{ selectedDate() === 'all' ? 'Последно участие' : 'Избрани избори' }} <span class="block font-medium text-foreground">{{ entry.electionName }}</span></span>
+            <span class="block text-xs text-muted-foreground">
+              @for (list of entry.lists; track list.regionId + ':' + list.candidateId) {
+                <span class="block">{{ list.regionName }} · № {{ list.candidateId }}</span>
+              }
+            </span>
+            <span class="grid grid-cols-2 gap-4 text-sm">
+              <span><span class="block text-xs text-muted-foreground">Преференции</span><span class="font-semibold tabular-nums">{{ entry.votes | number }}</span></span>
+              <span><span class="block text-xs text-muted-foreground">От партийните гласове</span><span class="font-semibold tabular-nums">{{ entry.share === null ? '-' : (entry.share | number:'1.2-2') + '%' }}</span></span>
+            </span>
+            <span class="flex items-center justify-between border-t border-border pt-3 text-sm font-medium"><span class="underline-offset-4 group-hover:underline">Виж профила</span><span aria-hidden="true">↗</span></span>
+          </span>
+        </button>
+      </ng-template>
+    </app-virtual-cards>
+    <p class="text-xs text-muted-foreground">Показани са последните резултати за всеки кандидат в избрания обхват. Преференциите от няколко района в едни избори са обединени.</p>
+  }
+</div>
+
+@defer (when selectedCandidate()) {
+  @if (selectedCandidate(); as selected) {
+    <app-candidate-detail-modal [candidate]="selected.candidate" [sections]="[]" [currentDate]="selected.date"
+      [pageRoute]="['/', 'governmental', 'election', selected.date, 'region', selected.lists[0].regionId]"
+      [pageQueryParams]="{ candidate: selected.partyId + '_' + selected.candidate.candidateId, panel: 'candidates' }"
+      (close)="selectedCandidate.set(null)" />
+  }
+}

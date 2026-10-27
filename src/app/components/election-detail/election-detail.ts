@@ -1,8 +1,11 @@
-import {Component, effect, OnInit, signal} from '@angular/core';
+import {ChangeDetectorRef, Component, computed, DestroyRef, effect, inject, OnInit, signal} from '@angular/core';
+import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {CommonModule} from '@angular/common';
-import {ActivatedRoute, RouterModule} from '@angular/router';
-import {Observable} from 'rxjs';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {distinctUntilChanged, map, Observable} from 'rxjs';
 import {ElectionService} from '../../services/election';
+import { ModalPageService } from '../../services/modal-page.service';
+import {getCikUrl} from '../../utils/election-links';
 import {ThemeService} from '../../services/theme.service';
 import {
   CandidateVotes,
@@ -19,8 +22,9 @@ import {
   ViewMode
 } from '../../models/election.models';
 import {filterSections} from '../../utils/election-utils';
+import {buildCandidateComparisonIndex, candidateComparisonKey} from '../../utils/candidate-comparisons.util';
 import {getPartyAlias} from '../../utils/party-aliases';
-import { getPartyColor } from '../../utils/party-colors';
+import { getPartyColor, getPartyDisplayName } from '../../utils/party-colors';
 import {copyToClipboard as copyToClipboardUtil, formatActivity, getGoogleMapsUrl} from '../../utils/common.utils';
 import {getDefaultSortDirection, sortArray} from '../../utils/table-sort.util';
 import {formatRiskMessage} from '../../utils/risk-message.util';
@@ -53,9 +57,9 @@ import {RiskCategory, RiskFilterDropdownComponent} from '../ui/risk-filter-dropd
 import {SearchFilterComponent} from '../ui/search-filter/search-filter';
 import {ColumnFilterComponent} from '../ui/column-filter/column-filter';
 import { PartyBadgeComponent } from '../ui/party-badge/party-badge';
-import { SettlementMapComponent } from '../ui/settlement-map/settlement-map';
+import { SettlementMapComponent, SettlementMapLevel } from '../ui/settlement-map/settlement-map';
 import { AbroadMapComponent } from '../ui/abroad-map/abroad-map';
-import { AbroadCityAggregate, AbroadCountryAggregate, aggregateAbroadSectionsByCity } from '../../utils/abroad-map.util';
+import { aggregateAbroadSectionsByCity } from '../../utils/abroad-map.util';
 import {
   SettlementAggregate,
   SettlementMapMetric,
@@ -63,6 +67,23 @@ import {
   getGeometryRegionCode,
 } from '../../utils/settlement-map.util';
 import { ABROAD_REGION_ID, splitAbroadLocation } from '../../utils/abroad-section.util';
+import { ElectionAnalysisComponent } from '../ui/election-analysis/election-analysis';
+import { ElectionPanel, electionToolTabs, isElectionTool, parseElectionPanel } from '../../utils/election-workspace.util';
+import { ElectionToolsComponent } from '../ui/election-tools/election-tools';
+import { ElectionComparisonComponent } from '../ui/election-comparison/election-comparison';
+import { MapSelection, restoreMapSelection } from '../../utils/map-interaction.util';
+import { MapComparison } from '../../utils/election-map-comparison.util';
+import { matchPartyId } from '../../utils/election-comparison.util';
+import { observeLaptopLayout } from '../../utils/laptop-layout';
+import { MapMetricControlsComponent } from '../ui/map-metric-controls/map-metric-controls';
+import { decodeElectionViewState, encodeElectionViewState, ElectionViewState } from '../../utils/election-view-state';
+import { MapMetric } from '../../utils/map-metric.helper';
+import { getBelowThresholdPartyIds } from '../../utils/below-threshold.util';
+import { MapIconComponent, MapIconName } from '../ui/map-icon/map-icon';
+import { ShareButtonComponent } from '../ui/share-button/share-button';
+import { VirtualTableDirective } from '../ui/virtual-table/virtual-table';
+import { ContestantDetailModalComponent } from '../contestant-detail-modal/contestant-detail-modal';
+import { ContestantPreviewDirective } from '../ui/contestant-preview/contestant-preview.directive';
 
 @Component({
   selector: 'app-election-detail',
@@ -71,8 +92,8 @@ import { ABROAD_REGION_ID, splitAbroadLocation } from '../../utils/abroad-sectio
     '(document:keydown.escape)': 'handleEscape()'
   },
   imports: [
+    ShareButtonComponent,
     CommonModule,
-    RouterModule,
     FormsModule,
     HlmButtonDirective,
     HlmTableDirective,
@@ -99,11 +120,22 @@ import { ABROAD_REGION_ID, splitAbroadLocation } from '../../utils/abroad-sectio
     PartyBadgeComponent,
     SettlementMapComponent,
     AbroadMapComponent,
+    ElectionAnalysisComponent,
+    ElectionToolsComponent,
+    ElectionComparisonComponent,
+    MapMetricControlsComponent,
+    MapIconComponent,
+    VirtualTableDirective,
+    ContestantDetailModalComponent,
+    ContestantPreviewDirective,
   ],
   templateUrl: './election-detail.html',
   styleUrl: './election-detail.scss',
 })
 export class ElectionDetailComponent implements OnInit {
+  readonly modalPages = inject(ModalPageService);
+  get electionType() { return this.electionService.electionType; }
+
   private readonly leaderCandidateId = '101';
   private isAllRegionsRoute = false;
   loading$: Observable<boolean>;
@@ -112,9 +144,61 @@ export class ElectionDetailComponent implements OnInit {
   dateName: string = '';
   regionName: string = '';
   sections: Section[] = [];
+  leftPanel = signal<ElectionPanel>('results');
+  readonly comparisonMode = signal<'elections' | 'parties'>('elections');
+  readonly isElectionTool = isElectionTool;
+  get widePanel(): boolean {
+    return this.leftPanel() !== 'results' || this.viewMode() !== 'sections';
+  }
+  readonly analysisInitialized = signal(false);
+  readonly analysisTabs = [
+    { id: 'stats', label: 'Статистика', icon: 'leading-party' }, { id: 'history', label: 'История', icon: 'history' },
+    { id: 'comparison', label: 'Сравнение', icon: 'party-change' },
+  ] as const satisfies ReadonlyArray<{ id: 'stats' | 'history' | 'comparison'; label: string; icon: MapIconName }>;
+  get contentTabs(): { id: Exclude<ViewMode, 'map'> | Exclude<ElectionPanel, 'results'>; label: string; icon: MapIconName }[] {
+    const tabs: { id: Exclude<ViewMode, 'map'> | Exclude<ElectionPanel, 'results'>; label: string; icon: MapIconName }[] = [
+      { id: 'sections', label: 'Секции', icon: 'section' }, { id: 'cities', label: 'Населени места', icon: 'settlement' },
+      { id: 'municipalities', label: this.municipalityPluralLabel, icon: 'municipality' },
+    ];
+    if (this.electionType !== 'presidential') tabs.push({ id: 'candidates', label: 'Кандидати', icon: 'leading-preference' });
+    return [...tabs, ...this.analysisTabs, ...electionToolTabs(this.electionType, !this.regionId)];
+  }
+
+  selectContentTab(tab: Exclude<ViewMode, 'map'> | Exclude<ElectionPanel, 'results'>): void {
+    if (tab === 'stats' || tab === 'history' || tab === 'comparison' || isElectionTool(tab)) this.setLeftPanel(tab);
+    else this.setViewMode(tab);
+    void this.router.navigate([], { relativeTo: this.route,
+      queryParams: { panel: this.leftPanel() === 'results' ? null : this.leftPanel() }, queryParamsHandling: 'merge', replaceUrl: true });
+  }
+  mobileMapVisible = signal(false);
+  mapView = signal<SettlementMapLevel>('sections');
+  readonly isLaptopLayout = observeLaptopLayout();
+  analysisSections: Section[] = [];
+  mapSelection: MapSelection | null = null;
+  mapFocusSectionId: string | null = null;
+  mapComparison: MapComparison | null = null;
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly changeDetector = inject(ChangeDetectorRef);
+  private candidateComparisonsAbort?: AbortController;
+  private loadVersion = 0;
+  private statsVersion = 0;
+  private sectionsReady = false;
+  private partiesReady = false;
+  private pendingViewParams: Params = {};
+  private restoredViewParams: Params | null = null;
+  private restoredViewVersion = -1;
+  private mapDataSections: Section[] | null = null;
+  private mapDataParties: Record<string, string> | null = null;
+  baselineDate = '';
+  historyMetric: 'share' | 'turnout' | 'invalid' | 'machine' | 'margin' | 'topParties' = 'share';
+  shareMessage = signal('');
+  detailError = signal('');
+  private sectionDetailRequest = 0;
+  belowThresholdPartyIds: ReadonlySet<string> | null = null;
   filteredSections: Section[] = [];
   selectedSection: SectionDetails | null = null;
   selectedCandidate: RegionCandidate | null = null;
+  readonly selectedContestant = signal<{ partyName: string; partyId: string } | null>(null);
   isCandidateModalOpen = signal<boolean>(false);
   searchTerm: string = '';
   activeTab = signal<SectionTab>('all');
@@ -139,6 +223,7 @@ export class ElectionDetailComponent implements OnInit {
 
   selectedPartyIds: Set<string> = new Set();
   allParties: { id: string, name: string }[] = [];
+  analysisParties: Record<string, string> = {};
   isModalOpen = signal<boolean>(false);
   isExportModalOpen = signal<boolean>(false);
   isErrorModalOpen = signal<boolean>(false);
@@ -147,10 +232,13 @@ export class ElectionDetailComponent implements OnInit {
   settlementMapMetric = signal<SettlementMapMetric>('leading-party');
   mapSelectedPartyId = signal<string | null>(null);
   regionalStats = signal<{ id: string, name: string, total: number }[]>([]);
+  readonly partyVotesMap = computed(() => Object.fromEntries(this.regionalStats().map(party => [party.id, party.total])));
   settlementMapData: SettlementAggregate[] = [];
   regionalChartOptions: Highcharts.Options = {};
   activityChartOptions: Highcharts.Options = {};
   ppdbChartOptions: Highcharts.Options = {};
+  readonly activeChart = signal<'votes' | 'ppdb' | 'activity'>('votes');
+  readonly visitedCharts = signal(new Set<'votes' | 'ppdb' | 'activity'>());
 
   availableColumns = SECTION_COLUMNS;
   visibleColumns = signal<Set<string>>(new Set(SECTION_COLUMNS.map(c => c.id)));
@@ -354,11 +442,11 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   get canShowMap(): boolean {
-    return !!this.regionId && this.regionId !== 'all';
+    return this.sections.length > 0;
   }
 
   get abroadMapCityCount(): number {
-    return aggregateAbroadSectionsByCity(this.sections, this.getPartiesById()).length;
+    return aggregateAbroadSectionsByCity(this.analysisSections, this.getPartiesById()).length;
   }
 
   get settlementMapRegionCode(): string {
@@ -386,11 +474,7 @@ export class ElectionDetailComponent implements OnInit {
   ];
 
   getCikUrl(): string {
-    if (this.date.startsWith('2023.04')) return 'https://results.cik.bg/ns2023/search/index.html#';
-    if (this.date.startsWith('2024.06')) return 'https://results.cik.bg/europe2024/search/index.html';
-    if (this.date.startsWith('2024.10')) return 'https://results.cik.bg/pe202410/search/index.html';
-    if (this.date.startsWith('2026.04')) return 'https://results.cik.bg/pe202604/search/index.html';
-    return '';
+    return getCikUrl(this.date);
   }
 
   private readonly DEFAULT_KEYWORDS = ["ГЕРБ", "ПРОДЪЛЖАВАМЕ", "ПРОГРЕСИВНА", "ПБ", "ВЪЗРАЖДАНЕ", "ДПС", "БСП", "ТАКЪВ НАРОД", "МЕЧ", "ВЕЛИЧИЕ"];
@@ -402,26 +486,36 @@ export class ElectionDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private electionService: ElectionService,
-    public themeService: ThemeService
+    public themeService: ThemeService,
+    private router: Router,
   ) {
-    this.loading$ = this.electionService.loading$;
+    this.destroyRef.onDestroy(() => this.candidateComparisonsAbort?.abort());
+    this.loading$ = toObservable(computed(() => this.isProcessingData() || this.isLoadingAllSections()));
+    if (this.electionType === 'presidential') {
+      this.availableColumns = SECTION_COLUMNS.filter(c => c.id !== 'topCandidates' && c.id !== 'votesToFirst')
+        .map(c => c.id === 'topParties' ? { ...c, label: 'Топ 3 кандидати' } : c);
+      this.visibleColumns.set(new Set(this.availableColumns.map(c => c.id)));
+    }
 
     effect(() => {
       // Re-calculate charts options when theme changes
       this.themeService.darkMode();
       if (this.regionalChartOptions.series) {
-        this.calculateRegionalStats();
+        this.calculateRegionalStats(this.analysisSections);
       }
     });
 
     effect(() => {
-      const anyModalOpen = this.isModalOpen() || this.isExportModalOpen() || this.isErrorModalOpen();
+      const anyModalOpen = !this.modalPages.isPage(this.modalPages.activeId() ?? '')
+        && (this.isModalOpen() || this.isCandidateModalOpen() || this.isExportModalOpen() || this.isErrorModalOpen());
       if (anyModalOpen) {
         document.body.classList.add('overflow-hidden');
       } else {
         document.body.classList.remove('overflow-hidden');
       }
     });
+
+    this.destroyRef.onDestroy(() => document.body.classList.remove('overflow-hidden'));
 
   }
 
@@ -450,7 +544,7 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   private isNationalView(): boolean {
-    return this.isAllRegionsRoute;
+    return this.isAllRegionsRoute && !this.mapSelection && this.analysisSections.length === this.sections.length;
   }
 
   private getEffectiveTotalElectors(sections: Section[]): number {
@@ -486,6 +580,11 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
+      this.pendingViewParams = params;
+      this.comparisonMode.set(params['comparison'] === 'parties' ? 'parties' : 'elections');
+      this.restoreSharedView();
+    });
     const visibleColumns = loadVisibleColumns(
       'visible_columns',
       this.availableColumns.map(column => column.id),
@@ -505,19 +604,58 @@ export class ElectionDetailComponent implements OnInit {
       visibleCandidateColumns ?? new Set(this.candidateColumns.map(column => column.id))
     );
 
-    this.date = this.route.snapshot.paramMap.get('date') || '';
-    this.regionId = this.route.snapshot.paramMap.get('regionId') || '';
-    this.isAllRegionsRoute = this.route.snapshot.routeConfig?.path === 'election/:date/all';
-    this.dateName = this.electionService.getDates().find(d => d.date === this.date)?.name ?? this.date;
-
     // Load all election data for comparisons
-    this.electionService.getAllFullData().subscribe(data => {
+    this.electionService.getAllFullData().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
       this.allData = data;
-      if (this.sections.length > 0) {
+      this.updateThresholdParties();
+      if (this.sections.length > 0 && (this.viewMode() === 'candidates'
+        || (this.isAbroadRegion && this.isMunicipalityGrouping()))) {
         this.applyFilter();
       }
+      this.changeDetector.markForCheck();
     });
 
+    this.route.paramMap.pipe(
+      map(params => ({ date: params.get('date') || '', regionId: params.get('regionId') || '' })),
+      distinctUntilChanged((previous, current) => previous.date === current.date && previous.regionId === current.regionId),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe(({ date, regionId }) => {
+      this.date = date;
+      this.regionId = regionId;
+      this.isAllRegionsRoute = this.route.snapshot.routeConfig?.path === 'election/:date/all';
+      this.dateName = this.electionService.getDates().find(d => d.date === this.date)?.name ?? this.date;
+      this.loadElection();
+    });
+  }
+
+  private loadElection(): void {
+    this.sectionsReady = false;
+    this.partiesReady = false;
+    this.updateThresholdParties();
+    const version = ++this.loadVersion;
+    const previousSections = this.sections;
+    const previousSelection = this.mapSelection;
+    const previousPartyName = this.analysisParties[this.mapSelectedPartyId() ?? ''];
+    this.sections = [];
+    this.regionCandidates = [];
+    this.groupedSections = [];
+    this.analysisSections = [];
+    this.filteredSections = [];
+    this.settlementMapData = [];
+    this.mapSelection = null;
+    this.mapFocusSectionId = null;
+    this.mapComparison = null;
+    this.selectedPartyIds = new Set();
+    this.allParties = [];
+    this.analysisParties = {};
+    this.mapSelectedPartyId.set(null);
+    this.calculateAvgActivity([]);
+    this.calculateRegionalStats([]);
+    this.closeModal();
+    this.closeCandidateModal();
+    this.closeExportModal();
+    this.closeErrorModal();
+    this.selectedContestant.set(null);
     if (this.date) {
       // Show loading when loading all sections
       if (this.regionId === 'all' || !this.regionId) {
@@ -530,7 +668,10 @@ export class ElectionDetailComponent implements OnInit {
         next: (sections) => {
           // Use setTimeout to allow UI to update and show loading state
           setTimeout(() => {
+            if (version !== this.loadVersion) return;
             this.sections = sections;
+            this.sectionsReady = true;
+            this.mapSelection = restoreMapSelection(previousSelection, previousSections, sections);
             if (this.sections.length > 0) {
               if (this.regionId && this.regionId !== 'all') {
                 this.regionName = this.formatRegionName((this.sections[0] as any).regionName);
@@ -539,23 +680,23 @@ export class ElectionDetailComponent implements OnInit {
               }
             }
             this.applyFilter();
-            this.sortSections(this.sectionSortColumn, true);
-            if (this.viewMode() === 'candidates') {
-              this.calculateRegionCandidates();
-              this.applyCandidateFilter();
-            }
             this.updateSettlementMapData();
+            this.restoreSharedView();
             this.isLoadingAllSections.set(false);
             this.isProcessingData.set(false);
           }, 0);
         },
         error: (err) => {
+          if (version !== this.loadVersion) return;
           console.error('Error loading sections:', err);
           this.isLoadingAllSections.set(false);
           this.isProcessingData.set(false);
         }
       });
       this.electionService.getParties(this.date).subscribe(partiesMap => {
+        if (version !== this.loadVersion) return;
+        this.analysisParties = partiesMap;
+        if (previousPartyName) this.mapSelectedPartyId.set(matchPartyId(previousPartyName, partiesMap));
         this.allParties = Object.entries(partiesMap)
           .map(([id, name]) => ({id, name}))
           .filter(p => p.id !== '0')
@@ -575,15 +716,166 @@ export class ElectionDetailComponent implements OnInit {
         const defaultCandidateParties = new Set<string>();
         this.allParties.forEach(party => {
           const name = party.name.toUpperCase();
-          if (this.DEFAULT_KEYWORDS.some(k => name.includes(k))) {
+          if (this.electionType === 'presidential' || this.DEFAULT_KEYWORDS.some(k => name.includes(k))) {
             this.selectedPartyIds.add(party.id);
             defaultCandidateParties.add(party.id);
           }
         });
         this.selectedCandidatePartyIds.set(defaultCandidateParties);
+        this.partiesReady = true;
+        this.restoreSharedView();
         this.updateSettlementMapData();
       });
     }
+  }
+
+  private captureViewState(): ElectionViewState {
+    return {
+      view: this.viewMode() === 'map' ? 'sections' : this.viewMode() as Exclude<ViewMode, 'map'>,
+      panel: this.leftPanel(), map: this.mobileMapVisible(), mapLevel: this.mapView(), party: this.mapSelectedPartyId(),
+      search: this.searchTerm, tab: this.activeTab(), activity: this.lowActivityThreshold, operator: this.activityOperator(),
+      types: [...this.selectedSectionTypes()], risk: this.riskFilterType(), categories: [...this.selectedRiskCategories()], parties: [...this.selectedPartyIds],
+      candidateSearch: this.candidateSearchTerm, candidateParties: [...this.selectedCandidatePartyIds()],
+      preference: this.candidatePreferenceThreshold, preferenceOperator: this.candidatePreferenceOperator(), leaders: this.showLeadersOnly(),
+      candidateRisk: this.candidateRiskFilterType(), candidateCategories: [...this.selectedCandidateRiskCategories()],
+      columns: [...this.visibleColumns()], candidateColumns: [...this.visibleCandidateColumns()],
+      sort: this.sectionSortColumn, ascending: this.sectionSortDir === 'asc', candidateSort: this.candidateSortColumn, candidateAscending: this.candidateSortDir === 'asc',
+      selection: this.mapSelection,
+    };
+  }
+
+  modalPageQueryParams(view: 'section' | 'candidate' | 'export' | 'protocol-errors'): Params {
+    const current = this.currentSectionData;
+    const group = current && 'sections' in current && Array.isArray(current.sections) ? current.sections : null;
+    return {
+      analysis: encodeElectionViewState(this.captureViewState()),
+      metric: this.settlementMapMetric(), baseline: this.baselineDate || null, historyMetric: this.historyMetric,
+      section: view === 'section' && !group ? current?.sectionId : null,
+      group: view === 'section' && group ? group[0]?.sectionId : null,
+      candidate: view === 'candidate' && this.selectedCandidate
+        ? `${this.selectedCandidate.partyId}_${this.selectedCandidate.candidateId}` : null,
+    };
+  }
+
+  private restoreModalPage(params: Params, previous: Params | null): void {
+    if (previous && ['dialog', 'section', 'group', 'candidate'].every(key => previous[key] === params[key])) return;
+    const view = params['dialog'];
+    if (!['section', 'candidate', 'export', 'protocol-errors'].includes(view)) return;
+    if (view !== 'section') this.closeModal();
+    if (view !== 'candidate') this.closeCandidateModal();
+    this.isExportModalOpen.set(view === 'export');
+    this.isErrorModalOpen.set(view === 'protocol-errors');
+    if (view === 'section') {
+      const section = params['group']
+        ? this.groupedSections.find(group => group.sections.some((section: Section) => section.sectionId === params['group']))
+        : this.sections.find(section => section.sectionId === params['section']);
+      if (section && (!this.isModalOpen() || this.currentSectionData !== section)) this.loadSectionDetails(section);
+      else if (!section) this.closeModal();
+    } else if (view === 'candidate' && this.electionType !== 'presidential') {
+      const key = (candidate: RegionCandidate) => `${candidate.partyId}_${candidate.candidateId}`;
+      if (this.selectedCandidate && key(this.selectedCandidate) === params['candidate']) return;
+      if (!this.regionCandidates.length) this.calculateRegionCandidates();
+      const candidate = this.regionCandidates.find(candidate => key(candidate) === params['candidate']);
+      if (candidate) this.openCandidateModal(candidate);
+      else this.closeCandidateModal();
+    }
+  }
+
+  private restoreSharedView(): void {
+    if (!this.sectionsReady || !this.partiesReady) return;
+    const params = this.pendingViewParams;
+    const previous = this.restoredViewVersion === this.loadVersion ? this.restoredViewParams : null;
+    this.restoredViewParams = params;
+    this.restoredViewVersion = this.loadVersion;
+    const state = decodeElectionViewState(params['analysis']);
+    if (state && (!previous || previous['analysis'] !== params['analysis'])) {
+      const validPartyIds = new Set(Object.keys(this.analysisParties));
+      this.searchTerm = state.search;
+      this.activeTab.set(this.electionType === 'presidential' && !['all', 'risky', 'outside'].includes(state.tab) ? 'all' : state.tab);
+      this.lowActivityThreshold = state.activity;
+      this.activityOperator.set(state.operator);
+      this.selectedSectionTypes.set(new Set(state.types));
+      this.riskFilterType.set(state.risk);
+      this.selectedRiskCategories.set(new Set(state.categories));
+      this.selectedPartyIds = new Set(state.parties.filter(id => validPartyIds.has(id)));
+      this.candidateSearchTerm = state.candidateSearch;
+      this.selectedCandidatePartyIds.set(new Set(state.candidateParties.filter(id => validPartyIds.has(id))));
+      this.candidatePreferenceThreshold = state.preference;
+      this.candidatePreferenceOperator.set(state.preferenceOperator);
+      this.showLeadersOnly.set(state.leaders);
+      this.candidateRiskFilterType.set(state.candidateRisk);
+      this.selectedCandidateRiskCategories.set(new Set(state.candidateCategories));
+      this.visibleColumns.set(new Set(state.columns.filter(id => this.availableColumns.some(column => column.id === id))));
+      this.visibleCandidateColumns.set(new Set(state.candidateColumns.filter(id => this.candidateColumns.some(column => column.id === id))));
+      if (this.availableColumns.some(column => column.id === state.sort)) this.sectionSortColumn = state.sort as keyof Section;
+      this.sectionSortDir = state.ascending ? 'asc' : 'desc';
+      if (this.candidateColumns.some(column => column.id === state.candidateSort)) this.candidateSortColumn = state.candidateSort as keyof RegionCandidate | 'risks';
+      this.candidateSortDir = state.candidateAscending ? 'asc' : 'desc';
+      const ids = new Set(this.sections.map(section => section.sectionId));
+      this.mapSelection = state.selection ? { ...state.selection, sectionIds: state.selection.sectionIds.filter(id => ids.has(id)) } : null;
+      this.mapSelectedPartyId.set(state.party && validPartyIds.has(state.party) ? state.party : null);
+      this.mapView.set(state.mapLevel);
+      this.viewMode.set(state.map && state.panel === 'results'
+        || state.view === 'candidates' && this.electionType === 'presidential' ? 'sections' : state.view);
+      this.groupByMode.set(this.viewMode() === 'cities' ? 'city' : this.viewMode() === 'municipalities' ? 'municipality' : 'none');
+      this.leftPanel.set(parseElectionPanel(state.panel, this.electionType, !this.regionId) ?? 'results');
+      if (state.panel === 'history' || state.panel === 'comparison') this.analysisInitialized.set(true);
+      this.mobileMapVisible.set(state.map);
+      this.applyFilter();
+    }
+    if (!previous || previous['panel'] !== params['panel']) {
+      const panel = parseElectionPanel(params['panel'], this.electionType, !this.regionId);
+      if (panel && panel !== 'results') this.setLeftPanel(panel);
+      else if (previous?.['panel']) this.setViewMode(this.viewMode());
+    }
+    if (!previous || previous['metric'] !== params['metric']) {
+      const metrics: MapMetric[] = ['leading-party', 'leading-preference', 'summary', 'activity', 'risks', 'party-votes', 'invalid-votes', 'no-votes', 'machine-vs-paper', 'winner-margin', 'party-change', 'below-threshold'];
+      const metric = metrics.find(metric => metric === params['metric']);
+      if (metric && !(this.electionType === 'presidential' && (metric === 'leading-preference' || metric === 'below-threshold'))) this.setSettlementMapMetric(metric);
+      if (params['metric'] === 'below-threshold' && !state) this.mobileMapVisible.set(true);
+    }
+    if (!previous || previous['baseline'] !== params['baseline']) {
+      const current = this.electionService.getDates().find(election => election.date === this.date);
+      this.baselineDate = this.electionService.getDates().find(election => election.date === params['baseline'] && election.date !== this.date && election.round === current?.round)?.date ?? '';
+    }
+    if (!previous || previous['historyMetric'] !== params['historyMetric']) {
+      const historyMetrics = ['share', 'turnout', 'invalid', 'machine', 'margin', 'topParties'] as const;
+      this.historyMetric = historyMetrics.find(metric => metric === params['historyMetric']) ?? 'share';
+    }
+    if (!params['dialog'] && (!previous || previous['section'] !== params['section'])) {
+      const section = this.sections.find(section => section.sectionId === params['section']);
+      if (section && (!this.isModalOpen() || this.currentSectionData?.sectionId !== section.sectionId)) this.loadSectionDetails(section);
+    }
+    this.restoreModalPage(params, previous);
+  }
+
+  readonly shareView = async (): Promise<boolean> => {
+    const state = this.captureViewState();
+    const encoded = encodeElectionViewState(state);
+    const restored = decodeElectionViewState(encoded);
+    if (!restored || (state.selection && !restored.selection)) {
+      this.shareMessage.set('Изборът е твърде голям за линк. Изберете по-малка територия и опитайте отново.');
+      return false;
+    }
+    const tree = this.router.createUrlTree([], {
+      relativeTo: this.route,
+      queryParams: {
+        ...this.route.snapshot.queryParams,
+        analysis: encoded, metric: this.settlementMapMetric(),
+        baseline: this.baselineDate || null, historyMetric: this.historyMetric,
+        section: this.isModalOpen() && this.sections.some(section => section === this.currentSectionData) ? this.currentSectionData?.sectionId : null,
+      },
+    });
+    await this.router.navigateByUrl(tree, { replaceUrl: true });
+    const copied = await copyToClipboardUtil(new URL(this.router.serializeUrl(tree), window.location.origin).href);
+    this.shareMessage.set(copied ? '' : 'Изгледът е запазен в адреса. Копирайте адреса от браузъра.');
+    return copied;
+  };
+
+  private updateThresholdParties(): void {
+    const data = this.allData[this.date];
+    this.belowThresholdPartyIds = this.electionType === 'governmental' && data
+      ? getBelowThresholdPartyIds(data.regions, data.parties) : null;
   }
 
   applyFilter(): void {
@@ -622,7 +914,14 @@ export class ElectionDetailComponent implements OnInit {
       }
     });
 
-    const result = filterSections(this.sections, filters, regionAvgTurnoutById);
+    let result = filterSections(this.sections, filters, regionAvgTurnoutById);
+    if (this.mapSelection) {
+      const selectedIds = new Set(this.mapSelection.sectionIds);
+      result = result.filter(section => selectedIds.has(section.sectionId));
+    }
+    if (result.length !== this.analysisSections.length || result.some((section, index) => section !== this.analysisSections[index])) {
+      this.analysisSections = result;
+    }
 
     if (this.groupByCity()) {
       const groupMode = this.groupByMode();
@@ -870,7 +1169,7 @@ export class ElectionDetailComponent implements OnInit {
       });
       this.filteredSections = this.groupedSections;
     } else {
-      this.filteredSections = result;
+      this.filteredSections = [...result];
     }
 
     this.sortSections(this.sectionSortColumn, true);
@@ -891,74 +1190,28 @@ export class ElectionDetailComponent implements OnInit {
 
   allData: { [date: string]: { sections: Section[], parties: { [id: string]: string }, regions: Region[] } } = {};
 
-  calculateCandidateComparisons(candidate: RegionCandidate): void {
-    // Skip if allData is not loaded yet
-    if (Object.keys(this.allData).length === 0) return;
-
-    const dates = this.electionService.getDates();
-    const comparisons: ComparativeValue[] = [];
-    const paperComparisons: ComparativeValue[] = [];
-    const machineComparisons: ComparativeValue[] = [];
-
-    // Normalize candidate name and party for matching
-    const candidateNameLower = candidate.candidateName.trim().toLowerCase();
-    const candidatePartyLower = candidate.partyName.trim().toLowerCase();
-
-    // Collect comparisons for all other dates
-    dates.forEach(dateInfo => {
-      if (dateInfo.date === this.date) return; // Skip current date
-
-      const otherDateData = this.allData[dateInfo.date];
-      if (!otherDateData || !otherDateData.sections) return;
-
-      // Find candidate in other election by matching name and party
-      let foundTotal = 0;
-      let foundPaper = 0;
-      let foundMachine = 0;
-
-      // Filter sections by region if we have a specific region
-      const otherSections = this.regionId && this.regionId !== 'all'
-        ? otherDateData.sections.filter(s => s.regionId === this.regionId)
-        : otherDateData.sections;
-
-      // Optimize: only process sections that have candidateVotes
-      for (const section of otherSections) {
-        if (!section.candidateVotes) continue;
-
-        for (const otherCandidate of Object.values(section.candidateVotes)) {
-          // Match by candidate name and party name (case-insensitive, trimmed)
-          const nameMatches = otherCandidate.candidateName.trim().toLowerCase() === candidateNameLower;
-          const partyMatches = otherCandidate.partyName.trim().toLowerCase() === candidatePartyLower;
-
-          if (nameMatches && partyMatches) {
-            foundTotal += otherCandidate.total;
-            foundPaper += otherCandidate.paper;
-            foundMachine += otherCandidate.machine;
-            break; // Found match, no need to check other candidates in this section
-          }
-        }
+  private async updateCandidateComparisons(candidates: RegionCandidate[], signal: AbortSignal): Promise<void> {
+    const date = this.date;
+    const regionId = this.regionId;
+    const history = this.allData;
+    try {
+      const index = await buildCandidateComparisonIndex(candidates, history, date, regionId, signal);
+      if (signal.aborted || this.destroyRef.destroyed || this.date !== date
+        || this.regionId !== regionId || this.allData !== history || this.regionCandidates !== candidates) return;
+      for (const candidate of candidates) {
+        const values = index.get(candidateComparisonKey(candidate));
+        candidate.comparisons = values?.comparisons.length ? values.comparisons : 'Не е участвал в други избори';
+        candidate.paperComparisons = values?.paperComparisons.length ? values.paperComparisons : 'Не е участвал в други избори';
+        candidate.machineComparisons = values?.machineComparisons.length ? values.machineComparisons : 'Не е участвал в други избори';
       }
-
-      if (foundTotal > 0) {
-        comparisons.push({v: foundTotal, d: dateInfo.date});
-        paperComparisons.push({v: foundPaper, d: dateInfo.date});
-        machineComparisons.push({v: foundMachine, d: dateInfo.date});
-      }
-    });
-
-    // Ensure comparisons are sorted by date (newest first)
-    // The `dates` array is already newest first, so they should be in order, but let's be safe
-    const sortByDate = (a: ComparativeValue, b: ComparativeValue) => b.d.localeCompare(a.d);
-    comparisons.sort(sortByDate);
-    paperComparisons.sort(sortByDate);
-    machineComparisons.sort(sortByDate);
-
-    candidate.comparisons = comparisons.length > 0 ? comparisons : 'Не е участвал в други избори';
-    candidate.paperComparisons = paperComparisons.length > 0 ? paperComparisons : 'Не е участвал в други избори';
-    candidate.machineComparisons = machineComparisons.length > 0 ? machineComparisons : 'Не е участвал в други избори';
+      this.changeDetector.markForCheck();
+    } catch (error) {
+      if (!signal.aborted) console.error('Error calculating candidate comparisons:', error);
+    }
   }
 
   calculateRegionCandidates(): void {
+    this.candidateComparisonsAbort?.abort();
     if (!this.sections || this.sections.length === 0) {
       this.regionCandidates = [];
       return;
@@ -982,6 +1235,7 @@ export class ElectionDetailComponent implements OnInit {
     this.sections.forEach(section => {
       if (section.candidateVotes) {
         Object.values(section.candidateVotes).forEach(candidate => {
+          regionPartyPreferenceVotes[candidate.partyId] = (regionPartyPreferenceVotes[candidate.partyId] || 0) + candidate.total;
           const key = `${candidate.partyId}_${candidate.candidateId}`;
 
           if (!candidateMap[key]) {
@@ -1058,20 +1312,6 @@ export class ElectionDetailComponent implements OnInit {
     Object.values(candidateMap).forEach(candidate => {
       candidate.totalInRegion = candidate.total;
 
-      // Calculate party preference votes in region
-      if (!regionPartyPreferenceVotes[candidate.partyId]) {
-        regionPartyPreferenceVotes[candidate.partyId] = 0;
-        this.sections.forEach(section => {
-          if (section.candidateVotes) {
-            Object.values(section.candidateVotes).forEach(c => {
-              if (c.partyId === candidate.partyId) {
-                regionPartyPreferenceVotes[candidate.partyId] += c.total;
-              }
-            });
-          }
-        });
-      }
-
       const partyTotalInRegion = regionPartyVotes[candidate.partyId] || 0;
       const partyPreferenceVotesInRegion = regionPartyPreferenceVotes[candidate.partyId] || 0;
 
@@ -1082,14 +1322,9 @@ export class ElectionDetailComponent implements OnInit {
     this.regionCandidates = Object.values(candidateMap);
     this.sortCandidates(this.candidateSortColumn, true);
 
-    // Calculate comparisons asynchronously after candidates are displayed
-    // This prevents freezing the UI
     if (Object.keys(this.allData).length > 0) {
-      setTimeout(() => {
-        this.regionCandidates.forEach(candidate => {
-          this.calculateCandidateComparisons(candidate);
-        });
-      }, 0);
+      this.candidateComparisonsAbort = new AbortController();
+      void this.updateCandidateComparisons(this.regionCandidates, this.candidateComparisonsAbort.signal);
     }
   }
 
@@ -1187,9 +1422,7 @@ export class ElectionDetailComponent implements OnInit {
       valGetter
     );
 
-    // Update the array in place
-    this.filteredCandidates.length = 0;
-    this.filteredCandidates.push(...sorted);
+    this.filteredCandidates = sorted;
   }
 
   onCandidatePartySelectionChange(selectedIds: Set<string>): void {
@@ -1236,7 +1469,7 @@ export class ElectionDetailComponent implements OnInit {
     this.filteredCandidates.forEach(candidate => {
       if (!partyCandidateVotes[candidate.partyId]) {
         partyCandidateVotes[candidate.partyId] = {
-          name: getPartyAlias(candidate.partyName),
+          name: getPartyDisplayName(candidate.partyName),
           total: 0
         };
       }
@@ -1356,7 +1589,7 @@ export class ElectionDetailComponent implements OnInit {
         const partyTotal = regionPartyVotes[partyId];
         const preferenceTotal = regionPartyPreferenceVotes[partyId] || 0;
         partyPreferencePercent[partyId] = {
-          name: getPartyAlias(party.name),
+          name: getPartyDisplayName(party.name),
           percent: partyTotal > 0 ? (preferenceTotal / partyTotal) * 100 : 0
         };
       }
@@ -1475,6 +1708,17 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   setViewMode(mode: ViewMode): void {
+    if (mode === 'map') {
+      const mapLevel = this.mapView();
+      this.setViewMode('sections');
+      this.mapView.set(mapLevel);
+      this.mobileMapVisible.set(true);
+      return;
+    }
+    this.mobileMapVisible.set(false);
+    this.leftPanel.set('results');
+    if (mode === 'cities' || mode === 'municipalities' || mode === 'sections') this.mapView.set(mode);
+    if (this.viewMode() === mode) return;
     this.viewMode.set(mode);
     if (mode === 'cities') {
       this.groupByMode.set('city');
@@ -1489,15 +1733,27 @@ export class ElectionDetailComponent implements OnInit {
       this.groupByMode.set('none');
       this.calculateRegionCandidates();
       this.applyCandidateFilter();
-    } else if (mode === 'map') {
-      this.groupByMode.set('none');
-      this.updateSettlementMapData();
     }
+  }
+
+  setLeftPanel(panel: Exclude<ElectionPanel, 'results'>): void {
+    const mapView = this.mapView();
+    this.setViewMode('sections');
+    this.mapView.set(mapView);
+    this.leftPanel.set(panel);
+    if (panel === 'history' || panel === 'comparison') this.analysisInitialized.set(true);
+    if (panel === 'stats') this.setActiveChart(this.activeChart());
+  }
+
+  setActiveChart(chart: 'votes' | 'ppdb' | 'activity'): void {
+    this.activeChart.set(chart);
+    if (!this.visitedCharts().has(chart)) this.visitedCharts.update(charts => new Set([...charts, chart]));
   }
 
   setSettlementMapMetric(metric: SettlementMapMetric): void {
     this.settlementMapMetric.set(metric);
-    if (metric === 'party-votes' && !this.mapSelectedPartyId()) {
+    if (metric === 'party-change') this.analysisInitialized.set(true);
+    if ((metric === 'party-votes' || metric === 'party-change') && !this.mapSelectedPartyId()) {
       // Prefer ПП-ДБ as default, otherwise pick first party
       const stats = this.regionalStats();
       if (stats.length > 0) {
@@ -1508,8 +1764,37 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   setMapSelectedPartyId(partyId: string): void {
+    this.mapComparison = null;
     this.mapSelectedPartyId.set(partyId);
-    this.settlementMapMetric.set('party-votes');
+    if (this.settlementMapMetric() !== 'party-change') this.settlementMapMetric.set('party-votes');
+  }
+
+  onAnalysisPartyChange(partyId: string | null): void {
+    this.mapComparison = null;
+    this.mapSelectedPartyId.set(partyId);
+  }
+
+  onMapSelection(selection: MapSelection): void {
+    this.mapSelection = selection;
+    this.applyFilter();
+  }
+
+  clearMapSelection(): void {
+    this.mapSelection = null;
+    this.mapFocusSectionId = null;
+    this.applyFilter();
+  }
+
+  focusAnalysisSection(section: Section): void {
+    this.mapFocusSectionId = section.sectionId;
+    this.selectContentTab('sections');
+    this.setViewMode('map');
+    setTimeout(() => document.getElementById('election-map')?.scrollIntoView({ block: 'start', behavior: 'smooth' }), 0);
+  }
+
+  changeAnalysisElection(date: string): void {
+    const path = [`/${this.electionType}/election`, date];
+    this.router.navigate(this.regionId && this.regionId !== 'all' ? [...path, 'region', this.regionId] : [...path, 'all']);
   }
 
   onFilterChange(filters: SectionFilters): void {
@@ -1561,7 +1846,21 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   private calculateRegionalStats(sections: Section[] = this.sections): void {
-    if (sections.length === 0) return;
+    const version = ++this.statsVersion;
+    if (sections.length === 0) {
+      this.totalElectors = 0;
+      this.totalVoted = 0;
+      this.totalInvalid = 0;
+      this.totalNoVotes = 0;
+      this.totalRegionMachine = 0;
+      this.totalRegionPaper = 0;
+      this.globalComparisons = {};
+      this.regionalStats.set([]);
+      this.regionalChartOptions = {};
+      this.ppdbChartOptions = {};
+      this.activityChartOptions = {};
+      return;
+    }
 
     this.totalElectors = this.getEffectiveTotalElectors(sections);
     this.totalVoted = sections.reduce((sum, s) => sum + s.voted, 0);
@@ -1644,6 +1943,7 @@ export class ElectionDetailComponent implements OnInit {
     }
 
     this.electionService.getParties(this.date).subscribe(partiesMap => {
+      if (version !== this.statsVersion) return;
       const partyData = Object.entries(regionalPartyVotes)
         .map(([id, total]) => ({
           id,
@@ -1670,7 +1970,7 @@ export class ElectionDetailComponent implements OnInit {
     const nonVoters = Math.max(0, this.totalElectors - this.totalVoted);
 
     const pieData = partyData.map(p => ({
-      name: getPartyAlias(p.name),
+      name: getPartyDisplayName(p.name),
       y: p.total,
       color: getPartyColor(p.name, isDark)
     }));
@@ -1968,7 +2268,10 @@ export class ElectionDetailComponent implements OnInit {
         totals.totalMachine += section.totalMachine || 0;
 
         Object.entries(section.partyVotes || {}).forEach(([partyId, votes]) => {
-          partyTotals[partyId] = (partyTotals[partyId] || 0) + (votes.total || 0);
+          const name = otherDateData.parties[partyId];
+          if (!name) return;
+          const identity = this.electionType === 'presidential' ? name : getPartyAlias(name);
+          partyTotals[identity] = (partyTotals[identity] || 0) + (votes.total || 0);
         });
       });
 
@@ -1983,8 +2286,11 @@ export class ElectionDetailComponent implements OnInit {
         v: totals.total > 0 ? Math.round((totals.voted / totals.total) * 10000) : 0
       });
 
-      Object.entries(partyTotals).forEach(([partyId, total]) => {
-        (partyComparisons[partyId] ||= []).push({ d: dateInfo.date, v: total });
+      this.allParties.forEach(party => {
+        const identity = this.electionType === 'presidential' ? party.name : getPartyAlias(party.name);
+        const total = partyTotals[identity];
+        if (total === undefined) return;
+        (partyComparisons[party.id] ||= []).push({ d: dateInfo.date, v: total });
       });
     });
 
@@ -2027,33 +2333,27 @@ export class ElectionDetailComponent implements OnInit {
     return `${municipalityName}`;
   }
 
-  getPartyAlias = getPartyAlias;
+  getPartyAlias = getPartyDisplayName;
 
   loadSectionDetails(section: Section): void {
-    if (this.groupByCity()) {
+    if ('sections' in section && Array.isArray(section.sections)) {
       this.openGroupedSectionDetails(section as any, section);
       return;
     }
-    this.electionService.getSectionDetails(this.date, section.sectionId).subscribe(details => {
-      this.selectedSection = details;
-      this.currentSectionData = section;
-      this.isModalOpen.set(true);
+    const request = ++this.sectionDetailRequest;
+    const date = this.date;
+    this.detailError.set('');
+    this.electionService.getSectionDetails(date, section.sectionId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: details => {
+        if (request !== this.sectionDetailRequest || date !== this.date) return;
+        this.selectedSection = details;
+        this.currentSectionData = section;
+        this.isModalOpen.set(true);
+      },
+      error: () => {
+        if (request === this.sectionDetailRequest && date === this.date) this.detailError.set('Секцията не можа да бъде заредена. Опитайте отново.');
+      },
     });
-  }
-
-  onMapSettlementSelect(settlement: SettlementAggregate): void {
-    const groupedSection = this.buildGroupedSectionFromSections(settlement.displayName, settlement.sections);
-    this.openGroupedSectionDetails(groupedSection, settlement.sections[0]);
-  }
-
-  onAbroadCitySelect(city: AbroadCityAggregate): void {
-    const groupedSection = this.buildGroupedSectionFromSections(city.displayName, city.sections);
-    this.openGroupedSectionDetails(groupedSection, city.sections[0]);
-  }
-
-  onAbroadCountrySelect(country: AbroadCountryAggregate): void {
-    const groupedSection = this.buildGroupedSectionFromSections(country.countryName, country.sections);
-    this.openGroupedSectionDetails(groupedSection, country.sections[0]);
   }
 
   private openGroupedSectionDetails(groupedSection: any, baseSection?: Section): void {
@@ -2377,44 +2677,15 @@ export class ElectionDetailComponent implements OnInit {
     this.isModalOpen.set(true);
   }
 
-  private buildGroupedSectionFromSections(cityName: string, sections: Section[]): Section & { sections: Section[]; partyVotes: { [pid: string]: number } } {
-    const partyVotes: { [pid: string]: number } = {};
-
-    sections.forEach((section) => {
-      Object.entries(section.partyVotes).forEach(([partyId, votes]) => {
-        partyVotes[partyId] = (partyVotes[partyId] || 0) + (votes.total || 0);
-      });
-    });
-
-    return {
-      sectionId: `Група (${sections.length})`,
-      regionId: sections[0]?.regionId || '',
-      regionName: sections[0]?.regionName,
-      cityName,
-      settlementEkatte: sections[0]?.settlementEkatte,
-      sectionName: '',
-      sectionType: 'City',
-      total: sections.reduce((sum, section) => sum + (section.total || 0), 0),
-      voted: sections.reduce((sum, section) => sum + (section.voted || 0), 0),
-      discardedVotes: sections.reduce((sum, section) => sum + (section.discardedVotes || 0), 0),
-      noVotes: sections.reduce((sum, section) => sum + (section.noVotes || 0), 0),
-      noVotesPaper: sections.reduce((sum, section) => sum + (section.noVotesPaper || 0), 0),
-      noVotesMachine: sections.reduce((sum, section) => sum + (section.noVotesMachine || 0), 0),
-      totalPaper: sections.reduce((sum, section) => sum + (section.totalPaper || 0), 0),
-      totalMachine: sections.reduce((sum, section) => sum + (section.totalMachine || 0), 0),
-      partyVotes: partyVotes as any,
-      topParties: [],
-      activityBp: 0,
-      sections,
-    } as Section & { sections: Section[]; partyVotes: { [pid: string]: number } };
-  }
-
   private updateSettlementMapData(): void {
-    if (!this.canShowMap || this.isAbroadRegion || this.sections.length === 0) {
+    if (this.mapDataSections === this.analysisSections && this.mapDataParties === this.analysisParties) return;
+    this.mapDataSections = this.analysisSections;
+    this.mapDataParties = this.analysisParties;
+    if (!this.canShowMap || this.isAbroadRegion || this.analysisSections.length === 0) {
       this.settlementMapData = [];
       return;
     }
-    this.settlementMapData = aggregateSectionsBySettlement(this.sections, this.getPartiesById());
+    this.settlementMapData = aggregateSectionsBySettlement(this.analysisSections, this.getPartiesById());
   }
 
   openCandidateModal(candidate: RegionCandidate): void {
@@ -2422,17 +2693,30 @@ export class ElectionDetailComponent implements OnInit {
     this.isCandidateModalOpen.set(true);
   }
 
+  openContestant(partyName: string, partyId: string): void {
+    if (!partyName || partyName === 'Други' || partyId === '0' || partyId === 'no_votes') return;
+    const sourceName = this.allParties.find(party => party.id === partyId)?.name || partyName;
+    if (this.modalPages.activeId()) {
+      void this.modalPages.open('contestant', { profileName: sourceName, profileParty: partyId, profileDate: this.date,
+        profileTab: 'overview', profileScope: 'all', profileMetric: 'share', section: null, group: null, candidate: null, analysis: null },
+        ['/', this.electionType]);
+      return;
+    }
+    this.selectedContestant.set({ partyName: sourceName, partyId });
+  }
+
   closeCandidateModal(): void {
     this.isCandidateModalOpen.set(false);
     this.selectedCandidate = null;
   }
 
-  onCandidateSectionClick(section: Section): void {
-    this.closeCandidateModal();
-    this.loadSectionDetails(section);
-  }
-
   onSectionCandidateClick(candidate: RegionCandidate): void {
+    if (this.modalPages.isActive('section')) {
+      this.selectedCandidate = candidate;
+      void this.modalPages.open('candidate', this.modalPageQueryParams('candidate'));
+      this.isCandidateModalOpen.set(true);
+      return;
+    }
     this.closeModal();
     this.selectedCandidate = candidate;
     this.isCandidateModalOpen.set(true);
@@ -2447,6 +2731,8 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   handleEscape(): void {
+    if (this.selectedContestant()) return;
+    if (this.modalPages.activeId()) return;
     this.closeModal();
     this.closeExportModal();
     this.closeErrorModal();
@@ -2454,6 +2740,7 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   closeModal(): void {
+    this.sectionDetailRequest++;
     this.isModalOpen.set(false);
   }
 
@@ -2504,8 +2791,6 @@ export class ElectionDetailComponent implements OnInit {
       valGetter
     );
 
-    // Update the array in place
-    this.filteredSections.length = 0;
-    this.filteredSections.push(...sorted);
+    this.filteredSections = sorted;
   }
 }

@@ -5,6 +5,7 @@ import {
   ElementRef,
   EventEmitter,
   OnDestroy,
+  OnInit,
   Output,
   ViewChild,
   inject,
@@ -33,20 +34,27 @@ import { SettlementMapMetric } from '../../../utils/settlement-map.util';
 import { ThemeService } from '../../../services/theme.service';
 import { SettlementMapDataService } from '../../../services/settlement-map-data.service';
 import { MapAggregate, MapMetricHelper } from '../../../utils/map-metric.helper';
+import { MapLegendComponent } from '../map-legend/map-legend';
+import { MapToolsComponent } from '../map-tools/map-tools';
+import { MapActionsComponent } from '../map-actions/map-actions';
+import { MapExportContext, MapSearchItem, MapSelection } from '../../../utils/map-interaction.util';
+import { exportMapImage, toggleMapFullscreen } from '../../../utils/map-image-export.util';
+import { resizeMapPreservingView } from '../../../utils/map-resize.util';
+import { applyMapComparison } from '../../../utils/election-map-comparison.util';
 
 export type AbroadMetricAggregate = MapAggregate;
 
 @Component({
   selector: 'app-abroad-map',
   standalone: true,
-  imports: [CommonModule, HlmButtonDirective],
+  imports: [CommonModule, HlmButtonDirective, MapLegendComponent, MapToolsComponent, MapActionsComponent],
   template: `
     <div
       [class]="embedded()
-        ? 'flex h-[720px] w-full flex-col overflow-hidden rounded-2xl border border-border bg-background'
+        ? 'flex h-[65dvh] min-h-[360px] max-h-[780px] w-full flex-col overflow-hidden rounded-2xl border border-border bg-background'
         : 'fixed inset-0 z-[1200] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm'"
       (click)="onBackdropClick()">
-      <div
+      <div #workspace class="map-workspace"
         [class]="embedded()
           ? 'flex min-h-0 flex-1 flex-col'
           : 'flex h-[min(90vh,840px)] w-full max-w-7xl flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl'"
@@ -72,7 +80,16 @@ export type AbroadMetricAggregate = MapAggregate;
           </div>
         </div>
 
+        <div class="grid gap-2 border-b border-border bg-background px-4 py-3 sm:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+          <app-map-tools class="block min-w-0" [items]="searchItems" [error]="toolError" (searchSelect)="focusSearchItem($event)" />
+          <ng-content select="app-map-metric-controls" />
+        </div>
         <div class="relative min-h-0 flex-1">
+          <div class="pointer-events-none absolute right-3 top-3 z-[600] w-[220px] max-w-[50%] space-y-2">
+            <app-map-actions class="pointer-events-auto block" [exporting]="exporting"
+              (exportClick)="exportImage()" (fullscreenClick)="toggleFullscreen()" />
+            <app-map-legend class="pointer-events-auto block" [metric]="metric()" [selectedPartyId]="selectedPartyId()" [partiesById]="partiesById()" [shareLabel]="shareLabel()" />
+          </div>
           @if (loading() || !dataLoaded) {
             <div class="absolute inset-0 z-10 flex items-center justify-center bg-background/80 text-sm text-muted-foreground backdrop-blur-sm">
               Зареждане на географските данни за чужбина...
@@ -83,16 +100,33 @@ export type AbroadMetricAggregate = MapAggregate;
       </div>
     </div>
   `,
+  styles: [`
+    .map-workspace:fullscreen { width: 100vw; max-width: none; height: 100dvh; max-height: none; border-radius: 0; }
+  `],
 })
-export class AbroadMapComponent implements AfterViewInit, OnDestroy {
+export class AbroadMapComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('mapContainer') private mapContainer?: ElementRef<HTMLDivElement>;
+  @ViewChild('workspace') private workspace?: ElementRef<HTMLDivElement>;
 
   sections = input<Section[]>([]);
   partiesById = input<Record<string, string>>({});
+  belowThresholdPartyIds = input<ReadonlySet<string> | null>(null);
   loading = input(false);
   embedded = input(false);
   metric = input<SettlementMapMetric>('leading-party');
   selectedPartyId = input<string | null>(null);
+  votesLabel = input('гласа');
+  shareLabel = input('от гласувалите');
+  focusSectionId = input<string | null>(null);
+  exportContext = input<MapExportContext | null>(null);
+  comparisonSections = input<Section[] | null>(null);
+  comparisonPartyId = input<string | null>(null);
+  @Output() selectionChange = new EventEmitter<MapSelection>();
+  searchItems: MapSearchItem[] = [];
+  exporting = false;
+  toolError = '';
+  private pendingFocusSectionId: string | null = null;
+  private selectedPlace = '';
 
   @Output() close = new EventEmitter<void>();
   @Output() citySelect = new EventEmitter<AbroadCityAggregate>();
@@ -119,6 +153,7 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
   private countryGeometrySub?: Subscription;
   private countryManifestSub?: Subscription;
   private renderQueued = false;
+  private resizeObserver?: ResizeObserver;
   private isDark = false;
   private lastViewportKey = '';
 
@@ -126,6 +161,25 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
     if (!this.embedded()) {
       this.close.emit();
     }
+  }
+
+  ngOnInit(): void {
+    this.countryManifestSub = this.settlementMapData.getAbroadCountryManifest().subscribe((manifest) => {
+      this.countryManifest = manifest;
+      this.updateComputedData();
+      this.dataLoaded = !!this.countryGeometry;
+      this.renderMap();
+      this.cdr.markForCheck();
+    });
+
+    this.countryGeometrySub = this.settlementMapData.getAbroadCountryGeometry().subscribe((geometry) => {
+      this.countryGeometry = geometry;
+      this.dataLoaded = this.countryManifest.length > 0;
+      this.renderMap();
+      this.cdr.markForCheck();
+    });
+
+    this.updateComputedData();
   }
 
   ngAfterViewInit(): void {
@@ -143,55 +197,64 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
 
     this.tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
+      crossOrigin: 'anonymous',
     });
     this.tileLayer.addTo(this.map);
+    if (typeof ResizeObserver !== 'undefined') {
+      this.resizeObserver = new ResizeObserver(() => resizeMapPreservingView(this.map));
+      this.resizeObserver.observe(this.mapContainer.nativeElement);
+    }
 
-    this.countryManifestSub = this.settlementMapData.getAbroadCountryManifest().subscribe((manifest) => {
-      this.countryManifest = manifest;
-      this.updateComputedData();
-      this.dataLoaded = !!this.countryGeometry;
-      this.renderMap();
-      this.cdr.detectChanges();
-    });
-
-    this.countryGeometrySub = this.settlementMapData.getAbroadCountryGeometry().subscribe((geometry) => {
-      this.countryGeometry = geometry;
-      this.dataLoaded = this.countryManifest.length > 0;
-      this.renderMap();
-      this.cdr.detectChanges();
-    });
-
-    this.updateComputedData();
+    this.renderMap();
   }
 
   constructor() {
     effect(() => {
+      const sectionId = this.focusSectionId();
+      if (sectionId) {
+        untracked(() => {
+          this.pendingFocusSectionId = sectionId;
+          this.focusPendingSection();
+        });
+      }
+    });
+    effect(() => {
       this.sections();
       this.partiesById();
+      if (this.comparisonSections()) {
+        this.comparisonPartyId();
+        this.selectedPartyId();
+      }
       untracked(() => {
         this.updateComputedData();
-        this.cdr.detectChanges();
+        this.renderMap();
+        this.cdr.markForCheck();
       });
     });
 
     effect(() => {
-      this.sections();
-      this.partiesById();
       this.metric();
+      this.belowThresholdPartyIds();
       this.selectedPartyId();
+      this.votesLabel();
+      this.shareLabel();
+      this.loading();
+      this.themeService.darkMode();
       if (this.map) {
         untracked(() => {
           this.renderMap();
-          this.cdr.detectChanges();
+          this.cdr.markForCheck();
         });
       }
     });
   }
 
   ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
     this.countryGeometrySub?.unsubscribe();
     this.countryManifestSub?.unsubscribe();
     this.map?.remove();
+    this.map = undefined;
   }
 
   showWorldView(): void {
@@ -201,9 +264,115 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
     this.renderMap();
   }
 
+  focusSearchItem(item: MapSearchItem): void {
+    this.toolError = '';
+    if (item.kind === 'section') {
+      this.pendingFocusSectionId = item.sectionIds[0];
+      this.focusPendingSection();
+      const section = this.sections().find(entry => entry.sectionId === item.sectionIds[0]);
+      if (section) this.emitSelection('section', item.label, [section]);
+      return;
+    }
+    if (item.kind === 'country') {
+      const country = this.countries.find(entry => `country:${entry.id}` === item.id);
+      if (!country) return;
+      this.selectedCountryCode = country.countryCode;
+      this.selectedCountryName = country.countryName;
+      this.emitSelection('country', country.countryName, country.sections);
+      const feature = this.getCountryFeatureForCode(country.countryCode);
+      if (this.map && feature) {
+        this.lastViewportKey = this.selectedCountryCode || 'world';
+        this.map.fitBounds(L.geoJSON(feature as any).getBounds(), { padding: [24, 24], animate: false });
+      }
+    } else {
+      const city = this.cities.find(entry => `city:${entry.id}` === item.id);
+      if (!city) return;
+      this.selectedCountryCode = city.countryCode;
+      this.selectedCountryName = city.countryName;
+      this.emitSelection('city', city.displayName, city.sections);
+      if (this.map && Number.isFinite(city.latitude) && Number.isFinite(city.longitude)) {
+        this.lastViewportKey = this.selectedCountryCode || 'world';
+        this.map.setView([city.latitude!, city.longitude!], 10, { animate: false });
+      } else {
+        this.toolError = 'Градът няма точни координати. Показана е държавата.';
+      }
+    }
+    this.updateSummary();
+    this.renderMap();
+  }
+
+  private focusPendingSection(): void {
+    if (!this.map || !this.pendingFocusSectionId) return;
+    const city = this.cities.find(entry => entry.sections.some(section => section.sectionId === this.pendingFocusSectionId));
+    if (!city) return;
+    this.pendingFocusSectionId = null;
+    this.selectedCountryCode = city.countryCode;
+    this.selectedCountryName = city.countryName;
+    if (Number.isFinite(city.latitude) && Number.isFinite(city.longitude)) {
+      this.lastViewportKey = this.selectedCountryCode || 'world';
+      this.map.setView([city.latitude!, city.longitude!], 11, { animate: false });
+      this.toolError = 'Показан е градът на секцията. Координатите в чужбина са обобщени по град.';
+    } else {
+      this.lastViewportKey = '';
+      this.toolError = 'Секцията няма точни координати. Показана е държавата.';
+    }
+    this.updateSummary();
+    this.renderMap();
+  }
+
+  private emitSelection(kind: MapSelection['kind'], label: string, sections: Section[]): void {
+    this.selectedPlace = label;
+    this.selectionChange.emit({ kind, label, sectionIds: sections.map(section => section.sectionId) });
+  }
+
+  private withComparison<T extends MapAggregate>(aggregate: T, sections: Section[]): T {
+    return applyMapComparison(aggregate, sections, this.comparisonSections(), this.selectedPartyId(), this.comparisonPartyId());
+  }
+
+  async exportImage(): Promise<void> {
+    if (!this.mapContainer || this.exporting) return;
+    this.exporting = true;
+    this.toolError = '';
+    try {
+      await exportMapImage(this.mapContainer.nativeElement, this.exportContext(),
+        MapMetricHelper.getLegend(this.metric(), this.themeService.darkMode(), this.selectedPartyId(), this.partiesById(), this.shareLabel()),
+        this.selectedPlace || this.selectedCountryName || 'Извън страната');
+    } catch (error) {
+      this.toolError = error instanceof Error ? error.message : 'Експортът на картата не е успешен.';
+    } finally {
+      this.exporting = false;
+      this.cdr.markForCheck();
+    }
+  }
+
+  async toggleFullscreen(): Promise<void> {
+    if (!this.workspace) return;
+    this.toolError = '';
+    try {
+      await toggleMapFullscreen(this.workspace.nativeElement);
+      resizeMapPreservingView(this.map);
+    } catch (error) {
+      this.toolError = error instanceof Error ? error.message : 'Режимът на цял екран не е достъпен.';
+    } finally {
+      this.cdr.markForCheck();
+    }
+  }
+
   private updateComputedData(): void {
-    this.cities = aggregateAbroadSectionsByCity(this.sections(), this.partiesById(), this.countryManifest);
-    this.countries = this.buildCountryAggregates(this.sections());
+    this.cities = aggregateAbroadSectionsByCity(this.sections(), this.partiesById(), this.countryManifest)
+      .map(city => this.withComparison(city, city.sections));
+    this.countries = this.buildCountryAggregates(this.sections())
+      .map(country => this.withComparison(country, country.sections));
+    this.searchItems = [
+      ...this.countries.map(country => ({ id: `country:${country.id}`, kind: 'country' as const,
+        label: country.countryName, sectionIds: country.sections.map(section => section.sectionId) })),
+      ...this.cities.flatMap(city => [
+        { id: `city:${city.id}`, kind: 'city' as const, label: city.displayName,
+          sectionIds: city.sections.map(section => section.sectionId) },
+        ...city.sections.map(section => ({ id: `section:${section.sectionId}`, kind: 'section' as const,
+          label: `Секция ${section.sectionId}, ${city.displayName}, ${section.sectionName}`, sectionIds: [section.sectionId] })),
+      ]),
+    ];
 
     if (this.selectedCountryCode && !this.cities.some((city) => city.countryCode === this.selectedCountryCode)) {
       this.selectedCountryCode = null;
@@ -302,14 +471,14 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
         }
 
         if (marker instanceof L.GeoJSON) {
-          marker.options.onEachFeature = (_feature, layer) => {
+          marker.eachLayer(layer => {
             layer.bindTooltip(this.buildTooltip(city), {
               sticky: true,
               opacity: 0.94,
               offset: L.point(10, 10),
               interactive: false,
             });
-          };
+          });
         } else {
           marker.bindTooltip(this.buildTooltip(city), {
             sticky: true,
@@ -320,6 +489,7 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
         }
 
         marker.on('click', () => {
+          this.emitSelection('city', city.displayName, city.sections);
           this.citySelect.emit(city);
         });
 
@@ -353,6 +523,7 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
             });
 
             layer.on('click', () => {
+              this.emitSelection('country', country.countryName, country.sections);
               this.countrySelect.emit(country);
               if (!hasRenderableWorldCities) {
                 this.citySelect.emit(this.buildCountryFallbackSelection(country, countryCities));
@@ -384,6 +555,7 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
             // Find the country for this city
             const country = this.countries.find(c => c.id === this.getCountryKey(city));
             if (country) {
+              this.emitSelection('country', country.countryName, country.sections);
               this.countrySelect.emit(country);
             }
           });
@@ -401,10 +573,11 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
         return;
       }
 
-      this.map.invalidateSize();
+      resizeMapPreservingView(this.map);
 
       const viewportKey = this.selectedCountryCode || 'world';
       if (this.lastViewportKey === viewportKey) {
+        this.focusPendingSection();
         return;
       }
 
@@ -413,12 +586,14 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
         if (bounds?.isValid()) {
           this.map.fitBounds(bounds, { padding: [20, 20] });
           this.lastViewportKey = viewportKey;
+          this.focusPendingSection();
           return;
         }
       }
 
       this.map.setView([24, 12], 2);
       this.lastViewportKey = viewportKey;
+      this.focusPendingSection();
     });
   }
 
@@ -433,7 +608,7 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
       const feature = this.getCountryFeatureForCity(city);
       if (feature) {
         return L.geoJSON(feature as any, {
-          style: MapMetricHelper.getAggregateStyle(this.metric(), city, this.isDark, this.selectedPartyId(), this.partiesById()),
+          style: MapMetricHelper.getAggregateStyle(this.metric(), city, this.isDark, this.selectedPartyId(), this.partiesById(), this.belowThresholdPartyIds()),
         });
       }
     }
@@ -444,7 +619,7 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
 
     const radius = this.selectedCountryCode ? 6 : 4;
     return L.circleMarker([city.latitude as number, city.longitude as number], {
-      ...MapMetricHelper.getAggregateStyle(this.metric(), city, this.isDark, this.selectedPartyId(), this.partiesById()),
+      ...MapMetricHelper.getAggregateStyle(this.metric(), city, this.isDark, this.selectedPartyId(), this.partiesById(), this.belowThresholdPartyIds()),
       radius,
     });
   }
@@ -455,7 +630,7 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
     }
 
     return L.circleMarker([city.latitude as number, city.longitude as number], {
-      ...MapMetricHelper.getAggregateStyle(this.metric(), city, this.isDark, this.selectedPartyId(), this.partiesById()),
+      ...MapMetricHelper.getAggregateStyle(this.metric(), city, this.isDark, this.selectedPartyId(), this.partiesById(), this.belowThresholdPartyIds()),
       radius: 5,
       weight: 1.1,
       fillOpacity: 0.96,
@@ -497,7 +672,7 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
   }
 
   private getWorldCountryStyle(country: AbroadCountryAggregate, hasCityOverlay: boolean): L.PathOptions {
-    const baseStyle = MapMetricHelper.getAggregateStyle(this.metric(), country, this.isDark, this.selectedPartyId(), this.partiesById());
+    const baseStyle = MapMetricHelper.getAggregateStyle(this.metric(), country, this.isDark, this.selectedPartyId(), this.partiesById(), this.belowThresholdPartyIds());
     if (!hasCityOverlay) {
       return baseStyle;
     }
@@ -509,7 +684,7 @@ export class AbroadMapComponent implements AfterViewInit, OnDestroy {
   }
 
   private buildMetricTooltip(aggregate: AbroadMetricAggregate, header: string): string {
-    return MapMetricHelper.buildMetricTooltip(this.metric(), aggregate, header, true, this.partiesById());
+    return MapMetricHelper.buildMetricTooltip(this.metric(), aggregate, header, true, this.partiesById(), this.selectedPartyId(), this.belowThresholdPartyIds(), this.votesLabel(), this.shareLabel());
   }
 
   private buildTooltip(city: AbroadCityAggregate): string {

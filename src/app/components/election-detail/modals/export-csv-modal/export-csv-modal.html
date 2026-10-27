@@ -1,4 +1,6 @@
-<app-base-modal
+<app-base-modal #modal
+  pageId="export"
+  [pageQueryParams]="pageQueryParams"
   [title]="modalTitle"
   [subtitle]="modalSubtitle"
   zIndex="z-[1200]"
@@ -10,6 +12,7 @@
         <app-party-filter
           position="right"
           [parties]="allParties"
+          [partyVotes]="partyVotes"
           [selectedPartyIds]="exportPartyIds"
           (selectedPartyIdsChange)="onExportPartySelectionChange($event)"/>
       </div>
@@ -34,7 +37,7 @@
   </div>
 
   <ng-template #footer>
-    <button hlmBtn variant="outline" (click)="close.emit()">Отказ</button>
-    <button hlmBtn variant="default" (click)="downloadCsv()">Експорт {{ exportCount }} записа</button>
+    <button hlmBtn variant="outline" (click)="modal.closeModal()">Отказ</button>
+    <button hlmBtn variant="default" (click)="downloadCsv(); modal.closeModal()">Експорт {{ exportCount }} записа</button>
   </ng-template>
 </app-base-modal>

@@ -1,13 +1,20 @@
-import { Component, OnInit, signal, effect } from '@angular/core';
+import { SelectComponent } from '../ui/select/select';
+import { partyVoteTotals } from '../../utils/party-order.util';
+import { Component, DestroyRef, OnInit, signal, effect, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { BehaviorSubject, finalize } from 'rxjs';
 import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
-import { Region, Section, PartyVotes } from '../../models/election.models';
+import { ModalPageService } from '../../services/modal-page.service';
+import { Region } from '../../models/election.models';
 import { getPartyAlias } from '../../utils/party-aliases';
+import { getPresidentialCandidateName } from '../../utils/candidate-label';
+import { contestantIdentity, matchContestantId } from '../../utils/contestant-profile.util';
 import { formatActivity, getPartyKeywords, findPartyByKeywords, getDefaultPartyIds } from '../../utils/common.utils';
-import { getPartyColor } from '../../utils/party-colors';
+import { getPartyColor, getPartyLegendIndex } from '../../utils/party-colors';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
 import {
   HlmCardContentDirective,
@@ -21,6 +28,8 @@ import { HighchartsChartComponent } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import { PartyFilterComponent } from '../election-detail/party-filter/party-filter';
 import { PartyBadgeComponent } from '../ui/party-badge/party-badge';
+import { ContestantDetailModalComponent } from '../contestant-detail-modal/contestant-detail-modal';
+import { ContestantPreviewDirective } from '../ui/contestant-preview/contestant-preview.directive';
 
 interface ElectionData {
   date: string;
@@ -28,12 +37,12 @@ interface ElectionData {
   totalElectors: number;
   totalVoted: number;
   avgActivity: number;
-  topParties: { name: string; total: number; percent: number }[];
+  topParties: { partyId: string; name: string; total: number; percent: number }[];
 }
 
 @Component({
   selector: 'app-election-list',
-  imports: [
+  imports: [SelectComponent,
     CommonModule,
     RouterModule,
     FormsModule,
@@ -47,14 +56,23 @@ interface ElectionData {
     HighchartsChartComponent,
     PartyFilterComponent,
     PartyBadgeComponent,
+    ContestantDetailModalComponent,
+    ContestantPreviewDirective,
   ],
   templateUrl: './election-list.html',
   styleUrl: './election-list.scss',
 })
 export class ElectionListComponent implements OnInit {
-  dates: { date: string; name: string }[] = [];
+  readonly modalPages = inject(ModalPageService);
+  private readonly destroyRef = inject(DestroyRef);
+  get electionType() { return this.electionService.electionType; }
+
+  dates: { date: string; name: string; provisional?: { processedPercent: number } }[] = [];
   electionsData: Map<string, ElectionData> = new Map();
-  loading$: any;
+  private readonly pageLoading = new BehaviorSubject(false);
+  readonly loading$ = this.pageLoading.asObservable();
+  readonly loadError = signal('');
+  readonly selectedContestant = signal<{ partyName: string; partyId?: string; date: string } | null>(null);
 
   // Historical trends properties
   Highcharts: typeof Highcharts = Highcharts;
@@ -68,12 +86,12 @@ export class ElectionListComponent implements OnInit {
   // Historical charts multiselect
   selectedHistoricalPartyIds = signal<Set<string>>(new Set());
   allParties: { id: string, name: string }[] = [];
+  private readonly topHistoricalCandidateIds = new Map<string, Set<string>>();
 
   constructor(
     private electionService: ElectionService,
     private themeService: ThemeService
   ) {
-    this.loading$ = this.electionService.loading$;
     this.dates = this.electionService.getDates();
 
     effect(() => {
@@ -88,57 +106,53 @@ export class ElectionListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Load all election data when site opens
     this.loadAllElectionsData();
-    
-    // Load historical trends data
-    this.electionService.getAllData().subscribe(data => {
-      this.allData = data;
-      
-      // Deduplicate parties by display alias so historical charts don't render
-      // separate series for the same party under different election-specific names/ids.
-      const allPartiesMap = new Map<string, { id: string; name: string }>();
-      Object.values(data).forEach((electionData: any) => {
-        if (electionData.parties) {
-          Object.entries(electionData.parties).forEach(([id, name]) => {
-            const partyName = name as string;
-            const alias = getPartyAlias(partyName);
-            if (!allPartiesMap.has(alias)) {
-              allPartiesMap.set(alias, { id, name: partyName });
-            }
-          });
-        }
-      });
-      this.allParties = Array.from(allPartiesMap.values());
-      
-      // Initialize default historical party selection
-      this.selectedHistoricalPartyIds.set(getDefaultPartyIds(this.allParties));
-      
-      this.updateHistoricalCharts();
-    });
-
-    // Load regions from the latest election to populate the dropdown
-    if (this.dates.length > 0) {
-      this.electionService.getRegions(this.dates[0].date).subscribe(regions => {
-        this.regions = regions.map(r => ({ id: r.id, name: r.name }));
-      });
-    }
   }
 
   loadAllElectionsData(): void {
-    this.dates.forEach(dateObj => {
-      // Load both regions and parties to get party names
-      this.electionService.getRegions(dateObj.date).subscribe(regions => {
-        this.electionService.getParties(dateObj.date).subscribe(parties => {
-          const electionData = this.calculateElectionStats(regions, parties, dateObj.date);
-          this.electionsData.set(dateObj.date, electionData);
+    this.loadError.set('');
+    this.pageLoading.next(true);
+    this.electionService.getAllData().pipe(
+      takeUntilDestroyed(this.destroyRef),
+      finalize(() => this.pageLoading.next(false)),
+    ).subscribe({ next: data => {
+      this.allData = data;
+      for (const { date } of this.dates) {
+        const summary = data[date];
+        if (summary) this.electionsData.set(date, this.calculateElectionStats(summary.regions, summary.parties, date));
+      }
+      this.regions = (data[this.dates[0]?.date]?.regions ?? []).map(region => ({ id: region.id, name: region.name }));
+      
+      const presidential = this.electionType === 'presidential';
+      this.topHistoricalCandidateIds.clear();
+      const allPartiesMap = new Map<string, { id: string; name: string }>();
+      Object.entries(data).forEach(([date, electionData]) => {
+        let parties = Object.entries(electionData.parties).filter(([id]) => id !== '0');
+        if (presidential) {
+          const totals = partyVoteTotals(electionData.regions);
+          parties = parties.filter(([id]) => (totals[id] ?? 0) > 0)
+            .sort(([left], [right]) => (totals[right] ?? 0) - (totals[left] ?? 0))
+            .slice(0, 5);
+          this.topHistoricalCandidateIds.set(date, new Set(parties.map(([id]) => id)));
+        }
+        parties.forEach(([, name]) => {
+          const id = presidential ? contestantIdentity(name, 'presidential') : getPartyAlias(name);
+          if (!allPartiesMap.has(id)) allPartiesMap.set(id, { id, name });
         });
       });
-    });
+      this.allParties = Array.from(allPartiesMap.values());
+      
+      this.selectedHistoricalPartyIds.set(presidential
+        ? new Set(this.allParties.map(p => p.id))
+        : getDefaultPartyIds(this.allParties));
+    }, error: () => {
+      this.loadError.set('Данните не могат да бъдат заредени. Опитайте отново.');
+    } });
   }
 
   calculateElectionStats(regions: Region[], parties: { [id: string]: string }, date: string): ElectionData {
-    const totalElectors = regions.reduce((sum, r) => sum + r.total, 0);
+    const totalElectors = this.electionService.getOfficialNationalElectors(date)
+      ?? regions.reduce((sum, r) => sum + r.total, 0);
     const totalVoted = regions.reduce((sum, r) => sum + r.voted, 0);
     const avgActivity = totalElectors > 0 ? totalVoted / totalElectors : 0;
 
@@ -154,13 +168,9 @@ export class ElectionListComponent implements OnInit {
     const topParties = Object.entries(partyVotes)
       .filter(([pid, _]) => pid !== '0')
       .map(([partyId, total]) => {
-        let name = parties[partyId] || partyId;
-        // Normalize PP-DB name
-        if (name.toUpperCase().includes('ПРОДЪЛЖАВАМЕ')) {
-          name = 'ПП-ДБ';
-        }
         return {
-          name,
+          partyId,
+          name: parties[partyId] || partyId,
           total,
           percent: totalVoted > 0 ? total / totalVoted : 0
         };
@@ -183,6 +193,32 @@ export class ElectionListComponent implements OnInit {
     return this.electionsData.get(date);
   }
 
+  openContestant(partyName: string, date: string, partyId?: string): void {
+    if (!partyName || partyName === 'Други' || partyId === '0' || partyId === 'no_votes') return;
+    this.selectedContestant.set({ partyName, partyId, date });
+  }
+
+  get historicalPartyVotes(): Record<string, number> {
+    const latest = this.allData[this.dates[0]?.date];
+    if (!latest) return {};
+    const regions = this.level() === 'region'
+      ? latest.regions.filter((region: Region) => region.id === this.selectedRegionId()) : latest.regions;
+    const votes: Record<string, number> = {};
+    for (const [id, total] of Object.entries(partyVoteTotals(regions))) {
+      const name = latest.parties[id];
+      if (name) {
+        const identity = this.electionType === 'presidential' ? contestantIdentity(name, 'presidential') : getPartyAlias(name);
+        votes[identity] = (votes[identity] ?? 0) + total;
+      }
+    }
+    return votes;
+  }
+
+  get regionOptions() {
+    return [{ value: '', label: 'Избери район' },
+      ...this.regions.map(region => ({ value: region.id, label: `${region.name} (${region.id})`, icon: region.id === '32' ? 'globe' as const : 'region' as const }))];
+  }
+
   formatActivity = formatActivity;
   getPartyAlias = getPartyAlias;
   getPartyKeywords = getPartyKeywords;
@@ -202,7 +238,7 @@ export class ElectionListComponent implements OnInit {
     const sortedDates = [...this.dates].sort((a, b) => a.date.localeCompare(b.date));
 
     // Build mapping: selected party ID -> keywords -> party data across elections
-    const partyDataMap: { [selectedId: string]: { keywords: string[], name: string, votesData: number[], percentData: number[] } } = {};
+    const partyDataMap: { [selectedId: string]: { keywords: string[], name: string, rawName: string, votesData: (number | null)[], percentData: (number | null)[] } } = {};
     
     // Initialize data structure for each selected party
     selectedIds.forEach(partyId => {
@@ -211,7 +247,8 @@ export class ElectionListComponent implements OnInit {
         const keywords = this.getPartyKeywords(party.name);
         partyDataMap[partyId] = {
           keywords,
-          name: getPartyAlias(party.name),
+          name: this.electionType === 'presidential' ? getPresidentialCandidateName(party.name) : getPartyAlias(party.name),
+          rawName: party.name,
           votesData: [],
           percentData: []
         };
@@ -224,33 +261,25 @@ export class ElectionListComponent implements OnInit {
 
       categories.push(d.name);
 
-      let totalVoted = 0;
-      const datePartyVotes: { [partyId: string]: number } = {};
+      const regions: Region[] = level === 'national' ? data.regions
+        : data.regions.filter((region: Region) => region.id === regionId);
+      const totalVoted = regions.reduce((sum, region) => sum + region.voted, 0);
+      const datePartyVotes = partyVoteTotals(regions);
 
-      if (level === 'national') {
-        data.regions.forEach((r: Region) => {
-          totalVoted += r.voted;
-          Object.entries(r.partyVotes).forEach(([pid, v]) => {
-            datePartyVotes[pid] = (datePartyVotes[pid] || 0) + (v as number);
-          });
-        });
-      } else if (level === 'region' && regionId) {
-        const region = data.regions.find((r: Region) => r.id === regionId);
-        if (region) {
-          totalVoted = region.voted;
-          Object.entries(region.partyVotes).forEach(([pid, v]) => {
-            datePartyVotes[pid] = v as number;
-          });
-        }
-      }
-
-      // Match selected parties by keywords and store data
+      // Match contestants across election-specific ballot numbers.
       selectedIds.forEach(selectedId => {
         const partyInfo = partyDataMap[selectedId];
         if (!partyInfo) return;
 
-        // Find matching party ID in this election by keywords
-        const matchingPartyId = this.findPartyByKeywords(partyInfo.keywords, data.parties);
+        const matchingPartyId = this.electionType === 'presidential'
+          ? matchContestantId(partyInfo.rawName, data.parties, 'presidential')
+          : this.findPartyByKeywords(partyInfo.keywords, data.parties);
+        if (this.electionType === 'presidential'
+          && (!matchingPartyId || !this.topHistoricalCandidateIds.get(d.date)?.has(matchingPartyId) || !regions.length)) {
+          partyInfo.votesData.push(null);
+          partyInfo.percentData.push(null);
+          return;
+        }
         const votes = matchingPartyId ? (datePartyVotes[matchingPartyId] || 0) : 0;
         
         partyInfo.votesData.push(votes);
@@ -273,7 +302,8 @@ export class ElectionListComponent implements OnInit {
           name: partyInfo.name,
           data: partyInfo.votesData,
           type: 'line',
-          color: getPartyColor(partyInfo.name, isDark)
+          color: getPartyColor(partyInfo.rawName, isDark),
+          legendIndex: getPartyLegendIndex(partyInfo.rawName)
         });
       }
     });
@@ -288,7 +318,8 @@ export class ElectionListComponent implements OnInit {
           name: partyInfo.name,
           data: partyInfo.percentData,
           type: 'line',
-          color: getPartyColor(partyInfo.name, isDark)
+          color: getPartyColor(partyInfo.rawName, isDark),
+          legendIndex: getPartyLegendIndex(partyInfo.rawName)
         });
       }
     });

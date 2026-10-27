@@ -1,0 +1,26 @@
+<figure class="mx-auto max-w-3xl space-y-6">
+  <svg viewBox="0 0 560 300" role="img" [attr.aria-label]="'Разпределение на ' + allocatedSeats() + ' мандата в Народното събрание'" class="mx-auto block w-full max-w-2xl">
+    <title>Мандати по партии</title>
+    <desc>{{ description() }}</desc>
+    @for (dot of dots(); track $index) {
+      <circle [attr.cx]="dot.x" [attr.cy]="dot.y" r="6.2" [attr.fill]="dot.party ? color(dot.party.name) : 'hsl(var(--muted))'" [attr.data-party-id]="dot.party?.id" [hlmTooltip]="dot.party ? tooltips().get(dot.party.id) : undefined" class="transition-[fill] duration-150 motion-reduce:transition-none"></circle>
+    }
+  </svg>
+
+  <figcaption class="text-center text-muted-foreground">
+    <span class="text-3xl font-bold tabular-nums text-foreground">{{ allocatedSeats() }}</span>
+    <span class="ml-1 text-sm">/ {{ totalSeats }} мандата</span>
+    <span class="mt-1 block text-sm sm:ml-2 sm:mt-0 sm:inline">· мнозинство на {{ majority }}</span>
+  </figcaption>
+
+  <ul aria-label="Мандати по партии" class="grid gap-x-10 gap-y-3 sm:grid-cols-2">
+    @for (party of legendParties(); track party.id) {
+      <li tabindex="0" class="flex min-w-0 items-center gap-3 rounded text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" [attr.data-party-id]="party.id" [hlmTooltip]="tooltips().get(party.id)">
+        <span class="h-3 w-3 shrink-0 rounded" [style.background-color]="color(party.name)" aria-hidden="true"></span>
+        <span class="min-w-0 flex-1">{{ displayName(party.name) }}</span>
+        <span class="font-semibold tabular-nums">{{ party.seats }}</span>
+        <span class="w-12 text-right text-muted-foreground tabular-nums">{{ party.seats / totalSeats * 100 | number:'1.1-1' }}%</span>
+      </li>
+    }
+  </ul>
+</figure>

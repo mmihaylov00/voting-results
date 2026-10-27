@@ -14,10 +14,6 @@ const baseDataDir = path.join(__dirname, '../public/data');
 const outputDir = path.join(baseDataDir, 'compiled');
 const buildTimestamp = new Date().toISOString().replace(/[-:TZ.]/g, '');
 
-if (!fs.existsSync(outputDir)) {
-  fs.mkdirSync(outputDir, {recursive: true});
-}
-
 const runStart = process.hrtime.bigint();
 
 function nowNs() {
@@ -41,7 +37,9 @@ function timeAction(label, fn) {
 }
 
 function readFileWithHeaders(filePath) {
-  const text = fs.readFileSync(filePath, 'utf8');
+  const text = fs.existsSync(filePath)
+    ? fs.readFileSync(filePath, 'utf8')
+    : zlib.gunzipSync(fs.readFileSync(`${filePath}.gz`)).toString('utf8');
   const newlineIndex = text.indexOf('\n');
   if (newlineIndex === -1) {
     throw new Error(`Missing header row in ${filePath}`);
@@ -132,6 +130,10 @@ function normalizePartyName(name) {
   if (n.includes('МЕЧ')) return 'МЕЧ';
   if (n.includes('ПРОГРЕСИВНА')) return 'ПБ';
   return name;
+}
+
+function candidateIdentity(candidate) {
+  return `${normalizePartyName(candidate.partyName).trim().toUpperCase()}:${candidate.candidateName.trim().toUpperCase()}`;
 }
 
 function calculateVariance(values) {
@@ -741,6 +743,9 @@ function buildIndexes(sections) {
 
   for (const s of sections) {
     byId.set(s.sectionId, s);
+    s.candidateVotesByName = Object.fromEntries(
+      Object.values(s.candidateVotes || {}).map(candidate => [candidateIdentity(candidate), candidate])
+    );
 
     let arr = byRegion.get(s.regionId);
     if (!arr) byRegion.set(s.regionId, (arr = []));
@@ -890,25 +895,43 @@ function buildRegionCandidateAggregates(byRegion) {
   return {candidateAggByRegion, partyPrefAggByRegion};
 }
 
+function comparableDates(catalog, date, historical = false) {
+  const current = catalog.find(e => e.date === date);
+  if (!current) throw new Error(`Unknown election: ${date}`);
+  return catalog.filter(e => !e.provisional && e.type === current.type && e.date !== date &&
+    (!historical || (e.date < date && e.round === current.round)))
+    .map(e => e.date).sort().reverse();
+}
+
+function compilationElections(catalog, date) {
+  if (!date) return catalog;
+  const current = catalog.find(election => election.date === date);
+  if (!current) throw new Error(`Unknown election: ${date}`);
+  return catalog.filter(election => election.type === current.type);
+}
+
+module.exports = { readFileWithHeaders, comparableDates, candidateIdentity, compilationElections };
+
+if (require.main === module) {
+const [flag, requestedDate, ...extraArgs] = process.argv.slice(2);
+if ((flag && (flag !== '--date' || !requestedDate)) || extraArgs.length) {
+  throw new Error('Usage: npm run compile-data -- [--date YYYY.MM.DD]');
+}
+const inputElections = compilationElections(elections, requestedDate);
+fs.mkdirSync(outputDir, {recursive: true});
+
 // Precompute date lookups (avoid repeated elections.find / dates.filter)
-const dates = elections.map((e) => e.date);
+const dates = inputElections.map((e) => e.date);
 const dateNameByDate = Object.fromEntries(elections.map((e) => [e.date, e.name]));
-const otherDatesByDate = Object.fromEntries(dates.map((dt) => [dt, dates.filter((d) => d !== dt)]));
-const previousDateByDate = Object.fromEntries(
-  dates.map((dt, idx) => [dt, idx < dates.length - 1 ? dates[idx + 1] : null])
-);
-// For risk baseline, you were taking latest 3 other dates (by lexicographic sort). Keep same behavior but cached.
+const otherDatesByDate = Object.fromEntries(dates.map(dt => [dt, comparableDates(elections, dt)]));
 const histDatesByDate = Object.fromEntries(
-  dates.map((dt) => {
-    const hist = otherDatesByDate[dt].slice().sort().reverse().slice(0, 3);
-    return [dt, hist];
-  })
+  dates.map(dt => [dt, comparableDates(elections, dt, true).slice(0, 3)])
 );
 
 logSection('Load Raw Data');
 const rawData = Object.create(null);
 
-for (const {date} of elections) {
+for (const {date} of inputElections) {
   console.log(`\n-- ${date} --`);
   const baseUrl = path.join(baseDataDir, date);
 
@@ -920,8 +943,8 @@ for (const {date} of elections) {
 
     return {
       sections: readFileWithHeaders(sectionsPath),
-      protocols: fs.existsSync(protocolsPath) ? readFileWithHeaders(protocolsPath) : { headers: [], body: '' },
-      votes: fs.existsSync(votesPath) ? readFileWithHeaders(votesPath) : { headers: [], body: '' },
+      protocols: readFileWithHeaders(protocolsPath),
+      votes: readFileWithHeaders(votesPath),
       parties: readFileWithHeaders(partiesPath)
     };
   });
@@ -954,13 +977,13 @@ for (const {date} of elections) {
   // Parse local candidates and preferences if files exist
   const localCandidatesPath = path.join(baseUrl, 'local_candidates.txt');
   const preferencesPath = path.join(baseUrl, 'preferences.txt');
-  if (fs.existsSync(localCandidatesPath)) {
+  if (fs.existsSync(localCandidatesPath) || fs.existsSync(`${localCandidatesPath}.gz`)) {
     const localCandidates = readFileWithHeaders(localCandidatesPath);
     const candidatesByRegion = timeAction('Parse local candidates', () =>
       parseLocalCandidates(localCandidates.body, localCandidates.headers)
     );
 
-    if (fs.existsSync(preferencesPath)) {
+    if (fs.existsSync(preferencesPath) || fs.existsSync(`${preferencesPath}.gz`)) {
       const preferences = readFileWithHeaders(preferencesPath);
       timeAction('Apply preferences', () =>
         applyPreferences(
@@ -1058,10 +1081,12 @@ logSection('Finalize Outputs');
 
 const manifest = {
   timestamp: buildTimestamp,
-  files: Object.create(null),
+  files: requestedDate
+    ? JSON.parse(fs.readFileSync(path.join(outputDir, 'manifest.json'), 'utf8')).files
+    : Object.create(null),
 };
 
-for (const date of dates) {
+for (const date of requestedDate ? [requestedDate] : dates) {
   console.log(`\n-- ${date} --`);
 
   const current = rawData[date];
@@ -1161,61 +1186,25 @@ for (const date of dates) {
       })
   );
 
-  // ----- Section comparisons (use byId instead of find) -----
-  timeAction('Build section comparisons', () => {
+  // Section comparisons are used only by risk scoring; the browser builds display comparisons.
+  timeAction('Build risk comparisons', () => {
     for (const s of targetSections) {
       s.comparisons = Object.create(null);
 
-      for (const d of otherDatesByDate[date]) {
+      for (const d of histDatesByDate[date]) {
         const other = rawData[d];
         const otherSection = other.byId.get(s.sectionId);
         if (!otherSection) continue;
 
         (s.comparisons.voted ||= []).push({v: otherSection.voted, d});
-        (s.comparisons.total ||= []).push({v: otherSection.total, d});
         (s.comparisons.discardedVotes ||= []).push({v: otherSection.discardedVotes, d});
-        (s.comparisons.noVotes ||= []).push({v: otherSection.noVotes, d});
-        (s.comparisons.totalPaper ||= []).push({v: otherSection.totalPaper || 0, d});
-        (s.comparisons.totalMachine ||= []).push({v: otherSection.totalMachine || 0, d});
         (s.comparisons.activityPercent ||= []).push({v: otherSection.activityBp || 0, d});
-        (s.comparisons.noVotesPaper ||= []).push({v: otherSection.noVotesPaper || 0, d});
-        (s.comparisons.noVotesMachine ||= []).push({v: otherSection.noVotesMachine || 0, d});
-        (s.comparisons.noVotesPercent ||= []).push({
-          v: otherSection.voted > 0 ? Math.round((otherSection.noVotes / otherSection.voted) * 10000) : 0,
-          d
-        });
-
-        // Party comparisons for sections:
-        // Previously: for each pid in s.partyVotes, scan otherSection.partyVotes with normalization.
-        // Now: use otherSection.partyVotesNorm[normalized] (O(#parties in s)).
-        const currentPartiesMap = current.parties;
-        const otherNormMap = otherSection.partyVotesNorm || Object.create(null);
-
-        for (const pid in s.partyVotes) {
-          const normalizedTarget = normalizePartyName(currentPartiesMap[pid] || pid);
-          const otherBucket = otherNormMap[normalizedTarget];
-          if (!otherBucket) continue;
-
-          const otherTotal = otherBucket.total || 0;
-          const otherPaper = otherBucket.paper || 0;
-          const otherMachine = otherBucket.machine || 0;
-
-          const sv = s.partyVotes[pid];
-          (sv.comparisons ||= []).push({v: otherTotal, d});
-
-          const otherPercent = otherSection.voted > 0 ? otherTotal / otherSection.voted : 0;
-          (sv.percentComparisons ||= []).push({v: Math.round(otherPercent * 10000), d});
-
-          (sv.paperComparisons ||= []).push({v: otherPaper, d});
-          (sv.machineComparisons ||= []).push({v: otherMachine, d});
-        }
-
-        // Top parties comparisons for sections removed
       }
     }
   });
 
   console.log(`Computing enhanced risks for ${date}...`);
+  const histDates = histDatesByDate[date];
 
   // ----- Compute region statistics for risk detection (single pass) -----
   const {regionStatsMapFinal, candidateAggByRegion, partyPrefAggByRegion} = timeAction(
@@ -1243,7 +1232,7 @@ for (const date of dates) {
         // turnout change (current vs most recent comparison entry you have)
         if (s.comparisons?.activityPercent && s.comparisons.activityPercent.length > 0) {
           const currentTurnout = (s.activityBp || 0) / 10000;
-          const previousTurnout = (s.comparisons.activityPercent[0].v || 0) / 10000;
+          const previousTurnout = (s.comparisons.activityPercent.find(c => histDates.includes(c.d))?.v || 0) / 10000;
           if (previousTurnout > 0) stats.turnoutChanges.push((currentTurnout - previousTurnout) / previousTurnout);
         }
 
@@ -1300,8 +1289,6 @@ for (const date of dates) {
   );
 
   // ----- Enhanced risks per section -----
-  const histDates = histDatesByDate[date];
-
   // Track R4.4, R5.1, and R6.1 risks per candidate to ensure uniqueness
   const r44ByCandidate = new Map(); // key: `${regionKey}_${partyId}_${candidateId}`
   const r51ByCandidate = new Map(); // key: `${regionKey}_${partyId}_${candidateId}`
@@ -1347,8 +1334,8 @@ for (const date of dates) {
         totalPaper += hs.totalPaper || 0;
         totalMachine += hs.totalMachine || 0;
 
-        for (const pid in hs.partyVotes) {
-          partyVoteSharesRaw[pid] = (partyVoteSharesRaw[pid] || 0) + (hs.partyVotes[pid].total || 0);
+        for (const name in hs.partyVotesNorm) {
+          partyVoteSharesRaw[name] = (partyVoteSharesRaw[name] || 0) + (hs.partyVotesNorm[name].total || 0);
         }
       }
 
@@ -1392,7 +1379,7 @@ for (const date of dates) {
     // R1.2: Party turnout capture
     if (baseline && section.comparisons?.voted && section.comparisons.voted.length > 0) {
       const currentVoted = section.voted;
-      const previousVoted = section.comparisons.voted[0].v || 0;
+      const previousVoted = historicalSections[0]?.voted || 0;
       const voteIncrease = currentVoted - previousVoted;
 
       if (voteIncrease > 0 && previousVoted > 0) {
@@ -1405,10 +1392,10 @@ for (const date of dates) {
           const votes = section.partyVotes[pid];
           let previousVotes = 0;
 
-          if (previousSection && previousSection.partyVotes[pid]) {
-            previousVotes = previousSection.partyVotes[pid].total || 0;
+          if (previousSection && previousSection.partyVotesNorm[current.normByPid[pid]]) {
+            previousVotes = previousSection.partyVotesNorm[current.normByPid[pid]].total || 0;
           } else {
-            previousVotes = (baseline.partyVoteShares[pid] || 0) * previousVoted;
+            previousVotes = (baseline.partyVoteShares[current.normByPid[pid]] || 0) * previousVoted;
           }
 
           const currentVotes = votes.total || 0;
@@ -1425,7 +1412,7 @@ for (const date of dates) {
           const partyName =
             section.topParties.find((tp) => tp.partyId === capturingParty)?.name || capturingParty;
 
-          const historicalShare = baseline.partyVoteShares[capturingParty] || 0;
+          const historicalShare = baseline.partyVoteShares[current.normByPid[capturingParty]] || 0;
           const currentShare = section.voted > 0 ? (section.partyVotes[capturingParty]?.total || 0) / section.voted : 0;
 
           if (historicalShare < 0.3 && currentShare > 0.5) {
@@ -1448,8 +1435,9 @@ for (const date of dates) {
       const partySharesByPid = Object.create(null);
 
       for (const hs of historicalSections) {
-        for (const pid in hs.partyVotes) {
-          const votes = hs.partyVotes[pid];
+        for (const pid in section.partyVotes) {
+          const votes = hs.partyVotesNorm[current.normByPid[pid]];
+          if (!votes) continue;
           (partySharesByPid[pid] ||= []).push(hs.voted > 0 ? (votes.total || 0) / hs.voted : 0);
         }
       }
@@ -1641,14 +1629,14 @@ for (const date of dates) {
     // R3.2: Party-correlated invalid spike
     if (baseline && section.comparisons?.discardedVotes) {
       const currentInvalid = section.discardedVotes;
-      const previousInvalid = section.comparisons.discardedVotes[0]?.v || 0;
+      const previousInvalid = historicalSections[0]?.discardedVotes || 0;
       const invalidIncrease = currentInvalid - previousInvalid;
 
       if (invalidIncrease > 0) {
         const losingParties = [];
         for (const pid in section.partyVotes) {
           const votes = section.partyVotes[pid];
-          const previousShare = baseline.partyVoteShares[pid] || 0;
+          const previousShare = baseline.partyVoteShares[current.normByPid[pid]] || 0;
           const currentShare = section.voted > 0 ? (votes.total || 0) / section.voted : 0;
           const loss = previousShare - currentShare;
 
@@ -1679,7 +1667,7 @@ for (const date of dates) {
       const historicalShares = [];
 
       for (const hs of historicalSections) {
-        const pv = hs.partyVotes[currentTopParty.partyId];
+        const pv = hs.partyVotesNorm[current.normByPid[currentTopParty.partyId]];
         if (pv && hs.voted > 0) historicalShares.push((pv.total || 0) / hs.voted);
       }
 
@@ -1850,10 +1838,10 @@ for (const date of dates) {
         let candidateHistoryCount = 0;
 
         for (const hs of historicalSections) {
-          const pv = hs.partyVotes[partyId];
+          const pv = hs.partyVotesNorm[current.normByPid[partyId]];
           partyShares.push(pv && hs.voted > 0 ? (pv.total || 0) / hs.voted : 0);
 
-          const cv = hs.candidateVotes?.[key];
+          const cv = hs.candidateVotesByName[candidateIdentity(candidate)];
           if (cv && pv && (pv.total || 0) > 0) {
             candidateShares.push((cv.total || 0) / (pv.total || 1));
             if ((cv.total || 0) > 0) candidateHistoryCount++;
@@ -2122,7 +2110,7 @@ for (const date of dates) {
     const r52ByCandidate = new Map(); // key: `${regionKey}_${partyId}_${candidateId}`
     for (const [regionKey, regionSections] of current.byRegion.entries()) {
       // Aggregate candidate and party votes across all sections in the region for current date
-      const regionCandidateVotes = new Map(); // key: `${partyId}_${candidateId}` -> {total, candidateName, partyName, candidateId, partyId}
+      const regionCandidateVotes = new Map(); // Stable party and candidate names across ballots
       const regionPartyVotes = new Map(); // key: partyId -> total
 
       for (const section of regionSections) {
@@ -2139,7 +2127,7 @@ for (const date of dates) {
         if (section.candidateVotes) {
           for (const key in section.candidateVotes) {
             const candidate = section.candidateVotes[key];
-            const candidateKey = `${candidate.partyId}_${candidate.candidateId}`;
+            const candidateKey = candidateIdentity(candidate);
 
             if (!regionCandidateVotes.has(candidateKey)) {
               regionCandidateVotes.set(candidateKey, {
@@ -2172,8 +2160,9 @@ for (const date of dates) {
           if (hs.partyVotes) {
             for (const partyId in hs.partyVotes) {
               const votes = hs.partyVotes[partyId];
-              const currentTotal = histPartyVotes.get(partyId) || 0;
-              histPartyVotes.set(partyId, currentTotal + (votes.total || 0));
+              const name = rawData[d].normByPid[partyId];
+              const currentTotal = histPartyVotes.get(name) || 0;
+              histPartyVotes.set(name, currentTotal + (votes.total || 0));
             }
           }
 
@@ -2181,7 +2170,7 @@ for (const date of dates) {
           if (hs.candidateVotes) {
             for (const key in hs.candidateVotes) {
               const candidate = hs.candidateVotes[key];
-              const candidateKey = `${candidate.partyId}_${candidate.candidateId}`;
+              const candidateKey = candidateIdentity(candidate);
 
               if (!histCandidateVotes.has(candidateKey)) {
                 histCandidateVotes.set(candidateKey, {
@@ -2218,7 +2207,7 @@ for (const date of dates) {
         const historicalRates = [];
         for (const histData of historicalRegionData) {
           const histCandidate = histData.candidateVotes.get(candidateKey);
-          const histPartyTotal = histData.partyVotes.get(partyId) || 0;
+          const histPartyTotal = histData.partyVotes.get(current.normByPid[partyId]) || 0;
 
           if (histCandidate && histPartyTotal > 0) {
             historicalRates.push(histCandidate.total / histPartyTotal);
@@ -2441,19 +2430,18 @@ for (const date of dates) {
       fullBr: fullBrName
     };
   });
+  for (const section of targetSections) {
+    delete section.comparisons;
+    delete section.riskIndicators;
+    delete section.candidateRiskIndicators;
+  }
 }
 
-logSection('Cleanup');
-timeAction('Remove intermediate .json files', () => {
-  for (const file of fs.readdirSync(outputDir)) {
-    if (file.endsWith('.json')) {
-      fs.unlinkSync(path.join(outputDir, file));
-    }
-  }
-});
-
 timeAction('Write manifest', () => {
-  fs.writeFileSync(path.join(outputDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
+  const manifestPath = path.join(outputDir, 'manifest.json');
+  fs.writeFileSync(`${manifestPath}.tmp`, JSON.stringify(manifest, null, 2));
+  fs.renameSync(`${manifestPath}.tmp`, manifestPath);
 });
 
 console.log(`Done in ${formatSeconds(nowNs() - runStart)}s`);
+}

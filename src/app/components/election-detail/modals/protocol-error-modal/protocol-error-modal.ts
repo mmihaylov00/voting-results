@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Params } from '@angular/router';
 import { Section, TableColumn } from '../../../../models/election.models';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
 import {
@@ -26,7 +26,6 @@ import { SortableTableHeaderComponent } from '../../../ui/sortable-table-header/
 import { ColumnFilterComponent } from '../../../ui/column-filter/column-filter';
 import { SearchFilterComponent } from '../../../ui/search-filter/search-filter';
 import { loadVisibleColumns, saveVisibleColumns } from '../../../../utils/column-visibility';
-import { ElectionService } from '../../../../services/election';
 
 @Component({
   selector: 'app-protocol-error-modal',
@@ -49,6 +48,7 @@ import { ElectionService } from '../../../../services/election';
 })
 export class ProtocolErrorModalComponent {
   private readonly visibleColumnsStorageKey = 'visible_protocol_error_columns';
+  @Input() pageQueryParams: Params = {};
   @Input({ required: true }) sectionsWithError: Section[] = [];
   @Output() close = new EventEmitter<void>();
 
@@ -56,7 +56,6 @@ export class ProtocolErrorModalComponent {
   sortColumn = signal<string>('sectionId');
   sortDirection = signal<'asc' | 'desc'>('asc');
   searchTerm = signal<string>('');
-  loading$: Observable<boolean>;
   protocolColumns: TableColumn[] = [
     { id: 'sectionId', label: 'Секция' },
     { id: 'cityName', label: 'Населено място' },
@@ -83,9 +82,8 @@ export class ProtocolErrorModalComponent {
     );
   });
 
-  constructor(private electionService: ElectionService) {
+  constructor() {
     this.loadVisibleColumns();
-    this.loading$ = this.electionService.loading$;
   }
 
   onColumnSelectionChange(selectedIds: Set<string>): void {

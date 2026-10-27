@@ -1,0 +1,248 @@
+<section class="space-y-6">
+  <header>
+    <h3 class="text-lg font-semibold">{{ tab === 'geography' ? 'Географска подкрепа' : tab === 'candidates' ? 'Кандидати и преференции' : tab === 'risks' ? 'Рискове и покритие' : 'Резултати по секции' }}</h3>
+    @if (tab === 'geography') {
+      <p class="mt-1 text-sm text-muted-foreground">{{ shareLabel }}. {{ elections.length > 1 ? 'Резултатите са отделни за всеки избор. Изберете конкретни избори за карта.' : '' }}</p>
+    } @else if (tab === 'candidates') {
+      <p class="mt-1 text-sm text-muted-foreground">Дялове спрямо партийните гласове и преференции в съответния район.</p>
+    } @else if (tab === 'risks') {
+      <p class="mt-1 text-sm text-muted-foreground">Сигналите служат за проверка и не доказват нарушение.</p>
+    }
+  </header>
+
+  <div class="flex flex-wrap items-center justify-between gap-3" role="group" aria-label="Филтри и експорт">
+    <div class="flex min-w-0 flex-1 flex-wrap items-center gap-3">
+      @if (tab === 'geography') {
+        <app-select class="w-full sm:w-48" label="Географско ниво" [value]="level" [options]="geographyOptions" (valueChange)="level = $event; setLevel()" />
+      }
+      @if (tab === 'sections') {
+        <app-select class="w-full sm:w-52" label="Рискови сигнали" [value]="riskFilter" [options]="riskOptions" (valueChange)="riskFilter = $event; filterRows()" />
+      }
+      <div class="w-full min-w-0 sm:w-64">
+        <label class="sr-only" [for]="searchInputId">{{ tab === 'candidates' ? 'Търсене на кандидат, район или избори' : 'Търсене на място, секция или избори' }}</label>
+        <app-search-filter [value]="search" (valueChange)="setSearch($event)" [inputId]="searchInputId"
+          [placeholder]="tab === 'candidates' ? 'Кандидат, район или избори...' : 'Място, секция или избори...'" />
+      </div>
+    </div>
+    <div class="flex shrink-0 items-center gap-3">
+      <span class="text-xs text-muted-foreground" aria-live="polite">{{ rowCount | number }} реда</span>
+      <button hlmBtn variant="outline" size="sm" type="button" (click)="exportCsv()" [disabled]="!rowCount">CSV</button>
+    </div>
+  </div>
+  @if (exportError) { <p class="text-sm text-destructive" role="alert">{{ exportError }}</p> }
+
+@if (tab === 'geography') {
+  @if (level === 'municipality' && missingMunicipalities) {
+    <p class="text-xs text-muted-foreground">{{ missingMunicipalities | number }} секции в избраните избори нямат еднозначно определена община. Те остават достъпни в раздел „Секции“.</p>
+  }
+  @if (mapElection; as election) {
+    <div class="space-y-3">
+      @if (level === 'country') {
+        <app-abroad-map [embedded]="true" [sections]="election.sections" [partiesById]="mapParties"
+          metric="party-votes" [selectedPartyId]="election.participation.partyId" [exportContext]="mapExportContext"
+          [votesLabel]="preference ? 'преференции' : 'гласа'" [shareLabel]="preference ? 'от партийните гласове' : 'от гласувалите'" />
+      } @else {
+        <app-settlement-map [settlements]="settlements" [partiesById]="mapParties"
+          metric="party-votes" [selectedPartyId]="election.participation.partyId" [selectedView]="mapView"
+          [votesLabel]="preference ? 'преференции' : 'гласа'" [shareLabel]="preference ? 'от партийните гласове' : 'от гласувалите'"
+          [fitKey]="election.participation.date + level" [exportContext]="mapExportContext"
+          (sectionSelect)="openSection.emit({ date: election.participation.date, section: $event })" />
+        <p class="mt-2 text-xs text-muted-foreground">Картата използва наличните географски съответствия. Таблиците включват и секциите без координати.</p>
+      }
+    </div>
+  }
+}
+
+@if (tab === 'risks') {
+  <section class="space-y-3">
+  <div class="overflow-x-auto rounded-md border border-border">
+    <table hlmTable class="min-w-full" aria-label="Оценка на риска по избори">
+      <thead hlmTableHeader class="bg-muted/40"><tr hlmTableRow>
+        <th hlmTableHead scope="col">Избори</th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">Оценени секции</th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">Без оценка</th>
+        <th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">Със сигнали</th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">Общи</th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">Специфични</th>
+        <th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">{{ votesLabel }} в секции със сигнали</th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">{{ preference ? 'Дял от преференциите' : 'Дял от подкрепата' }}</th>
+      </tr></thead>
+      <tbody hlmTableBody>
+        @for (row of riskSummaries; track row.date) {
+          <tr hlmTableRow>
+            <td hlmTableCell class="px-4 py-3">{{ row.electionName }}<span class="block text-xs text-muted-foreground">{{ row.date }}</span></td>
+            <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.assessed | number }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.unavailable | number }}</td>
+            <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.flagged | number }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.common | number }}</td>
+            <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.specific | number }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.flaggedVotes | number }}</td>
+            <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.exposure === null ? '-' : (row.exposure | number:'1.2-2') + '%' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+    <p class="text-xs text-muted-foreground">Общите сигнали се отнасят за секцията, а специфичните посочват тази партия или кандидат. Една секция може да има и двата вида; {{ preference ? 'преференциите' : 'гласовете' }} в нея се броят веднъж за съответните избори.</p>
+  </section>
+  @if (elections.length > 1) {
+    <section class="space-y-3">
+      <h4 class="font-semibold">Повтарящи се рискове</h4>
+      <p class="mt-1 text-sm text-muted-foreground">Сигнали в поне два сравними избора, спрямо най-новото участие за всеки тур. Липсващите секции и оценки са показани отделно.</p>
+      @if (recurring.length) {
+        <div class="overflow-x-auto rounded-md border border-border">
+          <table hlmTable class="min-w-full" aria-label="Повтарящи се рискове за партията или кандидата">
+            <thead hlmTableHeader class="bg-muted/40"><tr hlmTableRow><th hlmTableHead scope="col">Секция и място</th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">Избори със сигнали</th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">Оценени</th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">Липсващи/без оценка</th><th hlmTableHead scope="col">Сигнали</th></tr></thead>
+            <tbody hlmTableBody>
+              @for (row of visibleRecurring; track row.date + row.section.regionId + row.section.sectionId) {
+                <tr hlmTableRow>
+                  <td hlmTableCell class="px-4 py-3"><button type="button" hlmBtn variant="link" class="h-auto justify-start p-0 text-left font-normal whitespace-normal" (click)="openSection.emit({ date: row.date, section: row.section })">{{ row.section.sectionId }} · {{ row.section.cityName }}</button><span class="block text-xs text-muted-foreground">{{ row.section.regionName }} · {{ row.date }}</span></td>
+                  <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.flagged }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.assessed }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.unavailable }}</td><td hlmTableCell class="px-4 py-3">{{ row.codes.join(', ') }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        @if (recurringPageCount > 1) {
+          <div class="mt-3 flex items-center justify-end gap-2">
+            <button hlmBtn variant="outline" size="sm" type="button" [disabled]="recurringPage === 0" (click)="recurringPage = recurringPage - 1" aria-label="Предишни повтарящи се рискове">Назад</button>
+            <span class="text-xs text-muted-foreground">{{ recurringPage + 1 }} / {{ recurringPageCount }}</span>
+            <button hlmBtn variant="outline" size="sm" type="button" [disabled]="recurringPage + 1 >= recurringPageCount" (click)="recurringPage = recurringPage + 1" aria-label="Следващи повтарящи се рискове">Напред</button>
+          </div>
+        }
+      } @else {
+        <p class="text-sm text-muted-foreground">Няма установени повтарящи се сигнали в съпоставимите секции с налични оценки.</p>
+      }
+    </section>
+  }
+}
+
+<section class="space-y-3">
+@if (tab === 'risks') { <h4 class="font-semibold">Секции със сигнали</h4> }
+<div class="overflow-x-auto rounded-md border border-border">
+  @if (tab === 'geography') {
+    <table hlmTable class="min-w-full" aria-label="Географска подкрепа по избори">
+      <thead hlmTableHeader class="bg-muted/40"><tr hlmTableRow>
+        <th hlmTableHead scope="col" app-sortable-table-header columnKey="date" label="Избори"
+          [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('date')"
+          tabindex="0" (sortChange)="sort('date')" (keydown.enter)="sort('date')" (keydown.space)="$event.preventDefault(); sort('date')"></th>
+        <th hlmTableHead scope="col" app-sortable-table-header columnKey="label" label="Място"
+          [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('label')"
+          tabindex="0" (sortChange)="sort('label')" (keydown.enter)="sort('label')" (keydown.space)="$event.preventDefault(); sort('label')"></th>
+        <th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap" app-sortable-table-header columnKey="votes" [label]="votesLabel" align="right"
+          [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('votes')"
+          tabindex="0" (sortChange)="sort('votes')" (keydown.enter)="sort('votes')" (keydown.space)="$event.preventDefault(); sort('votes')"></th>
+        <th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap" app-sortable-table-header columnKey="share" [label]="shareLabel" align="right"
+          [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('share')"
+          tabindex="0" (sortChange)="sort('share')" (keydown.enter)="sort('share')" (keydown.space)="$event.preventDefault(); sort('share')"></th>
+        @if (elections.length > 1) { <th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">{{ voteChangeLabel }}</th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">Промяна дял</th> }
+        <th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">Секции</th>
+      </tr></thead>
+      <tbody hlmTableBody>
+        @for (row of visibleGeography; track row.date + row.id) {
+          <tr hlmTableRow><td hlmTableCell class="px-4 py-3">{{ row.electionName }}<span class="block text-xs text-muted-foreground">{{ row.date }}</span></td>
+            <td hlmTableCell class="px-4 py-3">{{ row.name }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.votes | number }}</td>
+            <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.share === null ? '-' : (row.share | number:'1.2-2') + '%' }}</td>
+            @if (elections.length > 1) {
+              <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.voteChange === null ? '-' : (row.voteChange > 0 ? '+' : '') + (row.voteChange | number) }}
+                @if (row.baselineDate) { <span class="block text-xs text-muted-foreground">спрямо {{ row.baselineDate }}</span> }</td>
+              <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.shareChange === null ? '-' : (row.shareChange > 0 ? '+' : '') + (row.shareChange | number:'1.2-2') + ' п.п.' }}</td>
+            }
+            <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.sectionCount | number }}</td></tr>
+        }
+        @if (!rowCount) { <tr hlmTableRow><td hlmTableCell [attr.colspan]="elections.length > 1 ? 7 : 5" class="px-4 py-8 text-center text-muted-foreground">Няма резултати за избрания обхват и търсене.</td></tr> }
+      </tbody>
+    </table>
+  } @else if (tab === 'candidates') {
+    <table hlmTable class="min-w-full" aria-label="Кандидати и преференции по избори">
+      <thead hlmTableHeader class="bg-muted/40"><tr hlmTableRow>
+        <th hlmTableHead scope="col" app-sortable-table-header columnKey="date" label="Избори"
+          [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('date')"
+          tabindex="0" (sortChange)="sort('date')" (keydown.enter)="sort('date')" (keydown.space)="$event.preventDefault(); sort('date')"></th><th hlmTableHead scope="col">Район</th>
+        <th hlmTableHead scope="col" app-sortable-table-header columnKey="label" label="Кандидат"
+          [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('label')"
+          tabindex="0" (sortChange)="sort('label')" (keydown.enter)="sort('label')" (keydown.space)="$event.preventDefault(); sort('label')"></th>
+        <th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap" app-sortable-table-header columnKey="votes" label="Преференции" align="right"
+          [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('votes')"
+          tabindex="0" (sortChange)="sort('votes')" (keydown.enter)="sort('votes')" (keydown.space)="$event.preventDefault(); sort('votes')"></th>
+        <th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap" app-sortable-table-header columnKey="share" label="От партийните гласове" align="right"
+          [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('share')"
+          tabindex="0" (sortChange)="sort('share')" (keydown.enter)="sort('share')" (keydown.space)="$event.preventDefault(); sort('share')"></th>
+        <th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">От партийните преференции</th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">Хартиени</th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">Машинни</th>
+      </tr></thead>
+      <tbody hlmTableBody>
+        @for (row of visiblePreferences; track row.date + row.regionId + row.candidateId + row.candidateName) {
+          <tr hlmTableRow><td hlmTableCell class="px-4 py-3">{{ row.electionName }}<span class="block text-xs text-muted-foreground">{{ row.date }}</span></td>
+            <td hlmTableCell class="px-4 py-3">{{ row.regionName }}</td><td hlmTableCell class="px-4 py-3"><button type="button" hlmBtn variant="link" class="h-auto justify-start p-0 text-left font-normal whitespace-normal"
+              [appContestantPreview]="row.candidateName" [contestantPreviewDate]="row.date" [contestantPreviewPartyId]="row.partyId"
+              [contestantPreviewCandidate]="row" [contestantPreviewRegion]="row.regionName"
+              (click)="selectCandidate(row)">{{ row.candidateName }}</button><span class="block text-xs text-muted-foreground">№ {{ row.candidateId }} @if (row.candidateId === '101') { · Водач на листата }</span></td>
+            <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.total | number }}</td>
+            <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.shareOfPartyVotes === null ? '-' : (row.shareOfPartyVotes | number:'1.2-2') + '%' }}</td>
+            <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.shareOfPreferences === null ? '-' : (row.shareOfPreferences | number:'1.2-2') + '%' }}</td>
+            <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.paper | number }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.machine | number }}</td></tr>
+        }
+        @if (!rowCount) { <tr hlmTableRow><td hlmTableCell colspan="8" class="px-4 py-8 text-center text-muted-foreground">Няма налични преференции за избрания обхват и търсене.</td></tr> }
+      </tbody>
+    </table>
+  } @else {
+    <table hlmTable class="min-w-full" [attr.aria-label]="tab === 'risks' ? 'Секции със сигнали по избори' : 'Резултати по секции и избори'">
+      <thead hlmTableHeader class="bg-muted/40"><tr hlmTableRow>
+        <th hlmTableHead scope="col" app-sortable-table-header columnKey="date" label="Избори"
+          [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('date')"
+          tabindex="0" (sortChange)="sort('date')" (keydown.enter)="sort('date')" (keydown.space)="$event.preventDefault(); sort('date')"></th>
+        <th hlmTableHead scope="col" app-sortable-table-header columnKey="label" label="Секция и място"
+          [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('label')"
+          tabindex="0" (sortChange)="sort('label')" (keydown.enter)="sort('label')" (keydown.space)="$event.preventDefault(); sort('label')"></th>
+        <th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap" app-sortable-table-header columnKey="votes" [label]="votesLabel" align="right"
+          [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('votes')"
+          tabindex="0" (sortChange)="sort('votes')" (keydown.enter)="sort('votes')" (keydown.space)="$event.preventDefault(); sort('votes')"></th>
+        <th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap" app-sortable-table-header columnKey="share" [label]="shareLabel" align="right"
+          [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('share')"
+          tabindex="0" (sortChange)="sort('share')" (keydown.enter)="sort('share')" (keydown.space)="$event.preventDefault(); sort('share')"></th>
+        @if (elections.length > 1) { <th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">{{ voteChangeLabel }}</th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap">Промяна дял</th> }
+        <th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap" app-sortable-table-header columnKey="paper" label="Хартиени" align="right"
+          [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('paper')"
+          tabindex="0" (sortChange)="sort('paper')" (keydown.enter)="sort('paper')" (keydown.space)="$event.preventDefault(); sort('paper')"></th>
+        <th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap" app-sortable-table-header columnKey="machine" label="Машинни" align="right"
+          [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('machine')"
+          tabindex="0" (sortChange)="sort('machine')" (keydown.enter)="sort('machine')" (keydown.space)="$event.preventDefault(); sort('machine')"></th><th hlmTableHead scope="col">Сигнали</th>
+      </tr></thead>
+      <tbody hlmTableBody>
+        @for (row of visibleSections; track row.date + row.section.regionId + row.section.sectionId) {
+          <tr hlmTableRow><td hlmTableCell class="px-4 py-3">{{ row.electionName }}<span class="block text-xs text-muted-foreground">{{ row.date }}</span></td>
+            <td hlmTableCell class="px-4 py-3"><button type="button" hlmBtn variant="link" class="h-auto justify-start p-0 text-left font-normal whitespace-normal" (click)="openSection.emit({ date: row.date, section: row.section })">{{ row.section.sectionId }} · {{ row.section.cityName }}</button><span class="block max-w-sm text-xs text-muted-foreground">{{ row.section.regionName }} · {{ row.section.sectionName }}</span></td>
+            <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.votes | number }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.share === null ? '-' : (row.share | number:'1.2-2') + '%' }}</td>
+            @if (elections.length > 1) {
+              <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.voteChange === null ? '-' : (row.voteChange > 0 ? '+' : '') + (row.voteChange | number) }}
+                @if (row.baselineDate) { <span class="block text-xs text-muted-foreground">спрямо {{ row.baselineDate }}</span> }</td>
+              <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.shareChange === null ? '-' : (row.shareChange > 0 ? '+' : '') + (row.shareChange | number:'1.2-2') + ' п.п.' }}</td>
+            }
+            <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.paper | number }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ row.machine | number }}</td>
+            <td hlmTableCell class="px-4 py-3">
+              @if (row.risks === null) { <span class="text-xs text-muted-foreground">Няма оценка</span> }
+              @else if (!row.risks.length) { <span class="text-xs text-muted-foreground">Без сигнали</span> }
+              @else {
+                <div class="flex flex-wrap gap-1">
+                  @for (risk of row.risks; track $index) {
+                    <span [title]="risk.details?.partyId == null ? 'Общ сигнал за секцията' : 'Специфичен сигнал за партията или кандидата'">
+                      <app-risk-badge [risk]="risk" [context]="{ section: row.section, partiesById: partiesByDate[row.date] }" />
+                    </span>
+                  }
+                </div>
+              }
+            </td></tr>
+        }
+        @if (!rowCount) { <tr hlmTableRow><td hlmTableCell [attr.colspan]="elections.length > 1 ? 9 : 7" class="px-4 py-8 text-center text-muted-foreground">Няма секции за избрания обхват и филтри.</td></tr> }
+      </tbody>
+    </table>
+  }
+</div>
+
+@if (pageCount > 1) {
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <p class="text-xs text-muted-foreground">Страница {{ page + 1 }} от {{ pageCount }}</p>
+    <div class="flex gap-2">
+      <button hlmBtn variant="outline" size="sm" type="button" [disabled]="page === 0" (click)="page = page - 1">Назад</button>
+      <button hlmBtn variant="outline" size="sm" type="button" [disabled]="page + 1 >= pageCount" (click)="page = page + 1">Напред</button>
+    </div>
+  </div>
+}
+
+@if (elections.length > 1 && tab !== 'candidates') {
+  <p class="text-xs text-muted-foreground">Промяната е спрямо предишното окончателно участие от същия тур. Изисква се еднозначно съпоставяне на секциите, а за географските обобщения - пълно съвпадение.</p>
+}
+</section>
+</section>

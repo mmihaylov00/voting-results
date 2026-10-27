@@ -1,6 +1,79 @@
 [
-  {"date": "2026.04.19", "name": "Април 2026"},
-  {"date": "2024.10.27", "name": "Октомври 2024"},
-  {"date": "2024.06.09", "name": "Юни 2024"},
-  {"date": "2023.04.02", "name": "Април 2023"}
+  {
+    "date": "2026.10.25",
+    "name": "Октомври 2026 - Тур 1",
+    "type": "presidential",
+    "round": 1,
+    "provisional": {
+      "sourceUrl": "https://results.cik.bg/pvr202610/rezultati/index.html",
+      "updatedAt": "2026-10-26T15:00:00+02:00",
+      "processedPercent": 100.0,
+      "reportedSections": 12719,
+      "totalSections": 12719
+    }
+  },
+  {
+    "date": "2026.04.19",
+    "name": "Април 2026",
+    "type": "governmental"
+  },
+  {
+    "date": "2024.10.27",
+    "name": "Октомври 2024",
+    "type": "governmental"
+  },
+  {
+    "date": "2024.06.09",
+    "name": "Юни 2024",
+    "type": "governmental"
+  },
+  {
+    "date": "2023.04.02",
+    "name": "Април 2023",
+    "type": "governmental"
+  },
+  {
+    "date": "2022.10.02",
+    "name": "Октомври 2022",
+    "type": "governmental"
+  },
+  {
+    "date": "2021.11.21",
+    "name": "Ноември 2021 - Тур 2",
+    "type": "presidential",
+    "round": 2
+  },
+  {
+    "date": "2021.11.14",
+    "name": "Ноември 2021 - Тур 1",
+    "type": "presidential",
+    "round": 1
+  },
+  {
+    "date": "2021.07.11",
+    "name": "Юли 2021",
+    "type": "governmental"
+  },
+  {
+    "date": "2021.04.04",
+    "name": "Април 2021",
+    "type": "governmental"
+  },
+  {
+    "date": "2017.03.26",
+    "name": "Март 2017",
+    "type": "governmental"
+  },
+  {
+    "date": "2016.11.13",
+    "name": "Ноември 2016 - Тур 2",
+    "type": "presidential",
+    "round": 2
+  },
+  {
+    "date": "2016.11.06",
+    "name": "Ноември 2016 - Тур 1",
+    "type": "presidential",
+    "round": 1
+  }
 ]

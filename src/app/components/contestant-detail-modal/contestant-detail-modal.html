@@ -1,0 +1,232 @@
+<app-base-modal [title]="displayName" [subtitle]="subtitle"
+  [pageId]="nestedContestant() ? '' : profilePageId" [pageRoute]="pageRoute" [pageQueryParams]="pageQueryParams" (close)="close.emit()">
+  <ng-template #headerImage>
+    @if (profileImage(); as image) {
+      @if (failedImage() !== image.src) {
+        <a [href]="image.sourceUrl" target="_blank" rel="noopener noreferrer"
+          [title]="image.author + ' · ' + image.license" [attr.aria-label]="'Източник на изображението: ' + displayName"
+          class="shrink-0 rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary">
+          <img [src]="image.src" [alt]="image.alt" width="64" height="64" decoding="async"
+            class="profile-image" [class.profile-logo]="!presidential && !preferenceMode" (error)="failedImage.set(image.src)" />
+        </a>
+      }
+    }
+  </ng-template>
+  <ng-template #loadingBar>
+    <div role="progressbar" aria-label="Зареждане на подробни данни" aria-valuemin="0" aria-valuemax="100"
+      [attr.aria-valuenow]="detailProgress()" class="my-8 h-2 w-full overflow-hidden rounded-full bg-muted">
+      <div class="h-full bg-primary transition-[width] duration-200 motion-reduce:transition-none" [style.width.%]="detailProgress()"></div>
+    </div>
+  </ng-template>
+  <div class="min-w-0">
+    <nav class="mb-6 flex flex-wrap gap-1 border-b border-border" aria-label="Профил">
+      @for (tab of tabs; track tab.id) {
+        <button hlmBtn variant="line" type="button" [attr.aria-pressed]="activeTab() === tab.id"
+          [attr.data-state]="activeTab() === tab.id ? 'active' : 'inactive'" (click)="selectTab(tab.id)">{{ tab.label }}</button>
+      }
+    </nav>
+
+    @if (loading()) {
+      @if (preferenceMode) { <ng-container [ngTemplateOutlet]="loadingBar" /> }
+      @else { <p role="status" class="py-10 text-center text-muted-foreground">Зареждане на участията във всички избори...</p> }
+    } @else if (error()) {
+      <div role="alert" class="py-6"><p>{{ error() }}</p><button hlmBtn variant="outline" type="button" class="mt-3" (click)="load()">Опитай отново</button></div>
+    } @else if (!participations().length) {
+      <p class="py-8 text-muted-foreground">Няма еднозначно съпоставени участия за този профил в архива.</p>
+    } @else {
+      @if (activeTab() === 'overview') {
+        <section aria-label="Обобщение" class="space-y-6">
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <app-stat-card [label]="presidential ? 'Участия / турове' : 'Участия'" [value]="participations().length" />
+            <app-stat-card label="Първо в архива">
+              <ng-template #customContent><p class="text-base font-semibold text-secondary dark:text-primary">{{ first()?.name }}</p></ng-template>
+            </app-stat-card>
+            <app-stat-card label="Последни избори">
+              <ng-template #customContent>
+                <p class="text-base font-semibold text-secondary dark:text-primary">{{ latest()?.name }}</p>
+                <p class="mt-1 text-xs text-muted-foreground">{{ latest()?.votes | number }} {{ preferenceMode ? 'преференции' : 'гласа' }} · {{ latest()?.share === null ? 'Няма данни за дял' : (latest()?.share | number:'1.2-2') + '%' }}</p>
+              </ng-template>
+            </app-stat-card>
+            <app-stat-card label="Най-висок дял">
+              <ng-template #customContent>
+                <div class="space-y-2">
+                  @for (result of best(); track result.round ?? 0) {
+                    <div>
+                      <p class="text-base font-semibold text-secondary dark:text-primary">{{ result.share | number:'1.2-2' }}% @if (presidential) { <span class="text-xs font-normal text-muted-foreground">· Тур {{ result.round }}</span> }</p>
+                      <p class="text-xs text-muted-foreground">{{ result.name }}</p>
+                    </div>
+                  } @empty { <p class="text-sm text-muted-foreground">Няма данни</p> }
+                </div>
+              </ng-template>
+            </app-stat-card>
+          </div>
+          <section aria-label="Представяне във времето" class="space-y-4">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <h3 class="text-lg font-semibold">Представяне във времето</h3>
+              <div class="flex items-center gap-3">
+                <label [for]="'profile-chart-metric-' + controlId + '--trigger'" class="text-sm text-muted-foreground">Показател</label>
+                <app-select class="w-40" [controlId]="'profile-chart-metric-' + controlId" label="Показател" [value]="chartMetric()" [options]="metricOptions" (valueChange)="selectChartMetric($event)" />
+              </div>
+            </div>
+            <highcharts-chart [options]="chartOptions()" style="display:block;width:100%;height:300px" />
+            <p class="text-xs text-muted-foreground">{{ preferenceMode ? 'Дяловете са от партийните гласове в районите на кандидатските листи. Участията се съпоставят по пълно име и партия.' : 'Дяловете са от гласувалите.' }} Гласовете от различни избори не се сумират.</p>
+          </section>
+        </section>
+      } @else {
+        <div class="mb-6 w-full space-y-2 sm:max-w-sm">
+          <label [for]="'profile-election-scope-' + controlId + '--trigger'" class="block text-sm text-muted-foreground">Избори</label>
+          <app-select [controlId]="'profile-election-scope-' + controlId" label="Избори" icon="calendar" [value]="scope()" [options]="scopeOptions()" (valueChange)="selectScope($event)" />
+        </div>
+      }
+
+      @if (activeTab() === 'elections' && scope() === 'all') {
+        <div class="overflow-x-auto rounded-md border border-border">
+          <table hlmTable aria-label="Участия във всички избори">
+            <thead hlmTableHeader class="bg-muted/40">
+              <tr hlmTableRow>
+                <th hlmTableHead scope="col">Избори</th>
+                <th hlmTableHead scope="col">{{ preferenceMode ? 'Партия / район' : presidential ? 'Кандидатска двойка' : 'Участие като' }}</th>
+                <th hlmTableHead scope="col" class="text-right">{{ votesLabel }}</th>
+                <th hlmTableHead scope="col" class="text-right">Дял</th>
+                <th hlmTableHead scope="col" class="text-right">Място</th>
+              </tr>
+            </thead>
+            <tbody hlmTableBody>
+              @for (election of participations(); track election.date) {
+                <tr hlmTableRow>
+                  <td hlmTableCell class="px-4 py-3">
+                    <button hlmBtn variant="link" type="button" class="h-auto justify-start p-0 text-left whitespace-normal" (click)="openElection(election.date)">{{ election.name }}</button>
+                    @if (election.provisional) { <span class="block text-xs text-amber-700 dark:text-amber-400">Предварителни · {{ election.provisional.processedPercent }}%</span> }
+                  </td>
+                  <td hlmTableCell class="max-w-sm px-4 py-3">
+                    @if (preferenceMode) {
+                      @for (list of preferenceLists(election.date); track list.regionId + ':' + list.partyId) {
+                        <span class="block">{{ list.partyName }} <span class="text-xs text-muted-foreground">· {{ list.regionName }}</span></span>
+                      }
+                    } @else { {{ election.fullName }} }
+                  </td>
+                  <td hlmTableCell class="px-4 py-3 text-right font-semibold tabular-nums whitespace-nowrap">{{ election.votes | number }}</td>
+                  <td hlmTableCell class="px-4 py-3 text-right tabular-nums whitespace-nowrap">{{ election.share === null ? 'Няма данни' : (election.share | number:'1.2-2') + '%' }}</td>
+                  <td hlmTableCell class="px-4 py-3 text-right tabular-nums">{{ election.rank ?? (preferenceMode ? 'По райони' : '-') }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-3 text-xs text-muted-foreground">Архивът показва само еднозначно съпоставени имена. Липсващо участие не се приема за нулев резултат.</p>
+      }
+
+      @if (activeTab() === 'elections' && selected(); as election) {
+        <section class="space-y-6" aria-label="Резултат за избраните избори">
+          <header>
+            <h3 class="text-lg font-semibold">{{ election.name }}</h3>
+            <p class="mt-1 text-sm text-muted-foreground">{{ election.fullName }} @if (!preferenceMode) { · Бюлетина № {{ election.partyId }} }</p>
+          </header>
+          @if (election.provisional; as provisional) {
+            <div class="space-y-1 text-sm">
+              <p class="font-medium text-amber-700 dark:text-amber-400">Предварителни резултати · {{ provisional.processedPercent }}% обработени секции</p>
+              <p class="text-xs text-muted-foreground">Обновени {{ formatUpdatedAt(provisional.updatedAt) }} (София) · <a [href]="provisional.sourceUrl" target="_blank" rel="noopener noreferrer" class="text-primary underline-offset-4 hover:underline">ЦИК</a></p>
+            </div>
+          }
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            <app-stat-card [label]="votesLabel" [value]="election.votes" />
+            <app-stat-card [label]="shareLabel" [value]="election.share === null ? 'Няма данни' : (election.share | number:'1.2-2') + '%'" />
+            <app-stat-card [label]="preferenceMode ? 'Място по преференции в листата' : 'Място'" [value]="election.rank ?? (preferenceMode ? 'По райони' : '-')" />
+            <app-stat-card [label]="preferenceMode ? 'Разлика до първото място в листата' : 'Разлика до първото място'" [value]="election.gapToLeader" />
+            <app-stat-card label="Хартиени" [value]="votingMethods()?.paper ?? null" />
+            <app-stat-card label="Машинни" [value]="votingMethods()?.machine ?? null" />
+          </div>
+          @if (selectedPreference(); as preference) {
+            <section class="space-y-3">
+              <h4 class="font-semibold">Листи и преференции по райони</h4>
+              <div class="overflow-x-auto rounded-md border border-border">
+                <table hlmTable aria-label="Листи на кандидата">
+                  <thead hlmTableHeader class="bg-muted/40"><tr hlmTableRow><th hlmTableHead scope="col">Район</th><th hlmTableHead scope="col">Партия</th><th hlmTableHead scope="col" class="text-right">Номер</th><th hlmTableHead scope="col" class="text-right">Място по преференции</th><th hlmTableHead scope="col" class="text-right">Преференции</th><th hlmTableHead scope="col" class="text-right">Дял от партийните гласове</th></tr></thead>
+                  <tbody hlmTableBody>
+                    @for (list of preference.lists; track list.regionId + ':' + list.partyId) {
+                      <tr hlmTableRow><td hlmTableCell class="px-4 py-3">{{ list.regionName }}</td><td hlmTableCell class="px-4 py-3">{{ list.partyName }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums">{{ list.candidateId }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums">{{ list.rank }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums">{{ list.votes | number }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums">{{ list.share === null ? '-' : (list.share | number:'1.2-2') + '%' }}</td></tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          }
+          @if (mandate(); as result) {
+            <section class="space-y-2 text-sm">
+              <h4 class="font-semibold">Мандати и изборен праг</h4>
+              @if (result.eligible) { <p>Национален дял за прага: <strong>{{ result.share | number:'1.2-2' }}%</strong> · {{ result.passedThreshold ? 'Над прага от 4%' : 'Под прага от 4%' }}</p> }
+              <p>{{ result.official ? 'Официални мандати' : 'Изчислени мандати при праг 4%' }}: <strong>{{ result.seats }}</strong></p>
+              @if (result.official; as official) { <a class="text-primary underline-offset-4 hover:underline" [href]="official.source" target="_blank" rel="noopener noreferrer">ЦИК · {{ official.decision }}</a> }
+              @else { <p class="text-xs text-muted-foreground">Национално разпределение по Хеър-Ниймайер. Не моделира независими мандати и разпределение по райони.</p> }
+            </section>
+          }
+          @if (roundComparison(); as comparison) {
+            <section class="space-y-3 text-sm">
+              <h4 class="font-semibold">Между първи и втори тур</h4>
+              <div class="overflow-x-auto rounded-md border border-border">
+                <table hlmTable aria-label="Резултати по турове">
+                  <thead hlmTableHeader class="bg-muted/40"><tr hlmTableRow><th hlmTableHead scope="col">Избори</th><th hlmTableHead scope="col" class="text-right">Гласове</th><th hlmTableHead scope="col" class="text-right">Дял</th></tr></thead>
+                  <tbody hlmTableBody>
+                    @for (round of [comparison.first, comparison.second]; track round.date) {
+                      <tr hlmTableRow><td hlmTableCell class="px-4 py-3">{{ round.name }}</td><td hlmTableCell class="px-4 py-3 text-right font-semibold tabular-nums">{{ round.votes | number }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums">{{ round.share === null ? 'Няма данни' : (round.share | number:'1.2-2') + '%' }}</td></tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+              <p>Промяна: <strong>{{ comparison.voteChange > 0 ? '+' : '' }}{{ comparison.voteChange | number }}</strong> гласа
+                @if (comparison.shareChange !== null) { · {{ comparison.shareChange > 0 ? '+' : '' }}{{ comparison.shareChange | number:'1.2-2' }} п.п. }
+              </p>
+              <p class="text-xs text-muted-foreground">Разликите между туровете не показват индивидуален трансфер на избиратели.</p>
+            </section>
+          }
+        </section>
+      }
+
+      @if (detailLoading()) {
+        <ng-container [ngTemplateOutlet]="loadingBar" />
+      } @else if (detailError()) {
+        <div role="alert" class="py-5"><p>{{ detailError() }}</p><button hlmBtn variant="outline" type="button" class="mt-3" (click)="loadDetails()">Опитай отново</button></div>
+      } @else if (activeTab() === 'geography' || activeTab() === 'sections' || activeTab() === 'risks' || activeTab() === 'candidates') {
+        @if (geographyWarning()) { <p class="mt-3 text-xs text-muted-foreground">{{ geographyWarning() }}</p> }
+        @if (activeTab() === 'risks' && preferenceMode && preferenceRiskLists().length) {
+          <section class="mb-6 space-y-3">
+            <h3 class="text-lg font-semibold">Сигнали за кандидатските листи</h3>
+            <p class="text-sm text-muted-foreground">Обобщени сигнали за кандидата в съответния район. Те не се броят като отделни рискови секции и не доказват нарушение.</p>
+            <div class="overflow-x-auto rounded-md border border-border">
+              <table hlmTable aria-label="Рискове за кандидатските листи">
+                <thead hlmTableHeader class="bg-muted/40"><tr hlmTableRow><th hlmTableHead scope="col">Избори</th><th hlmTableHead scope="col">Район</th><th hlmTableHead scope="col">Листа</th><th hlmTableHead scope="col">Сигнали</th></tr></thead>
+                <tbody hlmTableBody>
+                  @for (list of preferenceRiskLists(); track list.date + ':' + list.regionId + ':' + list.partyId) {
+                    <tr hlmTableRow><td hlmTableCell class="px-4 py-3">{{ list.electionName }}</td><td hlmTableCell class="px-4 py-3">{{ list.regionName }}</td><td hlmTableCell class="px-4 py-3">{{ list.partyName }} · № {{ list.candidateId }}</td><td hlmTableCell class="px-4 py-3"><span class="flex flex-wrap gap-1">@for (risk of list.risks; track risk.code) { <app-risk-badge [risk]="risk" [context]="list.context" /> }</span></td></tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </section>
+        }
+        <app-contestant-profile-panels [elections]="detailElections()" [tab]="panelTab()" [presidential]="presidential" [preference]="preferenceMode" (openSection)="openSection($event)" (openCandidate)="openCandidate($event)" />
+      }
+      @if (sectionLoading()) { <p role="status" class="text-sm py-3">Зареждане на секцията...</p> }
+      @if (sectionError()) { <p role="alert" class="text-sm py-3">{{ sectionError() }}</p> }
+    }
+  </div>
+</app-base-modal>
+
+@if (openedSection(); as section) {
+  <app-section-detail-modal [section]="section.details" [currentSectionData]="section.section" [date]="section.date"
+    [pageRoute]="['/', presidential ? 'presidential' : 'governmental', 'election', section.date, 'region', section.section.regionId]"
+    [pageQueryParams]="{ section: section.section.sectionId, candidate: null, group: null, analysis: null }"
+    [allParties]="sectionParties(section.date)" [allSections]="section.sections" [isAbroadRegion]="section.section.regionId === '32'"
+    [shareMessage]="sectionShareMessage()" [shareAction]="shareSection"
+    (close)="closeSection()" (openCandidate)="openSectionCandidate($event)" (openContestant)="openRelatedContestant($event)" />
+}
+@if (openedCandidate(); as candidate) {
+  <app-contestant-detail-modal [partyName]="candidate.candidate.candidateName" [partyId]="candidate.candidate.partyId" [currentDate]="candidate.date"
+    [preferenceCandidate]="candidate.candidate" [preferenceSections]="candidate.sections" [nested]="true"
+    [preferencePageRoute]="candidatePageRoute(candidate.date, candidate.sections)"
+    [preferencePageQueryParams]="{ candidate: candidate.candidate.partyId + '_' + candidate.candidate.candidateId, section: null, group: null, analysis: null }"
+    (close)="openedCandidate.set(null)" />
+}
+@if (nestedContestant(); as contestant) {
+  <app-contestant-detail-modal [partyName]="contestant.partyName" [partyId]="contestant.partyId" [currentDate]="contestant.date" [nested]="true" (close)="nestedContestant.set(null)" />
+}

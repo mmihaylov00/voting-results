@@ -1,45 +1,55 @@
-<div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-0 sm:p-4"
-     [class]="zIndex"
-     (click)="closeModal()">
-  <div class="bg-background w-full h-full sm:h-auto sm:max-h-[90vh] sm:rounded-lg shadow-xl flex flex-col"
-       (click)="$event.stopPropagation()">
-    <!-- Header -->
-    @if (title || subtitle || headerActions) {
-      <div class="flex items-center justify-between px-6 py-4 border-b border-primary/20">
-        <div class="flex-1">
-          <div class="flex flex-row justify-between" style="align-items: baseline">
-            <h2 hlmH2 class="m-0 text-secondary dark:text-primary">{{ title }}</h2>
-            <div class="flex flex-row justify-end gap-1 align-baseline">
-              @if (headerActions) {
-                <ng-container [ngTemplateOutlet]="headerActions"></ng-container>
-              }
-              <button hlmBtn variant="ghost" size="icon" (click)="closeModal()"
-                      class="text-secondary dark:text-primary hover:bg-primary dark:hover:bg-primary dark:hover:text-primary-foreground">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18"/>
-                  <line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-              </button>
-            </div>
-          </div>
+<ng-template #modalContent>
+  <section class="bg-background w-full flex flex-col"
+           [class]="isPage() ? 'mx-auto max-w-[1800px] min-h-[70vh]' : 'h-full sm:h-auto sm:max-h-[90dvh] sm:rounded-lg shadow-xl overflow-y-auto ' + maxWidth">
+    <div class="flex flex-wrap items-start justify-between gap-x-4 gap-y-2 px-4 py-4 sm:px-6 border-b border-primary/20">
+      <div class="flex min-w-0 flex-1 items-center gap-3 sm:gap-4">
+        @if (headerImage) {
+          <ng-container [ngTemplateOutlet]="headerImage"></ng-container>
+        }
+        <div class="min-w-0 flex-1">
+          <h2 hlmH2 [id]="headingId" tabindex="-1" [attr.aria-level]="isPage() ? 1 : 2" class="m-0 scroll-mt-28 text-secondary dark:text-primary">{{ title }}</h2>
           @if (subtitle) {
             <p hlmMuted class="text-sm mt-1">{{ subtitle }}</p>
           }
         </div>
       </div>
-    }
-
-    <!-- Content -->
-    <div class="flex-1 p-6">
+      @if (headerActions) {
+        <div class="order-3 flex w-full min-w-0 flex-wrap items-center gap-2 sm:order-none sm:w-auto sm:max-w-[60%] [&>div]:mt-0 [&>div]:flex-wrap">
+          <ng-container [ngTemplateOutlet]="headerActions"></ng-container>
+        </div>
+      }
+      <div class="flex shrink-0 items-center justify-end gap-1">
+        @if (isPage()) {
+          <button hlmBtn variant="ghost" size="icon" type="button" (click)="collapse()" aria-label="Свий до прозорец" title="Свий до прозорец" class="text-secondary dark:text-primary">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14 10 7-7M20 10h-6V4M4 14h6v6m-7 1 7-7"/></svg>
+          </button>
+        } @else {
+          @if (pageId()) {
+            <button hlmBtn variant="ghost" size="icon" type="button" (click)="expand()" aria-label="Отвори като страница" title="Отвори като страница" class="text-secondary dark:text-primary">
+              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M3 3l6 6m12-6-6 6M3 21l6-6m12 6-6-6"/></svg>
+            </button>
+          }
+          <button hlmBtn variant="ghost" size="icon" type="button" (click)="closeModal()" aria-label="Затвори" title="Затвори" class="text-secondary dark:text-primary">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 6-12 12M6 6l12 12"/></svg>
+          </button>
+        }
+      </div>
+    </div>
+    <div class="min-w-0 flex-1 p-4 sm:p-6">
       <ng-content></ng-content>
     </div>
-
-    <!-- Footer -->
     @if (footer) {
-      <div class="flex justify-end gap-2 p-6 border-t border-primary/20">
+      <div class="flex justify-end gap-2 p-4 sm:p-6 border-t border-primary/20">
         <ng-container [ngTemplateOutlet]="footer"></ng-container>
       </div>
     }
-  </div>
-</div>
+  </section>
+</ng-template>
+
+@if (!isPage()) {
+  <dialog #modalDialog [attr.aria-labelledby]="headingId"
+          class="fixed inset-0 m-0 h-[100dvh] max-h-none w-full max-w-none border-0 bg-transparent p-0 text-foreground backdrop:bg-black/50 backdrop:backdrop-blur-sm open:flex open:items-center open:justify-center sm:p-4"
+          [class]="zIndex" (cancel)="onCancel($event)" (click)="onBackdropClick($event)">
+    <ng-container [ngTemplateOutlet]="modalContent"></ng-container>
+  </dialog>
+}

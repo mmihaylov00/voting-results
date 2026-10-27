@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, signal, effect } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, signal, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SectionTab, SectionFilters } from '../../../models/election.models';
 import { HlmButtonDirective } from '../../ui/button-helm/src/lib/hlm-button.directive';
@@ -6,6 +6,8 @@ import { HlmTooltipDirective } from '../../ui/tooltip-helm/src/lib/hlm-tooltip.d
 import { ComparisonOperatorInputComponent } from '../../ui/comparison-operator-input/comparison-operator-input';
 import { RiskFilterDropdownComponent, RiskCategory } from '../../ui/risk-filter-dropdown/risk-filter-dropdown';
 import { SearchFilterComponent } from '../../ui/search-filter/search-filter';
+import { ELECTION_TYPE } from '../../../utils/election-type';
+import { MapIconComponent, MapIconName } from '../../ui/map-icon/map-icon';
 
 @Component({
   selector: 'app-section-filters',
@@ -20,12 +22,12 @@ import { SearchFilterComponent } from '../../ui/search-filter/search-filter';
     ComparisonOperatorInputComponent,
     RiskFilterDropdownComponent,
     SearchFilterComponent,
+    MapIconComponent,
   ],
   templateUrl: './section-filters.html',
 })
-export class SectionFiltersComponent implements OnInit {
+export class SectionFiltersComponent implements OnChanges {
   @Input() initialFilters?: SectionFilters;
-  @Input() showIcons: boolean = true;
   @Input() date: string = '';
   @Input() fullWidth: boolean = false;
 
@@ -44,25 +46,41 @@ export class SectionFiltersComponent implements OnInit {
   showQuickFiltersDropdown = signal<boolean>(false);
 
   availableSectionTypes = [
-    { id: 'City', label: 'Град' },
-    { id: 'Village', label: 'Село' },
-    { id: 'Other', label: 'Други' },
-    { id: 'Mobile', label: 'Подвижна' },
-  ];
+    { id: 'City', label: 'Град', icon: 'municipality' },
+    { id: 'Village', label: 'Село', icon: 'settlement' },
+    { id: 'Other', label: 'Други', icon: 'summary' },
+    { id: 'Mobile', label: 'Подвижна', icon: 'mobile' },
+  ] as const;
+  readonly quickFilterIcons: Record<string, MapIconName> = {
+    grid: 'neighborhood', target: 'target', swing: 'swing', outside: 'no-votes',
+    dormant: 'summary', flip: 'party-change', vanishing: 'declining', declining: 'declining',
+  };
 
-  ngOnInit() {
-    if (this.initialFilters) {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['initialFilters'] && this.initialFilters) {
       this.searchTerm.set(this.initialFilters.searchTerm || '');
       this.activeTab.set(this.initialFilters.activeTab || 'all');
       this.activityOperator.set(this.initialFilters.activityOperator || 'lte');
       this.lowActivityThreshold.set(this.initialFilters.lowActivityThreshold !== undefined ? this.initialFilters.lowActivityThreshold : 100);
-      this.sectionTypes.set(this.initialFilters.sectionTypes || new Set());
+      if (!this.sameSelection(this.sectionTypes(), this.initialFilters.sectionTypes)) {
+        this.sectionTypes.set(this.initialFilters.sectionTypes || new Set());
+      }
       this.riskFilterType.set(this.initialFilters.riskFilterType || null);
-      this.selectedRiskCategories.set(this.initialFilters.selectedRiskCategories || new Set());
+      if (!this.sameSelection(this.selectedRiskCategories(), this.initialFilters.selectedRiskCategories)) {
+        this.selectedRiskCategories.set(this.initialFilters.selectedRiskCategories || new Set());
+      }
     }
   }
 
+  private sameSelection(current: Set<string>, incoming?: Set<string>): boolean {
+    return current.size === (incoming?.size ?? 0) && [...current].every(value => incoming?.has(value));
+  }
+
   constructor() {
+    if (inject(ELECTION_TYPE) === 'presidential') {
+      this.quickFilterTabs = this.quickFilterTabs.filter(tab => tab.id === 'all');
+      this.riskCategories = this.riskCategories.filter(category => category.code !== 'R5' && category.code !== 'R6');
+    }
     effect(() => {
       this.filterChange.emit({
         searchTerm: this.searchTerm(),

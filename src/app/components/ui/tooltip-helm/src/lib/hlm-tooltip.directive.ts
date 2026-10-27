@@ -12,6 +12,7 @@ const elections = [
 
 @Directive({
   selector: '[hlmTooltip]',
+  exportAs: 'hlmTooltip',
   standalone: true,
   providers: [DecimalPipe]
 })
@@ -32,12 +33,15 @@ export class HlmTooltipDirective implements OnDestroy {
   ) {}
 
   @HostListener('mouseenter')
+  @HostListener('focusin')
   onMouseEnter() {
     if (this.isLoading || !this.comparisons || (Array.isArray(this.comparisons) && this.comparisons.length === 0)) return;
     this.showTooltip();
   }
 
   @HostListener('mouseleave')
+  @HostListener('focusout')
+  @HostListener('keydown.escape')
   onMouseLeave() {
     this.hideTooltip();
   }
@@ -216,7 +220,9 @@ export class HlmTooltipDirective implements OnDestroy {
   }
 
   private showTooltip() {
+    this.hideTooltip();
     this.tooltipElement = this.renderer.createElement('div');
+    this.renderer.setAttribute(this.tooltipElement, 'role', 'tooltip');
 
     let content = '';
     if (typeof this.comparisons === 'string') {
@@ -265,21 +271,30 @@ export class HlmTooltipDirective implements OnDestroy {
 
     this.renderer.appendChild(document.body, this.tooltipElement);
 
+    this.positionTooltip();
+  }
+
+  moveTooltip(event: MouseEvent): void {
+    if (this.tooltipElement) this.positionTooltip(event);
+  }
+
+  private positionTooltip(event?: MouseEvent): void {
+    if (!this.tooltipElement) return;
+
     const hostRect = this.el.nativeElement.getBoundingClientRect();
-    const tooltipRect = this.tooltipElement!.getBoundingClientRect();
+    const tooltipRect = this.tooltipElement.getBoundingClientRect();
 
-    let top = hostRect.top - tooltipRect.height - 8;
-    let left = hostRect.left + (hostRect.width / 2) - (tooltipRect.width / 2);
+    let top = event ? event.clientY + 12 : hostRect.top - tooltipRect.height - 8;
+    let left = event ? event.clientX + 12 : hostRect.left + (hostRect.width / 2) - (tooltipRect.width / 2);
 
-    if (top < 8) {
+    if (event && top + tooltipRect.height > window.innerHeight - 8) {
+      top = event.clientY - tooltipRect.height - 12;
+    } else if (top < 8) {
       top = hostRect.bottom + 8;
     }
 
-    if (left < 8) {
-      left = 8;
-    } else if (left + tooltipRect.width > window.innerWidth - 8) {
-      left = window.innerWidth - tooltipRect.width - 8;
-    }
+    top = Math.max(8, Math.min(top, window.innerHeight - tooltipRect.height - 8));
+    left = Math.max(8, Math.min(left, window.innerWidth - tooltipRect.width - 8));
 
     this.renderer.setStyle(this.tooltipElement, 'top', `${top}px`);
     this.renderer.setStyle(this.tooltipElement, 'left', `${left}px`);

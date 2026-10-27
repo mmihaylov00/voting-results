@@ -1,0 +1,117 @@
+<section aria-label="Социологически агенции" class="space-y-6">
+  <div class="flex flex-wrap items-center justify-between gap-3 border-b border-border">
+    <nav aria-label="Раздели на социологическите агенции" class="flex flex-wrap gap-1">
+      <button hlmBtn variant="line" type="button" [attr.aria-pressed]="activeTab() === 'accuracy'" [attr.data-state]="activeTab() === 'accuracy' ? 'active' : 'inactive'" (click)="activeTab.set('accuracy')">Точност на агенциите</button>
+      <button hlmBtn variant="line" type="button" [attr.aria-pressed]="activeTab() === 'comparison'" [attr.data-state]="activeTab() === 'comparison' ? 'active' : 'inactive'" (click)="activeTab.set('comparison')">Проучване и резултати</button>
+    </nav>
+    <button hlmBtn variant="outline" size="icon" type="button" aria-label="Методика на социологическите сравнения" aria-haspopup="dialog" (click)="methodOpen.set(true)">ⓘ</button>
+  </div>
+
+  <p class="text-sm text-muted-foreground">Последно предизборно проучване и отклонение от резултата</p>
+
+  @if (loading()) { <p role="status" class="py-12 text-center text-muted-foreground">Зареждане на проучванията...</p> }
+  @else if (error()) { <p role="alert" class="py-8">{{ error() }}</p> }
+  @else if (!agencies().length) { <p role="status">Няма налични сравними проучвания за тези избори.</p> }
+  @else {
+    <div role="region" aria-label="Отклонение на агенциите" tabindex="0" class="overflow-x-auto rounded-md border border-border" [hidden]="activeTab() !== 'accuracy'">
+      <table class="w-full min-w-[720px] text-sm">
+        <caption class="sr-only">Агенции по средно абсолютно отклонение в процентни пунктове. По-ниската стойност означава по-малко отклонение.</caption>
+        <thead class="border-b border-border text-left text-muted-foreground"><tr><th scope="col" class="px-4 py-3">Агенция</th><th scope="col" class="min-w-40 px-3 py-3">Средно отклонение</th><th scope="col" class="px-3 py-3 text-right">Край на терена</th><th scope="col" class="px-3 py-3 text-right">Дни преди вота</th><th scope="col" class="px-3 py-3 text-right">Сравнени партии</th><th scope="col" class="px-4 py-3 text-right">Публикация</th></tr></thead>
+        <tbody>
+          @for (agency of agencies(); track agency.id) {
+            <tr class="border-b border-border/60 last:border-0" [class.bg-primary/10]="selected()?.id === agency.id">
+              <th scope="row" class="px-4 py-4 font-medium"><button type="button" (click)="selectAgency(agency.id)" [attr.aria-pressed]="selected()?.id === agency.id" class="text-left underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary">{{ agency.name }}</button></th>
+              <td class="px-3 py-4"><div class="mb-1 text-right font-semibold tabular-nums">{{ agency.mae | number:'1.2-2' }} п.п.</div><div class="h-1.5 overflow-hidden rounded-full bg-muted" aria-hidden="true"><div class="h-full rounded-full bg-primary" [style.width.%]="agency.mae / maxMae() * 100"></div></div></td>
+              <td class="px-3 py-4 text-right tabular-nums">{{ agency.fieldworkEnd | date:'dd.MM.yyyy' }}</td><td class="px-3 py-4 text-right tabular-nums">{{ agency.daysBefore }}</td><td class="px-3 py-4 text-right tabular-nums">{{ agency.errors.length }}</td>
+              <td class="px-4 py-4 text-right"><a [href]="agency.sourceUrl" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4">Източник ↗</a></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <section aria-labelledby="agency-comparison-title" class="space-y-4" [hidden]="activeTab() !== 'comparison'">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <h2 id="agency-comparison-title" class="text-lg font-semibold">Проучване и резултати</h2>
+        <div class="flex max-w-full flex-wrap items-center gap-3">
+          <label for="polling-agency--trigger" class="text-sm text-muted-foreground">Агенция</label>
+          <app-select controlId="polling-agency" label="Агенция" icon="users" [value]="selected()?.id ?? ''" [options]="agencyOptions()" (valueChange)="selectAgency($event)" />
+        </div>
+      </div>
+      @if (selected(); as agency) {
+        <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground"><p>{{ agency.fieldworkEnd | date:'dd.MM.yyyy' }} · {{ agency.respondents === null ? 'Непосочен размер на извадката' : (agency.respondents | number:'1.0-0') + ' анкетирани' }}</p><a [href]="agency.sourceUrl" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4">Публикация на проучването ↗</a></div>
+        @if (agency.normalized) { <p class="text-sm text-muted-foreground">Дяловете за сравнение включват пропорционално разпределени {{ agency.redistributed | number:'1.1-2' }} п.п. неопределили се и отказали отговор. Публикуваният дял е посочен под прогнозата.</p> }
+        @if (agency.deduplicated) { <p class="text-sm text-muted-foreground">Премахнати са {{ agency.deduplicated }} идентични дублирани записа от изходния масив; средното отклонение е преизчислено.</p> }
+      }
+      @if (comparisonAgencies().length > 1) {
+        <p class="text-sm text-muted-foreground">„Най-близо“ отбелязва прогнозата с най-малко отклонение за всяка партия. При равенство са отбелязани всички най-близки прогнози.</p>
+      }
+      <div role="region" aria-label="Сравнение на проучванията с изборния резултат" tabindex="0" class="overflow-x-auto rounded-md border border-border">
+        <table class="w-full text-sm">
+          <caption class="sr-only">Прогнози и изборен резултат по партии. Най-близките оценки са с най-малко абсолютно отклонение.</caption>
+          <thead class="border-b border-border text-muted-foreground"><tr>
+            <th scope="col" class="sticky left-0 z-10 min-w-40 bg-background px-4 py-4 text-left">Партия</th>
+            <th scope="col" class="min-w-32 bg-muted/30 px-4 py-4 text-center">Изборен резултат</th>
+            @for (agency of comparisonAgencies(); track agency.id) {
+              <th scope="col" class="min-w-28 px-3 py-4 text-center font-medium">
+                <a [href]="agency.sourceUrl" target="_blank" rel="noopener noreferrer" class="underline-offset-4 hover:underline">{{ agency.name }}</a>
+                <span class="mt-1 block text-xs font-normal">{{ agency.fieldworkEnd | date:'dd.MM.yyyy' }}</span>
+                @if (agency.normalized) { <span class="mt-1 block text-xs font-normal">Преизчислено</span> }
+              </th>
+            }
+          </tr></thead>
+          <tbody>
+            @for (row of comparisonRows(); track row.party) {
+              <tr class="border-b border-border/60 last:border-0">
+                <th scope="row" class="sticky left-0 z-10 bg-background px-4 py-4 text-left font-medium"><span class="mr-2 inline-block h-2 w-2 rounded-full" [style.background-color]="color(row.party)" aria-hidden="true"></span>{{ displayName(row.party) }}</th>
+                <td class="bg-muted/30 px-4 py-4 text-center font-semibold tabular-nums">{{ row.actual | number:'1.1-2' }}%</td>
+                @for (cell of row.cells; track cell.agency.id) {
+                  <td class="px-3 py-4 text-center tabular-nums" [class.bg-primary/10]="cell.closest" [attr.data-closest-agency]="cell.closest ? cell.agency.id : null">
+                    @if (cell.result; as result) {
+                      <span [class.font-semibold]="cell.closest">{{ result.polled | number:'1.1-2' }}%</span>
+                      @if (cell.closest) { <span class="mt-1 block text-xs font-medium text-primary">Най-близо</span> }
+                      @if (cell.agency.normalized) { <span class="mt-1 block text-xs text-muted-foreground">Публикувано: {{ result.published | number:'1.1-2' }}%</span> }
+                    } @else { <span class="text-muted-foreground" aria-label="Няма публикувана оценка">-</span> }
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+          <tfoot class="border-t border-border bg-muted/20">
+            <tr>
+              <th scope="row" colspan="2" class="px-4 py-4 text-left font-medium">Средно отклонение<span class="mt-1 block text-xs font-normal text-muted-foreground">За съпоставените партии на всяка агенция</span></th>
+              @for (agency of comparisonAgencies(); track agency.id) {
+                <td class="px-3 py-4 text-center tabular-nums" [class.bg-primary/10]="closestAgencies().has(agency.id)" [attr.data-closest-overall]="closestAgencies().has(agency.id) ? agency.id : null">
+                  <span class="font-semibold">{{ agency.mae | number:'1.2-2' }} п.п.</span><span class="mt-1 block text-xs text-muted-foreground">{{ agency.errors.length }} партии</span>
+                  @if (closestAgencies().has(agency.id)) { <span class="mt-1 block text-xs font-medium text-primary">Най-близо общо</span> }
+                </td>
+              }
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+    @if (data(); as payload) { <p class="text-xs text-muted-foreground">Масив: <a [href]="payload.source.repository + '/tree/main/data/polls'" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4">Наясно</a> · Изчислен на {{ payload.generatedAt | date:'dd.MM.yyyy' }}</p> }
+  }
+</section>
+
+@if (methodOpen() || modalPages.isActive('polling-method')) {
+<app-base-modal title="Източници и методика" pageId="polling-method" maxWidth="max-w-3xl" [pageQueryParams]="{ panel: 'polls' }" (close)="methodOpen.set(false)">
+  <div class="space-y-3 text-sm leading-relaxed text-muted-foreground">
+    <p>Показано е последното налично проучване на всяка агенция, чийто терен приключва преди или в изборния ден. Наясно събира проучванията от публикации на агенциите, медии и Уикипедия и ги съпоставя с публикуваните резултати на ЦИК. Всяко проучване има отделна връзка към публикацията си.</p>
+    <p>Средното абсолютно отклонение (MAE) е средната стойност на абсолютните разлики между проучването и изборния резултат за съпоставените партии, в процентни пунктове. По-ниско е по-близо до резултата. Непубликуваните и несъпоставимите партии не участват; броят сравнени партии е показан, защото обхватът на агенциите е различен.</p>
+    <p>Когато източникът съдържа неопределили се и отказали отговор, Наясно ги разпределя пропорционално между посочените партии за съпоставим знаменател. Вече публикуваните прогнози не се нормализират повторно. При преизчисление показваме и оригиналните дялове.</p>
+    <p>Идентични дублирани партии са премахнати преди изчисляване на MAE. Показаното сравнение използва версията на резултатите в изходния масив. „Най-близо“ обозначава най-малкото абсолютно отклонение от изборния резултат за съответната партия, включително при равенство. Липсващите оценки са показани с „-“ и не участват. Отбелязване се показва само когато има поне две съпоставими прогнози.</p>
+    @for (agency of comparisonAgencies(); track agency.id) {
+      <section class="space-y-2 border-t border-border pt-3">
+        <h3 class="font-medium text-foreground">{{ agency.name }}</h3>
+        <p>{{ agency.fieldworkEnd | date:'dd.MM.yyyy' }} · {{ agency.respondents === null ? 'Непосочен размер на извадката' : (agency.respondents | number:'1.0-0') + ' анкетирани' }}</p>
+        @if (agency.methodology) { <p>{{ agency.methodology }}</p> }
+        @if (agency.normalized) { <p>Пропорционално разпределени {{ agency.redistributed | number:'1.1-2' }} п.п. неопределили се и отказали отговор.</p> }
+        @if (agency.deduplicated) { <p>Премахнати са {{ agency.deduplicated }} идентични дублирани записа.</p> }
+      </section>
+    }
+    <p><a href="https://github.com/atanasster/electionsbg/blob/main/scripts/polls/analyze_accuracy.ts" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4">Методика на Наясно</a> · <a href="https://github.com/atanasster/electionsbg/tree/main/data/polls" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4">Изходни данни</a></p>
+  </div>
+</app-base-modal>
+}

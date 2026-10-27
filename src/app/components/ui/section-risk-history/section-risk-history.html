@@ -1,0 +1,55 @@
+@if (result.rows.length) {
+  <section class="mt-6 space-y-3 border-t border-border pt-5" aria-label="История на секционните рискови индикатори">
+    <div class="flex flex-wrap items-baseline justify-between gap-2">
+      <h3 class="text-sm font-semibold">Повтарящи се рискови сигнали</h3>
+      @if (result.assessed) {
+        <p class="text-sm tabular-nums"><span class="font-semibold">{{ result.flagged }} от {{ result.assessed }}</span> съпоставими избора със сигнали</p>
+      } @else {
+        <p class="text-sm text-muted-foreground">Няма налични оценки за съпоставими избори.</p>
+      }
+    </div>
+    <p class="text-xs text-muted-foreground">Само текущите и по-ранните избори от същия вид и тур. Съпоставянето изисква еднакви район, номер на секция и населено място.</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs">
+        <caption class="sr-only">Секционни рискови сигнали, активност и водеща партия по избори</caption>
+        <thead class="border-b border-border text-muted-foreground">
+          <tr>
+            <th scope="col" class="py-2 pr-3 font-medium">Избори</th>
+            <th scope="col" class="p-2 text-right font-medium">Индекс</th>
+            <th scope="col" class="p-2 font-medium">Секционни сигнали</th>
+            <th scope="col" class="p-2 text-right font-medium">Активност</th>
+            <th scope="col" class="py-2 pl-3 font-medium">Водеща партия / кандидат</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of result.rows; track row.date) {
+            <tr class="border-b border-border/50" [class.bg-primary/5]="row.date === date">
+              <th scope="row" class="py-3 pr-3 font-normal"><span class="block whitespace-nowrap">{{ row.name }}</span><span class="text-muted-foreground">{{ row.date }}</span></th>
+              <td class="p-2 text-right tabular-nums" [class.font-semibold]="row.flagged">{{ row.score ?? '-' }}</td>
+              <td class="p-2">
+                @if (row.status === 'assessed') {
+                  <span [class.text-destructive]="row.flagged">{{ row.codes.length ? row.codes.join(', ') : row.flagged ? 'Има сигнали' : 'Без сигнали' }}</span>
+                } @else if (row.status === 'unmatched') {
+                  <span class="text-muted-foreground">Несъпоставима секция</span>
+                } @else {
+                  <span class="text-muted-foreground">Няма налична оценка</span>
+                }
+              </td>
+              <td class="p-2 text-right tabular-nums">{{ formatPercent(row.turnout) }}</td>
+              <td class="max-w-64 py-3 pl-3">
+                @if (row.winnerName) {
+                  <span>{{ row.tied ? 'Равенство: ' : '' }}{{ row.winnerName }}</span>
+                  <span class="block text-muted-foreground">{{ formatPercent(row.winnerShare) }} от гласувалите</span>
+                } @else { <span class="text-muted-foreground">-</span> }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    @if (result.unmatched || result.unavailable) {
+      <p class="text-xs text-muted-foreground" role="status">Извън броя оценени избори: {{ result.unmatched }} несъпоставими и {{ result.unavailable }} без налична оценка. Липсващите данни не означават липса на риск.</p>
+    }
+    <p class="text-xs text-muted-foreground">Индексът и кодовете са секционни индикатори. Повторението е повод за проверка, а не доказателство за нарушение. Промени в граници или адреси могат да ограничат историческата съпоставимост.</p>
+  </section>
+}

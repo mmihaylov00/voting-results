@@ -6,6 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "compile-data": "node scripts/compile-data.js",
+    "import:shtabo": "node scripts/import-shtabo-data.js",
+    "import:context": "node scripts/import-election-context.js",
+    "test:data": "node --test scripts/*.test.js",
+    "verify:data": "node scripts/verify-compiled-data.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

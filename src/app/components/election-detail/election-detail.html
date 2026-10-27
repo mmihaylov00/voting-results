@@ -1,4 +1,4 @@
-<div class="mx-4 px-4 py-8">
+<div class="mx-auto max-w-[1800px] px-4 py-8 sm:px-8">
   @if (loading$ | async) {
     <div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
       <div class="w-full max-w-md px-8 text-center">
@@ -39,6 +39,7 @@
     </div>
     <div class="flex gap-2 flex-col items-end self-end">
       <div class="flex gap-2 flex-row flex-wrap justify-end">
+        <app-share-button [action]="shareView" />
         @if (getCikUrl()) {
           <a [href]="getCikUrl()" target="_blank" hlmBtn variant="outline"
              hlmTooltip="Отвори официалните резултати в сайта на ЦИК">
@@ -51,24 +52,9 @@
             ЦИК
           </a>
         }
-        <a [routerLink]="['/governmental/election', date]" hlmBtn variant="default">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-            <path d="m12 19-7-7 7-7"/>
-            <path d="M19 12H5"/>
-          </svg>
-          Назад
-        </a>
-        <a routerLink="/" hlmBtn variant="default">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-            <path d="m3 9 9-7 9 7"/>
-            <path d="M9 22V12h6v10"/>
-            <path d="M21 22H3"/>
-          </svg>
-          Начало
-        </a>
       </div>
+      @if (shareMessage()) { <p role="status" class="max-w-sm text-sm">{{ shareMessage() }}</p> }
+      @if (detailError()) { <p role="alert" class="max-w-sm text-sm text-destructive">{{ detailError() }}</p> }
       <div class="flex gap-2 flex-row justify-end">
         @if (sectionsWithError.length > 0) {
           <button hlmBtn variant="outline" (click)="openErrorModal()"
@@ -86,9 +72,7 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-    <div class="lg:col-span-12">
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6" data-summary-cards>
         @if (viewMode() !== 'candidates') {
           <app-stat-card
             label="Активност"
@@ -107,7 +91,7 @@
           [showTrend]="true"
           [isLoading]="!!(loading$ | async)"/>
         <app-stat-card
-          [label]="viewMode() === 'candidates' ? 'Общо преференции' : 'Общо валидни гласове'"
+          [label]="viewMode() === 'candidates' ? 'Общо преференции' : 'Общо гласували'"
           [value]="totalVoted"
           [tooltipData]="globalComparisons['voted']"
           [currentValue]="totalVoted"
@@ -154,6 +138,34 @@
         }
       </div>
 
+      @if (contentTabs.length > 1) {
+        <nav class="mb-6 flex flex-wrap gap-1 border-b border-border" aria-label="Изглед на резултатите">
+          @for (tab of contentTabs; track tab.id) {
+            <button hlmBtn variant="line" class="gap-2"
+              [attr.data-state]="(leftPanel() === 'results' ? viewMode() === tab.id : leftPanel() === tab.id) ? 'active' : 'inactive'"
+              [attr.aria-pressed]="leftPanel() === 'results' ? viewMode() === tab.id : leftPanel() === tab.id"
+              (click)="selectContentTab(tab.id)"><app-map-icon [name]="tab.icon" />{{ tab.label }}</button>
+          }
+        </nav>
+      }
+      @if (!widePanel && canShowMap) {
+        <nav aria-label="Изглед на списъка" class="mb-6 flex flex-wrap gap-1 border-b border-border lg:hidden">
+          <button hlmBtn variant="line" type="button" class="gap-2" [attr.data-state]="!mobileMapVisible() ? 'active' : 'inactive'" [attr.aria-pressed]="!mobileMapVisible()" (click)="setViewMode('sections')"><app-map-icon name="summary" />Списък</button>
+          <button hlmBtn variant="line" type="button" class="gap-2" [attr.data-state]="mobileMapVisible() ? 'active' : 'inactive'" [attr.aria-pressed]="mobileMapVisible()" (click)="setViewMode('map')"><app-map-icon name="region" />Карта</button>
+        </nav>
+      }
+  <div class="grid grid-cols-1 gap-6 lg:items-start" [class.lg:grid-cols-2]="!widePanel" data-map-workspace>
+    <section class="min-w-0">
+            @if (mapSelection && !isElectionTool(leftPanel())) {
+              <div class="flex flex-wrap items-center gap-3 text-sm" role="status">
+                <span>Избрано място: <strong>{{ mapSelection.label }}</strong> · {{ analysisSections.length }} секции</span>
+                <button hlmBtn variant="outline" size="sm" (click)="setViewMode('sections')">Покажи секциите</button>
+                <button hlmBtn variant="outline" size="sm" (click)="clearMapSelection()">Изчисти избора</button>
+              </div>
+            }
+      <div [class.hidden]="!isLaptopLayout() && mobileMapVisible()">
+
+        <div [class.hidden]="leftPanel() !== 'results'">
       <div hlmCard class="p-4 md:p-6 border-primary/20">
         <div class="flex flex-col gap-6 mb-6">
           <div class="flex flex-wrap justify-between gap-4">
@@ -170,33 +182,7 @@
                   Редове: {{ currentRowCount }}
                 }
               </span>
-              <div class="flex flex-wrap gap-2 border-b border-primary/10 align-baseline">
-                <button hlmBtn [variant]="'line'" [attr.data-state]="viewMode() === 'sections' ? 'active' : 'inactive'"
-                        (click)="setViewMode('sections')">
-                  Секции
-                </button>
-                <button hlmBtn [variant]="'line'" [attr.data-state]="viewMode() === 'cities' ? 'active' : 'inactive'"
-                        (click)="setViewMode('cities')">
-                  Населени места
-                </button>
-                <button hlmBtn [variant]="'line'"
-                        [attr.data-state]="viewMode() === 'municipalities' ? 'active' : 'inactive'"
-                        (click)="setViewMode('municipalities')">
-                  {{ municipalityPluralLabel }}
-                </button>
-                <button hlmBtn [variant]="'line'"
-                        [attr.data-state]="viewMode() === 'candidates' ? 'active' : 'inactive'"
-                        (click)="setViewMode('candidates')">
-                  Кандидати
-                </button>
-                @if (canShowMap) {
-                  <button hlmBtn [variant]="'line'"
-                          [attr.data-state]="viewMode() === 'map' ? 'active' : 'inactive'"
-                          (click)="setViewMode('map')">
-                    Карта
-                  </button>
-                }
-              </div>
+
             </div>
             @if (viewMode() !== 'map') {
               <div class="flex items-center gap-2">
@@ -219,93 +205,24 @@
               </div>
             }
           </div>
-          @if (viewMode() === 'map') {
-              <div class="flex flex-col gap-4">
-                <div class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-primary/10 bg-muted/20 px-4 py-3">
-                  <div class="flex flex-wrap gap-2">
-                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-party' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-party')">
-                      Партии
-                    </button>
-                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'summary' ? 'default' : 'outline'" (click)="setSettlementMapMetric('summary')">
-                      Обобщение
-                    </button>
-                    @if (isAbroadRegion) {
-                      <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'leading-preference' ? 'default' : 'outline'" (click)="setSettlementMapMetric('leading-preference')">
-                        Преференции
-                      </button>
-                    }
-                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'activity' ? 'default' : 'outline'" (click)="setSettlementMapMetric('activity')">
-                      Активност
-                    </button>
-                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'risks' ? 'default' : 'outline'" (click)="setSettlementMapMetric('risks')">
-                      Риск
-                    </button>
-                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'invalid-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('invalid-votes')">
-                      Недействителни
-                    </button>
-                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'no-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('no-votes')">
-                      Не подкрепям
-                    </button>
-                    <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'machine-vs-paper' ? 'default' : 'outline'" (click)="setSettlementMapMetric('machine-vs-paper')">
-                      Машини vs Хартия
-                    </button>
-                    <button
-                      hlmBtn
-                      size="sm"
-                      title="Разлика между първата и втората партия като дял от избирателите"
-                      [variant]="settlementMapMetric() === 'winner-margin' ? 'default' : 'outline'"
-                      (click)="setSettlementMapMetric('winner-margin')">
-                      Преднина на победителя
-                    </button>
-                    <div class="flex items-center gap-2">
-                      <button hlmBtn size="sm" [variant]="settlementMapMetric() === 'party-votes' ? 'default' : 'outline'" (click)="setSettlementMapMetric('party-votes')">
-                        Гласове за партия
-                      </button>
-                      @if (settlementMapMetric() === 'party-votes') {
-                        <app-party-filter
-                          [parties]="regionalStats()"
-                          [selectedPartyIds]="asSet(mapSelectedPartyId())"
-                          [singleSelect]="true"
-                          (selectedPartyIdsChange)="setMapSelectedPartyId(asArray($event)[0])"
-                        />
-                      }
-                    </div>
-                  </div>
-                </div>
-              @if (isAbroadRegion) {
-                <app-abroad-map
-                  [sections]="sections"
-                  [partiesById]="getPartiesById()"
-                  [metric]="settlementMapMetric()"
-                  [selectedPartyId]="mapSelectedPartyId()"
-                  [embedded]="true"
-                  (citySelect)="onAbroadCitySelect($event)"
-                  (countrySelect)="onAbroadCountrySelect($event)" />
-              } @else {
-                <app-settlement-map
-                  [settlements]="settlementMapData"
-                  [regionCode]="settlementMapRegionCode"
-                  [metric]="settlementMapMetric()"
-                  [selectedPartyId]="mapSelectedPartyId()"
-                  [fitKey]="date + '-' + regionId"
-                  [allowUnresolvedFeatures]="true"
-                  (settlementSelect)="onMapSettlementSelect($event)" />
-              }
-            </div>
-          } @else if (viewMode() !== 'candidates') {
+          @if (viewMode() !== 'candidates') {
             <app-section-filters
               [date]="date"
               [initialFilters]="{searchTerm: searchTerm, activeTab: activeTab(), activityOperator: activityOperator(), lowActivityThreshold: lowActivityThreshold, sectionTypes: selectedSectionTypes(), riskFilterType: riskFilterType(), selectedRiskCategories: selectedRiskCategories()}"
               (filterChange)="onFilterChange($event)"/>
-          } @else {
+
+          }
+          @if (viewMode() === 'candidates') {
             <!-- Candidate Filters -->
-            <div class="grid grid-cols-1 md:grid-cols-2 md:grid-rows-3 lg:grid-cols-4 lg:grid-rows-1 gap-3 w-full">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
               <!-- Leaders Filter -->
               <div class="flex flex-row gap-2" style="align-content: center">
                 <!-- Party Filter -->
                 <app-party-filter
+                  [label]="electionType === 'presidential' ? 'Кандидат' : 'Партия'"
                   [parties]="allParties"
                   [selectedPartyIds]="selectedCandidatePartyIds()"
+                  [partyVotes]="partyVotesMap()"
                   (selectedPartyIdsChange)="onCandidatePartySelectionChange($event)"/>
 
                 <label class="flex items-center gap-2 cursor-pointer">
@@ -349,8 +266,10 @@
         </div>
 
         @if (viewMode() !== 'map' && viewMode() !== 'candidates') {
-          <div class="overflow-auto max-h-[70vh]">
-            <table hlmTable>
+          <div class="virtual-table-viewport overflow-auto max-h-[70vh]" tabindex="0" role="region"
+               aria-label="Резултати по секции и населени места"
+               [virtualRows]="filteredSections" [virtualRowsLayout]="visibleColumns()" #sectionRows="virtualRows">
+            <table hlmTable [attr.aria-rowcount]="filteredSections.length + 1">
               <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
               <tr hlmTableRow class="hover:bg-transparent">
                 @if (visibleColumns().has('sectionId')) {
@@ -641,7 +560,7 @@
                 }
                 @if (visibleColumns().has('topParties')) {
                   <th hlmTableHead class="min-w-[200px] text-secondary dark:text-primary">
-                    Топ 3 партии
+                    Топ 3 {{ electionType === 'presidential' ? 'кандидати' : 'партии' }}
                   </th>
                 }
                 @if (visibleColumns().has('topCandidates')) {
@@ -652,8 +571,13 @@
               </tr>
               </thead>
               <tbody hlmTableBody>
-                @for (section of filteredSections; track section.sectionId + section.cityName) {
+                <tr aria-hidden="true" class="virtual-table-spacer">
+                  <td [attr.colspan]="sectionRows.columnCount()" [style.height.px]="sectionRows.window().top"></td>
+                </tr>
+                @for (section of sectionRows.rows(); track section.sectionId + section.cityName) {
                   <tr hlmTableRow
+                      [attr.data-virtual-index]="sectionRows.window().start + $index"
+                      [attr.aria-rowindex]="sectionRows.window().start + $index + 2"
                       class="cursor-pointer hover:bg-primary/10 active:bg-primary/20 transition-colors group relative"
                       [class.bg-muted]="selectedSection?.sectionId === section.sectionId"
                       [class.bg-primary-5]="selectedSection?.sectionId === section.sectionId"
@@ -832,11 +756,17 @@
                     <td hlmTableCell>
                       <div class="flex flex-col text-xs">
                         @for (tp of section.topParties; track tp.name) {
-                          @let alias = getPartyAlias(tp.name);
                           @let partyComparisons = section.partyVotes[tp.partyId]?.comparisons;
-                          <div class="flex items-center gap-1.5 min-w-0"
-                               [title]="alias + ': ' + tp.total + ' (' + formatActivity((tp.percentBp || 0) / 10000) + '%)'">
-                            <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
+                          <div class="flex items-center gap-1.5 min-w-0">
+                            @if (tp.partyId !== '0' && tp.name !== 'Други') {
+                              <button type="button" class="min-w-0 rounded-sm text-left hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" [attr.aria-label]="'Отвори профил: ' + tp.name"
+                                [appContestantPreview]="analysisParties[tp.partyId] || tp.name" [contestantPreviewDate]="date" [contestantPreviewPartyId]="tp.partyId"
+                                (click)="$event.stopPropagation(); openContestant(tp.name, tp.partyId)">
+                                <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
+                              </button>
+                            } @else {
+                              <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
+                            }
                             <span class="whitespace-nowrap flex items-center"> <strong class="flex items-center"
                                                                                        [hlmTooltip]="partyComparisons"
                                                                                        [currentValue]="tp.total"
@@ -877,13 +807,18 @@
                   }
                 </tr>
               }
+                <tr aria-hidden="true" class="virtual-table-spacer">
+                  <td [attr.colspan]="sectionRows.columnCount()" [style.height.px]="sectionRows.window().bottom"></td>
+                </tr>
               </tbody>
             </table>
           </div>
         } @else if (viewMode() === 'candidates') {
           <!-- Candidates Table -->
-          <div class="overflow-auto max-h-[70vh]">
-            <table hlmTable>
+          <div class="virtual-table-viewport overflow-auto max-h-[70vh]" tabindex="0" role="region"
+               aria-label="Резултати по кандидати"
+               [virtualRows]="filteredCandidates" [virtualRowsLayout]="visibleCandidateColumns()" #candidateRows="virtualRows">
+            <table hlmTable [attr.aria-rowcount]="filteredCandidates.length + 1">
               <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
               <tr hlmTableRow class="hover:bg-transparent">
                 @if (currentVisibleColumns.has('candidateId')) {
@@ -1027,8 +962,13 @@
               </tr>
               </thead>
               <tbody hlmTableBody>
-                @for (candidate of filteredCandidates; track candidate.partyId + candidate.candidateId) {
+                <tr aria-hidden="true" class="virtual-table-spacer">
+                  <td [attr.colspan]="candidateRows.columnCount()" [style.height.px]="candidateRows.window().top"></td>
+                </tr>
+                @for (candidate of candidateRows.rows(); track candidate.partyId + candidate.candidateId) {
                   <tr hlmTableRow
+                      [attr.data-virtual-index]="candidateRows.window().start + $index"
+                      [attr.aria-rowindex]="candidateRows.window().start + $index + 2"
                       class="hover:bg-primary/10 transition-colors cursor-pointer"
                       (click)="openCandidateModal(candidate)">
                     @if (currentVisibleColumns.has('candidateId')) {
@@ -1051,7 +991,11 @@
                     @if (currentVisibleColumns.has('candidateName')) {
                       <td hlmTableCell class="font-medium">
                                               <span class="inline-flex items-center gap-2">
-                                                <span>{{ candidate.candidateName }}</span>
+                                                <button type="button" class="rounded-sm text-left hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                                                  [attr.aria-label]="'Отвори профил: ' + candidate.candidateName"
+                                                  [appContestantPreview]="candidate.candidateName" [contestantPreviewDate]="date"
+                                                  [contestantPreviewPartyId]="candidate.partyId" [contestantPreviewCandidate]="candidate" [contestantPreviewRegion]="regionId"
+                                                  (click)="$event.stopPropagation(); openCandidateModal(candidate)">{{ candidate.candidateName }}</button>
                                                 @if (isLeaderCandidate(candidate.candidateId)) {
                                                   <span
                                                     class="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary"
@@ -1064,7 +1008,12 @@
                     }
                     @if (currentVisibleColumns.has('partyName')) {
                       <td hlmTableCell>
-                        <app-party-badge [partyName]="candidate.partyName" size="xs"></app-party-badge>
+                        <button type="button" class="rounded-sm text-left hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                          [attr.aria-label]="'Отвори профил: ' + candidate.partyName"
+                          [appContestantPreview]="analysisParties[candidate.partyId] || candidate.partyName" [contestantPreviewDate]="date" [contestantPreviewPartyId]="candidate.partyId"
+                          (click)="$event.stopPropagation(); openContestant(candidate.partyName, candidate.partyId)">
+                          <app-party-badge [partyName]="candidate.partyName" size="xs"></app-party-badge>
+                        </button>
                       </td>
                     }
                     @if (currentVisibleColumns.has('totalInRegion')) {
@@ -1091,37 +1040,124 @@
                   }
                   </tr>
                 }
+                <tr aria-hidden="true" class="virtual-table-spacer">
+                  <td [attr.colspan]="candidateRows.columnCount()" [style.height.px]="candidateRows.window().bottom"></td>
+                </tr>
               </tbody>
             </table>
           </div>
         }
       </div>
-    </div>
+        </div>
+        <div [class.hidden]="leftPanel() !== 'history' && leftPanel() !== 'comparison'">
+  @if (sections.length > 0 && analysisInitialized()) {
+    <app-election-comparison [active]="leftPanel() === 'comparison'" [(mode)]="comparisonMode" [sections]="analysisSections"
+      [showAnalysis]="leftPanel() === 'history' || leftPanel() === 'comparison' && comparisonMode() === 'elections' || settlementMapMetric() === 'party-change'">
+    <ng-template>
+    <app-election-analysis
+      [view]="leftPanel() === 'comparison' ? 'comparison' : 'history'"
+      [baselineDate]="baselineDate" (baselineDateChange)="baselineDate = $event"
+      [historyMetric]="historyMetric" (historyMetricChange)="historyMetric = $event"
+      [date]="date"
+      [regionId]="regionId || 'all'"
+      [sections]="analysisSections"
+      [parentSections]="sections"
+      [parties]="analysisParties"
+      [selectedPartyId]="mapSelectedPartyId()"
+      [scopeLabel]="mapSelection?.label || regionName"
+      (partyChange)="onAnalysisPartyChange($event)"
+      (comparisonChange)="mapComparison = $event"
+      (electionChange)="changeAnalysisElection($event)"
+      (sectionSelect)="focusAnalysisSection($event)" />
+    </ng-template>
+    </app-election-comparison>
+  }
+
+
+        </div>
+        <div [class.hidden]="leftPanel() !== 'stats'">
+          <nav aria-label="Статистически графики" class="mb-6 flex flex-wrap gap-1 border-b border-border">
+            <button hlmBtn variant="line" type="button" [attr.data-state]="activeChart() === 'votes' ? 'active' : 'inactive'" [attr.aria-pressed]="activeChart() === 'votes'" (click)="setActiveChart('votes')">Разпределение на гласовете</button>
+            @if (electionType !== 'presidential') {
+              <button hlmBtn variant="line" type="button" [attr.data-state]="activeChart() === 'ppdb' ? 'active' : 'inactive'" [attr.aria-pressed]="activeChart() === 'ppdb'" (click)="setActiveChart('ppdb')">Секции по категории (ПП-ДБ)</button>
+            }
+            <button hlmBtn variant="line" type="button" [attr.data-state]="activeChart() === 'activity' ? 'active' : 'inactive'" [attr.aria-pressed]="activeChart() === 'activity'" (click)="setActiveChart('activity')">Активност по секции</button>
+          </nav>
+          @if (visitedCharts().has('votes') && regionalChartOptions.series) {
+            <div hlmCard class="border-primary/20 p-4" [class.hidden]="activeChart() !== 'votes'">
+              <highcharts-chart [options]="regionalChartOptions" style="width: 100%; height: 400px; display: block;" />
+            </div>
+          }
+          @if (electionType !== 'presidential' && visitedCharts().has('ppdb') && ppdbChartOptions.series) {
+            <div hlmCard class="border-primary/20 p-4" [class.hidden]="activeChart() !== 'ppdb'">
+              <highcharts-chart [options]="ppdbChartOptions" style="width: 100%; height: 400px; display: block;" />
+            </div>
+          }
+          @if (visitedCharts().has('activity') && activityChartOptions.series) {
+            <div hlmCard class="border-primary/20 p-4" [class.hidden]="activeChart() !== 'activity'">
+              <highcharts-chart [options]="activityChartOptions" style="width: 100%; height: 400px; display: block;" />
+            </div>
+          }
+        </div>
+      </div>
+      <app-election-tools [panel]="leftPanel()" [national]="!regionId && electionType === 'governmental'" />
+    </section>
+    <aside class="min-w-0 lg:sticky lg:top-4" [class.hidden]="widePanel || !isLaptopLayout() && !mobileMapVisible()" aria-label="Карта на резултатите">
+      @if (isLaptopLayout() || mobileMapVisible()) {
+<div id="election-map" class="flex flex-col gap-4 scroll-mt-4">
+              @if (settlementMapMetric() === 'party-change') {
+                <p class="text-sm text-muted-foreground">Промяна спрямо {{ mapComparison?.date || 'изборите, избрани в раздела Сравнение' }} в процентни пункта. Сиво: липсва съпоставима секция или партия.</p>
+              }
+              @if (isAbroadRegion) {
+                <app-abroad-map
+        [belowThresholdPartyIds]="belowThresholdPartyIds"
+                  [sections]="analysisSections"
+                  [partiesById]="analysisParties"
+                  [metric]="settlementMapMetric()"
+                  [selectedPartyId]="mapSelectedPartyId()"
+                  [embedded]="true"
+                  [focusSectionId]="mapFocusSectionId"
+                  [comparisonSections]="mapComparison?.sections ?? null"
+                  [comparisonPartyId]="mapComparison?.partyId ?? null"
+                  [exportContext]="{election: dateName, metricLabel: settlementMapMetric() === 'party-change' ? 'Промяна спрямо ' + (mapComparison?.date || '-') : undefined, place: mapSelection?.label || regionName}"
+                  (selectionChange)="onMapSelection($event)">
+                  <app-map-metric-controls [metric]="settlementMapMetric()" [selectedPartyId]="mapSelectedPartyId()"
+                    [parties]="allParties" [partyVotes]="partyVotesMap()" [presidential]="electionType === 'presidential'"
+                    (metricChange)="setSettlementMapMetric($event)" (partyChange)="setMapSelectedPartyId($event)" />
+                </app-abroad-map>
+              } @else {
+                <app-settlement-map
+        [belowThresholdPartyIds]="belowThresholdPartyIds"
+                  [settlements]="settlementMapData"
+                  [regionCode]="settlementMapRegionCode"
+                  [metric]="settlementMapMetric()"
+                  [selectedPartyId]="mapSelectedPartyId()"
+                  [partiesById]="analysisParties"
+                  [showViewTabs]="true"
+                  [selectedView]="mapView()"
+                  (viewChange)="mapView.set($event)"
+                  [focusSectionId]="mapFocusSectionId"
+                  [comparisonSections]="mapComparison?.sections ?? null"
+                  [comparisonPartyId]="mapComparison?.partyId ?? null"
+                  [exportContext]="{election: dateName, metricLabel: settlementMapMetric() === 'party-change' ? 'Промяна спрямо ' + (mapComparison?.date || '-') : undefined, place: mapSelection?.label || regionName}"
+                  [fitKey]="date + '-' + regionId"
+                  [allowUnresolvedFeatures]="true"
+                  (sectionSelect)="loadSectionDetails($event)"
+                  (selectionChange)="onMapSelection($event)">
+                  <app-map-metric-controls [metric]="settlementMapMetric()" [selectedPartyId]="mapSelectedPartyId()"
+                    [parties]="allParties" [partyVotes]="partyVotesMap()" [presidential]="electionType === 'presidential'"
+                    (metricChange)="setSettlementMapMetric($event)" (partyChange)="setMapSelectedPartyId($event)" />
+                </app-settlement-map>
+              }
+            </div>
+      }
+    </aside>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-    <div hlmCard class="border-primary/20 p-4">
-      @if (regionalChartOptions.series) {
-        <highcharts-chart [options]="regionalChartOptions"
-                          style="width: 100%; height: 400px; display: block;"></highcharts-chart>
-      }
-    </div>
-    <div hlmCard class="border-primary/20 p-4">
-      @if (ppdbChartOptions.series) {
-        <highcharts-chart [options]="ppdbChartOptions"
-                          style="width: 100%; height: 400px; display: block;"></highcharts-chart>
-      }
-    </div>
-    <div hlmCard class="border-primary/20 p-4">
-      @if (activityChartOptions.series) {
-        <highcharts-chart [options]="activityChartOptions"
-                          style="width: 100%; height: 400px; display: block;"></highcharts-chart>
-      }
-    </div>
-  </div>
 
   @if (isModalOpen() && selectedSection) {
     <app-section-detail-modal
+      [pageQueryParams]="modalPageQueryParams('section')"
       [section]="selectedSection"
       [currentSectionData]="currentSectionData"
       [allParties]="allParties"
@@ -1129,24 +1165,29 @@
       [date]="date"
       [allSections]="sections"
       [isAbroadRegion]="isAbroadRegion"
+      [shareMessage]="shareMessage()"
       (close)="closeModal()"
+      [shareAction]="shareView"
       (openCandidate)="onSectionCandidateClick($event)"
+      (openContestant)="openContestant($event.partyName, $event.partyId)"
     ></app-section-detail-modal>
   }
 
   @if (isCandidateModalOpen() && selectedCandidate) {
     <app-candidate-detail-modal
+      [pageQueryParams]="modalPageQueryParams('candidate')"
       [candidate]="selectedCandidate"
       [sections]="sections"
       [currentDate]="date"
       (close)="closeCandidateModal()"
-      (openSection)="onCandidateSectionClick($event)"
     />
   }
 
   @if (isExportModalOpen()) {
     <app-export-csv-modal
+      [pageQueryParams]="modalPageQueryParams('export')"
       [tableSections]="filteredSections"
+      [partyVotes]="partyVotesMap()"
       [filteredCandidates]="filteredCandidates"
       [allParties]="allParties"
       [selectedPartyIds]="selectedPartyIds"
@@ -1162,8 +1203,19 @@
   <!-- Error Sections Modal -->
   @if (isErrorModalOpen()) {
     <app-protocol-error-modal
+      [pageQueryParams]="modalPageQueryParams('protocol-errors')"
       [sectionsWithError]="sectionsWithError"
       (close)="closeErrorModal()"
     ></app-protocol-error-modal>
   }
 </div>
+
+@defer (when selectedContestant() || modalPages.isActive('contestant')) {
+  @if (selectedContestant() || modalPages.isActive('contestant')) {
+    <app-contestant-detail-modal
+      [partyName]="selectedContestant()?.partyName ?? ''"
+      [partyId]="selectedContestant()?.partyId ?? ''"
+      [currentDate]="date"
+      (close)="selectedContestant.set(null)" />
+  }
+}

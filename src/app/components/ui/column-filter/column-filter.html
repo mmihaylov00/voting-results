@@ -27,6 +27,7 @@
             [checked]="selectedColumnIds.has(column.id)"
             class="cursor-pointer"
             (click)="$event.stopPropagation(); toggleColumn(column.id, $event)" />
+          <app-map-icon [name]="columnIcons[column.id] || 'summary'" />
           <span class="text-sm">{{ column.label }}</span>
         </div>
       }

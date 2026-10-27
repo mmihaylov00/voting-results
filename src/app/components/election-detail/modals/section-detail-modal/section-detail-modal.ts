@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Input, Output, effect, signal, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Params } from '@angular/router';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
-import { Observable } from 'rxjs';
+import { finalize } from 'rxjs';
 import { Section, SectionDetails, PartyResult, ComparativeValue, PartyVotes, CandidateResult, CandidateVotes, RegionCandidate, TableColumn } from '../../../../models/election.models';
 import { ThemeService } from '../../../../services/theme.service';
 import { ElectionService } from '../../../../services/election';
 import { getPartyAlias } from '../../../../utils/party-aliases';
-import { getPartyColor } from '../../../../utils/party-colors';
+import { getPartyColor, getPartyLegendIndex } from '../../../../utils/party-colors';
 import { formatActivity, getGoogleMapsUrl, getPartyKeywords, findPartyByKeywords } from '../../../../utils/common.utils';
 import { sortArray, getDefaultSortDirection } from '../../../../utils/table-sort.util';
 import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.directive';
@@ -36,11 +37,15 @@ import { SearchFilterComponent } from '../../../ui/search-filter/search-filter';
 import { loadVisibleColumns, saveVisibleColumns } from '../../../../utils/column-visibility';
 import { candidateRiskAppliesToSection } from '../../../../utils/risk-utils';
 import { PartyBadgeComponent } from '../../../ui/party-badge/party-badge';
+import { SectionRiskHistoryComponent } from '../../../ui/section-risk-history/section-risk-history';
+import { ContestantPreviewDirective } from '../../../ui/contestant-preview/contestant-preview.directive';
+import { ShareButtonComponent } from '../../../ui/share-button/share-button';
 
 @Component({
   selector: 'app-section-detail-modal',
   standalone: true,
   imports: [
+    ShareButtonComponent,
     CommonModule,
     HighchartsChartComponent,
     HlmButtonDirective,
@@ -60,13 +65,20 @@ import { PartyBadgeComponent } from '../../../ui/party-badge/party-badge';
     ColumnFilterComponent,
     SearchFilterComponent,
     PartyBadgeComponent,
+    SectionRiskHistoryComponent,
+    ContestantPreviewDirective,
   ],
   templateUrl: './section-detail-modal.html'
 })
 export class SectionDetailModalComponent implements OnInit, OnChanges {
+  get electionType() { return this.electionService.electionType; }
+
   private readonly leaderCandidateId = '101';
   private readonly partyColumnsStorageKey = 'visible_section_detail_party_columns';
   private readonly candidateColumnsStorageKey = 'visible_section_detail_candidate_columns';
+  private readonly candidatePreviews = new WeakMap<CandidateResult, RegionCandidate>();
+  @Input() pageQueryParams: Params = {};
+  @Input() pageRoute: string[] = [];
   @Input({ required: true }) section!: SectionDetails;
   @Input() currentSectionData?: Section;
   @Input() allParties: { id: string, name: string }[] = [];
@@ -74,7 +86,10 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   @Input() allSections: Section[] = []; // All sections in the region for candidate modal
   @Input() isAbroadRegion = false;
   @Output() close = new EventEmitter<void>();
+  @Input() shareAction: () => Promise<boolean> = async () => false;
+  @Input() shareMessage = '';
   @Output() openCandidate = new EventEmitter<RegionCandidate>();
+  @Output() openContestant = new EventEmitter<{ partyName: string; partyId: string }>();
 
   partySortColumn: keyof PartyResult = 'total';
   partySortDir: 'asc' | 'desc' = 'desc';
@@ -82,7 +97,15 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   candidateSortDir: 'asc' | 'desc' = 'desc';
   @Input() selectedPartyIds: Set<string> = new Set();
   activeTab = signal<'parties' | 'candidates'>('parties');
-  loading$: Observable<boolean>;
+  readonly panels = [
+    { id: 'results', label: 'Резултати' },
+    { id: 'stats', label: 'Статистика' },
+    { id: 'history', label: 'История' },
+    { id: 'risks', label: 'Рискове' },
+  ] as const;
+  readonly activePanel = signal<'results' | 'stats' | 'history' | 'risks'>('results');
+  readonly visitedPanels = signal(new Set(['results']));
+  readonly historyLoading = signal(false);
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
   historicalVotesChartOptions: Highcharts.Options = {};
@@ -276,20 +299,12 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     private electionService: ElectionService
   ) {
     this.dates = this.electionService.getDates();
-    this.loading$ = this.electionService.loading$;
+    if (this.electionType === 'presidential') {
+      this.partyColumns = this.partyColumns.map(c => c.id === 'partyName' ? { ...c, label: 'Кандидат' } : c);
+    }
 
     effect(() => {
       this.themeService.darkMode();
-      if (this.section) {
-        this.updateChartOptions();
-        if (Object.keys(this.allData).length > 0) {
-          this.updateHistoricalCharts();
-        }
-      }
-    });
-
-    effect(() => {
-      // Update charts when tab changes
       this.activeTab();
       if (this.section) {
         this.updateChartOptions();
@@ -302,7 +317,10 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.loadVisibleColumns();
-    this.electionService.getAllFullData().subscribe(data => {
+    this.historyLoading.set(true);
+    this.electionService.getAllFullData().pipe(
+      finalize(() => this.historyLoading.set(false)),
+    ).subscribe(data => {
       this.allData = data;
       if (this.section) {
         this.calculateCandidateResults();
@@ -312,7 +330,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.section) {
+    if (this.section && ['section', 'currentSectionData', 'allParties', 'allSections', 'selectedPartyIds', 'date'].some(input => changes[input])) {
       this.calculateCandidateResults();
       this.updateChartOptions();
       if (Object.keys(this.allData).length > 0) {
@@ -323,6 +341,11 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
   closeModal(): void {
     this.close.emit();
+  }
+
+  selectPanel(panel: 'results' | 'stats' | 'history' | 'risks'): void {
+    this.activePanel.set(panel);
+    if (!this.visitedPanels().has(panel)) this.visitedPanels.update(panels => new Set([...panels, panel]));
   }
 
   onPartySelectionChange(selectedIds: Set<string>) {
@@ -1124,7 +1147,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     const sortedDates = [...this.dates].sort((a, b) => a.date.localeCompare(b.date));
 
     // Build mapping: selected party ID -> keywords -> party data across elections
-    const partyDataMap: { [selectedId: string]: { keywords: string[], name: string, votesData: number[], percentData: number[] } } = {};
+    const partyDataMap: { [selectedId: string]: { keywords: string[], name: string, rawName: string, votesData: number[], percentData: number[] } } = {};
 
     // Initialize data structure for each selected party
     selectedIds.forEach(partyId => {
@@ -1134,6 +1157,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
         partyDataMap[partyId] = {
           keywords,
           name: getPartyAlias(party.name),
+          rawName: party.name,
           votesData: [],
           percentData: []
         };
@@ -1207,7 +1231,9 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
         if (!partyInfo) return;
 
         // Find matching party ID in this election by keywords
-        const matchingPartyId = this.findPartyByKeywords(partyInfo.keywords, data.parties);
+        const matchingPartyId = this.electionType === 'presidential'
+          ? Object.keys(data.parties).find(id => data.parties[id] === partyInfo.name)
+          : this.findPartyByKeywords(partyInfo.keywords, data.parties);
         const votes = matchingPartyId ? (datePartyVotes[matchingPartyId] || 0) : 0;
 
         partyInfo.votesData.push(votes);
@@ -1225,13 +1251,14 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     sortedPartyIds.forEach((partyId, idx) => {
       const partyInfo = partyDataMap[partyId];
       if (partyInfo) {
-        const partyColor = getPartyColor(partyInfo.name, isDark) || colorPalette[idx % colorPalette.length];
+        const partyColor = getPartyColor(partyInfo.rawName, isDark) || colorPalette[idx % colorPalette.length];
         votesSeries.push({
           id: `historical-votes-${partyId}`,
           name: partyInfo.name,
           data: partyInfo.votesData,
           type: 'line',
-          color: partyColor
+          color: partyColor,
+          legendIndex: getPartyLegendIndex(partyInfo.rawName)
         });
       }
     });
@@ -1241,13 +1268,14 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
     sortedPartyIds.forEach((partyId, idx) => {
       const partyInfo = partyDataMap[partyId];
       if (partyInfo) {
-        const partyColor = getPartyColor(partyInfo.name, isDark) || colorPalette[idx % colorPalette.length];
+        const partyColor = getPartyColor(partyInfo.rawName, isDark) || colorPalette[idx % colorPalette.length];
         percentSeries.push({
           id: `historical-percent-${partyId}`,
           name: partyInfo.name,
           data: partyInfo.percentData,
           type: 'line',
-          color: partyColor
+          color: partyColor,
+          legendIndex: getPartyLegendIndex(partyInfo.rawName)
         });
       }
     });
@@ -1434,7 +1462,8 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
           name: `${candidateInfo.name} (${getPartyAlias(candidateInfo.partyName)})`,
           data: candidateInfo.votesData,
           type: 'line',
-          color: colorPalette[idx % colorPalette.length]
+          color: colorPalette[idx % colorPalette.length],
+          legendIndex: getPartyLegendIndex(candidateInfo.partyName)
         });
       }
     });
@@ -1450,7 +1479,8 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
           name: `${candidateInfo.name} (${getPartyAlias(candidateInfo.partyName)})`,
           data: candidateInfo.percentData,
           type: 'line',
-          color: colorPalette[idx % colorPalette.length]
+          color: colorPalette[idx % colorPalette.length],
+          legendIndex: getPartyLegendIndex(candidateInfo.partyName)
         });
       }
     });
@@ -1507,6 +1537,21 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       credits: { enabled: false },
       tooltip: { valueSuffix: '%', valueDecimals: 2 }
     };
+  }
+
+  candidatePreview(candidate: CandidateResult): RegionCandidate {
+    let preview = this.candidatePreviews.get(candidate);
+    if (!preview) {
+      preview = { ...candidate, preferencePercentOfPartyVotes: candidate.partyPercentInSection > 0
+        ? candidate.total / candidate.partyPercentInSection * 100 : 0 };
+      this.candidatePreviews.set(candidate, preview);
+    }
+    return preview;
+  }
+
+  get candidatePreviewRegion(): string {
+    return [this.currentSectionData?.regionName, this.section.cityName, this.section.sectionId]
+      .filter(Boolean).join(' · ');
   }
 
   onCandidateRowClick(candidate: CandidateResult): void {

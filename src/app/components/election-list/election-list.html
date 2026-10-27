@@ -9,18 +9,14 @@
       </div>
     </div>
   }
-  <div class="mb-8 flex justify-end">
-    <a routerLink="/" hlmBtn variant="default">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-        <path d="m12 19-7-7 7-7"/>
-        <path d="M19 12H5"/>
-      </svg>
-      Назад
-    </a>
-  </div>
+  @if (loadError()) {
+    <div role="alert" class="mb-6 flex flex-wrap items-center gap-3 text-sm text-destructive">
+      <p>{{ loadError() }}</p>
+      <button hlmBtn variant="outline" type="button" (click)="loadAllElectionsData()">Опитай отново</button>
+    </div>
+  }
   <div class="text-center mb-12">
-    <h1 hlmH1 class="text-secondary dark:text-primary">Изборни резултати</h1>
+    <h1 hlmH1 class="text-secondary dark:text-primary">{{ electionType === 'presidential' ? 'Президентски избори' : 'Парламентарни избори' }}</h1>
     <p hlmLead class="mt-4 text-secondary/80 dark:text-foreground/80">Изберете дата на избори, за да прегледате детайлна статистика</p>
   </div>
 
@@ -31,17 +27,23 @@
         <div hlmCard class="flex flex-col h-full transition-all hover:shadow-xl border-primary/20 hover:border-primary/50 group">
           <div hlmCardHeader>
             <h3 hlmCardTitle class="text-secondary dark:text-primary transition-colors">{{ date.name }}</h3>
+            @if (date.provisional) {
+              <span class="w-fit rounded border border-amber-500/50 bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-950 dark:bg-amber-950 dark:text-amber-100">Предварителни - {{ date.provisional.processedPercent }}% протоколи</span>
+            }
             <p hlmCardDescription hlmMuted class="text-secondary/60 dark:text-foreground/60">{{ date.date }}</p>
           </div>
           <div class="flex-grow"></div>
           <div hlmCardContent class="pt-0 flex-grow">
             <div class="flex flex-col text-xs mb-4 space-y-1">
               @for (tp of electionData.topParties; let i = $index; track tp.name) {
-                @let alias = getPartyAlias(tp.name);
-                <div class="flex justify-between items-center gap-2" [title]="alias + ': ' + tp.total + ' (' + formatActivity(tp.percent) + '%)'">
+                <div class="flex justify-between items-center gap-2">
                   <div class="flex items-center gap-2 min-w-0">
                     <span class="text-muted-foreground">{{ $index + 1 }}.</span>
-                    <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
+                    <button type="button" class="min-w-0 rounded-sm text-left hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" [attr.aria-label]="'Отвори профил: ' + tp.name"
+                      [appContestantPreview]="tp.name" [contestantPreviewDate]="date.date" [contestantPreviewPartyId]="tp.partyId"
+                      (click)="$event.stopPropagation(); openContestant(tp.name, date.date, tp.partyId)">
+                      <app-party-badge [partyName]="tp.name" size="xs" extraClass="truncate"></app-party-badge>
+                    </button>
                   </div>
                   <span class="whitespace-nowrap"><strong class="me-1">{{ tp.total | number }}</strong> <span class="text-[10px] opacity-70">({{ formatActivity(tp.percent) }}%)</span></span>
                 </div>
@@ -57,7 +59,7 @@
                 <span class="font-medium text-foreground">{{ electionData.totalVoted | number }}</span>
               </div>
             </div>
-            <a [routerLink]="['/governmental/election', date.date]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground mt-auto">
+            <a [routerLink]="['/' + electionType + '/election', date.date]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground mt-auto">
               Разгледай
             </a>
           </div>
@@ -66,11 +68,14 @@
         <div hlmCard class="flex flex-col h-full transition-all hover:shadow-xl border-primary/20 hover:border-primary/50 group">
           <div hlmCardHeader>
             <h3 hlmCardTitle class="text-secondary dark:text-primary transition-colors">{{ date.name }}</h3>
+            @if (date.provisional) {
+              <span class="w-fit rounded border border-amber-500/50 bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-950 dark:bg-amber-950 dark:text-amber-100">Предварителни - {{ date.provisional.processedPercent }}% протоколи</span>
+            }
             <p hlmCardDescription hlmMuted class="text-secondary/60 dark:text-foreground/60">{{ date.date }}</p>
           </div>
           <div hlmCardContent class="text-center">
             <p hlmMuted class="text-sm mb-4">Зареждане...</p>
-            <a [routerLink]="['/governmental/election', date.date]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary/20 hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
+            <a [routerLink]="['/' + electionType + '/election', date.date]" hlmBtn variant="outline" class="w-full border-primary text-secondary hover:bg-primary/20 hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
               Разгледай
             </a>
           </div>
@@ -83,7 +88,7 @@
   <div id="historical-trends" class="mt-16 scroll-mt-8">
     <div class="mb-8">
       <h2 hlmH2 class="border-b-0 pb-0 text-secondary dark:text-primary">Исторически трендове</h2>
-      <p hlmLead class="text-secondary/80 dark:text-foreground/80">Проследете представянето на партиите във времето</p>
+      <p hlmLead class="text-secondary/80 dark:text-foreground/80">{{ electionType === 'presidential' ? 'Първите 5 кандидати от всеки изборен тур по национален брой гласове' : 'Проследете представянето на партиите във времето' }}</p>
     </div>
 
     <div hlmCard class="p-4 md:p-6 border-primary/20">
@@ -99,19 +104,16 @@
         @if (level() === 'region') {
           <div class="w-full md:w-64">
             <label class="text-xs font-semibold text-muted-foreground uppercase mb-1 block">Избери район</label>
-            <select [ngModel]="selectedRegionId()" (ngModelChange)="selectedRegionId.set($event)" class="w-full h-9 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
-              <option value="">-- Избери район --</option>
-              @for (region of regions; track region.id) {
-                <option [value]="region.id">{{ region.name }} ({{ region.id }})</option>
-              }
-            </select>
+            <app-select label="Избери район" icon="region" [value]="selectedRegionId()" [options]="regionOptions" (valueChange)="selectedRegionId.set($event)" />
           </div>
         }
 
         <div class="ml-auto">
           <app-party-filter
+            [label]="electionType === 'presidential' ? 'Кандидат' : 'Партия'"
             [parties]="allParties"
             [selectedPartyIds]="selectedHistoricalPartyIds()"
+            [partyVotes]="historicalPartyVotes"
             (selectedPartyIdsChange)="onHistoricalPartySelectionChange($event)" />
         </div>
       </div>
@@ -131,3 +133,13 @@
     </div>
   </div>
 </div>
+
+@defer (when selectedContestant() || modalPages.isActive('contestant')) {
+  @if (selectedContestant() || modalPages.isActive('contestant')) {
+    <app-contestant-detail-modal
+      [partyName]="selectedContestant()?.partyName ?? ''"
+      [partyId]="selectedContestant()?.partyId ?? ''"
+      [currentDate]="selectedContestant()?.date ?? ''"
+      (close)="selectedContestant.set(null)" />
+  }
+}

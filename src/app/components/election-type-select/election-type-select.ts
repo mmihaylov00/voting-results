@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -11,19 +10,11 @@ import {
   HlmCardTitleDirective,
 } from '../ui/card-helm/src/lib/hlm-card.directives';
 import { HlmTypographyDirective } from '../ui/typography-helm/src/lib/hlm-typography.directive';
-
-type ElectionTypeOption = {
-  id: 'presidential' | 'governmental' | 'european' | 'mayoral';
-  title: string;
-  description: string;
-  route: string;
-  available: boolean;
-};
+import { MapIconComponent } from '../ui/map-icon/map-icon';
 
 @Component({
   selector: 'app-election-type-select',
   imports: [
-    CommonModule,
     RouterModule,
     HlmButtonDirective,
     HlmCardDirective,
@@ -32,39 +23,30 @@ type ElectionTypeOption = {
     HlmCardDescriptionDirective,
     HlmCardContentDirective,
     HlmTypographyDirective,
+    MapIconComponent,
   ],
   templateUrl: './election-type-select.html',
   styleUrl: './election-type-select.scss',
 })
 export class ElectionTypeSelectComponent {
-  protected readonly electionTypes: ElectionTypeOption[] = [
+  protected readonly navigationOptions = [
     {
-      id: 'presidential',
       title: 'Президентски избори',
-      description: 'Отделен изглед за президентски кампании и балотажи.',
+      description: 'Резултати от президентски избори и балотажи.',
       route: '/presidential',
-      available: false,
+      icon: 'person',
     },
     {
-      id: 'governmental',
       title: 'Парламентарни избори',
-      description: 'Наличните в момента резултати и исторически трендове.',
+      description: 'Резултати от парламентарни избори и сравнения във времето.',
       route: '/governmental',
-      available: true,
+      icon: 'parliament',
     },
     {
-      id: 'european',
-      title: 'Европейски избори',
-      description: 'Подготовка за избори за Европейски парламент.',
-      route: '/european',
-      available: false,
+      title: 'Партии и кандидати',
+      description: 'Профили на партии и президентски кандидати с история на участията им.',
+      route: '/governmental/contestants',
+      icon: 'users',
     },
-    {
-      id: 'mayoral',
-      title: 'Местни избори',
-      description: 'Подготовка за кметски и общински резултати.',
-      route: '/mayoral',
-      available: false,
-    },
-  ];
+  ] as const;
 }

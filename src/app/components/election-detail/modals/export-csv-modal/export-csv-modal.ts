@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Params } from '@angular/router';
 import { RegionCandidate, Section, SECTION_COLUMNS, TableColumn, ViewMode } from '../../../../models/election.models';
 import { getPartyAlias } from '../../../../utils/party-aliases';
 import { formatActivity } from '../../../../utils/common.utils';
@@ -24,9 +25,11 @@ import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
   templateUrl: './export-csv-modal.html'
 })
 export class ExportCsvModalComponent {
+  @Input() pageQueryParams: Params = {};
   @Input() tableSections: Section[] = [];
   @Input() filteredCandidates: RegionCandidate[] = [];
   @Input() allParties: { id: string, name: string }[] = [];
+  @Input() partyVotes: Record<string, number> = {};
   @Input() selectedPartyIds: Set<string> = new Set();
   @Input() initialCandidateColumnIds: Set<string> = new Set();
   @Input() viewMode: ViewMode = 'sections';
@@ -149,7 +152,6 @@ export class ExportCsvModalComponent {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    this.close.emit();
   }
 
   buildPartiesMap(): { [id: string]: string } {

@@ -21,6 +21,8 @@ export function filterSections(
   }
 
   const currentTab = filters.activeTab;
+  const ppdbId = sections.find(section => section.topParties.some(party => party.name.includes('ПП-ДБ')))
+    ?.topParties.find(party => party.name.includes('ПП-ДБ'))?.partyId;
 
   // Calculate votesToFirst for all sections if relevant
   result.forEach(s => {
@@ -33,13 +35,6 @@ export function filterSections(
       } else if (ppdb) {
         s.votesToFirst = (s.topParties[0].total - ppdb.total) + 1;
       } else {
-        // Not in top 3, we'd need to find it in all party votes
-        // Search partyVotes for the partyId that was used for PP-DB in other sections
-        // But we don't have the partyId here easily.
-        // Let's look for any section that HAS PP-DB in topParties to get its partyId
-        const ppdbInAny = sections.find(sec => sec.topParties.some(tp => tp.name.includes('ПП-ДБ')));
-        const ppdbId = ppdbInAny?.topParties.find(tp => tp.name.includes('ПП-ДБ'))?.partyId;
-
         if (ppdbId && s.partyVotes[ppdbId]) {
           s.votesToFirst = (s.topParties[0].total - s.partyVotes[ppdbId].total) + 1;
         } else {

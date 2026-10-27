@@ -1,5 +1,6 @@
-import { getPartyColor } from './party-colors';
-import * as L from 'leaflet';
+import { getPartyColor, getPartyDisplayName, getPartyLegendIndex } from './party-colors';
+import { getPresidentialCandidateName } from './candidate-label';
+import type * as L from 'leaflet';
 
 export type MapMetric =
   | 'leading-party'
@@ -11,7 +12,9 @@ export type MapMetric =
   | 'invalid-votes'
   | 'no-votes'
   | 'machine-vs-paper'
-  | 'winner-margin';
+  | 'winner-margin'
+  | 'party-change'
+  | 'below-threshold';
 
 export interface MapPartyLeader {
   partyId: string;
@@ -39,7 +42,60 @@ export interface MapAggregate {
   partyTotals: Record<string, number>;
   leadingParty?: MapPartyLeader;
   leadingPreference?: MapPreferenceLeader;
+  partyChangePp?: number | null;
 }
+
+export interface MapLegend {
+  title: string;
+  description: string;
+  items: { label: string; color: string; opacity?: number }[];
+  noDataColor: string;
+}
+
+type ScaleMetric = 'activity' | 'risks' | 'invalid-votes' | 'no-votes' | 'machine-vs-paper' | 'winner-margin' | 'party-change' | 'below-threshold';
+const COLOR_SCALES: Record<ScaleMetric, { title: string; description: string; unit: string; limits: number[]; colors: string[] }> = {
+  'below-threshold': {
+    title: 'Гласове за партии под 4% бариера',
+    description: 'Дял от действителните гласове за листи в мястото. Партиите под 4% се определят по националния резултат. Независимите кандидати не са в числителя; „Не подкрепям никого“ не е в знаменателя.',
+    unit: '%', limits: [5, 10, 15, 20, 30, 40],
+    colors: ['#ffedd5', '#fed7aa', '#fdba74', '#fb923c', '#f97316', '#ea580c', '#c2410c'],
+  },
+  activity: {
+    title: 'Избирателна активност', description: 'Гласували / избиратели по списък.', unit: '%',
+    limits: [10, 20, 30, 40, 50, 60],
+    colors: ['#bbf7d0', '#86efac', '#4ade80', '#22c55e', '#16a34a', '#15803d', '#166534'],
+  },
+  risks: {
+    title: 'Рискови индикатори', description: 'Брой индикатори в избраната територия. Индикаторите не доказват нарушение.', unit: '',
+    limits: [0, 2, 5, 10, 15, 20],
+    colors: ['#fee2e2', '#fca5a5', '#f87171', '#ef4444', '#dc2626', '#b91c1c', '#991b1b'],
+  },
+  'invalid-votes': {
+    title: 'Недействителни гласове', description: 'Недействителни / гласували.', unit: '%',
+    limits: [1, 3, 5, 7, 10, 15],
+    colors: ['#fee2e2', '#fca5a5', '#f87171', '#ef4444', '#dc2626', '#b91c1c', '#991b1b'],
+  },
+  'no-votes': {
+    title: 'Не подкрепям никого', description: 'Гласове „Не подкрепям никого“ / гласували.', unit: '%',
+    limits: [1, 2, 3, 5, 7, 10],
+    colors: ['#fae8ff', '#e879f9', '#d946ef', '#c026d3', '#a21caf', '#86198f', '#6b21a8'],
+  },
+  'machine-vs-paper': {
+    title: 'Дял на машинния вот', description: 'Машинни / (машинни + хартиени гласове).', unit: '%',
+    limits: [10, 30, 45, 55, 70, 90],
+    colors: ['#7c2d12', '#c2410c', '#f97316', '#94a3b8', '#3b82f6', '#1d4ed8', '#1e3a8a'],
+  },
+  'winner-margin': {
+    title: 'Преднина на победителя', description: 'Разлика между първите две партии / избиратели по списък.', unit: '%',
+    limits: [5, 10, 20, 30, 40],
+    colors: ['#818cf8', '#6366f1', '#4f46e5', '#4338ca', '#3730a3', '#312e81'],
+  },
+  'party-change': {
+    title: 'Промяна в подкрепата', description: 'Промяна в дела на избраната партия спрямо базовите избори, в процентни пунктове.', unit: ' п.п.',
+    limits: [-10, -5, -2, 2, 5, 10],
+    colors: ['#991b1b', '#dc2626', '#f87171', '#f8fafc', '#93c5fd', '#3b82f6', '#1d4ed8'],
+  },
+};
 
 export class MapMetricHelper {
   static getFillColor(
@@ -47,96 +103,32 @@ export class MapMetricHelper {
     aggregate: MapAggregate | undefined,
     isDark: boolean,
     selectedPartyId?: string | null,
-    partiesById: Record<string, string> = {}
+    partiesById: Record<string, string> = {},
+    belowThresholdPartyIds: ReadonlySet<string> | null = null,
   ): string {
-    if (!aggregate) {
-      return isDark ? '#334155' : '#cbd5e1';
-    }
+    const noDataColor = isDark ? '#334155' : '#cbd5e1';
+    if (!aggregate) return noDataColor;
 
     if (metric === 'leading-preference') {
-      return getPartyColor(aggregate.leadingPreference?.partyName, isDark);
+      return aggregate.leadingPreference ? getPartyColor(aggregate.leadingPreference.partyName, isDark) : noDataColor;
     }
 
-    if (metric === 'activity') {
-      const activity = aggregate.totalElectors > 0 ? (aggregate.voted / aggregate.totalElectors) : 0;
-      if (activity > 0.6) return '#166534';
-      if (activity > 0.5) return '#15803d';
-      if (activity > 0.4) return '#16a34a';
-      if (activity > 0.3) return '#22c55e';
-      if (activity > 0.2) return '#4ade80';
-      if (activity > 0.1) return '#86efac';
-      return '#bbf7d0';
-    }
-
-    if (metric === 'risks') {
-      const riskScore = aggregate.riskScore || 0;
-      if (riskScore > 20) return '#991b1b';
-      if (riskScore > 15) return '#b91c1c';
-      if (riskScore > 10) return '#dc2626';
-      if (riskScore > 5) return '#ef4444';
-      if (riskScore > 2) return '#f87171';
-      if (riskScore > 0) return '#fca5a5';
-      return isDark ? '#334155' : '#cbd5e1';
-    }
-
-    if (metric === 'invalid-votes') {
-      const invalidShare = aggregate.total > 0 ? (aggregate.discardedVotes / aggregate.total) : 0;
-      if (invalidShare > 0.15) return '#991b1b';
-      if (invalidShare > 0.10) return '#b91c1c';
-      if (invalidShare > 0.07) return '#dc2626';
-      if (invalidShare > 0.05) return '#ef4444';
-      if (invalidShare > 0.03) return '#f87171';
-      if (invalidShare > 0.01) return '#fca5a5';
-      return isDark ? '#334155' : '#cbd5e1';
-    }
-
-    if (metric === 'no-votes') {
-      const noVotesShare = aggregate.total > 0 ? (aggregate.noVotes / aggregate.total) : 0;
-      if (noVotesShare > 0.10) return '#6b21a8';
-      if (noVotesShare > 0.07) return '#86198f';
-      if (noVotesShare > 0.05) return '#a21caf';
-      if (noVotesShare > 0.03) return '#c026d3';
-      if (noVotesShare > 0.02) return '#d946ef';
-      if (noVotesShare > 0.01) return '#e879f9';
-      return isDark ? '#334155' : '#cbd5e1';
-    }
-
-    if (metric === 'machine-vs-paper') {
-      const machine = aggregate.totalMachine || 0;
-      const paper = aggregate.totalPaper || 0;
-      const total = machine + paper;
-      if (total === 0) return isDark ? '#334155' : '#cbd5e1';
-
-      const machineShare = machine / total;
-      if (machineShare > 0.9) return '#1e3a8a';
-      if (machineShare > 0.7) return '#1d4ed8';
-      if (machineShare > 0.55) return '#3b82f6';
-      if (machineShare > 0.45) return '#94a3b8';
-      if (machineShare > 0.3) return '#f97316';
-      if (machineShare > 0.1) return '#c2410c';
-      return '#7c2d12';
-    }
-
-    if (metric === 'winner-margin') {
-      const parties = Object.entries(aggregate.partyTotals)
-        .sort((a, b) => b[1] - a[1]);
-      if (parties.length < 2 || aggregate.total === 0) return isDark ? '#334155' : '#cbd5e1';
-
-      const margin = (parties[0][1] - parties[1][1]) / aggregate.total;
-      if (margin > 0.4) return '#312e81';
-      if (margin > 0.3) return '#3730a3';
-      if (margin > 0.2) return '#4338ca';
-      if (margin > 0.1) return '#4f46e5';
-      if (margin > 0.05) return '#6366f1';
-      return '#818cf8';
+    const scale = this.colorScale(metric);
+    if (scale) {
+      const value = this.numericMetricValue(metric, aggregate, belowThresholdPartyIds);
+      if (value === null) return noDataColor;
+      const index = scale.limits.findIndex(limit => value <= limit);
+      return scale.colors[index < 0 ? scale.colors.length - 1 : index];
     }
 
     if (metric === 'party-votes' && selectedPartyId) {
+      if (aggregate.voted <= 0) return noDataColor;
       const partyName = partiesById[selectedPartyId] || selectedPartyId;
       return getPartyColor(partyName, isDark);
     }
+    if (metric === 'party-votes') return noDataColor;
 
-    return getPartyColor(aggregate.leadingParty?.partyName, isDark);
+    return aggregate.leadingParty ? getPartyColor(aggregate.leadingParty.partyName, isDark) : noDataColor;
   }
 
   static buildMetricTooltip(
@@ -144,7 +136,11 @@ export class MapMetricHelper {
     aggregate: MapAggregate | undefined,
     header: string,
     showPreferences: boolean = true,
-    partiesById: Record<string, string> = {}
+    partiesById: Record<string, string> = {},
+    selectedPartyId?: string | null,
+    belowThresholdPartyIds: ReadonlySet<string> | null = null,
+    votesLabel = 'гласа',
+    shareLabel = 'от гласувалите',
   ): string {
     if (!aggregate) return header;
 
@@ -153,7 +149,23 @@ export class MapMetricHelper {
     }
 
     if (metric === 'leading-preference' && aggregate.leadingPreference) {
-      return `${header}<br/>Води преференция: ${aggregate.leadingPreference.candidateName}<br/>${aggregate.leadingPreference.partyName} • ${aggregate.leadingPreference.total.toLocaleString('bg-BG')} гласа`;
+      return `${header}<br/>Води преференция: ${this.escapeHtml(aggregate.leadingPreference.candidateName)}<br/>${this.escapeHtml(getPartyDisplayName(aggregate.leadingPreference.partyName))} • ${aggregate.leadingPreference.total.toLocaleString('bg-BG')} гласа`;
+    }
+
+    if (this.colorScale(metric) && this.numericMetricValue(metric, aggregate, belowThresholdPartyIds) === null) {
+      return `${header}<br/>Няма данни за показателя`;
+    }
+
+    if (metric === 'below-threshold') {
+      const share = this.numericMetricValue(metric, aggregate, belowThresholdPartyIds)!;
+      const votes = Object.entries(aggregate.partyTotals).filter(([id]) => belowThresholdPartyIds?.has(id)).reduce((sum, [, votes]) => sum + votes, 0);
+      return `${header}<br/>За партии под националната бариера: ${share.toFixed(2)}%<br/>${votes.toLocaleString('bg-BG')} гласа от действителните гласове за листи`;
+    }
+
+    if (metric === 'party-change') {
+      const change = aggregate.partyChangePp ?? 0;
+      const partyName = selectedPartyId ? partiesById[selectedPartyId] || selectedPartyId : 'Избрана партия';
+      return `${header}<br/>${this.escapeHtml(getPartyDisplayName(partyName))}<br/>Промяна спрямо базовите избори: ${change > 0 ? '+' : ''}${change.toFixed(2)} п.п.`;
     }
 
     if (metric === 'activity') {
@@ -162,17 +174,17 @@ export class MapMetricHelper {
     }
 
     if (metric === 'risks') {
-      return `${header}<br/>Рисков рейтинг: ${aggregate.riskScore}<br/>${aggregate.total.toLocaleString('bg-BG')} общо гласа`;
+      return `${header}<br/>Рискови индикатори: ${aggregate.riskScore}<br/>${aggregate.voted.toLocaleString('bg-BG')} гласували`;
     }
 
     if (metric === 'invalid-votes') {
-      const invalidShare = aggregate.total > 0 ? (aggregate.discardedVotes / aggregate.total * 100) : 0;
-      return `${header}<br/>Недействителни: ${invalidShare.toFixed(2)}%<br/>${aggregate.discardedVotes.toLocaleString('bg-BG')} от ${aggregate.total.toLocaleString('bg-BG')} гласа`;
+      const invalidShare = this.percentOf(aggregate.discardedVotes, aggregate.voted);
+      return `${header}<br/>Недействителни: ${invalidShare.toFixed(2)}%<br/>${aggregate.discardedVotes.toLocaleString('bg-BG')} от ${aggregate.voted.toLocaleString('bg-BG')} гласували`;
     }
 
     if (metric === 'no-votes') {
-      const noVotesShare = aggregate.total > 0 ? (aggregate.noVotes / aggregate.total * 100) : 0;
-      return `${header}<br/>Не подкрепям никого: ${noVotesShare.toFixed(2)}%<br/>${aggregate.noVotes.toLocaleString('bg-BG')} от ${aggregate.total.toLocaleString('bg-BG')} гласа`;
+      const noVotesShare = this.percentOf(aggregate.noVotes, aggregate.voted);
+      return `${header}<br/>Не подкрепям никого: ${noVotesShare.toFixed(2)}%<br/>${aggregate.noVotes.toLocaleString('bg-BG')} от ${aggregate.voted.toLocaleString('bg-BG')} гласували`;
     }
 
     if (metric === 'machine-vs-paper') {
@@ -185,31 +197,34 @@ export class MapMetricHelper {
     if (metric === 'winner-margin') {
       const parties = Object.entries(aggregate.partyTotals)
         .sort((a, b) => b[1] - a[1]);
-      if (parties.length < 2 || aggregate.total === 0) return header;
+      if (parties.length < 2 || aggregate.totalElectors === 0) return header;
 
       const [winnerPartyId, winnerVotes] = parties[0];
       const [runnerUpPartyId, runnerUpVotes] = parties[1];
       const voteDifference = winnerVotes - runnerUpVotes;
-      const margin = voteDifference / aggregate.total * 100;
+      const margin = voteDifference / aggregate.totalElectors * 100;
       const winnerName = partiesById[winnerPartyId] || winnerPartyId;
       const runnerUpName = partiesById[runnerUpPartyId] || runnerUpPartyId;
       return [
         header,
         `Преднина на победителя: ${margin.toFixed(2)}% от избирателите`,
         `Разлика в гласове: ${voteDifference.toLocaleString('bg-BG')}`,
-        `Първи: ${this.escapeHtml(winnerName)} (${winnerVotes.toLocaleString('bg-BG')})`,
-        `Втори: ${this.escapeHtml(runnerUpName)} (${runnerUpVotes.toLocaleString('bg-BG')})`,
+        `Първи: ${this.escapeHtml(getPartyDisplayName(winnerName))} (${winnerVotes.toLocaleString('bg-BG')})`,
+        `Втори: ${this.escapeHtml(getPartyDisplayName(runnerUpName))} (${runnerUpVotes.toLocaleString('bg-BG')})`,
       ].join('<br/>');
     }
 
-    if (metric === 'party-votes' && aggregate.leadingParty) {
-      const percentage = aggregate.total > 0 ? (aggregate.partyTotals[aggregate.leadingParty.partyId] || 0) / aggregate.total * 100 : 0;
-      return `${header}<br/>${aggregate.leadingParty.partyName}: ${percentage.toFixed(2)}%<br/>${(aggregate.partyTotals[aggregate.leadingParty.partyId] || 0).toLocaleString('bg-BG')} гласа`;
+    if (metric === 'party-votes') {
+      if (!selectedPartyId || aggregate.voted <= 0) return `${header}<br/>Няма данни за избрана партия`;
+      const votes = aggregate.partyTotals[selectedPartyId] || 0;
+      const partyName = partiesById[selectedPartyId] || selectedPartyId;
+      const percentage = this.percentOf(votes, aggregate.voted);
+      return `${header}<br/>${this.escapeHtml(getPartyDisplayName(partyName))}: ${percentage.toFixed(2)}% ${this.escapeHtml(shareLabel)}<br/>${votes.toLocaleString('bg-BG')} ${this.escapeHtml(votesLabel)}`;
     }
 
     if (aggregate.leadingParty) {
-      const percentage = aggregate.total > 0 ? (aggregate.leadingParty.total / aggregate.total * 100) : 0;
-      return `${header}<br/>Победител: ${aggregate.leadingParty.partyName}<br/>${percentage.toFixed(2)}% • ${aggregate.leadingParty.total.toLocaleString('bg-BG')} гласа`;
+      const percentage = this.percentOf(aggregate.leadingParty.total, aggregate.voted);
+      return `${header}<br/>Победител: ${this.escapeHtml(getPartyDisplayName(aggregate.leadingParty.partyName))}<br/>${percentage.toFixed(2)}% от гласувалите • ${aggregate.leadingParty.total.toLocaleString('bg-BG')} гласа`;
     }
 
     return header;
@@ -220,14 +235,15 @@ export class MapMetricHelper {
     aggregate: MapAggregate | undefined,
     isDark: boolean,
     selectedPartyId?: string | null,
-    partiesById: Record<string, string> = {}
+    partiesById: Record<string, string> = {},
+    belowThresholdPartyIds: ReadonlySet<string> | null = null,
   ): L.PathOptions {
-    const fillColor = this.getFillColor(metric, aggregate, isDark, selectedPartyId, partiesById);
+    const fillColor = this.getFillColor(metric, aggregate, isDark, selectedPartyId, partiesById, belowThresholdPartyIds);
 
     let fillOpacity = aggregate ? 0.9 : 0.45;
     if (aggregate && metric === 'party-votes' && selectedPartyId) {
       const votes = aggregate.partyTotals[selectedPartyId] || 0;
-      const share = aggregate.total > 0 ? votes / aggregate.total : 0;
+      const share = aggregate.voted > 0 ? votes / aggregate.voted : 0;
       fillOpacity = 0.6 + share * 0.4;
     }
 
@@ -238,6 +254,91 @@ export class MapMetricHelper {
       fillColor,
       fillOpacity,
     };
+  }
+
+  static getLegend(
+    metric: MapMetric,
+    isDark: boolean,
+    selectedPartyId?: string | null,
+    partiesById: Record<string, string> = {},
+    shareLabel = 'от гласувалите',
+  ): MapLegend {
+    const noDataColor = isDark ? '#334155' : '#cbd5e1';
+    const presidential = Object.values(partiesById).some(name => getPresidentialCandidateName(name) !== name);
+    const scale = this.colorScale(metric);
+    if (scale) {
+      return {
+        title: scale.title,
+        description: presidential && metric === 'winner-margin' ? scale.description.replace('партии', 'кандидати') : scale.description,
+        noDataColor,
+        items: scale.colors.map((color, index) => {
+          const lower = scale.limits[index - 1];
+          const upper = scale.limits[index];
+          const label = index === 0 ? `≤ ${upper}${scale.unit}`
+            : upper === undefined ? `> ${lower}${scale.unit}`
+              : `> ${lower} - ${upper}${scale.unit}`;
+          return { color, label };
+        }),
+      };
+    }
+
+    if (metric === 'party-votes') {
+      const partyName = selectedPartyId ? partiesById[selectedPartyId] || selectedPartyId : 'Изберете партия';
+      return {
+        title: getPartyDisplayName(partyName),
+        description: `Дял ${shareLabel}. По-плътният цвят означава по-висок дял.`,
+        noDataColor,
+        items: selectedPartyId ? [0, 25, 50, 75, 100].map(percent => ({
+          color: getPartyColor(partyName, isDark), label: `${percent}%`, opacity: 0.6 + percent / 100 * 0.4,
+        })) : [],
+      };
+    }
+
+    return {
+      title: metric === 'leading-preference' ? 'Водеща преференция' : presidential ? 'Водещ кандидат' : 'Водеща партия',
+      description: metric === 'leading-preference'
+        ? 'Цветът показва партията на кандидата с най-много преференции.'
+        : presidential ? 'Цветът показва кандидата с най-много гласове. Дяловете в подсказките са от гласувалите.'
+          : 'Цветът показва партията с най-много гласове. Дяловете в подсказките са от гласувалите.',
+      noDataColor,
+      items: Object.values(partiesById)
+        .sort((left, right) => getPartyLegendIndex(left) - getPartyLegendIndex(right))
+        .map(name => ({ label: getPartyDisplayName(name), color: getPartyColor(name, isDark) })),
+    };
+  }
+
+  private static colorScale(metric: MapMetric): typeof COLOR_SCALES[ScaleMetric] | undefined {
+    return metric in COLOR_SCALES ? COLOR_SCALES[metric as ScaleMetric] : undefined;
+  }
+
+  private static numericMetricValue(metric: MapMetric, aggregate: MapAggregate, belowThresholdPartyIds: ReadonlySet<string> | null = null): number | null {
+    const percent = (value: number, total: number): number | null =>
+      Number.isFinite(value) && Number.isFinite(total) && total > 0 ? value / total * 100 : null;
+
+    switch (metric) {
+      case 'below-threshold': {
+        if (belowThresholdPartyIds === null) return null;
+        let total = 0;
+        let below = 0;
+        for (const [id, votes] of Object.entries(aggregate.partyTotals)) {
+          if (id === '0') continue;
+          total += votes;
+          if (belowThresholdPartyIds.has(id)) below += votes;
+        }
+        return percent(below, total);
+      }
+      case 'activity': return percent(aggregate.voted, aggregate.totalElectors);
+      case 'invalid-votes': return percent(aggregate.discardedVotes, aggregate.voted);
+      case 'no-votes': return percent(aggregate.noVotes, aggregate.voted);
+      case 'machine-vs-paper': return percent(aggregate.totalMachine, aggregate.totalMachine + aggregate.totalPaper);
+      case 'risks': return Number.isFinite(aggregate.riskScore) ? aggregate.riskScore : null;
+      case 'party-change': return typeof aggregate.partyChangePp === 'number' && Number.isFinite(aggregate.partyChangePp) ? aggregate.partyChangePp : null;
+      case 'winner-margin': {
+        const votes = Object.values(aggregate.partyTotals).sort((a, b) => b - a);
+        return votes.length >= 2 ? percent(votes[0] - votes[1], aggregate.totalElectors) : null;
+      }
+      default: return null;
+    }
   }
 
   private static buildSummaryTooltip(
@@ -258,7 +359,7 @@ export class MapMetricHelper {
       ? partyRows
         .map((party, index) => {
           const percent = this.formatPercent(this.percentOf(party.total, aggregate.voted));
-          return `${index + 1}. ${this.escapeHtml(party.partyName)}: ${this.formatNumber(party.total)} (${percent})`;
+          return `${index + 1}. ${this.escapeHtml(getPartyDisplayName(party.partyName))}: ${this.formatNumber(party.total)} (${percent})`;
         })
         .join('<br/>')
       : 'Няма гласове за партии';
@@ -272,7 +373,8 @@ export class MapMetricHelper {
 
     return [
       header,
-      '<strong>Топ 3 партии</strong>',
+      Object.values(partiesById).some(name => getPresidentialCandidateName(name) !== name)
+        ? '<strong>Топ 3 кандидати</strong>' : '<strong>Топ 3 партии</strong>',
       partySummary,
       `Активност: ${turnoutPercent} (${this.formatNumber(aggregate.voted)} от ${this.formatNumber(aggregate.totalElectors)})`,
       `Недействителни: ${this.formatNumber(aggregate.discardedVotes)} (${invalidPercent})`,

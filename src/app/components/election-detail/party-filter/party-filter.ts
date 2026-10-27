@@ -3,7 +3,11 @@ import { CommonModule, DOCUMENT } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HlmButtonDirective } from '../../ui/button-helm/src/lib/hlm-button.directive';
 import { getPartyAlias } from '../../../utils/party-aliases';
+import { getPartyColor, getPartyDisplayName } from '../../../utils/party-colors';
 import { PartyBadgeComponent } from '../../ui/party-badge/party-badge';
+import { MapIconComponent } from '../../ui/map-icon/map-icon';
+import { ThemeService } from '../../../services/theme.service';
+import { sortPartiesByVotes } from '../../../utils/party-order.util';
 
 @Component({
   selector: 'app-party-filter',
@@ -13,11 +17,13 @@ import { PartyBadgeComponent } from '../../ui/party-badge/party-badge';
     FormsModule,
     HlmButtonDirective,
     PartyBadgeComponent,
+    MapIconComponent,
   ],
   templateUrl: './party-filter.html'
 })
 export class PartyFilterComponent implements OnChanges, OnDestroy {
-  @Input() parties: { id: string, name: string }[] = [];
+  @Input() label = 'Партия';
+  @Input() parties: { id: string, name: string, total?: number }[] = [];
   @Input() selectedPartyIds: Set<string> = new Set();
   @Input() showVotes: boolean = false;
   @Input() position: 'left' | 'right' = 'left';
@@ -28,60 +34,19 @@ export class PartyFilterComponent implements OnChanges, OnDestroy {
   showDropdown = signal<boolean>(false);
   private readonly onDocumentClick: (event: MouseEvent) => void;
 
+  get selectedParties() { return this.parties.filter(party => this.selectedPartyIds.has(party.id)).slice(0, 3); }
+  partyColor(name: string): string { return getPartyColor(name, this.theme.darkMode()); }
+
   get selectedPartyName(): string | null {
     if (this.selectedPartyIds.size !== 1) return null;
     const selectedId = Array.from(this.selectedPartyIds)[0];
     const party = this.parties.find(p => p.id === selectedId);
     if (!party) return null;
-    return getPartyAlias(party.name);
+    return getPartyDisplayName(party.name);
   }
 
   get sortedParties(): { id: string, name: string }[] {
-    const priorityOrder = [
-      'ПП-ДБ',
-      'ГЕРБ',
-      'ПБ',
-      'ДПС',
-      'БСП',
-      'ВЪЗРАЖДАНЕ',
-      'ИТН',
-      'МЕЧ',
-      'ВЕЛИЧИЕ'
-    ];
-
-    const priorityParties: Array<{ party: { id: string, name: string }, index: number }> = [];
-    const otherParties: { id: string, name: string }[] = [];
-
-    this.parties.forEach(party => {
-      if (party.id === '0') return; // Skip "Others"
-
-      const alias = getPartyAlias(party.name).toUpperCase();
-      const nameUpper = party.name.toUpperCase();
-
-      // Check both alias and original name for matching
-      const priorityIndex = priorityOrder.findIndex(p => {
-        const pUpper = p.toUpperCase();
-        return alias.includes(pUpper) || nameUpper.includes(pUpper);
-      });
-
-      if (priorityIndex !== -1) {
-        priorityParties.push({ party, index: priorityIndex });
-      } else {
-        otherParties.push(party);
-      }
-    });
-
-    // Sort priority parties by their index in the priority order
-    priorityParties.sort((a, b) => a.index - b.index);
-
-    // Sort other parties alphabetically by alias
-    otherParties.sort((a, b) => {
-      const aliasA = getPartyAlias(a.name).toUpperCase();
-      const aliasB = getPartyAlias(b.name).toUpperCase();
-      return aliasA.localeCompare(aliasB);
-    });
-
-    return [...priorityParties.map(p => p.party), ...otherParties];
+    return sortPartiesByVotes(this.parties.filter(party => party.id !== '0'), this.partyVotes);
   }
 
   get allSelected(): boolean {
@@ -129,7 +94,8 @@ export class PartyFilterComponent implements OnChanges, OnDestroy {
 
   constructor(
     private elementRef: ElementRef<HTMLElement>,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    private readonly theme: ThemeService,
   ) {
     this.onDocumentClick = (event: MouseEvent) => {
       if (!this.showDropdown()) return;

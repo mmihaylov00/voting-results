@@ -1,4 +1,5 @@
 import { getPartyAlias } from './party-aliases';
+import { getPresidentialCandidateName } from './candidate-label';
 
 const PARTY_COLOR_RULES: { match: string[]; color: string }[] = [
   { match: ['ПП-ДБ', 'ПРОДЪЛЖАВАМЕ'], color: '#0015FF' },
@@ -22,9 +23,32 @@ const DARK_PARTY_COLOR_OVERRIDES: { match: string[]; color: string }[] = [
 
 const DEFAULT_PARTY_COLOR = '#64748B';
 
+function isOthersParty(name: string | undefined | null): boolean {
+  return name?.trim().toLocaleUpperCase('bg') === 'ДРУГИ';
+}
+
 export function getPartyColor(partyName: string | undefined | null, isDark = false): string {
   if (!partyName) return DEFAULT_PARTY_COLOR;
-  const alias = getPartyAlias(partyName).toUpperCase();
+  if (isOthersParty(partyName)) return isDark ? '#CBD5E1' : '#0F172A';
+  const candidate = getPresidentialCandidateName(partyName).toLocaleUpperCase('bg').trim().split(/\s+/);
+  let colorName = partyName;
+  if ((candidate[0] === 'РУМЕН' && candidate.includes('РАДЕВ')) || (candidate[0] === 'ИЛИЯНА' && candidate.includes('ЙОТОВА'))) {
+    colorName = 'ПРОГРЕСИВНА БЪЛГАРИЯ';
+  } else if ((['АНАСТАС', 'АТАНАС'].includes(candidate[0]) && candidate.includes('ГЕРДЖИКОВ'))
+    || (candidate[0] === 'ЦЕЦКА' && candidate.includes('ЦАЧЕВА'))) {
+    colorName = 'ГЕРБ';
+  } else if (candidate[0] === 'МУСТАФА' && candidate.includes('КАРАДАЙЪ')) {
+    colorName = 'ДПС';
+  } else if (candidate[0] === 'АНДРЕЙ' && candidate.includes('ГЮРОВ')) {
+    colorName = 'ПРОДЪЛЖАВАМЕ ПРОМЯНАТА';
+  } else if (candidate[0] === 'КОСТАДИН' && candidate.includes('КОСТАДИНОВ')) {
+    colorName = 'ВЪЗРАЖДАНЕ';
+  } else if (candidate[0] === 'ИВЕЛИН' && candidate.includes('МИХАЙЛОВ')) {
+    colorName = 'ВЕЛИЧИЕ';
+  } else if (candidate[0] === 'РАДОСТИН' && candidate.includes('ВАСИЛЕВ')) {
+    colorName = 'МЕЧ';
+  }
+  const alias = getPartyAlias(colorName).toUpperCase();
   if (isDark) {
     for (const rule of DARK_PARTY_COLOR_OVERRIDES) {
       if (rule.match.some(key => alias.includes(key))) {
@@ -40,7 +64,17 @@ export function getPartyColor(partyName: string | undefined | null, isDark = fal
   return DEFAULT_PARTY_COLOR;
 }
 
+export function getPartyLegendIndex(partyName: string | undefined | null): number {
+  if (isOthersParty(partyName)) return 2;
+  return getPartyColor(partyName) === DEFAULT_PARTY_COLOR ? 1 : 0;
+}
+
 export function getPartyBadgeLabel(partyName: string | undefined | null): string {
+  return getPartyDisplayName(partyName);
+}
+
+export function getPartyDisplayName(partyName: string | undefined | null): string {
   if (!partyName) return '';
-  return getPartyAlias(partyName);
+  const candidate = getPresidentialCandidateName(partyName);
+  return candidate === partyName ? getPartyAlias(partyName) : candidate;
 }

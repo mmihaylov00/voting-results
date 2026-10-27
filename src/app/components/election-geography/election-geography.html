@@ -1,0 +1,59 @@
+<section aria-label="География на вота" class="space-y-6">
+  <nav aria-label="Раздели на географията" class="flex flex-wrap gap-1 border-b border-border">
+    @for (tab of tabs; track tab.id) {
+      <button hlmBtn variant="line" type="button" [attr.aria-pressed]="activeTab() === tab.id" [attr.data-state]="activeTab() === tab.id ? 'active' : 'inactive'" (click)="selectTab(tab.id)">{{ tab.label }}</button>
+    }
+  </nav>
+
+  <section aria-labelledby="top-regions-title" class="space-y-4" [hidden]="activeTab() !== 'regions'">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div><h2 id="top-regions-title" class="text-lg font-semibold">Топ изборни райони</h2><p class="mt-1 text-sm text-muted-foreground">По брой гласували в страната</p></div>
+      <button hlmBtn variant="outline" size="icon" type="button" aria-label="Източници и методика за районите" aria-haspopup="dialog" (click)="methodOpen.set(true)">ⓘ</button>
+    </div>
+    @if (loading()) { <p role="status" class="py-10 text-center text-muted-foreground">Зареждане на районите...</p> }
+    @else if (error()) { <p role="alert" class="py-6">{{ error() }}</p> }
+    @else if (!rows().length) { <p role="status">Няма данни за районите.</p> }
+    @else {
+      <div role="region" aria-label="Топ изборни райони" tabindex="0" class="overflow-x-auto rounded-md border border-border">
+        <table class="w-full min-w-[850px] text-sm">
+          <caption class="sr-only">Десетте района с най-много гласували, без чужбина</caption>
+          <thead class="border-b border-border text-muted-foreground"><tr>
+            <th scope="col" class="px-4 py-3 text-left">Район</th><th scope="col" class="px-3 py-3 text-left">Победител</th><th scope="col" class="px-3 py-3 text-right">Гласували</th><th scope="col" class="px-3 py-3 text-right">Активност</th><th scope="col" class="px-3 py-3 text-right">Машинен дял</th><th scope="col" class="min-w-36 px-3 py-3 text-right">Дял в страната</th><th scope="col" class="px-4 py-3 text-right">Промяна на дела</th>
+          </tr></thead>
+          <tbody>
+            @for (row of rows(); track row.id) {
+              <tr class="border-b border-border/60 last:border-0 hover:bg-muted/30">
+                <th scope="row" class="px-4 py-4 text-left font-medium"><a [routerLink]="['/governmental/election', date(), 'region', row.id]" class="underline-offset-4 hover:underline">{{ row.name }}</a></th>
+                <td class="px-3 py-4"><span class="mr-2 inline-block h-2.5 w-2.5 rounded-full" [style.background-color]="color(row.winnerId)" aria-hidden="true"></span>{{ row.winnerId ? partyName(row.winnerId) : row.tied ? 'Равенство' : '-' }}</td>
+                <td class="px-3 py-4 text-right tabular-nums">{{ row.voted | number:'1.0-0' }}</td>
+                <td class="px-3 py-4 text-right tabular-nums">{{ row.turnout === null ? '-' : (row.turnout | number:'1.1-1') + '%' }}</td>
+                <td class="px-3 py-4 text-right tabular-nums">{{ row.machineShare === null ? '-' : (row.machineShare | number:'1.1-1') + '%' }}</td>
+                <td class="px-3 py-4 text-right tabular-nums"><span>{{ row.share === null ? '-' : (row.share | number:'1.1-1') + '%' }}</span><div class="mt-1.5 h-1.5 overflow-hidden rounded-full bg-muted" aria-hidden="true"><div class="h-full rounded-full" [style.width.%]="row.barWidth" [style.background-color]="color(row.winnerId)"></div></div></td>
+                <td class="whitespace-nowrap px-4 py-4 text-right tabular-nums">{{ delta(row.share, row.priorShare, true) }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+
+  @if (date() && !error()) {
+    @if (visitedTabs().has('origins')) {
+      <div [hidden]="activeTab() !== 'origins'"><app-vote-origins [date]="date()" /></div>
+    }
+    @if (visitedTabs().has('demographics')) {
+      <div [hidden]="activeTab() !== 'demographics'"><app-demographic-breakdown [date]="date()" /></div>
+    }
+  }
+</section>
+
+@if (methodOpen() || modalPages.isActive('region-method')) {
+<app-base-modal title="Източници и методика" pageId="region-method" maxWidth="max-w-2xl" [pageQueryParams]="{ panel: 'geography' }" (close)="methodOpen.set(false)">
+  <div class="space-y-3 text-sm leading-relaxed text-muted-foreground">
+    <p>Класирането използва броя гласували в районите от данните на ЦИК. Чужбина е изключена. Дялът е от всички гласували в страната, а активността е спрямо избирателите в района.</p>
+    <p>Машинният дял е от сумата на хартиените и машинните гласове. Липсващи данни са показани с „-“. Промяната на дела е в процентни пунктове спрямо {{ previousDate() || 'предходните налични избори' }}.</p>
+    <p><a [href]="cikUrl(date())" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4">Публикувани резултати на ЦИК</a></p>
+  </div>
+</app-base-modal>
+}

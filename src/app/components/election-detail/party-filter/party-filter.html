@@ -1,8 +1,13 @@
 <div class="relative w-full">
-    <button hlmBtn variant="outline" size="sm" (click)="toggleDropdown($event)">
-        Партия
+    <button hlmBtn variant="outline" size="sm" type="button" class="max-w-full gap-2" [title]="singleSelect ? selectedPartyName || label : label" [attr.aria-expanded]="showDropdown()" (click)="toggleDropdown($event)">
+        @if (selectedParties.length) {
+            <span class="inline-flex gap-1" aria-hidden="true">
+                @for (party of selectedParties; track party.id) { <span class="h-3 w-3 shrink-0 rounded-sm" [style.background-color]="partyColor(party.name)"></span> }
+            </span>
+        } @else { <app-map-icon name="users" /> }
+        {{ label }}
         @if (selectedPartyIds.size > 0) {
-            <span class="ml-1">
+            <span class="ml-1 min-w-0 truncate">
                 @if (singleSelect && selectedPartyName) {
                     ({{ selectedPartyName }})
                 } @else {
@@ -10,13 +15,15 @@
                 }
             </span>
         }
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
     </button>
     @if (showDropdown()) {
-        <div [class]="`${position}-0`" class="absolute mt-2 w-64 max-h-96 overflow-auto bg-popover text-popover-foreground border border-primary/20 rounded-md shadow-md z-[1000] p-2" (click)="$event.stopPropagation()">
+        <div [class]="`${position}-0`" class="absolute mt-2 w-64 max-h-96 overflow-auto bg-popover text-popover-foreground border border-primary/20 rounded-md shadow-md z-[1000] p-2" (click)="$event.stopPropagation()" (keydown.escape)="$event.stopPropagation(); closeDropdown()">
             <!-- Select All / Deselect All -->
             @if (!singleSelect) {
                 <div class="flex items-center gap-2 p-2 border-b border-primary/10 mb-2">
                     <button hlmBtn variant="ghost" size="sm" (click)="allSelected ? deselectAll() : selectAll()" class="w-full justify-start text-xs">
+                        <app-map-icon [name]="allSelected ? 'reset' : 'summary'" class="mr-2" />
                         {{ allSelected ? 'Премахни всички' : 'Избери всички' }}
                     </button>
                 </div>
@@ -25,6 +32,7 @@
             @for (party of sortedParties; track party.id) {
                 <div class="flex items-center gap-2 p-2 hover:bg-muted rounded cursor-pointer" (click)="toggleParty(party.id)">
                     <input type="checkbox" [checked]="selectedPartyIds.has(party.id)" class="cursor-pointer" />
+                    <span class="h-3 w-3 shrink-0 rounded-sm" [style.background-color]="partyColor(party.name)" aria-hidden="true"></span>
                     <span class="text-sm truncate flex items-center gap-2 min-w-0">
                         @if (showVotes && partyVotes && partyVotes[party.id] !== undefined) {
                             <span class="text-muted-foreground">({{ partyVotes[party.id] | number }})</span>

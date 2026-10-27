@@ -1,10 +1,15 @@
-<app-base-modal
+<app-base-modal #modal
+  pageId="section"
+  [pageQueryParams]="pageQueryParams"
+  [pageRoute]="pageRoute"
     [title]="`Детайлни резултати за ${isGroupedByCity ? isMunicipalityDetail ? municipalityLabelLowercase : '' : 'секция'} ${section.sectionId}`"
     [subtitle]="detailSubtitle"
     zIndex="z-[1200]"
     (close)="closeModal()">
     <ng-template #headerActions>
         <div class="flex flex-row items-center gap-2 mt-3">
+            @if (!isGroupedByCity) { <app-share-button [action]="shareAction" size="sm" /> }
+            @if (shareMessage) { <span role="status" class="text-sm">{{ shareMessage }}</span> }
             <a [href]="getGoogleMapsUrl(section.cityName, section.sectionName)" target="_blank" hlmBtn variant="outline" size="sm" hlmTooltip="Виж в Google Maps" class="border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                 Карта
@@ -19,18 +24,28 @@
         </div>
     </ng-template>
 
-    <div class="flex flex-col" style="max-height: calc(90vh - 200px); overflow-y: auto;">
-            <!-- Tabs -->
+    <div class="flex flex-col" [style.max-height]="modal.isPage() ? null : 'calc(90vh - 200px)'" [style.overflow-y]="modal.isPage() ? null : 'auto'">
+      <nav aria-label="Раздели на секцията" class="flex flex-wrap gap-1 border-b border-border mb-6">
+        @for (panel of panels; track panel.id) {
+          <button hlmBtn variant="line" type="button" [attr.aria-pressed]="activePanel() === panel.id"
+            [attr.data-state]="activePanel() === panel.id ? 'active' : 'inactive'" (click)="selectPanel(panel.id)">{{ panel.label }}</button>
+        }
+      </nav>
+
+      <section aria-label="Резултати за секцията" [hidden]="activePanel() !== 'results'">
+            <!-- Result types -->
             <div class="flex flex-wrap gap-2 mb-4 flex-shrink-0 px-6 justify-between">
                 <div class="flex flex-row gap-2">
                   <button hlmBtn [variant]="activeTab() === 'parties' ? 'default' : 'outline'" size="lg" [attr.data-state]="activeTab() === 'parties' ? 'active' : 'inactive'"
                           (click)="activeTab.set('parties')">
-                    Партии
+                    {{ electionType === 'presidential' ? 'Кандидати' : 'Партии' }}
                   </button>
+                  @if (electionType !== 'presidential') {
                   <button hlmBtn [variant]="activeTab() === 'candidates' ? 'default' : 'outline'" size="lg" [attr.data-state]="activeTab() === 'candidates' ? 'active' : 'inactive'"
                           (click)="activeTab.set('candidates')">
                     Кандидати
                   </button>
+                  }
                 </div>
               <div class="flex items-center gap-2">
                 <app-search-filter
@@ -39,6 +54,7 @@
                   (valueChange)="onSearchTermChange($event)"
                   inputClass="w-full max-w-[220px]" />
                 <app-party-filter
+                  [label]="electionType === 'presidential' ? 'Кандидат' : 'Партия'"
                   position="right"
                   [parties]="allParties"
                   [selectedPartyIds]="selectedPartyIds"
@@ -62,7 +78,7 @@
                               <th hlmTableHead
                                   app-sortable-table-header
                                   columnKey="partyName"
-                                  label="Партия"
+                                  [label]="electionType === 'presidential' ? 'Кандидат' : 'Партия'"
                                   [currentSortColumn]="partySortColumn"
                                   [sortDirection]="partySortDir"
                                   (sortChange)="sortParties($event)"></th>
@@ -117,6 +133,12 @@
                                       <td hlmTableCell [class.text-muted-foreground]="res.isNoVotes" [class.italic]="res.isNoVotes">
                                         @if (res.isNoVotes) {
                                           {{ alias }}
+                                        } @else if (!res.isOthers && res.partyId !== '0' && res.partyId !== 'no_votes') {
+                                          <button type="button" class="rounded-sm text-left hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" [attr.aria-label]="'Отвори профил: ' + res.partyName"
+                                            [appContestantPreview]="res.partyName" [contestantPreviewDate]="date" [contestantPreviewPartyId]="res.partyId"
+                                            (click)="$event.stopPropagation(); openContestant.emit({ partyName: res.partyName, partyId: res.partyId })">
+                                            <app-party-badge [partyName]="res.partyName" size="xs"></app-party-badge>
+                                          </button>
                                         } @else {
                                           <app-party-badge [partyName]="res.partyName" size="xs"></app-party-badge>
                                         }
@@ -125,28 +147,28 @@
                                   @if (visiblePartyColumns().has('total')) {
                                       <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes">
                                         <div class="flex items-center justify-end">
-                                          <span [hlmTooltip]="res.comparisons || currentSectionData?.partyVotes?.[res.partyId]?.comparisons" [currentValue]="res.total" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ res.total }}</span>
+                                          <span [hlmTooltip]="res.comparisons || currentSectionData?.partyVotes?.[res.partyId]?.comparisons" [currentValue]="res.total" [showTrend]="true" [isLoading]="historyLoading()">{{ res.total }}</span>
                                         </div>
                                       </td>
                                   }
                                   @if (visiblePartyColumns().has('paper')) {
                                       <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes">
                                         <div class="flex items-center justify-end">
-                                          <span [hlmTooltip]="res.paperComparisons || currentSectionData?.partyVotes?.[res.partyId]?.paperComparisons" [currentValue]="res.paper" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ res.paper }}</span>
+                                          <span [hlmTooltip]="res.paperComparisons || currentSectionData?.partyVotes?.[res.partyId]?.paperComparisons" [currentValue]="res.paper" [showTrend]="true" [isLoading]="historyLoading()">{{ res.paper }}</span>
                                         </div>
                                       </td>
                                   }
                                   @if (visiblePartyColumns().has('machine')) {
                                       <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes">
                                         <div class="flex items-center justify-end">
-                                          <span [hlmTooltip]="res.machineComparisons || currentSectionData?.partyVotes?.[res.partyId]?.machineComparisons" [currentValue]="res.machine" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ res.machine }}</span>
+                                          <span [hlmTooltip]="res.machineComparisons || currentSectionData?.partyVotes?.[res.partyId]?.machineComparisons" [currentValue]="res.machine" [showTrend]="true" [isLoading]="historyLoading()">{{ res.machine }}</span>
                                         </div>
                                       </td>
                                   }
                                   @if (visiblePartyColumns().has('percent')) {
                                       <td hlmTableCell class="text-right" [class.text-muted-foreground]="res.isNoVotes">
                                         <div class="flex items-center justify-end">
-                                          <span [hlmTooltip]="res.percentComparisons || currentSectionData?.partyVotes?.[res.partyId]?.percentComparisons" [currentValue]="res.percentBp" [isPercent]="true" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ res.percentBp / 100 }}%</span>
+                                          <span [hlmTooltip]="res.percentComparisons || currentSectionData?.partyVotes?.[res.partyId]?.percentComparisons" [currentValue]="res.percentBp" [isPercent]="true" [showTrend]="true" [isLoading]="historyLoading()">{{ res.percentBp / 100 }}%</span>
                                         </div>
                                       </td>
                                   }
@@ -339,7 +361,11 @@
                                   @if (visibleCandidateColumns().has('candidateName')) {
                                     <td hlmTableCell>
                                       <span class="inline-flex items-center gap-2">
-                                        <span>{{ candidate.candidateName }}</span>
+                                        <button type="button" class="rounded-sm text-left hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                                          [appContestantPreview]="candidate.candidateName" [contestantPreviewDate]="date"
+                                          [contestantPreviewPartyId]="candidate.partyId" [contestantPreviewCandidate]="candidatePreview(candidate)"
+                                          [contestantPreviewRegion]="candidatePreviewRegion"
+                                          (click)="$event.stopPropagation(); onCandidateRowClick(candidate)">{{ candidate.candidateName }}</button>
                                         @if (isLeaderCandidate(candidate.candidateId)) {
                                           <span class="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary"
                                                 [hlmTooltip]="getLeaderTooltip(candidate.partyName)">
@@ -354,27 +380,32 @@
                                   }
                                   @if (visibleCandidateColumns().has('partyName')) {
                                     <td hlmTableCell>
-                                      <app-party-badge [partyName]="candidate.partyName" size="xs"></app-party-badge>
+                                      <button type="button" class="rounded-sm text-left hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                                        [appContestantPreview]="candidate.partyName" [contestantPreviewDate]="date" [contestantPreviewPartyId]="candidate.partyId"
+                                        [attr.aria-label]="'Отвори профил: ' + candidate.partyName"
+                                        (click)="$event.stopPropagation(); openContestant.emit({ partyName: candidate.partyName, partyId: candidate.partyId })">
+                                        <app-party-badge [partyName]="candidate.partyName" size="xs"></app-party-badge>
+                                      </button>
                                     </td>
                                   }
                                 @if (visibleCandidateColumns().has('total')) {
                                   <td hlmTableCell class="text-right">
                                     <div class="flex items-center justify-end">
-                                      <span [hlmTooltip]="candidate.comparisons" [currentValue]="candidate.total" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ candidate.total | number }}</span>
+                                      <span [hlmTooltip]="candidate.comparisons" [currentValue]="candidate.total" [showTrend]="true" [isLoading]="historyLoading()">{{ candidate.total | number }}</span>
                                     </div>
                                   </td>
                                 }
                                   @if (visibleCandidateColumns().has('paper')) {
                                     <td hlmTableCell class="text-right">
                                       <div class="flex items-center justify-end">
-                                        <span [hlmTooltip]="candidate.paperComparisons" [currentValue]="candidate.paper" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ candidate.paper | number }}</span>
+                                        <span [hlmTooltip]="candidate.paperComparisons" [currentValue]="candidate.paper" [showTrend]="true" [isLoading]="historyLoading()">{{ candidate.paper | number }}</span>
                                       </div>
                                     </td>
                                   }
                                   @if (visibleCandidateColumns().has('machine')) {
                                     <td hlmTableCell class="text-right">
                                       <div class="flex items-center justify-end">
-                                        <span [hlmTooltip]="candidate.machineComparisons" [currentValue]="candidate.machine" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ candidate.machine | number }}</span>
+                                        <span [hlmTooltip]="candidate.machineComparisons" [currentValue]="candidate.machine" [showTrend]="true" [isLoading]="historyLoading()">{{ candidate.machine | number }}</span>
                                       </div>
                                     </td>
                                   }
@@ -407,7 +438,16 @@
                                       }
                                       @if (visibleCandidateColumns().has('partyName')) {
                                           <td hlmTableCell class="font-bold">
-                                            <app-party-badge [partyName]="data.partyName" size="xs"></app-party-badge>
+                                            @if (partyId !== '0' && partyId !== 'no_votes' && partyId !== 'others') {
+                                            <button type="button" class="rounded-sm text-left hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                                              [appContestantPreview]="data.partyName" [contestantPreviewDate]="date" [contestantPreviewPartyId]="partyId"
+                                              [attr.aria-label]="'Отвори профил: ' + data.partyName"
+                                              (click)="$event.stopPropagation(); openContestant.emit({ partyName: data.partyName, partyId })">
+                                              <app-party-badge [partyName]="data.partyName" size="xs"></app-party-badge>
+                                            </button>
+                                            } @else {
+                                              <app-party-badge [partyName]="data.partyName" size="xs"></app-party-badge>
+                                            }
                                           </td>
                                       }
                                     @if (visibleCandidateColumns().has('total')) {
@@ -508,6 +548,10 @@
               }
             </table>
           </div>
+      </section>
+
+      @if (visitedPanels().has('stats')) {
+        <section aria-label="Статистика за секцията" [hidden]="activePanel() !== 'stats'">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 flex-shrink-0">
             <div hlmCard class="p-1 col-span-1 border-primary/10">
               <highcharts-chart
@@ -519,26 +563,19 @@
                 <div hlmCard class="p-6 border-primary/10">
                   <h4 hlmH4 class="mb-4 text-secondary dark:text-primary">Статистика за секцията</h4>
 
-                  <app-risk-analysis-summary
-                    [riskData]="{
-                      riskScore: sectionRiskScore,
-                      riskIndicators: sectionRiskIndicators
-                    }"
-                    [context]="{ section: currentSectionData, partiesById: partiesById }" />
-
                   <div class="space-y-4">
                     <div class="flex justify-between items-center border-b border-primary/10 pb-2">
                       <span class="text-secondary/70 dark:text-foreground/70">Избиратели:</span>
-                      <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['total']" [currentValue]="currentSectionData.total" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ currentSectionData.total }}</span>
+                      <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['total']" [currentValue]="currentSectionData.total" [showTrend]="true" [isLoading]="historyLoading()">{{ currentSectionData.total }}</span>
                     </div>
                     <div class="flex justify-between items-center border-b border-primary/10 pb-2">
                       <span class="text-secondary/70 dark:text-foreground/70">Гласували:</span>
-                      <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['voted']" [currentValue]="currentSectionData.voted" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ currentSectionData.voted }}</span>
+                      <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['voted']" [currentValue]="currentSectionData.voted" [showTrend]="true" [isLoading]="historyLoading()">{{ currentSectionData.voted }}</span>
                     </div>
                     <div class="flex justify-between items-center border-b border-primary/10 pb-2">
                       <span class="text-secondary/70 dark:text-foreground/70">Активност:</span>
                       <div class="flex flex-col items-end">
-                        <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['activityPercent']" [currentValue]="currentSectionData.activityBp" [isPercent]="true" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ formatActivity((currentSectionData.activityBp || 0) / 10000) }}%</span>
+                        <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['activityPercent']" [currentValue]="currentSectionData.activityBp" [isPercent]="true" [showTrend]="true" [isLoading]="historyLoading()">{{ formatActivity((currentSectionData.activityBp || 0) / 10000) }}%</span>
                         @if (regionAvgTurnout !== null) {
                           <span class="text-[10px] text-muted-foreground">ср. за {{ municipalityLabelLowercase }}та: {{ formatActivity((regionAvgTurnout || 0) / 10000) }}%</span>
                         }
@@ -546,15 +583,19 @@
                     </div>
                     <div class="flex justify-between items-center">
                       <span class="text-secondary/70 dark:text-foreground/70">Недействителни:</span>
-                      <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['discardedVotes']" [currentValue]="currentSectionData.discardedVotes" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ currentSectionData.discardedVotes }}</span>
+                      <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['discardedVotes']" [currentValue]="currentSectionData.discardedVotes" [showTrend]="true" [isLoading]="historyLoading()">{{ currentSectionData.discardedVotes }}</span>
                     </div>
                   </div>
                 </div>
               }
           </div>
 
-          <!-- Historical Trends Section -->
-          <div class="mt-8 border-t border-primary/20 pt-6 flex-shrink-0">
+        </section>
+      }
+
+      @if (visitedPanels().has('history')) {
+        <section aria-label="История на секцията" [hidden]="activePanel() !== 'history'">
+          <div class="flex-shrink-0">
             <div class="flex justify-between items-center mb-4">
               <h4 hlmH4 class="text-secondary dark:text-primary">Исторически трендове</h4>
             </div>
@@ -596,5 +637,23 @@
               }
             </div>
           </div>
+        </section>
+      }
+
+      @if (visitedPanels().has('risks')) {
+        <section aria-label="Рискове за секцията" [hidden]="activePanel() !== 'risks'" class="space-y-6">
+          @if (currentSectionData) {
+            <app-risk-analysis-summary
+              [riskData]="{ riskScore: sectionRiskScore, riskIndicators: sectionRiskIndicators }"
+              [context]="{ section: currentSectionData, partiesById: partiesById }" />
+            @if (!sectionRiskIndicators.length) {
+              <p class="text-sm text-muted-foreground">Няма отчетени рискови сигнали за този изглед.</p>
+            }
+          }
+          @if (!isGroupedByCity) {
+            <app-section-risk-history [section]="currentSectionData ?? null" [date]="date" [history]="allData" />
+          }
+        </section>
+      }
     </div>
 </app-base-modal>

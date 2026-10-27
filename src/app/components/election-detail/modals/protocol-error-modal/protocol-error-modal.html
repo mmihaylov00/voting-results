@@ -1,10 +1,12 @@
-<app-base-modal
+<app-base-modal #modal
+  pageId="protocol-errors"
+  [pageQueryParams]="pageQueryParams"
     [title]="'Секции със сгрешени протоколи (' + sectionsWithError.length + ')'"
     [subtitle]="'Списък на секциите, при които Общ брой гласове ≠ Хартиени гласове + Машинни гласове'"
     zIndex="z-[1200]"
     (close)="close.emit()">
 
-    <div style="max-height: calc(90vh - 200px); overflow: auto;">
+    <div [style.max-height]="modal.isPage() ? null : 'calc(90vh - 200px)'" [style.overflow]="modal.isPage() ? null : 'auto'">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-3">
                 <app-search-filter
                     placeholder="Търсене..."
@@ -111,21 +113,21 @@
                             @if (visibleColumns().has('voted')) {
                                 <td hlmTableCell class="text-right font-medium">
                                     <div class="flex items-center justify-end">
-                                        <span [hlmTooltip]="section.comparisons?.['voted']" [currentValue]="section.voted" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ section.voted }}</span>
+                                        <span [hlmTooltip]="section.comparisons?.['voted']" [currentValue]="section.voted" [showTrend]="true">{{ section.voted }}</span>
                                     </div>
                                 </td>
                             }
                             @if (visibleColumns().has('protocolPaperVotes')) {
                                 <td hlmTableCell class="text-right">
                                     <div class="flex items-center justify-end">
-                                        <span [hlmTooltip]="section.comparisons?.['totalPaper']" [currentValue]="section.protocolPaperVotes" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ section.protocolPaperVotes }}</span>
+                                        <span [hlmTooltip]="section.comparisons?.['totalPaper']" [currentValue]="section.protocolPaperVotes" [showTrend]="true">{{ section.protocolPaperVotes }}</span>
                                     </div>
                                 </td>
                             }
                             @if (visibleColumns().has('protocolMachineVotes')) {
                                 <td hlmTableCell class="text-right">
                                     <div class="flex items-center justify-end">
-                                        <span [hlmTooltip]="section.comparisons?.['totalMachine']" [currentValue]="section.protocolMachineVotes" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ section.protocolMachineVotes }}</span>
+                                        <span [hlmTooltip]="section.comparisons?.['totalMachine']" [currentValue]="section.protocolMachineVotes" [showTrend]="true">{{ section.protocolMachineVotes }}</span>
                                     </div>
                                 </td>
                             }

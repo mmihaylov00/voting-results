@@ -1,0 +1,46 @@
+<section aria-labelledby="demographics-title" class="space-y-5">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div><h2 id="demographics-title" class="text-lg font-semibold">Демографски разделения</h2><p class="mt-1 text-sm text-muted-foreground">Корелации по общини · НСИ, Преброяване 2021</p></div>
+    <div class="flex items-center gap-3">
+      <app-select controlId="demographic-group" label="Група демографски показатели" [value]="group()" [options]="groupOptions" (valueChange)="setGroup($event)" />
+      <button hlmBtn variant="outline" size="icon" type="button" aria-label="Методика на демографските разделения" aria-haspopup="dialog" (click)="methodOpen.set(true)">ⓘ</button>
+    </div>
+  </div>
+  @if (loading()) { <p role="status" class="py-10 text-center text-muted-foreground">Зареждане на демографските данни...</p> }
+  @else if (error()) { <p role="alert" class="py-6">{{ error() }}</p> }
+  @else if (data(); as payload) {
+    <ul aria-label="Партии в демографското сравнение" class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+      @for (party of legendParties(); track party.id) { <li [title]="displayName(party.name)"><span class="mr-2 inline-block h-2.5 w-2.5 rounded-full" [style.background-color]="color(party.name)" aria-hidden="true"></span>{{ displayName(party.name) }}</li> }
+    </ul>
+    <div>
+      <div class="grid px-3 sm:grid-cols-[15rem_minmax(0,1fr)] sm:gap-x-6" aria-hidden="true"><span class="hidden sm:block"></span><div class="mx-3 flex justify-between text-xs tabular-nums text-muted-foreground"><span>-1</span><span>0</span><span>+1</span></div></div>
+      @for (row of rows(); track row.metric; let index = $index; let evenRow = $odd) {
+        @if (group() === 'all' && (index === 0 || rows()[index - 1].group !== row.group)) {
+          <h3 class="border-b border-border px-3 pb-2 pt-5 text-sm font-semibold">{{ row.groupLabel }}</h3>
+        }
+        <div data-demographic-row class="grid items-center gap-y-2 rounded px-3 py-2.5 sm:grid-cols-[15rem_minmax(0,1fr)] sm:gap-x-6" [class.bg-muted/50]="evenRow">
+          <p class="text-sm">{{ row.label }}</p>
+          <div role="group" [attr.aria-label]="row.label" class="relative mx-3 h-7 rounded bg-muted/30">
+            <span class="absolute inset-y-0 left-1/2 border-l border-foreground/25" aria-hidden="true"></span>
+            @for (point of row.points; track point.party.id) {
+              <button type="button" class="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full ring-2 ring-background transition-transform hover:scale-125 hover:z-10 focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                [style.left.%]="point.position" [style.background-color]="color(point.party.name)" [hlmTooltip]="point.tooltip" [attr.aria-label]="point.label"></button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+    <p class="text-xs text-muted-foreground">Изчисления: <a [href]="payload.source.repository + '/blob/main/scripts/parties/build_demographics.ts'" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4">Наясно</a> · <a [href]="payload.censusSourceUrl" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4">НСИ, 2021</a></p>
+  }
+</section>
+
+@if (methodOpen() || modalPages.isActive('demographic-method')) {
+<app-base-modal title="Как се четат корелациите" pageId="demographic-method" maxWidth="max-w-2xl" [pageQueryParams]="{ panel: 'geography' }" (close)="methodOpen.set(false)">
+  <div class="space-y-3 text-sm leading-relaxed text-muted-foreground">
+    <p>Коефициентът на Пирсън r сравнява дела на гласовете за партията с демографския показател във всяка община. Положителна стойност означава, че общините с по-висока стойност на показателя обикновено дават по-висок дял за партията; отрицателната означава обратна връзка. 0 означава липса на линейна връзка.</p>
+    <p>Това са зависимости между общини, а не данни за избора на отделни избиратели. Не показват причинност. Показатели за населението, включително за деца, описват общината. Преброяването е към 7 септември 2021 г., независимо от избраната изборна дата.</p>
+    <p>Използваме публикуваните изчисления на Наясно върху ЦИК и НСИ. „Средно или висше“ включва и висшистите. Етническите и религиозните дялове са сред отговорилите на съответния въпрос. Показателите са групирани по категория, а възрастовите групи са подредени от най-младите към най-възрастните.</p>
+    @if (data(); as payload) { <p><a [href]="payload.source.url" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4">Изходни корелации</a> · <a [href]="payload.censusSourceUrl" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4">Преброяване 2021, НСИ</a></p> }
+  </div>
+</app-base-modal>
+}

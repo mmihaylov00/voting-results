@@ -1,0 +1,91 @@
+<div class="mx-auto max-w-[1800px] px-4 py-8 sm:px-8">
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold tracking-tight text-secondary dark:text-primary sm:text-4xl">Партии и кандидати</h1>
+    <p class="mt-3 text-base text-muted-foreground">Профили и резултати от всички избори в архива.</p>
+  </header>
+
+  <nav class="mb-6 flex flex-wrap gap-1 border-b border-border" aria-label="Вид профили">
+    <a hlmBtn variant="line" routerLink="/governmental/contestants" [attr.data-state]="!presidential && !preferencesView() ? 'active' : 'inactive'"
+      [attr.aria-current]="!presidential && !preferencesView() ? 'page' : null">Партии и коалиции</a>
+    <a hlmBtn variant="line" routerLink="/presidential/contestants" [attr.data-state]="presidential ? 'active' : 'inactive'"
+      [attr.aria-current]="presidential ? 'page' : null">Президентски кандидати</a>
+    <a hlmBtn variant="line" routerLink="/governmental/contestants" [queryParams]="{ tab: 'preferences' }"
+      [attr.data-state]="preferencesView() ? 'active' : 'inactive'" [attr.aria-current]="preferencesView() ? 'page' : null">Преференции</a>
+  </nav>
+
+  <section [hidden]="preferencesView()" aria-label="Профили">
+  <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+    <div class="flex w-full flex-wrap items-center gap-4 sm:w-auto">
+    <div class="w-full sm:w-80">
+      <label for="contestant-directory-search" class="sr-only">{{ presidential ? 'Търсене на кандидат' : 'Търсене на партия или коалиция' }}</label>
+      <app-search-filter inputId="contestant-directory-search" [value]="search()" (valueChange)="search.set($event)"
+        [placeholder]="presidential ? 'Търсене на кандидат...' : 'Търсене на партия или коалиция...'" />
+    </div>
+    <app-select class="w-full sm:w-64" label="Избори за профилите" icon="calendar" [value]="selectedDate()" [options]="dateOptions" (valueChange)="selectedDate.set($event)" />
+    </div>
+    @if (!loading() && !error()) {
+      <p class="text-sm text-muted-foreground" aria-live="polite">{{ filteredCards().length | number }} от {{ entries().length | number }} профила</p>
+    }
+  </div>
+
+  @if (loading()) {
+    <p role="status" class="py-12 text-center text-muted-foreground">Зареждане на профилите...</p>
+  } @else if (error()) {
+    <div role="alert" class="space-y-3 py-8">
+      <p>{{ error() }}</p>
+      <button hlmBtn variant="outline" type="button" (click)="load()">Опитай отново</button>
+    </div>
+  } @else {
+    <app-virtual-cards [items]="filteredCards()" [label]="presidential ? 'Президентски кандидати' : 'Партии и коалиции'"
+      [emptyMessage]="search().trim() ? 'Няма профили за това търсене.' : 'Няма профили за избраните избори.'">
+      <ng-template let-entry>
+          <button hlmCard type="button" class="group flex h-full w-full flex-col gap-5 border-primary/20 p-5 text-left transition-colors hover:border-primary/50 hover:bg-muted/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            [attr.aria-label]="'Отвори профил: ' + entry.displayName" [appContestantPreview]="entry.name"
+            [contestantPreviewDate]="entry.date" [contestantPreviewPartyId]="entry.partyId" (click)="selectedContestant.set(entry)">
+            <span class="flex w-full items-start gap-4">
+              <span class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md bg-muted text-lg font-semibold" aria-hidden="true">
+                @if (entry.image && !failedImages().has(entry.image.src)) {
+                  <img [src]="entry.image.src" alt="" width="64" height="64" loading="lazy" decoding="async"
+                    [title]="entry.image.author + ' · ' + entry.image.license" class="h-full w-full"
+                    [ngClass]="presidential ? 'object-cover object-[center_20%]' : 'object-contain bg-white p-1'" (error)="imageFailed(entry.image.src)" />
+                } @else { {{ entry.initials }} }
+              </span>
+              <span class="min-w-0 space-y-1">
+                <span class="block break-words text-base font-semibold leading-snug text-foreground">{{ entry.displayName }}</span>
+                @if (!presidential && entry.name !== entry.displayName) { <span class="line-clamp-2 text-xs text-muted-foreground">{{ entry.name }}</span> }
+                <span class="block text-xs text-muted-foreground">
+                  @if (presidential) { {{ entry.participationCount }} {{ entry.participationCount === 1 ? 'тур' : 'тура' }} в архива }
+                  @else { {{ entry.participationCount }} {{ entry.participationCount === 1 ? 'участие' : 'участия' }} в архива }
+                </span>
+              </span>
+            </span>
+            <span class="mt-auto block w-full space-y-3">
+              <span class="block text-xs text-muted-foreground">{{ selectedDate() === 'all' ? 'Последно участие' : 'Избрани избори' }} <span class="block font-medium text-foreground">{{ entry.electionName }}</span></span>
+              @if (entry.provisional) { <span class="block text-xs font-medium text-amber-700 dark:text-amber-400">Предварителни · {{ entry.provisional.processedPercent }}% обработени секции</span> }
+              <span class="grid grid-cols-2 gap-4 text-sm">
+                <span><span class="block text-xs text-muted-foreground">Гласове</span><span class="font-semibold tabular-nums">{{ entry.votes | number }}</span></span>
+                <span><span class="block text-xs text-muted-foreground">От гласувалите</span><span class="font-semibold tabular-nums">{{ entry.share === null ? '-' : (entry.share | number:'1.2-2') + '%' }}</span></span>
+              </span>
+              <span class="flex items-center justify-between border-t border-border pt-3 text-sm font-medium">
+                <span class="underline-offset-4 group-hover:underline">Виж профила</span><span aria-hidden="true">↗</span>
+              </span>
+            </span>
+          </button>
+      </ng-template>
+    </app-virtual-cards>
+    <p class="mt-6 text-xs text-muted-foreground">Подредени по последно участие и брой гласове. Участията от различни избори се показват в един профил при еднозначно съпоставяне.</p>
+  }
+  </section>
+
+  @defer (when preferencesView()) {
+    <section [hidden]="!preferencesView()" aria-label="Преференции">
+      <app-preference-directory />
+    </section>
+  }
+</div>
+
+@defer (when selectedContestant()) {
+  @if (selectedContestant(); as entry) {
+    <app-contestant-detail-modal [partyName]="entry.name" [partyId]="entry.partyId" [currentDate]="entry.date" (close)="selectedContestant.set(null)" />
+  }
+}

@@ -1,0 +1,34 @@
+# Profile image sources
+
+These local images identify parties, coalitions and presidential candidates that reached the national top five in at least one archived election, including the preliminary October 2026 snapshot. Profile images link to their sources, with author and license credits in the link title. Full credits are recorded below.
+
+Portraits are displayed with a CSS crop. Logos retain their proportions. GERB-SDS uses the GERB mark; DPS and DPS-New Beginning use the official DPS symbol while retaining separate election identities. Official-source entries do not assert an additional reuse license. The original NIJ portrait of Lozan Panov was extracted unchanged from its almanac.
+
+| Party / candidate | Source | Author / publisher | License / source status |
+| --- | --- | --- | --- |
+| ПРОГРЕСИВНА БЪЛГАРИЯ | [Source](https://commons.wikimedia.org/wiki/File:Progressive_Bulgaria.svg) | Прогресивна България | [Public domain](https://commons.wikimedia.org/wiki/Template:PD-textlogo) |
+| ГЕРБ-СДС / ГЕРБ – СДС / ПП ГЕРБ / ГЕРБ / КОАЛИЦИЯ ГЕРБ-СДС | [Source](https://commons.wikimedia.org/wiki/File:Logo_of_GERB.svg) | CIN I&II | [Public domain](https://commons.wikimedia.org/wiki/Template:PD-textlogo) |
+| КОАЛИЦИЯ ПРОДЪЛЖАВАМЕ ПРОМЯНАТА – ДЕМОКРАТИЧНА БЪЛГАРИЯ / КОАЛИЦИЯ ПРОДЪЛЖАВАМЕ ПРОМЯНАТА-ДЕМОКРАТИЧНА БЪЛГАРИЯ / ПРОДЪЛЖАВАМЕ ПРОМЯНАТА-ДЕМОКРАТИЧНА БЪЛГАРИЯ / ПП-ДБ | [Source](https://commons.wikimedia.org/wiki/File:PP%E2%80%93DB_logo.svg) | Продължаваме промяната – Демократична България | [Public domain](https://commons.wikimedia.org/wiki/Template:PD-textlogo) |
+| БСП – ОБЕДИНЕНА ЛЕВИЦА / БСП - ОБЕДИНЕНА ЛЕВИЦА | [Source](https://commons.wikimedia.org/wiki/File:Logo_of_the_BSP_%E2%80%93_United_Left.svg) | Българска социалистическа партия | [Public domain](https://commons.wikimedia.org/wiki/Template:PD-textlogo) |
+| БСП за БЪЛГАРИЯ / БСП ЗА БЪЛГАРИЯ | [Source](https://commons.wikimedia.org/wiki/File:Logo_of_the_BSP_for_Bulgaria.svg) | БСП за България | [Public domain](https://commons.wikimedia.org/wiki/Template:PD-textlogo) |
+| ПП ИМА ТАКЪВ НАРОД / ИМА ТАКЪВ НАРОД | [Source](https://commons.wikimedia.org/wiki/File:There_Is_Such_A_People_logo.svg) | There Is Such A People party | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| ВЪЗРАЖДАНЕ / ПП ВЪЗРАЖДАНЕ | [Source](https://vazrazhdane.bg/) | Възраждане | [Официално лого](https://vazrazhdane.bg/) |
+| Движение за права и свободи - ДПС / Движение за права и свободи – ДПС / ДВИЖЕНИЕ ЗА ПРАВА И СВОБОДИ - ДПС / ДВИЖЕНИЕ ЗА ПРАВА И СВОБОДИ – ДПС / ДПС | [Source](https://www.dpsbg.eu/) | Движение за права и свободи | [Официално лого](https://www.dpsbg.eu/) |
+| ДПС-Ново начало / ДПС - Ново начало / ДПС – Ново начало / ДПС-НОВО НАЧАЛО / ДПС - НОВО НАЧАЛО | [Source](https://www.dpsbg.eu/) | Движение за права и свободи | [Официално лого](https://www.dpsbg.eu/) |
+| Продължаваме Промяната / ПРОДЪЛЖАВАМЕ ПРОМЯНАТА | [Source](https://promeni.bg/) | Продължаваме Промяната | [Официално лого](https://promeni.bg/) |
+| ДЕМОКРАТИЧНА БЪЛГАРИЯ – ОБЕДИНЕНИЕ (ДА България, ДСБ, Зелено движение) / ДЕМОКРАТИЧНА БЪЛГАРИЯ - ОБЕДИНЕНИЕ (ДА България, ДСБ, Зелено движение) / ДЕМОКРАТИЧНА БЪЛГАРИЯ – ОБЕДИНЕНИЕ / ДЕМОКРАТИЧНА БЪЛГАРИЯ - ОБЕДИНЕНИЕ | [Source](https://demokrati.bg/) | Демократична България | [Официално лого](https://demokrati.bg/) |
+| ОБЕДИНЕНИ ПАТРИОТИ – НФСБ, АТАКА и ВМРО / ОБЕДИНЕНИ ПАТРИОТИ - НФСБ, АТАКА и ВМРО | [Source](https://commons.wikimedia.org/wiki/File:Logo_of_the_United_Patriots.svg) | United Patriots | [Public domain](https://commons.wikimedia.org/wiki/Template:PD-textlogo) |
+| ВОЛЯ | [Source](https://commons.wikimedia.org/wiki/File:Volya_text_logo.svg) | Political party Volya | [Public domain](https://commons.wikimedia.org/wiki/Template:PD-textlogo) |
+| Анастас Георгиев Герджиков | [Source](https://commons.wikimedia.org/wiki/File:Anastas_Gerdzhikov_(cropped).jpg) | EU2018BG Bulgarian Presidency | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) |
+| Андрей Атанасов Гюров | [Source](https://commons.wikimedia.org/wiki/File:Andrey_Gyurov_(cropped).jpg) | Government.bg (photographer not identified) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) |
+| Илияна Малинова Йотова | [Source](https://commons.wikimedia.org/wiki/File:President_Iliana_Iotova_(close_crop).jpg) | President.bg (photographer not identified) | [CC BY 2.5 bg](https://creativecommons.org/licenses/by/2.5/bg/deed.en) |
+| Радостин Петев Василев | [Source](https://commons.wikimedia.org/wiki/File:Radostin_Vasilev_51NS.png) | Juli KRIVOSHIEV / Parliament.bg | [CC BY 2.5 bg](https://creativecommons.org/licenses/by/2.5/bg/deed.en) |
+| Румен Георгиев Радев | [Source](https://commons.wikimedia.org/wiki/File:Rumen_Radev_official_portrait_(3x4_cropped).jpg) | Bulgarian Presidency / President.bg | [CC BY 2.5 bg](https://creativecommons.org/licenses/by/2.5/bg/deed.en) |
+| Костадин Тодоров Костадинов | [Source](https://commons.wikimedia.org/wiki/File:%D0%9A%D0%BE%D1%81%D1%82%D0%B0%D0%B4%D0%B8%D0%BD_%D0%9A%D0%BE%D1%81%D1%82%D0%B0%D0%B4%D0%B8%D0%BD%D0%BE%D0%B2_%D1%81%D0%BD%D0%B8%D0%BC%D0%BA%D0%B0_(cropped).jpg) | Владимир Ладев | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| Ивелин Людмилов Михайлов | [Source](https://commons.wikimedia.org/wiki/File:Ivelin_Mihaylov_(51NS).png) | Juli KRIVOSHIEV / Parliament.bg | [CC BY 2.5 bg](https://creativecommons.org/licenses/by/2.5/bg/deed.en) |
+| Красимир Дончев Каракачанов | [Source](https://commons.wikimedia.org/wiki/File:Krasimir_Karakachanov_2017-12-18.jpg) | EU2018BG Bulgarian Presidency | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) |
+| Пламен Василев Орешарски | [Source](https://commons.wikimedia.org/wiki/File:Plamen_Oresharski_2013_(cropped).jpg) | Georges Boulougouris / European Union, 2013 / EC - Audiovisual Service | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) |
+| Цецка Цачева Данговска | [Source](https://commons.wikimedia.org/wiki/File:Tsetska_Tsacheva_-_2017_(cropped).jpg) | EU2018BG Bulgarian Presidency | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) |
+| Веселин Найденов Марешки | [Source](https://commons.wikimedia.org/wiki/File:Veselin_Mareshki_(44NS).png) | Unknown photographer / National Assembly of Bulgaria | [Public domain (Commons PD-Bulgarian-official)](https://commons.wikimedia.org/wiki/Template:PD-Bulgarian-official) |
+| Мустафа Сали Карадайъ | [Source](https://commons.wikimedia.org/wiki/File:%D0%9C%D1%83%D1%81%D1%82%D0%B0%D1%84%D0%B0_%D0%9A%D0%B0%D1%80%D0%B0%D0%B4%D0%B0%D0%B9%D1%8B.jpg) | UltimateGnome | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| Лозан Йорданов Панов | [Source](https://nij.bg/wp-content/uploads/2023/02/Almanah-15-years_NIP.pdf#page=123) | National Institute of Justice (publisher); photographer not identified | [Official source; reuse license not specified](https://nij.bg/wp-content/uploads/2023/02/Almanah-15-years_NIP.pdf#page=123) |

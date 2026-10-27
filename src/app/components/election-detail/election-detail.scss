@@ -14,3 +14,14 @@ tr.clickable {
 .table-container {
   min-height: 200px;
 }
+
+.virtual-table-viewport {
+  overflow-anchor: none;
+}
+
+.virtual-table-spacer,
+.virtual-table-spacer td {
+  border: 0;
+  padding: 0;
+  line-height: 0;
+}
