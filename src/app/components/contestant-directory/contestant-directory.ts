@@ -1,3 +1,4 @@
+import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -19,7 +20,7 @@ import { VirtualCardsComponent } from '../ui/virtual-cards/virtual-cards';
 @Component({
   selector: 'app-contestant-directory',
   standalone: true,
-  imports: [CommonModule, RouterLink, HlmButtonDirective, HlmCardDirective, SearchFilterComponent,
+  imports: [LoadingBarComponent, CommonModule, RouterLink, HlmButtonDirective, HlmCardDirective, SearchFilterComponent,
     ContestantPreviewDirective, ContestantDetailModalComponent, PreferenceDirectoryComponent, SelectComponent, VirtualCardsComponent],
   templateUrl: './contestant-directory.html',
 })

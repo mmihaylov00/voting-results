@@ -1,5 +1,8 @@
+import { TableControlsComponent, TableColumns } from '../ui/table-controls/table-controls';
+import { SortableTableHeaderComponent } from '../ui/sortable-table-header/sortable-table-header';
+import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, OnInit, ViewChild, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { combineLatest, distinctUntilChanged, map } from 'rxjs';
@@ -7,36 +10,59 @@ import { Region } from '../../models/election.models';
 import { ElectionService } from '../../services/election';
 import { buildRecurringSectionRisks, RecurringSectionRisk } from '../../utils/section-risk-history.util';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
+import { VirtualTableDirective } from '../ui/virtual-table/virtual-table';
+import { RiskBadgeComponent } from '../ui/risk-badge/risk-badge';
+import { HlmTooltipDirective } from '../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
+import { CsvExportButtonComponent } from '../ui/csv-export-button/csv-export-button';
+import { CsvExportData } from '../../utils/csv-export.util';
+import { CsvExportModalComponent } from '../ui/csv-export-modal/csv-export-modal';
 
 @Component({
   selector: 'app-recurring-risks',
   standalone: true,
-  imports: [CommonModule, RouterLink, HlmButtonDirective],
+  imports: [TableControlsComponent, SortableTableHeaderComponent, LoadingBarComponent, CommonModule, RouterLink, HlmButtonDirective, VirtualTableDirective, RiskBadgeComponent, HlmTooltipDirective, CsvExportButtonComponent, CsvExportModalComponent],
   templateUrl: './recurring-risks.html',
 })
 export class RecurringRisksComponent implements OnInit {
+  @ViewChild('recurringTable') private tableControls?: TableControlsComponent<RecurringSectionRisk>;
   private readonly electionService = inject(ElectionService);
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
   private readonly changeDetector = inject(ChangeDetectorRef);
   readonly electionType = this.electionService.electionType;
-  readonly pageSize = 30;
   date = '';
   region = '';
   regions: Region[] = [];
   rows: RecurringSectionRisk[] = [];
   filteredRows: RecurringSectionRisk[] = [];
-  page = 0;
+  readonly csvExportAction = () => this.exportCsv();
+  csvExportData: CsvExportData | null = null;
+  readonly tableColumns: TableColumns<RecurringSectionRisk> = {
+    section: row => `${row.section.sectionId} ${row.section.sectionName}`,
+    place: row => `${row.section.cityName} ${row.section.regionName ?? ''}`,
+    flagged: row => row.flagged, unavailable: row => row.unavailable,
+    status: row => this.currentStatus(row),
+    codes: row => row.codes.join(', '),
+  };
   loading = true;
   error = '';
   private loadVersion = 0;
 
-  get visibleRows(): RecurringSectionRisk[] {
-    return this.filteredRows.slice(this.page * this.pageSize, (this.page + 1) * this.pageSize);
+  currentStatus(row: RecurringSectionRisk): string {
+    return !row.currentAssessed ? 'Няма налична оценка' : row.currentFlagged ? 'Има рискови индикатори' : 'Без рискови индикатори';
   }
 
-  get pageCount(): number {
-    return Math.max(1, Math.ceil(this.filteredRows.length / this.pageSize));
+  exportCsv(): void {
+    const rows = this.tableControls?.viewRows() ?? this.filteredRows;
+    if (this.loading || !rows.length) return;
+    this.csvExportData = {
+      filename: `recurring_risks_${this.electionType}_${this.date}_${this.region || 'all'}.csv`,
+      headers: ['Дата', 'Район', 'Име на района', 'Секция', 'Име на секцията', 'Населено място',
+        'Избори с рискови индикатори', 'Оценени избори', 'Без съпоставима оценка', 'В избраните избори', 'Секционни кодове през годините'],
+      rows: rows.map(row => [this.date, row.section.regionId, row.section.regionName, row.section.sectionId,
+        row.section.sectionName, row.section.cityName, row.flagged, row.assessed, row.unavailable,
+        this.currentStatus(row), row.codes.join(', ')]),
+    };
   }
 
   ngOnInit(): void {
@@ -63,7 +89,6 @@ export class RecurringRisksComponent implements OnInit {
     this.rows = [];
     this.filteredRows = [];
     this.regions = [];
-    this.page = 0;
     this.changeDetector.markForCheck();
     const election = this.electionService.getDates().find((item) => item.date === this.date);
     if (!election) {
@@ -91,7 +116,6 @@ export class RecurringRisksComponent implements OnInit {
 
   private updateScope(): void {
     this.filteredRows = this.region ? this.rows.filter((row) => row.section.regionId === this.region) : this.rows;
-    this.page = 0;
     this.changeDetector.markForCheck();
   }
 

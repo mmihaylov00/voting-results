@@ -7,6 +7,9 @@ import { ContestantDetailElection } from '../../utils/contestant-profile.util';
 import { ContestantProfilePanelsComponent } from './contestant-profile-panels';
 import { ContestantPreviewDirective } from '../ui/contestant-preview/contestant-preview.directive';
 import { SortableTableHeaderComponent } from '../ui/sortable-table-header/sortable-table-header';
+import { VirtualTableDirective } from '../ui/virtual-table/virtual-table';
+import { CsvExportModalComponent } from '../ui/csv-export-modal/csv-export-modal';
+import { provideRouter } from '@angular/router';
 
 @Directive({ selector: '[appContestantPreview]' })
 class PreviewStubDirective {
@@ -35,6 +38,64 @@ function election(date: string, sections: Section[], overrides: Partial<Contesta
 }
 
 describe('contestant profile detail panels', () => {
+  it.each(['sections', 'geography', 'candidates', 'risks'] as const)('virtualizes the complete %s list and resets scrolling after a search', async tab => {
+    TestBed.configureTestingModule({ imports: [ContestantProfilePanelsComponent], providers: [provideRouter([])] })
+      .overrideComponent(ContestantProfilePanelsComponent, {
+        remove: { imports: [ContestantPreviewDirective] }, add: { imports: [PreviewStubDirective] },
+      });
+    const fixture = TestBed.createComponent(ContestantProfilePanelsComponent);
+    const component = fixture.componentInstance;
+    component.level = 'settlement';
+    const sections = Array.from({ length: 128 }, (_, index) => section({
+      sectionId: String(index).padStart(9, '0'), cityName: `Град ${index}`, settlementEkatte: String(index).padStart(5, '0'),
+      candidateVotes: { [`2_${index + 101}`]: { candidateId: String(index + 101), candidateName: `Кандидат ${index}`,
+        partyId: '2', partyName: 'ГЕРБ-СДС', total: 5, paper: 3, machine: 2 } },
+      riskIndicators: [{ code: 'R1.1', category: 'R1', severity: 'high' }],
+    }));
+    fixture.componentRef.setInput('tab', tab);
+    fixture.componentRef.setInput('elections', [election('2026.04.19', sections), election('2024.10.27', sections)]);
+    await fixture.whenStable();
+    expect(component.rowCount).toBe(256);
+    const viewports = fixture.debugElement.queryAll(By.directive(VirtualTableDirective));
+    expect(viewports).toHaveLength(tab === 'risks' ? 2 : 1);
+    for (const viewport of viewports) {
+      if (tab === 'risks') expect(viewport.nativeElement.querySelector('app-risk-badge button[aria-label^="R1.1:"]')).not.toBeNull();
+      const list = viewport.injector.get(VirtualTableDirective);
+      const count = list.virtualRows().length;
+      const rows = () => viewport.nativeElement.querySelectorAll('tr[data-virtual-index]') as NodeListOf<HTMLTableRowElement>;
+      expect(rows().length).toBeLessThan(30);
+      expect(viewport.nativeElement.querySelector('table')?.getAttribute('aria-rowcount')).toBe(String(count + 1));
+      viewport.nativeElement.scrollTop = count * 64;
+      viewport.nativeElement.dispatchEvent(new Event('scroll'));
+      await fixture.whenStable();
+      expect(rows().item(rows().length - 1)?.getAttribute('data-virtual-index')).toBe(String(count - 1));
+      expect(rows().length).toBeLessThan(30);
+    }
+    if (tab === 'sections') {
+      expect(component.sectionsCsv().split('\r\n')).toHaveLength(257);
+      const last = component.filteredSections.at(-1)!;
+      const open = vi.spyOn(component.openSection, 'emit');
+      viewports[0].nativeElement.querySelector(`tr[data-virtual-index="255"] button`).click();
+      expect(open).toHaveBeenCalledWith({ date: last.date, section: last.section });
+    }
+    component.setSearch(tab === 'candidates' ? 'Кандидат 127' : 'Град 127');
+    fixture.changeDetectorRef.markForCheck();
+    await fixture.whenStable();
+    expect(component.rowCount).toBe(2);
+    expect(viewports.at(-1)!.nativeElement.scrollTop).toBe(0);
+    expect(viewports.at(-1)!.injector.get(VirtualTableDirective).window().start).toBe(0);
+    (fixture.nativeElement.querySelector('app-csv-export-button button') as HTMLButtonElement).click();
+    await fixture.whenStable();
+    const exportModal = fixture.debugElement.query(By.directive(CsvExportModalComponent));
+    expect(exportModal).not.toBeNull();
+    expect((exportModal.componentInstance as CsvExportModalComponent).data().rows).toHaveLength(2);
+    (exportModal.nativeElement as HTMLElement).querySelectorAll('button').forEach(button => {
+      if (button.textContent?.trim() === 'Отказ') button.click();
+    });
+    await fixture.whenStable();
+    expect(component.csvExportData).toBeNull();
+  });
+
   it('uses projected candidate preferences and party-vote denominators in rows, labels, risks and exports', async () => {
     TestBed.configureTestingModule({ imports: [ContestantProfilePanelsComponent] });
     const fixture = TestBed.createComponent(ContestantProfilePanelsComponent);
@@ -53,10 +114,11 @@ describe('contestant profile detail panels', () => {
     const headers = [...fixture.nativeElement.querySelectorAll('th')].map(header => header.textContent?.trim());
     expect(headers).toContain('Преференции');
     expect(headers).toContain('Дял от партийните гласове');
-    expect(headers).toContain('Преференции в секции със сигнали');
+    expect(headers).toContain('Преференции в секции с рискови индикатори');
     expect(headers).toContain('Дял от преференциите');
     const csv = component.sectionsCsv();
     expect(csv).toContain('"Преференции","Дял от партийните гласове %"');
+    expect(csv).toContain('"Рискови индикатори"');
     expect(csv).not.toContain('Дял от гласувалите');
     component.tab = 'geography';
     component.ngOnChanges();

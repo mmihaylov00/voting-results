@@ -58,6 +58,7 @@ export interface Section {
   noVotesMachine?: number;
   partyVotes: { [key: string]: PartyVotes };
   candidateVotes?: { [key: string]: CandidateVotes };
+  topCandidates?: Array<{ candidateId?: string; candidateName: string; partyId: string; partyName: string; total: number }>;
   topParties: { partyId: string, name: string, total: number, percentBp: number }[];
   activityBp: number;
   totalPaper?: number;

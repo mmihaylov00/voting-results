@@ -1,3 +1,6 @@
+import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
+import { CsvExportButtonComponent } from '../ui/csv-export-button/csv-export-button';
+import { SortableHeaderKeyboardDirective } from '../ui/sortable-table-header/sortable-table-header';
 import {ChangeDetectorRef, Component, computed, DestroyRef, effect, inject, OnInit, signal} from '@angular/core';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {CommonModule} from '@angular/common';
@@ -21,7 +24,7 @@ import {
   TableColumn,
   ViewMode
 } from '../../models/election.models';
-import {filterSections} from '../../utils/election-utils';
+import {filterSections, getTopCandidates} from '../../utils/election-utils';
 import {buildCandidateComparisonIndex, candidateComparisonKey} from '../../utils/candidate-comparisons.util';
 import {getPartyAlias} from '../../utils/party-aliases';
 import { getPartyColor, getPartyDisplayName } from '../../utils/party-colors';
@@ -91,7 +94,7 @@ import { ContestantPreviewDirective } from '../ui/contestant-preview/contestant-
   host: {
     '(document:keydown.escape)': 'handleEscape()'
   },
-  imports: [
+  imports: [LoadingBarComponent,
     ShareButtonComponent,
     CommonModule,
     FormsModule,
@@ -107,6 +110,8 @@ import { ContestantPreviewDirective } from '../ui/contestant-preview/contestant-
     HlmTooltipDirective,
     SectionDetailModalComponent,
     ExportCsvModalComponent,
+    CsvExportButtonComponent,
+    SortableHeaderKeyboardDirective,
     ProtocolErrorModalComponent,
     CandidateDetailModalComponent,
     SectionFiltersComponent,
@@ -164,7 +169,7 @@ export class ElectionDetailComponent implements OnInit {
     return [...tabs, ...this.analysisTabs, ...electionToolTabs(this.electionType, !this.regionId)];
   }
 
-  selectContentTab(tab: Exclude<ViewMode, 'map'> | Exclude<ElectionPanel, 'results'>): void {
+  selectContentTab(tab: ViewMode | Exclude<ElectionPanel, 'results'>): void {
     if (tab === 'stats' || tab === 'history' || tab === 'comparison' || isElectionTool(tab)) this.setLeftPanel(tab);
     else this.setViewMode(tab);
     void this.router.navigate([], { relativeTo: this.route,
@@ -531,6 +536,8 @@ export class ElectionDetailComponent implements OnInit {
     this.isExportModalOpen.set(false);
   }
 
+  readonly csvExportAction = () => this.openExportModal();
+
   openExportModal(): void {
     this.isExportModalOpen.set(true);
   }
@@ -826,7 +833,7 @@ export class ElectionDetailComponent implements OnInit {
     if (!previous || previous['panel'] !== params['panel']) {
       const panel = parseElectionPanel(params['panel'], this.electionType, !this.regionId);
       if (panel && panel !== 'results') this.setLeftPanel(panel);
-      else if (previous?.['panel']) this.setViewMode(this.viewMode());
+      else if (previous?.['panel'] && this.leftPanel() !== 'results') this.setViewMode(this.viewMode());
     }
     if (!previous || previous['metric'] !== params['metric']) {
       const metrics: MapMetric[] = ['leading-party', 'leading-preference', 'summary', 'activity', 'risks', 'party-votes', 'invalid-votes', 'no-votes', 'machine-vs-paper', 'winner-margin', 'party-change', 'below-threshold'];
@@ -1430,33 +1437,7 @@ export class ElectionDetailComponent implements OnInit {
     this.applyCandidateFilter();
   }
 
-  getTopCandidates(section: Section) {
-    const groupedTop = (section as any).topCandidates as Array<{ candidateId?: string; candidateName: string; partyId: string; partyName: string; total: number }> | undefined;
-    if (groupedTop && groupedTop.length > 0) {
-      return groupedTop.map(c => ({
-        candidateId: c.candidateId ?? '',
-        candidateName: c.candidateName,
-        partyId: c.partyId,
-        partyName: c.partyName,
-        total: c.total
-      }));
-    }
-    // Calculate top 3 candidates
-    if (section.candidateVotes) {
-      return Object.values(section.candidateVotes)
-        .filter(c => c.total > 0)
-        .sort((a, b) => b.total - a.total)
-        .slice(0, 3)
-        .map(c => ({
-          candidateId: c.candidateId,
-          candidateName: c.candidateName,
-          partyId: c.partyId,
-          partyName: c.partyName,
-          total: c.total
-        }));
-    }
-    return [];
-  }
+  readonly getTopCandidates = getTopCandidates;
 
   updateCandidateCharts(): void {
     if (this.viewMode() !== 'candidates' || this.filteredCandidates.length === 0) return;
@@ -2758,7 +2739,7 @@ export class ElectionDetailComponent implements OnInit {
         this.sectionSortDir = this.sectionSortDir === 'asc' ? 'desc' : 'asc';
       } else {
         this.sectionSortColumn = column;
-        const isStringColumn = column === 'sectionId' || column === 'cityName' || column === 'sectionName' || column === 'regionName';
+        const isStringColumn = column === 'sectionId' || column === 'cityName' || column === 'sectionName' || column === 'regionName' || column === 'municipalityName';
         this.sectionSortDir = getDefaultSortDirection(column as string, isStringColumn);
       }
     }

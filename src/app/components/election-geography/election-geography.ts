@@ -1,3 +1,6 @@
+import { TableControlsComponent, TableColumns } from '../ui/table-controls/table-controls';
+import { SortableTableHeaderComponent } from '../ui/sortable-table-header/sortable-table-header';
+import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -19,7 +22,7 @@ import { VoteOriginsComponent } from './vote-origins';
 @Component({
   selector: 'app-election-geography',
   standalone: true,
-  imports: [CommonModule, RouterLink, HlmButtonDirective, BaseModalComponent, DemographicBreakdownComponent, VoteOriginsComponent],
+  imports: [TableControlsComponent, SortableTableHeaderComponent, LoadingBarComponent, CommonModule, RouterLink, HlmButtonDirective, BaseModalComponent, DemographicBreakdownComponent, VoteOriginsComponent],
   templateUrl: './election-geography.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -38,6 +41,11 @@ export class ElectionGeographyComponent {
   readonly previousDate = signal('');
   readonly parties = signal<Record<string, string>>({});
   readonly rows = computed(() => topElectoralRegions(this.regions(), this.previous()));
+  readonly tableColumns: TableColumns<ReturnType<typeof topElectoralRegions>[number]> = {
+    name: row => row.name, winner: row => row.winnerId ? this.partyName(row.winnerId) : row.tied ? 'Равенство' : null,
+    voted: row => row.voted, turnout: row => row.turnout, machineShare: row => row.machineShare,
+    share: row => row.share, change: row => row.share !== null && row.priorShare !== null ? row.share - row.priorShare : null,
+  };
   readonly delta = comparisonDelta;
   readonly cikUrl = getCikUrl;
   readonly tabs = [

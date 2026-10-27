@@ -9,6 +9,7 @@ import { Region, Section, SectionDetails } from '../../models/election.models';
 import { ElectionService } from '../../services/election';
 import { SettlementMapDataService } from '../../services/settlement-map-data.service';
 import { ThemeService } from '../../services/theme.service';
+import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { ContestantDetailModalComponent } from './contestant-detail-modal';
 
 const dates = [
@@ -130,7 +131,7 @@ describe('contestant profile', () => {
     expect(component.detailProgress()).toBe(100);
   });
 
-  it('fills a text-free progress bar only after each requested election finishes loading', async () => {
+  it('feeds completed election milestones into the shared text-free loading bar', async () => {
     const { fixture, component, service } = setup(true);
     const first = new Subject<Section[]>();
     const second = new Subject<Section[]>();
@@ -141,6 +142,7 @@ describe('contestant profile', () => {
     const loading = component.loadDetails();
     fixture.detectChanges();
     const element: HTMLElement = fixture.nativeElement;
+    const loader = fixture.debugElement.query(By.directive(LoadingBarComponent)).componentInstance as LoadingBarComponent;
     const progress = () => element.querySelector<HTMLElement>('[role="progressbar"]');
     expect(progress()?.getAttribute('aria-valuenow')).toBe('0');
     expect(progress()?.textContent?.trim()).toBe('');
@@ -148,13 +150,15 @@ describe('contestant profile', () => {
     first.next([section]); first.complete();
     await vi.waitFor(() => expect(service.getSections).toHaveBeenCalledTimes(2));
     fixture.detectChanges();
-    expect(progress()?.getAttribute('aria-valuenow')).toBe('50');
-    expect(progress()?.firstElementChild?.getAttribute('style')).toContain('width: 50%');
+    expect(loader.progress()).toBe(50);
+    expect(loader.loading()).toBe(true);
     second.next([section]); second.complete();
     await loading;
     fixture.detectChanges();
     expect(component.detailProgress()).toBe(100);
-    expect(progress()).toBeNull();
+    expect(loader.loading()).toBe(false);
+    expect(progress()?.getAttribute('aria-valuenow')).toBe('100');
+    await vi.waitFor(() => expect(progress()).toBeNull());
     expect(component.detailElections()).toHaveLength(2);
   });
 

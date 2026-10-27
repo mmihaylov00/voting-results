@@ -1,6 +1,6 @@
 <section aria-label="Социологически агенции" class="space-y-6">
   <div class="flex flex-wrap items-center justify-between gap-3 border-b border-border">
-    <nav aria-label="Раздели на социологическите агенции" class="flex flex-wrap gap-1">
+    <nav aria-label="Раздели на социологическите агенции" class="app-tabs flex flex-wrap gap-1">
       <button hlmBtn variant="line" type="button" [attr.aria-pressed]="activeTab() === 'accuracy'" [attr.data-state]="activeTab() === 'accuracy' ? 'active' : 'inactive'" (click)="activeTab.set('accuracy')">Точност на агенциите</button>
       <button hlmBtn variant="line" type="button" [attr.aria-pressed]="activeTab() === 'comparison'" [attr.data-state]="activeTab() === 'comparison' ? 'active' : 'inactive'" (click)="activeTab.set('comparison')">Проучване и резултати</button>
     </nav>
@@ -9,16 +9,18 @@
 
   <p class="text-sm text-muted-foreground">Последно предизборно проучване и отклонение от резултата</p>
 
-  @if (loading()) { <p role="status" class="py-12 text-center text-muted-foreground">Зареждане на проучванията...</p> }
-  @else if (error()) { <p role="alert" class="py-8">{{ error() }}</p> }
-  @else if (!agencies().length) { <p role="status">Няма налични сравними проучвания за тези избори.</p> }
-  @else {
-    <div role="region" aria-label="Отклонение на агенциите" tabindex="0" class="overflow-x-auto rounded-md border border-border" [hidden]="activeTab() !== 'accuracy'">
+  <app-loading-bar [loading]="loading()" label="Зареждане: Социологически проучвания" class="my-8" />
+  @if (!loading() && (error())) { <p role="alert" class="py-8">{{ error() }}</p> }
+  @else if (!loading() && (!agencies().length)) { <p role="status">Няма налични сравними проучвания за тези избори.</p> }
+  @else if (!loading()) {
+    <div [hidden]="activeTab() !== 'accuracy'">
+    <app-table-controls [rows]="agencies()" [columns]="agencyColumns" label="Търсене на агенция" #agencyTable />
+    <div role="region" aria-label="Отклонение на агенциите" tabindex="0" class="max-h-[70vh] overflow-auto rounded-md border border-border" [hidden]="activeTab() !== 'accuracy'">
       <table class="w-full min-w-[720px] text-sm">
         <caption class="sr-only">Агенции по средно абсолютно отклонение в процентни пунктове. По-ниската стойност означава по-малко отклонение.</caption>
-        <thead class="border-b border-border text-left text-muted-foreground"><tr><th scope="col" class="px-4 py-3">Агенция</th><th scope="col" class="min-w-40 px-3 py-3">Средно отклонение</th><th scope="col" class="px-3 py-3 text-right">Край на терена</th><th scope="col" class="px-3 py-3 text-right">Дни преди вота</th><th scope="col" class="px-3 py-3 text-right">Сравнени партии</th><th scope="col" class="px-4 py-3 text-right">Публикация</th></tr></thead>
+        <thead class="border-b border-border text-left text-muted-foreground sticky top-0 z-20 bg-background/95 shadow-sm backdrop-blur"><tr><th scope="col" class="px-4 py-3" app-sortable-table-header columnKey="name" label="Агенция" [table]="agencyTable" align="left"></th><th scope="col" class="min-w-40 px-3 py-3" app-sortable-table-header columnKey="mae" label="Средно отклонение" [table]="agencyTable" align="left"></th><th scope="col" class="px-3 py-3 text-right" app-sortable-table-header columnKey="fieldwork" label="Край на терена" [table]="agencyTable" align="right"></th><th scope="col" class="px-3 py-3 text-right" app-sortable-table-header columnKey="days" label="Дни преди вота" [table]="agencyTable" align="right"></th><th scope="col" class="px-3 py-3 text-right" app-sortable-table-header columnKey="parties" label="Сравнени партии" [table]="agencyTable" align="right"></th><th scope="col" class="px-4 py-3 text-right">Публикация</th></tr></thead>
         <tbody>
-          @for (agency of agencies(); track agency.id) {
+          @for (agency of agencyTable.viewRows(); track agency.id) {
             <tr class="border-b border-border/60 last:border-0" [class.bg-primary/10]="selected()?.id === agency.id">
               <th scope="row" class="px-4 py-4 font-medium"><button type="button" (click)="selectAgency(agency.id)" [attr.aria-pressed]="selected()?.id === agency.id" class="text-left underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary">{{ agency.name }}</button></th>
               <td class="px-3 py-4"><div class="mb-1 text-right font-semibold tabular-nums">{{ agency.mae | number:'1.2-2' }} п.п.</div><div class="h-1.5 overflow-hidden rounded-full bg-muted" aria-hidden="true"><div class="h-full rounded-full bg-primary" [style.width.%]="agency.mae / maxMae() * 100"></div></div></td>
@@ -28,6 +30,7 @@
           }
         </tbody>
       </table>
+    </div>
     </div>
 
     <section aria-labelledby="agency-comparison-title" class="space-y-4" [hidden]="activeTab() !== 'comparison'">
@@ -46,22 +49,23 @@
       @if (comparisonAgencies().length > 1) {
         <p class="text-sm text-muted-foreground">„Най-близо“ отбелязва прогнозата с най-малко отклонение за всяка партия. При равенство са отбелязани всички най-близки прогнози.</p>
       }
-      <div role="region" aria-label="Сравнение на проучванията с изборния резултат" tabindex="0" class="overflow-x-auto rounded-md border border-border">
+      <app-table-controls [rows]="comparisonRows()" [columns]="comparisonColumns()" label="Търсене на партия в проучванията" #pollTable />
+      <div role="region" aria-label="Сравнение на проучванията с изборния резултат" tabindex="0" class="max-h-[70vh] overflow-auto rounded-md border border-border">
         <table class="w-full text-sm">
           <caption class="sr-only">Прогнози и изборен резултат по партии. Най-близките оценки са с най-малко абсолютно отклонение.</caption>
-          <thead class="border-b border-border text-muted-foreground"><tr>
-            <th scope="col" class="sticky left-0 z-10 min-w-40 bg-background px-4 py-4 text-left">Партия</th>
-            <th scope="col" class="min-w-32 bg-muted/30 px-4 py-4 text-center">Изборен резултат</th>
+          <thead class="border-b border-border text-muted-foreground sticky top-0 z-20 bg-background/95 shadow-sm backdrop-blur"><tr>
+            <th scope="col" class="sticky left-0 z-10 min-w-40 bg-background px-4 py-4 text-left" app-sortable-table-header columnKey="party" label="Партия" [table]="pollTable" align="left"></th>
+            <th scope="col" class="min-w-32 bg-muted/30 px-4 py-4 text-center" app-sortable-table-header columnKey="actual" label="Изборен резултат" [table]="pollTable" align="center"></th>
             @for (agency of comparisonAgencies(); track agency.id) {
-              <th scope="col" class="min-w-28 px-3 py-4 text-center font-medium">
-                <a [href]="agency.sourceUrl" target="_blank" rel="noopener noreferrer" class="underline-offset-4 hover:underline">{{ agency.name }}</a>
+              <th scope="col" class="min-w-28 px-3 py-4 text-center font-medium" app-sortable-table-header [columnKey]="agency.id" [table]="pollTable" align="center">
+                <a [href]="agency.sourceUrl" target="_blank" rel="noopener noreferrer" (click)="$event.stopPropagation()" class="underline-offset-4 hover:underline">{{ agency.name }}</a>
                 <span class="mt-1 block text-xs font-normal">{{ agency.fieldworkEnd | date:'dd.MM.yyyy' }}</span>
                 @if (agency.normalized) { <span class="mt-1 block text-xs font-normal">Преизчислено</span> }
               </th>
             }
           </tr></thead>
           <tbody>
-            @for (row of comparisonRows(); track row.party) {
+            @for (row of pollTable.viewRows(); track row.party) {
               <tr class="border-b border-border/60 last:border-0">
                 <th scope="row" class="sticky left-0 z-10 bg-background px-4 py-4 text-left font-medium"><span class="mr-2 inline-block h-2 w-2 rounded-full" [style.background-color]="color(row.party)" aria-hidden="true"></span>{{ displayName(row.party) }}</th>
                 <td class="bg-muted/30 px-4 py-4 text-center font-semibold tabular-nums">{{ row.actual | number:'1.1-2' }}%</td>

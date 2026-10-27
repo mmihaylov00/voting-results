@@ -1,4 +1,5 @@
 import { Region, Section } from '../models/election.models';
+import { CsvExportData, createCsv } from './csv-export.util';
 
 export interface AnalysisSnapshot {
   electors: number;
@@ -141,15 +142,16 @@ export function comparisonRow(id: string, label: string, current: AnalysisSnapsh
   };
 }
 
-export function analysisCsv(rows: AnalysisRow[], currentDate: string, previousDate: string, partyName: string): string {
-  const cells: (string | number | null)[][] = [
-    ['Място', 'Код', 'Партия', 'Текущи избори', 'Сравнявани избори', 'Гласове сега', 'Гласове преди', 'Промяна гласове', 'Дял сега %', 'Дял преди %', 'Промяна дял п.п.', 'Активност сега %', 'Активност преди %', 'Промяна активност п.п.'],
-    ...rows.map((row) => [row.label, row.id, partyName, currentDate, previousDate, row.current.votes, row.previous?.votes ?? null,
+export function analysisCsvData(rows: readonly AnalysisRow[], currentDate: string, previousDate: string, partyName: string): CsvExportData {
+  return {
+    filename: `comparison_${currentDate}_${previousDate}.csv`,
+    headers: ['Място', 'Код', 'Партия', 'Текущи избори', 'Сравнявани избори', 'Гласове сега', 'Гласове преди', 'Промяна гласове', 'Дял сега %', 'Дял преди %', 'Промяна дял п.п.', 'Активност сега %', 'Активност преди %', 'Промяна активност п.п.'],
+    rows: rows.map((row) => [row.label, row.id, partyName, currentDate, previousDate, row.current.votes, row.previous?.votes ?? null,
       row.voteChange, row.current.share, row.previous?.share ?? null, row.shareChange, row.current.turnout, row.previous?.turnout ?? null, row.turnoutChange]),
-  ];
-  return '\uFEFF' + cells.map((row) => row.map((cell) => {
-    const value = cell === null ? '' : String(cell);
-    const safe = typeof cell === 'string' && /^[=+@\-\t\r]/.test(value) ? `'${value}` : value;
-    return `"${safe.replace(/"/g, '""')}"`;
-  }).join(',')).join('\r\n');
+  };
+}
+
+export function analysisCsv(rows: AnalysisRow[], currentDate: string, previousDate: string, partyName: string): string {
+  const data = analysisCsvData(rows, currentDate, previousDate, partyName);
+  return createCsv([data.headers, ...data.rows]);
 }

@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HlmTooltipDirective } from '../tooltip-helm/src/lib/hlm-tooltip.directive';
-import { formatRiskMessage, RiskContext } from '../../../utils/risk-message.util';
+import { describeRiskCode, formatRiskMessage, RiskContext } from '../../../utils/risk-message.util';
 
 export interface RiskIndicator {
   code: string;
-  category: string;
-  severity: string; // 'high' | 'medium' | 'low' as string
+  category?: string;
+  severity?: string;
   details?: any;
 }
 
@@ -36,18 +36,20 @@ export class RiskBadgeComponent {
       low: 'bg-blue-500/20 text-blue-600 dark:text-blue-400'
     };
     
-    return `${baseClasses} ${severityMap[this.risk.severity] || severityMap['medium']}`;
+    const severity = this.risk.severity ? severityMap[this.risk.severity] || severityMap['medium'] : 'bg-muted text-foreground';
+    return `${baseClasses} ${severity}`;
   }
 
-  get displayText(): string {
-    const message = formatRiskMessage(this.risk, this.context);
-    if (this.displayMode === 'full') {
-      return `<strong>${this.risk.code}</strong>: ${message}`;
-    }
-    return this.risk.code;
+  get message(): string {
+    return formatRiskMessage(this.risk, this.context);
   }
 
   get tooltipText(): string {
-    return formatRiskMessage(this.risk, this.context);
+    const description = describeRiskCode(this.risk.code);
+    return this.message === description ? description : `${description}\n${this.message}`;
+  }
+
+  get escapedTooltipText(): string {
+    return this.tooltipText.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
   }
 }

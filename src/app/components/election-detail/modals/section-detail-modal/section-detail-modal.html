@@ -24,8 +24,10 @@
         </div>
     </ng-template>
 
+    <app-loading-bar [loading]="historyLoading()" label="Зареждане на секционната история" class="my-4" />
+
     <div class="flex flex-col" [style.max-height]="modal.isPage() ? null : 'calc(90vh - 200px)'" [style.overflow-y]="modal.isPage() ? null : 'auto'">
-      <nav aria-label="Раздели на секцията" class="flex flex-wrap gap-1 border-b border-border mb-6">
+      <nav aria-label="Раздели на секцията" class="app-tabs flex flex-wrap gap-1 border-b border-border mb-6">
         @for (panel of panels; track panel.id) {
           <button hlmBtn variant="line" type="button" [attr.aria-pressed]="activePanel() === panel.id"
             [attr.data-state]="activePanel() === panel.id ? 'active' : 'inactive'" (click)="selectPanel(panel.id)">{{ panel.label }}</button>
@@ -35,7 +37,7 @@
       <section aria-label="Резултати за секцията" [hidden]="activePanel() !== 'results'">
             <!-- Result types -->
             <div class="flex flex-wrap gap-2 mb-4 flex-shrink-0 px-6 justify-between">
-                <div class="flex flex-row gap-2">
+                <div class="app-tabs flex flex-row gap-2" role="group" aria-label="Вид резултати">
                   <button hlmBtn [variant]="activeTab() === 'parties' ? 'default' : 'outline'" size="lg" [attr.data-state]="activeTab() === 'parties' ? 'active' : 'inactive'"
                           (click)="activeTab.set('parties')">
                     {{ electionType === 'presidential' ? 'Кандидати' : 'Партии' }}
@@ -182,7 +184,7 @@
                   <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
                       <tr hlmTableRow class="hover:bg-transparent">
                           @if (visibleCandidateColumns().has('candidateName')) {
-                              <th hlmTableHead (click)="sortCandidates('candidateName')" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <th hlmTableHead appSortKeyboard (click)="sortCandidates('candidateName')" [attr.aria-sort]="candidateSortColumn === 'candidateName' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                   <span class="flex items-center justify-between">
                                       <span>Име</span>
                                       <span class="ml-1 flex items-center">
@@ -199,7 +201,7 @@
                               </th>
                           }
                           @if (visibleCandidateColumns().has('candidateId')) {
-                              <th hlmTableHead (click)="sortCandidates('candidateId')" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <th hlmTableHead appSortKeyboard (click)="sortCandidates('candidateId')" [attr.aria-sort]="candidateSortColumn === 'candidateId' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                   <span class="flex items-center justify-between">
                                       <span>Номер</span>
                                       <span class="ml-1 flex items-center">
@@ -216,7 +218,7 @@
                               </th>
                           }
                           @if (visibleCandidateColumns().has('partyName')) {
-                              <th hlmTableHead (click)="sortCandidates('partyName')" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <th hlmTableHead appSortKeyboard (click)="sortCandidates('partyName')" [attr.aria-sort]="candidateSortColumn === 'partyName' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                   <span class="flex items-center justify-between">
                                       <span>Партия</span>
                                       <span class="ml-1 flex items-center">
@@ -233,7 +235,7 @@
                               </th>
                           }
                         @if (visibleCandidateColumns().has('total')) {
-                          <th hlmTableHead (click)="sortCandidates('total')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                          <th hlmTableHead appSortKeyboard (click)="sortCandidates('total')" [attr.aria-sort]="candidateSortColumn === 'total' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                   <span class="flex items-center justify-end">
                                       <span>Общо преференции</span>
                                       <span class="ml-1 flex items-center">
@@ -250,7 +252,7 @@
                           </th>
                         }
                           @if (visibleCandidateColumns().has('paper')) {
-                              <th hlmTableHead (click)="sortCandidates('paper')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <th hlmTableHead appSortKeyboard (click)="sortCandidates('paper')" [attr.aria-sort]="candidateSortColumn === 'paper' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                   <span class="flex items-center justify-end">
                                       <span>Хартиени</span>
                                       <span class="ml-1 flex items-center">
@@ -267,7 +269,7 @@
                               </th>
                           }
                           @if (visibleCandidateColumns().has('machine')) {
-                              <th hlmTableHead (click)="sortCandidates('machine')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <th hlmTableHead appSortKeyboard (click)="sortCandidates('machine')" [attr.aria-sort]="candidateSortColumn === 'machine' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                   <span class="flex items-center justify-end">
                                       <span>Машинни</span>
                                       <span class="ml-1 flex items-center">
@@ -284,7 +286,7 @@
                               </th>
                           }
                           @if (visibleCandidateColumns().has('percentInSection')) {
-                              <th hlmTableHead (click)="sortCandidates('percentInSection')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <th hlmTableHead appSortKeyboard (click)="sortCandidates('percentInSection')" [attr.aria-sort]="candidateSortColumn === 'percentInSection' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                   <span class="flex items-center justify-end">
                                       <span>Процент от преференциите в {{ isGroupedByCity ? 'града' : 'секцията' }}</span>
                                       <span class="ml-1 flex items-center">
@@ -301,7 +303,7 @@
                               </th>
                           }
                           @if (visibleCandidateColumns().has('partyPercentInSection')) {
-                              <th hlmTableHead (click)="sortCandidates('partyPercentInSection')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <th hlmTableHead appSortKeyboard (click)="sortCandidates('partyPercentInSection')" [attr.aria-sort]="candidateSortColumn === 'partyPercentInSection' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                   <span class="flex items-center justify-end">
                                       <span>{{ isGroupedByCity ? 'Гласове за партия в града' : 'Гласове за партия в секцията' }}</span>
                                       <span class="ml-1 flex items-center">
@@ -318,7 +320,7 @@
                               </th>
                           }
                           @if (visibleCandidateColumns().has('totalInRegion')) {
-                            <th hlmTableHead (click)="sortCandidates('totalInRegion')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                            <th hlmTableHead appSortKeyboard (click)="sortCandidates('totalInRegion')" [attr.aria-sort]="candidateSortColumn === 'totalInRegion' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                   <span class="flex items-center justify-end">
                                       <span>Общо преференции в региона</span>
                                       <span class="ml-1 flex items-center">
@@ -335,7 +337,7 @@
                             </th>
                           }
                           @if (visibleCandidateColumns().has('partyPercentInRegion')) {
-                              <th hlmTableHead (click)="sortCandidates('partyPercentInRegion')" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
+                              <th hlmTableHead appSortKeyboard (click)="sortCandidates('partyPercentInRegion')" [attr.aria-sort]="candidateSortColumn === 'partyPercentInRegion' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'" class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                   <span class="flex items-center justify-end">
                                       <span>Процент от преференциите на партия в региона</span>
                                       <span class="ml-1 flex items-center">
@@ -599,7 +601,7 @@
             <div class="flex justify-between items-center mb-4">
               <h4 hlmH4 class="text-secondary dark:text-primary">Исторически трендове</h4>
             </div>
-            <div class="flex flex-wrap gap-2 border-b border-primary/10 mb-6">
+            <div class="app-tabs flex flex-wrap gap-2 border-b border-primary/10 mb-6" role="group" aria-label="Исторически показатели">
               <button hlmBtn [variant]="activeHistoricalTab() === 'votes' ? 'default' : 'outline'" size="lg" [attr.data-state]="activeHistoricalTab() === 'votes' ? 'active' : 'inactive'"
                       (click)="activeHistoricalTab.set('votes')">
                 Абсолютен брой гласове
@@ -647,7 +649,7 @@
               [riskData]="{ riskScore: sectionRiskScore, riskIndicators: sectionRiskIndicators }"
               [context]="{ section: currentSectionData, partiesById: partiesById }" />
             @if (!sectionRiskIndicators.length) {
-              <p class="text-sm text-muted-foreground">Няма отчетени рискови сигнали за този изглед.</p>
+              <p class="text-sm text-muted-foreground">Няма отчетени рискови индикатори за този изглед.</p>
             }
           }
           @if (!isGroupedByCity) {

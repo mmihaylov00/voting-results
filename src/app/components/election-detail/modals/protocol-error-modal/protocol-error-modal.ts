@@ -20,7 +20,7 @@ import {
 import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-typography.directive';
 import { HlmTooltipDirective } from '../../../ui/tooltip-helm/src/lib/hlm-tooltip.directive';
 import { getGoogleMapsUrl, copyToClipboard as copyToClipboardUtil } from '../../../../utils/common.utils';
-import { sortArray, toggleSort as toggleSortUtil, SortState } from '../../../../utils/table-sort.util';
+import { getDefaultSortDirection, sortArray, toggleSort as toggleSortUtil } from '../../../../utils/table-sort.util';
 import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
 import { SortableTableHeaderComponent } from '../../../ui/sortable-table-header/sortable-table-header';
 import { ColumnFilterComponent } from '../../../ui/column-filter/column-filter';
@@ -95,7 +95,8 @@ export class ProtocolErrorModalComponent {
     const newState = toggleSortUtil(
       this.sortColumn(),
       this.sortDirection(),
-      column
+      column,
+      getDefaultSortDirection(column, column === 'sectionId' || column === 'cityName')
     );
     this.sortColumn.set(newState.column);
     this.sortDirection.set(newState.direction);

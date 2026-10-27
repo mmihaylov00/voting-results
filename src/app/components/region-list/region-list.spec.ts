@@ -89,6 +89,19 @@ describe('RegionList map scope', () => {
     expect(component.totalVoted).toBe(50);
   });
 
+  it('keeps the mobile map open when its content tab is reconciled with the URL', () => {
+    component.ngOnInit();
+    component.date = '2026.04.19';
+    queries.next(convertToParamMap({ panel: 'stats' }));
+    component.setOverviewMode('map');
+    expect(component.leftPanel()).toBe('cards');
+    queries.next(convertToParamMap({}));
+    expect(component.overviewMode()).toBe('map');
+    component.selectContentTab('cards');
+    expect(component.overviewMode()).toBe('cards');
+    expect(requests).toBe(1);
+  });
+
   it('preserves a foreign selection made while the full map data is pending', () => {
     const abroad = section('320000001', '32');
     component.abroadSections = [abroad];

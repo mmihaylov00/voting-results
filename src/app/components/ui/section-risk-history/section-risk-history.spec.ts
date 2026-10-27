@@ -24,8 +24,13 @@ describe('SectionRiskHistoryComponent', () => {
     fixture.detectChanges();
     const text = fixture.nativeElement.textContent as string;
     expect(text).toContain('0 от 1');
-    expect(text).toContain('Без сигнали');
+    expect(text).toContain('Без рискови индикатори');
     expect(text).toContain('Няма налична оценка');
     expect(text).toContain('а не доказателство за нарушение');
+    fixture.componentRef.setInput('section', { ...section, riskIndicators: [{ code: 'R1.1', category: 'R1', severity: 'high' }] });
+    fixture.detectChanges();
+    const badge = fixture.nativeElement.querySelector('app-risk-badge button') as HTMLButtonElement;
+    expect(badge.textContent?.trim()).toBe('R1.1');
+    expect(badge.getAttribute('aria-label')).toContain('Активността се променя');
   });
 });

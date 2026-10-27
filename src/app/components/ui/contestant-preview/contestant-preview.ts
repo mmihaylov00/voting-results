@@ -1,3 +1,4 @@
+import { LoadingBarComponent } from '../loading-bar/loading-bar';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RegionCandidate } from '../../../models/election.models';
@@ -11,7 +12,7 @@ import { getDateName } from '../../../utils/date-name.util';
 @Component({
   selector: 'app-contestant-preview',
   standalone: true,
-  imports: [CommonModule],
+  imports: [LoadingBarComponent, CommonModule],
   host: { role: 'tooltip' },
   template: `
     <div class="identity">
@@ -33,9 +34,9 @@ import { getDateName } from '../../../utils/date-name.util';
       </dl>
     } @else {
       @if (name !== displayName) { <p class="full-name">{{ name }}</p> }
-      @if (loading) { <p class="scope" role="status">Зареждане на резултатите...</p> }
-      @else if (error) { <p class="scope">Резултатите не могат да бъдат заредени.</p> }
-      @else {
+      <app-loading-bar [loading]="loading" label="Зареждане на резултатите" class="my-3" />
+      @if (!loading && (error)) { <p class="scope">Резултатите не могат да бъдат заредени.</p> }
+      @else if (!loading) {
         <p class="scope">{{ participations.length }} {{ type === 'presidential' ? 'участия / турове' : 'участия' }} в архива</p>
         @if (result; as election) {
           <p class="scope">Национален резултат · {{ election.name }}</p>

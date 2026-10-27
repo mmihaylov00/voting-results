@@ -8,13 +8,18 @@ import { VirtualTableDirective } from './virtual-table';
   template: `
     <div [virtualRows]="items" [virtualRowsLayout]="layout" #viewport="virtualRows" tabindex="0">
       <table [attr.aria-rowcount]="items.length + 1">
-        <thead><tr><th [attr.data-width]="columnWidth">Number</th></tr></thead>
+        <thead><tr><th [attr.data-width]="columnWidth" [attr.rowspan]="grouped ? 2 : 1">Number</th>
+          @if (grouped) { <th colspan="2">Results</th> }
+        </tr>
+        @if (grouped) { <tr><th>Before</th><th>Now</th></tr> }
+        </thead>
         <tbody>
           <tr aria-hidden="true"><td [style.height.px]="viewport.window().top"></td></tr>
           @for (item of viewport.rows(); track item) {
             <tr [attr.data-virtual-index]="viewport.window().start + $index" [attr.data-height]="height(item)"
                 [attr.aria-rowindex]="viewport.window().start + $index + 2">
-              <td><button>{{ item }}</button></td>
+              <td [attr.data-width]="columnWidth"><button>{{ item }}</button></td>
+              @if (grouped) { <td data-width="200">{{ item }}</td><td data-width="300">{{ item }}</td> }
             </tr>
           }
           <tr aria-hidden="true"><td [style.height.px]="viewport.window().bottom"></td></tr>
@@ -27,6 +32,7 @@ class VirtualTableTestComponent {
   items = Array.from({ length: 13000 }, (_, index) => index);
   layout = 'default';
   columnWidth = 500;
+  grouped = false;
   height = (_item: number) => 64;
 }
 
@@ -40,9 +46,10 @@ describe('VirtualTableDirective', () => {
 
   afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
-  async function setup(columnWidth = 500) {
+  async function setup(columnWidth = 500, grouped = false) {
     const fixture = TestBed.createComponent(VirtualTableTestComponent);
     fixture.componentInstance.columnWidth = columnWidth;
+    fixture.componentInstance.grouped = grouped;
     const viewport = fixture.nativeElement.querySelector('div') as HTMLDivElement;
     let height = 320;
     let width = 500;
@@ -83,6 +90,17 @@ describe('VirtualTableDirective', () => {
     expect(data.length).toBe(13000);
   });
 
+  it('measures individual columns beneath grouped headers and counts their spans for spacer rows', async () => {
+    const { viewport, directive, scroll } = await setup(400, true);
+    const table = viewport.querySelector('table')!;
+    expect(directive.columnCount()).toBe(3);
+    expect([...table.querySelectorAll('col')].map(column => column.style.width)).toEqual(['400px', '200px', '300px']);
+    expect(table.style.width).toBe('900px');
+    await scroll(64000);
+    expect(directive.window().start).toBeGreaterThan(0);
+    expect(table.querySelectorAll('col')).toHaveLength(3);
+  });
+
   it('resets after filtering or sorting and handles empty results', async () => {
     const { fixture, viewport, rows, scroll } = await setup();
     await scroll(64000);
@@ -119,6 +137,23 @@ describe('VirtualTableDirective', () => {
     rows()[0].querySelector('button')!.focus();
     await scroll(64000);
     expect(document.activeElement).toBe(viewport);
+  });
+
+  it('handles Home and End directly so measuring rows cannot interrupt a native keyboard scroll animation', async () => {
+    const { fixture, viewport, rows } = await setup();
+    Object.defineProperty(viewport, 'scrollHeight', { value: 13000 * 64 + 48 });
+    const end = new KeyboardEvent('keydown', { key: 'End', bubbles: true, cancelable: true });
+    viewport.dispatchEvent(end);
+    await fixture.whenStable();
+    expect(end.defaultPrevented).toBe(true);
+    expect(rows().at(-1)?.textContent?.trim()).toBe('12999');
+    viewport.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+    await fixture.whenStable();
+    expect(viewport.scrollTop).toBe(0);
+    expect(rows()[0].textContent?.trim()).toBe('0');
+    const buttonEnd = new KeyboardEvent('keydown', { key: 'End', bubbles: true, cancelable: true });
+    rows()[0].querySelector('button')!.dispatchEvent(buttonEnd);
+    expect(buttonEnd.defaultPrevented).toBe(false);
   });
 
   it('keeps column widths and horizontal scroll stable between windows, then remeasures on layout or viewport changes', async () => {

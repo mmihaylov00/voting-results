@@ -4,7 +4,7 @@
     <p class="mt-3 text-base text-muted-foreground">Профили и резултати от всички избори в архива.</p>
   </header>
 
-  <nav class="mb-6 flex flex-wrap gap-1 border-b border-border" aria-label="Вид профили">
+  <nav class="app-tabs app-tabs-primary mb-6 flex flex-wrap gap-1 border-b border-border" aria-label="Вид профили">
     <a hlmBtn variant="line" routerLink="/governmental/contestants" [attr.data-state]="!presidential && !preferencesView() ? 'active' : 'inactive'"
       [attr.aria-current]="!presidential && !preferencesView() ? 'page' : null">Партии и коалиции</a>
     <a hlmBtn variant="line" routerLink="/presidential/contestants" [attr.data-state]="presidential ? 'active' : 'inactive'"
@@ -28,14 +28,14 @@
     }
   </div>
 
-  @if (loading()) {
-    <p role="status" class="py-12 text-center text-muted-foreground">Зареждане на профилите...</p>
-  } @else if (error()) {
+  <app-loading-bar [loading]="loading()" label="Зареждане: Профили" class="my-8" />
+  @if (!loading() && (error())) {
     <div role="alert" class="space-y-3 py-8">
       <p>{{ error() }}</p>
       <button hlmBtn variant="outline" type="button" (click)="load()">Опитай отново</button>
     </div>
-  } @else {
+  }
+  @else if (!loading()) {
     <app-virtual-cards [items]="filteredCards()" [label]="presidential ? 'Президентски кандидати' : 'Партии и коалиции'"
       [emptyMessage]="search().trim() ? 'Няма профили за това търсене.' : 'Няма профили за избраните избори.'">
       <ng-template let-entry>

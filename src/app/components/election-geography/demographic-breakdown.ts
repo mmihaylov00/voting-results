@@ -1,3 +1,4 @@
+import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { SelectComponent, SelectOption } from '../ui/select/select';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
 import { DEMOGRAPHIC_METRICS, DemographicData } from '../../models/election-context.models';
@@ -15,7 +16,7 @@ const METRIC_ORDER = Object.keys(DEMOGRAPHIC_METRICS);
 @Component({
   selector: 'app-demographic-breakdown',
   standalone: true,
-  imports: [SelectComponent, HlmButtonDirective, HlmTooltipDirective, BaseModalComponent],
+  imports: [LoadingBarComponent, SelectComponent, HlmButtonDirective, HlmTooltipDirective, BaseModalComponent],
   templateUrl: './demographic-breakdown.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

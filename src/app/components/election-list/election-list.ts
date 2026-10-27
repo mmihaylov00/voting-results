@@ -1,3 +1,4 @@
+import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { SelectComponent } from '../ui/select/select';
 import { partyVoteTotals } from '../../utils/party-order.util';
 import { Component, DestroyRef, OnInit, signal, effect, inject } from '@angular/core';
@@ -42,7 +43,7 @@ interface ElectionData {
 
 @Component({
   selector: 'app-election-list',
-  imports: [SelectComponent,
+  imports: [LoadingBarComponent, SelectComponent,
     CommonModule,
     RouterModule,
     FormsModule,

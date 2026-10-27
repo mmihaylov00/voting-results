@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angular/router';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { AgencyComparison, PollingData } from '../../models/election-context.models';
@@ -6,6 +7,7 @@ import { ElectionContextService } from '../../services/election-context.service'
 import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
 import { PollingAgenciesComponent } from './polling-agencies';
+import { TableControlsComponent } from '../ui/table-controls/table-controls';
 
 const agency = (id: string): AgencyComparison => ({
   id, name: `Агенция ${id}`, website: 'https://example.com/', pollId: `poll-${id}`, sourceUrl: 'https://example.com/poll',
@@ -56,6 +58,25 @@ describe('PollingAgenciesComponent', () => {
     expect(navigate).toHaveBeenCalledTimes(2);
     dates.next(convertToParamMap({ date: '2024.10.27' }));
     expect(getPolls).toHaveBeenCalledTimes(2);
+  });
+
+  it('filters and sorts both tables locally while retaining the original accuracy calculations', async () => {
+    const fixture = TestBed.createComponent(PollingAgenciesComponent);
+    await fixture.whenStable();
+    const tables = fixture.debugElement.queryAll(By.directive(TableControlsComponent));
+    const accuracy = tables[0].componentInstance as TableControlsComponent<AgencyComparison>;
+    accuracy.query.set('Агенция B'); accuracy.sort('mae');
+    await fixture.whenStable();
+    expect(accuracy.viewRows().map(row => row.id)).toEqual(['B']);
+    expect(fixture.componentInstance.agencies()).toHaveLength(2);
+    const comparison = tables[1].componentInstance as TableControlsComponent<ReturnType<PollingAgenciesComponent['comparisonRows']>[number]>;
+    comparison.query.set('ГЕРБ'); comparison.sort('A');
+    await fixture.whenStable();
+    expect(comparison.viewRows()[0].cells.every(cell => cell.closest)).toBe(true);
+    comparison.query.set('няма партия'); await fixture.whenStable();
+    expect(comparison.viewRows()).toEqual([]);
+    expect(getPolls).toHaveBeenCalledOnce();
+    expect(fixture.componentInstance.closestAgencies().size).toBe(2);
   });
 
   it('uses a second tab and a normal table with all agencies selected by default', async () => {

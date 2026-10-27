@@ -1,6 +1,12 @@
 import { Section, SectionFilters } from '../models/election.models';
 import { candidateRiskAppliesToSection } from './risk-utils';
 
+export function getTopCandidates(section: Section) {
+  const candidates = section.topCandidates?.length ? section.topCandidates : Object.values(section.candidateVotes ?? {})
+    .filter(candidate => candidate.total > 0).sort((left, right) => right.total - left.total).slice(0, 3);
+  return candidates.map(candidate => ({ ...candidate, candidateId: candidate.candidateId ?? '' }));
+}
+
 export function filterSections(
   sections: Section[],
   filters: SectionFilters,

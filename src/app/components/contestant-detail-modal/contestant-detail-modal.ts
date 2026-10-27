@@ -1,3 +1,6 @@
+import { TableControlsComponent, TableColumns } from '../ui/table-controls/table-controls';
+import { SortableTableHeaderComponent } from '../ui/sortable-table-header/sortable-table-header';
+import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { SelectComponent, SelectOption } from '../ui/select/select';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, computed, effect, inject, signal, untracked } from '@angular/core';
@@ -40,7 +43,7 @@ const OFFICIAL_SEATS: Partial<Record<string, OfficialSeats>> = officialSeats;
 @Component({
   selector: 'app-contestant-detail-modal',
   standalone: true,
-  imports: [SelectComponent, CommonModule, BaseModalComponent, HlmButtonDirective, HighchartsChartComponent,
+  imports: [TableControlsComponent, SortableTableHeaderComponent, LoadingBarComponent, SelectComponent, CommonModule, BaseModalComponent, HlmButtonDirective, HighchartsChartComponent,
     StatCardComponent, RiskBadgeComponent, HlmTableDirective, HlmTableHeaderDirective, HlmTableBodyDirective,
     HlmTableRowDirective, HlmTableHeadDirective, HlmTableCellDirective,
     ContestantProfilePanelsComponent, SectionDetailModalComponent],
@@ -113,6 +116,19 @@ export class ContestantDetailModalComponent implements OnChanges, OnDestroy {
     ...(!this.presidential && !this.preferenceMode ? [{ id: 'candidates' as const, label: 'Кандидати и преференции' }] : []),
   ]; }
   readonly selectedPreference = computed(() => this.preferenceElections().find(election => election.participation.date === this.scope()) ?? null);
+  readonly participationColumns: TableColumns<ContestantParticipation> = {
+    election: row => `${row.date} ${row.name}`, name: row => this.preferenceMode
+      ? this.preferenceLists(row.date).map(list => `${list.partyName} ${list.regionName}`).join(' ') : row.fullName,
+    votes: row => row.votes, share: row => row.share, rank: row => row.rank,
+  };
+  readonly preferenceListColumns: TableColumns<PreferenceProfileElection['lists'][number]> = {
+    region: row => row.regionName, party: row => row.partyName, number: row => row.candidateId, rank: row => row.rank,
+    votes: row => row.votes, share: row => row.share,
+  };
+  readonly preferenceRiskColumns: TableColumns<ReturnType<ContestantDetailModalComponent['preferenceRiskLists']>[number]> = {
+    election: row => `${row.date} ${row.electionName}`, region: row => row.regionName,
+    list: row => `${row.partyName} № ${row.candidateId}`, signals: row => row.risks.map(risk => risk.code).join(', '),
+  };
   readonly preferenceRiskLists = computed(() => this.preferenceElections()
     .filter(election => this.scope() === 'all' || election.participation.date === this.scope())
     .flatMap(election => election.lists.filter(list => list.risks.length).map(list => ({

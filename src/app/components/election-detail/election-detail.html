@@ -1,34 +1,5 @@
 <div class="mx-auto max-w-[1800px] px-4 py-8 sm:px-8">
-  @if (loading$ | async) {
-    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
-      <div class="w-full max-w-md px-8 text-center">
-        <p hlmMuted class="mb-4">Зареждане на данните...</p>
-        <div class="h-2 w-full overflow-hidden rounded-full bg-secondary">
-          <div class="h-full w-full origin-left animate-progress bg-primary"></div>
-        </div>
-      </div>
-    </div>
-  }
-  @if (isLoadingAllSections()) {
-    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
-      <div class="w-full max-w-md px-8 text-center">
-        <p hlmMuted class="mb-4">Зареждане на всички секции...</p>
-        <div class="h-2 w-full overflow-hidden rounded-full bg-secondary">
-          <div class="h-full w-full origin-left animate-progress bg-primary"></div>
-        </div>
-      </div>
-    </div>
-  }
-  @if (isProcessingData() && !isLoadingAllSections()) {
-    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
-      <div class="w-full max-w-md px-8 text-center">
-        <p hlmMuted class="mb-4">Обработване на данните...</p>
-        <div class="h-2 w-full overflow-hidden rounded-full bg-secondary">
-          <div class="h-full w-full origin-left animate-progress bg-primary"></div>
-        </div>
-      </div>
-    </div>
-  }
+  <app-loading-bar [loading]="!!(loading$ | async) || isLoadingAllSections() || isProcessingData()" appearance="overlay" label="Зареждане на изборните данни" />
 
   <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
     <div>
@@ -108,7 +79,7 @@
         }
         <app-stat-card [label]="viewMode() === 'candidates' ? 'Преференции по тип' : 'Гласове по тип'">
           <ng-template #customContent>
-            <div class="flex flex-col gap-1 ms-1 text-xs whitespace-nowrap">
+            <div class="flex flex-col gap-1 ms-1 text-xs">
               <span class="text-secondary/70 dark:text-foreground/70" [hlmTooltip]="globalComparisons['totalPaper']"
                     [currentValue]="totalRegionPaper" [showTrend]="true"
                     [isLoading]="!!(loading$ | async)">хартиени: <strong
@@ -139,19 +110,16 @@
       </div>
 
       @if (contentTabs.length > 1) {
-        <nav class="mb-6 flex flex-wrap gap-1 border-b border-border" aria-label="Изглед на резултатите">
+        <nav class="app-tabs app-tabs-primary mb-6 flex flex-wrap gap-1 border-b border-border" aria-label="Изглед на резултатите">
           @for (tab of contentTabs; track tab.id) {
             <button hlmBtn variant="line" class="gap-2"
-              [attr.data-state]="(leftPanel() === 'results' ? viewMode() === tab.id : leftPanel() === tab.id) ? 'active' : 'inactive'"
-              [attr.aria-pressed]="leftPanel() === 'results' ? viewMode() === tab.id : leftPanel() === tab.id"
-              (click)="selectContentTab(tab.id)"><app-map-icon [name]="tab.icon" />{{ tab.label }}</button>
+              [attr.data-state]="(leftPanel() === 'results' ? viewMode() === tab.id && (isLaptopLayout() || !mobileMapVisible()) : leftPanel() === tab.id) ? 'active' : 'inactive'"
+              [attr.aria-pressed]="leftPanel() === 'results' ? viewMode() === tab.id && (isLaptopLayout() || !mobileMapVisible()) : leftPanel() === tab.id"
+              (click)="selectContentTab(tab.id)"><app-map-icon [name]="tab.icon" /><span [class.hidden]="tab.id === 'sections'" [class.lg:inline]="tab.id === 'sections'">{{ tab.label }}</span>@if (tab.id === 'sections') { <span class="lg:hidden">Списък</span> }</button>
+            @if (tab.id === 'sections' && canShowMap) {
+              <button hlmBtn variant="line" type="button" class="gap-2 lg:hidden" [attr.data-state]="leftPanel() === 'results' && mobileMapVisible() ? 'active' : 'inactive'" [attr.aria-pressed]="leftPanel() === 'results' && mobileMapVisible()" (click)="selectContentTab('map')"><app-map-icon name="region" />Карта</button>
+            }
           }
-        </nav>
-      }
-      @if (!widePanel && canShowMap) {
-        <nav aria-label="Изглед на списъка" class="mb-6 flex flex-wrap gap-1 border-b border-border lg:hidden">
-          <button hlmBtn variant="line" type="button" class="gap-2" [attr.data-state]="!mobileMapVisible() ? 'active' : 'inactive'" [attr.aria-pressed]="!mobileMapVisible()" (click)="setViewMode('sections')"><app-map-icon name="summary" />Списък</button>
-          <button hlmBtn variant="line" type="button" class="gap-2" [attr.data-state]="mobileMapVisible() ? 'active' : 'inactive'" [attr.aria-pressed]="mobileMapVisible()" (click)="setViewMode('map')"><app-map-icon name="region" />Карта</button>
         </nav>
       }
   <div class="grid grid-cols-1 gap-6 lg:items-start" [class.lg:grid-cols-2]="!widePanel" data-map-workspace>
@@ -186,16 +154,7 @@
             </div>
             @if (viewMode() !== 'map') {
               <div class="flex items-center gap-2">
-                <button hlmBtn variant="outline" (click)="openExportModal()"
-                        class="border-primary text-secondary hover:bg-primary hover:text-secondary dark:border-secondary dark:text-secondary dark:hover:bg-secondary dark:hover:text-secondary-foreground">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                    <polyline points="7 10 12 15 17 10"/>
-                    <line x1="12" y1="15" x2="12" y2="3"/>
-                  </svg>
-                  Експорт CSV
-                </button>
+                <app-csv-export-button [action]="csvExportAction" [disabled]="!currentRowCount || isLoadingAllSections() || isProcessingData()" />
                 <div class="relative">
                   <app-column-filter
                     [columns]="filteredAvailableColumns"
@@ -273,7 +232,7 @@
               <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
               <tr hlmTableRow class="hover:bg-transparent">
                 @if (visibleColumns().has('sectionId')) {
-                  <th hlmTableHead (click)="sortSections('sectionId')"
+                  <th hlmTableHead appSortKeyboard (click)="sortSections('sectionId')" [attr.aria-sort]="sectionSortColumn === 'sectionId' ? sectionSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                         <span class="flex items-center justify-between">
                                             <span>{{ groupByCity() ? 'Секции' : 'Секция' }}</span>
@@ -295,7 +254,7 @@
                   </th>
                 }
                 @if (visibleColumns().has('riskScore')) {
-                  <th hlmTableHead (click)="sortSections('riskScore')"
+                  <th hlmTableHead appSortKeyboard (click)="sortSections('riskScore')" [attr.aria-sort]="sectionSortColumn === 'riskScore' ? sectionSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                         <span class="flex items-center justify-end">
                                             <span>Рискове</span>
@@ -317,7 +276,7 @@
                   </th>
                 }
                 @if (visibleColumns().has('regionName') && (regionId === 'all' || !regionId)) {
-                  <th hlmTableHead (click)="sortSections('regionName')"
+                  <th hlmTableHead appSortKeyboard (click)="sortSections('regionName')" [attr.aria-sort]="sectionSortColumn === 'regionName' ? sectionSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                         <span class="flex items-center justify-between">
                                             <span>Регион</span>
@@ -339,7 +298,7 @@
                   </th>
                 }
                 @if (visibleColumns().has('municipalityName') && viewMode() !== 'municipalities') {
-                  <th hlmTableHead (click)="sortSections('municipalityName')"
+                  <th hlmTableHead appSortKeyboard (click)="sortSections('municipalityName')" [attr.aria-sort]="sectionSortColumn === 'municipalityName' ? sectionSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                       <span class="flex items-center justify-between">
                         <span>{{ municipalityLabel }}</span>
@@ -361,7 +320,7 @@
                   </th>
                 }
                 @if (visibleColumns().has('cityName')) {
-                  <th hlmTableHead (click)="sortSections('cityName')"
+                  <th hlmTableHead appSortKeyboard (click)="sortSections('cityName')" [attr.aria-sort]="sectionSortColumn === 'cityName' ? sectionSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                       <span class="flex items-center justify-between">
                         <span>{{ isMunicipalityGrouping() ? municipalityLabel : 'Населено място' }}</span>
@@ -383,7 +342,7 @@
                   </th>
                 }
                 @if (visibleColumns().has('sectionName') && !groupByCity()) {
-                  <th hlmTableHead (click)="sortSections('sectionName')"
+                  <th hlmTableHead appSortKeyboard (click)="sortSections('sectionName')" [attr.aria-sort]="sectionSortColumn === 'sectionName' ? sectionSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                     <span class="flex items-center justify-between">
                         <span>Име на секция</span>
@@ -405,7 +364,7 @@
                   </th>
                 }
                 @if (visibleColumns().has('total')) {
-                  <th hlmTableHead (click)="sortSections('total')"
+                  <th hlmTableHead appSortKeyboard (click)="sortSections('total')" [attr.aria-sort]="sectionSortColumn === 'total' ? sectionSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                       <span class="flex items-center justify-end">
                           <span>Избиратели</span>
@@ -427,7 +386,7 @@
                   </th>
                 }
                 @if (visibleColumns().has('voted')) {
-                  <th hlmTableHead (click)="sortSections('voted')"
+                  <th hlmTableHead appSortKeyboard (click)="sortSections('voted')" [attr.aria-sort]="sectionSortColumn === 'voted' ? sectionSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                         <span class="flex items-center justify-end">
                                             <span>Гласували</span>
@@ -449,7 +408,7 @@
                   </th>
                 }
                 @if (visibleColumns().has('activityBp')) {
-                  <th hlmTableHead (click)="sortSections('activityBp')"
+                  <th hlmTableHead appSortKeyboard (click)="sortSections('activityBp')" [attr.aria-sort]="sectionSortColumn === 'activityBp' ? sectionSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                       <span class="flex items-center justify-end">
                           <span>Активност</span>
@@ -471,7 +430,7 @@
                   </th>
                 }
                 @if (visibleColumns().has('discardedVotes')) {
-                  <th hlmTableHead (click)="sortSections('discardedVotes')"
+                  <th hlmTableHead appSortKeyboard (click)="sortSections('discardedVotes')" [attr.aria-sort]="sectionSortColumn === 'discardedVotes' ? sectionSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                       <span class="flex items-center justify-end">
                           <span>Невалидни</span>
@@ -493,7 +452,7 @@
                   </th>
                 }
                 @if (visibleColumns().has('noVotes')) {
-                  <th hlmTableHead (click)="sortSections('noVotes')"
+                  <th hlmTableHead appSortKeyboard (click)="sortSections('noVotes')" [attr.aria-sort]="sectionSortColumn === 'noVotes' ? sectionSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                       <span class="flex items-center justify-end">
                           <span>Не подкрепя никого</span>
@@ -515,7 +474,7 @@
                   </th>
                 }
                 @if (visibleColumns().has('typeVotes')) {
-                  <th hlmTableHead (click)="sortSections('totalMachine')"
+                  <th hlmTableHead appSortKeyboard (click)="sortSections('totalMachine')" [attr.aria-sort]="sectionSortColumn === 'totalMachine' ? sectionSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                       <span class="flex items-center justify-between">
                           <span>Гласове по тип</span>
@@ -537,7 +496,7 @@
                   </th>
                 }
                 @if (visibleColumns().has('votesToFirst')) {
-                  <th hlmTableHead (click)="sortSections('votesToFirst')"
+                  <th hlmTableHead appSortKeyboard (click)="sortSections('votesToFirst')" [attr.aria-sort]="sectionSortColumn === 'votesToFirst' ? sectionSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                       <span class="flex items-center justify-end">
                           <span>Нужни</span>
@@ -822,7 +781,7 @@
               <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
               <tr hlmTableRow class="hover:bg-transparent">
                 @if (currentVisibleColumns.has('candidateId')) {
-                  <th hlmTableHead (click)="sortCandidates('candidateId')"
+                  <th hlmTableHead appSortKeyboard (click)="sortCandidates('candidateId')" [attr.aria-sort]="candidateSortColumn === 'candidateId' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                             <span class="flex items-center justify-between">
                                                 <span>Номер</span>
@@ -845,7 +804,7 @@
                   </th>
                 }
                 @if (currentVisibleColumns.has('risks')) {
-                  <th hlmTableHead (click)="sortCandidates('risks')"
+                  <th hlmTableHead appSortKeyboard (click)="sortCandidates('risks')" [attr.aria-sort]="candidateSortColumn === 'risks' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                             <span class="flex items-center justify-between">
                                                 <span>Рискове</span>
@@ -868,7 +827,7 @@
                   </th>
                 }
                 @if (currentVisibleColumns.has('candidateName')) {
-                  <th hlmTableHead (click)="sortCandidates('candidateName')"
+                  <th hlmTableHead appSortKeyboard (click)="sortCandidates('candidateName')" [attr.aria-sort]="candidateSortColumn === 'candidateName' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                             <span class="flex items-center justify-between">
                                                 <span>Име</span>
@@ -891,7 +850,7 @@
                   </th>
                 }
                 @if (currentVisibleColumns.has('partyName')) {
-                  <th hlmTableHead (click)="sortCandidates('partyName')"
+                  <th hlmTableHead appSortKeyboard (click)="sortCandidates('partyName')" [attr.aria-sort]="candidateSortColumn === 'partyName' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                             <span class="flex items-center justify-between">
                                                 <span>Партия</span>
@@ -914,7 +873,7 @@
                   </th>
                 }
                 @if (currentVisibleColumns.has('totalInRegion')) {
-                  <th hlmTableHead (click)="sortCandidates('totalInRegion')"
+                  <th hlmTableHead appSortKeyboard (click)="sortCandidates('totalInRegion')" [attr.aria-sort]="candidateSortColumn === 'totalInRegion' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                         <span class="flex items-center justify-between">
                             <span>Преференции</span>
@@ -937,7 +896,7 @@
                   </th>
                 }
                 @if (currentVisibleColumns.has('preferencePercentOfPartyVotes')) {
-                  <th hlmTableHead (click)="sortCandidates('preferencePercentOfPartyVotes')"
+                  <th hlmTableHead appSortKeyboard (click)="sortCandidates('preferencePercentOfPartyVotes')" [attr.aria-sort]="candidateSortColumn === 'preferencePercentOfPartyVotes' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
                       class="text-right cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
                                             <span class="flex items-center justify-end">
                                                 <span>% от гласовете за партията</span>
@@ -1076,7 +1035,7 @@
 
         </div>
         <div [class.hidden]="leftPanel() !== 'stats'">
-          <nav aria-label="Статистически графики" class="mb-6 flex flex-wrap gap-1 border-b border-border">
+          <nav aria-label="Статистически графики" class="app-tabs mb-6 flex flex-wrap gap-1 border-b border-border">
             <button hlmBtn variant="line" type="button" [attr.data-state]="activeChart() === 'votes' ? 'active' : 'inactive'" [attr.aria-pressed]="activeChart() === 'votes'" (click)="setActiveChart('votes')">Разпределение на гласовете</button>
             @if (electionType !== 'presidential') {
               <button hlmBtn variant="line" type="button" [attr.data-state]="activeChart() === 'ppdb' ? 'active' : 'inactive'" [attr.aria-pressed]="activeChart() === 'ppdb'" (click)="setActiveChart('ppdb')">Секции по категории (ПП-ДБ)</button>
@@ -1190,7 +1149,7 @@
       [partyVotes]="partyVotesMap()"
       [filteredCandidates]="filteredCandidates"
       [allParties]="allParties"
-      [selectedPartyIds]="selectedPartyIds"
+      [selectedPartyIds]="viewMode() === 'candidates' ? selectedCandidatePartyIds() : selectedPartyIds"
       [initialCandidateColumnIds]="visibleCandidateColumns()"
       [viewMode]="viewMode()"
       [date]="date"

@@ -1,3 +1,6 @@
+import { TableControlsComponent, TableColumns } from '../ui/table-controls/table-controls';
+import { SortableTableHeaderComponent } from '../ui/sortable-table-header/sortable-table-header';
+import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { SelectComponent } from '../ui/select/select';
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, computed, inject, input, signal } from '@angular/core';
@@ -18,7 +21,7 @@ import { HlmTableBodyDirective, HlmTableDirective, HlmTableHeadDirective, HlmTab
 @Component({
   selector: 'app-head-to-head',
   standalone: true,
-  imports: [SelectComponent, CommonModule, RouterLink, HlmButtonDirective, HlmTableDirective, ComparisonCellComponent,
+  imports: [TableControlsComponent, SortableTableHeaderComponent, LoadingBarComponent, SelectComponent, CommonModule, RouterLink, HlmButtonDirective, HlmTableDirective, ComparisonCellComponent,
     HlmTableHeaderDirective, HlmTableBodyDirective, HlmTableRowDirective, HlmTableHeadDirective],
   templateUrl: './head-to-head.html',
   styles: ':host { display: block; min-width: 0; }',
@@ -78,6 +81,10 @@ export class HeadToHeadComponent {
     ].map(row => ({ ...row, leader: this.leader(row.left, row.right) }));
   });
   readonly displayPartyName = getPartyDisplayName;
+  readonly tableColumns: TableColumns<ReturnType<HeadToHeadComponent['rows']>[number]> = {
+    label: row => row.label, left: row => row.left, right: row => row.right,
+    difference: row => row.left != null && row.right != null ? row.left - row.right : null,
+  };
   readonly comparisonSides = COMPARISON_SIDES;
   readonly format = formatComparisonValue;
   readonly leader = comparisonLeader;

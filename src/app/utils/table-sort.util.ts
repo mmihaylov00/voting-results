@@ -19,7 +19,7 @@ export interface SortState {
  * @param valueGetter - Optional function to extract/transform the value before sorting
  */
 export function sortArray<T>(
-  array: T[],
+  array: readonly T[],
   column: keyof T | string,
   direction: SortDirection = 'asc',
   locale: string = 'bg',
@@ -28,18 +28,17 @@ export function sortArray<T>(
   const sorted = [...array];
   
   return sorted.sort((a, b) => {
-    let valA: any = valueGetter ? valueGetter(a) : (a as any)[column];
-    let valB: any = valueGetter ? valueGetter(b) : (b as any)[column];
+    const valA: any = valueGetter ? valueGetter(a) : (a as any)[column];
+    const valB: any = valueGetter ? valueGetter(b) : (b as any)[column];
+    const missingA = valA == null || typeof valA === 'number' && !Number.isFinite(valA);
+    const missingB = valB == null || typeof valB === 'number' && !Number.isFinite(valB);
+    if (missingA || missingB) return Number(missingA) - Number(missingB);
 
     // Handle string comparison with locale
     if (typeof valA === 'string' && typeof valB === 'string') {
-      const comparison = valA.localeCompare(valB, locale);
+      const comparison = valA.localeCompare(valB, locale, { numeric: true });
       return direction === 'asc' ? comparison : -comparison;
     }
-
-    // Handle null/undefined values
-    if (valA === undefined || valA === null) valA = 0;
-    if (valB === undefined || valB === null) valB = 0;
 
     // Handle number comparison
     if (typeof valA === 'number' && typeof valB === 'number') {
@@ -51,7 +50,7 @@ export function sortArray<T>(
     // Fallback: convert to string and compare
     const strA = String(valA);
     const strB = String(valB);
-    const comparison = strA.localeCompare(strB, locale);
+    const comparison = strA.localeCompare(strB, locale, { numeric: true });
     return direction === 'asc' ? comparison : -comparison;
   });
 }
@@ -63,7 +62,8 @@ export function sortArray<T>(
 export function toggleSort(
   currentColumn: string,
   currentDirection: SortDirection,
-  newColumn: string
+  newColumn: string,
+  defaultDirection: SortDirection = 'asc'
 ): SortState {
   if (currentColumn === newColumn) {
     return {
@@ -73,7 +73,7 @@ export function toggleSort(
   }
   return {
     column: newColumn,
-    direction: 'asc'
+    direction: defaultDirection
   };
 }
 

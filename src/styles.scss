@@ -89,14 +89,40 @@ body {
   font-family: 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-@keyframes progress-animation {
-  0% { transform: translateX(-100%) scaleX(0.2); }
-  50% { transform: translateX(0%) scaleX(0.5); }
-  100% { transform: translateX(100%) scaleX(0.2); }
+.app-tabs {
+  min-width: 0;
+  max-width: 100%;
 }
 
-.animate-progress {
-  animation: progress-animation 2s infinite linear;
+@media (max-width: 1023px) {
+  .app-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+
+  .app-tabs > :is(button, a) {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .app-tabs-primary {
+    position: sticky;
+    top: 65px;
+    z-index: 40;
+    background: hsl(var(--background));
+  }
+}
+
+.virtual-table-viewport {
+  overflow-anchor: none;
+}
+
+.virtual-table-spacer,
+.virtual-table-spacer td {
+  border: 0;
+  padding: 0;
+  line-height: 0;
 }
 
 .leaflet-dragging .leaflet-tooltip-pane {

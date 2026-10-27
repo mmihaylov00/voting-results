@@ -1,3 +1,4 @@
+import { LoadingBarComponent } from '../loading-bar/loading-bar';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -47,19 +48,19 @@ export type AbroadMetricAggregate = MapAggregate;
 @Component({
   selector: 'app-abroad-map',
   standalone: true,
-  imports: [CommonModule, HlmButtonDirective, MapLegendComponent, MapToolsComponent, MapActionsComponent],
+  imports: [LoadingBarComponent, CommonModule, HlmButtonDirective, MapLegendComponent, MapToolsComponent, MapActionsComponent],
   template: `
     <div
       [class]="embedded()
-        ? 'flex h-[65dvh] min-h-[360px] max-h-[780px] w-full flex-col overflow-hidden rounded-2xl border border-border bg-background'
+        ? 'flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-background lg:h-[65dvh] lg:min-h-[360px] lg:max-h-[780px]'
         : 'fixed inset-0 z-[1200] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm'"
       (click)="onBackdropClick()">
       <div #workspace class="map-workspace"
         [class]="embedded()
           ? 'flex min-h-0 flex-1 flex-col'
-          : 'flex h-[min(90vh,840px)] w-full max-w-7xl flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl'"
+          : 'flex max-h-[90dvh] w-full max-w-7xl flex-col overflow-y-auto rounded-2xl border border-border bg-background shadow-2xl lg:h-[min(90vh,840px)] lg:overflow-hidden'"
         (click)="embedded() ? null : $event.stopPropagation()">
-        <div class="flex items-center justify-between border-b border-border px-6 py-4">
+        <div class="flex shrink-0 items-center justify-between border-b border-border px-6 py-4">
           <div>
             <h2 class="text-xl font-semibold text-foreground">Извън страната</h2>
             <p class="text-sm text-muted-foreground">
@@ -80,28 +81,26 @@ export type AbroadMetricAggregate = MapAggregate;
           </div>
         </div>
 
-        <div class="grid gap-2 border-b border-border bg-background px-4 py-3 sm:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+        <div class="grid shrink-0 gap-2 border-b border-border bg-background px-4 py-3 sm:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
           <app-map-tools class="block min-w-0" [items]="searchItems" [error]="toolError" (searchSelect)="focusSearchItem($event)" />
           <ng-content select="app-map-metric-controls" />
         </div>
-        <div class="relative min-h-0 flex-1">
+        <div class="relative flex shrink-0 flex-col lg:min-h-0 lg:flex-1">
+        <div class="map-viewport relative isolate h-[55dvh] min-h-[320px] max-h-[620px] lg:h-auto lg:min-h-0 lg:max-h-none lg:flex-1">
           <div class="pointer-events-none absolute right-3 top-3 z-[600] w-[220px] max-w-[50%] space-y-2">
             <app-map-actions class="pointer-events-auto block" [exporting]="exporting"
               (exportClick)="exportImage()" (fullscreenClick)="toggleFullscreen()" />
-            <app-map-legend class="pointer-events-auto block" [metric]="metric()" [selectedPartyId]="selectedPartyId()" [partiesById]="partiesById()" [shareLabel]="shareLabel()" />
           </div>
-          @if (loading() || !dataLoaded) {
-            <div class="absolute inset-0 z-10 flex items-center justify-center bg-background/80 text-sm text-muted-foreground backdrop-blur-sm">
-              Зареждане на географските данни за чужбина...
-            </div>
-          }
+          <app-loading-bar [loading]="loading() || !dataLoaded" appearance="contained" label="Зареждане на картата на чужбина" />
           <div #mapContainer class="h-full w-full"></div>
+        </div>
+        <app-map-legend class="m-3 block shrink-0 lg:absolute lg:right-3 lg:top-[60px] lg:z-[600] lg:m-0 lg:w-[220px] lg:max-w-[50%]" [metric]="metric()" [selectedPartyId]="selectedPartyId()" [partiesById]="partiesById()" [shareLabel]="shareLabel()" />
         </div>
       </div>
     </div>
   `,
   styles: [`
-    .map-workspace:fullscreen { width: 100vw; max-width: none; height: 100dvh; max-height: none; border-radius: 0; }
+    .map-workspace:fullscreen { width: 100vw; max-width: none; height: 100dvh; max-height: none; border-radius: 0; overflow: auto; }
   `],
 })
 export class AbroadMapComponent implements OnInit, AfterViewInit, OnDestroy {

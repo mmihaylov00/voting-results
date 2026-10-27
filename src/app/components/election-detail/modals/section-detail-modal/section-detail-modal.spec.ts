@@ -249,7 +249,7 @@ describe('Section detail panels', () => {
     expect(risks.hidden).toBe(false);
     expect(risks.querySelector('app-risk-analysis-summary')).not.toBeNull();
     expect(risks.querySelector('app-section-risk-history')).not.toBeNull();
-    expect(risks.textContent).toContain('Няма отчетени рискови сигнали');
+    expect(risks.textContent).toContain('Няма отчетени рискови индикатори');
     expect(host.querySelector('highcharts-chart')).toBeNull();
   });
 });

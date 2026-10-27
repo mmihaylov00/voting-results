@@ -15,14 +15,14 @@
     }
   </div>
 
-  @if (loading()) {
-    <p role="status" class="py-12 text-center text-muted-foreground">Зареждане на преференциите... {{ processed() }} / {{ dates.length }} избора</p>
-  } @else if (error()) {
+  <app-loading-bar [loading]="loading()" [progress]="dates.length ? processed() / dates.length * 100 : null" label="Зареждане: Преференции" class="my-8" />
+  @if (!loading() && (error())) {
     <div role="alert" class="space-y-3 py-8">
       <p>{{ error() }}</p>
       <button hlmBtn variant="outline" type="button" (click)="load()">Опитай отново</button>
     </div>
-  } @else {
+  }
+  @else if (!loading()) {
     <app-virtual-cards [items]="filteredCards()" label="Кандидати с преференции" emptyMessage="Няма профили за избраните избори и филтри.">
       <ng-template let-entry>
         <button hlmCard type="button" class="group flex h-full w-full flex-col gap-5 border-primary/20 p-5 text-left transition-colors hover:border-primary/50 hover:bg-muted/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"

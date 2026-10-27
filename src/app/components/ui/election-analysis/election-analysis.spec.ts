@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { describe, expect, it, vi } from 'vitest';
 import { of, Subject, throwError } from 'rxjs';
@@ -8,6 +9,8 @@ import { ElectionService } from '../../../services/election';
 import { ThemeService } from '../../../services/theme.service';
 import { Region, Section } from '../../../models/election.models';
 import { ElectionAnalysisComponent } from './election-analysis';
+import { VirtualTableDirective } from '../virtual-table/virtual-table';
+import { provideRouter } from '@angular/router';
 
 const section: Section = {
   sectionId: '010100001', regionId: '01', cityName: 'Банско', sectionName: 'Училище', sectionType: 'City',
@@ -26,6 +29,7 @@ function setup(getSections = vi.fn(() => of([section])), renderTemplate = false)
   const testing = TestBed.configureTestingModule({
     imports: [ElectionAnalysisComponent],
     providers: [
+      provideRouter([]),
       { provide: ElectionService, useValue: {
         getDates: () => [
           { date: '2021.11.14', name: '2021 тур 1', type: 'presidential', round: 1 },
@@ -55,6 +59,77 @@ function setup(getSections = vi.fn(() => of([section])), renderTemplate = false)
 }
 
 describe('election analysis loading', () => {
+  afterEach(() => vi.restoreAllMocks());
+
+  it('exports every search match in the displayed order and disables export for empty search results', async () => {
+    const fixture = setup(undefined, true);
+    const component = fixture.componentInstance;
+    component.view = 'comparison';
+    await component.load();
+    const source = component.rows[0];
+    component.rows = Array.from({ length: 128 }, (_, id) => ({ ...source, id: String(id), label: `Място ${id}`,
+      current: { ...source.current, votes: id } }));
+    fixture.detectChanges(); await fixture.whenStable();
+    const controls = component.comparisonTable!;
+    controls.query.set('Място 1'); controls.sort('currentVotes');
+    await fixture.whenStable();
+    const create = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:comparison-csv');
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+    vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
+    component.exportCsv();
+    fixture.changeDetectorRef.markForCheck();
+    await fixture.whenStable();
+    expect(create).not.toHaveBeenCalled();
+    const confirm = fixture.nativeElement.querySelector('app-csv-export-modal app-csv-export-button button') as HTMLButtonElement;
+    expect(confirm).not.toBeNull();
+    confirm.click();
+    await fixture.whenStable();
+    const blob = create.mock.calls[0][0];
+    if (!(blob instanceof Blob)) throw new Error('Expected a CSV blob');
+    const contents = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = () => reject(reader.error);
+      reader.readAsText(blob);
+    });
+    expect(contents.split('\r\n')).toHaveLength(controls.viewRows().length + 1);
+    expect(contents.split('\r\n')[1]).toContain('Място 127');
+    expect(contents).not.toContain('Място 20');
+    expect(controls.viewRows().length).toBeGreaterThan(fixture.nativeElement.querySelectorAll('tr[data-virtual-index]').length);
+    expect(component.rows).toHaveLength(128);
+    expect(component.rows[0].id).toBe('0');
+    controls.query.set('Няма такова място'); await fixture.whenStable();
+    expect(fixture.nativeElement.querySelector('app-csv-export-button button')?.disabled).toBe(true);
+  });
+
+  it('virtualizes every comparison row and resets to the first row after sorting', async () => {
+    const fixture = setup(undefined, true);
+    const component = fixture.componentInstance;
+    component.view = 'comparison';
+    await component.load();
+    const initial = component.rows[0];
+    component.rows = Array.from({ length: 128 }, (_, index) => ({ ...initial,
+      id: String(index), label: `Място ${index}`, voteChange: index,
+    }));
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const viewport = fixture.debugElement.query(By.directive(VirtualTableDirective));
+    const list = viewport.injector.get(VirtualTableDirective);
+    expect(list.columnCount()).toBe(10);
+    expect(list.virtualRows()).toHaveLength(128);
+    expect(viewport.nativeElement.querySelectorAll('tr[data-virtual-index]').length).toBeLessThan(30);
+    viewport.nativeElement.scrollTop = 128 * 64;
+    viewport.nativeElement.dispatchEvent(new Event('scroll'));
+    await fixture.whenStable();
+    expect(viewport.nativeElement.querySelector('tr[data-virtual-index="127"] button')?.textContent).toBe('Място 127');
+    component.sort('voteChange');
+    fixture.changeDetectorRef.markForCheck();
+    await fixture.whenStable();
+    expect(viewport.nativeElement.scrollTop).toBe(0);
+    expect(viewport.nativeElement.querySelector('tr[data-virtual-index="0"] button')?.textContent).toBe('Място 127');
+    expect(list.virtualRows()).toHaveLength(128);
+  });
+
   it('orders historical party choices by the current election and scope without loading extra sections', async () => {
     const getSections = vi.fn(() => of([section]));
     const component = setup(getSections).componentInstance;
@@ -253,13 +328,14 @@ describe('election analysis loading', () => {
     const selectRow = vi.spyOn(component, 'selectRow').mockImplementation(() => {});
     rows[1].querySelector<HTMLButtonElement>('th button')!.click();
     expect(selectRow).toHaveBeenCalledWith(component.rows[1]);
-    const sort = vi.spyOn(component, 'sort').mockImplementation(() => {});
-    element.querySelector<HTMLButtonElement>('button[aria-label="Сортирай по промяна: Дял"]')!.click();
-    expect(sort).toHaveBeenCalledWith('shareChange');
+    const sortHeader = element.querySelector<HTMLElement>('th[aria-label="Сортирай по промяна: Дял"]')!;
+    sortHeader.click(); fixture.detectChanges();
+    expect(component.comparisonTable?.sortColumn()).toBe('shareChange');
+    expect(sortHeader.getAttribute('aria-sort')).toBe('descending');
     const exportCsv = vi.spyOn(component, 'exportCsv').mockImplementation(() => {});
-    const download = element.querySelector<HTMLButtonElement>('button[aria-label="Изтегли таблицата като CSV"]');
-    expect(download?.textContent?.trim()).toBe('');
-    expect(download?.title).toBe('Изтегли таблицата като CSV');
+    const download = element.querySelector<HTMLButtonElement>('app-csv-export-button button');
+    expect(download?.textContent?.trim()).toBe('Експорт CSV');
+    expect(download?.title).toBe('Експорт CSV');
     expect(download?.querySelector('app-map-icon svg[aria-hidden="true"]')).not.toBeNull();
     download?.click();
     expect(exportCsv).toHaveBeenCalledOnce();
@@ -296,7 +372,7 @@ describe('election analysis loading', () => {
     expect(element.querySelector('table')).not.toBeNull();
     expect(element.querySelector('highcharts-chart')).toBe(chart);
     expect(chart?.parentElement?.parentElement?.classList.contains('hidden')).toBe(true);
-    expect(element.querySelector('button[aria-label="Изтегли таблицата като CSV"]')).not.toBeNull();
+    expect(element.querySelector('app-csv-export-button button')).not.toBeNull();
     expect(element.textContent).not.toContain('Показател');
     expect(element.textContent).not.toContain('Дял спрямо страната');
     expect(load).not.toHaveBeenCalled();

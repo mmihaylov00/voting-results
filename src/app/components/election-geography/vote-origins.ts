@@ -1,3 +1,4 @@
+import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { SelectComponent, partySelectOptions } from '../ui/select/select';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
@@ -20,7 +21,7 @@ const SHARE_FORMAT = new Intl.NumberFormat('bg-BG', { minimumFractionDigits: 1, 
 @Component({
   selector: 'app-vote-origins',
   standalone: true,
-  imports: [SelectComponent, CommonModule, HlmButtonDirective, HlmTooltipDirective, BaseModalComponent],
+  imports: [LoadingBarComponent, SelectComponent, CommonModule, HlmButtonDirective, HlmTooltipDirective, BaseModalComponent],
   templateUrl: './vote-origins.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

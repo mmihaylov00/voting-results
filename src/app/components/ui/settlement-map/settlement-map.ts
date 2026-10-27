@@ -1,3 +1,4 @@
+import { LoadingBarComponent } from '../loading-bar/loading-bar';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -62,7 +63,7 @@ export type SettlementMapLevel = SettlementMapView | 'neighborhoods';
 @Component({
   selector: 'app-settlement-map',
   standalone: true,
-  imports: [CommonModule, MapLegendComponent, MapToolsComponent, MapActionsComponent, MapIconComponent],
+  imports: [LoadingBarComponent, CommonModule, MapLegendComponent, MapToolsComponent, MapActionsComponent, MapIconComponent],
   template: `
     <div #workspace class="map-workspace space-y-3 bg-background p-1">
       <div class="grid gap-2 sm:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
@@ -70,7 +71,7 @@ export type SettlementMapLevel = SettlementMapView | 'neighborhoods';
         <ng-content select="app-map-metric-controls" />
       </div>
       @if (showViewTabs) {
-        <div class="flex flex-wrap gap-1 rounded-lg border border-border bg-background p-1" role="group" aria-label="Географско ниво">
+        <div class="app-tabs flex flex-wrap gap-1 rounded-lg border border-border bg-background p-1" role="group" aria-label="Географско ниво">
           <button
             type="button"
             class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-accent"
@@ -119,21 +120,21 @@ export type SettlementMapLevel = SettlementMapView | 'neighborhoods';
           }
         </div>
       }
-      <div class="map-frame relative min-w-0">
+      <div class="map-frame relative flex min-w-0 flex-col">
+      <div class="map-viewport relative isolate min-h-0 flex-1">
         <div class="pointer-events-none absolute right-3 top-3 z-[600] w-[220px] max-w-[50%] space-y-2">
           <app-map-actions class="pointer-events-auto block" [exporting]="exporting"
             (exportClick)="exportImage()" (fullscreenClick)="toggleFullscreen()" />
-          <app-map-legend class="pointer-events-auto block" [metric]="metric" [selectedPartyId]="selectedPartyId" [partiesById]="partiesById" [shareLabel]="shareLabel" />
         </div>
         <div #mapContainer class="map-canvas h-[55dvh] min-h-[320px] max-h-[620px] w-full overflow-hidden rounded-xl border border-primary/20 bg-muted/20 lg:h-[45dvh]"></div>
       @if (view === 'neighborhoods') {
-        <p class="absolute bottom-3 left-3 right-20 z-[500] rounded bg-background/95 p-2 text-xs text-muted-foreground">
-          @if (!neighborhoodGeometry) { Зареждане на кварталите... }
-          @else {
+        <div class="absolute bottom-3 left-3 right-20 z-[500] rounded bg-background/95 p-2 text-xs text-muted-foreground">
+          <app-loading-bar [loading]="!neighborhoodGeometry" label="Зареждане на кварталите" />
+          @if (neighborhoodGeometry) {
             Кварталите са с частично покритие. Показани са само секции с координати в наличните граници.
             © <a class="underline" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>
           }
-        </p>
+        </div>
       }
       @if (showWorldButton) {
         <button
@@ -157,6 +158,8 @@ export type SettlementMapLevel = SettlementMapView | 'neighborhoods';
           </div>
         </div>
       }
+      </div>
+      <app-map-legend class="mt-3 block shrink-0 lg:absolute lg:right-3 lg:top-[60px] lg:z-[600] lg:mt-0 lg:w-[220px] lg:max-w-[50%]" [metric]="metric" [selectedPartyId]="selectedPartyId" [partiesById]="partiesById" [shareLabel]="shareLabel" />
       </div>
     </div>
   `,

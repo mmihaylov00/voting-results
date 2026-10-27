@@ -12,28 +12,34 @@
       }
     }
   </ng-template>
-  <ng-template #loadingBar>
-    <div role="progressbar" aria-label="Зареждане на подробни данни" aria-valuemin="0" aria-valuemax="100"
-      [attr.aria-valuenow]="detailProgress()" class="my-8 h-2 w-full overflow-hidden rounded-full bg-muted">
-      <div class="h-full bg-primary transition-[width] duration-200 motion-reduce:transition-none" [style.width.%]="detailProgress()"></div>
-    </div>
-  </ng-template>
-  <div class="min-w-0">
-    <nav class="mb-6 flex flex-wrap gap-1 border-b border-border" aria-label="Профил">
-      @for (tab of tabs; track tab.id) {
-        <button hlmBtn variant="line" type="button" [attr.aria-pressed]="activeTab() === tab.id"
-          [attr.data-state]="activeTab() === tab.id ? 'active' : 'inactive'" (click)="selectTab(tab.id)">{{ tab.label }}</button>
-      }
-    </nav>
 
-    @if (loading()) {
-      @if (preferenceMode) { <ng-container [ngTemplateOutlet]="loadingBar" /> }
-      @else { <p role="status" class="py-10 text-center text-muted-foreground">Зареждане на участията във всички избори...</p> }
-    } @else if (error()) {
+  <div class="min-w-0">
+    <ng-template #electionScope>
+      <label [for]="'profile-election-scope-' + controlId + '--trigger'" class="block text-sm text-muted-foreground" [class.sr-only]="preferenceMode">Избори</label>
+      <app-select [controlId]="'profile-election-scope-' + controlId" label="Избори" icon="calendar" [value]="scope()" [options]="scopeOptions()" (valueChange)="selectScope($event)" />
+    </ng-template>
+    <div class="mb-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-border">
+      <nav class="app-tabs flex flex-wrap gap-1" aria-label="Профил">
+        @for (tab of tabs; track tab.id) {
+          <button hlmBtn variant="line" type="button" [attr.aria-pressed]="activeTab() === tab.id"
+            [attr.data-state]="activeTab() === tab.id ? 'active' : 'inactive'" (click)="selectTab(tab.id)">{{ tab.label }}</button>
+        }
+      </nav>
+      @if (preferenceMode && activeTab() !== 'overview' && !loading() && !error() && participations().length) {
+        <div class="ml-auto w-full pb-2 sm:w-56 sm:pb-0">
+          <ng-container [ngTemplateOutlet]="electionScope" />
+        </div>
+      }
+    </div>
+
+    <app-loading-bar [loading]="loading() || detailLoading()" [progress]="(loading() && preferenceMode) || detailLoading() ? detailProgress() : null" label="Зареждане на профила" class="my-8" />
+    @if (!loading() && (error())) {
       <div role="alert" class="py-6"><p>{{ error() }}</p><button hlmBtn variant="outline" type="button" class="mt-3" (click)="load()">Опитай отново</button></div>
-    } @else if (!participations().length) {
+    }
+    @else if (!loading() && (!participations().length)) {
       <p class="py-8 text-muted-foreground">Няма еднозначно съпоставени участия за този профил в архива.</p>
-    } @else {
+    }
+    @else if (!loading()) {
       @if (activeTab() === 'overview') {
         <section aria-label="Обобщение" class="space-y-6">
           <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -72,27 +78,27 @@
             <p class="text-xs text-muted-foreground">{{ preferenceMode ? 'Дяловете са от партийните гласове в районите на кандидатските листи. Участията се съпоставят по пълно име и партия.' : 'Дяловете са от гласувалите.' }} Гласовете от различни избори не се сумират.</p>
           </section>
         </section>
-      } @else {
+      } @else if (!preferenceMode) {
         <div class="mb-6 w-full space-y-2 sm:max-w-sm">
-          <label [for]="'profile-election-scope-' + controlId + '--trigger'" class="block text-sm text-muted-foreground">Избори</label>
-          <app-select [controlId]="'profile-election-scope-' + controlId" label="Избори" icon="calendar" [value]="scope()" [options]="scopeOptions()" (valueChange)="selectScope($event)" />
+          <ng-container [ngTemplateOutlet]="electionScope" />
         </div>
       }
 
       @if (activeTab() === 'elections' && scope() === 'all') {
-        <div class="overflow-x-auto rounded-md border border-border">
+        <app-table-controls [rows]="participations()" [columns]="participationColumns" label="Търсене: Участия във всички избори" #participationTable />
+<div class="max-h-[70vh] overflow-auto rounded-md border border-border">
           <table hlmTable aria-label="Участия във всички избори">
-            <thead hlmTableHeader class="bg-muted/40">
+            <thead hlmTableHeader class="bg-muted/40 sticky top-0 z-20 bg-background/95 shadow-sm backdrop-blur">
               <tr hlmTableRow>
-                <th hlmTableHead scope="col">Избори</th>
-                <th hlmTableHead scope="col">{{ preferenceMode ? 'Партия / район' : presidential ? 'Кандидатска двойка' : 'Участие като' }}</th>
-                <th hlmTableHead scope="col" class="text-right">{{ votesLabel }}</th>
-                <th hlmTableHead scope="col" class="text-right">Дял</th>
-                <th hlmTableHead scope="col" class="text-right">Място</th>
+                <th hlmTableHead scope="col" app-sortable-table-header columnKey="election" label="Избори" [table]="participationTable" align="left"></th>
+                <th hlmTableHead scope="col" app-sortable-table-header columnKey="name" [label]="preferenceMode ? 'Партия / район' : presidential ? 'Кандидатска двойка' : 'Участие като'" [table]="participationTable" align="left"></th>
+                <th hlmTableHead scope="col" class="text-right" app-sortable-table-header columnKey="votes" [label]="votesLabel" [table]="participationTable" align="right"></th>
+                <th hlmTableHead scope="col" class="text-right" app-sortable-table-header columnKey="share" label="Дял" [table]="participationTable" align="right"></th>
+                <th hlmTableHead scope="col" class="text-right" app-sortable-table-header columnKey="rank" label="Място" [table]="participationTable" align="right"></th>
               </tr>
             </thead>
             <tbody hlmTableBody>
-              @for (election of participations(); track election.date) {
+              @for (election of participationTable.viewRows(); track election.date) {
                 <tr hlmTableRow>
                   <td hlmTableCell class="px-4 py-3">
                     <button hlmBtn variant="link" type="button" class="h-auto justify-start p-0 text-left whitespace-normal" (click)="openElection(election.date)">{{ election.name }}</button>
@@ -139,11 +145,12 @@
           @if (selectedPreference(); as preference) {
             <section class="space-y-3">
               <h4 class="font-semibold">Листи и преференции по райони</h4>
-              <div class="overflow-x-auto rounded-md border border-border">
+              <app-table-controls [rows]="preference.lists" [columns]="preferenceListColumns" label="Търсене: Листи на кандидата" #listTable />
+<div class="max-h-[70vh] overflow-auto rounded-md border border-border">
                 <table hlmTable aria-label="Листи на кандидата">
-                  <thead hlmTableHeader class="bg-muted/40"><tr hlmTableRow><th hlmTableHead scope="col">Район</th><th hlmTableHead scope="col">Партия</th><th hlmTableHead scope="col" class="text-right">Номер</th><th hlmTableHead scope="col" class="text-right">Място по преференции</th><th hlmTableHead scope="col" class="text-right">Преференции</th><th hlmTableHead scope="col" class="text-right">Дял от партийните гласове</th></tr></thead>
+                  <thead hlmTableHeader class="bg-muted/40 sticky top-0 z-20 bg-background/95 shadow-sm backdrop-blur"><tr hlmTableRow><th hlmTableHead scope="col" app-sortable-table-header columnKey="region" label="Район" [table]="listTable" align="left"></th><th hlmTableHead scope="col" app-sortable-table-header columnKey="party" label="Партия" [table]="listTable" align="left"></th><th hlmTableHead scope="col" class="text-right" app-sortable-table-header columnKey="number" label="Номер" [table]="listTable" align="right"></th><th hlmTableHead scope="col" class="text-right" app-sortable-table-header columnKey="rank" label="Място по преференции" [table]="listTable" align="right"></th><th hlmTableHead scope="col" class="text-right" app-sortable-table-header columnKey="votes" label="Преференции" [table]="listTable" align="right"></th><th hlmTableHead scope="col" class="text-right" app-sortable-table-header columnKey="share" label="Дял от партийните гласове" [table]="listTable" align="right"></th></tr></thead>
                   <tbody hlmTableBody>
-                    @for (list of preference.lists; track list.regionId + ':' + list.partyId) {
+                    @for (list of listTable.viewRows(); track list.regionId + ':' + list.partyId) {
                       <tr hlmTableRow><td hlmTableCell class="px-4 py-3">{{ list.regionName }}</td><td hlmTableCell class="px-4 py-3">{{ list.partyName }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums">{{ list.candidateId }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums">{{ list.rank }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums">{{ list.votes | number }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums">{{ list.share === null ? '-' : (list.share | number:'1.2-2') + '%' }}</td></tr>
                     }
                   </tbody>
@@ -163,11 +170,12 @@
           @if (roundComparison(); as comparison) {
             <section class="space-y-3 text-sm">
               <h4 class="font-semibold">Между първи и втори тур</h4>
-              <div class="overflow-x-auto rounded-md border border-border">
+              <app-table-controls [rows]="[comparison.first, comparison.second]" [columns]="participationColumns" label="Търсене: Резултати по турове" #roundTable />
+<div class="max-h-[70vh] overflow-auto rounded-md border border-border">
                 <table hlmTable aria-label="Резултати по турове">
-                  <thead hlmTableHeader class="bg-muted/40"><tr hlmTableRow><th hlmTableHead scope="col">Избори</th><th hlmTableHead scope="col" class="text-right">Гласове</th><th hlmTableHead scope="col" class="text-right">Дял</th></tr></thead>
+                  <thead hlmTableHeader class="bg-muted/40 sticky top-0 z-20 bg-background/95 shadow-sm backdrop-blur"><tr hlmTableRow><th hlmTableHead scope="col" app-sortable-table-header columnKey="election" label="Избори" [table]="roundTable" align="left"></th><th hlmTableHead scope="col" class="text-right" app-sortable-table-header columnKey="votes" label="Гласове" [table]="roundTable" align="right"></th><th hlmTableHead scope="col" class="text-right" app-sortable-table-header columnKey="share" label="Дял" [table]="roundTable" align="right"></th></tr></thead>
                   <tbody hlmTableBody>
-                    @for (round of [comparison.first, comparison.second]; track round.date) {
+                    @for (round of roundTable.viewRows(); track round.date) {
                       <tr hlmTableRow><td hlmTableCell class="px-4 py-3">{{ round.name }}</td><td hlmTableCell class="px-4 py-3 text-right font-semibold tabular-nums">{{ round.votes | number }}</td><td hlmTableCell class="px-4 py-3 text-right tabular-nums">{{ round.share === null ? 'Няма данни' : (round.share | number:'1.2-2') + '%' }}</td></tr>
                     }
                   </tbody>
@@ -182,21 +190,21 @@
         </section>
       }
 
-      @if (detailLoading()) {
-        <ng-container [ngTemplateOutlet]="loadingBar" />
-      } @else if (detailError()) {
+      @if (!detailLoading() && (detailError())) {
         <div role="alert" class="py-5"><p>{{ detailError() }}</p><button hlmBtn variant="outline" type="button" class="mt-3" (click)="loadDetails()">Опитай отново</button></div>
-      } @else if (activeTab() === 'geography' || activeTab() === 'sections' || activeTab() === 'risks' || activeTab() === 'candidates') {
+      }
+      @else if (!detailLoading() && (activeTab() === 'geography' || activeTab() === 'sections' || activeTab() === 'risks' || activeTab() === 'candidates')) {
         @if (geographyWarning()) { <p class="mt-3 text-xs text-muted-foreground">{{ geographyWarning() }}</p> }
         @if (activeTab() === 'risks' && preferenceMode && preferenceRiskLists().length) {
           <section class="mb-6 space-y-3">
-            <h3 class="text-lg font-semibold">Сигнали за кандидатските листи</h3>
-            <p class="text-sm text-muted-foreground">Обобщени сигнали за кандидата в съответния район. Те не се броят като отделни рискови секции и не доказват нарушение.</p>
-            <div class="overflow-x-auto rounded-md border border-border">
+            <h3 class="text-lg font-semibold">Рискови индикатори за кандидатските листи</h3>
+            <p class="text-sm text-muted-foreground">Обобщени рискови индикатори за кандидата в съответния район. Те не се броят като отделни рискови секции и не доказват нарушение.</p>
+            <app-table-controls [rows]="preferenceRiskLists()" [columns]="preferenceRiskColumns" label="Търсене: Рискове за кандидатските листи" #listRiskTable />
+<div class="max-h-[70vh] overflow-auto rounded-md border border-border">
               <table hlmTable aria-label="Рискове за кандидатските листи">
-                <thead hlmTableHeader class="bg-muted/40"><tr hlmTableRow><th hlmTableHead scope="col">Избори</th><th hlmTableHead scope="col">Район</th><th hlmTableHead scope="col">Листа</th><th hlmTableHead scope="col">Сигнали</th></tr></thead>
+                <thead hlmTableHeader class="bg-muted/40 sticky top-0 z-20 bg-background/95 shadow-sm backdrop-blur"><tr hlmTableRow><th hlmTableHead scope="col" app-sortable-table-header columnKey="election" label="Избори" [table]="listRiskTable" align="left"></th><th hlmTableHead scope="col" app-sortable-table-header columnKey="region" label="Район" [table]="listRiskTable" align="left"></th><th hlmTableHead scope="col" app-sortable-table-header columnKey="list" label="Листа" [table]="listRiskTable" align="left"></th><th hlmTableHead scope="col" app-sortable-table-header columnKey="signals" label="Индикатори" [table]="listRiskTable" align="left"></th></tr></thead>
                 <tbody hlmTableBody>
-                  @for (list of preferenceRiskLists(); track list.date + ':' + list.regionId + ':' + list.partyId) {
+                  @for (list of listRiskTable.viewRows(); track list.date + ':' + list.regionId + ':' + list.partyId) {
                     <tr hlmTableRow><td hlmTableCell class="px-4 py-3">{{ list.electionName }}</td><td hlmTableCell class="px-4 py-3">{{ list.regionName }}</td><td hlmTableCell class="px-4 py-3">{{ list.partyName }} · № {{ list.candidateId }}</td><td hlmTableCell class="px-4 py-3"><span class="flex flex-wrap gap-1">@for (risk of list.risks; track risk.code) { <app-risk-badge [risk]="risk" [context]="list.context" /> }</span></td></tr>
                   }
                 </tbody>
@@ -206,7 +214,7 @@
         }
         <app-contestant-profile-panels [elections]="detailElections()" [tab]="panelTab()" [presidential]="presidential" [preference]="preferenceMode" (openSection)="openSection($event)" (openCandidate)="openCandidate($event)" />
       }
-      @if (sectionLoading()) { <p role="status" class="text-sm py-3">Зареждане на секцията...</p> }
+      <app-loading-bar [loading]="sectionLoading()" label="Зареждане на секцията" class="my-3" />
       @if (sectionError()) { <p role="alert" class="text-sm py-3">{{ sectionError() }}</p> }
     }
   </div>

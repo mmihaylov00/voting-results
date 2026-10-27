@@ -8,24 +8,25 @@
   </div>
   }
 
-  @if (loading()) {
-    <p role="status" class="py-12 text-center text-muted-foreground">Зареждане на резултатите...</p>
-  } @else if (error()) {
+  <app-loading-bar [loading]="loading()" label="Зареждане: Резултати за сравнение" class="my-8" />
+  @if (!loading() && (error())) {
     <div role="alert" class="space-y-3 py-8">
       <p class="text-destructive">{{ error() }}</p>
       <button hlmBtn variant="outline" type="button" (click)="load()">Опитай отново</button>
     </div>
-  } @else {
+  }
+  @else if (!loading()) {
     @if (profiles().length) {
-      <div class="overflow-x-auto rounded-md border border-border" role="region" aria-label="Таблица за сравнение" tabindex="0">
+      <app-table-controls [rows]="rows()" [columns]="tableColumns" label="Търсене на показател" #metricTable />
+      <div class="max-h-[70vh] overflow-auto rounded-md border border-border" role="region" aria-label="Таблица за сравнение" tabindex="0">
         <table hlmTable class="w-full min-w-[800px] table-fixed">
           <caption class="sr-only">Сравнение на избраните участници</caption>
-          <thead hlmTableHeader class="bg-muted/40">
+          <thead hlmTableHeader class="bg-muted/40 sticky top-0 z-20 bg-background/95 shadow-sm backdrop-blur">
             <tr hlmTableRow>
-              <th hlmTableHead scope="col" class="w-[16%]">Показател</th>
+              <th hlmTableHead scope="col" class="w-[16%]" app-sortable-table-header columnKey="label" label="Показател" [table]="metricTable" align="left"></th>
               @for (side of ['left', 'right']; track side; let index = $index) {
                 @if (index === 1) {
-                  <th hlmTableHead scope="col" class="w-[20%] text-center">Разлика</th>
+                  <th hlmTableHead scope="col" class="w-[20%] text-center" app-sortable-table-header columnKey="difference" label="Разлика" [table]="metricTable" align="center"></th>
                 }
                 @let profile = index === 0 ? left() : right();
                 <th hlmTableHead scope="col" class="w-[24%] py-4 align-top">
@@ -39,7 +40,7 @@
             </tr>
           </thead>
           <tbody hlmTableBody>
-            @for (row of rows(); track row.label) {
+            @for (row of metricTable.viewRows(); track row.label) {
               <tr hlmTableRow>
                 <th hlmTableHead scope="row" class="font-normal">{{ row.label }}</th>
                 @for (side of comparisonSides; track side) {

@@ -22,13 +22,13 @@ type ProvisionalElection = {
   template: `
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-2 focus:z-[300] focus:bg-background focus:p-3">Към съдържанието</a>
     <header class="sticky top-0 z-50 border-b border-primary/20 bg-background/95 backdrop-blur-sm">
-      <div class="mx-auto flex max-w-[1800px] flex-wrap items-center gap-x-5 gap-y-1 px-4 py-2 sm:px-8">
-        <a routerLink="/" class="mr-auto flex min-w-0 items-center gap-2 py-1 font-semibold tracking-tight text-foreground lg:mr-0" aria-label="Изборни резултати - начало">
+      <div class="mx-auto flex h-16 max-w-[1800px] items-center gap-2 px-4 py-2 sm:px-8 lg:h-auto lg:gap-5">
+        <a routerLink="/" class="flex shrink-0 items-center gap-2 py-1 font-semibold tracking-tight text-foreground" aria-label="Изборни резултати - начало">
           <span aria-hidden="true" class="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-primary text-primary-foreground">✓</span>
-          <span>Изборни резултати</span>
+          <span class="hidden lg:inline">Изборни резултати</span>
         </a>
-        <nav aria-label="Навигационна пътека" class="order-3 min-w-0 w-full lg:order-none lg:w-auto lg:flex-1">
-          <ol class="flex min-w-0 flex-wrap items-center gap-y-1">
+        <nav aria-label="Навигационна пътека" class="min-w-0 flex-1 overflow-x-auto overscroll-x-contain">
+          <ol class="flex w-max min-w-full items-center whitespace-nowrap">
             @if (backLink(); as destination) {
               <li class="mr-2 flex shrink-0 items-center">
                 <a hlmBtn variant="outline" size="icon" [routerLink]="destination" class="h-11 w-11 border-foreground/30 bg-muted text-foreground" aria-label="Назад" title="Назад">
@@ -36,24 +36,24 @@ type ProvisionalElection = {
                 </a>
               </li>
             }
-            <li class="flex min-w-0 max-w-full items-center">
+            <li class="flex shrink-0 items-center">
               <app-select controlId="navigation-type" label="Вид избори" appearance="breadcrumb" class="max-w-[17rem]"
                 [value]="type()" (valueChange)="changeType($event)" [options]="typeOptions" />
             </li>
             @if (isDirectory()) {
-              <li class="flex min-w-0 max-w-full items-center" aria-current="page">
+              <li class="flex shrink-0 items-center" aria-current="page">
                 <span aria-hidden="true" class="breadcrumb-separator">›</span>
                 <span class="px-2 py-2 font-medium">Партии и кандидати</span>
               </li>
             } @else {
-              <li class="flex min-w-0 max-w-full items-center">
+              <li class="flex shrink-0 items-center">
                 <span aria-hidden="true" class="breadcrumb-separator">›</span>
                 <app-select controlId="navigation-date" label="Изборна дата" icon="calendar" appearance="breadcrumb" class="max-w-[17rem]"
                   [value]="isElection() ? date() : ''" (valueChange)="changeDate($event)" [options]="dateOptions()" />
               </li>
             }
             @if (isElection()) {
-              <li class="flex min-w-0 max-w-full items-center" aria-current="page">
+              <li class="flex shrink-0 items-center" aria-current="page">
                 <span aria-hidden="true" class="breadcrumb-separator">›</span>
                 <app-select controlId="navigation-region" label="Район" icon="region" appearance="breadcrumb" class="max-w-[17rem]"
                   [value]="region()" (valueChange)="changeRegion($event)" [options]="regionOptions" />
@@ -75,7 +75,7 @@ type ProvisionalElection = {
         </div>
       </div>
       @if (provisional(); as snapshot) {
-        <div role="status" class="border-t border-amber-300 bg-amber-50 text-amber-950 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-100">
+        <div role="status" class="hidden border-t border-amber-300 bg-amber-50 text-amber-950 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-100 lg:block">
           <div class="mx-auto flex max-w-[1800px] flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2 text-sm sm:px-8">
             <strong>Предварителни резултати</strong>
             <span>Обработени протоколи общо: {{ snapshot.processedPercent }}%</span>

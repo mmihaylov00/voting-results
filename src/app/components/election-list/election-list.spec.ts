@@ -167,7 +167,7 @@ describe('ElectionListComponent', () => {
     expect(getAllData).not.toHaveBeenCalled();
   });
 
-  it('keeps archive loading tied to its summary request instead of background modal requests', () => {
+  it('keeps archive loading tied to its summary request instead of background modal requests', async () => {
     const response = new Subject<Record<string, ContestantSummary>>();
     vi.spyOn(TestBed.inject(ElectionService), 'getAllData').mockReturnValue(response);
     const states: boolean[] = [];
@@ -180,7 +180,7 @@ describe('ElectionListComponent', () => {
     component.dates = [{ date, name: 'Октомври 2024' }];
     component.loadAllElectionsData();
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.fixed.inset-0')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('[role="progressbar"]')).not.toBeNull();
     serviceLoading.next(false);
     expect(states).toEqual([false, true]);
 
@@ -190,7 +190,8 @@ describe('ElectionListComponent', () => {
     expect(states).toEqual([false, true, false]);
     expect(component.electionsData.get(date)?.totalVoted).toBe(50);
     expect(component.regions).toEqual([{ id: '23', name: 'София' }]);
-    expect(fixture.nativeElement.querySelector('.fixed.inset-0')).toBeNull();
+    expect(fixture.nativeElement.querySelector('[role="progressbar"]')?.getAttribute('aria-valuenow')).toBe('100');
+    await vi.waitFor(() => expect(fixture.nativeElement.querySelector('[role="progressbar"]')).toBeNull());
     const cards = component.electionsData;
     const chart = component.chartOptions;
     const update = vi.spyOn(component, 'updateHistoricalCharts');
@@ -200,7 +201,7 @@ describe('ElectionListComponent', () => {
     serviceLoading.next(false);
     fixture.detectChanges();
     expect(states).toEqual([false, true, false]);
-    expect(fixture.nativeElement.querySelector('.fixed.inset-0')).toBeNull();
+    expect(fixture.nativeElement.querySelector('[role="progressbar"]')).toBeNull();
     expect(component.electionsData).toBe(cards);
     expect(component.allData).toBe(summaries);
     expect(component.chartOptions).toBe(chart);
@@ -217,7 +218,7 @@ describe('ElectionListComponent', () => {
     response.error(new Error('Download failed'));
     fixture.detectChanges();
     expect(states).toEqual([false, true, false]);
-    expect(fixture.nativeElement.querySelector('.fixed.inset-0')).toBeNull();
+    expect(fixture.nativeElement.querySelector('[role="progressbar"]')).toBeNull();
     expect(fixture.nativeElement.querySelector('[role="alert"]')?.textContent).toContain('Данните не могат да бъдат заредени.');
 
     getAllData.mockReturnValue(of({}));

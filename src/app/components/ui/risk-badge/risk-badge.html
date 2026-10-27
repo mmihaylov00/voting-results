@@ -1,7 +1,9 @@
-<span [class]="severityClasses" [hlmTooltip]="tooltipText" style="display: inline-block; cursor: help; position: relative;">
+<button type="button" [class]="severityClasses + ' inline-block cursor-help text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'"
+        #tooltip="hlmTooltip" [hlmTooltip]="escapedTooltipText" [attr.aria-label]="risk.code + ': ' + tooltipText"
+        (click)="$event.stopPropagation(); tooltip.onMouseEnter()">
     @if (displayMode === 'full') {
-        <strong>{{ risk.code }}</strong>: {{ tooltipText }}
+        <strong>{{ risk.code }}</strong>: {{ message }}
     } @else {
         {{ risk.code }}
     }
-</span>
+</button>

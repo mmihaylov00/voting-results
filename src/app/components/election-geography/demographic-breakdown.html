@@ -6,9 +6,9 @@
       <button hlmBtn variant="outline" size="icon" type="button" aria-label="Методика на демографските разделения" aria-haspopup="dialog" (click)="methodOpen.set(true)">ⓘ</button>
     </div>
   </div>
-  @if (loading()) { <p role="status" class="py-10 text-center text-muted-foreground">Зареждане на демографските данни...</p> }
-  @else if (error()) { <p role="alert" class="py-6">{{ error() }}</p> }
-  @else if (data(); as payload) {
+  <app-loading-bar [loading]="loading()" label="Зареждане: Демографски данни" class="my-8" />
+  @if (!loading() && (error())) { <p role="alert" class="py-6">{{ error() }}</p> }
+  @else if (!loading() && (data()); as payload) {
     <ul aria-label="Партии в демографското сравнение" class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
       @for (party of legendParties(); track party.id) { <li [title]="displayName(party.name)"><span class="mr-2 inline-block h-2.5 w-2.5 rounded-full" [style.background-color]="color(party.name)" aria-hidden="true"></span>{{ displayName(party.name) }}</li> }
     </ul>

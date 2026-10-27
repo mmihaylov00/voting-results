@@ -10,9 +10,9 @@
     </div>
   </div>
 
-  @if (loading()) { <p role="status" class="py-12 text-center text-muted-foreground">Зареждане на оценените потоци...</p> }
-  @else if (error()) { <p role="alert" class="py-6">{{ error() }}</p> }
-  @else if (data(); as payload) {
+  <app-loading-bar [loading]="loading()" label="Зареждане: Произход на гласовете" class="my-8" />
+  @if (!loading() && (error())) { <p role="alert" class="py-6">{{ error() }}</p> }
+  @else if (!loading() && (data()); as payload) {
     <p class="text-sm text-muted-foreground">{{ payload.from }} → {{ payload.date }} · {{ payload.sectionsMatched | number:'1.0-0' }} съпоставени секции</p>
     @if (payload.maxNodeExcess > 0.01) { <p role="status" class="text-sm text-muted-foreground">Тази оценка има разминавания със сборовете на отделни категории. Подробностите са в методиката.</p> }
     @if (groups().length) {

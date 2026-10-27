@@ -1,3 +1,4 @@
+import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { Component, DestroyRef, OnInit, effect, inject, signal, ViewChild, AfterViewInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
@@ -40,7 +41,7 @@ import { ContestantPreviewDirective } from '../ui/contestant-preview/contestant-
 @Component({
   selector: 'app-region-list',
   standalone: true,
-  imports: [
+  imports: [LoadingBarComponent,
     CommonModule,
     RouterLink,
     HlmButtonDirective,
@@ -183,7 +184,8 @@ export class RegionListComponent implements OnInit, AfterViewInit {
       map(params => parseElectionPanel(params.get('panel'), this.electionType, true)),
       distinctUntilChanged(), takeUntilDestroyed(this.destroyRef),
     ).subscribe(panel => {
-      this.setLeftPanel(panel && panel !== 'results' ? panel : 'cards');
+      const nextPanel = panel && panel !== 'results' ? panel : 'cards';
+      if (this.leftPanel() !== nextPanel) this.setLeftPanel(nextPanel);
     });
     this.route.params.pipe(
       distinctUntilChanged((previous, current) => previous['date'] === current['date']),

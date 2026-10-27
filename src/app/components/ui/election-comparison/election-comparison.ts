@@ -14,7 +14,7 @@ import { HlmButtonDirective } from '../button-helm/src/lib/hlm-button.directive'
   imports: [HeadToHeadComponent, HlmButtonDirective, NgTemplateOutlet],
   template: `
     @if (active()) {
-      <nav aria-label="Вид сравнение" class="mb-6 flex flex-wrap gap-1 border-b border-border">
+      <nav aria-label="Вид сравнение" class="app-tabs mb-6 flex flex-wrap gap-1 border-b border-border">
         <button hlmBtn variant="line" type="button" [attr.data-state]="mode() === 'elections' ? 'active' : 'inactive'" [attr.aria-pressed]="mode() === 'elections'" (click)="selectMode('elections')">Между избори</button>
         @if (presidential) {
           <button hlmBtn variant="line" type="button" [attr.data-state]="mode() === 'parties' ? 'active' : 'inactive'" [attr.aria-pressed]="mode() === 'parties'" (click)="selectMode('parties')">Между кандидати</button>

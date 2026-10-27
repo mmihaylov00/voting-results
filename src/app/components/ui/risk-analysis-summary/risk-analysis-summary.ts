@@ -18,6 +18,7 @@ export interface RiskAnalysisData {
   standalone: true,
   imports: [
     CommonModule,
+    RiskBadgeComponent,
   ],
   templateUrl: './risk-analysis-summary.html',
 })
@@ -29,23 +30,6 @@ export class RiskAnalysisSummaryComponent {
     return !!(
       (this.riskData?.riskIndicators && this.riskData.riskIndicators.length > 0)
     );
-  }
-
-  getSeverityColor(severity: string): string {
-    const colorMap: { [key: string]: string } = {
-      high: 'bg-red-600',
-      medium: 'bg-orange-500',
-      low: 'bg-yellow-500'
-    };
-    return colorMap[severity] || colorMap['medium'];
-  }
-
-  getCategoryCode(code: string): string {
-    const parts = code.split('.');
-    if (parts.length > 1) {
-      return `${parts[0]}.${parts[1]}`;
-    }
-    return code;
   }
 
   getMessage(indicator: { code: string; details?: any }): string {

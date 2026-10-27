@@ -1,5 +1,5 @@
 <section aria-label="География на вота" class="space-y-6">
-  <nav aria-label="Раздели на географията" class="flex flex-wrap gap-1 border-b border-border">
+  <nav aria-label="Раздели на географията" class="app-tabs flex flex-wrap gap-1 border-b border-border">
     @for (tab of tabs; track tab.id) {
       <button hlmBtn variant="line" type="button" [attr.aria-pressed]="activeTab() === tab.id" [attr.data-state]="activeTab() === tab.id ? 'active' : 'inactive'" (click)="selectTab(tab.id)">{{ tab.label }}</button>
     }
@@ -10,18 +10,19 @@
       <div><h2 id="top-regions-title" class="text-lg font-semibold">Топ изборни райони</h2><p class="mt-1 text-sm text-muted-foreground">По брой гласували в страната</p></div>
       <button hlmBtn variant="outline" size="icon" type="button" aria-label="Източници и методика за районите" aria-haspopup="dialog" (click)="methodOpen.set(true)">ⓘ</button>
     </div>
-    @if (loading()) { <p role="status" class="py-10 text-center text-muted-foreground">Зареждане на районите...</p> }
-    @else if (error()) { <p role="alert" class="py-6">{{ error() }}</p> }
-    @else if (!rows().length) { <p role="status">Няма данни за районите.</p> }
-    @else {
-      <div role="region" aria-label="Топ изборни райони" tabindex="0" class="overflow-x-auto rounded-md border border-border">
+    <app-loading-bar [loading]="loading()" label="Зареждане: Изборни райони" class="my-8" />
+    @if (!loading() && (error())) { <p role="alert" class="py-6">{{ error() }}</p> }
+    @else if (!loading() && (!rows().length)) { <p role="status">Няма данни за районите.</p> }
+    @else if (!loading()) {
+      <app-table-controls [rows]="rows()" [columns]="tableColumns" label="Търсене на район или победител" #regionTable />
+      <div role="region" aria-label="Топ изборни райони" tabindex="0" class="max-h-[70vh] overflow-auto rounded-md border border-border">
         <table class="w-full min-w-[850px] text-sm">
           <caption class="sr-only">Десетте района с най-много гласували, без чужбина</caption>
-          <thead class="border-b border-border text-muted-foreground"><tr>
-            <th scope="col" class="px-4 py-3 text-left">Район</th><th scope="col" class="px-3 py-3 text-left">Победител</th><th scope="col" class="px-3 py-3 text-right">Гласували</th><th scope="col" class="px-3 py-3 text-right">Активност</th><th scope="col" class="px-3 py-3 text-right">Машинен дял</th><th scope="col" class="min-w-36 px-3 py-3 text-right">Дял в страната</th><th scope="col" class="px-4 py-3 text-right">Промяна на дела</th>
+          <thead class="border-b border-border text-muted-foreground sticky top-0 z-20 bg-background/95 shadow-sm backdrop-blur"><tr>
+            <th scope="col" class="px-4 py-3 text-left" app-sortable-table-header columnKey="name" label="Район" [table]="regionTable" align="left"></th><th scope="col" class="px-3 py-3 text-left" app-sortable-table-header columnKey="winner" label="Победител" [table]="regionTable" align="left"></th><th scope="col" class="px-3 py-3 text-right" app-sortable-table-header columnKey="voted" label="Гласували" [table]="regionTable" align="right"></th><th scope="col" class="px-3 py-3 text-right" app-sortable-table-header columnKey="turnout" label="Активност" [table]="regionTable" align="right"></th><th scope="col" class="px-3 py-3 text-right" app-sortable-table-header columnKey="machineShare" label="Машинен дял" [table]="regionTable" align="right"></th><th scope="col" class="min-w-36 px-3 py-3 text-right" app-sortable-table-header columnKey="share" label="Дял в страната" [table]="regionTable" align="right"></th><th scope="col" class="px-4 py-3 text-right" app-sortable-table-header columnKey="change" label="Промяна на дела" [table]="regionTable" align="right"></th>
           </tr></thead>
           <tbody>
-            @for (row of rows(); track row.id) {
+            @for (row of regionTable.viewRows(); track row.id) {
               <tr class="border-b border-border/60 last:border-0 hover:bg-muted/30">
                 <th scope="row" class="px-4 py-4 text-left font-medium"><a [routerLink]="['/governmental/election', date(), 'region', row.id]" class="underline-offset-4 hover:underline">{{ row.name }}</a></th>
                 <td class="px-3 py-4"><span class="mr-2 inline-block h-2.5 w-2.5 rounded-full" [style.background-color]="color(row.winnerId)" aria-hidden="true"></span>{{ row.winnerId ? partyName(row.winnerId) : row.tied ? 'Равенство' : '-' }}</td>

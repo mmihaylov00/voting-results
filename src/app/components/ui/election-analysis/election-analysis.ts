@@ -1,3 +1,6 @@
+import { TableControlsComponent, TableColumns } from '../table-controls/table-controls';
+import { SortableTableHeaderComponent } from '../sortable-table-header/sortable-table-header';
+import { LoadingBarComponent } from '../loading-bar/loading-bar';
 import { SelectComponent, SelectOption, partySelectOptions } from '../select/select';
 import { partyVoteTotals, sortPartiesByVotes } from '../../../utils/party-order.util';
 import { CommonModule } from '@angular/common';
@@ -10,13 +13,17 @@ import { ElectionService } from '../../../services/election';
 import { ThemeService } from '../../../services/theme.service';
 import { getPartyColor, getPartyDisplayName, getPartyLegendIndex } from '../../../utils/party-colors';
 import {
-  AnalysisRow, AnalysisSnapshot, analysisCsv, comparisonRow, difference, indexSections,
+  AnalysisRow, AnalysisSnapshot, analysisCsvData, comparisonRow, difference, indexSections,
   matchHistoricalSection, matchPartyId, regionSnapshot, sectionSnapshot,
 } from '../../../utils/election-comparison.util';
 import { HlmButtonDirective } from '../button-helm/src/lib/hlm-button.directive';
 import { MapIconComponent } from '../map-icon/map-icon';
 import { COMPARISON_SIDES, ComparisonCellComponent } from '../comparison-cell/comparison-cell';
 import { HlmTableBodyDirective, HlmTableDirective, HlmTableHeadDirective, HlmTableHeaderDirective, HlmTableRowDirective } from '../table-helm/src/lib/hlm-table.directives';
+import { VirtualTableDirective } from '../virtual-table/virtual-table';
+import { CsvExportButtonComponent } from '../csv-export-button/csv-export-button';
+import { CsvExportData } from '../../../utils/csv-export.util';
+import { CsvExportModalComponent } from '../csv-export-modal/csv-export-modal';
 
 export type AnalysisMetric = 'share' | 'turnout' | 'invalid' | 'machine' | 'margin' | 'topParties';
 type Metric = AnalysisMetric;
@@ -28,8 +35,8 @@ type Benchmark = { label: string; snapshot: AnalysisSnapshot };
 @Component({
   selector: 'app-election-analysis',
   standalone: true,
-  imports: [SelectComponent, CommonModule, HighchartsChartComponent, HlmButtonDirective, MapIconComponent,
-    ComparisonCellComponent, HlmTableDirective, HlmTableHeaderDirective, HlmTableBodyDirective, HlmTableRowDirective, HlmTableHeadDirective],
+  imports: [TableControlsComponent, SortableTableHeaderComponent, LoadingBarComponent, SelectComponent, CommonModule, HighchartsChartComponent, HlmButtonDirective, MapIconComponent,
+    ComparisonCellComponent, VirtualTableDirective, CsvExportButtonComponent, CsvExportModalComponent, HlmTableDirective, HlmTableHeaderDirective, HlmTableBodyDirective, HlmTableRowDirective, HlmTableHeadDirective],
   templateUrl: './election-analysis.html',
   styles: ':host { display: block; min-width: 0; }',
 })
@@ -52,6 +59,7 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
   @Output() partyChange = new EventEmitter<string | null>();
   @Output() comparisonChange = new EventEmitter<{ date: string; sections: Section[]; partyId: string | null } | null>();
   @ViewChild('chartContainer') chartContainer?: ElementRef<HTMLElement>;
+  @ViewChild('comparisonTable') comparisonTable?: TableControlsComponent<AnalysisRow>;
 
   private readonly elections = inject(ElectionService);
   private readonly theme = inject(ThemeService);
@@ -72,6 +80,14 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
   error = '';
   exportError = '';
   exporting = false;
+  readonly csvExportAction = () => this.exportCsv();
+  csvExportData: CsvExportData | null = null;
+  readonly tableColumns: TableColumns<AnalysisRow> = {
+    label: row => `${row.label} ${row.id}`,
+    previousVotes: row => row.previous?.votes, currentVotes: row => row.current.votes, voteChange: row => row.voteChange,
+    previousShare: row => row.previous?.share, currentShare: row => row.current.share, shareChange: row => row.shareChange,
+    previousTurnout: row => row.previous?.turnout, currentTurnout: row => row.current.turnout, turnoutChange: row => row.turnoutChange,
+  };
   missingDates: string[] = [];
   timeline: TimelinePoint[] = [];
   rows: AnalysisRow[] = [];
@@ -81,13 +97,11 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
   chartOptions: Highcharts.Options = {};
   sortKey: SortKey = 'shareChange';
   sortAscending = false;
-  page = 0;
-  readonly pageSize = 20;
   readonly comparisonSides = COMPARISON_SIDES;
   readonly comparisonMetrics = [
-    { key: 'votes', label: 'Гласове', sort: 'voteChange', rate: false },
-    { key: 'share', label: 'Дял', sort: 'shareChange', rate: true },
-    { key: 'turnout', label: 'Активност', sort: 'turnoutChange', rate: true },
+    { key: 'votes', label: 'Гласове', sort: 'voteChange', before: 'previousVotes', after: 'currentVotes', rate: false },
+    { key: 'share', label: 'Дял', sort: 'shareChange', before: 'previousShare', after: 'currentShare', rate: true },
+    { key: 'turnout', label: 'Активност', sort: 'turnoutChange', before: 'previousTurnout', after: 'currentTurnout', rate: true },
   ] as const;
   get metrics(): { id: Metric; label: string }[] { return [
     { id: 'share', label: this.isPresidential ? 'Дял на кандидата' : 'Дял на партията' },
@@ -137,8 +151,6 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
   get partyOptions() { return sortPartiesByVotes(Object.entries(this.parties).filter(([id]) => id !== '0')
     .map(([id, name]) => ({ id, name })), this.partyVotes); }
   get partyName() { return this.activePartyId ? this.parties[this.activePartyId] ?? '' : ''; }
-  get hasNextPage() { return (this.page + 1) * this.pageSize < this.rows.length; }
-  get visibleRows() { return this.rows.slice(this.page * this.pageSize, (this.page + 1) * this.pageSize); }
 
   ngOnChanges(changes: SimpleChanges): void {
     const baselineChanged = !!changes['baselineDate'] && this.comparisonDate !== this.baselineDate;
@@ -233,7 +245,6 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
     this.parent = null;
     this.national = null;
     this.rows = [];
-    this.page = 0;
     try {
       const summaries = await firstValueFrom(this.elections.getAllData());
       if (generation !== this.generation) return;
@@ -310,7 +321,6 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
     this.comparisonLoading = true;
     this.error = '';
     this.rows = [];
-    this.page = 0;
     try { await this.buildComparison(generation); }
     catch { if (generation === this.generation) this.error = 'Неуспешно зареждане на сравнението. Опитайте отново.'; }
     finally {
@@ -361,14 +371,13 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
 
   private sortRows(): void {
     const key = this.sortKey;
-    this.rows.sort((a, b) => {
+    this.rows = [...this.rows].sort((a, b) => {
       const left = a[key]; const right = b[key];
       if (left === null) return right === null ? 0 : 1;
       if (right === null) return -1;
       const result = typeof left === 'string' && typeof right === 'string' ? left.localeCompare(right, 'bg') : Number(left) - Number(right);
       return this.sortAscending ? result : -result;
     });
-    this.page = 0;
   }
 
   selectRow(row: AnalysisRow): void {
@@ -387,13 +396,9 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
   }
 
   exportCsv(): void {
-    const blob = new Blob([analysisCsv(this.rows, this.date, this.comparisonDate, this.partyName)], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `comparison_${this.date}_${this.comparisonDate}.csv`;
-    link.click();
-    setTimeout(() => URL.revokeObjectURL(url), 0);
+    const rows = this.comparisonTable?.viewRows() ?? this.rows;
+    if (!rows.length || this.loading || this.comparisonLoading) return;
+    this.csvExportData = analysisCsvData(rows, this.date, this.comparisonDate, this.partyName);
   }
 
   async exportChart(): Promise<void> {

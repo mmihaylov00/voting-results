@@ -1,3 +1,6 @@
+import { TableControlsComponent, TableColumns } from '../ui/table-controls/table-controls';
+import { SortableTableHeaderComponent } from '../ui/sortable-table-header/sortable-table-header';
+import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { SelectComponent } from '../ui/select/select';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
@@ -16,7 +19,7 @@ import { BaseModalComponent } from '../ui/base-modal/base-modal';
 @Component({
   selector: 'app-polling-agencies',
   standalone: true,
-  imports: [SelectComponent, CommonModule, HlmButtonDirective, BaseModalComponent],
+  imports: [TableControlsComponent, SortableTableHeaderComponent, LoadingBarComponent, SelectComponent, CommonModule, HlmButtonDirective, BaseModalComponent],
   templateUrl: './polling-agencies.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -64,6 +67,17 @@ export class PollingAgenciesComponent {
       });
   });
   readonly maxMae = computed(() => Math.max(0.01, ...this.agencies().map(agency => agency.mae)));
+  readonly agencyColumns: TableColumns<PollingData['agencies'][number]> = {
+    name: row => row.name, mae: row => row.mae, fieldwork: row => row.fieldworkEnd,
+    days: row => row.daysBefore, parties: row => row.errors.length,
+  };
+  readonly comparisonColumns = computed(() => {
+    const columns: TableColumns<ReturnType<PollingAgenciesComponent['comparisonRows']>[number]> = {
+      party: row => this.displayName(row.party), actual: row => row.actual,
+    };
+    for (const agency of this.comparisonAgencies()) columns[agency.id] = row => row.cells.find(cell => cell.agency.id === agency.id)?.result?.polled;
+    return columns;
+  });
   readonly closestAgencies = computed(() => {
     const agencies = this.comparisonAgencies();
     const minimum = Math.min(...agencies.map(agency => agency.mae));

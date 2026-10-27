@@ -19,10 +19,7 @@
         Сравнение с
         <app-select label="Сравнение с" icon="calendar" [value]="comparisonDate" [options]="comparisonOptions" (valueChange)="comparisonDate = $event; changeComparison()" />
       </div>
-      <button hlmBtn type="button" variant="outline" size="icon" class="shrink-0" [disabled]="!rows.length"
-        aria-label="Изтегли таблицата като CSV" title="Изтегли таблицата като CSV" (click)="exportCsv()">
-        <app-map-icon name="download-table" />
-      </button>
+      <app-csv-export-button class="shrink-0" [action]="csvExportAction" [disabled]="!(comparisonTable?.viewRows()?.length ?? rows.length) || loading || comparisonLoading" />
       }
     </div>
   </div>
@@ -33,11 +30,11 @@
       <button hlmBtn variant="outline" size="sm" (click)="load()">Опитайте отново</button>
     </div>
   }
-  @if (loading) {
-    <p role="status" class="py-8 text-center text-sm text-muted-foreground">{{ view === 'history' ? 'Зареждане на исторически данни...' : 'Зареждане на сравнението...' }}</p>
-  } @else if (!current) {
+  <app-loading-bar [loading]="loading || comparisonLoading" label="Зареждане на анализа" class="my-6" />
+  @if (!loading && (!current)) {
     <p class="py-8 text-center text-sm text-muted-foreground">Няма данни за избраните секции.</p>
-  } @else {
+  }
+  @else if (!loading && current) {
     @if (historyVisited) {
     <div [class.hidden]="view !== 'history'" class="space-y-5">
     <div class="grid grid-cols-3 gap-3 border-y border-border py-4">
@@ -69,7 +66,8 @@
         <button hlmBtn type="button" variant="outline" size="icon" [disabled]="exporting" [attr.aria-busy]="exporting"
           [attr.aria-label]="exporting ? 'Експортиране...' : 'Изтегли графиката като PNG'"
           [title]="exporting ? 'Експортиране...' : 'Изтегли графиката като PNG'" (click)="exportChart()">
-          <app-map-icon [name]="exporting ? 'loading' : 'download'" [class.animate-spin]="exporting" />
+          <app-loading-bar #exportProgress [loading]="exporting" label="Експортиране на графика" class="w-6" />
+          @if (!exportProgress.visible()) { <app-map-icon name="download" /> }
         </button>
       </div>
       @if (exportError) { <p role="alert" class="text-sm text-destructive">{{ exportError }}</p> }
@@ -84,30 +82,36 @@
     }
 
     @if (view === 'comparison') {
-    @if (comparisonLoading) { <p role="status" class="text-sm text-muted-foreground">Зареждане на сравнението...</p> }
+
     @if (comparisonDates.length) {
       <div class="space-y-4">
-        <div class="overflow-x-auto rounded-md border border-border" role="region" aria-label="Таблица за сравнение на избори" tabindex="0">
-          <table hlmTable class="w-full min-w-[1200px] whitespace-nowrap">
+        <app-table-controls [rows]="rows" [columns]="tableColumns" label="Търсене на място или секция в сравнението" #comparisonTable />
+        <div class="virtual-table-viewport max-h-[70vh] overflow-auto rounded-md border border-border" role="region" aria-label="Таблица за сравнение на избори" tabindex="0"
+          [virtualRows]="comparisonTable.viewRows()" #comparisonRows="virtualRows">
+          <table hlmTable class="w-full min-w-[1200px] whitespace-nowrap" [attr.aria-rowcount]="comparisonTable.viewRows().length + 2">
             <caption class="sr-only">Гласове, дял и активност по места за два избора</caption>
-            <thead hlmTableHeader class="bg-muted/40">
+            <thead hlmTableHeader class="sticky top-0 z-10 bg-background/95 shadow-sm backdrop-blur">
               <tr hlmTableRow>
-                <th hlmTableHead scope="col" rowspan="2" class="min-w-52" [attr.aria-sort]="sortKey === 'label' ? sortAscending ? 'ascending' : 'descending' : 'none'"><button class="py-1" (click)="sort('label')">Място ↕</button></th>
+                <th hlmTableHead scope="col" rowspan="2" class="min-w-52" app-sortable-table-header columnKey="label" label="Място" [table]="comparisonTable"></th>
                 @for (metric of comparisonMetrics; track metric.key) {
                   <th hlmTableHead scope="colgroup" colspan="3" class="border-l-2 border-border py-3 text-center">{{ metric.label }}</th>
                 }
               </tr>
               <tr hlmTableRow>
                 @for (metric of comparisonMetrics; track metric.key) {
-                  <th hlmTableHead scope="col" class="border-l-2 border-border py-3 text-center">Преди <span class="mt-1 block text-xs font-normal">{{ comparisonDate }}</span></th>
-                  <th hlmTableHead scope="col" class="text-center" [attr.aria-sort]="sortKey === metric.sort ? sortAscending ? 'ascending' : 'descending' : 'none'"><button class="py-1" [attr.aria-label]="'Сортирай по промяна: ' + metric.label" (click)="sort(metric.sort)">Разлика ↕</button></th>
-                  <th hlmTableHead scope="col" class="py-3 text-center">Сега <span class="mt-1 block text-xs font-normal">{{ date }}</span></th>
+                  <th hlmTableHead scope="col" class="border-l-2 border-border py-3 text-center" app-sortable-table-header [columnKey]="metric.before" label="Преди" [table]="comparisonTable" align="center"><span class="mt-1 block text-xs font-normal">{{ comparisonDate }}</span></th>
+                  <th hlmTableHead scope="col" class="text-center" app-sortable-table-header [columnKey]="metric.sort" label="Разлика" [attr.aria-label]="'Сортирай по промяна: ' + metric.label" [table]="comparisonTable" align="center"></th>
+                  <th hlmTableHead scope="col" class="py-3 text-center" app-sortable-table-header [columnKey]="metric.after" label="Сега" [table]="comparisonTable" align="center"><span class="mt-1 block text-xs font-normal">{{ date }}</span></th>
                 }
               </tr>
             </thead>
             <tbody hlmTableBody>
-              @for (row of visibleRows; track row.id) {
-                <tr hlmTableRow class="border-b border-border/60 odd:bg-muted/20 last:border-0">
+              @if (comparisonRows.window().top) {
+                <tr class="virtual-table-spacer" aria-hidden="true"><td [attr.colspan]="comparisonRows.columnCount()" [style.height.px]="comparisonRows.window().top"></td></tr>
+              }
+              @for (row of comparisonRows.rows(); track row.id) {
+                <tr hlmTableRow class="border-b border-border/60 last:border-0" [class.bg-muted/20]="(comparisonRows.window().start + $index) % 2 === 0"
+                  [attr.data-virtual-index]="comparisonRows.window().start + $index" [attr.aria-rowindex]="comparisonRows.window().start + $index + 3">
                   <th hlmTableHead scope="row" class="py-3 font-normal"><button class="max-w-64 truncate text-primary underline-offset-4 hover:underline focus-visible:underline" [title]="row.label" (click)="selectRow(row)">{{ row.label }}</button>@if (row.section) { <span class="block text-xs text-muted-foreground">{{ row.id }}</span> }</th>
                   @for (metric of comparisonMetrics; track metric.key) {
                     @for (side of comparisonSides; track side) {
@@ -117,12 +121,11 @@
                   }
                 </tr>
               } @empty { <tr hlmTableRow><td colspan="10" class="p-5 text-center text-muted-foreground">Няма места за сравнение.</td></tr> }
+              @if (comparisonRows.window().bottom) {
+                <tr class="virtual-table-spacer" aria-hidden="true"><td [attr.colspan]="comparisonRows.columnCount()" [style.height.px]="comparisonRows.window().bottom"></td></tr>
+              }
             </tbody>
           </table>
-        </div>
-        <div class="flex items-center justify-between gap-3 text-xs text-muted-foreground">
-          <span>{{ rows.length }} места, страница {{ page + 1 }}</span>
-          <div class="flex gap-2"><button hlmBtn variant="outline" size="sm" [disabled]="page === 0" (click)="page = page - 1">Назад</button><button hlmBtn variant="outline" size="sm" [disabled]="!hasNextPage" (click)="page = page + 1">Напред</button></div>
         </div>
       </div>
     } @else {
@@ -131,3 +134,7 @@
     }
   }
 </section>
+
+@if (csvExportData) {
+  <app-csv-export-modal [data]="csvExportData" (close)="csvExportData = null" />
+}

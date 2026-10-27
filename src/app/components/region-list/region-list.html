@@ -1,14 +1,5 @@
 <div class="mx-auto max-w-[1800px] px-4 py-8 sm:px-8">
-  @if (loading$ | async) {
-    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
-      <div class="w-full max-w-md px-8 text-center">
-        <p hlmMuted class="mb-4">Зареждане на данните...</p>
-        <div class="h-2 w-full overflow-hidden rounded-full bg-secondary">
-          <div class="h-full w-full origin-left animate-progress bg-primary"></div>
-        </div>
-      </div>
-    </div>
-  }
+  <app-loading-bar [loading]="!!(loading$ | async)" appearance="overlay" label="Зареждане на изборните данни" />
 
   <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
     <div>
@@ -64,27 +55,24 @@
       [isLoading]="!!(loading$ | async)" />
     <app-stat-card label="Гласове по тип">
       <ng-template #customContent>
-        <div class="flex flex-col text-sm whitespace-nowrap">
-          <span class="text-secondary/70 dark:text-foreground/70 flex items-center">машинни: <strong class="text-secondary dark:text-primary ms-1" [hlmTooltip]="globalComparisons['totalMachine']" [currentValue]="totalMachine" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ totalMachine | number }}</strong></span>
-          <span class="text-secondary/70 dark:text-foreground/70 flex items-center">хартиени: <strong class="text-secondary dark:text-primary ms-1" [hlmTooltip]="globalComparisons['totalPaper']" [currentValue]="totalPaper" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ totalPaper | number }}</strong></span>
+        <div class="flex flex-col text-sm">
+          <span class="text-secondary/70 dark:text-foreground/70 flex flex-wrap items-center">машинни: <strong class="text-secondary dark:text-primary ms-1" [hlmTooltip]="globalComparisons['totalMachine']" [currentValue]="totalMachine" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ totalMachine | number }}</strong></span>
+          <span class="text-secondary/70 dark:text-foreground/70 flex flex-wrap items-center">хартиени: <strong class="text-secondary dark:text-primary ms-1" [hlmTooltip]="globalComparisons['totalPaper']" [currentValue]="totalPaper" [showTrend]="true" [isLoading]="!!(loading$ | async)">{{ totalPaper | number }}</strong></span>
         </div>
       </ng-template>
     </app-stat-card>
   </div>
 
-    <nav class="mb-6 flex flex-wrap gap-1 border-b border-border" aria-label="Изглед на резултатите">
+    <nav class="app-tabs app-tabs-primary mb-6 flex flex-wrap gap-1 border-b border-border" aria-label="Изглед на резултатите">
       @for (tab of overviewTabs; track tab.id) {
-        <button hlmBtn variant="line" class="gap-2" [attr.data-state]="leftPanel() === tab.id ? 'active' : 'inactive'"
-          [attr.aria-pressed]="leftPanel() === tab.id"
+        <button hlmBtn variant="line" class="gap-2" [attr.data-state]="leftPanel() === tab.id && (tab.id !== 'cards' || isLaptopLayout() || overviewMode() === 'cards') ? 'active' : 'inactive'"
+          [attr.aria-pressed]="leftPanel() === tab.id && (tab.id !== 'cards' || isLaptopLayout() || overviewMode() === 'cards')"
           (click)="selectContentTab(tab.id)"><app-map-icon [name]="tab.icon" />{{ tab.label }}</button>
+        @if (tab.id === 'cards') {
+          <button hlmBtn variant="line" type="button" class="gap-2 lg:hidden" [attr.data-state]="leftPanel() === 'cards' && overviewMode() === 'map' ? 'active' : 'inactive'" [attr.aria-pressed]="leftPanel() === 'cards' && overviewMode() === 'map'" (click)="setOverviewMode('map')"><app-map-icon name="region" />Карта</button>
+        }
       }
     </nav>
-    @if (leftPanel() === 'cards') {
-      <nav aria-label="Изглед на списъка" class="mb-6 flex flex-wrap gap-1 border-b border-border lg:hidden">
-        <button hlmBtn variant="line" type="button" class="gap-2" [attr.data-state]="overviewMode() === 'cards' ? 'active' : 'inactive'" [attr.aria-pressed]="overviewMode() === 'cards'" (click)="setOverviewMode('cards')"><app-map-icon name="summary" />Списък</button>
-        <button hlmBtn variant="line" type="button" class="gap-2" [attr.data-state]="overviewMode() === 'map' ? 'active' : 'inactive'" [attr.aria-pressed]="overviewMode() === 'map'" (click)="setOverviewMode('map')"><app-map-icon name="region" />Карта</button>
-      </nav>
-    }
   <div class="grid grid-cols-1 gap-6 lg:items-start" [class.lg:grid-cols-2]="!widePanel" data-map-workspace>
     <section class="min-w-0">
       <div [class.hidden]="!isLaptopLayout() && overviewMode() === 'map'">
@@ -154,7 +142,7 @@
 
         </div>
         <div [class.hidden]="leftPanel() !== 'stats'">
-          <nav aria-label="Статистически графики" class="mb-6 flex flex-wrap gap-1 border-b border-border">
+          <nav aria-label="Статистически графики" class="app-tabs mb-6 flex flex-wrap gap-1 border-b border-border">
             <button hlmBtn variant="line" type="button" [attr.data-state]="activeChart() === 'activity' ? 'active' : 'inactive'" [attr.aria-pressed]="activeChart() === 'activity'" (click)="setActiveChart('activity')">Активност и негласували</button>
             <button hlmBtn variant="line" type="button" [attr.data-state]="activeChart() === 'party' ? 'active' : 'inactive'" [attr.aria-pressed]="activeChart() === 'party'" (click)="setActiveChart('party')">Резултати за {{ electionType === 'presidential' ? 'кандидат' : 'партия' }}</button>
           </nav>

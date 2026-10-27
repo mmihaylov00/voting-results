@@ -1,3 +1,6 @@
+import { TableControlsComponent, TableColumns } from '../ui/table-controls/table-controls';
+import { SortableTableHeaderComponent } from '../ui/sortable-table-header/sortable-table-header';
+import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { CommonModule } from '@angular/common';
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -24,7 +27,7 @@ const OFFICIAL_SEATS: Partial<Record<string, OfficialSeats>> = officialSeats;
 @Component({
   selector: 'app-seat-simulator',
   standalone: true,
-  imports: [CommonModule, RouterLink, HlmButtonDirective, HlmInputDirective, HlmTooltipDirective, ParliamentChartComponent, BaseModalComponent],
+  imports: [TableControlsComponent, SortableTableHeaderComponent, LoadingBarComponent, CommonModule, RouterLink, HlmButtonDirective, HlmInputDirective, HlmTooltipDirective, ParliamentChartComponent, BaseModalComponent],
   templateUrl: './seat-simulator.html',
 })
 export class SeatSimulatorComponent {
@@ -54,6 +57,11 @@ export class SeatSimulatorComponent {
   });
   readonly selectedRows = computed(() => this.parliamentaryRows().filter((row) => this.selectedIds().has(row.id)));
   readonly selectedSeats = computed(() => coalitionSeats(this.allocation().rows, this.selectedIds()));
+  readonly tableColumns: TableColumns<ReturnType<SeatSimulatorComponent['allocation']>['rows'][number]> = {
+    name: row => this.displayName(row.name), votes: row => row.votes, share: row => row.share,
+    official: row => { const reference = this.official(); return reference ? reference.seats[row.id] ?? 0 : null; }, seats: row => row.seats,
+    coalition: row => this.selectedIds().has(row.id) ? 'В коалицията' : 'Извън коалицията',
+  };
   readonly official = computed(() => OFFICIAL_SEATS[this.date()] ?? null);
   readonly mandateRows = computed(() => {
     const reference = this.official();

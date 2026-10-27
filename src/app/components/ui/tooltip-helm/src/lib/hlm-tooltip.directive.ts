@@ -41,8 +41,15 @@ export class HlmTooltipDirective implements OnDestroy {
 
   @HostListener('mouseleave')
   @HostListener('focusout')
-  @HostListener('keydown.escape')
   onMouseLeave() {
+    this.hideTooltip();
+  }
+
+  @HostListener('keydown.escape', ['$event'])
+  onEscape(event: Event): void {
+    if (!this.tooltipElement) return;
+    event.preventDefault();
+    event.stopPropagation();
     this.hideTooltip();
   }
 
@@ -141,8 +148,7 @@ export class HlmTooltipDirective implements OnDestroy {
     }
 
     if (this.isLoading) {
-      this.renderer.setProperty(this.trendIndicator, 'innerHTML', '⌛');
-      this.renderer.addClass(this.trendIndicator, 'text-muted-foreground');
+      this.removeTrendIndicator();
       return;
     }
 
@@ -228,9 +234,10 @@ export class HlmTooltipDirective implements OnDestroy {
     if (typeof this.comparisons === 'string') {
       content = `<div class="flex flex-col gap-1">`;
       this.comparisons.split('\n').forEach(line => {
-        content += `<span class="whitespace-nowrap">${line}</span>`;
+        content += `<span class="whitespace-normal break-words">${line}</span>`;
       });
       content += `</div>`;
+      this.renderer.setStyle(this.tooltipElement, 'max-width', 'min(32rem, calc(100vw - 1rem))');
     } else if (Array.isArray(this.comparisons)) {
       const formattedValue = this.isPercent
         ? ((this.currentValue || 0) / 100).toFixed(2) + '%'
@@ -269,7 +276,7 @@ export class HlmTooltipDirective implements OnDestroy {
     this.renderer.addClass(this.tooltipElement, 'pointer-events-none');
     this.renderer.addClass(this.tooltipElement, 'text-xs');
 
-    this.renderer.appendChild(document.body, this.tooltipElement);
+    this.renderer.appendChild(this.el.nativeElement.closest('dialog[open]') ?? document.body, this.tooltipElement);
 
     this.positionTooltip();
   }
@@ -302,7 +309,7 @@ export class HlmTooltipDirective implements OnDestroy {
 
   private hideTooltip() {
     if (this.tooltipElement) {
-      this.renderer.removeChild(document.body, this.tooltipElement);
+      this.renderer.removeChild(this.tooltipElement.parentNode, this.tooltipElement);
       this.tooltipElement = null;
     }
   }

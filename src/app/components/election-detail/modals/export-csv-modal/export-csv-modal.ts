@@ -11,6 +11,9 @@ import { HlmButtonDirective } from '../../../ui/button-helm/src/lib/hlm-button.d
 import { HlmTypographyDirective } from '../../../ui/typography-helm/src/lib/hlm-typography.directive';
 import { PartyFilterComponent } from '../../party-filter/party-filter';
 import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
+import { CsvExportButtonComponent } from '../../../ui/csv-export-button/csv-export-button';
+import { createCsv, downloadCsvFile } from '../../../../utils/csv-export.util';
+import { getTopCandidates } from '../../../../utils/election-utils';
 
 @Component({
   selector: 'app-export-csv-modal',
@@ -21,6 +24,7 @@ import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
     HlmTypographyDirective,
     PartyFilterComponent,
     BaseModalComponent,
+    CsvExportButtonComponent,
   ],
   templateUrl: './export-csv-modal.html'
 })
@@ -38,7 +42,7 @@ export class ExportCsvModalComponent {
   @Input() isAbroadRegion = false;
   @Output() close = new EventEmitter<void>();
 
-  filteredSections: Section[] = [];
+  readonly csvExportAction = () => this.downloadCsv();
   exportPartyIds: Set<string> = new Set();
   baseAvailableColumns = SECTION_COLUMNS.filter(c => c.id !== 'typeVotes' && c.id !== 'topParties');
   exportColumnIds: Set<string> = new Set(this.availableColumns.map(c => c.id));
@@ -65,8 +69,8 @@ export class ExportCsvModalComponent {
   }
 
   ngOnInit() {
-    this.exportPartyIds = new Set(this.selectedPartyIds);
-    this.filteredSections = this.tableSections;
+    this.exportPartyIds = new Set(this.viewMode === 'candidates' && !this.selectedPartyIds.size
+      ? this.filteredCandidates.map(candidate => candidate.partyId) : this.selectedPartyIds);
     const visibleColumns = loadVisibleColumns(
       'visible_columns',
       this.availableColumns.map(column => column.id),
@@ -133,6 +137,7 @@ export class ExportCsvModalComponent {
   }
 
   downloadCsv() {
+    if (!this.exportCount) return;
     const filePrefix = this.viewMode === 'candidates'
       ? 'candidates'
       : this.viewMode === 'cities'
@@ -143,15 +148,7 @@ export class ExportCsvModalComponent {
     const csvContent = this.viewMode === 'candidates'
       ? this.generateCandidatesCsv()
       : this.generateCsv(this.buildPartiesMap());
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', `${filePrefix}_${this.regionName}_${this.date}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    downloadCsvFile(csvContent, `${filePrefix}_${this.regionName}_${this.date}.csv`);
   }
 
   buildPartiesMap(): { [id: string]: string } {
@@ -186,10 +183,12 @@ export class ExportCsvModalComponent {
     if (this.exportColumnIds.has('activityBp')) headers.push('Активност');
     if (this.exportColumnIds.has('discardedVotes')) headers.push('Невалидни');
     if (this.exportColumnIds.has('noVotes')) headers.push('Не подкрепя никого');
+    if (this.exportColumnIds.has('votesToFirst')) headers.push('Нужни');
+    if (this.exportColumnIds.has('topCandidates')) headers.push('Топ 3 преференции');
 
     headers.push(...sortedPartyIds.map(id => partiesMap[id]));
 
-    const rows = this.filteredSections.map(section => {
+    const rows = this.tableSections.map(section => {
       const rowData: (string | number)[] = [];
       if (this.exportColumnIds.has('sectionId')) rowData.push(section.sectionId);
       if (this.exportColumnIds.has('riskScore')) rowData.push(this.getRisksForExport(section));
@@ -206,6 +205,9 @@ export class ExportCsvModalComponent {
       if (this.exportColumnIds.has('activityBp')) rowData.push(this.formatActivity((section.activityBp || 0) / 10000) + '%');
       if (this.exportColumnIds.has('discardedVotes')) rowData.push(section.discardedVotes);
       if (this.exportColumnIds.has('noVotes')) rowData.push(section.noVotes);
+      if (this.exportColumnIds.has('votesToFirst')) rowData.push(section.votesToFirst ?? '');
+      if (this.exportColumnIds.has('topCandidates')) rowData.push(getTopCandidates(section)
+        .map(candidate => `${candidate.candidateName} (${getPartyAlias(candidate.partyName)}): ${candidate.total}`).join('; '));
 
       rowData.push(...sortedPartyIds.map(id => {
         const partyVotes = section.partyVotes[id] as any;
@@ -215,13 +217,10 @@ export class ExportCsvModalComponent {
         return partyVotes?.total || 0;
       }));
 
-      return rowData.map(v => this.escapeSemi(String(v)));
+      return rowData;
     });
 
-    return [
-      headers.map(h => this.escapeSemi(h)).join(';'),
-      ...rows.map(r => r.join(';'))
-    ].join('\n');
+    return createCsv([headers, ...rows]);
   }
 
   generateCandidatesCsv(): string {
@@ -233,7 +232,7 @@ export class ExportCsvModalComponent {
     if (this.exportCandidateColumnIds.has('totalInRegion')) headers.push('Преференции');
     if (this.exportCandidateColumnIds.has('preferencePercentOfPartyVotes')) headers.push('% от гласовете за партията');
 
-    const rows = this.filteredCandidates.map(candidate => {
+    const rows = this.exportCandidates.map(candidate => {
       const rowData: (string | number)[] = [];
       if (this.exportCandidateColumnIds.has('candidateId')) rowData.push(candidate.candidateId);
       if (this.exportCandidateColumnIds.has('risks')) rowData.push(candidate.riskIndicators?.length || 0);
@@ -244,13 +243,10 @@ export class ExportCsvModalComponent {
         rowData.push(`${candidate.preferencePercentOfPartyVotes.toFixed(2)}%`);
       }
 
-      return rowData.map(v => this.escapeSemi(String(v)));
+      return rowData;
     });
 
-    return [
-      headers.map(h => this.escapeSemi(h)).join(';'),
-      ...rows.map(r => r.join(';'))
-    ].join('\n');
+    return createCsv([headers, ...rows]);
   }
 
   get modalTitle(): string {
@@ -265,8 +261,12 @@ export class ExportCsvModalComponent {
   }
 
   get exportCount(): number {
-    if (this.viewMode === 'candidates') return this.filteredCandidates.length;
-    return this.filteredSections.length;
+    if (this.viewMode === 'candidates') return this.exportCandidates.length;
+    return this.tableSections.length;
+  }
+
+  get exportCandidates(): RegionCandidate[] {
+    return this.filteredCandidates.filter(candidate => this.exportPartyIds.has(candidate.partyId));
   }
 
   get exportColumns(): TableColumn[] {
@@ -279,11 +279,4 @@ export class ExportCsvModalComponent {
       : this.exportColumnIds.has(columnId);
   }
 
-  escapeSemi(v: string): string {
-    if (!v) return '';
-    if (v.includes(';') || v.includes('"') || v.includes('\n')) {
-      return `"${v.replace(/"/g, '""')}"`;
-    }
-    return v;
-  }
 }

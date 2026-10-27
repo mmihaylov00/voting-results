@@ -1,34 +1,39 @@
 @if (result.rows.length) {
   <section class="mt-6 space-y-3 border-t border-border pt-5" aria-label="История на секционните рискови индикатори">
     <div class="flex flex-wrap items-baseline justify-between gap-2">
-      <h3 class="text-sm font-semibold">Повтарящи се рискови сигнали</h3>
+      <h3 class="text-sm font-semibold">Повтарящи се рискови индикатори</h3>
       @if (result.assessed) {
-        <p class="text-sm tabular-nums"><span class="font-semibold">{{ result.flagged }} от {{ result.assessed }}</span> съпоставими избора със сигнали</p>
+        <p class="text-sm tabular-nums"><span class="font-semibold">{{ result.flagged }} от {{ result.assessed }}</span> съпоставими избора с рискови индикатори</p>
       } @else {
         <p class="text-sm text-muted-foreground">Няма налични оценки за съпоставими избори.</p>
       }
     </div>
     <p class="text-xs text-muted-foreground">Само текущите и по-ранните избори от същия вид и тур. Съпоставянето изисква еднакви район, номер на секция и населено място.</p>
-    <div class="overflow-x-auto">
+    <app-table-controls [rows]="result.rows" [columns]="tableColumns" label="Търсене в историята на рисковите индикатори" #historyTable />
+    <div class="max-h-[70vh] overflow-auto">
       <table class="w-full text-left text-xs">
-        <caption class="sr-only">Секционни рискови сигнали, активност и водеща партия по избори</caption>
-        <thead class="border-b border-border text-muted-foreground">
+        <caption class="sr-only">Секционни рискови индикатори, активност и водеща партия по избори</caption>
+        <thead class="border-b border-border text-muted-foreground sticky top-0 z-20 bg-background/95 shadow-sm backdrop-blur">
           <tr>
-            <th scope="col" class="py-2 pr-3 font-medium">Избори</th>
-            <th scope="col" class="p-2 text-right font-medium">Индекс</th>
-            <th scope="col" class="p-2 font-medium">Секционни сигнали</th>
-            <th scope="col" class="p-2 text-right font-medium">Активност</th>
-            <th scope="col" class="py-2 pl-3 font-medium">Водеща партия / кандидат</th>
+            <th scope="col" class="py-2 pr-3 font-medium" app-sortable-table-header columnKey="election" label="Избори" [table]="historyTable" align="left"></th>
+            <th scope="col" class="p-2 text-right font-medium" app-sortable-table-header columnKey="score" label="Индекс" [table]="historyTable" align="right"></th>
+            <th scope="col" class="p-2 font-medium" app-sortable-table-header columnKey="signals" label="Секционни индикатори" [table]="historyTable" align="left"></th>
+            <th scope="col" class="p-2 text-right font-medium" app-sortable-table-header columnKey="turnout" label="Активност" [table]="historyTable" align="right"></th>
+            <th scope="col" class="py-2 pl-3 font-medium" app-sortable-table-header columnKey="winner" label="Водеща партия / кандидат" [table]="historyTable" align="left"></th>
           </tr>
         </thead>
         <tbody>
-          @for (row of result.rows; track row.date) {
+          @for (row of historyTable.viewRows(); track row.date) {
             <tr class="border-b border-border/50" [class.bg-primary/5]="row.date === date">
               <th scope="row" class="py-3 pr-3 font-normal"><span class="block whitespace-nowrap">{{ row.name }}</span><span class="text-muted-foreground">{{ row.date }}</span></th>
               <td class="p-2 text-right tabular-nums" [class.font-semibold]="row.flagged">{{ row.score ?? '-' }}</td>
               <td class="p-2">
                 @if (row.status === 'assessed') {
-                  <span [class.text-destructive]="row.flagged">{{ row.codes.length ? row.codes.join(', ') : row.flagged ? 'Има сигнали' : 'Без сигнали' }}</span>
+                  @if (row.codes.length) {
+                    <div class="flex flex-wrap gap-1">@for (code of row.codes; track code) { <app-risk-badge [risk]="{ code: code }" /> }</div>
+                  } @else {
+                    <span [class.text-destructive]="row.flagged">{{ row.flagged ? 'Има рискови индикатори' : 'Без рискови индикатори' }}</span>
+                  }
                 } @else if (row.status === 'unmatched') {
                   <span class="text-muted-foreground">Несъпоставима секция</span>
                 } @else {

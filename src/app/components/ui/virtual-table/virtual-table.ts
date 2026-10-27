@@ -33,7 +33,7 @@ function rowAt(offsets: Float64Array, offset: number): number {
   selector: '[virtualRows]',
   standalone: true,
   exportAs: 'virtualRows',
-  host: { '(scroll)': 'updateWindow()' },
+  host: { '(scroll)': 'updateWindow()', '(keydown)': 'onKeyDown($event)' },
 })
 export class VirtualTableDirective<T> {
   readonly virtualRows = input<readonly T[]>([]);
@@ -92,6 +92,13 @@ export class VirtualTableDirective<T> {
     });
   }
 
+  onKeyDown(event: KeyboardEvent): void {
+    if (event.target !== this.element || (event.key !== 'Home' && event.key !== 'End')) return;
+    event.preventDefault();
+    this.element.scrollTop = event.key === 'End' ? this.element.scrollHeight : 0;
+    this.updateWindow();
+  }
+
   updateWindow(): void {
     const count = this.heights.length;
     const viewportHeight = this.viewportHeight();
@@ -134,11 +141,12 @@ export class VirtualTableDirective<T> {
 
   private stabilizeColumns(table: HTMLTableElement): boolean {
     const viewportWidth = this.element.clientWidth;
+    const row = table.querySelector<HTMLTableRowElement>('tr[data-virtual-index]');
     if (!viewportWidth || (this.columnGroup && viewportWidth === this.columnViewportWidth)
-      || !table.querySelector('tr[data-virtual-index]')) return false;
+      || !row) return false;
     const resized = !!this.columnGroup;
     this.clearColumnWidths();
-    const widths = Array.from(table.tHead?.rows[0]?.cells || [], cell => cell.getBoundingClientRect().width);
+    const widths = Array.from(row.cells, cell => cell.getBoundingClientRect().width);
     if (!widths.length || widths.some(width => width <= 0)) return resized;
     if (!this.table) {
       this.table = table;
@@ -160,7 +168,7 @@ export class VirtualTableDirective<T> {
 
   private measureRows(): void {
     const table = this.element.querySelector('table');
-    const columns = table?.tHead?.rows[0]?.cells.length || 1;
+    const columns = Array.from(table?.tHead?.rows[0]?.cells ?? []).reduce((count, cell) => count + cell.colSpan, 0) || 1;
     if (columns !== this.columnCount()) this.columnCount.set(columns);
 
     const anchor = rowAt(this.offsets, this.element.scrollTop);

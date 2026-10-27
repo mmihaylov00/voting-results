@@ -1,3 +1,4 @@
+import { LoadingBarComponent } from '../../../ui/loading-bar/loading-bar';
 import { Component, EventEmitter, Input, Output, effect, signal, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Params } from '@angular/router';
@@ -29,7 +30,7 @@ import {
 } from '../../../ui/card-helm/src/lib/hlm-card.directives';
 import { PartyFilterComponent } from '../../party-filter/party-filter';
 import { BaseModalComponent } from '../../../ui/base-modal/base-modal';
-import { SortableTableHeaderComponent } from '../../../ui/sortable-table-header/sortable-table-header';
+import { SortableTableHeaderComponent, SortableHeaderKeyboardDirective } from '../../../ui/sortable-table-header/sortable-table-header';
 import { RiskBadgeComponent } from '../../../ui/risk-badge/risk-badge';
 import { RiskAnalysisSummaryComponent } from '../../../ui/risk-analysis-summary/risk-analysis-summary';
 import { ColumnFilterComponent } from '../../../ui/column-filter/column-filter';
@@ -44,7 +45,7 @@ import { ShareButtonComponent } from '../../../ui/share-button/share-button';
 @Component({
   selector: 'app-section-detail-modal',
   standalone: true,
-  imports: [
+  imports: [LoadingBarComponent, SortableHeaderKeyboardDirective,
     ShareButtonComponent,
     CommonModule,
     HighchartsChartComponent,

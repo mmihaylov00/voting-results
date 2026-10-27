@@ -1,3 +1,4 @@
+import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
@@ -19,7 +20,7 @@ import { VirtualCardsComponent } from '../ui/virtual-cards/virtual-cards';
 @Component({
   selector: 'app-preference-directory',
   standalone: true,
-  imports: [CommonModule, HlmButtonDirective, HlmCardDirective, SelectComponent, SearchFilterComponent,
+  imports: [LoadingBarComponent, CommonModule, HlmButtonDirective, HlmCardDirective, SelectComponent, SearchFilterComponent,
     PartyBadgeComponent, ContestantPreviewDirective, CandidateDetailModalComponent, VirtualCardsComponent],
   templateUrl: './preference-directory.html',
 })

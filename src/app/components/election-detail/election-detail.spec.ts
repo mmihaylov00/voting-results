@@ -389,6 +389,22 @@ describe('ElectionDetailComponent', () => {
     expect(component.mapView()).toBe('sections');
   });
 
+  it('opens the map from the main tab row and preserves it when the URL clears the previous panel', async () => {
+    component['sectionsReady'] = true;
+    component['partiesReady'] = true;
+    component['pendingViewParams'] = { panel: 'stats' };
+    component['restoreSharedView']();
+    component.selectContentTab('map');
+    component['pendingViewParams'] = {};
+    component['restoreSharedView']();
+    expect(component.leftPanel()).toBe('results');
+    expect(component.mobileMapVisible()).toBe(true);
+    component.selectContentTab('sections');
+    expect(component.mobileMapVisible()).toBe(false);
+    await fixture.whenStable();
+    expect(fixture.nativeElement.querySelector('nav[aria-label="Изглед на списъка"]')).toBeNull();
+  });
+
   it('keeps the map selector and its selection independent of content tabs without fetching data', async () => {
     const requests = TestBed.inject(ElectionService).getSections;
     vi.mocked(requests).mockClear();

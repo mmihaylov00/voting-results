@@ -1,3 +1,4 @@
+import { TableControlsComponent, TableColumns } from '../ui/table-controls/table-controls';
 import { SelectComponent, SelectOption } from '../ui/select/select';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
@@ -17,13 +18,17 @@ import { SearchFilterComponent } from '../ui/search-filter/search-filter';
 import { SettlementMapComponent, SettlementMapLevel } from '../ui/settlement-map/settlement-map';
 import { ContestantPreviewDirective } from '../ui/contestant-preview/contestant-preview.directive';
 import { SortableTableHeaderComponent } from '../ui/sortable-table-header/sortable-table-header';
+import { VirtualTableDirective } from '../ui/virtual-table/virtual-table';
+import { CsvExportButtonComponent } from '../ui/csv-export-button/csv-export-button';
+import { CsvExportData, createCsv } from '../../utils/csv-export.util';
+import { CsvExportModalComponent } from '../ui/csv-export-modal/csv-export-modal';
 import {
   HlmTableDirective, HlmTableHeaderDirective, HlmTableBodyDirective,
   HlmTableRowDirective, HlmTableHeadDirective, HlmTableCellDirective,
 } from '../ui/table-helm/src/lib/hlm-table.directives';
 
 type PanelTab = 'geography' | 'sections' | 'risks' | 'candidates';
-type SortKey = 'date' | 'label' | 'votes' | 'share' | 'paper' | 'machine';
+type SortKey = 'date' | 'label' | 'votes' | 'share' | 'paper' | 'machine' | 'region' | 'voteChange' | 'shareChange' | 'sectionCount' | 'preferencesShare' | 'signals';
 type ElectionLabel = { date: string; electionName: string; partyId: string; fullName: string };
 type Change = { baselineDate: string | null; voteChange: number | null; shareChange: number | null };
 type SectionRow = ContestantSectionRow & ElectionLabel & Change;
@@ -38,9 +43,9 @@ type RecurringRow = { date: string; section: Section; flagged: number; assessed:
 @Component({
   selector: 'app-contestant-profile-panels',
   standalone: true,
-  imports: [SelectComponent, CommonModule, HlmButtonDirective, SearchFilterComponent,
+  imports: [TableControlsComponent, SelectComponent, CommonModule, HlmButtonDirective, SearchFilterComponent,
     RiskBadgeComponent, SettlementMapComponent, AbroadMapComponent, ContestantPreviewDirective,
-    SortableTableHeaderComponent, HlmTableDirective, HlmTableHeaderDirective, HlmTableBodyDirective,
+    SortableTableHeaderComponent, VirtualTableDirective, CsvExportButtonComponent, CsvExportModalComponent, HlmTableDirective, HlmTableHeaderDirective, HlmTableBodyDirective,
     HlmTableRowDirective, HlmTableHeadDirective, HlmTableCellDirective],
   templateUrl: './contestant-profile-panels.html',
   styleUrl: './contestant-profile-panels.scss',
@@ -54,7 +59,6 @@ export class ContestantProfilePanelsComponent implements OnChanges {
   @Output() openSection = new EventEmitter<{ date: string; section: Section }>();
   @Output() openCandidate = new EventEmitter<{ date: string; candidate: RegionCandidate; sections: Section[] }>();
 
-  readonly pageSize = 25;
   readonly searchInputId = `contestant-profile-search-${++ContestantProfilePanelsComponent.nextId}`;
   readonly geographyLevels: { id: ContestantGeographyLevel; name: string }[] = [
     { id: 'region', name: 'Райони' }, { id: 'municipality', name: 'Общини' },
@@ -64,16 +68,16 @@ export class ContestantProfilePanelsComponent implements OnChanges {
     value: option.id, label: option.name, icon: option.id === 'country' ? 'globe' : option.id,
   }));
   readonly riskOptions: SelectOption[] = [
-    { value: 'all', label: 'Всички секции', icon: 'section' }, { value: 'flagged', label: 'Със сигнали', icon: 'risks' },
-    { value: 'clear', label: 'Оценени без сигнали', icon: 'check' }, { value: 'unavailable', label: 'Без оценка', icon: 'no-votes' },
+    { value: 'all', label: 'Всички секции', icon: 'section' }, { value: 'flagged', label: 'С рискови индикатори', icon: 'risks' },
+    { value: 'clear', label: 'Оценени без индикатори', icon: 'check' }, { value: 'unavailable', label: 'Без оценка', icon: 'no-votes' },
   ];
   level: ContestantGeographyLevel = 'region';
   search = '';
   riskFilter = 'all';
   sortKey: SortKey = 'votes';
   ascending = false;
-  page = 0;
-  exportError = '';
+  readonly csvExportAction = () => this.exportCsv();
+  csvExportData: CsvExportData | null = null;
   sectionRows: SectionRow[] = [];
   geographyRows: GeographyRow[] = [];
   preferenceRows: PreferenceRow[] = [];
@@ -82,7 +86,15 @@ export class ContestantProfilePanelsComponent implements OnChanges {
   filteredPreferences: PreferenceRow[] = [];
   riskSummaries: RiskSummary[] = [];
   recurring: RecurringRow[] = [];
-  recurringPage = 0;
+  readonly riskSummaryColumns: TableColumns<RiskSummary> = {
+    election: row => `${row.date} ${row.electionName}`, assessed: row => row.assessed, unavailable: row => row.unavailable,
+    flagged: row => row.flagged, common: row => row.common, specific: row => row.specific,
+    votes: row => row.flaggedVotes, exposure: row => row.exposure,
+  };
+  readonly recurringColumns: TableColumns<RecurringRow> = {
+    section: row => `${row.section.sectionId} ${row.section.cityName} ${row.section.regionName ?? ''} ${row.date}`,
+    flagged: row => row.flagged, assessed: row => row.assessed, unavailable: row => row.unavailable, codes: row => row.codes.join(', '),
+  };
   settlements: SettlementAggregate[] = [];
   mapParties: Record<string, string> = {};
   partiesByDate: Record<string, Record<string, string>> = {};
@@ -101,17 +113,8 @@ export class ContestantProfilePanelsComponent implements OnChanges {
     return this.tab === 'geography' ? this.filteredGeography.length
       : this.tab === 'candidates' ? this.filteredPreferences.length : this.filteredSections.length;
   }
-  get pageCount(): number { return Math.max(1, Math.ceil(this.rowCount / this.pageSize)); }
-  get visibleSections(): SectionRow[] { return this.filteredSections.slice(this.page * this.pageSize, (this.page + 1) * this.pageSize); }
-  get visibleGeography(): GeographyRow[] { return this.filteredGeography.slice(this.page * this.pageSize, (this.page + 1) * this.pageSize); }
-  get visiblePreferences(): PreferenceRow[] { return this.filteredPreferences.slice(this.page * this.pageSize, (this.page + 1) * this.pageSize); }
-  get visibleRecurring(): RecurringRow[] { return this.recurring.slice(this.recurringPage * this.pageSize, (this.recurringPage + 1) * this.pageSize); }
-  get recurringPageCount(): number { return Math.max(1, Math.ceil(this.recurring.length / this.pageSize)); }
 
   ngOnChanges(): void {
-    this.page = 0;
-    this.recurringPage = 0;
-    this.exportError = '';
     this.partiesByDate = Object.fromEntries(this.elections.map(election => [election.participation.date,
       { [election.participation.partyId]: election.participation.fullName }]));
     if (this.tab === 'geography') this.updateGeography();
@@ -130,7 +133,7 @@ export class ContestantProfilePanelsComponent implements OnChanges {
   setLevel(): void { this.updateGeography(); this.filterRows(); }
   setSearch(value: string): void { this.search = value; this.filterRows(); }
   sort(key: SortKey): void {
-    this.ascending = this.sortKey === key ? !this.ascending : key === 'label' || key === 'date';
+    this.ascending = this.sortKey === key ? !this.ascending : ['label', 'date', 'region', 'signals'].includes(key);
     this.sortKey = key;
     this.filterRows();
   }
@@ -139,7 +142,6 @@ export class ContestantProfilePanelsComponent implements OnChanges {
   }
 
   filterRows(): void {
-    this.page = 0;
     const query = this.search.trim().toLocaleLowerCase('bg');
     const matches = (...values: string[]) => !query || values.join(' ').toLocaleLowerCase('bg').includes(query);
     this.filteredSections = this.sortRows(this.sectionRows.filter(row => matches(row.electionName, row.date,
@@ -150,14 +152,16 @@ export class ContestantProfilePanelsComponent implements OnChanges {
         || this.riskFilter === 'clear' && row.risks !== null && row.risks.length === 0)), row => ({
       date: row.date, label: `${row.section.cityName} ${row.section.sectionId}`,
       votes: row.votes, share: row.share, paper: row.paper, machine: row.machine,
+      voteChange: row.voteChange, shareChange: row.shareChange, signals: row.risks?.map(risk => risk.code).join(', ') ?? null,
     }));
     this.filteredGeography = this.sortRows(this.geographyRows.filter(row => matches(row.name, row.electionName, row.date)), row => ({
       date: row.date, label: row.name, votes: row.votes, share: row.share, paper: row.paper, machine: row.machine,
+      voteChange: row.voteChange, shareChange: row.shareChange, sectionCount: row.sectionCount,
     }));
     this.filteredPreferences = this.sortRows(this.preferenceRows.filter(row => matches(row.candidateName,
       row.candidateId, row.regionName, row.regionId, row.electionName, row.date)), row => ({
       date: row.date, label: row.candidateName, votes: row.total,
-      share: row.shareOfPartyVotes, paper: row.paper, machine: row.machine,
+      share: row.shareOfPartyVotes, paper: row.paper, machine: row.machine, region: row.regionName, preferencesShare: row.shareOfPreferences,
     }));
   }
 
@@ -168,38 +172,32 @@ export class ContestantProfilePanelsComponent implements OnChanges {
   }
 
   sectionsCsv(): string {
-    return this.csv([
-      ['Избори', 'Дата', this.preference ? 'Кандидат' : 'Партия/кандидат', 'Секция', 'Район', 'Община/държава', 'Населено място', this.votesLabel, `${this.shareLabel} %`, 'Базови избори', this.voteChangeLabel, 'Промяна дял п.п.', 'Хартиени', 'Машинни', 'Рискови сигнали'],
-      ...this.filteredSections.map(row => [row.electionName, row.date, row.fullName, row.section.sectionId,
+    const data = this.sectionCsvData();
+    return createCsv([data.headers, ...data.rows]);
+  }
+
+  private sectionCsvData(): Pick<CsvExportData, 'headers' | 'rows'> {
+    return {
+      headers: ['Избори', 'Дата', this.preference ? 'Кандидат' : 'Партия/кандидат', 'Секция', 'Район', 'Община/държава', 'Населено място', this.votesLabel, `${this.shareLabel} %`, 'Базови избори', this.voteChangeLabel, 'Промяна дял п.п.', 'Хартиени', 'Машинни', 'Рискови индикатори'],
+      rows: this.filteredSections.map(row => [row.electionName, row.date, row.fullName, row.section.sectionId,
         row.section.regionName ?? row.section.regionId, row.section.municipalityName ?? '', row.section.cityName,
         row.votes, row.share, row.baselineDate, row.voteChange, row.shareChange, row.paper, row.machine,
         row.risks === null ? 'Няма оценка' : row.risks.map(risk => risk.code).join(', ')]),
-    ]);
+    };
   }
 
   exportCsv(): void {
-    this.exportError = '';
-    let url: string | undefined;
-    try {
-      const contents = this.tab === 'geography' ? this.csv([
-        ['Избори', 'Дата', 'Място', this.votesLabel, `${this.shareLabel} %`, 'Базови избори', this.voteChangeLabel, 'Промяна дял п.п.', 'Секции'],
-        ...this.filteredGeography.map(row => [row.electionName, row.date, row.name, row.votes, row.share,
+    if (!this.rowCount) return;
+    const table = this.tab === 'geography' ? {
+        headers: ['Избори', 'Дата', 'Място', this.votesLabel, `${this.shareLabel} %`, 'Базови избори', this.voteChangeLabel, 'Промяна дял п.п.', 'Секции'],
+        rows: this.filteredGeography.map(row => [row.electionName, row.date, row.name, row.votes, row.share,
           row.baselineDate, row.voteChange, row.shareChange, row.sectionCount]),
-      ]) : this.tab === 'candidates' ? this.csv([
-        ['Избори', 'Дата', 'Район', 'Кандидат', 'Номер', 'Преференции', 'Дял от партийните гласове в района %', 'Дял от партийните преференции в района %'],
-        ...this.filteredPreferences.map(row => [row.electionName, row.date, row.regionName, row.candidateName,
+      } : this.tab === 'candidates' ? {
+        headers: ['Избори', 'Дата', 'Район', 'Кандидат', 'Номер', 'Преференции', 'Дял от партийните гласове в района %', 'Дял от партийните преференции в района %'],
+        rows: this.filteredPreferences.map(row => [row.electionName, row.date, row.regionName, row.candidateName,
           row.candidateId, row.total, row.shareOfPartyVotes, row.shareOfPreferences]),
-      ]) : this.sectionsCsv();
-      url = URL.createObjectURL(new Blob([contents], { type: 'text/csv;charset=utf-8;' }));
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `profile-${this.tab}-${this.elections.length === 1 ? this.elections[0].participation.date : 'all'}.csv`;
-      link.click();
-    } catch {
-      this.exportError = 'Файлът не може да бъде изтеглен. Опитайте отново.';
-    } finally {
-      if (url) URL.revokeObjectURL(url);
-    }
+      } : this.sectionCsvData();
+    this.csvExportData = { ...table, filename: `profile-${this.tab}-${this.elections.length === 1 ? this.elections[0].participation.date : 'all'}.csv` };
   }
 
   private updateGeography(): void {
@@ -332,7 +330,7 @@ export class ContestantProfilePanelsComponent implements OnChanges {
       partyId: participation.partyId, fullName: participation.fullName };
   }
 
-  private sortRows<T>(rows: T[], values: (row: T) => Record<SortKey, string | number | null>): T[] {
+  private sortRows<T>(rows: T[], values: (row: T) => Partial<Record<SortKey, string | number | null>>): T[] {
     const direction = this.ascending ? 1 : -1;
     return rows.sort((left, right) => {
       const leftValues = values(left);
@@ -342,17 +340,10 @@ export class ContestantProfilePanelsComponent implements OnChanges {
       }
       const a = leftValues[this.sortKey];
       const b = rightValues[this.sortKey];
-      if (a === null || b === null) return a === b ? 0 : a === null ? 1 : -1;
+      if (a == null || b == null) return Number(a == null) - Number(b == null);
       return direction * (typeof a === 'number' && typeof b === 'number' ? a - b
         : String(a).localeCompare(String(b), 'bg', { numeric: true }));
     });
   }
 
-  private csv(rows: (string | number | null)[][]): string {
-    return '\uFEFF' + rows.map(row => row.map(cell => {
-      const value = cell === null ? '' : String(cell);
-      const safe = typeof cell === 'string' && /^[=+@\-\t\r]/.test(value) ? `'${value}` : value;
-      return `"${safe.replace(/"/g, '""')}"`;
-    }).join(',')).join('\r\n');
-  }
 }
