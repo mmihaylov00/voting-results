@@ -3,14 +3,7 @@
     "date": "2026.10.25",
     "name": "Октомври 2026 - Тур 1",
     "type": "presidential",
-    "round": 1,
-    "provisional": {
-      "sourceUrl": "https://results.cik.bg/pvr202610/rezultati/index.html",
-      "updatedAt": "2026-10-26T15:00:00+02:00",
-      "processedPercent": 100.0,
-      "reportedSections": 12719,
-      "totalSections": 12719
-    }
+    "round": 1
   },
   {
     "date": "2026.04.19",

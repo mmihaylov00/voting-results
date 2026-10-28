@@ -4,7 +4,7 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 ## Election data
 
-The archive contains eight parliamentary elections (2017-2026), both rounds of the 2016 and 2021 presidential elections, and a preliminary snapshot of the 25 October 2026 presidential election. `/governmental` and `/presidential` share the result views, with separate datasets and comparisons. Presidential results show candidate tickets and do not expose parliamentary preference or PP-DB targeting controls.
+The archive contains eight parliamentary elections (2017-2026), both rounds of the 2016 and 2021 presidential elections, and official results for the 25 October 2026 presidential election. `/governmental` and `/presidential` share the result views, with separate datasets and comparisons. Presidential results show candidate tickets and do not expose parliamentary preference or PP-DB targeting controls.
 
 `src/assets/elections.json` is the catalog. Each entry has a real election `date` (`YYYY.MM.DD`), `name`, and `type` (`governmental` or `presidential`); presidential entries also have `round` (`1` or `2`). Canonical semicolon-delimited tables live in `public/data/<date>/` as `.txt` or `.txt.gz`. The compiler writes versioned summary and full datasets plus `public/data/compiled/manifest.json`.
 
@@ -20,7 +20,7 @@ Existing datasets are preserved. Import validates structure, dates, and paths, b
 python3 scripts/repair-cik-data.py 2022.10.02 /path/to/export.zip
 ```
 
-The correction script covers the eight imported historical dates. For a new official export, verify its CIK readme and canonical field mappings before compiling. The preliminary 2026 data comes from the published numerical protocol pages, as described below.
+The correction script covers the eight imported historical dates and the official October 2026 export. For a new official export, verify its CIK readme and canonical field mappings before compiling.
 
 ```bash
 npm run test:data
@@ -39,25 +39,25 @@ Review notes: detail comparisons still load the full history of the selected ele
 
 The existing April 2026 national party catalog omits Smolyan's independent ballot 25 (`ИК Тодор Тодоров Батков`), which is defined in `local_candidates.txt`. Its 2,093 votes remain intact, but result labels can fall back to the ballot number. The data verifier accepts region-only ballots only when a local candidate definition exists.
 
-### Preliminary CIK page results
+### Official October 2026 results
 
-The October 2026 snapshot is labelled preliminary throughout the site, with CIK's published update time and national processing percentage. It contains all 12,719 published protocols at 15:00 Sofia time on 26 October (100.00%), including the six sections missing from the earlier 10:00 snapshot. No listed sections remain unprocessed.
+The October 2026 dataset uses the [official CIK export](https://results.cik.bg/pvr202610/opendata/export.zip), approved by [Decision 416-ПВР of 27 October 2026](https://www.cik.bg/bg/decisions/416/2026-10-27). It replaces the earlier page-derived snapshot, removes its preliminary metadata and source-results file, and includes all 12,719 sections. Official EKATTE identifiers replace inferred geography; 12,380 sections have published coordinates and 339 do not.
 
-To refresh this snapshot before the official export is available:
+To reproduce the import with the official archive:
 
 ```bash
-uv run --no-project --with curl-cffi python scripts/import-cik-pages.py --cache-dir /tmp/cik-pvr202610-cache
-python3 scripts/import_cik_pages_test.py
-npm run compile-data -- --date 2026.10.25
+python3 scripts/repair-cik-data.py 2026.10.25 /path/to/export.zip
+python3 scripts/repair_cik_data_test.py
+npm run compile-data
 npm run verify:data
 npm run build
 ```
 
-The scraper uses two workers, caches raw HTML outside the repository, and validates every candidate total and no-support count against all 32 regional result pages and the national page. Protocol totals are cross-checked against the numerical RIK protocols. It refuses publication if the national snapshot changes during extraction, and it cannot overwrite an election marked final. Published percentages, source counts, unprocessed section IDs and unmatched geography IDs are preserved in `public/data/2026.10.25/source-results.json`.
+The importer validates the new protocol layouts and paper/machine vote components before replacing the dataset and catalog together. Candidate and no-support totals were checked against all 32 final regional result pages and the national page; protocol metrics were checked against the final national protocol. The archive hash, field mappings and published inconsistencies are recorded in [the election's SOURCE.md](public/data/2026.10.25/SOURCE.md).
 
-The `--date` compiler mode loads history of the selected election type, replaces only that date's compiled files, and preserves existing manifest entries. Preliminary snapshots are excluded from compiler and section-tooltip comparison baselines. Refreshing the import and rebuilding the app keeps the source badge and data together. No recurring refresh is scheduled. Replace this snapshot with a verified official export and clear its `provisional` metadata when finalizing, then run a full compilation to refresh all historical comparisons.
+Finalizing a snapshot requires a full compilation so it becomes available in historical comparisons throughout the archive. The `--date` compiler mode is available for later data-only corrections, preserving other manifest entries. The earlier `scripts/import-cik-pages.py` scraper is retained for provenance and refuses to overwrite a final election. No recurring refresh is scheduled.
 
-The site retains its existing share denominator (signed-in voters); CIK's percentages use valid candidate votes plus no-support votes. Both raw counts and CIK's published percentages are retained. Physical section coordinates are unavailable, and 193 domestic sections have no unambiguous match in the existing settlement catalog; their results remain available in tables. See the election's `SOURCE.md` for field definitions and original protocol discrepancies.
+The site retains its existing share denominator (signed-in voters); CIK's percentages use valid candidate votes plus no-support votes. Published inconsistencies are preserved: October 2026 candidate rows sum to 1,454,357 versus the CIK protocol headline 1,454,359, and candidate plus no-support rows sum to 1,521,710 versus the headline valid-vote total 1,521,723. The site uses the individual candidate vote rows.
 
 ## Maps and analysis
 
