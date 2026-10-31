@@ -1,5 +1,5 @@
 import { SelectComponent, SelectOption } from '../select/select';
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, ChangeDetectionStrategy } from '@angular/core';
 import { MapMetric } from '../../../utils/map-metric.helper';
 import { PartyFilterComponent } from '../../election-detail/party-filter/party-filter';
 
@@ -16,6 +16,7 @@ import { PartyFilterComponent } from '../../election-detail/party-filter/party-f
       }
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: ':host { display: block; min-width: 0; }',
 })
 export class MapMetricControlsComponent implements OnChanges {

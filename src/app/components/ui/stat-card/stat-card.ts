@@ -1,4 +1,4 @@
-import { Component, Input, TemplateRef, ContentChild } from '@angular/core';
+import { Component, Input, TemplateRef, ContentChild, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   HlmCardDirective,
@@ -22,6 +22,7 @@ import { formatActivity } from '../../../utils/common.utils';
     HlmTypographyDirective,
     HlmTooltipDirective,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './stat-card.html',
 })
 export class StatCardComponent {

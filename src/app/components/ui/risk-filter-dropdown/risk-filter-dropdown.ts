@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, signal, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HlmButtonDirective } from '../button-helm/src/lib/hlm-button.directive';
@@ -20,6 +20,7 @@ export interface RiskCategory {
     MapIconComponent,
   ],
   templateUrl: './risk-filter-dropdown.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
     '(document:click)': 'closeDropdown()'
   }

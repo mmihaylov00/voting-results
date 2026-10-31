@@ -35,10 +35,12 @@ export type SplitViewLayout = 'split' | 'list' | 'map';
     </div>
   `,
   styles: `
+    @reference '../../../../tailwind.css';
+
     .panel-handle {
       @apply inline-flex h-8 w-7 items-center justify-center rounded-full border border-border
-        bg-background text-muted-foreground shadow-sm transition-colors hover:bg-accent
-        hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
+        bg-background text-muted-foreground shadow-xs transition-colors hover:bg-accent
+        hover:text-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring;
     }
   `,
 })

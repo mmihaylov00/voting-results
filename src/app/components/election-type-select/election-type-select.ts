@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
@@ -26,6 +26,7 @@ import { MapIconComponent } from '../ui/map-icon/map-icon';
     MapIconComponent,
   ],
   templateUrl: './election-type-select.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './election-type-select.scss',
 })
 export class ElectionTypeSelectComponent {

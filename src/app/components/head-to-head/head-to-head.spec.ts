@@ -113,9 +113,7 @@ describe('head-to-head page', () => {
     const table = fixture.nativeElement.querySelector('table') as HTMLTableElement;
     const selects = [...table.querySelectorAll<HTMLButtonElement>('thead [role="combobox"]')];
     expect(selects).toHaveLength(2);
-    const labels = selects.map(select => table.querySelector<HTMLElement>('#' + select.getAttribute('aria-labelledby'))!);
-    expect(labels.map(label => label.textContent?.trim())).toEqual(['Лява страна', 'Дясна страна']);
-    expect(labels.every(label => label.style.display === 'none')).toBe(true);
+    expect(selects.map(select => select.getAttribute('aria-label'))).toEqual(['Лява страна', 'Дясна страна']);
     expect(selects.every(select => select.querySelector('.party-swatch'))).toBe(true);
     expect(table.tHead?.textContent).not.toContain('лява - дясна');
     expect(table.caption?.classList.contains('sr-only')).toBe(true);

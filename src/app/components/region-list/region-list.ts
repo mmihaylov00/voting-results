@@ -1,5 +1,5 @@
 import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
-import { Component, DestroyRef, OnInit, effect, inject, signal, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, effect, inject, signal, ViewChild, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -69,6 +69,7 @@ import { SplitViewControlsComponent, SplitViewLayout } from '../ui/split-view-co
     ContestantPreviewDirective,
     SplitViewControlsComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './region-list.html'
 })
 export class RegionListComponent implements OnInit, AfterViewInit {

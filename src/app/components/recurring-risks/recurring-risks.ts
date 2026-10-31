@@ -2,7 +2,7 @@ import { TableControlsComponent, TableColumns } from '../ui/table-controls/table
 import { SortableTableHeaderComponent } from '../ui/sortable-table-header/sortable-table-header';
 import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, DestroyRef, OnInit, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, OnInit, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { combineLatest, distinctUntilChanged, map } from 'rxjs';
@@ -21,6 +21,7 @@ import { CsvExportModalComponent } from '../ui/csv-export-modal/csv-export-modal
   selector: 'app-recurring-risks',
   standalone: true,
   imports: [TableControlsComponent, SortableTableHeaderComponent, LoadingBarComponent, CommonModule, RouterLink, HlmButtonDirective, VirtualTableDirective, RiskBadgeComponent, HlmTooltipDirective, CsvExportButtonComponent, CsvExportModalComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './recurring-risks.html',
 })
 export class RecurringRisksComponent implements OnInit {

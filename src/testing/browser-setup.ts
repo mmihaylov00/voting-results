@@ -1,6 +1,8 @@
 import { afterEach, beforeEach, vi } from 'vitest';
 
-// CDK select triggers observe their width; jsdom has no layout observer.
+// CDK selects use browser layout APIs that jsdom does not implement.
+HTMLElement.prototype.scrollIntoView ??= () => {};
+
 beforeEach(() => {
   vi.stubGlobal('ResizeObserver', class {
     observe(): void {}

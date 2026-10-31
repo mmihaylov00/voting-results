@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { ThemeService } from './services/theme.service';
@@ -13,6 +13,7 @@ const STORAGE_KEY = 'votes_password';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, AppHeaderComponent, NgTemplateOutlet],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @if (unlocked()) {
       <app-header />
@@ -22,7 +23,7 @@ const STORAGE_KEY = 'votes_password';
       </main>
     } @else {
       <div class="fixed inset-0 z-[500] flex items-center justify-center bg-slate-950 text-slate-100">
-        <div class="w-full max-w-sm rounded-xl border border-slate-800 bg-slate-900/80 p-6 shadow-2xl backdrop-blur">
+        <div class="w-full max-w-sm rounded-xl border border-slate-800 bg-slate-900/80 p-6 shadow-2xl backdrop-blur-sm">
           <div class="text-lg font-semibold">Въведи парола</div>
           <div class="mt-1 text-sm text-slate-400">Достъпът е защитен.</div>
           @if (errorMessage()) {
@@ -33,7 +34,7 @@ const STORAGE_KEY = 'votes_password';
             <form class="mt-4 space-y-3" (submit)="submit($event)">
               <input
                 type="password"
-                class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-base text-slate-100 outline-none focus:border-amber-400"
+                class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-base text-slate-100 outline-hidden focus:border-amber-400"
                 autocomplete="current-password"
                 placeholder="Парола"
                 [value]="password()"

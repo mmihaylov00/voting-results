@@ -21,7 +21,7 @@
                     (selectedColumnIdsChange)="onColumnSelectionChange($event)" />
             </div>
             <table hlmTable>
-                <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
+                <thead hlmTableHeader class="bg-background/95 backdrop-blur-sm sticky top-0 z-10 shadow-xs">
                     <tr hlmTableRow>
                         @if (visibleColumns().has('sectionId')) {
                             <th hlmTableHead
@@ -113,21 +113,21 @@
                             @if (visibleColumns().has('voted')) {
                                 <td hlmTableCell class="text-right font-medium">
                                     <div class="flex items-center justify-end">
-                                        <span [hlmTooltip]="section.comparisons?.['voted']" [currentValue]="section.voted" [showTrend]="true">{{ section.voted }}</span>
+                                        <span [hlmTooltip]="$safeNavigationMigration(section.comparisons?.['voted'])" [currentValue]="section.voted" [showTrend]="true">{{ section.voted }}</span>
                                     </div>
                                 </td>
                             }
                             @if (visibleColumns().has('protocolPaperVotes')) {
                                 <td hlmTableCell class="text-right">
                                     <div class="flex items-center justify-end">
-                                        <span [hlmTooltip]="section.comparisons?.['totalPaper']" [currentValue]="section.protocolPaperVotes" [showTrend]="true">{{ section.protocolPaperVotes }}</span>
+                                        <span [hlmTooltip]="$safeNavigationMigration(section.comparisons?.['totalPaper'])" [currentValue]="section.protocolPaperVotes" [showTrend]="true">{{ section.protocolPaperVotes }}</span>
                                     </div>
                                 </td>
                             }
                             @if (visibleColumns().has('protocolMachineVotes')) {
                                 <td hlmTableCell class="text-right">
                                     <div class="flex items-center justify-end">
-                                        <span [hlmTooltip]="section.comparisons?.['totalMachine']" [currentValue]="section.protocolMachineVotes" [showTrend]="true">{{ section.protocolMachineVotes }}</span>
+                                        <span [hlmTooltip]="$safeNavigationMigration(section.comparisons?.['totalMachine'])" [currentValue]="section.protocolMachineVotes" [showTrend]="true">{{ section.protocolMachineVotes }}</span>
                                     </div>
                                 </td>
                             }

@@ -99,7 +99,7 @@
           [virtualRows]="comparisonTable.viewRows()" #comparisonRows="virtualRows">
           <table hlmTable class="w-full min-w-[1200px] whitespace-nowrap" [attr.aria-rowcount]="comparisonTable.viewRows().length + 2">
             <caption class="sr-only">Гласове, дял и активност по места за два избора</caption>
-            <thead hlmTableHeader class="sticky top-0 z-10 bg-background/95 shadow-sm backdrop-blur">
+            <thead hlmTableHeader class="sticky top-0 z-10 bg-background/95 shadow-xs backdrop-blur-sm">
               <tr hlmTableRow>
                 <th hlmTableHead scope="col" rowspan="2" class="min-w-52" app-sortable-table-header columnKey="label" label="Място" [table]="comparisonTable"></th>
                 @for (metric of comparisonMetrics; track metric.key) {
@@ -124,7 +124,7 @@
                   <th hlmTableHead scope="row" class="py-3 font-normal"><button class="max-w-64 truncate text-primary underline-offset-4 hover:underline focus-visible:underline" [title]="row.label" (click)="selectRow(row)">{{ row.label }}</button>@if (row.section) { <span class="block text-xs text-muted-foreground">{{ row.id }}</span> }</th>
                   @for (metric of comparisonMetrics; track metric.key) {
                     @for (side of comparisonSides; track side) {
-                      <td appComparisonCell [side]="side" [left]="row.previous?.[metric.key]" [right]="row.current[metric.key]" [rate]="metric.rate" [rightMinusLeft]="true"
+                      <td appComparisonCell [side]="side" [left]="$safeNavigationMigration(row.previous?.[metric.key])" [right]="row.current[metric.key]" [rate]="metric.rate" [rightMinusLeft]="true"
                         [class.border-l-2]="side === 'left'" [class.border-border]="side === 'left'"></td>
                     }
                   }

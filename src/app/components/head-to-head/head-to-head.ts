@@ -3,7 +3,7 @@ import { SortableTableHeaderComponent } from '../ui/sortable-table-header/sortab
 import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { SelectComponent } from '../ui/select/select';
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, computed, inject, input, signal } from '@angular/core';
+import { Component, DestroyRef, computed, inject, input, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink, convertToParamMap } from '@angular/router';
 import { distinctUntilChanged, firstValueFrom, map } from 'rxjs';
@@ -24,6 +24,7 @@ import { HlmTableBodyDirective, HlmTableDirective, HlmTableHeadDirective, HlmTab
   imports: [TableControlsComponent, SortableTableHeaderComponent, LoadingBarComponent, SelectComponent, CommonModule, RouterLink, HlmButtonDirective, HlmTableDirective, ComparisonCellComponent,
     HlmTableHeaderDirective, HlmTableBodyDirective, HlmTableRowDirective, HlmTableHeadDirective],
   templateUrl: './head-to-head.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: ':host { display: block; min-width: 0; }',
 })
 export class HeadToHeadComponent {

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, signal, OnChanges, SimpleChanges, ElementRef, Inject, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, OnChanges, SimpleChanges, ElementRef, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HlmButtonDirective } from '../../ui/button-helm/src/lib/hlm-button.directive';
@@ -19,6 +19,7 @@ import { sortPartiesByVotes } from '../../../utils/party-order.util';
     PartyBadgeComponent,
     MapIconComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './party-filter.html'
 })
 export class PartyFilterComponent implements OnChanges, OnDestroy {

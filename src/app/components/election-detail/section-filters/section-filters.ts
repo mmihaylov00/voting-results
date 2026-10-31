@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, signal, effect, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, signal, effect, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SectionTab, SectionFilters } from '../../../models/election.models';
 import { HlmButtonDirective } from '../../ui/button-helm/src/lib/hlm-button.directive';
@@ -24,6 +24,7 @@ import { MapIconComponent, MapIconName } from '../../ui/map-icon/map-icon';
     SearchFilterComponent,
     MapIconComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './section-filters.html',
 })
 export class SectionFiltersComponent implements OnChanges {

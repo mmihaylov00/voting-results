@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Injector, Input, Output, TemplateRef, ContentChild, afterNextRender, computed, effect, inject, input, viewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Injector, Input, Output, TemplateRef, ContentChild, afterNextRender, computed, effect, inject, input, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Params } from '@angular/router';
 import { ModalPageService } from '../../../services/modal-page.service';
@@ -13,6 +13,7 @@ import { HlmTypographyDirective } from '../typography-helm/src/lib/hlm-typograph
     HlmButtonDirective,
     HlmTypographyDirective,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './base-modal.html',
 })
 export class BaseModalComponent {

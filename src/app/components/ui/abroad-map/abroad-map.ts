@@ -13,6 +13,7 @@ import {
   input,
   effect,
   untracked,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as L from 'leaflet';
@@ -53,7 +54,7 @@ export type AbroadMetricAggregate = MapAggregate;
     <div
       [class]="embedded()
         ? 'flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-background lg:h-[65dvh] lg:min-h-[360px] lg:max-h-[780px]'
-        : 'fixed inset-0 z-[1200] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm'"
+        : 'fixed inset-0 z-[1200] flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs'"
       (click)="onBackdropClick()">
       <div #workspace class="map-workspace"
         [class]="embedded()
@@ -99,6 +100,7 @@ export type AbroadMetricAggregate = MapAggregate;
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [`
     .map-workspace:fullscreen { width: 100vw; max-width: none; height: 100dvh; max-height: none; border-radius: 0; overflow: auto; }
   `],

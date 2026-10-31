@@ -128,7 +128,7 @@ describe('AppHeaderComponent breadcrumb navigation', () => {
     const { element } = await render('/governmental/election/2026.04.19/region/23?panel=risks');
     expect(element.querySelector('a[href="#main-content"]')).not.toBeNull();
     const selects = [...element.querySelectorAll<HTMLButtonElement>('header [role="combobox"]')];
-    expect(selects.every(select => Boolean(element.querySelector('#' + select.getAttribute('aria-labelledby'))))).toBe(true);
+    expect(selects.every(select => Boolean(select.getAttribute('aria-label')))).toBe(true);
     expect(selects.map(select => select.textContent?.trim())).toEqual(['Парламентарни', 'Април 2026', 'СОФИЯ 23 МИР']);
     expect(selects.every(select => select.querySelector('app-map-icon'))).toBe(true);
     expect(element.querySelector('nav[aria-label="Раздели на изборите"]')).toBeNull();

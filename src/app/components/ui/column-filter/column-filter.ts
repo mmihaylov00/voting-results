@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, signal, ElementRef, Inject, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, ElementRef, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DOCUMENT } from '@angular/common';
 import { HlmButtonDirective } from '../button-helm/src/lib/hlm-button.directive';
@@ -19,6 +19,7 @@ export interface Column {
     HlmTooltipDirective,
     MapIconComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './column-filter.html'
 })
 export class ColumnFilterComponent implements OnDestroy {

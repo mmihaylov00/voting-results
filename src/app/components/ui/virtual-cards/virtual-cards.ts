@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, DestroyRef, ElementRef, TemplateRef, afterNextRender, computed, contentChild, inject, input, signal } from '@angular/core';
+import { Component, DestroyRef, ElementRef, TemplateRef, afterNextRender, computed, contentChild, inject, input, signal, ChangeDetectionStrategy } from '@angular/core';
 import { VirtualTableDirective } from '../virtual-table/virtual-table';
 
 @Component({
@@ -21,6 +21,7 @@ import { VirtualTableDirective } from '../virtual-table/virtual-table';
       <div [style.height.px]="viewport.window().bottom" aria-hidden="true"></div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: `
     :host { display: block; min-width: 0; --card-columns: 1; }
     .card-viewport { max-height: min(72dvh, 64rem); overflow: auto; scrollbar-gutter: stable; padding: 2px; }

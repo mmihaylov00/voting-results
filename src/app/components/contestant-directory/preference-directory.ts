@@ -1,6 +1,6 @@
 import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { ElectionService } from '../../services/election';
 import { ContestantSummary, contestantPreferences, isSyntheticContestant } from '../../utils/contestant-profile.util';
@@ -22,6 +22,7 @@ import { VirtualCardsComponent } from '../ui/virtual-cards/virtual-cards';
   standalone: true,
   imports: [LoadingBarComponent, CommonModule, HlmButtonDirective, HlmCardDirective, SelectComponent, SearchFilterComponent,
     PartyBadgeComponent, ContestantPreviewDirective, CandidateDetailModalComponent, VirtualCardsComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './preference-directory.html',
 })
 export class PreferenceDirectoryComponent implements OnInit, OnDestroy {

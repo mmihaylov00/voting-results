@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { MapMetric } from '../../../utils/map-metric.helper';
 
 export type MapIconName = MapMetric | 'download' | 'download-table' | 'history' | 'fullscreen' | 'loading' | 'settlement' | 'municipality' | 'neighborhood' | 'section' | 'region'
@@ -14,6 +14,7 @@ export type MapIconName = MapMetric | 'download' | 'download-table' | 'history' 
       <path [attr.d]="paths[name]" />
     </svg>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [':host { display: inline-flex; flex-shrink: 0; }'],
 })
 export class MapIconComponent {

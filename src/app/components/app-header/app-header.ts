@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Params, Router, RouterLink } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
@@ -21,7 +21,7 @@ type ProvisionalElection = {
   imports: [RouterLink, HlmButtonDirective, SelectComponent],
   template: `
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-2 focus:z-[300] focus:bg-background focus:p-3">Към съдържанието</a>
-    <header class="sticky top-0 z-50 border-b border-primary/20 bg-background/95 backdrop-blur-sm">
+    <header class="sticky top-0 z-50 border-b border-primary/20 bg-background/95 backdrop-blur-xs">
       <div class="mx-auto flex h-16 max-w-[1800px] items-center gap-2 px-4 py-2 sm:px-8 lg:h-auto lg:gap-5">
         <a routerLink="/" class="flex shrink-0 items-center gap-2 py-1 font-semibold tracking-tight text-foreground" aria-label="Изборни резултати - начало">
           <span aria-hidden="true" class="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-primary text-primary-foreground">✓</span>
@@ -86,6 +86,7 @@ type ProvisionalElection = {
       }
     </header>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: `
     :host { display: contents; }
     .breadcrumb-separator {

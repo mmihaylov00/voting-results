@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TableColumns, TableControlsComponent } from './table-controls';
@@ -8,6 +8,7 @@ import { VirtualTableDirective } from '../virtual-table/virtual-table';
 interface Row { id: number; name: string; votes: number | null; }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [TableControlsComponent, SortableTableHeaderComponent, SortableHeaderKeyboardDirective, VirtualTableDirective],
   template: `
     <app-table-controls [rows]="rows" [columns]="columns" label="Търсене на район" #table />

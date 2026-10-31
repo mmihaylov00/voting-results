@@ -15,6 +15,7 @@ import {
   effect,
   inject,
   untracked,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as L from 'leaflet';
@@ -152,7 +153,7 @@ export type SettlementMapLevel = SettlementMapView | 'neighborhoods';
         </button>
       }
       @if (isEmpty) {
-        <div class="pointer-events-none absolute inset-0 flex items-center justify-center rounded-xl bg-background/70 backdrop-blur-sm">
+        <div class="pointer-events-none absolute inset-0 flex items-center justify-center rounded-xl bg-background/70 backdrop-blur-xs">
           <div class="max-w-md px-6 text-center text-sm text-muted-foreground">
             Няма налични географски данни за тази карта.
           </div>
@@ -163,6 +164,7 @@ export type SettlementMapLevel = SettlementMapView | 'neighborhoods';
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [`
     .map-workspace:fullscreen { display: flex; flex-direction: column; height: 100dvh; padding: 16px; overflow: auto; }
     .map-workspace:fullscreen > .map-frame { flex: 1; min-height: 240px; }

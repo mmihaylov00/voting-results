@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RiskBadgeComponent } from '../risk-badge/risk-badge';
 import { formatRiskMessage, RiskContext } from '../../../utils/risk-message.util';
@@ -20,6 +20,7 @@ export interface RiskAnalysisData {
     CommonModule,
     RiskBadgeComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './risk-analysis-summary.html',
 })
 export class RiskAnalysisSummaryComponent {

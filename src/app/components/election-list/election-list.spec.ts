@@ -191,7 +191,10 @@ describe('ElectionListComponent', () => {
     expect(component.electionsData.get(date)?.totalVoted).toBe(50);
     expect(component.regions).toEqual([{ id: '23', name: 'София' }]);
     expect(fixture.nativeElement.querySelector('[role="progressbar"]')?.getAttribute('aria-valuenow')).toBe('100');
-    await vi.waitFor(() => expect(fixture.nativeElement.querySelector('[role="progressbar"]')).toBeNull());
+    await vi.waitFor(() => {
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('[role="progressbar"]')).toBeNull();
+    });
     const cards = component.electionsData;
     const chart = component.chartOptions;
     const update = vi.spyOn(component, 'updateHistoricalCharts');

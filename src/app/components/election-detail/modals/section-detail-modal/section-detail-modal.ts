@@ -1,5 +1,5 @@
 import { LoadingBarComponent } from '../../../ui/loading-bar/loading-bar';
-import { Component, EventEmitter, Input, Output, effect, signal, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, effect, signal, OnInit, OnChanges, OnDestroy, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Params } from '@angular/router';
 import * as Highcharts from 'highcharts';
@@ -71,6 +71,7 @@ import { getElectionHistoryLabel } from '../../../../utils/date-name.util';
     SectionRiskHistoryComponent,
     ContestantPreviewDirective,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './section-detail-modal.html'
 })
 export class SectionDetailModalComponent implements OnInit, OnChanges, OnDestroy {

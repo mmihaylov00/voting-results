@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HlmInputDirective } from '../input-helm/src/lib/hlm-input.directive';
 
@@ -6,6 +6,7 @@ import { HlmInputDirective } from '../input-helm/src/lib/hlm-input.directive';
   selector: 'app-search-filter',
   standalone: true,
   imports: [CommonModule, HlmInputDirective],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './search-filter.html'
 })
 export class SearchFilterComponent {

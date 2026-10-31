@@ -18,7 +18,7 @@
       [virtualRows]="recurringTable.viewRows()" #riskRows="virtualRows">
       <table class="w-full text-sm" [attr.aria-rowcount]="recurringTable.viewRows().length + 1">
         <caption class="sr-only">Секции с рискови индикатори в поне два съпоставими избора</caption>
-        <thead class="sticky top-0 z-10 border-b border-border bg-background/95 text-xs text-muted-foreground shadow-sm backdrop-blur">
+        <thead class="sticky top-0 z-10 border-b border-border bg-background/95 text-xs text-muted-foreground shadow-xs backdrop-blur-sm">
           <tr>
             <th scope="col" class="py-3 pr-4 text-left font-medium" app-sortable-table-header columnKey="section" label="Секция" [table]="recurringTable" align="left"></th>
             <th scope="col" class="p-3 text-left font-medium" app-sortable-table-header columnKey="place" label="Населено място" [table]="recurringTable" align="left"></th>

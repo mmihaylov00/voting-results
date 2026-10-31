@@ -13,5 +13,13 @@
     "src/testing/**/*.ts",
     "src/**/*.spec.ts",
     "src/**/*.worker.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    }
+  }
 }

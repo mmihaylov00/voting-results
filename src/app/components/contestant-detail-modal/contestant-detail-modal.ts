@@ -3,7 +3,7 @@ import { SortableTableHeaderComponent } from '../ui/sortable-table-header/sortab
 import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { SelectComponent, SelectOption } from '../ui/select/select';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, computed, effect, inject, signal, untracked } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, computed, effect, inject, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
@@ -48,6 +48,7 @@ const OFFICIAL_SEATS: Partial<Record<string, OfficialSeats>> = officialSeats;
     HlmTableRowDirective, HlmTableHeadDirective, HlmTableCellDirective,
     ContestantProfilePanelsComponent, SectionDetailModalComponent],
   templateUrl: './contestant-detail-modal.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './contestant-detail-modal.scss',
 })
 export class ContestantDetailModalComponent implements OnChanges, OnDestroy {

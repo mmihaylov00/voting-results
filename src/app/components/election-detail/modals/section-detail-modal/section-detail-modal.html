@@ -36,7 +36,7 @@
 
       <section aria-label="Резултати за секцията" [hidden]="activePanel() !== 'results'">
             <!-- Result types -->
-            <div class="flex flex-wrap gap-2 mb-4 flex-shrink-0 px-6 justify-between">
+            <div class="flex flex-wrap gap-2 mb-4 shrink-0 px-6 justify-between">
                 <div class="app-tabs flex flex-row gap-2" role="group" aria-label="Вид резултати">
                   <button hlmBtn [variant]="activeTab() === 'parties' ? 'default' : 'outline'" size="lg" [attr.data-state]="activeTab() === 'parties' ? 'active' : 'inactive'"
                           (click)="activeTab.set('parties')">
@@ -74,7 +74,7 @@
             <table hlmTable class="min-w-full">
               <!-- Parties Table -->
               @if (activeTab() === 'parties') {
-                  <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
+                  <thead hlmTableHeader class="bg-background/95 backdrop-blur-sm sticky top-0 z-10 shadow-xs">
                       <tr hlmTableRow class="hover:bg-transparent">
                           @if (visiblePartyColumns().has('partyName')) {
                               <th hlmTableHead
@@ -181,7 +181,7 @@
 
               <!-- Candidates Table -->
               @if (activeTab() === 'candidates') {
-                  <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
+                  <thead hlmTableHeader class="bg-background/95 backdrop-blur-sm sticky top-0 z-10 shadow-xs">
                       <tr hlmTableRow class="hover:bg-transparent">
                           @if (visibleCandidateColumns().has('candidateName')) {
                               <th hlmTableHead appSortKeyboard (click)="sortCandidates('candidateName')" [attr.aria-sort]="candidateSortColumn === 'candidateName' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'" class="cursor-pointer hover:bg-primary/20 active:bg-primary/30 transition-colors text-secondary dark:text-primary group relative">
@@ -554,7 +554,7 @@
 
       @if (visitedPanels().has('stats')) {
         <section aria-label="Статистика за секцията" [hidden]="activePanel() !== 'stats'">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 flex-shrink-0">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 shrink-0">
             <div hlmCard class="p-1 col-span-1 border-primary/10">
               <highcharts-chart
                 [options]="chartOptions"
@@ -568,16 +568,16 @@
                   <div class="space-y-4">
                     <div class="flex justify-between items-center border-b border-primary/10 pb-2">
                       <span class="text-secondary/70 dark:text-foreground/70">Избиратели:</span>
-                      <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['total']" [currentValue]="currentSectionData.total" [showTrend]="true" [isLoading]="historyLoading()">{{ currentSectionData.total }}</span>
+                      <span class="font-bold flex items-center" [hlmTooltip]="$safeNavigationMigration(currentSectionData.comparisons?.['total'])" [currentValue]="currentSectionData.total" [showTrend]="true" [isLoading]="historyLoading()">{{ currentSectionData.total }}</span>
                     </div>
                     <div class="flex justify-between items-center border-b border-primary/10 pb-2">
                       <span class="text-secondary/70 dark:text-foreground/70">Гласували:</span>
-                      <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['voted']" [currentValue]="currentSectionData.voted" [showTrend]="true" [isLoading]="historyLoading()">{{ currentSectionData.voted }}</span>
+                      <span class="font-bold flex items-center" [hlmTooltip]="$safeNavigationMigration(currentSectionData.comparisons?.['voted'])" [currentValue]="currentSectionData.voted" [showTrend]="true" [isLoading]="historyLoading()">{{ currentSectionData.voted }}</span>
                     </div>
                     <div class="flex justify-between items-center border-b border-primary/10 pb-2">
                       <span class="text-secondary/70 dark:text-foreground/70">Активност:</span>
                       <div class="flex flex-col items-end">
-                        <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['activityPercent']" [currentValue]="currentSectionData.activityBp" [isPercent]="true" [showTrend]="true" [isLoading]="historyLoading()">{{ formatActivity((currentSectionData.activityBp || 0) / 10000) }}%</span>
+                        <span class="font-bold flex items-center" [hlmTooltip]="$safeNavigationMigration(currentSectionData.comparisons?.['activityPercent'])" [currentValue]="currentSectionData.activityBp" [isPercent]="true" [showTrend]="true" [isLoading]="historyLoading()">{{ formatActivity((currentSectionData.activityBp || 0) / 10000) }}%</span>
                         @if (regionAvgTurnout !== null) {
                           <span class="text-[10px] text-muted-foreground">ср. за {{ municipalityLabelLowercase }}та: {{ formatActivity((regionAvgTurnout || 0) / 10000) }}%</span>
                         }
@@ -585,7 +585,7 @@
                     </div>
                     <div class="flex justify-between items-center">
                       <span class="text-secondary/70 dark:text-foreground/70">Недействителни:</span>
-                      <span class="font-bold flex items-center" [hlmTooltip]="currentSectionData.comparisons?.['discardedVotes']" [currentValue]="currentSectionData.discardedVotes" [showTrend]="true" [isLoading]="historyLoading()">{{ currentSectionData.discardedVotes }}</span>
+                      <span class="font-bold flex items-center" [hlmTooltip]="$safeNavigationMigration(currentSectionData.comparisons?.['discardedVotes'])" [currentValue]="currentSectionData.discardedVotes" [showTrend]="true" [isLoading]="historyLoading()">{{ currentSectionData.discardedVotes }}</span>
                     </div>
                   </div>
                 </div>
@@ -597,7 +597,7 @@
 
       @if (visitedPanels().has('history')) {
         <section aria-label="История на секцията" [hidden]="activePanel() !== 'history'">
-          <div class="flex-shrink-0">
+          <div class="shrink-0">
             <div class="flex justify-between items-center mb-4">
               <h4 hlmH4 class="text-secondary dark:text-primary">Исторически трендове</h4>
             </div>

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../../services/theme.service';
 import { getPartyBadgeLabel, getPartyColor } from '../../../utils/party-colors';
@@ -7,6 +7,7 @@ import { getPartyBadgeLabel, getPartyColor } from '../../../utils/party-colors';
   selector: 'app-party-badge',
   standalone: true,
   imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './party-badge.html',
 })
 export class PartyBadgeComponent {

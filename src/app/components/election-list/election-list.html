@@ -23,8 +23,8 @@
             }
             <p hlmCardDescription hlmMuted class="text-secondary/60 dark:text-foreground/60">{{ date.date }}</p>
           </div>
-          <div class="flex-grow"></div>
-          <div hlmCardContent class="pt-0 flex-grow">
+          <div class="grow"></div>
+          <div hlmCardContent class="pt-0 grow">
             <div class="flex flex-col text-xs mb-4 space-y-1">
               @for (tp of electionData.topParties; let i = $index; track tp.name) {
                 <div class="flex justify-between items-center gap-2">

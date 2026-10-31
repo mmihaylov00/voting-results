@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { VirtualTableDirective } from './virtual-table';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [VirtualTableDirective],
   template: `
     <div [virtualRows]="items" [virtualRowsLayout]="layout" #viewport="virtualRows" tabindex="0">

@@ -24,7 +24,7 @@
               <path #connection #connectionTooltip="hlmTooltip" [attr.d]="ribbon.path" [attr.fill]="color(ribbon.source)" fill-opacity="0.35"
                 role="img" tabindex="0" [attr.aria-label]="ribbon.label" [hlmTooltip]="ribbon.tooltip"
                 (mousemove)="connectionTooltip.moveTooltip($event)" (pointerdown)="connection.focus()"
-                class="cursor-help transition-[fill-opacity] duration-150 hover:[fill-opacity:0.75] focus:[fill-opacity:0.75] focus-visible:stroke-foreground focus-visible:[stroke-width:1] focus-visible:outline-none motion-reduce:transition-none" />
+                class="cursor-help transition-[fill-opacity] duration-150 hover:[fill-opacity:0.75] focus:[fill-opacity:0.75] focus-visible:stroke-foreground focus-visible:[stroke-width:1] focus-visible:outline-hidden motion-reduce:transition-none" />
             }
             @for (source of chart().sources; track source.node.id) {
               <rect x="286" [attr.y]="source.y" width="14" [attr.height]="source.height" [attr.fill]="color(source.node)"><title>{{ displayName(source.node) }}: ≈ {{ source.total | number:'1.0-0' }}</title></rect>
@@ -62,7 +62,7 @@
                     <button #segment #segmentTooltip="hlmTooltip" type="button" [attr.data-vote-origin-segment]="row.source.id"
                       [style.width.%]="row.share" [style.background-color]="color(row.source)" [attr.aria-label]="row.label" [hlmTooltip]="row.tooltip"
                       (mousemove)="segmentTooltip.moveTooltip($event)" (pointerdown)="segment.focus()"
-                      class="h-full min-w-0 shrink-0 border-r border-background/70 transition-[filter] last:border-0 hover:brightness-125 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-foreground motion-reduce:transition-none"></button>
+                      class="h-full min-w-0 shrink-0 border-r border-background/70 transition-[filter] last:border-0 hover:brightness-125 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-foreground motion-reduce:transition-none"></button>
                   }
                 </div>
                 <details class="text-xs">

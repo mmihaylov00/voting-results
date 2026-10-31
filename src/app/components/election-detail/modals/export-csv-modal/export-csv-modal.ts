@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Params } from '@angular/router';
 import { RegionCandidate, Section, SECTION_COLUMNS, TableColumn, ViewMode } from '../../../../models/election.models';
@@ -26,6 +26,7 @@ import { getTopCandidates } from '../../../../utils/election-utils';
     BaseModalComponent,
     CsvExportButtonComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './export-csv-modal.html'
 })
 export class ExportCsvModalComponent {

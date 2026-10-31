@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, signal, computed } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Params } from '@angular/router';
 import { Section, TableColumn } from '../../../../models/election.models';
@@ -44,6 +44,7 @@ import { loadVisibleColumns, saveVisibleColumns } from '../../../../utils/column
     ColumnFilterComponent,
     SearchFilterComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './protocol-error-modal.html'
 })
 export class ProtocolErrorModalComponent {

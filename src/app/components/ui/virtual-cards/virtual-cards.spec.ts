@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { VirtualCardsComponent } from './virtual-cards';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [VirtualCardsComponent],
   template: `<app-virtual-cards [items]="items" label="Тестови карти"><ng-template let-item><button>{{ item.id }}</button></ng-template></app-virtual-cards>`,
 })

@@ -1,12 +1,13 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { ThemeService } from '../../../services/theme.service';
 import { MapMetric, MapMetricHelper } from '../../../utils/map-metric.helper';
 
 @Component({
   selector: 'app-map-legend',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
-    <details open class="w-full min-w-0 max-w-full overflow-hidden rounded-lg border border-border bg-background/95 text-foreground shadow-sm">
+    <details open class="w-full min-w-0 max-w-full overflow-hidden rounded-lg border border-border bg-background/95 text-foreground shadow-xs">
       <summary class="cursor-pointer break-words px-3 py-2 text-xs font-medium">Легенда: {{ legend().title }}</summary>
       <div class="max-h-[min(28dvh,11rem)] overflow-x-hidden overflow-y-auto px-3 pb-3 text-xs">
         <p class="mb-2 whitespace-normal break-words text-muted-foreground">{{ legend().description }}</p>

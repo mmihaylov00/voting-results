@@ -1,7 +1,7 @@
 import { TableControlsComponent, TableColumns } from '../table-controls/table-controls';
 import { SortableTableHeaderComponent } from '../sortable-table-header/sortable-table-header';
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, inject } from '@angular/core';
+import { Component, Input, OnChanges, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Section } from '../../../models/election.models';
 import { ElectionService } from '../../../services/election';
 import { buildSectionRiskHistory, RiskHistoryDataset, SectionRiskHistory } from '../../../utils/section-risk-history.util';
@@ -11,6 +11,7 @@ import { RiskBadgeComponent } from '../risk-badge/risk-badge';
   selector: 'app-section-risk-history',
   standalone: true,
   imports: [TableControlsComponent, SortableTableHeaderComponent, CommonModule, RiskBadgeComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './section-risk-history.html',
 })
 export class SectionRiskHistoryComponent implements OnChanges {

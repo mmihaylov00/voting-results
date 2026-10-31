@@ -4,7 +4,7 @@ import { LoadingBarComponent } from '../loading-bar/loading-bar';
 import { SelectComponent, SelectOption, partySelectOptions } from '../select/select';
 import { partyVoteTotals, sortPartiesByVotes } from '../../../utils/party-order.util';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild, effect, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild, effect, inject, ChangeDetectionStrategy } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
@@ -39,6 +39,7 @@ type Benchmark = { label: string; snapshot: AnalysisSnapshot };
   imports: [TableControlsComponent, SortableTableHeaderComponent, LoadingBarComponent, SelectComponent, CommonModule, HighchartsChartComponent, HlmButtonDirective, MapIconComponent,
     ComparisonCellComponent, VirtualTableDirective, CsvExportButtonComponent, CsvExportModalComponent, HlmTableDirective, HlmTableHeaderDirective, HlmTableBodyDirective, HlmTableRowDirective, HlmTableHeadDirective],
   templateUrl: './election-analysis.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: ':host { display: block; min-width: 0; }',
 })
 export class ElectionAnalysisComponent implements OnChanges, OnDestroy {

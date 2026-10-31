@@ -1,7 +1,7 @@
 import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { CsvExportButtonComponent } from '../ui/csv-export-button/csv-export-button';
 import { SortableHeaderKeyboardDirective } from '../ui/sortable-table-header/sortable-table-header';
-import {ChangeDetectorRef, Component, computed, DestroyRef, effect, inject, OnInit, signal} from '@angular/core';
+import {ChangeDetectorRef, Component, computed, DestroyRef, effect, inject, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Params, Router} from '@angular/router';
@@ -137,6 +137,7 @@ import { SplitViewControlsComponent, SplitViewLayout } from '../ui/split-view-co
     SplitViewControlsComponent,
   ],
   templateUrl: './election-detail.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './election-detail.scss',
 })
 export class ElectionDetailComponent implements OnInit {

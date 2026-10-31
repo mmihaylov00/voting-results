@@ -1,6 +1,10 @@
 # VotesFrontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.2.
+This project uses [Angular CLI](https://github.com/angular/angular-cli) version 22.2.5.
+
+Use Node.js 22.22.3+, 24.15.0+, or 26+, with npm 12.2.1. Run `npm ci` to install the locked dependencies. TypeScript stays on 6.0 because Angular 22 does not support TypeScript 7.
+
+Tailwind CSS 4 is processed through PostCSS in `src/tailwind.css`, before the custom Sass in `src/styles.scss`. The existing theme remains in `tailwind.config.js`.
 
 ## Election data
 

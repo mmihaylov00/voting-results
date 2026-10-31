@@ -1,6 +1,6 @@
 import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { firstValueFrom, map } from 'rxjs';
@@ -22,6 +22,7 @@ import { VirtualCardsComponent } from '../ui/virtual-cards/virtual-cards';
   standalone: true,
   imports: [LoadingBarComponent, CommonModule, RouterLink, HlmButtonDirective, HlmCardDirective, SearchFilterComponent,
     ContestantPreviewDirective, ContestantDetailModalComponent, PreferenceDirectoryComponent, SelectComponent, VirtualCardsComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './contestant-directory.html',
 })
 export class ContestantDirectoryComponent implements OnInit, OnDestroy {

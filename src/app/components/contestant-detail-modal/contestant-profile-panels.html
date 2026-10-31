@@ -86,7 +86,7 @@
 <div class="virtual-table-viewport max-h-[70vh] overflow-auto rounded-md border border-border" role="region" aria-label="Повтарящи се рискове за партията или кандидата" tabindex="0"
           [virtualRows]="recurringTable.viewRows()" #recurringRows="virtualRows">
           <table hlmTable class="min-w-full" aria-label="Повтарящи се рискове за партията или кандидата" [attr.aria-rowcount]="recurringTable.viewRows().length + 1">
-            <thead hlmTableHeader class="sticky top-0 z-10 bg-background/95 shadow-sm backdrop-blur"><tr hlmTableRow><th hlmTableHead scope="col" app-sortable-table-header columnKey="section" label="Секция и място" [table]="recurringTable" align="left"></th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap" app-sortable-table-header columnKey="flagged" label="Избори с рискови индикатори" [table]="recurringTable" align="right"></th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap" app-sortable-table-header columnKey="assessed" label="Оценени" [table]="recurringTable" align="right"></th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap" app-sortable-table-header columnKey="unavailable" label="Липсващи/без оценка" [table]="recurringTable" align="right"></th><th hlmTableHead scope="col" app-sortable-table-header columnKey="codes" label="Индикатори" [table]="recurringTable" align="left"></th></tr></thead>
+            <thead hlmTableHeader class="sticky top-0 z-10 bg-background/95 shadow-xs backdrop-blur-sm"><tr hlmTableRow><th hlmTableHead scope="col" app-sortable-table-header columnKey="section" label="Секция и място" [table]="recurringTable" align="left"></th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap" app-sortable-table-header columnKey="flagged" label="Избори с рискови индикатори" [table]="recurringTable" align="right"></th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap" app-sortable-table-header columnKey="assessed" label="Оценени" [table]="recurringTable" align="right"></th><th hlmTableHead scope="col" class="text-right tabular-nums whitespace-nowrap" app-sortable-table-header columnKey="unavailable" label="Липсващи/без оценка" [table]="recurringTable" align="right"></th><th hlmTableHead scope="col" app-sortable-table-header columnKey="codes" label="Индикатори" [table]="recurringTable" align="left"></th></tr></thead>
             <tbody hlmTableBody>
               @if (recurringRows.window().top) {
                 <tr class="virtual-table-spacer" aria-hidden="true"><td [attr.colspan]="recurringRows.columnCount()" [style.height.px]="recurringRows.window().top"></td></tr>
@@ -116,7 +116,7 @@
     <div class="virtual-table-viewport max-h-[70vh] overflow-auto rounded-md border border-border" role="region" aria-label="Географска подкрепа по избори" tabindex="0"
       [virtualRows]="filteredGeography" [virtualRowsLayout]="elections.length > 1" #geographyRows="virtualRows">
     <table hlmTable class="min-w-full" aria-label="Географска подкрепа по избори" [attr.aria-rowcount]="filteredGeography.length + 1">
-      <thead hlmTableHeader class="sticky top-0 z-10 bg-background/95 shadow-sm backdrop-blur"><tr hlmTableRow>
+      <thead hlmTableHeader class="sticky top-0 z-10 bg-background/95 shadow-xs backdrop-blur-sm"><tr hlmTableRow>
         <th hlmTableHead scope="col" app-sortable-table-header columnKey="date" label="Избори"
           [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('date')"
           tabindex="0" (sortChange)="sort('date')"></th>
@@ -158,7 +158,7 @@
     <div class="virtual-table-viewport max-h-[70vh] overflow-auto rounded-md border border-border" role="region" aria-label="Кандидати и преференции по избори" tabindex="0"
       [virtualRows]="filteredPreferences" #preferenceRows="virtualRows">
     <table hlmTable class="min-w-full" aria-label="Кандидати и преференции по избори" [attr.aria-rowcount]="filteredPreferences.length + 1">
-      <thead hlmTableHeader class="sticky top-0 z-10 bg-background/95 shadow-sm backdrop-blur"><tr hlmTableRow>
+      <thead hlmTableHeader class="sticky top-0 z-10 bg-background/95 shadow-xs backdrop-blur-sm"><tr hlmTableRow>
         <th hlmTableHead scope="col" app-sortable-table-header columnKey="date" label="Избори"
           [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('date')"
           tabindex="0" (sortChange)="sort('date')"></th><th hlmTableHead scope="col" app-sortable-table-header columnKey="region" label="Район" [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" (sortChange)="sort('region')" align="left"></th>
@@ -199,7 +199,7 @@
     <div class="virtual-table-viewport max-h-[70vh] overflow-auto rounded-md border border-border" role="region" [attr.aria-label]="tab === 'risks' ? 'Секции с рискови индикатори по избори' : 'Резултати по секции и избори'" tabindex="0"
       [virtualRows]="filteredSections" [virtualRowsLayout]="elections.length > 1" #sectionRows="virtualRows">
     <table hlmTable class="min-w-full" [attr.aria-label]="tab === 'risks' ? 'Секции с рискови индикатори по избори' : 'Резултати по секции и избори'" [attr.aria-rowcount]="filteredSections.length + 1">
-      <thead hlmTableHeader class="sticky top-0 z-10 bg-background/95 shadow-sm backdrop-blur"><tr hlmTableRow>
+      <thead hlmTableHeader class="sticky top-0 z-10 bg-background/95 shadow-xs backdrop-blur-sm"><tr hlmTableRow>
         <th hlmTableHead scope="col" app-sortable-table-header columnKey="date" label="Избори"
           [currentSortColumn]="sortKey" [sortDirection]="ascending ? 'asc' : 'desc'" [attr.aria-sort]="sortAria('date')"
           tabindex="0" (sortChange)="sort('date')"></th>

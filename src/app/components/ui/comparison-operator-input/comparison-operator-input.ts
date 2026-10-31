@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HlmButtonDirective } from '../button-helm/src/lib/hlm-button.directive';
@@ -15,6 +15,7 @@ import { HlmTooltipDirective } from '../tooltip-helm/src/lib/hlm-tooltip.directi
     HlmInputDirective,
     HlmTooltipDirective,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './comparison-operator-input.html',
 })
 export class ComparisonOperatorInputComponent {

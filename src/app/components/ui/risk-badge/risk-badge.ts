@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HlmTooltipDirective } from '../tooltip-helm/src/lib/hlm-tooltip.directive';
 import { describeRiskCode, formatRiskMessage, RiskContext } from '../../../utils/risk-message.util';
@@ -17,6 +17,7 @@ export interface RiskIndicator {
     CommonModule,
     HlmTooltipDirective,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './risk-badge.html',
 })
 export class RiskBadgeComponent {

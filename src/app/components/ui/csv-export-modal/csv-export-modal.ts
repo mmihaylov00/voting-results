@@ -1,4 +1,4 @@
-import { Component, OnInit, input, output, signal } from '@angular/core';
+import { Component, OnInit, input, output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CsvExportData, createCsv, downloadCsvFile } from '../../../utils/csv-export.util';
 import { BaseModalComponent } from '../base-modal/base-modal';
@@ -9,6 +9,7 @@ import { CsvExportButtonComponent } from '../csv-export-button/csv-export-button
   selector: 'app-csv-export-modal',
   standalone: true,
   imports: [CommonModule, BaseModalComponent, HlmButtonDirective, CsvExportButtonComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <app-base-modal #modal title="Експорт CSV" subtitle="Експортирайте текущите резултати от таблицата"
       maxWidth="max-w-3xl" (close)="close.emit()">

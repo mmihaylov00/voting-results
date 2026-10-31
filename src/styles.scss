@@ -1,12 +1,8 @@
 @import 'leaflet/dist/leaflet.css';
 @import '@angular/cdk/overlay-prebuilt.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-.site-select-menu [data-brn-select-viewport] { scrollbar-width: thin; }
-.site-select-menu [data-brn-select-viewport]::-webkit-scrollbar { display: block; }
+.site-select-menu { scrollbar-width: thin; }
+.site-select-menu::-webkit-scrollbar { display: block; }
 
 :root {
   color-scheme: light;
@@ -85,7 +81,8 @@
 }
 
 body {
-  @apply bg-background text-foreground;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
   font-family: 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 

@@ -2,7 +2,7 @@ import { TableControlsComponent, TableColumns } from '../ui/table-controls/table
 import { SortableTableHeaderComponent } from '../ui/sortable-table-header/sortable-table-header';
 import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { CommonModule } from '@angular/common';
-import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { catchError, distinctUntilChanged, EMPTY, forkJoin, map, of, switchMap } from 'rxjs';
@@ -28,6 +28,7 @@ const OFFICIAL_SEATS: Partial<Record<string, OfficialSeats>> = officialSeats;
   selector: 'app-seat-simulator',
   standalone: true,
   imports: [TableControlsComponent, SortableTableHeaderComponent, LoadingBarComponent, CommonModule, RouterLink, HlmButtonDirective, HlmInputDirective, HlmTooltipDirective, ParliamentChartComponent, BaseModalComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './seat-simulator.html',
 })
 export class SeatSimulatorComponent {

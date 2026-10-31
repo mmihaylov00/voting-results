@@ -1,4 +1,4 @@
-import { Component, Directive, ElementRef, Input, Output, EventEmitter, HostListener, HostBinding, inject } from '@angular/core';
+import { Component, Directive, ElementRef, Input, Output, EventEmitter, HostListener, HostBinding, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableSorting } from '../table-controls/table-controls';
 
@@ -23,6 +23,7 @@ export class SortableHeaderKeyboardDirective {
   imports: [
     CommonModule,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './sortable-table-header.html',
 })
 export class SortableTableHeaderComponent {

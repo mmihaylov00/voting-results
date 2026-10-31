@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, ChangeDetectionStrategy } from '@angular/core';
 import { MapSearchItem, searchMapItems } from '../../../utils/map-interaction.util';
 import { MapIconComponent } from '../map-icon/map-icon';
 
@@ -6,6 +6,7 @@ import { MapIconComponent } from '../map-icon/map-icon';
   selector: 'app-map-tools',
   standalone: true,
   imports: [MapIconComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="flex flex-wrap items-start gap-2">
       <div class="relative min-w-0 flex-1">

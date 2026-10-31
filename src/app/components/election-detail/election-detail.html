@@ -231,7 +231,7 @@
                aria-label="Резултати по секции и населени места"
                [virtualRows]="filteredSections" [virtualRowsLayout]="visibleColumns()" #sectionRows="virtualRows">
             <table hlmTable [attr.aria-rowcount]="filteredSections.length + 1">
-              <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
+              <thead hlmTableHeader class="bg-background/95 backdrop-blur-sm sticky top-0 z-10 shadow-xs">
               <tr hlmTableRow class="hover:bg-transparent">
                 @if (visibleColumns().has('sectionId')) {
                   <th hlmTableHead appSortKeyboard (click)="sortSections('sectionId')" [attr.aria-sort]="sectionSortColumn === 'sectionId' ? sectionSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"
@@ -644,7 +644,7 @@
                   @if (visibleColumns().has('total')) {
                     <td hlmTableCell class="text-center">
                       <div class="flex items-center justify-center">
-                        <span [hlmTooltip]="section.comparisons?.['total']"
+                        <span [hlmTooltip]="$safeNavigationMigration(section.comparisons?.['total'])"
                               [trendNewLine]="true"
                               [currentValue]="section.total" [showTrend]="true"
                               [isLoading]="!!(loading$ | async)">{{ section.total | number }}</span>
@@ -654,7 +654,7 @@
                   @if (visibleColumns().has('voted')) {
                     <td hlmTableCell class="text-center">
                       <div class="flex items-center justify-center">
-                        <span [hlmTooltip]="section.comparisons?.['voted']"
+                        <span [hlmTooltip]="$safeNavigationMigration(section.comparisons?.['voted'])"
                               [trendNewLine]="true"
                               [currentValue]="section.voted" [showTrend]="true"
                               [isLoading]="!!(loading$ | async)">{{ section.voted | number }}</span>
@@ -664,7 +664,7 @@
                   @if (visibleColumns().has('activityBp')) {
                     <td hlmTableCell class="text-center">
                       <div class="flex items-center justify-center">
-                        <span [hlmTooltip]="section.comparisons?.['activityPercent']"
+                        <span [hlmTooltip]="$safeNavigationMigration(section.comparisons?.['activityPercent'])"
                               [trendNewLine]="true"
                               [currentValue]="section.activityBp"
                               [isPercent]="true" [showTrend]="true"
@@ -676,7 +676,7 @@
                   @if (visibleColumns().has('discardedVotes')) {
                     <td hlmTableCell class="text-center">
                       <div class="flex items-center justify-center">
-                        <span [hlmTooltip]="section.comparisons?.['discardedVotes']"
+                        <span [hlmTooltip]="$safeNavigationMigration(section.comparisons?.['discardedVotes'])"
                               [trendNewLine]="true"
                               [currentValue]="section.discardedVotes" [showTrend]="true"
                               [isLoading]="!!(loading$ | async)">{{ section.discardedVotes | number }}</span>
@@ -686,7 +686,7 @@
                   @if (visibleColumns().has('noVotes')) {
                     <td hlmTableCell class="text-center">
                       <div class="flex items-center justify-center">
-                        <span [hlmTooltip]="section.comparisons?.['noVotes']"
+                        <span [hlmTooltip]="$safeNavigationMigration(section.comparisons?.['noVotes'])"
                               [trendNewLine]="true"
                               [currentValue]="section.noVotes" [showTrend]="true"
                               [isLoading]="!!(loading$ | async)">{{ section.noVotes | number }}</span>
@@ -697,11 +697,11 @@
                     <td hlmTableCell>
                       <div class="flex flex-col gap-1 ms-1 text-xs whitespace-nowrap">
                         <span class="text-secondary/70 dark:text-foreground/70 flex items-center"
-                              [hlmTooltip]="section.comparisons?.['totalPaper']" [currentValue]="section.totalPaper"
+                              [hlmTooltip]="$safeNavigationMigration(section.comparisons?.['totalPaper'])" [currentValue]="section.totalPaper"
                               [showTrend]="true" [isLoading]="!!(loading$ | async)">хартиени: <strong
                           class="ms-1">{{ section.totalPaper | number }}</strong></span>
                         <span class="text-secondary/70 dark:text-foreground/70 flex items-center"
-                              [hlmTooltip]="section.comparisons?.['totalMachine']"
+                              [hlmTooltip]="$safeNavigationMigration(section.comparisons?.['totalMachine'])"
                               [currentValue]="section.totalMachine" [showTrend]="true"
                               [isLoading]="!!(loading$ | async)">машинни: <strong
                           class="ms-1">{{ section.totalMachine | number }}</strong></span>
@@ -717,7 +717,7 @@
                     <td hlmTableCell>
                       <div class="flex flex-col text-xs">
                         @for (tp of section.topParties; track tp.name) {
-                          @let partyComparisons = section.partyVotes[tp.partyId]?.comparisons;
+                          @let partyComparisons = $safeNavigationMigration(section.partyVotes[tp.partyId]?.comparisons);
                           <div class="flex items-center gap-1.5 min-w-0">
                             @if (tp.partyId !== '0' && tp.name !== 'Други') {
                               <button type="button" class="min-w-0 rounded-sm text-left hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" [attr.aria-label]="'Отвори профил: ' + tp.name"
@@ -780,7 +780,7 @@
                aria-label="Резултати по кандидати"
                [virtualRows]="filteredCandidates" [virtualRowsLayout]="visibleCandidateColumns()" #candidateRows="virtualRows">
             <table hlmTable [attr.aria-rowcount]="filteredCandidates.length + 1">
-              <thead hlmTableHeader class="bg-background/95 backdrop-blur sticky top-0 z-10 shadow-sm">
+              <thead hlmTableHeader class="bg-background/95 backdrop-blur-sm sticky top-0 z-10 shadow-xs">
               <tr hlmTableRow class="hover:bg-transparent">
                 @if (currentVisibleColumns.has('candidateId')) {
                   <th hlmTableHead appSortKeyboard (click)="sortCandidates('candidateId')" [attr.aria-sort]="candidateSortColumn === 'candidateId' ? candidateSortDir === 'asc' ? 'ascending' : 'descending' : 'none'"

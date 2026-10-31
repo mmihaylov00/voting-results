@@ -48,7 +48,7 @@
 
 @if (!isPage()) {
   <dialog #modalDialog [attr.aria-labelledby]="headingId"
-          class="fixed inset-0 m-0 h-[100dvh] max-h-none w-full max-w-none border-0 bg-transparent p-0 text-foreground backdrop:bg-black/50 backdrop:backdrop-blur-sm open:flex open:items-center open:justify-center sm:p-4"
+          class="fixed inset-0 m-0 h-[100dvh] max-h-none w-full max-w-none border-0 bg-transparent p-0 text-foreground backdrop:bg-black/50 backdrop:backdrop-blur-xs open:flex open:items-center open:justify-center sm:p-4"
           [class]="zIndex" (cancel)="onCancel($event)" (click)="onBackdropClick($event)">
     <ng-container [ngTemplateOutlet]="modalContent"></ng-container>
   </dialog>

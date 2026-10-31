@@ -1,7 +1,7 @@
 import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { SelectComponent } from '../ui/select/select';
 import { partyVoteTotals } from '../../utils/party-order.util';
-import { Component, DestroyRef, OnInit, signal, effect, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, signal, effect, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -61,6 +61,7 @@ interface ElectionData {
     ContestantPreviewDirective,
   ],
   templateUrl: './election-list.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './election-list.scss',
 })
 export class ElectionListComponent implements OnInit {

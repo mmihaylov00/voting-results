@@ -41,11 +41,11 @@ describe('SelectComponent', () => {
     const { fixture, component, trigger } = await render();
     const changed = vi.fn(); component.valueChange.subscribe(changed);
     trigger.click(); await fixture.whenStable();
-    const options = document.querySelectorAll<HTMLButtonElement>('[role="option"]');
+    const options = document.querySelectorAll<HTMLElement>('[role="option"]');
     options[1].click(); await fixture.whenStable();
     expect(changed).toHaveBeenCalledExactlyOnceWith('2');
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
-    component.selectValue('unknown'); component.selectValue(['1', '2']);
+    component.selectValue({ value: 'unknown', label: 'Unknown' }); component.selectValue(undefined);
     expect(changed).toHaveBeenCalledTimes(1);
   });
 
@@ -73,10 +73,13 @@ describe('SelectComponent', () => {
     const menu = document.querySelector('[role="listbox"]')!;
     expect([...menu.querySelectorAll('[role="option"]')].every(option => option.querySelector('app-map-icon'))).toBe(true);
     const escape = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true });
-    menu.dispatchEvent(escape); await fixture.whenStable();
+    trigger.dispatchEvent(escape); await fixture.whenStable();
     expect(escape.defaultPrevented).toBe(true);
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
-    expect(trigger.getAttribute('aria-labelledby')).toBeTruthy();
+    expect(trigger.getAttribute('aria-label')).toBe('Партия');
+    const closedEscape = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true });
+    trigger.dispatchEvent(closedEscape);
+    expect(closedEscape.defaultPrevented).toBe(false);
   });
 
   it('preserves the null option used to clear historical party selections', async () => {
@@ -86,9 +89,26 @@ describe('SelectComponent', () => {
     await fixture.whenStable();
     const changed = vi.fn(); component.valueChange.subscribe(changed);
     trigger.click(); await fixture.whenStable();
-    document.querySelector<HTMLButtonElement>('[role="option"]')!.click();
+    document.querySelector<HTMLElement>('[role="option"]')!.click();
     await fixture.whenStable();
     expect(changed).toHaveBeenCalledExactlyOnceWith(null);
+  });
+
+  it('keeps focus on the trigger and allows clearing a selection with the keyboard', async () => {
+    const { fixture, component, trigger } = await render();
+    fixture.componentRef.setInput('options', [{ value: null, label: 'Изберете', icon: 'users' },
+      ...partySelectOptions([{ id: '1', name: 'ПП-ДБ' }])]);
+    await fixture.whenStable();
+    const changed = vi.fn(); component.valueChange.subscribe(changed);
+    trigger.focus(); trigger.click(); await fixture.whenStable();
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', keyCode: 36, bubbles: true }));
+    await fixture.whenStable();
+    expect(document.activeElement).toBe(trigger);
+    expect(trigger.getAttribute('aria-controls')).toBe(document.querySelector('[role="listbox"]')!.id);
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+    await fixture.whenStable();
+    expect(changed).toHaveBeenCalledExactlyOnceWith(null);
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
   });
 
   it('keeps options inside a native modal dialog and removes its overlay on destruction', async () => {

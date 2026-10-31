@@ -1,7 +1,7 @@
 import { TableControlsComponent, TableColumns } from '../ui/table-controls/table-controls';
 import { SelectComponent, SelectOption } from '../ui/select/select';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, ChangeDetectionStrategy } from '@angular/core';
 import { RegionCandidate, Section } from '../../models/election.models';
 import {
   ContestantDetailElection, ContestantGeographyLevel, ContestantGeographyRow,
@@ -48,6 +48,7 @@ type RecurringRow = { date: string; section: Section; flagged: number; assessed:
     SortableTableHeaderComponent, VirtualTableDirective, CsvExportButtonComponent, CsvExportModalComponent, HlmTableDirective, HlmTableHeaderDirective, HlmTableBodyDirective,
     HlmTableRowDirective, HlmTableHeadDirective, HlmTableCellDirective],
   templateUrl: './contestant-profile-panels.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './contestant-profile-panels.scss',
 })
 export class ContestantProfilePanelsComponent implements OnChanges {
