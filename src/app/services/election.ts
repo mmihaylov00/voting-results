@@ -126,8 +126,6 @@ export class ElectionService {
   private riskHistoryCache: { [date: string]: FullData } = {};
   private riskHistoryLoadPromises: { [date: string]: Promise<FullData> | undefined } = {};
 
-  private summariesLoaded = false;
-  private summaryLoadPromise: Promise<void> | null = null;
   private summaryLoadPromises: { [date: string]: Promise<void> | undefined } = {};
   private fullLoadPromises: { [date: string]: Promise<void> | undefined } = {};
   private manifestPromise: Promise<DataManifest | null> | null = null;
@@ -668,31 +666,16 @@ export class ElectionService {
     };
   }
 
-  private ensureSummariesLoaded(): Observable<void> {
-    if (this.summariesLoaded) return of(undefined);
-    if (this.summaryLoadPromise) return from(this.summaryLoadPromise);
-
-    const dates = this.electionDates.map((d) => d.date);
-
-    this.summaryLoadPromise = new Promise<void>(async (resolve, reject) => {
-      try {
-        for (const d of dates) {
-          await firstValueFrom(this.ensureSummaryLoaded(d));
-        }
-
-        this.summariesLoaded = true;
-        resolve();
-      } catch (err) {
-        this.summaryLoadPromise = null;
-        reject(err);
-      }
-    });
-
-    return from(this.summaryLoadPromise);
+  private ensureSummariesLoaded(includeAllTypes = false): Observable<void> {
+    const dates = this.getDates(includeAllTypes).filter(election => !this.summaryCache[election.date]);
+    if (!dates.length) return of(undefined);
+    return from((async () => {
+      for (const election of dates) await firstValueFrom(this.ensureSummaryLoaded(election.date));
+    })());
   }
 
   private ensureSummaryLoaded(date: string): Observable<void> {
-    if (this.summaryCache[date] || !this.electionDates.some(election => election.date === date)) return of(undefined);
+    if (this.summaryCache[date] || !elections.some(election => election.date === date)) return of(undefined);
     if (this.summaryLoadPromises[date]) return from(this.summaryLoadPromises[date]);
 
     const load = (async () => {
@@ -763,23 +746,25 @@ export class ElectionService {
     return from(promise);
   }
 
-  getDates() {
-    return this.electionDates;
+  getDates(includeAllTypes = false) {
+    return includeAllTypes ? elections : this.electionDates;
   }
 
   getOfficialNationalElectors(date: string): number | null {
     return this.officialNationalElectorsByDate[date] ?? null;
   }
 
-  getAllData(): Observable<{ [date: string]: SummaryData }> {
-    return this.ensureSummariesLoaded().pipe(map(() => this.summaryCache));
+  getAllData(includeAllTypes = false): Observable<{ [date: string]: SummaryData }> {
+    return this.ensureSummariesLoaded(includeAllTypes).pipe(map(() => Object.fromEntries(
+      this.getDates(includeAllTypes).map(election => [election.date, this.summaryCache[election.date]])
+    )));
   }
 
   getAllFullData(): Observable<{ [date: string]: FullData }> {
     return this.ensureAllFullDataLoaded().pipe(
       switchMap(async () => {
         const out: { [date: string]: FullData } = {};
-        for (const date of Object.keys(this.fullCache)) out[date] = await this.materializeFullData(date);
+        for (const { date } of this.electionDates) out[date] = await this.materializeFullData(date);
         return out;
       })
     );

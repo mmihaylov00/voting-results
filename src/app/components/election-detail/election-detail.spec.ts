@@ -77,6 +77,22 @@ describe('ElectionDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('opens an activity history point using its election type and keeps the regional scope', () => {
+    const dates = vi.spyOn(TestBed.inject(ElectionService), 'getDates').mockReturnValue([
+      { date: '2026.10.25', name: 'Октомври 2026 - Тур 1', type: 'presidential', round: 1 },
+      { date: '2026.04.19', name: 'Април 2026', type: 'governmental' },
+    ]);
+    component.regionId = '23';
+    component.changeAnalysisElection('2026.10.25');
+    expect(dates).toHaveBeenCalledWith(true);
+    expect(TestBed.inject(Router).navigate).toHaveBeenLastCalledWith(['/presidential/election', '2026.10.25', 'region', '23']);
+
+    electionType = 'presidential';
+    component.regionId = 'all';
+    component.changeAnalysisElection('2026.04.19');
+    expect(TestBed.inject(Router).navigate).toHaveBeenLastCalledWith(['/governmental/election', '2026.04.19', 'all']);
+  });
+
   it('reports the clipboard result for share feedback and keeps fallback messages on failure', async () => {
     const router = TestBed.inject(Router);
     const tree = router.parseUrl('/governmental/election/2026.04.19/region/23');

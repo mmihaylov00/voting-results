@@ -88,6 +88,60 @@ describe('ElectionService', () => {
     http.verify();
   });
 
+  it.each(['governmental', 'presidential'])('loads both types explicitly while keeping the %s archive isolated', async electionType => {
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({providers: [
+      provideHttpClient(), provideHttpClientTesting(),
+      {provide: ELECTION_TYPE, useValue: electionType},
+    ]});
+    const elections = TestBed.inject(ElectionService);
+    const http = TestBed.inject(HttpTestingController);
+    const dates = elections.getDates(true);
+    const parties = firstValueFrom(elections.getParties(dates[0].date));
+    const allTypes = firstValueFrom(elections.getAllData(true));
+    const archive = firstValueFrom(elections.getAllData());
+    http.expectOne('/data/compiled/manifest.json').flush({files: {}});
+    for (const election of dates) {
+      const request = await vi.waitFor(() => http.expectOne(`/data/compiled/${election.date}.summary.json.gz`));
+      request.flush(responseBuffer({version: 2, regions: [], parties: {'1': election.name}}));
+    }
+    expect(await parties).toEqual({'1': dates[0].name});
+    expect(Object.keys(await allTypes)).toEqual(dates.map(election => election.date));
+    const expectedDates = elections.getDates().map(election => election.date);
+    expect(elections.getDates().every(election => election.type === electionType)).toBe(true);
+    expect(Object.keys(await archive)).toEqual(expectedDates);
+    expect(Object.keys(await firstValueFrom(elections.getAllData()))).toEqual(expectedDates);
+    expect(await firstValueFrom(elections.getAllData(true))).toEqual(await allTypes);
+    http.verify();
+  });
+
+  it('keeps other-type section loads out of the full archive and result comparisons', async () => {
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({providers: [provideHttpClient(), provideHttpClientTesting()]});
+    const elections = TestBed.inject(ElectionService);
+    const http = TestBed.inject(HttpTestingController);
+    const otherDate = elections.getDates(true).find(election => election.type === 'presidential')!.date;
+    const otherSections = firstValueFrom(elections.getSections(otherDate));
+    http.expectOne('/data/compiled/manifest.json').flush({files: {}});
+    const otherRequest = await vi.waitFor(() => http.expectOne(`/data/compiled/${otherDate}.full.json.gz`));
+    otherRequest.flush(responseBuffer(fullPayload()));
+    expect(await otherSections).toHaveLength(1);
+
+    const archive = firstValueFrom(elections.getAllFullData());
+    const sections = firstValueFrom(elections.getSections(elections.getDates()[0].date, undefined, true));
+    for (const election of elections.getDates()) {
+      const request = await vi.waitFor(() => http.expectOne(`/data/compiled/${election.date}.full.json.gz`));
+      request.flush(responseBuffer(fullPayload()));
+    }
+    const expectedDates = elections.getDates().map(election => election.date);
+    expect(Object.keys(await archive)).toEqual(expectedDates);
+    expect(Object.keys(await firstValueFrom(elections.getAllData()))).toEqual(expectedDates);
+    const comparisons = (await sections)[0].comparisons?.['voted'];
+    expect(comparisons).toHaveLength(expectedDates.length - 1);
+    expect(comparisons?.every(value => expectedDates.includes(value.d))).toBe(true);
+    http.verify();
+  });
+
   it('shares full-data requests between simultaneous detail-page subscriptions', async () => {
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({providers: [provideHttpClient(), provideHttpClientTesting()]});

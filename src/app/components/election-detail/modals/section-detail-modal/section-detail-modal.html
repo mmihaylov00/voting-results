@@ -603,18 +603,27 @@
             </div>
             <div class="app-tabs flex flex-wrap gap-2 border-b border-primary/10 mb-6" role="group" aria-label="Исторически показатели">
               <button hlmBtn [variant]="activeHistoricalTab() === 'votes' ? 'default' : 'outline'" size="lg" [attr.data-state]="activeHistoricalTab() === 'votes' ? 'active' : 'inactive'"
-                      (click)="activeHistoricalTab.set('votes')">
+                      (click)="selectHistoricalTab('votes')">
                 Абсолютен брой гласове
               </button>
               <button hlmBtn [variant]="activeHistoricalTab() === 'percent' ? 'default' : 'outline'" size="lg" [attr.data-state]="activeHistoricalTab() === 'percent' ? 'active' : 'inactive'"
-                      (click)="activeHistoricalTab.set('percent')">
+                      (click)="selectHistoricalTab('percent')">
                 Процентна подкрепа
               </button>
               <button hlmBtn [variant]="activeHistoricalTab() === 'activity' ? 'default' : 'outline'" size="lg" [attr.data-state]="activeHistoricalTab() === 'activity' ? 'active' : 'inactive'"
-                      (click)="activeHistoricalTab.set('activity')">
+                      (click)="selectHistoricalTab('activity')">
                 Активност
               </button>
             </div>
+            @if (activeHistoricalTab() === 'activity') {
+              <app-loading-bar [loading]="activityLoading()" label="Зареждане на активността" />
+              @if (activityError()) {
+                <div role="alert" class="mb-4 flex flex-wrap items-center gap-3 text-sm text-destructive">
+                  <span>{{ activityError() }}</span>
+                  <button hlmBtn variant="outline" size="sm" type="button" (click)="loadActivityHistory()">Опитайте отново</button>
+                </div>
+              }
+            }
             <div hlmCard class="border-primary/10 p-4">
               @if (activeHistoricalTab() === 'votes' && historicalVotesChartOptions.series) {
                 <highcharts-chart

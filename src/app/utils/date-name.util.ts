@@ -8,4 +8,8 @@ export function getDateName(date: string): string {
   return dateNameByDate[date] || date;
 }
 
+export function getElectionHistoryLabel(election: { name: string; type: string }): string {
+  return `${election.name} (${election.type === 'presidential' ? 'Президентски' : 'Парламентарни'})`;
+}
+
 export { dateNameByDate };

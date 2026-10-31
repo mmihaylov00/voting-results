@@ -50,6 +50,17 @@ describe('RegionList map scope', () => {
     expect(component.mapView()).toBe('regions');
   });
 
+  it('opens an activity history point using its election type', () => {
+    const dates = vi.spyOn(TestBed.inject(ElectionService), 'getDates').mockReturnValue([
+      { date: '2026.10.25', name: 'Октомври 2026 - Тур 1', type: 'presidential', round: 1 },
+    ]);
+
+    component.changeAnalysisElection('2026.10.25');
+
+    expect(dates).toHaveBeenCalledWith(true);
+    expect(TestBed.inject(Router).navigate).toHaveBeenCalledWith(['/presidential/election', '2026.10.25']);
+  });
+
   it('opens a contestant profile with its full source identity without changing map scope', () => {
     component.partiesById = { '12': 'Пълно име на партията' };
     component.mapSelectedPartyId.set('2');

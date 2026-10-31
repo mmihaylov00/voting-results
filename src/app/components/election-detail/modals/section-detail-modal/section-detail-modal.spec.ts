@@ -3,7 +3,7 @@ import { Component, Directive, Input, signal, SimpleChange } from '@angular/core
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { HighchartsChartComponent } from 'highcharts-angular';
-import { of } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 
 import { ElectionService } from '../../../../services/election';
 import { ThemeService } from '../../../../services/theme.service';
@@ -251,5 +251,99 @@ describe('Section detail panels', () => {
     expect(risks.querySelector('app-section-risk-history')).not.toBeNull();
     expect(risks.textContent).toContain('Няма отчетени рискови индикатори');
     expect(host.querySelector('highcharts-chart')).toBeNull();
+  });
+});
+
+
+describe('Section activity across election types', () => {
+  const first: Section = {
+    sectionId: '230100001', regionId: '23', cityName: 'София', sectionName: 'Училище', sectionType: 'City',
+    total: 100, voted: 80, discardedVotes: 0, noVotes: 0, topParties: [], activityBp: 8000, partyVotes: {},
+  };
+  const second: Section = { ...first, sectionId: '230100002', total: 300, voted: 60 };
+  const catalog = [
+    { date: '2024.10.27', name: 'Октомври 2024', type: 'governmental' },
+    { date: '2021.11.21', name: 'Ноември 2021 - Тур 2', type: 'presidential', round: 2 },
+    { date: '2021.11.14', name: 'Ноември 2021 - Тур 1', type: 'presidential', round: 1 },
+    { date: '2016.11.06', name: 'Ноември 2016 - Тур 1', type: 'presidential', round: 1 },
+  ];
+  const historical: Record<string, Section[]> = {
+    '2021.11.21': [{ ...first, voted: 0 }],
+    '2021.11.14': [{ ...first, total: 200, voted: 40 }, { ...second, voted: 90 }],
+    '2016.11.06': [{ ...first, cityName: 'Друг град' }],
+  };
+
+  function createModal(getSections = vi.fn((date: string) => of(historical[date] ?? [])), presidential = false) {
+    TestBed.configureTestingModule({ providers: [
+      { provide: ElectionService, useValue: {
+        electionType: presidential ? 'presidential' : 'governmental',
+        getDates: (allTypes = false) => allTypes ? catalog : catalog.filter(election => election.type === (presidential ? 'presidential' : 'governmental')),
+        getSections,
+      } },
+      { provide: ThemeService, useValue: { darkMode: () => false } },
+    ] });
+    const component = TestBed.runInInjectionContext(() => new SectionDetailModalComponent(
+      TestBed.inject(ThemeService), TestBed.inject(ElectionService)
+    ));
+    component.date = presidential ? '2021.11.14' : '2024.10.27';
+    component.section = { sectionId: first.sectionId, cityName: first.cityName, sectionName: first.sectionName, partyResults: [] };
+    component.currentSectionData = { ...first, sections: [first, second] } as Section & { sections: Section[] };
+    component.allData = { [component.date]: { sections: [first, second], parties: {}, regions: [] } };
+    return component;
+  }
+
+  it('lazily adds presidential rounds, weights matched sections and reuses loaded history', async () => {
+    const getSections = vi.fn((date: string) => of(historical[date] ?? []));
+    const component = createModal(getSections);
+    component.updateHistoricalCharts();
+    component.selectPanel('history');
+    expect(getSections).not.toHaveBeenCalled();
+    component.selectHistoricalTab('activity');
+    await vi.waitFor(() => expect(component.activityLoading()).toBe(false));
+    expect(getSections.mock.calls.map(([date]) => date)).toEqual(['2021.11.21', '2021.11.14', '2016.11.06']);
+    expect(component.historicalActivityChartOptions.series).toEqual([
+      expect.objectContaining({ data: [null, 26, 0, 35], connectNulls: false }),
+    ]);
+    expect(component.historicalActivityChartOptions.xAxis).toEqual(expect.objectContaining({ categories: [
+      'Ноември 2016 - Тур 1 (Президентски)', 'Ноември 2021 - Тур 1 (Президентски)',
+      'Ноември 2021 - Тур 2 (Президентски)', 'Октомври 2024 (Парламентарни)',
+    ] }));
+    expect(component.historicalVotesChartOptions.xAxis).toEqual(expect.objectContaining({ categories: ['Октомври 2024'] }));
+    component.activeTab.set('candidates');
+    component.updateHistoricalCharts();
+    expect(component.historicalActivityChartOptions.series).toEqual([expect.objectContaining({ data: [null, 26, 0, 35] })]);
+    await component.loadActivityHistory();
+    expect(getSections).toHaveBeenCalledTimes(3);
+  });
+
+  it('adds parliamentary activity from presidential pages and retries failed dates', async () => {
+    const getSections = vi.fn((date: string) => date === '2024.10.27'
+      ? throwError(() => new Error('offline')) : of(historical[date] ?? []));
+    const component = createModal(getSections, true);
+    component.activeHistoricalTab.set('activity');
+    await component.loadActivityHistory();
+    expect(component.activityError()).toContain('Октомври 2024 (Парламентарни)');
+    expect(component.historicalActivityChartOptions.series).toEqual([expect.objectContaining({ data: [null, 35, 0, null] })]);
+    getSections.mockImplementation(date => of(date === '2024.10.27' ? [first, second] : historical[date] ?? []));
+    await component.loadActivityHistory();
+    expect(component.activityError()).toBe('');
+    expect(component.historicalActivityChartOptions.series).toEqual([expect.objectContaining({ data: [null, 35, 0, 35] })]);
+    expect(getSections.mock.calls.map(([date]) => date)).toEqual(['2024.10.27', '2021.11.21', '2016.11.06', '2024.10.27']);
+  });
+
+  it.each(['tab', 'panel', 'destroy'] as const)('stops a pending history load after changing %s', async change => {
+    const pending = new Subject<Section[]>();
+    const getSections = vi.fn(() => pending);
+    const component = createModal(getSections);
+    component.activeHistoricalTab.set('activity');
+    const load = component.loadActivityHistory();
+    if (change === 'tab') component.selectHistoricalTab('votes');
+    else if (change === 'panel') component.selectPanel('stats');
+    else component.ngOnDestroy();
+    pending.next([first]); pending.complete();
+    await load;
+    expect(getSections).toHaveBeenCalledOnce();
+    expect(component.activityLoading()).toBe(false);
+    expect(component.historicalActivityChartOptions.series).toBeUndefined();
   });
 });

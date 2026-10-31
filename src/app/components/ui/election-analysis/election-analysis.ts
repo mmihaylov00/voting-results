@@ -24,6 +24,7 @@ import { VirtualTableDirective } from '../virtual-table/virtual-table';
 import { CsvExportButtonComponent } from '../csv-export-button/csv-export-button';
 import { CsvExportData } from '../../../utils/csv-export.util';
 import { CsvExportModalComponent } from '../csv-export-modal/csv-export-modal';
+import { getElectionHistoryLabel } from '../../../utils/date-name.util';
 
 export type AnalysisMetric = 'share' | 'turnout' | 'invalid' | 'machine' | 'margin' | 'topParties';
 type Metric = AnalysisMetric;
@@ -68,6 +69,8 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
   private partyVotes: Record<string, number> = {};
   private readonly historicalSections = new Map<string, Section[]>();
   private generation = 0;
+  private turnoutGeneration = 0;
+  private turnoutRequest: Promise<void> | null = null;
   private lastParties = '';
   private chart?: Highcharts.Chart;
   private reflowFrame: number | null = null;
@@ -90,6 +93,10 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
   };
   missingDates: string[] = [];
   timeline: TimelinePoint[] = [];
+  turnoutTimeline: TimelinePoint[] | null = null;
+  turnoutLoading = false;
+  turnoutError = '';
+  turnoutMissingDates: string[] = [];
   rows: AnalysisRow[] = [];
   current: AnalysisSnapshot | null = null;
   parent: AnalysisSnapshot | null = null;
@@ -133,6 +140,8 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
   }
 
   get comparisonDates() { return this.dates.filter((election) => election.date !== this.date); }
+  get historyTimeline() { return this.metric === 'turnout' ? this.turnoutTimeline ?? [] : this.timeline; }
+  get historyMissingDates() { return this.metric === 'turnout' ? this.turnoutMissingDates : this.missingDates; }
   get scopedSections() { return this.regionId === null ? null : this.sections; }
   private get wholeParentScope() {
     return this.sections !== null && this.parentSections !== null &&
@@ -177,15 +186,18 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
       else void this.refreshComparison();
     }
     if (metricChanged) this.updateChart();
+    if (this.view === 'history' && this.metric === 'turnout') void this.loadTurnoutHistory();
   }
 
   selectHistoryMetric(): void {
     this.historyMetricChange.emit(this.metric);
     this.updateChart();
+    if (this.metric === 'turnout') void this.loadTurnoutHistory();
   }
 
   ngOnDestroy(): void {
     this.generation += 1;
+    this.turnoutGeneration += 1;
     if (this.reflowFrame !== null) cancelAnimationFrame(this.reflowFrame);
   }
 
@@ -236,6 +248,12 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
     if (!this.date) return;
     if (this.view === 'history') this.historyVisited = true;
     const generation = ++this.generation;
+    this.turnoutGeneration += 1;
+    this.turnoutTimeline = null;
+    this.turnoutRequest = null;
+    this.turnoutLoading = false;
+    this.turnoutError = '';
+    this.turnoutMissingDates = [];
     this.comparisonChange.emit(null);
     this.loading = true;
     this.comparisonLoading = false;
@@ -258,31 +276,12 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
       const missingDates: string[] = [];
       for (const election of this.dates) {
         if (generation !== this.generation) return;
-        const summary = summaries[election.date];
-        let sections: Section[] | null = null;
-        let snapshot: AnalysisSnapshot | null = null;
         try {
-          const scope = this.scopedSections;
-          if (scope !== null) {
-            let completeNationalCoverage = this.wholeNationalScope;
-            if (election.date === this.date) {
-              sections = scope;
-            } else {
-              const historicalSections = await this.loadSections(election.date);
-              const historical = indexSections(historicalSections);
-              sections = scope.map((section) => matchHistoricalSection(section, historical)).filter((section): section is Section => !!section);
-              completeNationalCoverage = completeNationalCoverage && sections.length === historicalSections.length;
-            }
-            const partyId = election.date === this.date ? this.activePartyId : matchPartyId(this.partyName, summary?.parties ?? {});
-            snapshot = sections.length ? sectionSnapshot(sections, partyId,
-              completeNationalCoverage ? this.elections.getOfficialNationalElectors(election.date) : null) : null;
-          } else if (summary) {
-            snapshot = regionSnapshot(summary.regions, matchPartyId(this.partyName, summary.parties), this.elections.getOfficialNationalElectors(election.date));
-          }
+          timeline.push(await this.loadTimelinePoint(election, summaries[election.date]));
         } catch {
           missingDates.push(election.name);
+          timeline.push({ date: election.date, name: election.name, snapshot: null, sections: null, parties: {} });
         }
-        timeline.push({ date: election.date, name: election.name, snapshot, sections, parties: summary?.parties ?? {} });
       }
       if (generation !== this.generation) return;
       this.missingDates = missingDates;
@@ -299,6 +298,70 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
         this.changeDetector.markForCheck();
       }
     }
+    if (generation === this.generation && this.view === 'history' && this.metric === 'turnout') await this.loadTurnoutHistory();
+  }
+
+  async loadTurnoutHistory(): Promise<void> {
+    if (this.loading || !this.timeline.length || (this.turnoutTimeline && !this.turnoutMissingDates.length)) return;
+    if (this.turnoutRequest) return this.turnoutRequest;
+    const generation = ++this.turnoutGeneration;
+    this.turnoutLoading = true;
+    this.turnoutError = '';
+    this.turnoutRequest = (async () => {
+      try {
+        const summaries = await firstValueFrom(this.elections.getAllData(true));
+        if (generation !== this.turnoutGeneration) return;
+        this.summaries = { ...this.summaries, ...summaries };
+        const existing = new Map((this.turnoutTimeline ?? this.timeline).map(point => [point.date, point]));
+        const timeline: TimelinePoint[] = [];
+        const missing: string[] = [];
+        for (const election of [...this.elections.getDates(true)].sort((a, b) => a.date.localeCompare(b.date))) {
+          if (generation !== this.turnoutGeneration) return;
+          let point = existing.get(election.date);
+          if (!point || this.turnoutMissingDates.includes(point.name) || this.missingDates.includes(point.name)) {
+            try { point = await this.loadTimelinePoint(election, summaries[election.date]); }
+            catch { missing.push(getElectionHistoryLabel(election)); }
+          }
+          timeline.push({ date: election.date, name: getElectionHistoryLabel(election), snapshot: point?.snapshot ?? null,
+            sections: point?.sections ?? null, parties: point?.parties ?? {} });
+        }
+        if (generation !== this.turnoutGeneration) return;
+        this.turnoutTimeline = timeline;
+        this.turnoutMissingDates = missing;
+        if (this.metric === 'turnout') this.updateChart();
+      } catch {
+        if (generation === this.turnoutGeneration) this.turnoutError = 'Неуспешно зареждане на активността. Опитайте отново.';
+      } finally {
+        if (generation === this.turnoutGeneration) {
+          this.turnoutLoading = false;
+          this.turnoutRequest = null;
+          this.changeDetector.markForCheck();
+        }
+      }
+    })();
+    return this.turnoutRequest;
+  }
+
+  private async loadTimelinePoint(election: { date: string; name: string }, summary?: ElectionData): Promise<TimelinePoint> {
+    let sections: Section[] | null = null;
+    let snapshot: AnalysisSnapshot | null = null;
+    const scope = this.scopedSections;
+    const partyId = election.date === this.date ? this.activePartyId : matchPartyId(this.partyName, summary?.parties ?? {});
+    if (scope !== null) {
+      let completeNationalCoverage = this.wholeNationalScope;
+      if (election.date === this.date) sections = scope;
+      else {
+        const historicalSections = await this.loadSections(election.date);
+        const historical = indexSections(historicalSections);
+        sections = scope.map(section => matchHistoricalSection(section, historical)).filter((section): section is Section => !!section);
+        completeNationalCoverage = completeNationalCoverage && sections.length === historicalSections.length;
+      }
+      snapshot = sections.length ? sectionSnapshot(sections, partyId,
+        completeNationalCoverage ? this.elections.getOfficialNationalElectors(election.date) : null) : null;
+    } else if (summary) {
+      snapshot = regionSnapshot(summary.regions, partyId, this.elections.getOfficialNationalElectors(election.date));
+    }
+    return { date: election.date, name: election.name, snapshot, sections, parties: summary?.parties ?? {} };
   }
 
   private async loadSections(date: string): Promise<Section[]> {
@@ -434,7 +497,7 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
       drawing.fillRect(0, 0, width, height + 136);
       drawing.fillStyle = this.theme.darkMode() ? '#f8fafc' : '#020817';
       const title = this.metrics.find((metric) => metric.id === this.metric)?.label ?? '';
-      const lines = [`История: ${title}`, this.scopedSections === null ? 'Национални резултати' : this.scopeLabel, this.metric === 'share' ? getPartyDisplayName(this.partyName) : 'Избори от същия вид и тур'];
+      const lines = [`История: ${title}`, this.scopedSections === null ? 'Национални резултати' : this.scopeLabel, this.metric === 'share' ? getPartyDisplayName(this.partyName) : this.metric === 'turnout' ? 'Парламентарни и президентски избори, всички турове' : 'Избори от същия вид и тур'];
       lines.forEach((line, index) => {
         drawing.font = index === 0 ? '600 17px sans-serif' : '13px sans-serif';
         drawing.fillText(line, 12, 24 + index * 23, width - 24);
@@ -462,7 +525,8 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
 
   updateChart(): void {
     const color = this.theme.darkMode() ? '#f8fafc' : '#020817';
-    const select = (index: number) => this.electionChange.emit(this.timeline[index].date);
+    const timeline = this.historyTimeline;
+    const select = (index: number) => this.electionChange.emit(timeline[index].date);
     const metric = this.metric;
     const partyTotals: Record<string, number> = {};
     if (metric === 'topParties') {
@@ -476,7 +540,7 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
       ? rankedParties.slice(0, 5).map((party) => ({
         type: 'line', name: getPartyDisplayName(party.name), color: getPartyColor(party.name, this.theme.darkMode()),
         legendIndex: getPartyLegendIndex(party.name),
-        data: this.timeline.map((point) => {
+        data: timeline.map((point) => {
           const id = matchPartyId(party.name, point.parties);
           if (point.sections) return point.sections.length ? sectionSnapshot(point.sections, id).share : null;
           const regions = this.summaries[point.date]?.regions;
@@ -485,13 +549,13 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
       }))
       : [{
         type: 'line', name: metric === 'share' ? getPartyDisplayName(this.partyName) : this.metrics.find((item) => item.id === metric)?.label ?? '',
-        data: this.timeline.map((point) => point.snapshot?.[metric] ?? null),
+        data: timeline.map((point) => point.snapshot?.[metric] ?? null),
         color: metric === 'share' ? getPartyColor(this.partyName, this.theme.darkMode()) : '#2563eb',
       }];
     this.chartOptions = {
       chart: { type: 'line', backgroundColor: 'transparent', height: 290, reflow: true },
       title: { text: undefined }, credits: { enabled: false },
-      xAxis: { categories: this.timeline.map((point) => point.name), labels: { style: { color } } },
+      xAxis: { categories: timeline.map((point) => point.name), labels: { style: { color } } },
       yAxis: { title: { text: '%' }, min: 0, labels: { style: { color } } },
       legend: { enabled: metric === 'topParties', itemStyle: { color } },
       tooltip: { valueDecimals: 2, valueSuffix: '%', shared: true },

@@ -1,10 +1,10 @@
 import { LoadingBarComponent } from '../../../ui/loading-bar/loading-bar';
-import { Component, EventEmitter, Input, Output, effect, signal, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, effect, signal, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Params } from '@angular/router';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
-import { finalize } from 'rxjs';
+import { finalize, firstValueFrom } from 'rxjs';
 import { Section, SectionDetails, PartyResult, ComparativeValue, PartyVotes, CandidateResult, CandidateVotes, RegionCandidate, TableColumn } from '../../../../models/election.models';
 import { ThemeService } from '../../../../services/theme.service';
 import { ElectionService } from '../../../../services/election';
@@ -41,6 +41,8 @@ import { PartyBadgeComponent } from '../../../ui/party-badge/party-badge';
 import { SectionRiskHistoryComponent } from '../../../ui/section-risk-history/section-risk-history';
 import { ContestantPreviewDirective } from '../../../ui/contestant-preview/contestant-preview.directive';
 import { ShareButtonComponent } from '../../../ui/share-button/share-button';
+import { indexSections, matchHistoricalSection } from '../../../../utils/election-comparison.util';
+import { getElectionHistoryLabel } from '../../../../utils/date-name.util';
 
 @Component({
   selector: 'app-section-detail-modal',
@@ -71,7 +73,7 @@ import { ShareButtonComponent } from '../../../ui/share-button/share-button';
   ],
   templateUrl: './section-detail-modal.html'
 })
-export class SectionDetailModalComponent implements OnInit, OnChanges {
+export class SectionDetailModalComponent implements OnInit, OnChanges, OnDestroy {
   get electionType() { return this.electionService.electionType; }
 
   private readonly leaderCandidateId = '101';
@@ -113,6 +115,11 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   historicalPercentChartOptions: Highcharts.Options = {};
   historicalActivityChartOptions: Highcharts.Options = {};
   activeHistoricalTab = signal<'votes' | 'percent' | 'activity'>('votes');
+  readonly activityLoading = signal(false);
+  readonly activityError = signal('');
+  private readonly activitySections = new Map<string, Section[]>();
+  private readonly activityRequests = new Map<string, Promise<Section[]>>();
+  private activityGeneration = 0;
 
   allData: { [date: string]: any } = {};
   dates: { date: string, name: string }[] = [];
@@ -331,13 +338,23 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (['section', 'currentSectionData', 'allSections', 'date'].some(input => changes[input])) {
+      this.activityGeneration += 1;
+      this.activityLoading.set(false);
+    }
     if (this.section && ['section', 'currentSectionData', 'allParties', 'allSections', 'selectedPartyIds', 'date'].some(input => changes[input])) {
       this.calculateCandidateResults();
       this.updateChartOptions();
       if (Object.keys(this.allData).length > 0) {
         this.updateHistoricalCharts();
       }
+      if (this.activePanel() === 'history' && this.activeHistoricalTab() === 'activity') void this.loadActivityHistory();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.activityGeneration += 1;
+    this.activityLoading.set(false);
   }
 
   closeModal(): void {
@@ -347,6 +364,14 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
   selectPanel(panel: 'results' | 'stats' | 'history' | 'risks'): void {
     this.activePanel.set(panel);
     if (!this.visitedPanels().has(panel)) this.visitedPanels.update(panels => new Set([...panels, panel]));
+    if (panel === 'history' && this.activeHistoricalTab() === 'activity') void this.loadActivityHistory();
+    else { this.activityGeneration += 1; this.activityLoading.set(false); }
+  }
+
+  selectHistoricalTab(tab: 'votes' | 'percent' | 'activity'): void {
+    this.activeHistoricalTab.set(tab);
+    if (tab === 'activity') void this.loadActivityHistory();
+    else { this.activityGeneration += 1; this.activityLoading.set(false); }
   }
 
   onPartySelectionChange(selectedIds: Set<string>) {
@@ -1118,6 +1143,7 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
 
   updateHistoricalCharts() {
     if (!this.section) return;
+    this.updateActivityChart();
 
     if (this.activeTab() === 'candidates') {
       // For candidates, show preference votes over time
@@ -1165,8 +1191,6 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       }
     });
 
-    const activityData: number[] = [];
-
     sortedDates.forEach(d => {
       const data = this.allData[d.date];
       if (!data) return;
@@ -1174,7 +1198,6 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       categories.push(d.name);
 
       let totalVoted = 0;
-      let totalElectors = 0;
 
       // Collect votes for all parties in this date
       const datePartyVotes: { [partyId: string]: number } = {};
@@ -1188,7 +1211,6 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
         });
         groupSections.forEach((section: Section) => {
           totalVoted += section.voted;
-          totalElectors += section.total;
           Object.entries(section.partyVotes).forEach(([pid, v]) => {
             const votesObj = v as PartyVotes;
             datePartyVotes[pid] = (datePartyVotes[pid] || 0) + votesObj.total;
@@ -1203,7 +1225,6 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
         });
         citySections.forEach((section: Section) => {
           totalVoted += section.voted;
-          totalElectors += section.total;
           Object.entries(section.partyVotes).forEach(([pid, v]) => {
             const votesObj = v as PartyVotes;
             datePartyVotes[pid] = (datePartyVotes[pid] || 0) + votesObj.total;
@@ -1214,17 +1235,12 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
         const section = data.sections.find((s: Section) => s.sectionId === sectionId);
         if (section) {
           totalVoted = section.voted;
-          totalElectors = section.total;
           Object.entries(section.partyVotes).forEach(([pid, v]) => {
             const votesObj = v as PartyVotes;
             datePartyVotes[pid] = votesObj.total;
           });
         }
       }
-
-      // Calculate activity (turnout) percentage
-      const activity = totalElectors > 0 ? (totalVoted / totalElectors) * 100 : 0;
-      activityData.push(Math.round(activity * 100) / 100);
 
       // Match selected parties by keywords and store data
       selectedIds.forEach(selectedId => {
@@ -1314,33 +1330,72 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       credits: { enabled: false },
       tooltip: { shared: true, valueSuffix: '%', valueDecimals: 2 }
     };
+  }
 
-    // Build activity chart
+  async loadActivityHistory(): Promise<void> {
+    const generation = ++this.activityGeneration;
+    const regionId = this.currentSectionData?.regionId;
+    this.activityLoading.set(true);
+    this.activityError.set('');
+    const missing: string[] = [];
+    try {
+      for (const election of this.electionService.getDates(true)) {
+        if (generation !== this.activityGeneration) return;
+        if (this.allData[election.date]) continue;
+        const key = `${regionId ?? 'all'}:${election.date}`;
+        if (this.activitySections.has(key)) continue;
+        try {
+          let request = this.activityRequests.get(key);
+          if (!request) {
+            request = firstValueFrom(this.electionService.getSections(election.date, regionId))
+              .finally(() => this.activityRequests.delete(key));
+            this.activityRequests.set(key, request);
+          }
+          this.activitySections.set(key, await request);
+        } catch {
+          missing.push(getElectionHistoryLabel(election));
+        }
+      }
+      if (generation !== this.activityGeneration) return;
+      this.activityError.set(missing.length ? `Неуспешно зареждане за: ${missing.join(', ')}.` : '');
+      this.updateActivityChart();
+    } finally {
+      if (generation === this.activityGeneration) this.activityLoading.set(false);
+    }
+  }
+
+  private updateActivityChart(): void {
+    if (!this.section || this.activeHistoricalTab() !== 'activity') return;
+    const grouped = (this.currentSectionData as (Section & { sections?: Section[] }) | undefined)?.sections;
+    const currentSections: Section[] = this.allData[this.date]?.sections ?? this.allSections;
+    const regionId = this.currentSectionData?.regionId;
+    const scope = grouped?.length ? grouped : this.section.sectionName.startsWith('Общо за')
+      ? currentSections.filter(section => section.cityName === this.section.cityName && (!regionId || section.regionId === regionId))
+      : this.currentSectionData ? [this.currentSectionData]
+      : currentSections.filter(section => section.sectionId === this.section.sectionId);
+    const dates = [...this.electionService.getDates(true)].sort((a, b) => a.date.localeCompare(b.date));
+    const data = dates.map(election => {
+      const sections: Section[] | undefined = this.allData[election.date]?.sections
+        ?? this.activitySections.get(`${regionId ?? 'all'}:${election.date}`);
+      if (!sections) return null;
+      const historical = indexSections(sections);
+      const matched = scope.map(section => matchHistoricalSection(section, historical))
+        .filter((section): section is Section => !!section);
+      const electors = matched.reduce((total, section) => total + section.total, 0);
+      const voted = matched.reduce((total, section) => total + section.voted, 0);
+      return electors > 0 ? Math.round(voted / electors * 10000) / 100 : null;
+    });
+    const textColor = this.themeService.darkMode() ? '#f8fafc' : '#1e293b';
     this.historicalActivityChartOptions = {
       chart: { type: 'line', backgroundColor: 'transparent' },
       title: { text: 'Активност (избирателна активност)', style: { color: textColor } },
-      xAxis: { categories, labels: { style: { color: textColor } } },
-      yAxis: {
-        title: { text: 'Активност (%)', style: { color: textColor } },
-        labels: { style: { color: textColor } },
-        min: 0,
-        max: 100
-      },
-      legend: {
-        enabled: false
-      },
-      series: [{
-        name: 'Активност',
-        data: activityData,
-        type: 'line',
-        color: '#0ea5e9',
-        tooltip: {
-          valueSuffix: '%',
-          valueDecimals: 2
-        }
-      }],
+      xAxis: { categories: dates.map(getElectionHistoryLabel), labels: { style: { color: textColor } } },
+      yAxis: { title: { text: 'Активност (%)', style: { color: textColor } },
+        labels: { style: { color: textColor } }, min: 0, max: 100 },
+      legend: { enabled: false },
+      series: [{ name: 'Активност', data, type: 'line', color: '#0ea5e9', connectNulls: false }],
       credits: { enabled: false },
-      tooltip: { valueSuffix: '%', valueDecimals: 2 }
+      tooltip: { valueSuffix: '%', valueDecimals: 2 },
     };
   }
 
@@ -1349,7 +1404,6 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       // No candidate data available
       this.historicalVotesChartOptions = { chart: { type: 'line' }, series: [] };
       this.historicalPercentChartOptions = { chart: { type: 'line' }, series: [] };
-      this.historicalActivityChartOptions = { chart: { type: 'line' }, series: [] };
       return;
     }
 
@@ -1518,25 +1572,6 @@ export class SectionDetailModalComponent implements OnInit, OnChanges {
       series: percentSeries,
       credits: { enabled: false },
       tooltip: { shared: true, valueSuffix: '%', valueDecimals: 2 }
-    };
-
-    // Activity chart remains the same for candidates
-    this.historicalActivityChartOptions = {
-      chart: { type: 'line', backgroundColor: 'transparent' },
-      title: { text: 'Активност (избирателна активност)', style: { color: textColor } },
-      xAxis: { categories, labels: { style: { color: textColor } } },
-      yAxis: {
-        title: { text: 'Активност (%)', style: { color: textColor } },
-        labels: { style: { color: textColor } },
-        min: 0,
-        max: 100
-      },
-      legend: {
-        enabled: false
-      },
-      series: [],
-      credits: { enabled: false },
-      tooltip: { valueSuffix: '%', valueDecimals: 2 }
     };
   }
 

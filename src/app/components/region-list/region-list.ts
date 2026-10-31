@@ -691,7 +691,8 @@ export class RegionListComponent implements OnInit, AfterViewInit {
   }
 
   changeAnalysisElection(date: string): void {
-    this.router.navigate([`/${this.electionType}/election`, date]);
+    const type = this.electionService.getDates(true).find(election => election.date === date)?.type ?? this.electionType;
+    this.router.navigate([`/${type}/election`, date]);
   }
 
   setSettlementMapMetric(metric: SettlementMapMetric): void {

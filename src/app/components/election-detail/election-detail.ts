@@ -1779,7 +1779,8 @@ export class ElectionDetailComponent implements OnInit {
   }
 
   changeAnalysisElection(date: string): void {
-    const path = [`/${this.electionType}/election`, date];
+    const type = this.electionService.getDates(true).find(election => election.date === date)?.type ?? this.electionType;
+    const path = [`/${type}/election`, date];
     this.router.navigate(this.regionId && this.regionId !== 'all' ? [...path, 'region', this.regionId] : [...path, 'all']);
   }
 

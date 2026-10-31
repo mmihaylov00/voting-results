@@ -440,6 +440,9 @@ describe('election analysis loading', () => {
     expect(fixture.nativeElement.querySelector('highcharts-chart')).toBe(chart);
     component.metric = 'turnout';
     component.selectHistoryMetric();
+    await component.loadTurnoutHistory();
+    expect(getAllData).toHaveBeenCalledExactlyOnceWith(true);
+    getAllData.mockClear();
     updateChart.mockClear();
     fixture.componentRef.setInput('historyMetric', 'turnout');
     fixture.detectChanges();
@@ -451,6 +454,133 @@ describe('election analysis loading', () => {
     fixture.detectChanges();
     expect(component.timeline).toBe(timeline);
     expect(getAllData).not.toHaveBeenCalled();
+  });
+
+  it.each(['2021.11.21', '2024.10.27'])('combines both election types and rounds for turnout from %s only', async (date) => {
+    const getSections = vi.fn(() => of([section]));
+    const component = setup(getSections).componentInstance;
+    const service = TestBed.inject(ElectionService);
+    const dates = [...service.getDates(), { date: '2024.10.27', name: 'Октомври 2024', type: 'governmental' }];
+    vi.spyOn(service, 'getDates').mockImplementation((allTypes = false) => allTypes ? dates
+      : dates.filter(election => election.type === (date === '2024.10.27' ? 'governmental' : 'presidential')));
+    const summaries = Object.fromEntries(dates.map(election => [election.date, {
+      parties: { '1': 'Кандидат' }, regions: [{ id: '01', name: 'Регион', total: 999, voted: 60, partyVotes: { '1': 40 } }],
+    }]));
+    const getAllData = vi.spyOn(service, 'getAllData').mockImplementation((allTypes = false) => of(Object.fromEntries(
+      service.getDates(allTypes).map(election => [election.date, summaries[election.date]])
+    )));
+    component.date = date;
+    await component.load();
+    const comparisons = component.comparisonDates;
+    expect(getAllData).toHaveBeenCalledExactlyOnceWith();
+    expect(component.turnoutTimeline).toBeNull();
+    component.metric = 'turnout';
+    component.selectHistoryMetric();
+    await component.loadTurnoutHistory();
+    expect(component.historyTimeline.map(point => point.date)).toEqual(dates.map(election => election.date).sort());
+    expect(component.chartOptions.series?.[0]).toMatchObject({ data: [60, 60, 60, 60, 60, 60] });
+    expect((component.chartOptions.xAxis as Highcharts.XAxisOptions).categories).toContain('Октомври 2024 (Парламентарни)');
+    expect((component.chartOptions.xAxis as Highcharts.XAxisOptions).categories).toContain('2021 тур 2 (Президентски)');
+    expect(getSections).not.toHaveBeenCalled();
+    expect(component.comparisonDates).toEqual(comparisons);
+    expect(component.timeline.every(point => comparisons.some(election => election.date === point.date) || point.date === date)).toBe(true);
+    const emit = vi.spyOn(component.electionChange, 'emit');
+    const click = component.chartOptions.plotOptions?.series?.point?.events?.click;
+    click?.call({ index: 5 } as Highcharts.Point, {} as Highcharts.PointClickEventObject);
+    expect(emit).toHaveBeenCalledExactlyOnceWith('2024.10.27');
+    getAllData.mockClear();
+    component.metric = 'share'; component.selectHistoryMetric();
+    expect(component.historyTimeline).toBe(component.timeline);
+    component.metric = 'turnout'; component.selectHistoryMetric();
+    await component.loadTurnoutHistory();
+    expect(getAllData).not.toHaveBeenCalled();
+  });
+
+  it('matches cross-type turnout sections, weights their totals and keeps missing places unavailable', async () => {
+    const first = { ...section, voted: 50 };
+    const second = { ...section, sectionId: '010100002', total: 300, voted: 30 };
+    const getSections = vi.fn((date?: string) => of(date === '2024.10.27' ? [first, second] : [first]));
+    const component = setup(getSections).componentInstance;
+    const service = TestBed.inject(ElectionService);
+    const dates = service.getDates();
+    vi.spyOn(service, 'getDates').mockImplementation((allTypes = false) => allTypes ? [...dates,
+      { date: '2024.10.27', name: 'Октомври 2024', type: 'governmental' },
+      { date: '2026.04.19', name: 'Април 2026', type: 'governmental' },
+    ] : dates);
+    component.regionId = '01';
+    component.sections = [section, second];
+    await component.load();
+    getSections.mockClear();
+    component.metric = 'turnout';
+    await component.loadTurnoutHistory();
+    expect(component.historyTimeline.find(point => point.date === '2024.10.27')?.snapshot?.turnout).toBe(20);
+    expect(getSections.mock.calls.map(([date]) => date)).toEqual(['2016.11.06', '2021.11.14', '2024.10.27', '2026.04.19']);
+    const history = component.historyTimeline;
+    component.sections = [{ ...section, cityName: 'Друг нов град' }];
+    await component.load();
+    expect(component.historyTimeline).not.toBe(history);
+    expect(component.historyTimeline.find(point => point.date === '2024.10.27')?.snapshot).toBeNull();
+    expect(component.historyTimeline.find(point => point.date === '2026.04.19')?.snapshot).toBeNull();
+  });
+
+  it('retries a failed turnout summary without invalidating ordinary comparisons', async () => {
+    const component = setup().componentInstance;
+    await component.load();
+    const rows = component.rows;
+    const service = TestBed.inject(ElectionService);
+    const getAllData = service.getAllData.bind(service);
+    vi.spyOn(service, 'getAllData').mockReturnValueOnce(throwError(() => new Error('offline')));
+    component.metric = 'turnout';
+    await component.loadTurnoutHistory();
+    expect(component.turnoutError).toContain('Неуспешно');
+    expect(component.turnoutLoading).toBe(false);
+    expect(component.rows).toBe(rows);
+    vi.spyOn(service, 'getAllData').mockImplementation(getAllData);
+    await component.loadTurnoutHistory();
+    expect(component.turnoutError).toBe('');
+    expect(component.historyTimeline).toHaveLength(5);
+  });
+
+  it('keeps failed turnout sections unavailable and retries only their missing data', async () => {
+    const getSections = vi.fn(() => of([section]));
+    const component = setup(getSections).componentInstance;
+    const service = TestBed.inject(ElectionService);
+    const dates = service.getDates();
+    vi.spyOn(service, 'getDates').mockImplementation((allTypes = false) => allTypes ? [...dates,
+      { date: '2024.10.27', name: 'Октомври 2024', type: 'governmental' },
+    ] : dates);
+    component.regionId = '01'; component.sections = [section];
+    await component.load();
+    getSections.mockReturnValueOnce(throwError(() => new Error('offline')));
+    component.metric = 'turnout';
+    await component.loadTurnoutHistory();
+    expect(component.turnoutMissingDates).toEqual(['2016 тур 1 (Президентски)']);
+    expect(component.historyTimeline[1].snapshot).toBeNull();
+    getSections.mockClear();
+    await component.loadTurnoutHistory();
+    expect(getSections).toHaveBeenCalledExactlyOnceWith('2016.11.06', '01');
+    expect(component.turnoutMissingDates).toEqual([]);
+    expect(component.historyTimeline[1].snapshot?.turnout).toBe(80);
+  });
+
+  it('discards a pending turnout timeline after its section scope changes', async () => {
+    const component = setup().componentInstance;
+    const service = TestBed.inject(ElectionService);
+    component.regionId = '01'; component.sections = [section];
+    await component.load();
+    const getAllData = service.getAllData.bind(service);
+    const pending = new Subject<Record<string, { regions: Region[]; parties: Record<string, string> }>>();
+    vi.spyOn(service, 'getAllData').mockReturnValueOnce(pending);
+    component.metric = 'turnout';
+    const obsolete = component.loadTurnoutHistory();
+    component.sections = [];
+    await component.load();
+    expect(component.historyTimeline.every(point => point.snapshot === null)).toBe(true);
+    const latest = component.historyTimeline;
+    getAllData().subscribe(value => pending.next(value)); pending.complete();
+    await obsolete;
+    expect(component.historyTimeline).toBe(latest);
+    expect(component.turnoutLoading).toBe(false);
   });
 
   it('finishes with the latest party when a selection changes during initial loading', async () => {
