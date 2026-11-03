@@ -393,6 +393,9 @@ describe('hidden electoral research pages', () => {
       vi.mocked(hypotheses.getBoundingClientRect).mockReturnValue(new DOMRect(0, 128, 100, 400));
       updateNavigation();
       expect(fixture.componentInstance.activeSection()).toBe('candidate-checks');
+      sections.forEach((section, index) => vi.mocked(section.getBoundingClientRect).mockReturnValue(new DOMRect(0, 300 + index * 400, 100, 400)));
+      updateNavigation();
+      expect(fixture.componentInstance.activeSection()).toBe('results');
       http.verify();
     } finally {
       fixture.destroy();

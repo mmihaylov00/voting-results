@@ -219,7 +219,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
       const sections = [...this.element.nativeElement.querySelectorAll<HTMLElement>('section[id]')];
       this.sectionObserver = new IntersectionObserver(() => {
         const navigationBottom = this.element.nativeElement.querySelector('.section-nav')?.getBoundingClientRect().bottom ?? 120;
-        const current = [...sections].reverse().find(section => section.getBoundingClientRect().top <= navigationBottom + 24);
+        const current = [...sections].reverse().find(section => section.getBoundingClientRect().top <= navigationBottom + 24) ?? sections[0];
         if (current) this.activeSection.set(current.id === 'hypotheses' ? 'candidate-checks' : current.id);
       }, { rootMargin: '-120px 0px -60% 0px' });
       sections.forEach(section => this.sectionObserver?.observe(section));
