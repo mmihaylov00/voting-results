@@ -23,6 +23,7 @@ import { ForensicsHistoryComponent } from './forensics-history';
 import { ForensicsVoteSummaryComponent } from './forensics-vote-summary';
 import { ViewTab, ViewTabsComponent } from '../ui/view-tabs/view-tabs';
 import { SignedChangeDirective } from '../ui/signed-change/signed-change';
+import { ForensicsGainsChartComponent } from './forensics-gains-chart';
 
 const DATA_ROOT = '/data/forensics/2026';
 const initialFilters: SectionFilters = {
@@ -32,7 +33,7 @@ const initialFilters: SectionFilters = {
 
 @Component({
   selector: 'app-electoral-forensics',
-  imports: [CommonModule, FormsModule, RouterLink, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective],
+  imports: [CommonModule, FormsModule, RouterLink, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective, ForensicsGainsChartComponent],
   templateUrl: './electoral-forensics.html',
   styleUrls: ['./electoral-forensics.scss', './forensics-workspace.scss', './forensics-tables.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -66,7 +67,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   readonly showSectionDetails = signal(false);
   readonly placeLevel = signal('municipalities');
   readonly overviewView = signal('charts');
-  readonly explorerView = signal('map');
+  readonly explorerView = signal(this.route.snapshot.fragment === 'section-gains' ? 'gains' : 'map');
   readonly reviewView = signal(this.route.snapshot.fragment === 'candidate-review' ? 'candidate' : this.route.snapshot.fragment === 'added-review' ? 'added' : 'turnout');
   readonly statsView = signal(this.route.snapshot.fragment === 'hypotheses' ? 'general' : 'candidates');
   readonly inspectorRound = signal('2026.10.25');
@@ -76,7 +77,9 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
     { id: 'size', label: 'Размер на секцията' }, { id: 'method', label: 'Метод на гласуване' },
     { id: 'controls', label: 'Сходни секции' }, { id: 'observations', label: 'Наблюдения' },
   ];
-  readonly explorerTabs: ViewTab[] = [{ id: 'map', label: 'Карта' }, { id: 'table', label: 'Секционна таблица' }];
+  readonly explorerTabs: ViewTab[] = [
+    { id: 'map', label: 'Карта' }, { id: 'table', label: 'Секционна таблица' }, { id: 'gains', label: 'Прираст по секции' },
+  ];
   readonly placeTabs: ViewTab[] = [{ id: 'municipalities', label: 'Общини' }, { id: 'settlements', label: 'Населени места' }];
   readonly statsTabs: ViewTab[] = [
     { id: 'candidates', label: 'Кандидатски ръст' },
@@ -95,7 +98,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   readonly activeSection = signal('results');
   readonly navigation: { id: string; label: string; icon: MapIconName }[] = [
     { id: 'results', label: 'Обобщение', icon: 'summary' },
-    { id: 'geography', label: 'Карта и секции', icon: 'region' },
+    { id: 'geography', label: 'Секции', icon: 'region' },
     { id: 'places', label: 'По места', icon: 'municipality' },
     { id: 'review', label: 'За преглед', icon: 'risks' },
     { id: 'candidate-checks', label: 'Проверки', icon: 'target' },
@@ -249,6 +252,9 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
     if (typeof IntersectionObserver === 'undefined') return;
     if (this.observationFrame !== undefined) cancelAnimationFrame(this.observationFrame);
     this.observationFrame = requestAnimationFrame(() => {
+      if (this.route.snapshot.fragment === 'section-gains') {
+        this.element.nativeElement.querySelector('#section-gains')?.scrollIntoView({ block: 'start' });
+      }
       this.sectionObserver?.disconnect();
       const sections = [...this.element.nativeElement.querySelectorAll<HTMLElement>('.research-page > section[id]')];
       this.sectionObserver = new IntersectionObserver(() => {
@@ -324,6 +330,9 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
     this.selected.set(null);
     this.detailLoading.set(false);
     this.detailError.set('');
+    if (this.explorerView() === 'gains') {
+      requestAnimationFrame(() => this.element.nativeElement.querySelector('#section-gains')?.scrollIntoView({ block: 'start' }));
+    }
   }
 
   openFinding(sectionId: string): void {

@@ -30,7 +30,7 @@
     </nav>
 
     <section id="results" aria-labelledby="results-title">
-      <div class="section-heading"><div><p class="eyebrow">Цялата извадка</p><h2 id="results-title">Как се промени вотът</h2></div><a hlmBtn variant="default" size="sm" class="gap-2" [href]="pagePath + '#geography'"><app-map-icon name="region" />Разгледай секциите</a></div>
+      <div class="section-heading"><div><p class="eyebrow">Цялата извадка</p><h2 id="results-title">Как се промени вотът</h2></div><a hlmBtn variant="default" size="sm" class="gap-2" [href]="pagePath + '#section-gains'" (click)="explorerView.set('gains')"><app-map-icon name="target" />Прираст по секции</a></div>
       @if (query(); as current) {
         <p class="scope-label"><strong>{{ count(overviewTotals().n) }}</strong> съпоставими от {{ count(sampleCounts().sections) }} секции · Едни и същи секции за всички показатели</p>
         <app-forensics-vote-summary data-overview-totals [summary]="overviewTotals()" />
@@ -59,7 +59,7 @@
     </section>
 
     <section id="geography" aria-labelledby="geography-title">
-      <div class="section-heading"><div><p class="eyebrow">Текущ филтър</p><h2 id="geography-title">Карта и секции</h2></div><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/sections.csv'" download aria-label="Изтегли всички секции в страната CSV, независимо от филтрите" title="Всички секции в страната; филтрите не променят файла"><app-map-icon name="download-table" />Всички секции CSV</a></div>
+      <div class="section-heading"><div><p class="eyebrow">Текущ филтър</p><h2 id="geography-title">Секционен анализ</h2></div><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/sections.csv'" download aria-label="Изтегли всички секции в страната CSV, независимо от филтрите" title="Всички секции в страната; филтрите не променят файла"><app-map-icon name="download-table" />Всички секции CSV</a></div>
       <div class="filters">
         <label>Изборен район<select aria-label="Филтър по изборен район" [value]="filters().regionId" (change)="setFilter('regionId', inputValue($event))"><option value="">Цялата страна</option>@for (district of districts(); track district.key) {<option [value]="district.key">{{ district.key }}. {{ district.name }}</option>}</select></label>
         <label class="search-field">Търсене<input type="search" [value]="filters().search" (input)="setFilter('search', inputValue($event))" placeholder="Секция, община, населено място, ЕКАТТЕ"></label>
@@ -73,8 +73,8 @@
       </div></details>
       <p class="scope-label" aria-live="polite"><strong>{{ count(filtered().length) }}</strong> показани · {{ count(jointTotals().n) }} съпоставими за общите суми · {{ count(flagged().length) }} с основание за преглед</p>
       <app-forensics-vote-summary data-joint-totals [summary]="jointTotals()" />
-      <p class="note">Картата, секционната таблица и тези суми следват текущите филтри.</p>
-      <app-view-tabs [tabs]="explorerTabs" [(value)]="explorerView" label="Изглед на секциите" idPrefix="explorer" />
+      <p class="note">Картата, таблицата, графиката и тези суми следват текущите филтри.</p>
+      <div id="section-gains" class="section-gains-navigation"><app-view-tabs [tabs]="explorerTabs" [(value)]="explorerView" label="Изглед на секциите" idPrefix="explorer" /></div>
       <div class="view-panel" role="tabpanel" id="explorer-panel-map" aria-labelledby="explorer-tab-map" [hidden]="explorerView() !== 'map'">
       <app-forensics-map [rows]="filtered()" (sectionSelect)="selectSection($event)" />
       <p class="note">Контур на точка = основание за проверка на протокола.</p>
@@ -91,6 +91,9 @@
       <div class="pagination"><span>{{ filtered().length | number }} резултата · по {{ pageSize }} на страница</span><button hlmBtn variant="outline" size="sm" class="gap-1" type="button" (click)="page.set(page() - 1)" [disabled]="page() === 0"><app-map-icon name="chevron-left" />Предишни</button><span>{{ page() + 1 }} / {{ pages() }}</span><button hlmBtn variant="outline" size="sm" class="gap-1" type="button" (click)="page.set(page() + 1)" [disabled]="page() + 1 >= pages()">Следващи<app-map-icon name="chevron-right" /></button></div>
 
 
+      </div>
+      <div class="view-panel" role="tabpanel" id="explorer-panel-gains" aria-labelledby="explorer-tab-gains" [hidden]="explorerView() !== 'gains'">
+        @if (explorerView() === 'gains') {<app-forensics-gains-chart [rows]="filtered()" (sectionSelect)="selectSection($event)" />}
       </div>
       @if (selected(); as row) {
         <article id="section-inspector" class="section-inspector p-4 sm:p-6 mt-6 scroll-mt-6 text-sm">

@@ -22,6 +22,8 @@ import { SignedChangeDirective } from '../ui/signed-change/signed-change';
 class ChartStub { @Input() options: unknown; }
 @Component({ selector: 'app-forensics-map', template: '' })
 class MapStub { @Input() rows: ForensicsSection[] = []; @Output() sectionSelect = new EventEmitter<ForensicsSection>(); }
+@Component({ selector: 'app-forensics-gains-chart', template: '' })
+class GainsStub { @Input() rows: readonly ForensicsSection[] = []; @Output() sectionSelect = new EventEmitter<ForensicsSection>(); }
 @Component({ selector: 'app-forensics-group-table', template: '' })
 class GroupStub { @Input() rows: ForensicsGroup[] = []; @Input() label = ''; }
 
@@ -32,7 +34,7 @@ function setup(query = 'query1', fragment?: string) {
       { provide: ActivatedRoute, useValue: { snapshot: { data: { researchQuery: query }, fragment } } }],
   });
   TestBed.overrideComponent(ElectoralForensicsComponent, {
-    set: { imports: [CommonModule, FormsModule, RouterLink, ChartStub, MapStub, GroupStub, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective] },
+    set: { imports: [CommonModule, FormsModule, RouterLink, ChartStub, MapStub, GainsStub, GroupStub, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective] },
   });
   return TestBed.createComponent(ElectoralForensicsComponent);
 }
@@ -341,6 +343,49 @@ describe('hidden electoral research pages', () => {
     fixture.detectChanges();
     expect(panel('#explorer-panel-map').hidden).toBe(false);
     expect(page.filters().regionId).toBe('5');
+    fixture.destroy();
+  });
+
+  it('mounts the gains chart on demand, shares filters and opens the common section inspector', () => {
+    const fixture = setup('query2');
+    const page = fixture.componentInstance;
+    const row = sectionFixture();
+    page.report.set(reportFixture());
+    page.sections.set([row, sectionFixture({ sectionId: '010100001', regionId: '1' })]);
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.directive(GainsStub))).toBeNull();
+    const element = fixture.nativeElement as HTMLElement;
+    element.querySelector<HTMLButtonElement>('#explorer-tab-gains')!.click();
+    fixture.detectChanges();
+    const chart = fixture.debugElement.query(By.directive(GainsStub)).componentInstance as GainsStub;
+    expect(chart.rows).toHaveLength(2);
+    page.setFilter('regionId', '5');
+    fixture.detectChanges();
+    expect(chart.rows).toEqual([row]);
+    chart.sectionSelect.emit(row);
+    const http = TestBed.inject(HttpTestingController);
+    http.expectOne(`/data/forensics/2026/section-records/${row.sectionId}.json`).flush(row);
+    fixture.detectChanges();
+    expect(page.selected()?.sectionId).toBe(row.sectionId);
+    expect(element.querySelector('#section-inspector')).not.toBeNull();
+    expect(page.explorerView()).toBe('gains');
+    expect(fixture.debugElement.query(By.directive(GainsStub)).componentInstance).toBe(chart);
+    page.closeSection();
+    expect(page.selected()).toBeNull();
+    expect(page.filters()).toMatchObject({ focus: true, regionId: row.regionId });
+    fixture.destroy();
+  });
+
+  it.each(['query1', 'query2'])('opens the gains view directly from a %s chart link', query => {
+    const fixture = setup(query, 'section-gains');
+    fixture.componentInstance.report.set(reportFixture());
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelector<HTMLElement>('#explorer-panel-gains')?.hidden).toBe(false);
+    expect(element.querySelector('#explorer-tab-gains')?.getAttribute('aria-selected')).toBe('true');
+    expect(element.querySelector('#section-gains')).not.toBeNull();
+    expect(fixture.debugElement.query(By.directive(GainsStub))).not.toBeNull();
+    expect(fixture.componentInstance.focus).toBe(query === 'query2');
     fixture.destroy();
   });
 

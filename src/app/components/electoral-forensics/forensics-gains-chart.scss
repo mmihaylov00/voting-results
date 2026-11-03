@@ -1,0 +1,9 @@
+@use './forensics-tables.scss';
+.chart-controls,.rank-heading{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem 1.5rem;margin:1rem 0}
+.stable-filter{display:flex;align-items:center;gap:.5rem;min-height:44px;font-size:.8rem;cursor:pointer}.stable-filter input{width:16px;height:16px;accent-color:#047857}
+.scope,.note{font-size:.78rem;line-height:1.6;color:hsl(var(--muted-foreground));margin:.5rem 0}.scope strong{color:hsl(var(--foreground))}.empty{padding:2rem 0;font-size:.9rem}
+.list-key{display:flex;align-items:center;gap:.4rem}.list-marker{width:9px;height:9px;border:1.5px solid #b58118;border-radius:50%;flex-shrink:0}
+.rank-heading{margin-top:1.5rem}.rank-heading h3{font-size:1rem;font-weight:650;margin:0}.rank-heading label{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;font-size:.78rem}
+select{min-height:44px;max-width:100%;min-width:0;padding:.5rem .65rem;border:1px solid hsl(var(--foreground)/.2);border-radius:5px;background:hsl(var(--background));color:inherit}
+.section-link{min-height:44px}tbody th small{max-width:220px;white-space:normal}thead th{height:44px}
+@media(max-width:640px){select{font-size:1rem}.rank-heading label{width:100%}}
