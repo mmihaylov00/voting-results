@@ -121,6 +121,7 @@ export class ForensicsMapComponent implements AfterViewInit, OnChanges, OnDestro
           const text = document.createElement('span');
           text.textContent = this.tooltip(row);
           text.style.display = 'block';
+          text.style.width = 'max-content';
           text.style.whiteSpace = 'pre-line';
           text.style.maxWidth = 'min(22rem, calc(100vw - 3rem))';
           text.style.overflowWrap = 'anywhere';
