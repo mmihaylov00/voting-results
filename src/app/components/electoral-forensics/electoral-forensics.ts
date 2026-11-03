@@ -250,7 +250,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
     if (this.observationFrame !== undefined) cancelAnimationFrame(this.observationFrame);
     this.observationFrame = requestAnimationFrame(() => {
       this.sectionObserver?.disconnect();
-      const sections = [...this.element.nativeElement.querySelectorAll<HTMLElement>('section[id]')];
+      const sections = [...this.element.nativeElement.querySelectorAll<HTMLElement>('.research-page > section[id]')];
       this.sectionObserver = new IntersectionObserver(() => {
         const navigationBottom = this.element.nativeElement.querySelector('.section-nav')?.getBoundingClientRect().bottom ?? 120;
         const current = [...sections].reverse().find(section => section.getBoundingClientRect().top <= navigationBottom + 24) ?? sections[0];

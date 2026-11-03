@@ -491,6 +491,9 @@ describe('hidden electoral research pages', () => {
         const top = index < 4 ? -800 + index * 200 : 128 + (index - 4) * 400;
         vi.spyOn(section, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, top, 100, 400));
       });
+      const nestedPanel = document.createElement('section');
+      nestedPanel.id = 'nested-check-panel';
+      element.querySelector('#candidate-checks')!.append(nestedPanel);
       frame(0);
       updateNavigation();
       expect(fixture.componentInstance.activeSection()).toBe('candidate-checks');
