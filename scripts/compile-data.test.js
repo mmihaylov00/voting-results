@@ -39,9 +39,18 @@ test('comparisons stay within an election type and risk history uses only earlie
   assert.deepEqual(comparableDates(catalog, '2021.07.11', true), []);
   assert.deepEqual(comparableDates(catalog, '2022.10.02', true), ['2021.07.11']);
   assert.throws(() => comparableDates(catalog, '2026.10.01'), /Unknown election/);
-  assert.deepEqual(comparableDates([
-    ...catalog, {date: '2026.10.25', type: 'presidential', round: 1, provisional: {}},
-  ], '2021.11.14'), comparableDates(catalog, '2021.11.14'));
+  const withProvisional = [...catalog,
+    {date: '2026.10.25', type: 'presidential', round: 1},
+    {date: '2026.11.01', type: 'presidential', round: 2, provisional: {}},
+    {date: '2026.04.19', type: 'governmental', provisional: {}},
+  ];
+  assert.deepEqual(comparableDates(withProvisional, '2026.10.25'),
+    ['2026.11.01', '2021.11.21', '2021.11.14', '2016.11.13', '2016.11.06']);
+  assert.deepEqual(comparableDates(withProvisional, '2026.11.01'),
+    ['2026.10.25', '2021.11.21', '2021.11.14', '2016.11.13', '2016.11.06']);
+  assert.deepEqual(comparableDates(withProvisional, '2026.11.01', true),
+    ['2021.11.21', '2016.11.13']);
+  assert.deepEqual(comparableDates(withProvisional, '2022.10.02'), ['2021.07.11']);
 });
 
 test('compressed canonical files parse identically and missing input fails', t => {

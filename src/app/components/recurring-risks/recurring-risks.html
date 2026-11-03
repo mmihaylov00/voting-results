@@ -8,7 +8,7 @@
   @else if (!loading) {
     <div class="flex flex-wrap items-baseline justify-between gap-3 border-y border-border py-4">
       <p class="text-sm"><strong class="text-xl tabular-nums">{{ filteredRows.length | number }}</strong> секции с повтарящи се рискови индикатори</p>
-      <p class="text-xs text-muted-foreground">Еднакви вид и тур; съвпадение по район, секция и населено място.</p>
+      <p class="text-xs text-muted-foreground">{{ electionType === 'presidential' ? 'Всички президентски турове до избраната дата' : 'Избори от същия вид до избраната дата' }}; съвпадение по район, секция и населено място.</p>
     </div>
     <div class="flex flex-wrap items-start justify-between gap-3">
       <app-table-controls class="min-w-64 flex-1" [rows]="filteredRows" [columns]="tableColumns" label="Търсене на секция, място или индикатор" #recurringTable />

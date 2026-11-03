@@ -230,7 +230,7 @@ export class ContestantProfilePanelsComponent implements OnChanges {
   private baseline(election: ContestantDetailElection): ContestantDetailElection | undefined {
     return this.elections.filter(previous => previous.participation.date < election.participation.date
       && previous.participation.type === election.participation.type
-      && previous.participation.round === election.participation.round && !previous.participation.provisional)
+      && !previous.participation.provisional)
       .sort((left, right) => right.participation.date.localeCompare(left.participation.date))[0];
   }
 
@@ -294,9 +294,9 @@ export class ContestantProfilePanelsComponent implements OnChanges {
 
   private recurringRows(rowsByDate: Map<string, SectionRow[]>): RecurringRow[] {
     const recurring: RecurringRow[] = [];
-    const rounds = new Set(this.elections.map(election => election.participation.round));
-    for (const round of rounds) {
-      const elections = this.elections.filter(election => election.participation.round === round)
+    const types = new Set(this.elections.map(election => election.participation.type));
+    for (const type of types) {
+      const elections = this.elections.filter(election => election.participation.type === type)
         .sort((left, right) => right.participation.date.localeCompare(left.participation.date));
       const latest = elections[0];
       if (!latest || elections.length < 2) continue;

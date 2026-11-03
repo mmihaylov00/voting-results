@@ -898,7 +898,8 @@ function buildRegionCandidateAggregates(byRegion) {
 function comparableDates(catalog, date, historical = false) {
   const current = catalog.find(e => e.date === date);
   if (!current) throw new Error(`Unknown election: ${date}`);
-  return catalog.filter(e => !e.provisional && e.type === current.type && e.date !== date &&
+  return catalog.filter(e => (!e.provisional || (!historical && current.type === 'presidential')) &&
+    e.type === current.type && e.date !== date &&
     (!historical || (e.date < date && e.round === current.round)))
     .map(e => e.date).sort().reverse();
 }

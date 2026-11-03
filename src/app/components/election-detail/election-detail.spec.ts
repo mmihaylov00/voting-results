@@ -15,6 +15,7 @@ import { decodeElectionViewState, encodeElectionViewState } from '../../utils/el
 import { SettlementMapComponent } from '../ui/settlement-map/settlement-map';
 import { AbroadMapComponent } from '../ui/abroad-map/abroad-map';
 import { ExportCsvModalComponent } from './modals/export-csv-modal/export-csv-modal';
+import elections from '../../../assets/elections.json';
 
 describe('ElectionDetailComponent', () => {
   let component: ElectionDetailComponent;
@@ -75,6 +76,24 @@ describe('ElectionDetailComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it.each([
+    ['2026.11.01', '2026.10.25', '2026.10.25'],
+    ['2026.10.25', '2026.11.01', '2026.11.01'],
+    ['2026.11.01', '2026.04.19', ''],
+    ['2026.11.01', '2026.11.01', ''],
+    ['2026.11.01', 'missing', ''],
+  ])('restores the saved comparison baseline %s -> %s with election-type isolation', (date, baseline, expected) => {
+    electionType = 'presidential';
+    vi.spyOn(TestBed.inject(ElectionService), 'getDates').mockReturnValue(elections);
+    component.date = date;
+    component['sectionsReady'] = true;
+    component['partiesReady'] = true;
+    component['pendingViewParams'] = { panel: 'comparison', baseline };
+    component['restoreSharedView']();
+    expect(component.baselineDate).toBe(expected);
+    expect(component.leftPanel()).toBe('comparison');
   });
 
   it('opens an activity history point using its election type and keeps the regional scope', () => {

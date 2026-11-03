@@ -72,6 +72,29 @@ describe('contestant profiles', () => {
     expect(contestantSectionRows([section({ voted: 0, partyVotes: {} })], '1')[0].share).toBeNull();
   });
 
+  it('keeps both presidential rounds across years by person identity rather than ballot number', () => {
+    const ticket = 'Иван Петров Иванов и Мария Петрова Николова';
+    const nextTicket = 'Иван Петров Иванов и Елена Георгиева Димова';
+    const elections: ContestantElection[] = [
+      { date: '2021.11.14', name: '2021 първи тур', type: 'presidential', round: 1 },
+      { date: '2021.11.21', name: '2021 втори тур', type: 'presidential', round: 2 },
+      { date: '2026.10.25', name: '2026 първи тур', type: 'presidential', round: 1 },
+      { date: '2026.11.01', name: '2026 втори тур', type: 'presidential', round: 2 },
+      { date: '2016.11.13', name: 'Друг кандидат със същия номер', type: 'presidential', round: 2 },
+    ];
+    const rows = contestantParticipations(ticket, 'presidential', elections, {
+      '2021.11.14': { parties: { '1': ticket }, regions: [region({ '1': 20 })] },
+      '2021.11.21': { parties: { '1': ticket }, regions: [region({ '1': 40 })] },
+      '2026.10.25': { parties: { '4': nextTicket }, regions: [region({ '4': 30 })] },
+      '2026.11.01': { parties: { '25': nextTicket }, regions: [region({ '25': 60 })] },
+      '2016.11.13': { parties: { '25': 'Друг Петров Иванов и Мария Петрова Николова' }, regions: [region({ '25': 90 })] },
+    });
+    expect(rows.map(row => [row.date, row.round, row.partyId, row.votes])).toEqual([
+      ['2026.11.01', 2, '25', 60], ['2026.10.25', 1, '4', 30],
+      ['2021.11.21', 2, '1', 40], ['2021.11.14', 1, '1', 20],
+    ]);
+  });
+
   it('anchors an uncatalogued local ballot only to its exact election and never reuses its number historically', () => {
     const elections: ContestantElection[] = [
       { date: '2026.04.19', name: 'Текущи избори', type: 'governmental' },

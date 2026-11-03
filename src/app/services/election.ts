@@ -386,7 +386,8 @@ export class ElectionService {
   }
 
   private getOtherDates(date: string): string[] {
-    return this.electionDates.filter(d => d.date !== date && !('provisional' in d && d.provisional)).map(d => d.date);
+    return this.electionDates.filter(d => d.date !== date
+      && (d.type === 'presidential' || !('provisional' in d && d.provisional))).map(d => d.date);
   }
 
   private attachComparisons(date: string, section: Section): void {
@@ -807,8 +808,7 @@ export class ElectionService {
   getRiskHistoryData(date: string): Observable<{ [date: string]: FullData }> {
     const current = this.electionDates.find((election) => election.date === date);
     if (!current) return of({});
-    const dates = this.electionDates.filter((election) => election.type === current.type
-      && election.round === current.round && election.date <= date);
+    const dates = this.electionDates.filter((election) => election.type === current.type && election.date <= date);
     return from((async () => {
       const history: { [date: string]: FullData } = {};
       // Keep one raw election in memory at a time instead of retaining all candidate arrays.

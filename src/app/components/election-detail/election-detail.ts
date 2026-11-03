@@ -847,8 +847,7 @@ export class ElectionDetailComponent implements OnInit {
       if (params['metric'] === 'below-threshold' && !state) this.mobileMapVisible.set(true);
     }
     if (!previous || previous['baseline'] !== params['baseline']) {
-      const current = this.electionService.getDates().find(election => election.date === this.date);
-      this.baselineDate = this.electionService.getDates().find(election => election.date === params['baseline'] && election.date !== this.date && election.round === current?.round)?.date ?? '';
+      this.baselineDate = this.electionService.getDates().find(election => election.date === params['baseline'] && election.date !== this.date && election.type === this.electionType)?.date ?? '';
     }
     if (!previous || previous['historyMetric'] !== params['historyMetric']) {
       const historyMetrics = ['share', 'turnout', 'invalid', 'machine', 'margin', 'topParties'] as const;

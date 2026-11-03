@@ -77,6 +77,23 @@ describe('RecurringRisksComponent', () => {
     expect(component.rows).toEqual([]);
   });
 
+  it('includes first-round flags in a presidential runoff recurrence', () => {
+    vi.spyOn(TestBed.inject(ElectionService), 'getDates').mockReturnValue([
+      { date: '2026.11.01', name: 'Ноември 2026 - Тур 2', type: 'presidential', round: 2 },
+      { date: '2026.10.25', name: 'Октомври 2026 - Тур 1', type: 'presidential', round: 1 },
+    ]);
+    dates.next(convertToParamMap({ date: '2026.11.01' }));
+    const sections = [section('010100001', '01')];
+    const regions = [{ id: '01', name: 'Район 1', total: 100, voted: 80, partyVotes: {} }];
+    response.next({
+      '2026.11.01': { sections, parties: {}, regions },
+      '2026.10.25': { sections, parties: {}, regions },
+    });
+    expect(component.filteredRows[0]).toMatchObject({ flagged: 2, assessed: 2, currentFlagged: true });
+    expect(getRiskHistoryData).toHaveBeenLastCalledWith('2026.11.01');
+    expect(fixture.nativeElement.textContent).not.toContain('Еднакви вид и тур');
+  });
+
   it('renders historical codes as individually explained badges without fetching more data', async () => {
     const sections = [{ ...section('010100001', '01'), riskIndicators: [{ code: 'R1.1', category: 'R1', severity: 'high' }] }];
     const regions = [{ id: '01', name: 'Район 1', total: 100, voted: 80, partyVotes: {} }];

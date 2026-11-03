@@ -18,6 +18,16 @@ const elections: RiskHistoryElection[] = [
   { date: '2023.04.02', name: '2023', type: 'governmental' },
 ];
 
+const presidentialElections: RiskHistoryElection[] = [
+  { date: '2026.11.01', name: '2026 round 2', type: 'presidential', round: 2 },
+  { date: '2026.10.25', name: '2026 round 1', type: 'presidential', round: 1 },
+  { date: '2021.11.21', name: '2021 round 2', type: 'presidential', round: 2 },
+  { date: '2021.11.14', name: '2021 round 1', type: 'presidential', round: 1 },
+  { date: '2021.07.11', name: 'Parliament', type: 'governmental' },
+  { date: '2016.11.13', name: '2016 round 2', type: 'presidential', round: 2 },
+  { date: '2016.11.06', name: '2016 round 1', type: 'presidential', round: 1 },
+];
+
 describe('section risk history', () => {
   it('counts assessed zeros separately from unavailable evaluations and excludes future elections', () => {
     const result = buildSectionRiskHistory(section({ riskIndicators: [] }), '2024.10.27', elections, {
@@ -44,16 +54,15 @@ describe('section risk history', () => {
     expect(result.rows[0].turnout).toBeNull();
   });
 
-  it('keeps election types and presidential rounds separate', () => {
-    const catalog: RiskHistoryElection[] = [
-      { date: '2021.11.21', name: '2021 round 2', type: 'presidential', round: 2 },
-      { date: '2021.11.14', name: '2021 round 1', type: 'presidential', round: 1 },
-      { date: '2021.07.11', name: 'Parliament', type: 'governmental' },
-      { date: '2016.11.13', name: '2016 round 2', type: 'presidential', round: 2 },
-    ];
-    const result = buildSectionRiskHistory(section({ riskScore: 0 }), '2021.11.21', catalog, {});
-    expect(result.rows.map((row) => row.date)).toEqual(['2016.11.13', '2021.11.21']);
+  it('shows earlier first and second presidential rounds while keeping election types separate', () => {
+    const result = buildSectionRiskHistory(section({ riskScore: 0 }), '2021.11.21', presidentialElections, {});
+    expect(result.rows.map((row) => row.date)).toEqual(['2016.11.06', '2016.11.13', '2021.11.14', '2021.11.21']);
     expect(result.rows[0].status).toBe('missing');
+  });
+
+  it('does not show a later runoff in first-round history', () => {
+    const result = buildSectionRiskHistory(section({ riskScore: 0 }), '2021.11.14', presidentialElections, {});
+    expect(result.rows.map((row) => row.date)).toEqual(['2016.11.06', '2016.11.13', '2021.11.14']);
   });
 
   it('shows the historical party label and computes turnout and winner share from counts', () => {
@@ -113,12 +122,16 @@ describe('section risk history', () => {
     expect(buildRecurringSectionRisks('2026.04.19', elections, duplicateHistory)).toEqual([]);
   });
 
-  it('does not include later risk flags or a different presidential round in recurrence', () => {
+  it('counts earlier presidential rounds in recurrence without including later flags', () => {
     const recurring = section({ riskScore: 1 });
     const history = Object.fromEntries(elections.map((election) => [election.date, { sections: [recurring], parties: {} }]));
     expect(buildRecurringSectionRisks('2023.04.02', elections, history)).toEqual([]);
-    const presidential = elections.map((election, index) => ({ ...election, type: 'presidential', round: index === 0 ? 2 : 1 }));
-    expect(buildRecurringSectionRisks('2026.04.19', presidential, history)).toEqual([]);
+    const presidentialHistory = Object.fromEntries(presidentialElections.map((election) =>
+      [election.date, { sections: [recurring], parties: {} }]));
+    expect(buildRecurringSectionRisks('2021.11.21', presidentialElections, presidentialHistory)[0])
+      .toMatchObject({ flagged: 4, assessed: 4, unavailable: 0 });
+    expect(buildRecurringSectionRisks('2021.11.14', presidentialElections, presidentialHistory)[0])
+      .toMatchObject({ flagged: 3, assessed: 3, unavailable: 0 });
   });
 
   it('excludes candidate-only risks present in the compiled section array and raw score', () => {

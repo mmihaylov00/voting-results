@@ -152,6 +152,35 @@ describe('ElectionService', () => {
     http.verify();
   });
 
+  it('includes the provisional runoff in first-round display comparisons and reuses it in reverse', async () => {
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({providers: [
+      provideHttpClient(), provideHttpClientTesting(), {provide: ELECTION_TYPE, useValue: 'presidential'},
+    ]});
+    const presidential = TestBed.inject(ElectionService);
+    const http = TestBed.inject(HttpTestingController);
+    const firstRound = '2026.10.25';
+    const runoff = '2026.11.01';
+    const first = firstValueFrom(presidential.getSections(firstRound, undefined, true));
+    http.expectOne('/data/compiled/manifest.json').flush({files: {}});
+    for (const election of presidential.getDates()) {
+      const request = await vi.waitFor(() => http.expectOne(`/data/compiled/${election.date}.full.json.gz`));
+      const payload = fullPayload();
+      request.flush(responseBuffer({ ...payload, sections: {
+        ...payload.sections, voted: [election.date === runoff ? 95 : 85],
+      } }));
+    }
+    const firstComparisons = (await first)[0].comparisons?.['voted'];
+    expect(firstComparisons).toContainEqual({d: runoff, v: 95});
+    expect(firstComparisons?.some(value => value.d === firstRound)).toBe(false);
+    const runoffComparisons = (await firstValueFrom(presidential.getSections(runoff, undefined, true)))[0].comparisons?.['voted'];
+    expect(runoffComparisons).toContainEqual({d: firstRound, v: 85});
+    expect(runoffComparisons?.some(value => value.d === runoff)).toBe(false);
+    expect(presidential.getDates().find(election => election.date === runoff)?.provisional)
+      .toMatchObject({processedPercent: 100, updatedAt: '2026-11-02T09:15:00+02:00'});
+    http.verify();
+  });
+
   it('shares full-data requests between simultaneous detail-page subscriptions', async () => {
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({providers: [provideHttpClient(), provideHttpClientTesting()]});
@@ -270,7 +299,7 @@ describe('ElectionService', () => {
     http.verify();
   });
 
-  it('excludes future cycles and other presidential rounds from compact risk history', async () => {
+  it('includes earlier first and second presidential rounds in compact runoff history', async () => {
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({providers: [
       provideHttpClient(), provideHttpClientTesting(), {provide: ELECTION_TYPE, useValue: 'presidential'},
@@ -279,12 +308,32 @@ describe('ElectionService', () => {
     const http = TestBed.inject(HttpTestingController);
     const history = firstValueFrom(presidential.getRiskHistoryData('2021.11.21'));
     http.expectOne('/data/compiled/manifest.json').flush({files: {}});
-    for (const date of ['2021.11.21', '2016.11.13']) {
+    const expected = ['2021.11.21', '2021.11.14', '2016.11.13', '2016.11.06'];
+    for (const date of expected) {
       const request = await vi.waitFor(() => http.expectOne(`/data/compiled/${date}.full.json.gz`));
       request.flush(responseBuffer(compactRiskPayload()));
     }
-    expect(Object.keys(await history)).toEqual(['2021.11.21', '2016.11.13']);
+    expect(Object.keys(await history)).toEqual(expected);
     expect(await firstValueFrom(presidential.getRiskHistoryData('unknown'))).toEqual({});
+    http.verify();
+  });
+
+  it('does not load a later presidential runoff when showing first-round risk history', async () => {
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({providers: [
+      provideHttpClient(), provideHttpClientTesting(), {provide: ELECTION_TYPE, useValue: 'presidential'},
+    ]});
+    const presidential = TestBed.inject(ElectionService);
+    const http = TestBed.inject(HttpTestingController);
+    const history = firstValueFrom(presidential.getRiskHistoryData('2021.11.14'));
+    http.expectOne('/data/compiled/manifest.json').flush({files: {}});
+    const expected = ['2021.11.14', '2016.11.13', '2016.11.06'];
+    for (const date of expected) {
+      const request = await vi.waitFor(() => http.expectOne(`/data/compiled/${date}.full.json.gz`));
+      request.flush(responseBuffer(compactRiskPayload()));
+    }
+    expect(Object.keys(await history)).toEqual(expected);
+    http.expectNone('/data/compiled/2021.11.21.full.json.gz');
     http.verify();
   });
 

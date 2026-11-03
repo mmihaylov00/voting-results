@@ -11,6 +11,7 @@ import { Region, Section } from '../../../models/election.models';
 import { ElectionAnalysisComponent } from './election-analysis';
 import { VirtualTableDirective } from '../virtual-table/virtual-table';
 import { provideRouter } from '@angular/router';
+import elections from '../../../../assets/elections.json';
 
 const section: Section = {
   sectionId: '010100001', regionId: '01', cityName: 'Банско', sectionName: 'Училище', sectionType: 'City',
@@ -150,12 +151,53 @@ describe('election analysis loading', () => {
     expect(getSections).not.toHaveBeenCalled();
   });
 
-  it('keeps presidential rounds separate and avoids full data loads for national summaries', async () => {
+  it('includes both presidential rounds and avoids full data loads for national summaries', async () => {
     const getSections = vi.fn(() => of([section]));
     const component = setup(getSections).componentInstance;
     await component.load();
-    expect(component.timeline.map((point) => point.date)).toEqual(['2011.10.30', '2016.11.13', '2021.11.21']);
+    expect(component.timeline.map((point) => point.date)).toEqual(['2011.10.30', '2016.11.06', '2016.11.13', '2021.11.14', '2021.11.21']);
     expect(component.rows[0].regionId).toBe('01');
+    expect(getSections).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['2026.11.01', '2026.10.25', 60, 40],
+    ['2026.10.25', '2026.11.01', 40, 60],
+  ] as const)('exposes all six presidential rounds and compares %s with %s by ticket identity', async (date, baseline, currentVotes, previousVotes) => {
+    const getSections = vi.fn(() => of([section]));
+    const component = setup(getSections).componentInstance;
+    const service = TestBed.inject(ElectionService);
+    vi.spyOn(service, 'getDates').mockReturnValue(elections);
+    const candidate = 'Андрей Атанасов Гюров и Георги Димитров Кандев';
+    const summary = Object.fromEntries(elections.map(election => {
+      const id = election.date === '2026.11.01' ? '9' : '4';
+      const name = election.date.startsWith('2026.1') ? candidate : 'Различна кандидатска двойка';
+      const votes = election.date === '2026.11.01' ? 60 : 40;
+      return [election.date, { parties: { [id]: name },
+        regions: [{ id: '01', name: 'Район', total: 100, voted: 80, partyVotes: { [id]: votes } }] }];
+    }));
+    vi.spyOn(service, 'getAllData').mockReturnValue(of(summary));
+    component.date = date;
+    component.parties = summary[date].parties;
+    component.activePartyId = Object.keys(component.parties)[0];
+    if (date === '2026.10.25') component.comparisonDate = baseline;
+    await component.load();
+    const presidential = elections.filter(election => election.type === 'presidential').map(election => election.date).sort();
+    expect(component.timeline.map(point => point.date)).toEqual(presidential);
+    expect(component.timeline).toHaveLength(6);
+    expect(component.comparisonOptions.map(option => option.value)).toEqual(presidential.filter(value => value !== date));
+    if (baseline === '2026.11.01') expect(component.comparisonOptions.find(option => option.value === baseline)?.label).toContain('предварителни');
+    expect(component.timeline.find(point => point.date === '2026.11.01')?.name).toContain('предварителни');
+    expect(component.comparisonDate).toBe(baseline);
+    expect(component.rows[0].current.votes).toBe(currentVotes);
+    expect(component.rows[0].previous?.votes).toBe(previousVotes);
+    expect(component.rows[0].voteChange).toBe(currentVotes - previousVotes);
+    expect(component.timeline.filter(point => !point.date.startsWith('2026.1')).every(point => point.snapshot?.votes === null)).toBe(true);
+    const series = component.chartOptions.series?.[0];
+    expect(series).toMatchObject({ data: [null, null, null, null, 50, 75] });
+    component.exportCsv();
+    expect(component.csvExportData?.filename).toBe(`comparison_${date}_${baseline}.csv`);
+    expect(component.csvExportData?.rows[0].slice(2, 8)).toEqual([candidate, date, baseline, currentVotes, previousVotes, currentVotes - previousVotes]);
     expect(getSections).not.toHaveBeenCalled();
   });
 
@@ -514,7 +556,7 @@ describe('election analysis loading', () => {
     component.metric = 'turnout';
     await component.loadTurnoutHistory();
     expect(component.historyTimeline.find(point => point.date === '2024.10.27')?.snapshot?.turnout).toBe(20);
-    expect(getSections.mock.calls.map(([date]) => date)).toEqual(['2016.11.06', '2021.11.14', '2024.10.27', '2026.04.19']);
+    expect(getSections.mock.calls.map(([date]) => date)).toEqual(['2024.10.27', '2026.04.19']);
     const history = component.historyTimeline;
     component.sections = [{ ...section, cityName: 'Друг нов град' }];
     await component.load();
@@ -554,13 +596,13 @@ describe('election analysis loading', () => {
     getSections.mockReturnValueOnce(throwError(() => new Error('offline')));
     component.metric = 'turnout';
     await component.loadTurnoutHistory();
-    expect(component.turnoutMissingDates).toEqual(['2016 тур 1 (Президентски)']);
-    expect(component.historyTimeline[1].snapshot).toBeNull();
+    expect(component.turnoutMissingDates).toEqual(['Октомври 2024 (Парламентарни)']);
+    expect(component.historyTimeline.find(point => point.date === '2024.10.27')?.snapshot).toBeNull();
     getSections.mockClear();
     await component.loadTurnoutHistory();
-    expect(getSections).toHaveBeenCalledExactlyOnceWith('2016.11.06', '01');
+    expect(getSections).toHaveBeenCalledExactlyOnceWith('2024.10.27', '01');
     expect(component.turnoutMissingDates).toEqual([]);
-    expect(component.historyTimeline[1].snapshot?.turnout).toBe(80);
+    expect(component.historyTimeline.find(point => point.date === '2024.10.27')?.snapshot?.turnout).toBe(80);
   });
 
   it('discards a pending turnout timeline after its section scope changes', async () => {
@@ -599,7 +641,7 @@ describe('election analysis loading', () => {
     await initial;
     await vi.waitFor(() => expect(component.loading).toBe(false));
     expect(component.activePartyId).toBe('2');
-    expect(component.timeline).toHaveLength(3);
+    expect(component.timeline).toHaveLength(5);
     expect(component.comparisonLoading).toBe(false);
   });
 

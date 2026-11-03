@@ -189,7 +189,7 @@ describe('contestant profile detail panels', () => {
     expect(component.riskSummaries[0].exposure).toBeCloseTo(100 / 3);
   });
 
-  it('matches recurrence by settlement and round while keeping missing assessments separate', () => {
+  it('matches recurrence across presidential rounds while keeping missing assessments separate', () => {
     const component = new ContestantProfilePanelsComponent();
     const flagged = section({ riskIndicators: [{ code: 'R1.1', category: 'R1', severity: 'high' }] });
     component.tab = 'risks';
@@ -199,7 +199,7 @@ describe('contestant profile detail panels', () => {
       election('2021.11.21', [flagged], { type: 'presidential', round: 2 })];
     component.ngOnChanges();
     expect(component.recurring).toHaveLength(1);
-    expect(component.recurring[0]).toMatchObject({ flagged: 2, assessed: 2, unavailable: 1, date: '2026.10.25' });
+    expect(component.recurring[0]).toMatchObject({ flagged: 3, assessed: 3, unavailable: 1, date: '2026.10.25' });
     component.elections[1] = election('2026.10.25', [section({ ...flagged, settlementEkatte: '00014' })], { type: 'presidential', round: 1 });
     component.ngOnChanges();
     expect(component.recurring).toEqual([]);
@@ -221,7 +221,7 @@ describe('contestant profile detail panels', () => {
     expect(component.filteredGeography[0].voteChange).toBeNull();
   });
 
-  it('does not use another presidential round or a preliminary snapshot as the baseline', () => {
+  it('uses the latest earlier presidential round while skipping preliminary baselines', () => {
     const component = new ContestantProfilePanelsComponent();
     component.elections = [election('2021.11.14', [section()], { type: 'presidential', round: 1 }),
       election('2021.11.21', [section()], { type: 'presidential', round: 2 }),
@@ -229,8 +229,49 @@ describe('contestant profile detail panels', () => {
         sourceUrl: 'https://example.com', updatedAt: '2026-10-26', processedPercent: 90, reportedSections: 9, totalSections: 10,
       } }), election('2031.10.25', [section()], { type: 'presidential', round: 1 })];
     component.ngOnChanges();
-    expect(component.filteredSections.find(row => row.date === '2021.11.21')?.baselineDate).toBeNull();
-    expect(component.filteredSections.find(row => row.date === '2031.10.25')?.baselineDate).toBe('2021.11.14');
+    expect(component.filteredSections.find(row => row.date === '2021.11.21')?.baselineDate).toBe('2021.11.14');
+    expect(component.filteredSections.find(row => row.date === '2031.10.25')?.baselineDate).toBe('2021.11.21');
+  });
+
+  it('compares the latest runoff with its first-round participation using each ballot identity', () => {
+    const component = new ContestantProfilePanelsComponent();
+    const fullName = 'Илияна Малинова Йотова и Кирил Александров Вълчев';
+    component.elections = [
+      election('2026.10.25', [section({ partyVotes: { '4': { total: 20, paper: 10, machine: 10 } } })],
+        { type: 'presidential', round: 1, partyId: '4', fullName }),
+      election('2026.11.01', [section({ partyVotes: { '25': { total: 35, paper: 15, machine: 20 } } })],
+        { type: 'presidential', round: 2, partyId: '25', fullName }),
+    ];
+    component.ngOnChanges();
+    expect(component.filteredSections.find(row => row.date === '2026.11.01')).toMatchObject({
+      baselineDate: '2026.10.25', voteChange: 15, shareChange: 30,
+    });
+    component.tab = 'geography';
+    component.ngOnChanges();
+    expect(component.filteredGeography.find(row => row.date === '2026.11.01')).toMatchObject({
+      baselineDate: '2026.10.25', voteChange: 15, shareChange: 30,
+    });
+    component.elections[0].sections = [section({ settlementEkatte: '00014' })];
+    component.tab = 'sections';
+    component.ngOnChanges();
+    expect(component.filteredSections.find(row => row.date === '2026.11.01')).toMatchObject({
+      baselineDate: '2026.10.25', voteChange: null, shareChange: null,
+    });
+  });
+
+  it('counts first-round and runoff recurrences together without mixing election types', () => {
+    const component = new ContestantProfilePanelsComponent();
+    const flagged = section({ riskIndicators: [{ code: 'R1.1', category: 'R1', severity: 'high' }] });
+    component.tab = 'risks';
+    component.elections = [
+      election('2026.10.25', [flagged], { type: 'presidential', round: 1 }),
+      election('2026.11.01', [flagged], { type: 'presidential', round: 2 }),
+      election('2026.04.19', [flagged]),
+    ];
+    component.ngOnChanges();
+    expect(component.recurring).toHaveLength(1);
+    expect(component.recurring[0]).toMatchObject({ date: '2026.11.01', flagged: 2, assessed: 2, unavailable: 0 });
+    expect(component.filteredSections.find(row => row.date === '2026.10.25')?.baselineDate).toBeNull();
   });
 
   it('opens the correct candidate election and district with both preference denominators', () => {

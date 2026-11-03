@@ -33,6 +33,10 @@ type ElectionData = { regions: Region[]; parties: Record<string, string> };
 type TimelinePoint = { date: string; name: string; snapshot: AnalysisSnapshot | null; sections: Section[] | null; parties: Record<string, string> };
 type Benchmark = { label: string; snapshot: AnalysisSnapshot };
 
+function analysisElectionLabel(election: { name: string; provisional?: unknown }): string {
+  return `${election.name}${election.provisional ? ' · предварителни' : ''}`;
+}
+
 @Component({
   selector: 'app-election-analysis',
   standalone: true,
@@ -125,7 +129,7 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
         : item.id === 'turnout' ? 'activity' : item.id === 'margin' ? 'winner-margin'
         : item.id === 'invalid' ? 'invalid-votes' : 'machine-vs-paper' }));
   }
-  get comparisonOptions() { return this.comparisonDates.map(election => ({ value: election.date, label: election.name })); }
+  get comparisonOptions() { return this.comparisonDates.map(election => ({ value: election.date, label: analysisElectionLabel(election) })); }
   get isPresidential() { return this.elections.electionType === 'presidential'; }
 
   constructor() {
@@ -136,7 +140,7 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
     const dates = this.elections.getDates();
     const current = dates.find((election) => election.date === this.date);
     if (!current) return [];
-    return dates.filter((election) => election.type === current.type && election.round === current.round)
+    return dates.filter((election) => election.type === current.type)
       .sort((a, b) => a.date.localeCompare(b.date));
   }
 
@@ -280,8 +284,9 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
         try {
           timeline.push(await this.loadTimelinePoint(election, summaries[election.date]));
         } catch {
-          missingDates.push(election.name);
-          timeline.push({ date: election.date, name: election.name, snapshot: null, sections: null, parties: {} });
+          const name = analysisElectionLabel(election);
+          missingDates.push(name);
+          timeline.push({ date: election.date, name, snapshot: null, sections: null, parties: {} });
         }
       }
       if (generation !== this.generation) return;
@@ -318,12 +323,13 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
         const missing: string[] = [];
         for (const election of [...this.elections.getDates(true)].sort((a, b) => a.date.localeCompare(b.date))) {
           if (generation !== this.turnoutGeneration) return;
+          const name = analysisElectionLabel({ ...election, name: getElectionHistoryLabel(election) });
           let point = existing.get(election.date);
           if (!point || this.turnoutMissingDates.includes(point.name) || this.missingDates.includes(point.name)) {
             try { point = await this.loadTimelinePoint(election, summaries[election.date]); }
-            catch { missing.push(getElectionHistoryLabel(election)); }
+            catch { missing.push(name); }
           }
-          timeline.push({ date: election.date, name: getElectionHistoryLabel(election), snapshot: point?.snapshot ?? null,
+          timeline.push({ date: election.date, name, snapshot: point?.snapshot ?? null,
             sections: point?.sections ?? null, parties: point?.parties ?? {} });
         }
         if (generation !== this.turnoutGeneration) return;
@@ -343,7 +349,7 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
     return this.turnoutRequest;
   }
 
-  private async loadTimelinePoint(election: { date: string; name: string }, summary?: ElectionData): Promise<TimelinePoint> {
+  private async loadTimelinePoint(election: { date: string; name: string; provisional?: unknown }, summary?: ElectionData): Promise<TimelinePoint> {
     let sections: Section[] | null = null;
     let snapshot: AnalysisSnapshot | null = null;
     const scope = this.scopedSections;
@@ -362,7 +368,7 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
     } else if (summary) {
       snapshot = regionSnapshot(summary.regions, partyId, this.elections.getOfficialNationalElectors(election.date));
     }
-    return { date: election.date, name: election.name, snapshot, sections, parties: summary?.parties ?? {} };
+    return { date: election.date, name: analysisElectionLabel(election), snapshot, sections, parties: summary?.parties ?? {} };
   }
 
   private async loadSections(date: string): Promise<Section[]> {
@@ -498,7 +504,7 @@ export class ElectionAnalysisComponent implements OnChanges, OnDestroy {
       drawing.fillRect(0, 0, width, height + 136);
       drawing.fillStyle = this.theme.darkMode() ? '#f8fafc' : '#020817';
       const title = this.metrics.find((metric) => metric.id === this.metric)?.label ?? '';
-      const lines = [`История: ${title}`, this.scopedSections === null ? 'Национални резултати' : this.scopeLabel, this.metric === 'share' ? getPartyDisplayName(this.partyName) : this.metric === 'turnout' ? 'Парламентарни и президентски избори, всички турове' : 'Избори от същия вид и тур'];
+      const lines = [`История: ${title}`, this.scopedSections === null ? 'Национални резултати' : this.scopeLabel, this.metric === 'share' ? getPartyDisplayName(this.partyName) : this.metric === 'turnout' ? 'Парламентарни и президентски избори, всички турове' : this.isPresidential ? 'Президентски избори, всички турове' : 'Парламентарни избори'];
       lines.forEach((line, index) => {
         drawing.font = index === 0 ? '600 17px sans-serif' : '13px sans-serif';
         drawing.fillText(line, 12, 24 + index * 23, width - 24);

@@ -80,7 +80,7 @@
   @if (elections.length > 1) {
     <section class="space-y-3">
       <h4 class="font-semibold">Повтарящи се рискове</h4>
-      <p class="mt-1 text-sm text-muted-foreground">Рискови индикатори в поне два сравними избора, спрямо най-новото участие за всеки тур. Липсващите секции и оценки са показани отделно.</p>
+      <p class="mt-1 text-sm text-muted-foreground">Рискови индикатори в поне две сравними гласувания, спрямо най-новото участие от същия вид избори. Включени са всички турове. Липсващите секции и оценки са показани отделно.</p>
       @if (recurring.length) {
         <app-table-controls [rows]="recurring" [columns]="recurringColumns" label="Търсене: Повтарящи се рискове за партията или кандидата" #recurringTable />
 <div class="virtual-table-viewport max-h-[70vh] overflow-auto rounded-md border border-border" role="region" aria-label="Повтарящи се рискове за партията или кандидата" tabindex="0"
@@ -258,7 +258,7 @@
   }
 
 @if (elections.length > 1 && tab !== 'candidates') {
-  <p class="text-xs text-muted-foreground">Промяната е спрямо предишното окончателно участие от същия тур. Изисква се еднозначно съпоставяне на секциите, а за географските обобщения - пълно съвпадение.</p>
+  <p class="text-xs text-muted-foreground">Промяната е спрямо предишното окончателно участие от същия вид избори, включително друг тур. Изисква се еднозначно съпоставяне на секциите, а за географските обобщения - пълно съвпадение.</p>
 }
 </section>
 </section>

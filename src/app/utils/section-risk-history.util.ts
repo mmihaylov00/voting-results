@@ -48,7 +48,7 @@ export interface RecurringSectionRisk {
 function comparableElections(date: string, elections: readonly RiskHistoryElection[]): RiskHistoryElection[] {
   const current = elections.find((election) => election.date === date);
   return current ? elections
-    .filter((election) => election.type === current.type && election.round === current.round && election.date <= date)
+    .filter((election) => election.type === current.type && election.date <= date)
     .sort((left, right) => left.date.localeCompare(right.date)) : [];
 }
 
