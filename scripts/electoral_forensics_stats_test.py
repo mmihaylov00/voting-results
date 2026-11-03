@@ -6,7 +6,8 @@ import unittest
 import numpy as np
 
 from analyze_electoral_forensics import (APRIL, FIRST_ROUND, OCTOBER_2024, SECOND_ROUND,
-                                         compact_detail, enrich_rows, findings_for, group_rows, method_overlap, query_block,
+                                         compact_detail, enrich_rows, findings_for, group_rows, joint_totals, method_overlap, query_block,
+                                         review_rows,
                                          spatial_clusters)
 from electoral_forensics_stats import (bh_adjust, collapse_sites, fixed_effect_model,
                                        matched_controls, spatial_test)
@@ -52,6 +53,43 @@ class ForensicsDefinitionsTest(unittest.TestCase):
         self.assertEqual(len(row['history'][APRIL]['parties']), 3)
         self.assertEqual(row['eliminatedCandidateVotes1'], 15)
         self.assertAlmostEqual(row['candidateChanges'][0]['share1'], 100 * 40 / 90)
+        self.assertAlmostEqual(row['candidateChanges'][0]['finalistShare1'], 100 * 40 / 70)
+        self.assertAlmostEqual(row['candidateChanges'][0]['finalistShare2'], 100 * 90 / 165)
+        self.assertEqual(row['candidateChanges'][0]['gainPer100Registered'], 20)
+
+    def test_added_review_is_separate_from_inference_eligibility(self):
+        source = section()
+        source['elections'][SECOND_ROUND].update(added=669, reviewFlags=['added_exceed_signed'])
+        row = enrich_rows([source])[0]
+        self.assertTrue(row['eligible'])
+        self.assertEqual(row['addedReviewFlags'], [SECOND_ROUND + ':added_exceed_signed'])
+        self.assertEqual(row['deltaAdded'], 667)
+        self.assertAlmostEqual(row['addedPer100Voters2'], 100 * 669 / 170)
+        self.assertEqual(row['signal']['flags'], [])
+        self.assertEqual(review_rows([row], 'addedReviewFlags')[0]['sectionId'], row['sectionId'])
+
+    def test_joint_totals_keep_one_cohort_and_candidate_screen_requires_stable_lists(self):
+        sources = [section(), section('050100002'), section('050100003')]
+        sources[1]['elections'][SECOND_ROUND]['qualityFlags'] = ['valid_votes_exceed_voters']
+        sources[2]['elections'][SECOND_ROUND]['registered'] = 300
+        rows = enrich_rows(sources)
+        total = joint_totals(rows)
+        self.assertEqual(total['cohortN'], 2)
+        self.assertEqual(total['voted1'], 180)
+        self.assertEqual(total['voted2'], 340)
+        self.assertEqual(total['candidateTotals'][0]['deltaVotes'], 100)
+        self.assertEqual(total['candidateTotals'][1]['deltaVotes'], 90)
+        self.assertEqual(rows[0]['candidateReviewFlags'], ['joint_turnout_growth_gyurov_gain_larger'])
+        self.assertEqual(rows[1]['candidateReviewFlags'], [])
+        self.assertEqual(rows[2]['candidateReviewFlags'], [])
+
+    def test_unmatched_finalist_identity_is_not_a_joint_comparison(self):
+        source = section()
+        source['elections'][SECOND_ROUND]['votesByParty']['25']['name'] = 'different candidate'
+        row = enrich_rows([source])[0]
+        self.assertFalse(row['eligible'])
+        self.assertIn('finalist_identity_not_matched', row['analysisExclusions'])
+        self.assertIsNone(row['candidateChanges'][0]['finalistShare1'])
 
     def test_focus_uses_registered_and_priority_not_voters(self):
         rows = [section(), section('010100001', '1')]

@@ -8,11 +8,12 @@ import { By, Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, provideRouter, RouterLink } from '@angular/router';
 import { afterEach, describe, expect, it } from 'vitest';
 import { ElectoralForensicsComponent } from './electoral-forensics';
-import { ForensicsFinding, ForensicsGroup, ForensicsSection } from './forensics.models';
-import { groupFixture, reportFixture, sectionFixture } from './forensics.fixtures';
+import { CandidateAnalysisSummary, ForensicsFinding, ForensicsGroup, ForensicsSection } from './forensics.models';
+import { candidateFixture, groupFixture, reportFixture, sectionFixture } from './forensics.fixtures';
 import { ForensicsHypothesesComponent } from './forensics-hypotheses';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
 import { MapIconComponent } from '../ui/map-icon/map-icon';
+import { ForensicsHistoryComponent } from './forensics-history';
 
 @Component({ selector: 'highcharts-chart', template: '' })
 class ChartStub { @Input() options: unknown; }
@@ -28,7 +29,7 @@ function setup(query = 'query1') {
       { provide: ActivatedRoute, useValue: { snapshot: { data: { researchQuery: query } } } }],
   });
   TestBed.overrideComponent(ElectoralForensicsComponent, {
-    set: { imports: [CommonModule, FormsModule, RouterLink, ChartStub, MapStub, GroupStub, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent] },
+    set: { imports: [CommonModule, FormsModule, RouterLink, ChartStub, MapStub, GroupStub, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent] },
   });
   return TestBed.createComponent(ElectoralForensicsComponent);
 }
@@ -164,7 +165,7 @@ describe('hidden electoral research pages', () => {
       fixture.componentInstance.report.set(reportFixture());
       fixture.detectChanges();
       const anchors = [...(fixture.nativeElement as HTMLElement).querySelectorAll<HTMLAnchorElement>('a[href*="#"]')];
-      expect(anchors.length).toBe(7);
+      expect(anchors.length).toBe(9);
       for (const anchor of anchors) {
         const destination = new URL(anchor.href);
         expect(destination.pathname).toBe(path);
@@ -312,5 +313,45 @@ describe('hidden electoral research pages', () => {
       expect(height).toBeLessThanOrEqual(420);
     }
     fixture.destroy();
+  });
+
+  it('keeps joint counts paired and candidate-screen and added-voter checks visibly separate', () => {
+    const fixture = setup('query2');
+    fixture.detectChanges();
+    const http = TestBed.inject(HttpTestingController);
+    const report = reportFixture();
+    const row = sectionFixture({ candidateChanges: [candidateFixture('4', 20, 50), candidateFixture('25', 30, 90)],
+      added1: 100, added2: 2, addedPer100Voters1: 111.11, addedPer100Voters2: 1.18,
+      addedReviewFlags: ['2026.10.25:added_exceed_signed'], candidateReviewFlags: ['joint_turnout_growth_yotova_gain_larger'] });
+    const summary: CandidateAnalysisSummary = { eligibleSections: 1, usableSections: 1, excludedZeroFinalistSections: 0,
+      stableListSections: 1, candidates: [], deltaVoted: 80,
+      screen: { definition: 'Пълна извадка.', sections: 3, yotovaGain: 180, gyurovGain: 90, deltaVoted: 240,
+        yotovaDominantSections: 3, gyurovDominantSections: 0, tiedSections: 0 },
+      stableList: { eligibleSections: 1, usableSections: 1, excludedZeroFinalistSections: 0, candidates: [], deltaVoted: 80,
+        screen: { definition: 'Стабилна извадка.', sections: 1, yotovaGain: 60, gyurovGain: 30, deltaVoted: 80,
+          yotovaDominantSections: 1, gyurovDominantSections: 0, tiedSections: 0 } } };
+    report.query2.candidateAnalysis = { summary, hypotheses: [], methodology: {} };
+    report.query2.candidateReview = [{ sectionId: row.sectionId, regionName: 'Видин', municipalityName: 'Белоградчик', settlementName: 'Рабиша',
+      candidateChanges: row.candidateChanges, deltaTurnoutPp: row.deltaTurnoutPp, deltaVoted: row.deltaVoted, candidateReviewFlags: row.candidateReviewFlags! }];
+    report.query2.addedElectorReview = [{ sectionId: '050100002', regionName: 'Видин', municipalityName: 'Белоградчик', settlementName: 'Рабиша',
+      added1: 100, added2: 2, voted1: 90, voted2: 170, addedPer100Voters1: 111.11, addedPer100Voters2: 1.18,
+      deltaAdded: -98, addedReviewFlags: ['2026.10.25:added_exceed_signed'], eligible: false }];
+    http.expectOne('/data/forensics/2026/report.json').flush(report);
+    http.expectOne('/data/forensics/2026/sections.json').flush([row, sectionFixture({ sectionId: '050100002', eligible: false,
+      candidateChanges: [candidateFixture('4', 1, 1000), candidateFixture('25', 1, 1000)] })]);
+    fixture.componentInstance.setFilter('comparableOnly', false);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.filtered()).toHaveLength(2);
+    expect(fixture.componentInstance.jointTotals().n).toBe(1);
+    expect(fixture.componentInstance.jointTotals().deltaVoted).toBe(80);
+    const element = fixture.nativeElement as HTMLElement;
+    const totals = element.querySelector('[data-joint-totals]');
+    expect(totals?.textContent).toContain('+30');
+    expect(totals?.textContent).toContain('+60');
+    expect(element.querySelector('#candidate-checks')?.textContent).toContain('Стабилна извадка.');
+    expect(element.querySelector('[aria-label="Протоколни проверки за дописани избиратели"] tbody')?.textContent).toContain('050100002');
+    expect(element.querySelector('[aria-label="Протоколни проверки за дописани избиратели"] tbody')?.textContent).toContain('Не');
+    expect(element.querySelectorAll('.section-nav a a')).toHaveLength(0);
+    http.verify(); fixture.destroy();
   });
 });

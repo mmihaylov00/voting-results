@@ -1,4 +1,23 @@
-import { ForensicsGroup, ForensicsReport, ForensicsSection } from './forensics.models';
+import { CandidateChange, ForensicsGroup, ForensicsReport, ForensicsSection, HistoricalRunoffBenchmark } from './forensics.models';
+
+export function candidateFixture(id: string, votes1: number, votes2: number): CandidateChange {
+  return { id, name: id === '4' ? 'Андрей Атанасов Гюров и Георги Димитров Кандев' : 'Илияна Малинова Йотова и Кирил Александров Вълчев',
+    votes1, votes2, deltaVotes: votes2 - votes1, share1: null, share2: null, deltaSharePp: null,
+    shareOfVoters1: null, shareOfVoters2: null, deltaShareOfVotersPp: null };
+}
+
+export function historicalFixture(overrides: Partial<HistoricalRunoffBenchmark> = {}): HistoricalRunoffBenchmark {
+  const summary = { n: 10, registered1: 1000, registered2: 1000, added1: 5, added2: 7,
+    voted1: 600, voted2: 550, deltaVoted: -50, turnout1: 60, turnout2: 55, deltaTurnoutPp: -5, meanDeltaPp: -4,
+    finalists: [{ name: 'Първа историческа двойка', ballot1: '1', ballot2: '1', votes1: 200, votes2: 320, deltaVotes: 120, share1: 40, share2: 60 }] };
+  return { ...summary, cycle: 2016, round1Date: '2016.11.06', round2Date: '2016.11.13', sections: 11, excludedN: 1,
+    stableListSensitivity: { ...summary, n: 8 }, regions: [], quality: {},
+    sources: [{ date: '2016.11.06', sourceUrl: 'https://results.cik.bg/pvrnr2016/tur1/export.zip', trustStatus: 'documented_official_archive_rebuild',
+      freshArchiveVerification: false, sourceDocumentationUrl: '/data/2016.11.06/SOURCE.md' }],
+    cohortDefinition: 'Съпоставими секции само в съответния изборен цикъл.', matchingConfidence: 'code_place_only_missing_addresses',
+    limitations: ['Не се установява индивидуално прехвърляне на гласове.'],
+    context: 'Първият тур съвпада с национален референдум.', contextSourceUrl: 'https://www.cik.bg/bg/decisions/example', ...overrides };
+}
 
 export function groupFixture(overrides: Partial<ForensicsGroup> = {}): ForensicsGroup {
   return { key: '5', name: 'Видин', n: 1, registered1: 250, registered2: 250, voted1: 90, voted2: 170,

@@ -8,7 +8,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import { forkJoin, Subscription } from 'rxjs';
-import { ForensicsGroup, ForensicsReport, ForensicsSection, SectionFilters, SectionSort } from './forensics.models';
+import { ForensicsFinding, ForensicsGroup, ForensicsReport, ForensicsSection, SectionFilters, SectionSort } from './forensics.models';
 import { filterSections, placeValue, safeSourceLinks, sectionLabel, signed } from './forensics.util';
 import { ForensicsGroupTableComponent } from './forensics-group-table';
 import { ForensicsMapComponent } from './forensics-map';
@@ -16,6 +16,10 @@ import { hydrateSectionRecord } from './forensics-record.util';
 import { ForensicsHypothesesComponent } from './forensics-hypotheses';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
 import { MapIconComponent } from '../ui/map-icon/map-icon';
+import { candidateDelta, hasReviewFlag, jointVoteSummary } from './forensics-candidates.util';
+import { getPartyColor } from '../../utils/party-colors';
+import { ThemeService } from '../../services/theme.service';
+import { ForensicsHistoryComponent } from './forensics-history';
 
 const DATA_ROOT = '/data/forensics/2026';
 const initialFilters: SectionFilters = {
@@ -25,7 +29,7 @@ const initialFilters: SectionFilters = {
 
 @Component({
   selector: 'app-electoral-forensics',
-  imports: [CommonModule, FormsModule, RouterLink, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent],
+  imports: [CommonModule, FormsModule, RouterLink, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent],
   templateUrl: './electoral-forensics.html',
   styleUrl: './electoral-forensics.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,6 +40,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   private readonly destroyRef = inject(DestroyRef);
   private readonly meta = inject(Meta);
   private readonly title = inject(Title);
+  private readonly theme = inject(ThemeService);
   private readonly originalRobots = this.meta.getTag('name="robots"')?.getAttribute('content') ?? null;
   private readonly originalTitle = this.title.getTitle();
   private detailSubscription?: Subscription;
@@ -59,6 +64,11 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   readonly placeValue = placeValue;
   readonly sectionLabel = sectionLabel;
   readonly safeSourceLinks = safeSourceLinks;
+  readonly candidateDelta = candidateDelta;
+  readonly hasReviewFlag = hasReviewFlag;
+  readonly jointTotals = computed(() => jointVoteSummary(this.filtered()));
+  readonly reviewSort = signal<'deltaTurnoutPp' | 'candidate4Delta' | 'candidate25Delta'>('deltaTurnoutPp');
+  readonly reviewDescending = signal(true);
   exclusionReasons(row: ForensicsSection): string[] {
     return [...new Set([...row.exclusionReasons, ...(row.analysisExclusions ?? [])])];
   }
@@ -73,13 +83,24 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   readonly districts = computed(() => (this.report()?.regions ?? []).filter(row => Number(row.key) <= 31).sort((a, b) => Number(a.key) - Number(b.key)));
   readonly currentGroups = computed(() => this.query()?.municipalities ?? []);
   readonly currentSettlements = computed(() => this.query()?.settlements ?? []);
-  readonly regionChart = computed(() => this.groupChart(this.regionSummary(), 'Промяна по изборни райони', true));
+  readonly regionChart = computed(() => this.jointDistrictChart());
   readonly binChart = computed(() => this.groupChart(this.query()?.binSummary ?? [], 'Промяна по размер на секцията'));
-  readonly flagged = computed(() => this.filtered().filter(row => row.signal.flags.length));
+  readonly flagged = computed(() => this.filtered().filter(hasReviewFlag));
   private readonly sectionIndex = computed(() => new Map(this.sections().map(row => [row.sectionId, row])));
   readonly findings = computed(() => {
     const ids = new Set(this.query()?.findings ?? []);
     return (this.report()?.findings ?? []).filter(row => ids.has(row.sectionId));
+  });
+  readonly sortedFindings = computed(() => {
+    const key = this.reviewSort();
+    const value = (row: ForensicsFinding) => key === 'candidate4Delta'
+      ? candidateDelta(row, '4') : key === 'candidate25Delta' ? candidateDelta(row, '25') : row.deltaTurnoutPp;
+    return [...this.findings()].sort((a, b) => {
+      const left = value(a); const right = value(b);
+      if (left === null) return right === null ? a.sectionId.localeCompare(b.sectionId) : 1;
+      if (right === null) return -1;
+      return (this.reviewDescending() ? right - left : left - right) || a.sectionId.localeCompare(b.sectionId);
+    });
   });
   readonly selectedFinding = computed(() => this.report()?.findings.find(row => row.sectionId === this.selected()?.sectionId));
   readonly sampleCounts = computed(() => {
@@ -110,16 +131,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
     const ids = this.query()?.clusterIds ?? [];
     return report.clusters.filter(cluster => !this.focus || ids.includes(cluster.id));
   });
-  readonly candidateTotals = computed(() => {
-    const totals = new Map<string, { name: string; votes1: number; votes2: number }>();
-    for (const row of this.filtered()) for (const candidate of row.candidateChanges) {
-      const total = totals.get(candidate.id) ?? { name: candidate.name, votes1: 0, votes2: 0 };
-      total.votes1 += candidate.votes1;
-      total.votes2 += candidate.votes2;
-      totals.set(candidate.id, total);
-    }
-    return [...totals.entries()].map(([id, total]) => ({ id, ...total, deltaVotes: total.votes2 - total.votes1 }));
-  });
+  readonly candidateTotals = computed(() => this.jointTotals().candidates);
 
   ngOnInit(): void {
     this.meta.updateTag({ name: 'robots', content: 'noindex,nofollow,noarchive' });
@@ -172,6 +184,15 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
 
   ariaSort(key: SectionSort): 'ascending' | 'descending' | 'none' {
     return this.filters().sort !== key ? 'none' : this.filters().descending ? 'descending' : 'ascending';
+  }
+
+  sortReview(key: 'deltaTurnoutPp' | 'candidate4Delta' | 'candidate25Delta'): void {
+    this.reviewDescending.set(this.reviewSort() === key ? !this.reviewDescending() : true);
+    this.reviewSort.set(key);
+  }
+
+  reviewAriaSort(key: 'deltaTurnoutPp' | 'candidate4Delta' | 'candidate25Delta'): 'ascending' | 'descending' | 'none' {
+    return this.reviewSort() !== key ? 'none' : this.reviewDescending() ? 'descending' : 'ascending';
   }
 
   selectSection(row: ForensicsSection): void {
@@ -314,8 +335,14 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
       official_mobile_flag: 'Официално обозначена подвижна секция',
       official_ship_flag: 'Официално обозначена корабна секция',
       unchanged_first_round_official_special_flag: 'Официалният флаг от I тур е пренесен при непроменена идентичност на секцията',
+      added_exceed_signed: 'Дописаните избиратели са повече от подписалите се - преглед на протокола',
+      joint_turnout_growth_yotova_gain_larger: 'Съвместен ръст; по-голям ръст на гласовете за Йотова',
+      joint_turnout_growth_gyurov_gain_larger: 'Съвместен ръст; по-голям ръст на гласовете за Гюров',
+      joint_turnout_growth_equal_gains: 'Съвместен ръст; равен ръст на гласовете за двамата',
     };
     if (value.startsWith('candidate_components_disagree:')) return `Несъответствие на компонентите за бюлетина № ${value.split(':')[1]}`;
+    const separator = value.indexOf(':');
+    if (separator > 0 && /^\d{4}\.\d{2}\.\d{2}$/.test(value.slice(0, separator))) return `${value.slice(0, separator)} · ${this.enumLabel(value.slice(separator + 1))}`;
     return labels[value] ?? value;
   }
 
@@ -329,6 +356,25 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   entries(value: unknown): { key: string; value: unknown }[] {
     if (!value || typeof value !== 'object' || Array.isArray(value)) return [];
     return Object.entries(value).map(([key, item]) => ({ key, value: item }));
+  }
+
+  private jointDistrictChart(): Highcharts.Options {
+    const groups = this.regionSummary();
+    const candidates = this.report()?.registrations?.['2026.11.01']?.parties ?? {};
+    return {
+      chart: { type: 'column', height: 360, backgroundColor: 'transparent', style: { fontFamily: 'inherit' } },
+      title: { text: 'Промяна в броя гласували и кандидатски гласове', style: { color: 'var(--research-ink)', fontSize: '15px' } },
+      xAxis: { categories: groups.map(row => `${row.key}. ${row.name}`), labels: { rotation: -60, style: { color: 'var(--research-ink)', fontSize: '10px' } } },
+      yAxis: { title: { text: 'Гласове / гласували', style: { color: 'var(--research-ink)' } }, labels: { style: { color: 'var(--research-ink)' } }, plotLines: [{ value: 0, width: 1, color: '#89949c' }], gridLineColor: 'var(--research-rule)' },
+      legend: { itemStyle: { color: 'var(--research-ink)' } }, credits: { enabled: false },
+      tooltip: { shared: true, valueDecimals: 0 }, plotOptions: { series: { animation: false }, column: { borderWidth: 0 } },
+      series: [
+        ...(['4', '25'] as const).map<Highcharts.SeriesColumnOptions>(id => ({ type: 'column', name: id === '4' ? 'Δ Гюров' : 'Δ Йотова',
+          color: getPartyColor(candidates[id] ?? (id === '4' ? 'Андрей Гюров' : 'Илияна Йотова'), this.theme.darkMode()),
+          data: groups.map(row => row.candidateTotals?.find(candidate => candidate.id === id)?.deltaVotes ?? null) })),
+        { type: 'column', name: 'Δ гласували', color: '#81909b', data: groups.map(row => row.deltaVoted) },
+      ],
+    };
   }
 
   private groupChart(rows: ForensicsGroup[], title: string, districts = false): Highcharts.Options {

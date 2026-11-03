@@ -21,6 +21,10 @@ FIRST_ROUND = '2026.10.25'
 SECOND_ROUND = '2026.11.01'
 PRIORITY_REGIONS = {'5': 'Видин', '6': 'Враца', '12': 'Монтана', '19': 'Русе'}
 SOURCE_BASES = {
+    '2016.11.06': 'https://results.cik.bg/pvrnr2016/tur1/',
+    '2016.11.13': 'https://results.cik.bg/pvrnr2016/tur2/',
+    '2021.11.14': 'https://results.cik.bg/pvrns2021/tur1/',
+    '2021.11.21': 'https://results.cik.bg/pvrns2021/tur2/',
     '2026.04.19': 'https://results.cik.bg/pe202604/',
     FIRST_ROUND: 'https://results.cik.bg/pvr202610/',
     SECOND_ROUND: 'https://results.cik.bg/pvr202610/tur2/',
@@ -38,6 +42,10 @@ DEFINITIONS = {
                   'избиратели (totalB) се пазят отделно.',
     'turnout': '100 × гласували / totalA. Може да надхвърли 100% при дописани в изборния ден избиратели.',
     'turnoutWithAdded': 'Проверка с алтернативен знаменател: 100 × гласували / (totalA + totalB).',
+    'addedElectors': 'totalB е отделно протоколно поле. Дописани / подписали се е съотношение на '
+                     'два броя, а не установен дял на конкретни лица сред гласувалите. '
+                     'Дописани над подписалите се е основание за документална проверка; '
+                     'само по себе си не изключва секцията от анализа и не установява кандидатски вот.',
     'share': '100 × гласове за листата / сбор на гласовете за всички кандидатски или партийни листи. '
              '„Не подкрепям никого“ не влиза в този знаменател.',
     'shareOfValidIncludingNoSupport': '100 × гласове за листата / (гласове за всички листи + „Не подкрепям никого“).',
@@ -455,6 +463,16 @@ def _party_names(parties, local_candidates):
     return names, regional
 
 
+def _vote_shares(totals, voted, no_support):
+    total_candidate_votes = sum(value['total'] for value in totals.values())
+    for value in totals.values():
+        value.update(share=percentage(value['total'], total_candidate_votes),
+                     shareOfValidLists=percentage(value['total'], total_candidate_votes),
+                     shareOfValidIncludingNoSupport=percentage(value['total'], total_candidate_votes + no_support),
+                     shareOfVoters=percentage(value['total'], voted))
+    return total_candidate_votes
+
+
 def _votes(values, header, parties, regional_parties, region, voted, no_support, date):
     start = header.index('partyId')
     stride = header.index('partyId', start + 1) - start if header.count('partyId') > 1 else len(header) - start
@@ -477,12 +495,7 @@ def _votes(values, header, parties, regional_parties, region, voted, no_support,
         totals[ballot] = {'id': ballot, 'name': name, 'registrationId': registration_id,
                           'total': total, 'paper': paper, 'machine': machine,
                           'machineFirst': machine_first, 'machineSecond': machine_second}
-    total_candidate_votes = sum(value['total'] for value in totals.values())
-    for value in totals.values():
-        value.update(share=percentage(value['total'], total_candidate_votes),
-                     shareOfValidLists=percentage(value['total'], total_candidate_votes),
-                     shareOfValidIncludingNoSupport=percentage(value['total'], total_candidate_votes + no_support),
-                     shareOfVoters=percentage(value['total'], voted))
+    total_candidate_votes = _vote_shares(totals, voted, no_support)
     return totals, total_candidate_votes, flags
 
 
@@ -492,7 +505,14 @@ def load_election(root, date, settlements, municipalities, cache_dirs=None, arch
     tables = {name: _table(root, date, name) for name in ['sections', 'protocols', 'votes', 'cik_parties']}
     local_candidates = _table(root, date, 'local_candidates', required=False)
     parties, regional_parties = _party_names(tables['cik_parties'], local_candidates)
-    protocol_rows, vote_rows = _indexed(tables['protocols']), _indexed(tables['votes'])
+    protocol_rows = _indexed(tables['protocols'])
+    vote_rows = defaultdict(list)
+    vote_id_index = tables['votes']['header'].index('sectionId')
+    for line, values in tables['votes']['rows']:
+        section_id = values[vote_id_index]
+        if vote_rows[section_id] and date not in {'2021.11.14', '2021.11.21'}:
+            raise ValueError(f'Duplicate sectionId: {section_id} in {tables["votes"]["path"]}:{line}')
+        vote_rows[section_id].append((line, values))
     section_rows = _indexed(tables['sections'])
     if set(section_rows) != set(protocol_rows) or set(section_rows) != set(vote_rows):
         raise ValueError(f'Section, protocol and vote coverage disagree: {date}')
@@ -511,11 +531,24 @@ def load_election(root, date, settlements, municipalities, cache_dirs=None, arch
         geography = _section(section_values, tables['sections']['header'], settlements, municipalities)
         protocol_line, protocol_values = protocol_rows[section_id]
         protocol = dict(zip(tables['protocols']['header'], protocol_values))
-        vote_line, vote_values = vote_rows[section_id]
+        vote_line, vote_values = vote_rows[section_id][0]
         registered, added, voted = (_integer(protocol[key]) for key in ['totalA', 'totalB', 'voted'])
         no_support = _integer(protocol['noVotesPaper']) + _integer(protocol['noVotesMachine'])
-        votes, candidate_total, flags = _votes(vote_values, tables['votes']['header'], parties,
-                                               regional_parties, geography['regionId'], voted, no_support, date)
+        votes, flags = {}, []
+        for _, values in vote_rows[section_id]:
+            if date in {'2021.11.14', '2021.11.21'} and str(int(values[1])) != geography['regionId']:
+                raise ValueError(f'Vote geography disagrees with section: {date}/{section_id}')
+            channel, _, channel_flags = _votes(values, tables['votes']['header'], parties,
+                                                regional_parties, geography['regionId'], voted, no_support, date)
+            flags.extend(channel_flags)
+            for ballot, entry in channel.items():
+                if ballot not in votes:
+                    votes[ballot] = entry.copy()
+                else:
+                    for key in ['total', 'paper', 'machine', 'machineFirst', 'machineSecond']:
+                        votes[ballot][key] += entry[key]
+        candidate_total = _vote_shares(votes, voted, no_support)
+        flags = list(dict.fromkeys(flags))
         evidence = methods.get(section_id)
         if evidence is None and protocol.get('col0'):
             form = _integer(protocol['col0'])
@@ -550,6 +583,7 @@ def load_election(root, date, settlements, municipalities, cache_dirs=None, arch
             'noSupport': no_support, 'invalidVotes': invalid,
             'protocolPaperVotes': _integer(protocol['protocolPaperVotes']),
             'protocolMachineVotes': _integer(protocol['protocolMachineVotes']), 'qualityFlags': flags,
+            'reviewFlags': ['added_exceed_signed'] if added > voted else [],
             'sourceDiscrepancies': [],
             'sourceUrls': {'protocol': protocol_url, 'result': base + f'rezultati/{int(geography["regionId"]):02d}.html',
                            'search': base + 'search/index.html#' + section_id,
@@ -559,6 +593,9 @@ def load_election(root, date, settlements, municipalities, cache_dirs=None, arch
                            'votes': _reference(tables['votes'], vote_line)},
             'raw': {'section': section_values, 'protocol': protocol_values, 'votes': vote_values},
         }
+        if len(vote_rows[section_id]) > 1:
+            records[section_id]['sourceRefs']['votes']['lines'] = [line for line, _ in vote_rows[section_id]]
+            records[section_id]['raw']['voteRows'] = [values for _, values in vote_rows[section_id]]
     metadata_file = root / 'public/data' / date / 'source-results.json'
     snapshot = json.loads(metadata_file.read_text()) if metadata_file.exists() else None
     for discrepancy in (snapshot or {}).get('protocolDiscrepancies', []):

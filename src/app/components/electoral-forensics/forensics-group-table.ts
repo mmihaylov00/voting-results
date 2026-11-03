@@ -13,9 +13,9 @@ import { MapIconComponent } from '../ui/map-icon/map-icon';
     <span>{{ filtered().length | number }} реда</span></div>
     <div class="table-scroll" tabindex="0" role="region" [attr.aria-label]="label()"><table>
       <caption>{{ label() }}. Сумите и процентите са само за допустимите сравними секции. „Секции“ включва и изключените записи.</caption>
-      <thead><tr><th scope="col">Място</th><th scope="col">Секции</th><th scope="col">Сравними</th><th scope="col">По списък I / II</th><th scope="col">Гласували I / II</th><th scope="col">Активност I / II</th><th scope="col">Промяна, п.п.</th><th scope="col">Δ гласували</th><th scope="col">За преглед</th></tr></thead>
-      <tbody>@for (row of visible(); track row.key) {<tr><th scope="row">{{ groupName(row.name) }}@if (row.region && row.region !== row.name) {<small>{{ row.region }}</small>}</th><td>{{ row.n | number }}</td><td>{{ row.eligibleN | number }}</td><td>{{ row.registered1 | number }} / {{ row.registered2 | number }}</td><td>{{ row.voted1 | number }} / {{ row.voted2 | number }}</td><td>{{ number(row.turnout1) }} / {{ number(row.turnout2) }}</td><td>{{ signed(row.deltaTurnoutPp) }}</td><td>{{ signed(row.deltaVoted, 0) }}</td><td>{{ row.flaggedN | number }}</td></tr>}
-      @empty {<tr><td colspan="9">Няма съответстващи места.</td></tr>}</tbody>
+      <thead><tr><th scope="col">Място</th><th scope="col">Секции</th><th scope="col">Сравними</th><th scope="col">По списък I / II</th><th scope="col">Гласували I / II</th><th scope="col">Активност I / II</th><th scope="col">Промяна, п.п.</th><th scope="col">Δ гласували</th><th scope="col">Δ Гюров</th><th scope="col">Δ Йотова</th><th scope="col">Дописани I / II</th><th scope="col">Активност: преглед</th><th scope="col">Дописани: преглед</th></tr></thead>
+      <tbody>@for (row of visible(); track row.key) {<tr><th scope="row">{{ groupName(row.name) }}@if (row.region && row.region !== row.name) {<small>{{ row.region }}</small>}</th><td>{{ row.n | number }}</td><td>{{ row.eligibleN | number }}</td><td>{{ row.registered1 | number }} / {{ row.registered2 | number }}</td><td>{{ row.voted1 | number }} / {{ row.voted2 | number }}</td><td>{{ number(row.turnout1) }} / {{ number(row.turnout2) }}</td><td>{{ signed(row.deltaTurnoutPp) }}</td><td>{{ signed(row.deltaVoted, 0) }}</td><td>{{ signed(candidateGain(row, '4'), 0) }}</td><td>{{ signed(candidateGain(row, '25'), 0) }}</td><td>{{ count(row.added1) }} / {{ count(row.added2) }}<small>Δ {{ signed(row.deltaAdded, 0) }}</small></td><td>{{ row.flaggedN | number }}</td><td>{{ count(row.addedReviewN) }}</td></tr>}
+      @empty {<tr><td colspan="13">Няма съответстващи места.</td></tr>}</tbody>
     </table></div>
     @if (filtered().length > pageSize) {<div class="pagination"><button hlmBtn variant="outline" size="sm" class="gap-1" type="button" (click)="page.set(page() - 1)" [disabled]="page() === 0"><app-map-icon name="chevron-left" />Предишни</button><span>{{ page() + 1 }} / {{ pages() }}</span><button hlmBtn variant="outline" size="sm" class="gap-1" type="button" (click)="page.set(page() + 1)" [disabled]="page() + 1 >= pages()">Следващи<app-map-icon name="chevron-right" /></button></div>}`,
   styleUrl: './forensics-tables.scss',
@@ -40,6 +40,10 @@ export class ForensicsGroupTableComponent {
   }
   number(value: number | null): string {
     return value === null ? 'няма данни' : value.toLocaleString('bg-BG', { maximumFractionDigits: 2 }) + '%';
+  }
+  count(value: number | undefined): string { return value === undefined ? 'няма данни' : value.toLocaleString('bg-BG'); }
+  candidateGain(row: ForensicsGroup, id: string): number | null {
+    return row.candidateTotals?.find(candidate => candidate.id === id)?.deltaVotes ?? null;
   }
   groupName(value: string): string {
     return ({ paper: 'Хартиено', machine: 'Машинно', interrupted: 'Преустановено машинно',

@@ -156,6 +156,14 @@ Two direct routes answer the requested 2026 runoff research queries:
 
 Both include compact results, regional summaries, charts, a filtered map, internally scrollable tables, section evidence and icon buttons for downloads. Detailed methods and source notes are collapsible. Comparison controls come from outside each target section's own election district, with the existing matching rules and reuse limitations retained. The 31 districts follow CIK's published geography; Sofia's three city districts and Plovdiv city/district remain separate.
 
+Turnout and both finalists' vote gains share the same eligible section cohort in the totals, district charts and geographic tables. Candidate shares among the two finalists are shown separately from shares of all valid votes. Candidate gains are net changes, not identified votes from newly participating individuals.
+
+Candidate checks C1-C3 model the change in Yotova's share among the two finalists against turnout change and the exact April GERB-SDS and DPS registrations, with baseline controls and municipal effects. Gyurov's change in this two-candidate balance is the opposite. Each page reports its own three-term BH correction and a stable-list sensitivity analysis; the small-section page is a nested sample, not independent replication. A separate exploratory review screen requires at least 10 percentage points of turnout growth, 30 additional signed voters and a registered-list change within 5%.
+
+Added-elector diagnostics retain the original `totalB` counts. More added electors than signatures triggers a document-review flag, not an automatic exclusion or a claim about a candidate. These records have a separate queue and CSV export from turnout findings and candidate screens.
+
+Historical runoff benchmarks cover 2016, 2021 and 2026. Each election has its own paired domestic cohort and first-round size classification; these are not the same sections tracked across years. Older archives lack addresses and named institution flags, so their matching is weaker and its coverage limitations remain visible. Source links, original archive hashes where documented, canonical-table hashes and stable-list sensitivity accompany the benchmarks. Historical candidate tickets are matched by identity rather than ballot number.
+
 Municipal grouping follows CIK's district-and-municipality codes. Its 267 groups include Sofia city separately in districts 23, 24 and 25; they are not the 265 administrative municipalities.
 
 The reports have no main-navigation links, set `noindex, nofollow, noarchive`, and restore the document metadata when closed. Netlify also sends these directives for the report and analysis-data paths. These are unlisted public pages, not access-controlled pages.

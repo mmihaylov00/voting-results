@@ -137,6 +137,14 @@ class ForensicsDataTests(unittest.TestCase):
             self.assertEqual(record['sourceDiscrepancies'][0]['field'], 'protocolMachineVotes')
             self.assertEqual(record['sourceDiscrepancies'][0]['rikTotal'], 101)
             self.assertEqual(record['qualityFlags'], ['unknown_voting_method'])
+            self.assertEqual(record['reviewFlags'], [])
+            for added, review_flags in [(171, ['added_exceed_signed']), (170, []), (0, [])]:
+                (directory / 'protocols.txt').write_text(
+                    sources['protocols'].replace(';250;2;170;', f';250;{added};170;'), encoding='utf-8')
+                checked = load_election(root, '2026.11.01', {}, {})['records']['050100001']
+                self.assertEqual(checked['reviewFlags'], review_flags)
+                self.assertEqual(checked['qualityFlags'], ['unknown_voting_method'])
+                self.assertEqual(checked['added'], added)
 
     def test_official_archive_verification_pins_canonical_files(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -158,6 +166,36 @@ class ForensicsDataTests(unittest.TestCase):
             self.assertEqual(verify_official_archive(root, '2026.04.19', archive_path)['status'], 'mismatch')
             with self.assertRaisesRegex(ValueError, 'changed after official verification'):
                 _retained_evidence(root, '2026.04.19')
+
+    def test_historical_channel_rows_are_summed_with_all_source_lines_retained(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            directory = root / 'public/data/2021.11.14'
+            directory.mkdir(parents=True)
+            sources = {
+                'sections': ('sectionId;regionId;regionName;municipalityId;cityName;sectionName;col6;col7;col8\n'
+                             '050100001;5;Видин;14;с.Абланица;;0;0;2\n'),
+                'protocols': ('sectionId;totalA;totalB;voted;discardedVotes;noVotesPaper;noVotesMachine;protocolPaperVotes;protocolMachineVotes\n'
+                              '050100001;250;2;100;0;0;0;10;90\n'),
+                'votes': ('sectionId;regionId;partyId;total;paper;machine;partyId;total;paper;machine\n'
+                          '050100001;5;6;40;0;40;15;10;10;0\n'
+                          '050100001;5;6;30;0;30;15;20;0;20\n'),
+                'cik_parties': 'partyId;partyName\n6;Първа двойка\n15;Втора двойка\n',
+            }
+            for name, text in sources.items():
+                (directory / (name + '.txt')).write_text(text, encoding='utf-8')
+            record = load_election(root, '2021.11.14', {}, {})['records']['050100001']
+            self.assertEqual(record['totalCandidateVotes'], 100)
+            self.assertEqual(record['votesByParty']['6']['total'], 70)
+            self.assertEqual(record['votesByParty']['6']['machine'], 70)
+            self.assertEqual(record['votesByParty']['15']['paper'], 10)
+            self.assertEqual(record['votesByParty']['15']['machine'], 20)
+            self.assertEqual(record['votesByParty']['6']['share'], 70)
+            self.assertEqual(record['sourceRefs']['votes']['lines'], [2, 3])
+            self.assertEqual(len(record['raw']['voteRows']), 2)
+            directory.rename(root / 'public/data/2026.11.01')
+            with self.assertRaisesRegex(ValueError, 'Duplicate sectionId'):
+                load_election(root, '2026.11.01', {}, {})
 
 
 if __name__ == '__main__':

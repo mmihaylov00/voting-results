@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { sectionFixture } from './forensics.fixtures';
+import { candidateFixture, sectionFixture } from './forensics.fixtures';
 import { SectionFilters } from './forensics.models';
 import { filterSections, safeSourceLinks, signed } from './forensics.util';
 
@@ -57,5 +57,15 @@ describe('research section selection', () => {
     expect(safeSourceLinks(row)).toEqual([{ date: '2026.11.01', url: 'https://results.cik.bg/pvr202610/protocol.html' }]);
     expect(signed(null)).toBe('няма данни');
     expect(signed(0)).toContain('0');
+  });
+
+  it('sorts candidate gains with missing pairs last and includes all three review categories', () => {
+    const rows = [sectionFixture({ sectionId: '1', candidateChanges: [candidateFixture('4', 10, 30)] }),
+      sectionFixture({ sectionId: '2', candidateChanges: [candidateFixture('4', 10, 50)], addedReviewFlags: ['2026.10.25:added_exceed_signed'] }),
+      sectionFixture({ sectionId: '3', candidateReviewFlags: ['joint_turnout_growth_equal_gains'] })];
+    expect(filterSections(rows, { ...filters, sort: 'candidate4Delta' }).map(row => row.sectionId)).toEqual(['2', '1', '3']);
+    expect(filterSections(rows, { ...filters, flaggedOnly: true }).map(row => row.sectionId)).toEqual(['2', '3']);
+    rows[0].signal.flags = ['turnout-review'];
+    expect(filterSections(rows, { ...filters, flaggedOnly: true })).toHaveLength(3);
   });
 });

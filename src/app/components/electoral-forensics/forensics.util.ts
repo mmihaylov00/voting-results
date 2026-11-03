@@ -1,4 +1,5 @@
 import { ForensicsSection, SectionFilters } from './forensics.models';
+import { candidateDelta, hasReviewFlag } from './forensics-candidates.util';
 
 const collator = new Intl.Collator('bg', { numeric: true, sensitivity: 'base' });
 
@@ -21,15 +22,15 @@ export function filterSections(rows: ForensicsSection[], filters: SectionFilters
     if (filters.focus && !row.small400) return false;
     if (filters.regionId && Number(row.regionId) !== Number(filters.regionId)) return false;
     if (filters.comparableOnly && (!row.comparableRoundPair || row['eligible'] === false)) return false;
-    if (filters.flaggedOnly && !row.signal.flags.length) return false;
+    if (filters.flaggedOnly && !hasReviewFlag(row)) return false;
     if (filters.size && row.sizeGroup !== filters.size) return false;
     if (filters.method && row.method2 !== filters.method) return false;
     return !search || `${row.sectionId} ${sectionLabel(row)} ${placeValue(row, 'settlementEkatte', 'ekatte')} ${placeValue(row, 'address')}`
       .toLocaleLowerCase('bg').includes(search);
   });
   return matches.sort((left, right) => {
-    const a = left[filters.sort];
-    const b = right[filters.sort];
+    const a = filters.sort === 'candidate4Delta' ? candidateDelta(left, '4') : filters.sort === 'candidate25Delta' ? candidateDelta(left, '25') : left[filters.sort];
+    const b = filters.sort === 'candidate4Delta' ? candidateDelta(right, '4') : filters.sort === 'candidate25Delta' ? candidateDelta(right, '25') : right[filters.sort];
     // Missing measurements always follow measured values, in either direction.
     if (a === null || a === undefined) return b === null || b === undefined ? collator.compare(left.sectionId, right.sectionId) : 1;
     if (b === null || b === undefined) return -1;
@@ -40,13 +41,15 @@ export function filterSections(rows: ForensicsSection[], filters: SectionFilters
 
 export function safeSourceLinks(row: ForensicsSection): { date: string; url: string }[] {
   return Object.entries(row.elections ?? {}).flatMap(([date, election]) => Object.values(election?.sourceUrls ?? {})
-    .filter((url): url is string => {
-      if (!url) return false;
-      try {
-        const parsed = new URL(url);
-        return parsed.protocol === 'https:' && (parsed.hostname === 'cik.bg' || parsed.hostname.endsWith('.cik.bg'));
-      } catch { return false; }
-    }).map(url => ({ date, url })));
+    .filter(isOfficialSource).map(url => ({ date, url })));
+}
+
+export function isOfficialSource(url: unknown): url is string {
+  if (typeof url !== 'string') return false;
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === 'https:' && (parsed.hostname === 'cik.bg' || parsed.hostname.endsWith('.cik.bg'));
+  } catch { return false; }
 }
 
 export function signed(value: number | null | undefined, digits = 2): string {

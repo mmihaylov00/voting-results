@@ -20,9 +20,11 @@ from pathlib import Path
 import statistics
 
 from electoral_forensics_data import (ANALYSIS_DATES, FIRST_ROUND, SECOND_ROUND,
-                                      PRIORITY_REGIONS, load_dataset)
+                                      PRIORITY_REGIONS, load_dataset, percentage)
 from electoral_forensics_stats import (bh_adjust, collapse_sites, fixed_effect_model,
                                        matched_controls, mean_interval, spatial_test)
+from electoral_forensics_candidates import THRESHOLD_TOLERANCE, candidate_analysis
+from electoral_forensics_history import build_historical_benchmarks, build_runoff_benchmark
 
 
 APRIL = '2026.04.19'
@@ -52,9 +54,14 @@ def enrich_rows(panel, verified_dates=None):
         row['priority'] = row['regionId'] in PRIORITY_REGIONS
         row['domestic'] = row['regionId'].isdigit() and 1 <= int(row['regionId']) <= 31
         for suffix, election in [('1', first), ('2', second)]:
-            for name in ('registered', 'voted', 'turnout'):
+            for name in ('registered', 'added', 'voted', 'turnout'):
                 row[name + suffix] = election[name] if election else None
             row['method' + suffix] = election['votingMethod'] if election else 'unknown'
+            row['addedPer100Voters' + suffix] = percentage(election['added'], election['voted']) if election else None
+        row['deltaAdded'] = difference(row['added2'], row['added1'])
+        row['addedReviewFlags'] = [date + ':' + flag
+                                   for date, election in [(FIRST_ROUND, first), (SECOND_ROUND, second)]
+                                   if election for flag in election.get('reviewFlags', [])]
         row['sizeGroup'] = first['sizeGroup'] if first else None
         row['small400'] = bool(first and 0 < first['registered'] <= 400)
         row['deltaVoted'] = difference(row['voted2'], row['voted1'])
@@ -90,6 +97,22 @@ def enrich_rows(panel, verified_dates=None):
                     'shareOfVoters1': earlier['shareOfVoters'], 'shareOfVoters2': current['shareOfVoters'],
                     'deltaShareOfVotersPp': difference(current['shareOfVoters'], earlier['shareOfVoters']),
                 })
+        if row['eligible'] and len(row['candidateChanges']) != 2:
+            row['analysisExclusions'].append('finalist_identity_not_matched')
+            row['eligible'] = False
+        finalist1 = sum(candidate['votes1'] for candidate in row['candidateChanges'])
+        finalist2 = sum(candidate['votes2'] for candidate in row['candidateChanges'])
+        for candidate in row['candidateChanges']:
+            candidate['finalistShare1'] = percentage(candidate['votes1'], finalist1) if len(row['candidateChanges']) == 2 else None
+            candidate['finalistShare2'] = percentage(candidate['votes2'], finalist2) if len(row['candidateChanges']) == 2 else None
+            candidate['deltaFinalistSharePp'] = difference(candidate['finalistShare2'], candidate['finalistShare1'])
+            candidate['gainPer100Registered'] = percentage(candidate['deltaVotes'], row['registered1']) if first else None
+        row['candidateReviewFlags'] = []
+        if (row['eligible'] and abs(row['registeredChangePct']) <= 5 + THRESHOLD_TOLERANCE
+                and row['deltaTurnoutPp'] >= 10 - THRESHOLD_TOLERANCE and row['deltaVoted'] >= 30):
+            gains = {candidate['id']: candidate['deltaVotes'] for candidate in row['candidateChanges']}
+            larger = 'yotova_gain_larger' if gains['25'] > gains['4'] else 'gyurov_gain_larger' if gains['4'] > gains['25'] else 'equal_gains'
+            row['candidateReviewFlags'].append('joint_turnout_growth_' + larger)
         row['eliminatedCandidateVotes1'] = sum(value['total'] for ballot, value in first['votesByParty'].items()
                                                if ballot not in second['votesByParty']) if first and second else None
         row['history'] = {}
@@ -120,6 +143,30 @@ def enrich_rows(panel, verified_dates=None):
                          'alternativeExplanations': ALTERNATIVES[:], 'neighborCount': 0,
                          'neighborMean': None, 'spatialP': None, 'spatialQ': None}
     return panel
+
+
+def joint_totals(rows):
+    """Use one complete eligible cohort for turnout, candidates and added-elector counts."""
+    selected = [row for row in rows if row['eligible']]
+    totals = {key: sum(row[key] for row in selected)
+              for key in ['registered1', 'registered2', 'voted1', 'voted2', 'added1', 'added2']}
+    totals.update(cohortN=len(selected), deltaVoted=totals['voted2'] - totals['voted1'],
+                  deltaAdded=totals['added2'] - totals['added1'],
+                  turnout1=percentage(totals['voted1'], totals['registered1']),
+                  turnout2=percentage(totals['voted2'], totals['registered2']),
+                  addedPer100Voters1=percentage(totals['added1'], totals['voted1']),
+                  addedPer100Voters2=percentage(totals['added2'], totals['voted2']),
+                  addedReviewN=sum(bool(row['addedReviewFlags']) for row in selected))
+    totals['deltaTurnoutPp'] = difference(totals['turnout2'], totals['turnout1'])
+    candidates = {}
+    for row in selected:
+        for candidate in row['candidateChanges']:
+            total = candidates.setdefault(candidate['id'], {'id': candidate['id'], 'name': candidate['name'],
+                                                             'votes1': 0, 'votes2': 0, 'deltaVotes': 0})
+            for metric in ['votes1', 'votes2', 'deltaVotes']:
+                total[metric] += candidate[metric]
+    totals['candidateTotals'] = list(candidates.values())
+    return totals
 
 
 def base_features(row):
@@ -206,6 +253,7 @@ def group_rows(rows, field):
         interval = mean_interval([row['deltaTurnoutPp'] for row in eligible],
                                  [row['municipalityCode'] for row in eligible])
         result.append({'key': key, 'name': first[name_field] if name_field else BIN_NAMES.get(key, key),
+                       **joint_totals(eligible),
                        'region': first['regionName'], 'regionId': first['regionId'],
                        'municipalityCode': first['municipalityCode'],
                        'settlementEkatte': first['settlementEkatte'], 'n': len(members),
@@ -341,6 +389,11 @@ def analyze_hypotheses(rows):
                     'eliminatedCandidateVotes1': sum(row['eliminatedCandidateVotes1'] or 0 for row in rows),
                     'signedVoterDelta': sum(row['deltaVoted'] for row in rows),
                     'meanDeltaSensitivityPp': statistics.mean(row['deltaTurnoutSensitivityPp'] for row in rows) if rows else None}
+    joint = joint_totals(rows)
+    h5['details']['addedElectors'] = {key: joint[key] for key in
+                                     ['added1', 'added2', 'deltaAdded', 'addedPer100Voters1',
+                                      'addedPer100Voters2', 'addedReviewN']}
+    h5['details']['candidateTotals'] = joint['candidateTotals']
     h5['limitations'] = ['Не се прави индивидуален трансфер на гласове от агрегирани секционни данни.',
                          'Това не е тест, който доказва или отхвърля натиск, организатор или нарушение.']
     return [h1, h2, h3, h5]
@@ -423,6 +476,14 @@ def findings_for(rows):
                                           -abs(row['deltaTurnoutPp']), row['sectionId']))
 
 
+def review_rows(rows, flag_field):
+    fields = ['sectionId', 'regionId', 'regionName', 'municipalityName', 'settlementName',
+              'registered1', 'registered2', 'voted1', 'voted2', 'deltaVoted', 'deltaTurnoutPp',
+              'added1', 'added2', 'deltaAdded', 'addedPer100Voters1', 'addedPer100Voters2',
+              'addedReviewFlags', 'candidateReviewFlags', 'candidateChanges', 'eligible', 'small400']
+    return [{key: row[key] for key in fields} for row in rows if row[flag_field]]
+
+
 def query_block(identifier, title, selected, controls, findings, clusters):
     eligible = [row for row in selected if row['eligible']]
     interval = mean_interval([row['deltaTurnoutPp'] for row in eligible], [row['municipalityCode'] for row in eligible])
@@ -432,12 +493,15 @@ def query_block(identifier, title, selected, controls, findings, clusters):
     selected_clusters = [dict(cluster, targetSectionIds=sorted(selected_ids.intersection(cluster['sectionIds'])),
                              targetSectionCount=len(selected_ids.intersection(cluster['sectionIds'])))
                          for cluster in clusters if selected_ids.intersection(cluster['sectionIds'])]
-    summary = {'sections': len(selected), 'eligibleSections': len(eligible),
+    summary = {**joint_totals(eligible), 'sections': len(selected), 'eligibleSections': len(eligible),
                'excludedSections': len(selected) - len(eligible), 'meanDeltaPp': interval['mean'],
                'meanDeltaCi95': interval['ci95'], 'municipalityClusters': interval['clusters'],
                'positiveDeltaN': sum(row['deltaTurnoutPp'] > 0 for row in eligible),
                'reviewN': len(selected_findings), 'clusterN': len(selected_clusters),
-               'unknownMethodN': sum(row['method1'] == 'unknown' or row['method2'] == 'unknown' for row in eligible)}
+               'unknownMethodN': sum(row['method1'] == 'unknown' or row['method2'] == 'unknown' for row in eligible),
+               'addedEligibleReviewN': sum(bool(row['addedReviewFlags']) for row in eligible),
+               'addedReviewN': sum(bool(row['addedReviewFlags']) for row in selected),
+               'candidateReviewN': sum(bool(row['candidateReviewFlags']) for row in eligible)}
     return {'id': identifier, 'title': title,
             'filter': 'Цялата страна; 1-400 избиратели по списък totalA на първия тур' if identifier == 'query2'
                       else 'Цялата страна; всички размери; 31 избирателни района на ЦИК',
@@ -448,6 +512,9 @@ def query_block(identifier, title, selected, controls, findings, clusters):
             'findings': [finding['sectionId'] for finding in selected_findings],
             'clusterIds': [cluster['id'] for cluster in selected_clusters],
             'clusters': selected_clusters,
+            'candidateAnalysis': candidate_analysis(selected),
+            'candidateReview': review_rows(selected, 'candidateReviewFlags'),
+            'addedElectorReview': review_rows(selected, 'addedReviewFlags'),
             'comparison': comparison,
             'report': {
                 'facts': [f"31 избирателни района на ЦИК; {len(selected)} секции, {len(eligible)} съпоставими и валидни.",
@@ -475,12 +542,15 @@ def section_csv_rows(rows):
                                         'rural', 'special', 'eligible', 'priority', 'small400', 'sizeGroup',
                                         'registered1', 'registered2', 'registeredChangePct', 'voted1', 'voted2',
                                         'turnout1', 'turnout2', 'deltaTurnoutPp', 'deltaTurnoutSensitivityPp',
-                                        'deltaVoted', 'method1', 'method2', 'analysisExclusions']}
+                                        'deltaVoted', 'method1', 'method2', 'analysisExclusions',
+                                        'added1', 'added2', 'deltaAdded', 'addedPer100Voters1', 'addedPer100Voters2',
+                                        'addedReviewFlags', 'candidateReviewFlags']}
         for key in ['peerN', 'peerMedian', 'peerMad', 'robustZ', 'empiricalUpperTail', 'spatialP', 'spatialQ', 'flags']:
             flat[key] = row['signal'][key]
         for candidate in row['candidateChanges']:
             for metric in ['votes1', 'votes2', 'deltaVotes', 'share1', 'share2', 'deltaSharePp',
-                           'shareOfVoters1', 'shareOfVoters2', 'deltaShareOfVotersPp']:
+                           'shareOfVoters1', 'shareOfVoters2', 'deltaShareOfVotersPp',
+                           'finalistShare1', 'finalistShare2', 'deltaFinalistSharePp', 'gainPer100Registered']:
                 flat['candidate_' + candidate['id'] + '_' + metric] = candidate[metric]
         for date, election in row['elections'].items():
             if election:
@@ -512,7 +582,7 @@ def clean_json(value):
     return value
 
 
-def build_report(dataset, permutations=999, seed=20261101):
+def build_report(dataset, permutations=999, seed=20261101, historical_benchmarks=None):
     verified_dates = {date for date, election in dataset['elections'].items()
                       if election['metadata'].get('canonicalArchiveVerification') == 'verified'}
     rows = enrich_rows(dataset['rows'], verified_dates)
@@ -536,7 +606,19 @@ def build_report(dataset, permutations=999, seed=20261101):
     focus = [row for row in domestic if row['small400']]
     query1 = query_block('query1', 'Секционен анализ за цялата страна', domestic, eligible, findings, clusters)
     query2 = query_block('query2', 'Секции до 400 избиратели в цялата страна', focus, eligible, findings, clusters)
+    historical_benchmarks = historical_benchmarks or {'query1': [], 'query2': [], 'metadata': {}}
     for query, selected in [(query1, domestic), (query2, focus)]:
+        current_benchmark = build_runoff_benchmark(
+            dataset['elections'][FIRST_ROUND], dataset['elections'][SECOND_ROUND],
+            cycle=2026, round1_date=FIRST_ROUND, round2_date=SECOND_ROUND,
+            small400=query['id'] == 'query2',
+            sources=[{'date': date, 'sourceUrl': dataset['elections'][date]['metadata']['sourceUrl'],
+                      'canonicalArchiveVerification': dataset['elections'][date]['metadata']['canonicalArchiveVerification'],
+                      'tableHashes': {name: table['sha256'] for name, table in dataset['provenance'][date]['tables'].items()}}
+                     for date in [FIRST_ROUND, SECOND_ROUND]])
+        if current_benchmark['n'] != query['summary']['eligibleSections']:
+            raise ValueError('Historical benchmark and current analysis use different 2026 cohorts')
+        query['historicalRunoffs'] = historical_benchmarks[query['id']] + [current_benchmark]
         query['hypotheses'] = hypotheses if query['id'] == 'query1' else analyze_hypotheses(
             [row for row in selected if row['eligible']])
         if query['id'] == 'query2':
@@ -598,7 +680,9 @@ def build_report(dataset, permutations=999, seed=20261101):
                 'eligibleCount': len(eligible),
                 'analysisCodeHashes': {path.name: hashlib.sha256(path.read_bytes()).hexdigest()
                                        for path in [Path(__file__), Path(__file__).with_name('electoral_forensics_stats.py'),
-                                                    Path(__file__).with_name('electoral_forensics_data.py')]},
+                                                    Path(__file__).with_name('electoral_forensics_data.py'),
+                                                    Path(__file__).with_name('electoral_forensics_candidates.py'),
+                                                    Path(__file__).with_name('electoral_forensics_history.py')]},
                 'inputHashes': {date: {name: table['sha256'] for name, table in value['tables'].items()}
                                 for date, value in dataset['provenance'].items()}}
     quality = dict(dataset['quality'])
@@ -610,6 +694,7 @@ def build_report(dataset, permutations=999, seed=20261101):
                                                    for reason in row['analysisExclusions'])),
                    mappedEligibleSections=sum(row['coordinates'] is not None for row in eligible),
                    distinctSpatialSites=len(spatial['sites']), testedSpatialSites=spatial['testedSites'])
+    quality['addedElectorReviewSections'] = len(review_rows(domestic, 'addedReviewFlags'))
     quality['sizeBinMigration'] = dict(Counter(row['sizeGroup'] + ' -> ' + row['elections'][SECOND_ROUND]['sizeGroup']
                                               for row in eligible))
     relaxed = [row for row in domestic if row['comparableRoundPair']
@@ -645,12 +730,22 @@ def build_report(dataset, permutations=999, seed=20261101):
               'regions': group_rows(domestic, 'regionId'), 'municipalities': group_rows(domestic, 'municipalityCode'),
               'settlements': group_rows(domestic, 'settlementEkatte'),
               'hypotheses': hypotheses, 'clusters': clusters, 'findings': findings,
+              'addedElectorFindings': review_rows(domestic, 'addedReviewFlags'),
+              'candidateFindings': review_rows(domestic, 'candidateReviewFlags'),
+              'historicalBenchmarkMetadata': historical_benchmarks['metadata'],
               'methodology': {
                   'scope': 'Съпоставими редовни секции в страната без аритметични противоречия; променените, специалните и липсващите записи се пазят с причина за изключване.',
                   'geography': 'Регионалните обобщения използват 31 избирателни района на ЦИК, не 28 административни области. Четирите първоначални приоритетни района са само исторически метаданни.',
                   'size': 'Избиратели totalA на първия тур: <300, 300-400, 401-700, >700. Фокусът включва всички секции <=400, включително градските.',
                   'turnout': '100 * подписали се / totalA за всеки тур; отделна проверка с totalA+totalB.',
                   'candidateShares': 'Гласове за кандидат / (всички кандидатски гласове + НПН); отделно дял от подписалите се.',
+                  'finalistShares': 'Гласове за кандидат / гласове за двамата финалисти. Промяната отделя баланса '
+                                    'между тях от отпадането на другите кандидатури. Не установява индивидуален избор.',
+                  'candidateScreen': 'Проучвателен подбор: допустима секция, промяна на списъка до ±5%, '
+                                     'ръст на активността поне 10 пр.п. и поне 30 повече подписали се. '
+                                     'По-големият кандидатски ръст не означава установен избор на нови избиратели.',
+                  'addedReview': 'Дописани над подписалите се е отделен сигнал за документална проверка, '
+                                 'без автоматично изключване или корекция на оригиналните бройки.',
                   'historicShares': 'Точните регистрации на конкретните избори; дял от действителните гласове за листи без НПН.',
                   'highHistoricalShare': 'Предварително определен праг >=50% за всяка априлска регистрация поотделно; непрекъснат анализ за 10 пр.п. дял.',
                   'models': 'Линейни модели с общински ефекти; логаритъм и квадрат на логаритъма на списъка, начална активност и нейния квадрат, промяна на списъка, град/село; H2 добавя предишна активност. H3 изисква припокриване и фиксирани ефекти по населено място; неопределеността остава по общински клъстери.',
@@ -703,6 +798,8 @@ def compact_detail(row):
         snapshot['methodEvidence'] = {key: evidence[key] for key in ['form', 'line', 'pointer', 'evidenceType',
                                                                     'retainedSourceUrl'] if key in evidence} if evidence else None
         snapshot['sourceDiscrepancies'] = election.get('sourceDiscrepancies', [])
+        if election.get('reviewFlags'):
+            snapshot['reviewFlags'] = election['reviewFlags']
         snapshot['settlementEkatteSource'] = election.get('settlementEkatteSource', 'not_recorded')
         snapshot['special'] = election.get('special', False)
         snapshot['specialReasons'] = election.get('specialReasons', [])
@@ -733,7 +830,8 @@ def main():
             parser.error('Archive must be an existing DATE=PATH for one of the four analysis elections')
         archives[date] = Path(path)
     dataset = load_dataset(args.root, archives=archives)
-    report, rows = build_report(dataset, args.permutations, args.seed)
+    historical_benchmarks = build_historical_benchmarks(args.root)
+    report, rows = build_report(dataset, args.permutations, args.seed, historical_benchmarks)
     output = args.output or args.root / 'public/data/forensics/2026'
     output.mkdir(parents=True, exist_ok=True)
     detail_directory = output / 'section-records'
@@ -761,9 +859,18 @@ def main():
     write_csv(output / 'sections.csv', list(section_csv_rows(rows)))
     for name in ['regions', 'municipalities', 'settlements', 'findings']:
         write_csv(output / f'{name}.csv', report[name])
+    write_csv(output / 'added-elector-findings.csv', report['addedElectorFindings'])
+    write_csv(output / 'candidate-findings.csv', report['candidateFindings'])
     for query in ['query1', 'query2']:
         for name in ['regions', 'municipalities', 'settlements']:
             write_csv(output / f'{query}-{name}.csv', report[query][name])
+        write_csv(output / f'{query}-candidate-checks.csv', report[query]['candidateAnalysis']['hypotheses'])
+        historical_rows = []
+        for benchmark in report[query]['historicalRunoffs']:
+            for finalist in benchmark['finalists']:
+                historical_rows.append({key: value for key, value in benchmark.items()
+                                        if key not in {'finalists', 'regions', 'stableListSensitivity'}} | finalist)
+        write_csv(output / f'{query}-historical-runoffs.csv', historical_rows)
     for path in output.glob('*.csv'):
         path.with_suffix('.csv.gz').write_bytes(gzip.compress(path.read_bytes(), mtime=0))
     manifest = {path.name: {'bytes': path.stat().st_size, 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}

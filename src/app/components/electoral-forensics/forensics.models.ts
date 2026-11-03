@@ -23,6 +23,30 @@ export interface CandidateChange {
   shareOfVoters1: number | null;
   shareOfVoters2: number | null;
   deltaShareOfVotersPp: number | null;
+  finalistShare1?: number | null;
+  finalistShare2?: number | null;
+  deltaFinalistSharePp?: number | null;
+  gainPer100Registered?: number | null;
+}
+
+export interface CandidateVoteTotals {
+  id: string;
+  name: string;
+  votes1: number;
+  votes2: number;
+  deltaVotes: number;
+}
+
+export interface CandidateAnalysisSummary {
+  eligibleSections: number;
+  usableSections: number;
+  excludedZeroFinalistSections: number;
+  stableListSections: number;
+  candidates: (CandidateVoteTotals & { finalistShare1: number | null; finalistShare2: number | null; deltaFinalistSharePp: number | null })[];
+  deltaVoted: number | null;
+  screen: { definition: string; sections: number; yotovaGain: number; gyurovGain: number; deltaVoted: number;
+    yotovaDominantSections: number; gyurovDominantSections: number; tiedSections: number };
+  stableList?: Omit<CandidateAnalysisSummary, 'stableList' | 'stableListSections'>;
 }
 
 export interface HistoryParty {
@@ -62,6 +86,13 @@ export interface ForensicsSection {
   deltaTurnoutPp: number | null;
   deltaTurnoutSensitivityPp: number | null;
   deltaVoted: number | null;
+  added1?: number | null;
+  added2?: number | null;
+  deltaAdded?: number | null;
+  addedPer100Voters1?: number | null;
+  addedPer100Voters2?: number | null;
+  addedReviewFlags?: string[];
+  candidateReviewFlags?: string[];
   sizeGroup: string;
   method1: string;
   method2: string;
@@ -120,6 +151,11 @@ export interface ForensicsGroup {
   eligibleN: number;
   flaggedN: number;
   smallN: number;
+  candidateTotals?: CandidateVoteTotals[];
+  added1?: number;
+  added2?: number;
+  deltaAdded?: number;
+  addedReviewN?: number;
 }
 
 export interface ForensicsQuery {
@@ -135,6 +171,14 @@ export interface ForensicsQuery {
   hypotheses: ForensicsHypothesis[];
   clusters?: ForensicsCluster[];
   selectionSensitivity?: unknown;
+  candidateAnalysis?: {
+    summary: CandidateAnalysisSummary;
+    hypotheses: ForensicsHypothesis[];
+    methodology: unknown;
+  };
+  addedElectorReview?: AddedElectorReview[];
+  candidateReview?: CandidateReview[];
+  historicalRunoffs?: HistoricalRunoffBenchmark[];
   regions: ForensicsGroup[];
   municipalities: ForensicsGroup[];
   settlements: ForensicsGroup[];
@@ -208,6 +252,78 @@ export interface ForensicsFinding {
   spatialQ: number | null;
   priority: boolean;
   small400: boolean;
+  candidateChanges?: CandidateChange[];
+}
+
+export interface AddedElectorReview {
+  sectionId: string;
+  regionName: string;
+  municipalityName: string;
+  settlementName: string;
+  added1: number | null;
+  added2: number | null;
+  voted1: number | null;
+  voted2: number | null;
+  addedPer100Voters1: number | null;
+  addedPer100Voters2: number | null;
+  deltaAdded: number | null;
+  addedReviewFlags: string[];
+  eligible: boolean;
+}
+
+export interface CandidateReview {
+  sectionId: string;
+  regionName: string;
+  municipalityName: string;
+  settlementName: string;
+  deltaTurnoutPp: number | null;
+  deltaVoted: number | null;
+  candidateChanges: CandidateChange[];
+  candidateReviewFlags: string[];
+}
+
+export interface HistoricalRunoffSummary {
+  n: number;
+  registered1: number;
+  registered2: number;
+  voted1: number;
+  voted2: number;
+  added1: number;
+  added2: number;
+  deltaVoted: number;
+  turnout1: number | null;
+  turnout2: number | null;
+  deltaTurnoutPp: number | null;
+  meanDeltaPp: number | null;
+  finalists: {
+    name: string;
+    ballot1: string;
+    ballot2: string;
+    votes1: number;
+    votes2: number;
+    deltaVotes: number;
+    share1: number | null;
+    share2: number | null;
+    deltaSharePp?: number | null;
+  }[];
+}
+
+export interface HistoricalRunoffBenchmark extends HistoricalRunoffSummary {
+  cycle: number;
+  round1Date: string;
+  round2Date: string;
+  sections: number;
+  eligibleN?: number;
+  excludedN: number;
+  stableListSensitivity: HistoricalRunoffSummary;
+  regions: (HistoricalRunoffSummary & { regionId: string; regionName: string })[];
+  quality: Record<string, unknown>;
+  sources: { date: string; sourceUrl: string; archiveSha256?: string | null; trustStatus: string; freshArchiveVerification?: boolean; sourceDocumentationUrl?: string; canonicalHashes?: Record<string, string> }[];
+  cohortDefinition: string;
+  matchingConfidence: string;
+  limitations: string[];
+  context?: string;
+  contextSourceUrl?: string;
 }
 
 export interface ForensicsReport {
@@ -228,7 +344,7 @@ export interface ForensicsReport {
   sampleSensitivity?: unknown;
 }
 
-export type SectionSort = 'sectionId' | 'registered1' | 'voted1' | 'voted2' | 'turnout1' | 'turnout2' | 'deltaTurnoutPp' | 'deltaVoted';
+export type SectionSort = 'sectionId' | 'registered1' | 'voted1' | 'voted2' | 'turnout1' | 'turnout2' | 'deltaTurnoutPp' | 'deltaVoted' | 'candidate4Delta' | 'candidate25Delta' | 'deltaAdded';
 export interface SectionFilters {
   focus: boolean;
   regionId: string;

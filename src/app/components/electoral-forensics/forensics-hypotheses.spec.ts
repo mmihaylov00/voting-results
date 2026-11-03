@@ -38,4 +38,17 @@ describe('hypothesis result presentation', () => {
     expect(element.querySelector('tbody tr')?.textContent).toContain('0,24');
     expect(fixture.componentInstance.partyEstimates()[0].coefficients[0].ci95).toEqual([-.2, .7]);
   });
+
+  it('shows stable-list candidate estimates as readable sensitivity rows with their own sample and correction', () => {
+    const fixture = TestBed.createComponent(ForensicsHypothesesComponent);
+    fixture.componentRef.setInput('rows', [hypothesis({ id: 'C1', estimate: -.5, status: 'estimated', details: {
+      sensitivity: { n: 80, estimate: -.7, ci95: [-1, -.4], p: .01, q: .03, status: 'estimated' },
+    } })]);
+    fixture.detectChanges();
+    const sensitivity = (fixture.nativeElement as HTMLElement).querySelector('[aria-label="Кандидатски проверки при стабилни списъци"]');
+    expect(sensitivity?.textContent).toContain('80');
+    expect(sensitivity?.textContent).toContain('-0,70');
+    expect(sensitivity?.textContent).toContain('0,03');
+    expect(fixture.componentInstance.sensitivities()[0].ci95).toEqual([-1, -.4]);
+  });
 });
