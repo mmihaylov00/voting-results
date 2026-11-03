@@ -172,6 +172,7 @@
   <ng-template>
   <app-election-analysis
     [view]="leftPanel() === 'comparison' ? 'comparison' : 'history'"
+    [baselineDate]="baselineDate()" (baselineDateChange)="baselineDate.set($event)"
     [date]="date"
     [regionId]="mapSelection ? 'all' : null"
     [sections]="analysisSections"

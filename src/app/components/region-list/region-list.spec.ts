@@ -1,14 +1,77 @@
 import { TestBed } from '@angular/core/testing';
+import { Component, EventEmitter, Input, NO_ERRORS_SCHEMA, Output } from '@angular/core';
+import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angular/router';
+import { RouterTestingHarness } from '@angular/router/testing';
+import type * as Highcharts from 'highcharts';
+import { HighchartsChartComponent } from 'highcharts-angular';
 import { BehaviorSubject, of, Subject } from 'rxjs';
 import { Region, Section } from '../../models/election.models';
 import { ElectionService } from '../../services/election';
 import { ThemeService } from '../../services/theme.service';
 import { RegionListComponent } from './region-list';
+import { ElectionAnalysisComponent } from '../ui/election-analysis/election-analysis';
+import { SettlementMapComponent } from '../ui/settlement-map/settlement-map';
+import { AbroadMapComponent } from '../ui/abroad-map/abroad-map';
+import { ContestantDetailModalComponent } from '../contestant-detail-modal/contestant-detail-modal';
+import elections from '../../../assets/elections.json';
+
+@Component({ selector: 'highcharts-chart', template: '' })
+class AnalysisChartStub {
+  @Input() options: unknown;
+  @Input() oneToOne = false;
+  @Output() chartInstance = new EventEmitter<Highcharts.Chart>();
+}
 
 const section = (id: string, regionId: string): Section => ({
   sectionId: id, regionId, cityName: 'София', sectionName: '', sectionType: 'normal', settlementEkatte: id,
   total: 100, voted: 50, discardedVotes: 1, noVotes: 2, activityBp: 5000, partyVotes: {}, topParties: [],
+});
+
+describe('national saved presidential comparisons', () => {
+  it('passes the initial URL runoff baseline through the national page into the visible comparison', async () => {
+    const dates = elections.filter(election => election.type === 'presidential');
+    const summaries = Object.fromEntries(dates.map(election => [election.date, {
+      parties: { '4': 'Андрей Атанасов Гюров и Георги Димитров Кандев' },
+      regions: [{ id: '01', name: 'Благоевград', total: 100, voted: 80, partyVotes: { '4': 40 } }],
+    }]));
+    TestBed.configureTestingModule({
+      imports: [RegionListComponent],
+      providers: [
+        provideRouter([{ path: 'presidential/election/:date', component: RegionListComponent }]),
+        { provide: ThemeService, useValue: { darkMode: () => false } },
+        { provide: ElectionService, useValue: {
+          electionType: 'presidential', getDates: () => dates, getOfficialNationalElectors: () => 100,
+          getRegions: (date: string) => of(summaries[date].regions),
+          getParties: (date: string) => of(summaries[date].parties),
+          getAllData: () => of(summaries), getSections: () => of([]),
+        } },
+      ],
+    }).overrideComponent(RegionListComponent, {
+      remove: { imports: [SettlementMapComponent, AbroadMapComponent, ContestantDetailModalComponent] },
+      add: { schemas: [NO_ERRORS_SCHEMA] },
+    }).overrideComponent(ElectionAnalysisComponent, {
+      remove: { imports: [HighchartsChartComponent] }, add: { imports: [AnalysisChartStub] },
+    });
+    await TestBed.compileComponents();
+    const url = '/presidential/election/2026.10.25?panel=comparison&baseline=2026.11.01';
+    const harness = await RouterTestingHarness.create(url);
+    await vi.waitFor(() => {
+      harness.detectChanges();
+      const analysis = harness.routeDebugElement?.query(By.directive(ElectionAnalysisComponent)).componentInstance as ElectionAnalysisComponent;
+      expect(analysis?.comparisonDate).toBe('2026.11.01');
+      expect(analysis?.loading).toBe(false);
+    });
+    expect(harness.routeNativeElement?.querySelector('app-select button[aria-label="Сравнение с"]')?.textContent).toContain('Ноември 2026');
+    expect(harness.routeNativeElement?.querySelector('app-select button[aria-label="Сравнение с"]')?.textContent).toContain('предварителни');
+    expect(TestBed.inject(Router).url).toBe(url);
+    await harness.navigateByUrl('/presidential/election/2026.10.25?panel=comparison&baseline=2021.11.14');
+    await vi.waitFor(() => {
+      harness.detectChanges();
+      const analysis = harness.routeDebugElement?.query(By.directive(ElectionAnalysisComponent)).componentInstance as ElectionAnalysisComponent;
+      expect(analysis?.comparisonDate).toBe('2021.11.14');
+    });
+  });
 });
 
 describe('RegionList map scope', () => {

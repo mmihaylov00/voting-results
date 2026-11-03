@@ -109,6 +109,7 @@ export class RegionListComponent implements OnInit, AfterViewInit {
     return this.leftPanel() !== 'cards';
   }
   readonly analysisVisited = signal(false);
+  readonly baselineDate = signal('');
   get overviewTabs() { return [
     { id: 'cards', label: 'Списък', icon: 'summary' }, { id: 'stats', label: 'Статистика', icon: 'leading-party' },
     { id: 'history', label: 'История', icon: 'history' }, { id: 'comparison', label: 'Сравнение', icon: 'party-change' },
@@ -180,6 +181,10 @@ export class RegionListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.route.queryParamMap.pipe(
+      map(params => params.get('baseline') ?? ''),
+      distinctUntilChanged(), takeUntilDestroyed(this.destroyRef),
+    ).subscribe(date => this.baselineDate.set(date));
     this.route.queryParamMap.pipe(
       map(params => params.get('comparison') === 'parties' ? 'parties' : 'elections'),
       distinctUntilChanged(), takeUntilDestroyed(this.destroyRef),

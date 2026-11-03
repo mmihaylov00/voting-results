@@ -2,13 +2,7 @@ import { Directive, Input, ElementRef, HostListener, Renderer2, OnDestroy, OnIni
 import { ComparativeValue } from '../../../../../models/election.models';
 import { DecimalPipe } from '@angular/common';
 import { getDateName } from '../../../../../utils/date-name.util';
-
-const elections = [
-  {"date": "2026.04.19", "name": "Април 2026"},
-  {"date": "2024.10.27", "name": "Октомври 2024"},
-  {"date": "2024.06.09", "name": "Юни 2024"},
-  {"date": "2023.04.02", "name": "Април 2023"}
-];
+import elections from '../../../../../../assets/elections.json';
 
 @Directive({
   selector: '[hlmTooltip]',
@@ -174,9 +168,6 @@ export class HlmTooltipDirective implements OnDestroy {
       return;
     }
 
-    // Find the current election date from the URL or state
-    // For simplicity, we can try to find which election date we are currently viewing
-    // and then find its predecessor.
     const currentPath = window.location.pathname;
     const dateMatch = currentPath.match(/(\d{4}\.\d{2}\.\d{2})/);
     const currentDate = dateMatch ? dateMatch[1] : null;
@@ -186,18 +177,18 @@ export class HlmTooltipDirective implements OnDestroy {
       return;
     }
 
-    const currentIndex = elections.findIndex(e => e.date === currentDate);
-    if (currentIndex === -1) {
-      // Current date not found in the list, can't reliably find previous
+    const currentElection = elections.find(election => election.date === currentDate);
+    if (!currentElection) {
       this.removeTrendIndicator();
       return;
     }
 
-    // Elections are sorted newest to oldest, so dates with index > currentIndex are older
+    const previousElections = elections
+      .filter(election => election.type === currentElection.type && election.date < currentDate)
+      .sort((left, right) => right.date.localeCompare(left.date));
     let bestPrevComp: ComparativeValue | undefined;
-    for (let i = currentIndex + 1; i < elections.length; i++) {
-      const dateToCheck = elections[i].date;
-      const comp = (this.comparisons as ComparativeValue[]).find(c => c.d === dateToCheck);
+    for (const election of previousElections) {
+      const comp = (this.comparisons as ComparativeValue[]).find(c => c.d === election.date);
       if (comp) {
         bestPrevComp = comp;
         break; // Found the most recent participation before the current election
