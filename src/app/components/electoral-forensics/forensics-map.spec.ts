@@ -13,10 +13,23 @@ describe('joint map indicators', () => {
     expect(component.tooltip(row)).toContain('Δ Гюров +20');
     expect(component.tooltip(row)).toContain('Δ Йотова +30');
     expect(component.tooltip(row)).toContain('Преглед: дописани, съвместен ръст');
+    expect(component.tooltip(row).split('\n')).toEqual([
+      row.sectionId, 'Видин / Белоградчик / Рабиша',
+      'Δ активност +20,00 п.п.', 'Δ гласували +40', 'Δ Гюров +20', 'Δ Йотова +30',
+      'Преглед: дописани, съвместен ръст',
+    ]);
     component.metric = 'candidate4';
     expect(component.markerValue(row)).toBe(10);
     component.metric = 'candidate25';
     expect(component.markerValue(row)).toBe(15);
     expect(component.markerValue({ ...row, registered1: 0 })).toBeNull();
+  });
+
+  it('omits the review line when a section has no review flags', () => {
+    const component = TestBed.createComponent(ForensicsMapComponent).componentInstance;
+    const lines = component.tooltip(sectionFixture()).split('\n');
+    expect(lines).toHaveLength(6);
+    expect(lines.every(line => line.length > 0)).toBe(true);
+    expect(lines.some(line => line.startsWith('Преглед:'))).toBe(false);
   });
 });

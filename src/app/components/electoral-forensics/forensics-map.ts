@@ -74,7 +74,14 @@ export class ForensicsMapComponent implements AfterViewInit, OnChanges, OnDestro
   tooltip(row: ForensicsSection): string {
     const review = [row.signal.flags.length ? 'активност' : '', row.addedReviewFlags?.length ? 'дописани' : '',
       row.candidateReviewFlags?.length ? 'съвместен ръст' : ''].filter(Boolean);
-    return `${row.sectionId} · ${sectionLabel(row)} · Δ активност ${signed(row.deltaTurnoutPp)} п.п. · Δ гласували ${signed(row.deltaVoted, 0)} · Δ Гюров ${signed(candidateDelta(row, '4'), 0)} · Δ Йотова ${signed(candidateDelta(row, '25'), 0)}${review.length ? ' · Преглед: ' + review.join(', ') : ''}`;
+    return [
+      row.sectionId, sectionLabel(row),
+      `Δ активност ${signed(row.deltaTurnoutPp)} п.п.`,
+      `Δ гласували ${signed(row.deltaVoted, 0)}`,
+      `Δ Гюров ${signed(candidateDelta(row, '4'), 0)}`,
+      `Δ Йотова ${signed(candidateDelta(row, '25'), 0)}`,
+      ...(review.length ? [`Преглед: ${review.join(', ')}`] : []),
+    ].join('\n');
   }
 
   markerValue(row: ForensicsSection): number | null {
@@ -113,6 +120,10 @@ export class ForensicsMapComponent implements AfterViewInit, OnChanges, OnDestro
         marker.bindTooltip(() => {
           const text = document.createElement('span');
           text.textContent = this.tooltip(row);
+          text.style.display = 'block';
+          text.style.whiteSpace = 'pre-line';
+          text.style.maxWidth = 'min(22rem, calc(100vw - 3rem))';
+          text.style.overflowWrap = 'anywhere';
           return text;
         });
         marker.on('click', () => this.sectionSelect.emit(row));
