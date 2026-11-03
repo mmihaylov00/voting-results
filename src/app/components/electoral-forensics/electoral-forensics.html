@@ -1,13 +1,10 @@
 <main class="research-page">
   <header class="research-heading">
     <div><p class="eyebrow">Изследвания · Президентски избори 2026</p>
-      <h1>{{ focus ? 'Вотът в малките секции' : 'Вотът между двата тура' }}</h1>
-      <p class="intro">25 октомври <span aria-hidden="true">→</span> 1 ноември · {{ focus ? 'До 400 избиратели по списък на I тур' : 'Всички размери секции' }} · Цялата страна</p>
+      <h1>Вотът между двата тура</h1>
+      <p class="intro">25 октомври <span aria-hidden="true">→</span> 1 ноември · {{ focus() ? 'До 400 избиратели по списък на I тур' : 'Всички размери секции' }} · Цялата страна</p>
     </div>
-    <div class="research-links" aria-label="Обхват на изследването">
-      <a routerLink="/research/electoral-forensics-2026" [attr.aria-current]="!focus ? 'page' : null"><app-map-icon name="globe" />Всички секции</a>
-      <a routerLink="/research/runoff-mobilization-2026" [attr.aria-current]="focus ? 'page' : null"><app-map-icon name="users" />До 400 избиратели</a>
-    </div>
+
   </header>
 
   <aside class="source-note" aria-label="Статус и ограничения на данните">
@@ -25,12 +22,12 @@
     <nav class="section-nav" aria-label="Раздели на анализа">
       <label class="mobile-section-select">Раздел<select [value]="activeSection()" (change)="navigateSection(inputValue($event))">@for (item of navigation; track item.id) {<option [value]="item.id">{{ item.label }}</option>}</select></label>
       @for (item of navigation; track item.id) {
-        <a [href]="pagePath + '#' + item.id" [attr.aria-current]="activeSection() === item.id ? 'location' : null" (click)="activeSection.set(item.id)"><app-map-icon [name]="item.icon" />{{ item.label }}</a>
+        <a [href]="pagePath() + '#' + item.id" [attr.aria-current]="activeSection() === item.id ? 'location' : null" (click)="activeSection.set(item.id)"><app-map-icon [name]="item.icon" />{{ item.label }}</a>
       }
     </nav>
 
     <section id="results" aria-labelledby="results-title">
-      <div class="section-heading"><div><p class="eyebrow">Цялата извадка</p><h2 id="results-title">Как се промени вотът</h2></div><a hlmBtn variant="default" size="sm" class="gap-2" [href]="pagePath + '#section-gains'" (click)="explorerView.set('gains')"><app-map-icon name="target" />Прираст по секции</a></div>
+      <div class="section-heading"><div><p class="eyebrow">Цялата извадка</p><h2 id="results-title">Как се промени вотът</h2></div><a hlmBtn variant="default" size="sm" class="gap-2" [href]="pagePath() + '#section-gains'" (click)="explorerView.set('gains')"><app-map-icon name="target" />Прираст по секции</a></div>
       @if (query(); as current) {
         <p class="scope-label"><strong>{{ count(overviewTotals().n) }}</strong> съпоставими от {{ count(sampleCounts().sections) }} секции · Едни и същи секции за всички показатели</p>
         <app-forensics-vote-summary data-overview-totals [summary]="overviewTotals()" />
@@ -40,7 +37,7 @@
         <div class="charts"><div class="chart-scroll" tabindex="0" role="region" aria-label="Графика по 31 изборни района"><highcharts-chart class="block w-full" [options]="regionChart()" /></div><highcharts-chart class="block w-full" [options]="binChart()" /></div>
       </div>
       <div class="view-panel" role="tabpanel" id="overview-panel-regions" aria-labelledby="overview-tab-regions" [hidden]="overviewView() !== 'regions'">
-        <div class="section-heading"><h3>31 изборни района</h3><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/' + queryCsvPrefix + '-regions.csv'" download aria-label="Изтегли обобщението по изборни райони CSV" title="Обобщение по изборни райони"><app-map-icon name="download-table" />CSV</a></div><app-forensics-group-table [rows]="regionSummary()" label="Изборни райони на ЦИК" />
+        <div class="section-heading"><h3>31 изборни района</h3><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/' + queryCsvPrefix() + '-regions.csv'" download aria-label="Изтегли обобщението по изборни райони CSV" title="Обобщение по изборни райони"><app-map-icon name="download-table" />CSV</a></div><app-forensics-group-table [rows]="regionSummary()" label="Изборни райони на ЦИК" />
       </div>
       <div class="view-panel" role="tabpanel" id="overview-panel-size" aria-labelledby="overview-tab-size" [hidden]="overviewView() !== 'size'">
         <app-forensics-group-table [rows]="current.binSummary" label="По избиратели по списък" />
@@ -149,7 +146,7 @@
 
     <section id="places" aria-labelledby="places-title">
       <div class="section-heading"><div><p class="eyebrow">Цялата извадка · Независимо от филтрите на картата</p><h2 id="places-title">Общини и населени места</h2></div>
-        <div class="source-links"><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/' + queryCsvPrefix + '-municipalities.csv'" download aria-label="Изтегли общините CSV" title="Общини CSV"><app-map-icon name="download-table" />Общини CSV</a><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/' + queryCsvPrefix + '-settlements.csv'" download aria-label="Изтегли населените места CSV" title="Населени места CSV"><app-map-icon name="download-table" />Населени места CSV</a></div>
+        <div class="source-links"><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/' + queryCsvPrefix() + '-municipalities.csv'" download aria-label="Изтегли общините CSV" title="Общини CSV"><app-map-icon name="download-table" />Общини CSV</a><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/' + queryCsvPrefix() + '-settlements.csv'" download aria-label="Изтегли населените места CSV" title="Населени места CSV"><app-map-icon name="download-table" />Населени места CSV</a></div>
       </div>
       <app-view-tabs [tabs]="placeTabs" [(value)]="placeLevel" label="Обобщение по места" idPrefix="places" panelId="places-panel" />
       <div class="view-panel" role="tabpanel" id="places-panel" [attr.aria-labelledby]="'places-tab-' + placeLevel()">
@@ -191,14 +188,14 @@
       @empty {<tr><td colspan="4">Няма групи по зададените критерии.</td></tr>}
       </tbody></table></div>
       </div>
-<p class="mt-4"><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="pagePath + '#geography'" (click)="setFilter('flaggedOnly', true); explorerView.set('table')"><app-map-icon name="filter" />Филтрирай за преглед</a></p>
+<p class="mt-4"><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="pagePath() + '#geography'" (click)="setFilter('flaggedOnly', true); explorerView.set('table')"><app-map-icon name="filter" />Филтрирай за преглед</a></p>
     </section>
 
     <section id="candidate-checks" aria-labelledby="candidate-checks-title">
       <h2 id="candidate-checks-title">Проверки на изборните модели</h2>
-      <app-view-tabs [tabs]="statsTabs" [(value)]="statsView" label="Вид проверки" idPrefix="checks" />
+      <app-view-tabs [tabs]="statsTabs()" [(value)]="statsView" label="Вид проверки" idPrefix="checks" />
       <div class="view-panel" role="tabpanel" id="checks-panel-candidates" aria-labelledby="checks-tab-candidates" [hidden]="statsView() !== 'candidates'">
-        <div class="section-heading"><h3 id="candidate-gains-title">Активност и кандидатски ръст</h3><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/' + queryCsvPrefix + '-candidate-checks.csv'" download aria-label="Изтегли кандидатските проверки за тази извадка CSV" title="Кандидатски проверки CSV"><app-map-icon name="download-table" />CSV</a></div>
+        <div class="section-heading"><h3 id="candidate-gains-title">Активност и кандидатски ръст</h3><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/' + queryCsvPrefix() + '-candidate-checks.csv'" download aria-label="Изтегли кандидатските проверки за тази извадка CSV" title="Кандидатски проверки CSV"><app-map-icon name="download-table" />CSV</a></div>
       @if (query()?.candidateAnalysis; as analysis) {
         <p class="note">Делът сред двамата финалисти изключва останалите кандидатури и „Не подкрепям никого“. Коефициентите по-долу са за промяната на дела на Йотова; промяната за Гюров е с обратен знак. Това са секционни асоциации, а не индивидуални прехвърляния на гласове.</p>
         <div class="selection-stats"><span><strong class="block text-xl font-semibold">{{ analysis.summary.usableSections | number }}</strong>секции в кандидатските модели</span><span><strong class="block text-xl font-semibold">{{ analysis.summary.excludedZeroFinalistSections | number }}</strong>с нулев кандидатски знаменател</span><span><strong class="block text-xl font-semibold">{{ analysis.summary.stableListSections | number }}</strong>със стабилни списъци</span></div>
@@ -211,24 +208,19 @@
       <div class="view-panel" role="tabpanel" id="checks-panel-general" aria-labelledby="checks-tab-general" [hidden]="statsView() !== 'general'">
 <div id="hypotheses" aria-labelledby="hypotheses-title">
       <h3 id="hypotheses-title">Проверки H1-H5</h3>
-      <p class="note">{{ focus ? 'Всички секции в страната с до 400 избиратели по списък на I тур.' : 'Всички секции в страната.' }} Оценките са асоциации; ограниченията са под таблицата.</p>
+      <p class="note">{{ focus() ? 'Всички секции в страната с до 400 избиратели по списък на I тур.' : 'Всички секции в страната.' }} Оценките са асоциации; ограниченията са под таблицата.</p>
       <app-forensics-hypotheses [rows]="query()?.hypotheses ?? []" />
 
       @if (query()?.selectionSensitivity; as sensitivity) {<details><summary>Чувствителност към границата от 400 избиратели в двата тура</summary><div class="evidence wrap-anywhere">{{ display(sensitivity) }}</div></details>}
       @if (data.sampleSensitivity) {<details><summary>Чувствителност при изключване на секции с несъответствия в броя бюлетини</summary><div class="evidence wrap-anywhere">{{ display(data.sampleSensitivity) }}</div></details>}
     </div>
       </div>
-      @if (focus) {
-        <div class="view-panel" role="tabpanel" id="checks-panel-national" aria-labelledby="checks-tab-national" [hidden]="statsView() !== 'national'">
-          <h3>H1-H5 · Всички размери секции</h3><p class="scope-label">Цялата страна, всички размери. Самостоятелна извадка за контекст.</p>
-          <app-forensics-hypotheses [rows]="data.hypotheses" />
-        </div>
-      }
+
     </section>
 
-    <section id="historical-runoffs" aria-labelledby="historical-title"><div class="section-heading"><h2 id="historical-title">Други президентски балотажи</h2><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/' + queryCsvPrefix + '-historical-runoffs.csv'" download aria-label="Изтегли историческите балотажи за тази извадка CSV" title="Исторически балотажи CSV"><app-map-icon name="download-table" />CSV</a></div>@if (query()?.historicalRunoffs; as benchmarks) {<app-forensics-history [benchmarks]="benchmarks" />} @else {<p class="note">Историческата справка не е налична в тази версия на отчета.</p>}</section>
+    <section id="historical-runoffs" aria-labelledby="historical-title"><div class="section-heading"><h2 id="historical-title">Други президентски балотажи</h2><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/' + queryCsvPrefix() + '-historical-runoffs.csv'" download aria-label="Изтегли историческите балотажи за тази извадка CSV" title="Исторически балотажи CSV"><app-map-icon name="download-table" />CSV</a></div>@if (query()?.historicalRunoffs; as benchmarks) {<app-forensics-history [benchmarks]="benchmarks" />} @else {<p class="note">Историческата справка не е налична в тази версия на отчета.</p>}</section>
 
-    <section id="sources" aria-labelledby="sources-title"><div class="section-heading"><h2 id="sources-title">Източници, качество и метод</h2><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/report.json'" download aria-label="Изтегли пълния национален отчет за двата анализа JSON" title="Пълен отчет за двата анализа JSON"><app-map-icon name="download" />Пълен отчет JSON</a></div>
+    <section id="sources" aria-labelledby="sources-title"><div class="section-heading"><h2 id="sources-title">Източници, качество и метод</h2><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/report.json'" download aria-label="Изтегли пълния отчет за всички секции и секциите до 400 избиратели JSON" title="Пълен отчет за двата обхвата JSON"><app-map-icon name="download" />Пълен отчет JSON</a></div>
       <p class="note">Страницата е извън навигацията и е обозначена за неиндексиране. Достъпна е с адреса.</p>
       <div class="source-links"><a href="https://results.cik.bg/pe202604/rezultati/index.html" target="_blank" rel="noopener noreferrer">Парламентарни избори · 19.04.2026</a><a hlmBtn variant="outline" size="sm" class="gap-2" href="https://results.cik.bg/pvr202610/opendata/export.zip" aria-label="Изтегли официалния архив за първия тур" title="Официален архив за първия тур"><app-map-icon name="download" />I тур · ZIP</a><a href="https://results.cik.bg/pvr202610/tur2/rezultati/index.html" target="_blank" rel="noopener noreferrer">II тур · публикувани резултати</a><a href="https://results.cik.bg/pe202410/rezultati/index.html" target="_blank" rel="noopener noreferrer">Парламентарни избори · 27.10.2024</a></div>
       <details><summary>Версия и произход на данните</summary><dl class="evidence-list">@for (entry of entries(data.metadata); track entry.key) {<div><dt>{{ fieldLabel(entry.key) }}</dt><dd>{{ display(entry.value) }}</dd></div>}</dl><p class="evidence wrap-anywhere">{{ display(data.provenance) }}</p></details>

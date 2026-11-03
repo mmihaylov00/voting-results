@@ -14,15 +14,33 @@ class WorkspaceDestinationComponent {
   readonly electionService = inject(ElectionService);
 }
 
+@Component({ template: '' })
+class ResearchDestinationComponent {}
+
 describe('Election routes', () => {
-  it.each([
-    ['research/electoral-forensics-2026', 'query1'],
-    ['research/runoff-mobilization-2026', 'query2'],
-  ])('keeps %s available as a direct research route', (path, query) => {
-    const route = routes.find(candidate => candidate.path === path);
-    expect(route?.data?.['researchQuery']).toBe(query);
+  it('provides one research page and redirects the previous small-section route', () => {
+    const route = routes.find(candidate => candidate.path === 'research/electoral-forensics-2026');
     expect(route?.loadComponent).toBeTypeOf('function');
     expect(routes.indexOf(route!)).toBeLessThan(routes.findIndex(candidate => candidate.path === '**'));
+    const legacy = routes.find(candidate => candidate.path === 'research/runoff-mobilization-2026');
+    expect(legacy?.redirectTo).toBeTypeOf('function');
+    expect(legacy?.loadComponent).toBeUndefined();
+  });
+
+  it.each([
+    ['/research/runoff-mobilization-2026', { scope: 'small' }, null],
+    ['/research/runoff-mobilization-2026?scope=all&keep=1#section-gains', { scope: 'small', keep: '1' }, 'section-gains'],
+  ])('preserves the small cohort and deep links from %s', async (url, queryParams, fragment) => {
+    const research = routes.filter(route => route.path?.startsWith('research/')).map(route => route.redirectTo ? route : {
+      ...route, loadComponent: undefined, component: ResearchDestinationComponent,
+    });
+    TestBed.configureTestingModule({ providers: [provideRouter(research)] });
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl(url);
+    const tree = router.parseUrl(router.url);
+    expect(tree.root.children['primary']?.segments.map(segment => segment.path).join('/')).toBe('research/electoral-forensics-2026');
+    expect(tree.queryParams).toEqual(queryParams);
+    expect(tree.fragment).toBe(fragment);
   });
   it.each(['governmental', 'presidential'])('opens the %s directory in its election data scope', async type => {
     const archive = routes.find(route => route.path === type)!;

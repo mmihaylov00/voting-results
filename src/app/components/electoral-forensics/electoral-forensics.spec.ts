@@ -5,11 +5,13 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By, Meta, Title } from '@angular/platform-browser';
-import { ActivatedRoute, provideRouter, RouterLink } from '@angular/router';
+import { ActivatedRoute, Params, provideRouter } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { HighchartsChartComponent } from 'highcharts-angular';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ElectoralForensicsComponent } from './electoral-forensics';
 import { CandidateAnalysisSummary, ForensicsFinding, ForensicsGroup, ForensicsSection } from './forensics.models';
-import { candidateFixture, groupFixture, reportFixture, sectionFixture } from './forensics.fixtures';
+import { candidateFixture, groupFixture, historicalFixture, reportFixture, sectionFixture } from './forensics.fixtures';
 import { ForensicsHypothesesComponent } from './forensics-hypotheses';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
 import { MapIconComponent } from '../ui/map-icon/map-icon';
@@ -27,14 +29,17 @@ class GainsStub { @Input() rows: readonly ForensicsSection[] = []; @Output() sec
 @Component({ selector: 'app-forensics-group-table', template: '' })
 class GroupStub { @Input() rows: ForensicsGroup[] = []; @Input() label = ''; }
 
-function setup(query = 'query1', fragment?: string) {
+function setup(query = 'query1', fragment?: string, queryParams = new BehaviorSubject<Params>(query === 'query2' ? { scope: 'small' } : {})) {
   TestBed.configureTestingModule({
     imports: [ElectoralForensicsComponent],
     providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([]),
-      { provide: ActivatedRoute, useValue: { snapshot: { data: { researchQuery: query }, fragment } } }],
+      { provide: ActivatedRoute, useValue: { snapshot: { queryParams: queryParams.value, fragment }, queryParams } }],
   });
   TestBed.overrideComponent(ElectoralForensicsComponent, {
-    set: { imports: [CommonModule, FormsModule, RouterLink, ChartStub, MapStub, GainsStub, GroupStub, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective] },
+    set: { imports: [CommonModule, FormsModule, ChartStub, MapStub, GainsStub, GroupStub, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective] },
+  });
+  TestBed.overrideComponent(ForensicsHistoryComponent, {
+    remove: { imports: [HighchartsChartComponent] }, add: { imports: [ChartStub] },
   });
   return TestBed.createComponent(ElectoralForensicsComponent);
 }
@@ -62,7 +67,7 @@ describe('hidden electoral research pages', () => {
   it('removes its robots tag when no tag existed previously', () => {
     const fixture = setup('query2');
     fixture.detectChanges();
-    expect(fixture.componentInstance.focus).toBe(true);
+    expect(fixture.componentInstance.focus()).toBe(true);
     expect(TestBed.inject(Meta).getTag('name="robots"')?.content).toBe('noindex,nofollow,noarchive');
     fixture.destroy();
     expect(TestBed.inject(Meta).getTag('name="robots"')).toBeNull();
@@ -158,7 +163,7 @@ describe('hidden electoral research pages', () => {
 
   it.each([
     ['query1', '/research/electoral-forensics-2026'],
-    ['query2', '/research/runoff-mobilization-2026'],
+    ['query2', '/research/electoral-forensics-2026'],
   ])('keeps all %s section anchors on the current research route with a root base URL', (query, path) => {
     const existingBase = document.head.querySelector('base');
     const base = existingBase ?? document.createElement('base');
@@ -174,6 +179,7 @@ describe('hidden electoral research pages', () => {
       for (const anchor of anchors) {
         const destination = new URL(anchor.href);
         expect(destination.pathname).toBe(path);
+        expect(destination.searchParams.get('scope')).toBe(query === 'query2' ? 'small' : null);
         expect(destination.hash).not.toBe('');
         expect((fixture.nativeElement as HTMLElement).querySelector(destination.hash)).not.toBeNull();
       }
@@ -385,7 +391,7 @@ describe('hidden electoral research pages', () => {
     expect(element.querySelector('#explorer-tab-gains')?.getAttribute('aria-selected')).toBe('true');
     expect(element.querySelector('#section-gains')).not.toBeNull();
     expect(fixture.debugElement.query(By.directive(GainsStub))).not.toBeNull();
-    expect(fixture.componentInstance.focus).toBe(query === 'query2');
+    expect(fixture.componentInstance.focus()).toBe(query === 'query2');
     fixture.destroy();
   });
 
@@ -434,17 +440,90 @@ describe('hidden electoral research pages', () => {
     fixture.destroy();
   });
 
-  it('exposes national checks separately from the small-section checks and preserves their scope', () => {
-    const fixture = setup('query2', 'hypotheses');
-    fixture.componentInstance.report.set(reportFixture());
+  it('switches the shared research cohort without reloading data or losing valid filters and views', () => {
+    const params = new BehaviorSubject<Params>({ keep: '1' });
+    const fixture = setup('query1', 'section-gains', params);
+    const page = fixture.componentInstance;
     fixture.detectChanges();
+    const http = TestBed.inject(HttpTestingController);
+    const report = reportFixture();
+    report.query1.regions = [groupFixture({ n: 2 })];
+    report.query2.regions = [groupFixture({ n: 1 })];
+    report.query1.historicalRunoffs = [historicalFixture({ n: 2 })];
+    report.query2.historicalRunoffs = [historicalFixture({ n: 1 })];
+    const small = sectionFixture();
+    const large = sectionFixture({ sectionId: '050100002', registered1: 800, small400: false, sizeGroup: '>700' });
+    http.expectOne('/data/forensics/2026/report.json').flush(report);
+    http.expectOne('/data/forensics/2026/sections.json').flush([small, large]);
+    fixture.detectChanges();
+    page.setFilter('regionId', '5');
+    page.setFilter('search', 'Рабиша');
+    page.setFilter('method', 'paper');
+    page.sort('candidate25Delta');
+    page.statsView.set('general');
+    page.reviewView.set('added');
+    fixture.detectChanges();
+    const chart = fixture.debugElement.query(By.directive(GainsStub)).componentInstance as GainsStub;
+    const history = fixture.debugElement.query(By.directive(ForensicsHistoryComponent)).componentInstance as ForensicsHistoryComponent;
+    expect(chart.rows).toHaveLength(2);
+    page.page.set(2);
+    params.next({ scope: 'small', keep: '1' });
+    fixture.detectChanges();
+    expect(page.focus()).toBe(true);
+    expect(page.query()).toBe(report.query2);
+    expect(page.regionSummary()[0].n).toBe(1);
+    expect(page.filters()).toMatchObject({ focus: true, regionId: '5', search: 'Рабиша', method: 'paper', sort: 'candidate25Delta' });
+    expect(page.page()).toBe(0);
+    expect(page.explorerView()).toBe('gains');
+    expect(page.reviewView()).toBe('added');
+    expect(page.statsView()).toBe('general');
+    expect(fixture.debugElement.query(By.directive(GainsStub)).componentInstance).toBe(chart);
+    expect(chart.rows).toEqual([small]);
+    expect(history.benchmarks()[0].n).toBe(1);
     const element = fixture.nativeElement as HTMLElement;
-    expect(element.querySelector<HTMLElement>('#checks-panel-general')?.hidden).toBe(false);
-    element.querySelector<HTMLButtonElement>('#checks-tab-national')!.click();
+    expect(element.querySelector('.research-heading h1')?.textContent).toBe('Вотът между двата тура');
+    expect(element.querySelector('.research-links')).toBeNull();
+    expect(element.querySelector('a[href$="query2-regions.csv"]')).not.toBeNull();
+    expect(element.querySelector('#checks-tab-national')).toBeNull();
+    expect(page.statsTabs()[1].label).toContain('До 400');
+    expect(new URL(page.pagePath(), 'https://example.test').searchParams.get('scope')).toBe('small');
+    expect(new URL(page.pagePath(), 'https://example.test').searchParams.get('keep')).toBe('1');
+    params.next({ keep: '1' });
     fixture.detectChanges();
-    expect(element.querySelector<HTMLElement>('#checks-panel-national')?.hidden).toBe(false);
-    expect(element.querySelector('#checks-panel-national')?.textContent).toContain('всички размери');
-    expect(fixture.componentInstance.focus).toBe(true);
+    expect(page.focus()).toBe(false);
+    expect(page.query()).toBe(report.query1);
+    expect(chart.rows).toHaveLength(2);
+    expect(history.benchmarks()[0].n).toBe(2);
+    expect(element.querySelector('a[href$="query1-regions.csv"]')).not.toBeNull();
+    http.verify();
+    fixture.destroy();
+  });
+
+  it('clears an unavailable size filter and cancels details outside the newly selected small cohort', () => {
+    const params = new BehaviorSubject<Params>({});
+    const fixture = setup('query1', undefined, params);
+    fixture.detectChanges();
+    const http = TestBed.inject(HttpTestingController);
+    const large = sectionFixture({ sectionId: '050100002', registered1: 800, small400: false, sizeGroup: '>700' });
+    http.expectOne('/data/forensics/2026/report.json').flush(reportFixture());
+    http.expectOne('/data/forensics/2026/sections.json').flush([sectionFixture(), large]);
+    fixture.detectChanges();
+    const page = fixture.componentInstance;
+    page.setFilter('size', '>700');
+    page.selectSection(large);
+    const detail = http.expectOne('/data/forensics/2026/section-records/050100002.json');
+    params.next({ scope: 'small' });
+    fixture.detectChanges();
+    expect(detail.cancelled).toBe(true);
+    expect(page.selected()).toBeNull();
+    expect(page.detailLoading()).toBe(false);
+    expect(page.filters().size).toBe('');
+    expect(page.filtered().map(row => row.sectionId)).toEqual(['050100001']);
+    params.next({ scope: 'unknown' });
+    fixture.detectChanges();
+    expect(page.focus()).toBe(false);
+    expect(page.filtered()).toHaveLength(2);
+    http.verify();
     fixture.destroy();
   });
 

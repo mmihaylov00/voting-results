@@ -21,11 +21,16 @@ export const routes: Routes = [
     path: '',
     loadComponent: () => import('./components/election-type-select/election-type-select').then(m => m.ElectionTypeSelectComponent)
   },
-  ...(['electoral-forensics-2026', 'runoff-mobilization-2026'] as const).map((path, index) => ({
-    path: `research/${path}`,
-    data: { researchQuery: index === 0 ? 'query1' : 'query2' },
+  {
+    path: 'research/electoral-forensics-2026',
     loadComponent: () => import('./components/electoral-forensics/electoral-forensics').then(m => m.ElectoralForensicsComponent),
-  })),
+  },
+  {
+    path: 'research/runoff-mobilization-2026', pathMatch: 'full',
+    redirectTo: ({ queryParams, fragment }) => inject(Router).createUrlTree(['/research/electoral-forensics-2026'], {
+      queryParams: { ...queryParams, scope: 'small' }, fragment: fragment ?? undefined,
+    }),
+  },
   ...(['governmental', 'presidential'] as ElectionType[]).map<Route>(type => ({
     path: type,
     providers: [ElectionService, { provide: ELECTION_TYPE, useValue: type }],

@@ -106,6 +106,34 @@ describe('AppHeaderComponent breadcrumb navigation', () => {
     expect(element.querySelector('nav')?.textContent).not.toContain('Изследвания');
   });
 
+  it('switches the research cohort in the header while preserving the current section and other parameters', async () => {
+    const { fixture, element, router } = await render('/research/electoral-forensics-2026?keep=1#section-gains');
+    const scope = element.querySelector('header nav[aria-label="Обхват на анализа"]')!;
+    const links = [...scope.querySelectorAll<HTMLAnchorElement>('a')];
+    expect(links.map(link => link.textContent?.trim())).toEqual(['Всички секции', 'До 400 избиратели']);
+    expect(links[0].getAttribute('aria-current')).toBe('true');
+    expect(links[1].getAttribute('aria-current')).toBeNull();
+    expect(links[1].getAttribute('href')).toBe('/research/electoral-forensics-2026?keep=1&scope=small#section-gains');
+    links[1].click();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(router.parseUrl(router.url).queryParams).toEqual({ keep: '1', scope: 'small' });
+    expect(router.parseUrl(router.url).fragment).toBe('section-gains');
+    expect(links[1].getAttribute('aria-current')).toBe('true');
+    expect(links[0].getAttribute('aria-current')).toBeNull();
+    links[0].click();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(router.url).toBe('/research/electoral-forensics-2026?keep=1#section-gains');
+    expect(links[0].getAttribute('aria-current')).toBe('true');
+  });
+
+  it.each(['/governmental', '/research/another-report', '/research/electoral-forensics-2026/unknown'])
+    ('hides the research scope toggle outside the combined report on %s', async url => {
+      const { element } = await render(url);
+      expect(element.querySelector('nav[aria-label="Обхват на анализа"]')).toBeNull();
+    });
+
   it.each([
     ['governmental', 'presidential', 'Парламентарни', 'Президентски'],
     ['presidential', 'governmental', 'Президентски', 'Парламентарни'],

@@ -22,7 +22,7 @@ type ProvisionalElection = {
   template: `
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-2 focus:z-[300] focus:bg-background focus:p-3">Към съдържанието</a>
     <header class="sticky top-0 z-50 border-b border-primary/20 bg-background/95 backdrop-blur-xs">
-      <div class="mx-auto flex h-16 max-w-[1800px] items-center gap-2 px-4 py-2 sm:px-8 lg:h-auto lg:gap-5">
+      <div class="mx-auto flex h-16 max-w-[1800px] items-center gap-2 px-4 py-2 sm:px-8 lg:h-auto lg:gap-5" [class.research-header]="isResearchAnalysis()">
         <a routerLink="/" class="flex shrink-0 items-center gap-2 py-1 font-semibold tracking-tight text-foreground" aria-label="Изборни резултати - начало">
           <span aria-hidden="true" class="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-primary text-primary-foreground">✓</span>
           <span class="hidden lg:inline">Изборни резултати</span>
@@ -65,6 +65,12 @@ type ProvisionalElection = {
             }
           </ol>
         </nav>
+        @if (isResearchAnalysis()) {
+          <nav class="research-scope" aria-label="Обхват на анализа">
+            <a routerLink="/research/electoral-forensics-2026" [queryParams]="{ scope: null }" queryParamsHandling="merge" [preserveFragment]="true" [attr.aria-current]="!smallResearchScope() ? 'true' : null">Всички секции</a>
+            <a routerLink="/research/electoral-forensics-2026" [queryParams]="{ scope: 'small' }" queryParamsHandling="merge" [preserveFragment]="true" [attr.aria-current]="smallResearchScope() ? 'true' : null">До 400 избиратели</a>
+          </nav>
+        }
         <div class="flex shrink-0 items-center gap-2">
           <button hlmBtn variant="outline" size="icon" type="button" class="h-11 w-11 shrink-0 border-foreground/30 bg-muted text-foreground" (click)="theme.toggleDarkMode()" [attr.aria-label]="theme.darkMode() ? 'Светла тема' : 'Тъмна тема'" [attr.title]="theme.darkMode() ? 'Светла тема' : 'Тъмна тема'">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -100,6 +106,14 @@ type ProvisionalElection = {
       line-height: 1;
       color: hsl(var(--muted-foreground));
     }
+    .research-scope { display: flex; flex-shrink: 0; gap: .25rem; padding: .125rem; border-radius: .5rem; background: hsl(var(--muted)); }
+    .research-scope a { display: flex; min-height: 44px; flex: 1; align-items: center; justify-content: center; padding: .5rem .8rem; border-radius: .35rem; font-size: .8rem; white-space: nowrap; }
+    .research-scope a[aria-current] { background: hsl(var(--background)); color: hsl(var(--foreground)); font-weight: 650; box-shadow: 0 1px 3px hsl(var(--foreground) / .12); }
+    .research-scope a:focus-visible { outline: 2px solid hsl(var(--primary)); outline-offset: 2px; }
+    @media (max-width: 767px) {
+      .research-header { height: auto; min-height: 4rem; flex-wrap: wrap; }
+      .research-scope { order: 1; width: 100%; }
+    }
   `,
 })
 export class AppHeaderComponent {
@@ -116,6 +130,8 @@ export class AppHeaderComponent {
   readonly isElection = computed(() => this.segments()[1] === 'election');
   readonly isDirectory = computed(() => this.segments()[1] === 'contestants');
   readonly isResearch = computed(() => this.segments()[0] === 'research');
+  readonly isResearchAnalysis = computed(() => this.isResearch() && this.segments().length === 2 && this.segments()[1] === 'electoral-forensics-2026');
+  readonly smallResearchScope = computed(() => this.tree().queryParams['scope'] === 'small');
   readonly backLink = computed(() => {
     if (!this.segments().length) return null;
     if (!this.isElection()) return ['/'];

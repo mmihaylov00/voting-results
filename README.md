@@ -147,18 +147,20 @@ The parliamentary **География** view has separate tabs for the ten larg
 
 **Откъде дойдоха гласовете**, within Geography, shows estimated incoming vote flows for all parties by default, with a proportional flow diagram and one horizontal 100% stacked bar per destination party. Connection and segment tooltips show the source, destination, election dates, estimated votes and share on hover or keyboard focus. Source colours and segment order stay consistent across bars, and expandable ranked lists provide exact values on small screens. Its dropdown can isolate one party or restore all parties. It loads independently from the other sections; changing the party or theme reuses the same local matrix. These are ecological estimates from Наясно's matched-section model, including non-voters and changes to the electoral rolls. Counts, coverage, omitted-flow effects and imperfect balancing are identified explicitly. Percentages use the displayed incoming flows for each destination, rather than presenting model totals as official national vote counts.
 
-## Hidden electoral-forensics reports
+## Hidden electoral-forensics research
 
-Two direct routes answer the requested 2026 runoff research queries:
+One research page answers both 2026 runoff queries. The sticky header toggles the cohort without reloading the report or resetting valid filters and views:
 
 - `/research/electoral-forensics-2026`: nationwide domestic section comparisons, hypotheses H1-H5, and summaries for all 31 CIK election districts, municipalities and settlements.
-- `/research/runoff-mobilization-2026`: all domestic sections with 1-400 registered electors at the first round, with the same nationwide regional summaries.
+- `/research/electoral-forensics-2026?scope=small`: all domestic sections with 1-400 registered electors at the first round, with the same nationwide regional summaries.
 
-Both include compact results, regional summaries, charts, a filtered map, internally scrollable tables, section evidence and icon buttons for downloads. Detailed methods and source notes are collapsible. Comparison controls come from outside each target section's own election district, with the existing matching rules and reuse limitations retained. The 31 districts follow CIK's published geography; Sofia's three city districts and Plovdiv city/district remain separate.
+The old `/research/runoff-mobilization-2026` link redirects to the small-section scope, preserving query parameters and section anchors.
+
+The page includes compact results, regional summaries, charts, a filtered map, internally scrollable tables, section evidence and icon buttons for downloads. Detailed methods and source notes are collapsible. Comparison controls come from outside each target section's own election district, with the existing matching rules and reuse limitations retained. The 31 districts follow CIK's published geography; Sofia's three city districts and Plovdiv city/district remain separate.
 
 Turnout and both finalists' vote gains share the same eligible section cohort in the totals, district charts and geographic tables. Candidate shares among the two finalists are shown separately from shares of all valid votes. Candidate gains are net changes, not identified votes from newly participating individuals.
 
-Candidate checks C1-C3 model the change in Yotova's share among the two finalists against turnout change and the exact April GERB-SDS and DPS registrations, with baseline controls and municipal effects. Gyurov's change in this two-candidate balance is the opposite. Each page reports its own three-term BH correction and a stable-list sensitivity analysis; the small-section page is a nested sample, not independent replication. A separate exploratory review screen requires at least 10 percentage points of turnout growth, 30 additional signed voters and a registered-list change within 5%.
+Candidate checks C1-C3 model the change in Yotova's share among the two finalists against turnout change and the exact April GERB-SDS and DPS registrations, with baseline controls and municipal effects. Gyurov's change in this two-candidate balance is the opposite. Each cohort reports its own three-term BH correction and a stable-list sensitivity analysis; the small-section cohort is a nested sample, not independent replication. A separate exploratory review screen requires at least 10 percentage points of turnout growth, 30 additional signed voters and a registered-list change within 5%.
 
 Added-elector diagnostics retain the original `totalB` counts. More added electors than signatures triggers a document-review flag, not an automatic exclusion or a claim about a candidate. These records have a separate queue and CSV export from turnout findings and candidate screens.
 

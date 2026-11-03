@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, computed, DestroyRef, ElementRef, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, ElementRef, effect, inject, OnDestroy, OnInit, signal, untracked } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import { forkJoin, Subscription } from 'rxjs';
@@ -26,14 +26,14 @@ import { SignedChangeDirective } from '../ui/signed-change/signed-change';
 import { ForensicsGainsChartComponent } from './forensics-gains-chart';
 
 const DATA_ROOT = '/data/forensics/2026';
-const initialFilters: SectionFilters = {
-  focus: false, regionId: '', search: '', size: '', method: '', comparableOnly: true,
+const initialFilters: Omit<SectionFilters, 'focus'> = {
+  regionId: '', search: '', size: '', method: '', comparableOnly: true,
   flaggedOnly: false, sort: 'deltaTurnoutPp', descending: true,
 };
 
 @Component({
   selector: 'app-electoral-forensics',
-  imports: [CommonModule, FormsModule, RouterLink, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective, ForensicsGainsChartComponent],
+  imports: [CommonModule, FormsModule, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective, ForensicsGainsChartComponent],
   templateUrl: './electoral-forensics.html',
   styleUrls: ['./electoral-forensics.scss', './forensics-workspace.scss', './forensics-tables.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,6 +41,8 @@ const initialFilters: SectionFilters = {
 export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   private readonly http = inject(HttpClient);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly queryParams = toSignal(this.route.queryParams, { initialValue: this.route.snapshot.queryParams });
   private readonly destroyRef = inject(DestroyRef);
   private readonly meta = inject(Meta);
   private readonly title = inject(Title);
@@ -52,13 +54,15 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   private sectionObserver?: IntersectionObserver;
   private observationFrame?: number;
   private readonly detailCache = new Map<string, ForensicsSection>();
-  readonly focus = this.route.snapshot.data['researchQuery'] === 'query2';
-  readonly pagePath = this.focus ? '/research/runoff-mobilization-2026' : '/research/electoral-forensics-2026';
+  readonly focus = computed(() => this.queryParams()['scope'] === 'small');
+  readonly pagePath = computed(() => this.router.serializeUrl(this.router.createUrlTree(
+    ['/research/electoral-forensics-2026'], { queryParams: this.queryParams() })));
   readonly report = signal<ForensicsReport | null>(null);
   readonly sections = signal<ForensicsSection[]>([]);
   readonly error = signal('');
   readonly loading = signal(true);
-  readonly filters = signal<SectionFilters>({ ...initialFilters, focus: this.focus });
+  private readonly sectionFilters = signal({ ...initialFilters });
+  readonly filters = computed<SectionFilters>(() => ({ ...this.sectionFilters(), focus: this.focus() }));
   readonly page = signal(0);
   readonly selected = signal<ForensicsSection | null>(null);
   readonly detailLoading = signal(false);
@@ -81,11 +85,10 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
     { id: 'map', label: 'Карта' }, { id: 'table', label: 'Секционна таблица' }, { id: 'gains', label: 'Прираст по секции' },
   ];
   readonly placeTabs: ViewTab[] = [{ id: 'municipalities', label: 'Общини' }, { id: 'settlements', label: 'Населени места' }];
-  readonly statsTabs: ViewTab[] = [
+  readonly statsTabs = computed<ViewTab[]>(() => [
     { id: 'candidates', label: 'Кандидатски ръст' },
-    { id: 'general', label: this.focus ? 'H1-H5 · До 400 избиратели' : 'Активност · H1-H5' },
-    ...(this.focus ? [{ id: 'national', label: 'H1-H5 · Всички размери' }] : []),
-  ];
+    { id: 'general', label: this.focus() ? 'H1-H5 · До 400 избиратели' : 'Активност · H1-H5' },
+  ]);
   readonly roundTabs: ViewTab[] = [{ id: '2026.10.25', label: 'I тур · 25 октомври' }, { id: '2026.11.01', label: 'II тур · 1 ноември' }];
   readonly reviewTabs = computed<ViewTab[]>(() => [
     { id: 'turnout', label: 'Активност', count: this.findings().length },
@@ -106,7 +109,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
     { id: 'sources', label: 'Източници', icon: 'history' },
   ];
   readonly dataRoot = DATA_ROOT;
-  readonly queryCsvPrefix = this.focus ? 'query2' : 'query1';
+  readonly queryCsvPrefix = computed(() => this.focus() ? 'query2' : 'query1');
   readonly presidentialDates = ['2026.10.25', '2026.11.01'];
   readonly signed = signed;
   readonly placeValue = placeValue;
@@ -115,7 +118,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   readonly candidateDelta = candidateDelta;
   readonly hasReviewFlag = hasReviewFlag;
   readonly jointTotals = computed(() => jointVoteSummary(this.filtered()));
-  readonly overviewTotals = computed(() => jointVoteSummary(this.sections().filter(row => !this.focus || row.small400)));
+  readonly overviewTotals = computed(() => jointVoteSummary(this.sections().filter(row => !this.focus() || row.small400)));
   readonly activeFilterCount = computed(() => {
     const filters = this.filters();
     return [filters.regionId, filters.search.trim(), filters.size, filters.method, filters.flaggedOnly, !filters.comparableOnly].filter(Boolean).length;
@@ -125,13 +128,13 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   exclusionReasons(row: ForensicsSection): string[] {
     return [...new Set([...row.exclusionReasons, ...(row.analysisExclusions ?? [])])];
   }
-  readonly query = computed(() => this.focus ? this.report()?.query2 : this.report()?.query1);
+  readonly query = computed(() => this.focus() ? this.report()?.query2 : this.report()?.query1);
   readonly filtered = computed(() => filterSections(this.sections(), this.filters()));
   readonly visible = computed(() => this.filtered().slice(this.page() * this.pageSize, (this.page() + 1) * this.pageSize));
   readonly pages = computed(() => Math.max(1, Math.ceil(this.filtered().length / this.pageSize)));
   readonly methods = computed(() => [...new Set(this.sections().map(row => row.method2))].sort());
   readonly unverifiedHistorical = computed(() => this.sections().some(row => row.history['2024.10.27']?.verified === false));
-  readonly sizes = computed(() => [...new Set(this.sections().filter(row => !this.focus || row.small400).map(row => row.sizeGroup))]);
+  readonly sizes = computed(() => [...new Set(this.sections().filter(row => !this.focus() || row.small400).map(row => row.sizeGroup))]);
   readonly regionSummary = computed(() => this.query()?.regions ?? []);
   readonly districts = computed(() => (this.report()?.regions ?? []).filter(row => Number(row.key) <= 31).sort((a, b) => Number(a.key) - Number(b.key)));
   readonly currentGroups = computed(() => this.query()?.municipalities ?? []);
@@ -157,7 +160,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   });
   readonly selectedFinding = computed(() => this.report()?.findings.find(row => row.sectionId === this.selected()?.sectionId));
   readonly sampleCounts = computed(() => {
-    const rows = this.sections().filter(row => !this.focus || row.small400);
+    const rows = this.sections().filter(row => !this.focus() || row.small400);
     return { sections: rows.length, eligible: rows.filter(row => row.eligible !== false && row.comparableRoundPair).length, review: this.findings().length };
   });
   readonly keyResults = computed(() => {
@@ -182,12 +185,26 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
     const scoped = this.query()?.clusters;
     if (scoped) return scoped;
     const ids = this.query()?.clusterIds ?? [];
-    return report.clusters.filter(cluster => !this.focus || ids.includes(cluster.id));
+    return report.clusters.filter(cluster => !this.focus() || ids.includes(cluster.id));
   });
+
+  constructor() {
+    effect(() => {
+      const focus = this.focus();
+      untracked(() => {
+        this.page.set(0);
+        if (focus && this.filters().size && !this.sizes().includes(this.filters().size)) {
+          this.setFilter('size', '');
+        }
+        const selected = this.selected();
+        if (focus && selected && !selected.small400) this.closeSection();
+      });
+    });
+  }
 
   ngOnInit(): void {
     this.meta.updateTag({ name: 'robots', content: 'noindex,nofollow,noarchive' });
-    this.title.setTitle(this.focus ? 'Мобилизация между туровете - изследване 2026' : 'Изборни модели - изследване 2026');
+    this.title.setTitle('Вотът между двата тура - изследване 2026');
     this.load();
   }
 
@@ -224,13 +241,13 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
     });
   }
 
-  setFilter<K extends keyof SectionFilters>(key: K, value: SectionFilters[K]): void {
-    this.filters.update(filters => ({ ...filters, [key]: value }));
+  setFilter<K extends Exclude<keyof SectionFilters, 'focus'>>(key: K, value: SectionFilters[K]): void {
+    this.sectionFilters.update(filters => ({ ...filters, [key]: value }));
     this.page.set(0);
   }
 
   resetFilters(): void {
-    this.filters.update(filters => ({ ...initialFilters, focus: this.focus, sort: filters.sort, descending: filters.descending }));
+    this.sectionFilters.update(filters => ({ ...initialFilters, sort: filters.sort, descending: filters.descending }));
     this.page.set(0);
   }
 
@@ -243,7 +260,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   toggleSectionDetails(): void {
     this.showSectionDetails.update(value => !value);
     if (!this.showSectionDetails() && !['sectionId', 'deltaTurnoutPp', 'deltaVoted', 'candidate4Delta', 'candidate25Delta'].includes(this.filters().sort)) {
-      this.filters.update(filters => ({ ...filters, sort: 'deltaTurnoutPp', descending: true }));
+      this.sectionFilters.update(filters => ({ ...filters, sort: 'deltaTurnoutPp', descending: true }));
       this.page.set(0);
     }
   }
@@ -270,7 +287,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   checked(event: Event): boolean { return (event.target as HTMLInputElement).checked; }
 
   sort(key: SectionSort): void {
-    this.filters.update(filters => ({ ...filters, sort: key, descending: filters.sort === key ? !filters.descending : key !== 'sectionId' }));
+    this.sectionFilters.update(filters => ({ ...filters, sort: key, descending: filters.sort === key ? !filters.descending : key !== 'sectionId' }));
     this.page.set(0);
   }
 
