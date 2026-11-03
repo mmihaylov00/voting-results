@@ -17,8 +17,9 @@ function row(overrides: Partial<ForensicsSection> = {}): ForensicsSection {
 }
 
 function setup(rows: readonly ForensicsSection[]) {
+  const darkMode = signal(false);
   TestBed.configureTestingModule({ imports: [ForensicsGainsChartComponent],
-    providers: [{ provide: ThemeService, useValue: { darkMode: signal(false) } }],
+    providers: [{ provide: ThemeService, useValue: { darkMode, toggleDarkMode: () => darkMode.update(value => !value) } }],
   }).overrideComponent(ForensicsGainsChartComponent, {
     remove: { imports: [HighchartsChartComponent] }, add: { imports: [ChartStub] },
   });
@@ -170,17 +171,25 @@ describe('section gain graph and ranking', () => {
       chart.update(component.chart(), true, false);
       component.stableOnly.set(true);
       chart.update(component.chart(), true, false);
+      chart.setSize(320, 500, false);
+      chart.setSize(390, 500, false);
+      TestBed.inject(ThemeService).toggleDarkMode();
+      chart.update(component.chart(), true, false);
       const scatter = chart.series.find(series => series.type === 'scatter');
       if (!scatter) throw new Error('Missing updated scatter series');
       const top = scatter.points.find(point => point.options.id === 'top');
       const loss = scatter.points.find(point => point.options.id === 'loss');
       expect(scatter.points.map(point => point.options.id)).toEqual(['top', 'second', 'third', 'fourth', 'fifth', 'loss']);
-      expect(top).toMatchObject({ x: 17, y: 193, options: { dataLabels: { enabled: true }, marker: { radius: 5 } } });
-      expect(loss).toMatchObject({ x: 17, y: -26, options: { dataLabels: { enabled: false }, marker: { radius: 3 } } });
+      expect(top).toMatchObject({ x: 17, y: 193, options: { labelrank: 193, marker: { radius: 5 } } });
+      expect(loss).toMatchObject({ x: 17, y: -26, options: { labelrank: 0, marker: { radius: 3 } } });
       const tooltip = chart.options.tooltip?.formatter;
       if (!top || !tooltip) throw new Error('Missing updated top point or tooltip');
       expect(Reflect.apply(tooltip, top, [{}])).toContain('<b>top</b>');
       expect(Reflect.apply(tooltip, top, [{}])).toContain('Δ +193');
+      const labels = [...container.querySelectorAll('.highcharts-data-labels text')].map(label => label.textContent);
+      expect(labels.length).toBeGreaterThan(0);
+      expect(labels.length).toBeLessThanOrEqual(5);
+      expect(new Set(labels).size).toBe(labels.length);
     } finally {
       chart.destroy();
       container.remove();
@@ -193,8 +202,10 @@ describe('section gain graph and ranking', () => {
     const scatter = fixture.componentInstance.chart().series?.find((series): series is SeriesScatterOptions => 'type' in series && series.type === 'scatter');
     if (!scatter) throw new Error('Missing section scatter');
     const labels = scatter.data?.map(point => typeof point === 'object' && point !== null && !Array.isArray(point)
-      ? point.dataLabels : undefined);
-    expect(labels?.filter(label => label && !Array.isArray(label) && label.enabled)).toHaveLength(5);
+      ? point.labelrank : undefined);
+    expect(labels?.filter(rank => rank !== undefined && rank > 0)).toHaveLength(5);
+    expect(fixture.componentInstance.chart().plotOptions?.scatter?.dataLabels).toMatchObject({ enabled: true,
+      filter: { property: 'labelrank', operator: '>', value: 0 } });
   });
 
   it('marks changed registered lists with an amber outline while preserving candidate-change fills', () => {

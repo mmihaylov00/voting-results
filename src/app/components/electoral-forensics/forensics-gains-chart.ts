@@ -135,7 +135,10 @@ export class ForensicsGainsChartComponent {
       tooltip: { useHTML: false, outside: false, backgroundColor: 'hsl(var(--background))', borderColor: '#81909c', style: { color: 'var(--research-ink)', fontSize: '12px' },
         formatter() { return tooltip(this.options.id); } },
       plotOptions: { series: { animation: false }, scatter: { turboThreshold: 0, cursor: 'pointer', marker: { radius: 3, lineWidth: 0 },
-        point: { events: { click() { openPoint(this.options.id); } } }, dataLabels: { enabled: false, format: '{point.name}', allowOverlap: false, style: { color: 'var(--research-ink)', textOutline: 'none', fontSize: '10px' } } } },
+        // Shared filtering keeps label ownership intact across point and theme updates.
+        point: { events: { click() { openPoint(this.options.id); } } }, dataLabels: { enabled: true,
+          filter: { property: 'labelrank', operator: '>', value: 0 }, format: '{point.name}', allowOverlap: false,
+          style: { color: 'var(--research-ink)', textOutline: 'none', fontSize: '10px' } } } },
       series: [
         { type: 'line', name: 'Равен абсолютен прираст (описателна линия)', color: '#81909c', dashStyle: 'Dash', lineWidth: 1,
           marker: { enabled: false }, enableMouseTracking: false, data: [[start, start], [end, end]] },
@@ -143,7 +146,7 @@ export class ForensicsGainsChartComponent {
           const extreme = extremeIds.has(point.row.sectionId);
           const changedList = point.listChangePct > 5;
           const color = point.yotova > 0 ? positive : point.yotova < 0 ? negative : '#81909c';
-          return { id: point.row.sectionId, x: xValue(point), y: point.yotova, name: escapeText(point.row.sectionId), dataLabels: { enabled: extreme },
+          return { id: point.row.sectionId, x: xValue(point), y: point.yotova, name: escapeText(point.row.sectionId), labelrank: extreme ? Math.abs(point.yotova) : 0,
             marker: { radius: extreme ? 5 : 3, fillColor: Highcharts.color(color).setOpacity(extreme ? 1 : .35).get(),
               lineColor: changedList ? '#b58118' : 'var(--research-ink)', lineWidth: changedList ? 1.5 : extreme ? 1 : 0 } };
         }) },
