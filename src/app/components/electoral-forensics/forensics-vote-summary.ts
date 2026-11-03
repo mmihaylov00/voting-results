@@ -3,15 +3,17 @@ import { ThemeService } from '../../services/theme.service';
 import { getPartyColor } from '../../utils/party-colors';
 import { jointVoteSummary } from './forensics-candidates.util';
 import { signed } from './forensics.util';
+import { SignedChangeDirective } from '../ui/signed-change/signed-change';
 
 @Component({
   selector: 'app-forensics-vote-summary',
+  imports: [SignedChangeDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<dl class="vote-summary">
     @for (metric of metrics(); track metric.id) {
       <div class="metric" [style.--metric-color]="metric.color">
         <dt><span class="metric-dot" aria-hidden="true"></span>{{ metric.label }}</dt>
-        <dd>{{ metric.value }}<span class="unit">{{ metric.unit }}</span></dd>
+        <dd [appSignedChange]="metric.change">{{ metric.value }}<span class="unit">{{ metric.unit }}</span></dd>
         <dd class="baseline" [attr.aria-label]="'I тур: ' + metric.before + '; II тур: ' + metric.after">{{ metric.before }} <span aria-hidden="true">→</span> {{ metric.after }}</dd>
       </div>
     }
@@ -37,14 +39,15 @@ export class ForensicsVoteSummaryComponent {
     const count = (value: number | null) => value === null ? 'няма данни' : value.toLocaleString('bg-BG');
     const percent = (value: number | null) => value === null ? 'няма данни' : `${value.toLocaleString('bg-BG', { maximumFractionDigits: 2 })}%`;
     return [
-      { id: 'voters', label: 'Промяна в гласувалите', value: signed(summary.deltaVoted, 0), unit: '',
+      { id: 'voters', label: 'Промяна в гласувалите', value: signed(summary.deltaVoted, 0), change: summary.deltaVoted, unit: '',
         before: count(summary.voted1), after: count(summary.voted2), color: 'hsl(var(--foreground))' },
-      { id: 'turnout', label: 'Промяна в активността', value: signed(summary.deltaTurnoutPp), unit: 'п.п.',
+      { id: 'turnout', label: 'Промяна в активността', value: signed(summary.deltaTurnoutPp), change: summary.deltaTurnoutPp, unit: 'п.п.',
         before: percent(summary.turnout1), after: percent(summary.turnout2), color: 'hsl(var(--primary))' },
       ...(['4', '25'] as const).map(id => {
         const candidate = summary.candidates.find(row => row.id === id);
         const label = id === '4' ? 'Андрей Гюров' : 'Илияна Йотова';
-        return { id, label, value: signed(candidate?.deltaVotes, 0), unit: Math.abs(candidate?.deltaVotes ?? 0) === 1 ? 'глас' : 'гласа',
+        return { id, label, value: signed(candidate?.deltaVotes, 0), change: candidate?.deltaVotes,
+          unit: Math.abs(candidate?.deltaVotes ?? 0) === 1 ? 'глас' : 'гласа',
           before: count(candidate?.votes1 ?? null), after: count(candidate?.votes2 ?? null),
           color: getPartyColor(candidate?.name ?? label, this.theme.darkMode()) };
       }),

@@ -154,4 +154,30 @@ describe('national district summary', () => {
     expect(cells[10].textContent).toContain('няма данни / няма данни');
     expect(cells[12].textContent).toContain('няма данни / няма данни / няма данни');
   });
+
+  it('colors only signed changes while baseline totals, zero changes and review counts stay neutral', () => {
+    const fixture = TestBed.createComponent(ForensicsGroupTableComponent);
+    fixture.componentRef.setInput('rows', [groupFixture({ registered2: 235, voted2: 86,
+      deltaTurnoutPp: 100 * 86 / 235 - 36, deltaVoted: -4, added1: 8, added2: 5, deltaAdded: -3,
+      candidateTotals: [{ id: '4', name: 'Гюров', votes1: 40, votes2: 30, deltaVotes: -10 },
+        { id: '25', name: 'Йотова', votes1: 50, votes2: 50, deltaVotes: 0 }] })]);
+    fixture.componentInstance.showDetails.set(true);
+    fixture.detectChanges();
+    const cells = fixture.nativeElement.querySelectorAll('tbody td') as NodeListOf<HTMLTableCellElement>;
+    expect(cells[1].getAttribute('data-change')).toBe('up');
+    expect(cells[1].classList.contains('text-emerald-700')).toBe(true);
+    expect(cells[2].getAttribute('data-change')).toBe('down');
+    expect(cells[2].classList.contains('dark:text-rose-400')).toBe(true);
+    expect(cells[3].querySelector('[data-change]')?.getAttribute('data-change')).toBe('down');
+    const unchanged = cells[4].querySelector('[data-change]')!;
+    expect(unchanged.getAttribute('data-change')).toBe('flat');
+    expect(unchanged.classList.contains('text-emerald-700')).toBe(false);
+    expect(unchanged.classList.contains('text-rose-700')).toBe(false);
+    expect(cells[3].querySelector('small')?.hasAttribute('data-change')).toBe(false);
+    expect(cells[0].hasAttribute('data-change')).toBe(false);
+    expect(cells[5].hasAttribute('data-change')).toBe(false);
+    expect(cells[10].hasAttribute('data-change')).toBe(false);
+    expect(cells[10].querySelector('[data-change]')?.getAttribute('data-change')).toBe('down');
+    expect(cells[10].querySelector('small')?.classList.contains('opacity-100!')).toBe(true);
+  });
 });

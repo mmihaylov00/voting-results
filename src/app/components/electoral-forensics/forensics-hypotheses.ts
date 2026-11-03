@@ -1,8 +1,9 @@
 import { DecimalPipe, JsonPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 import { ForensicsHypothesis } from './forensics.models';
 import { signed } from './forensics.util';
-import { MapIconComponent } from '../ui/map-icon/map-icon';
+import { ViewTabsComponent, ViewTab } from '../ui/view-tabs/view-tabs';
+import { SignedChangeDirective } from '../ui/signed-change/signed-change';
 
 type Coefficient = { name: string; estimate: number | null; ci95: [number, number] | null; p: number | null };
 
@@ -13,42 +14,51 @@ function numericInterval(value: unknown): [number, number] | null {
 
 @Component({
   selector: 'app-forensics-hypotheses',
-  imports: [DecimalPipe, JsonPipe, MapIconComponent],
+  imports: [DecimalPipe, JsonPipe, ViewTabsComponent, SignedChangeDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <p class="guide">Изберете проверка за метода, p-стойността и ограниченията. Статистическият сигнал не доказва нарушение.</p>
-    <div class="table-scroll checks" tabindex="0" role="region" aria-label="Резултати от статистическите проверки">
-      <div class="check-grid check-head" aria-hidden="true"><span>Проверка</span><span>Оценка и 95% интервал</span><span>q</span><span>Наблюдения</span><span></span></div>
-      @for (row of rows(); track row.id) {
-        <details class="check" [attr.data-check-id]="row.id">
-          <summary class="check-grid">
-            <span class="check-label"><strong>{{ row.id }} · {{ shortLabel(row) }}</strong><span class="status-chip" [class.signal]="hasSignal(row)" [attr.title]="hasSignal(row) ? 'q < 0,05: асоциация в рамките на модела, а не доказателство за нарушение' : status(row.status)">{{ badge(row) }}</span></span>
-            <span class="check-effect"><small class="mobile-label">Оценка · 95% интервал</small><strong>{{ row.id === 'H2' && row.estimate === null ? 'Две партийни оценки' : signed(row.estimate) }}</strong><small>{{ interval(row.ci95) }}@if (row.estimate !== null) { · {{ row.id.startsWith('C') ? 'п.п. / +10 п.п.' : 'п.п.' }}}</small></span>
-            <span class="check-q" [attr.title]="row.q"><small class="mobile-label">q</small>{{ probability(row.q) }}</span>
-            <span class="check-n"><small class="mobile-label">Наблюдения</small>{{ row.n | number }}<small>{{ row.id === 'H4' ? 'Места за гласуване' : 'Секции' }}</small></span>
-            <app-map-icon class="toggle-icon" name="chevron-right" />
-          </summary>
-          <div class="check-body">
-            <h4>{{ row.title }}</h4><p>{{ row.summary }}</p>
-            <dl class="technical-values"><div><dt>p</dt><dd [attr.title]="row.p">{{ probability(row.p) }}</dd></div><div><dt>Мерна единица</dt><dd>{{ row.unit }}</dd></div><div><dt>Статус на оценката</dt><dd>{{ status(row.status) }}</dd></div></dl>
-            @if (row.id === 'H2') {
-              @for (party of partyEstimates(); track party.id) {
-                <div class="party-estimates"><div class="table-scroll" tabindex="0" role="region" aria-label="Партийни оценки и доверителни интервали"><table><caption>За +10 п.п. исторически партиен дял. Отделните p-стойности са некоригирани; общата q-стойност за H2 е показана по-горе.</caption><thead><tr><th scope="col">Регистрация от 19.04.2026</th><th scope="col">Оценка, п.п.</th><th scope="col">95% интервал</th><th scope="col">p</th></tr></thead><tbody>@for (coefficient of party.coefficients; track coefficient.name) {<tr><th scope="row">{{ coefficient.name }}</th><td>{{ signed(coefficient.estimate) }}</td><td>{{ interval(coefficient.ci95) }}</td><td>{{ probability(coefficient.p) }}</td></tr>}</tbody></table></div></div>
-              }
-            }
-            @if (row.method) {<p><strong>Метод:</strong> {{ row.method }}</p>}
-            <ul>@for (limitation of row.limitations; track $index) {<li>{{ limitation }}</li>}</ul>
-            <details class="technical"><summary>Всички контролни коефициенти и изчисления</summary><pre>{{ row.details | json }}</pre></details>
-          </div>
-        </details>
-      }
-    </div>
-    @if (sensitivities().length) {<details><summary>Същите кандидатски проверки при стабилни списъци</summary><div class="table-scroll" tabindex="0" role="region" aria-label="Кандидатски проверки при стабилни списъци"><table><caption>Отделна извадка със стабилни списъци. Показани са публикуваните оценки и корекции за тази проверка.</caption><thead><tr><th scope="col">Проверка</th><th scope="col">Статус</th><th scope="col">N</th><th scope="col">Оценка</th><th scope="col">95% интервал</th><th scope="col">p</th><th scope="col">q</th></tr></thead><tbody>@for (row of sensitivities(); track row.id) {<tr><th scope="row">{{ row.id }}</th><td>{{ status(row.status) }}</td><td>{{ row.n ?? 'няма данни' }}</td><td>{{ signed(row.estimate) }}</td><td>{{ interval(row.ci95) }}</td><td>{{ probability(row.p) }}</td><td>{{ probability(row.q) }}</td></tr>}</tbody></table></div></details>}
+    <app-view-tabs [tabs]="tabs()" [value]="selectedRow()?.id ?? ''" (valueChange)="activeId.set($event)" label="Статистическа проверка" [idPrefix]="tabPrefix" [panelId]="tabPrefix + '-panel'" />
+    @if (selectedRow(); as row) {
+      <section class="check-panel" role="tabpanel" tabindex="0" [id]="tabPrefix + '-panel'" [attr.aria-labelledby]="tabPrefix + '-tab-' + row.id" [attr.data-check-id]="row.id">
+        <div class="check-heading"><h3>{{ row.title }}</h3><span class="status-chip" [class.signal]="hasSignal(row)" [attr.title]="hasSignal(row) ? 'q < 0,05: асоциация в рамките на модела, а не доказателство за нарушение' : status(row.status)">{{ badge(row) }}</span></div>
+        <p>{{ row.summary }}</p>
+        <dl class="check-metrics">
+          <div><dt>Оценка</dt><dd [appSignedChange]="row.estimate">{{ row.id === 'H2' && row.estimate === null ? 'Две партийни оценки' : signed(row.estimate) }}</dd></div>
+          <div><dt>95% интервал</dt><dd>{{ interval(row.ci95) }}</dd></div>
+          <div><dt>q</dt><dd [attr.title]="row.q">{{ probability(row.q) }}</dd></div>
+          <div><dt>p</dt><dd [attr.title]="row.p">{{ probability(row.p) }}</dd></div>
+          <div><dt>{{ row.id === 'H4' ? 'Места за гласуване' : 'Секции' }}</dt><dd>{{ row.n | number }}</dd></div>
+        </dl>
+        <p class="unit"><strong>Мерна единица:</strong> {{ row.unit }}</p>
+        @if (row.id === 'H2') {
+          @for (party of partyEstimates(); track party.id) {
+            <div class="party-estimates"><div class="table-scroll" tabindex="0" role="region" aria-label="Партийни оценки и доверителни интервали"><table><caption>За +10 п.п. исторически партиен дял. Отделните p-стойности са некоригирани; общата q-стойност за H2 е показана по-горе.</caption><thead><tr><th scope="col">Регистрация от 19.04.2026</th><th scope="col">Оценка, п.п.</th><th scope="col">95% интервал</th><th scope="col">p</th></tr></thead><tbody>@for (coefficient of party.coefficients; track coefficient.name) {<tr><th scope="row">{{ coefficient.name }}</th><td [appSignedChange]="coefficient.estimate">{{ signed(coefficient.estimate) }}</td><td>{{ interval(coefficient.ci95) }}</td><td>{{ probability(coefficient.p) }}</td></tr>}</tbody></table></div></div>
+          }
+        }
+        @if (selectedSensitivity(); as stable) {
+          <h4>Сравнение със стабилни списъци</h4>
+          <div class="table-scroll" tabindex="0" role="region" aria-label="Кандидатски проверки при стабилни списъци"><table><caption>Същата проверка в две извадки; всяка използва собствената публикувана корекция.</caption><thead><tr><th scope="col">Извадка</th><th scope="col">Статус</th><th scope="col">Секции</th><th scope="col">Оценка</th><th scope="col">95% интервал</th><th scope="col">p</th><th scope="col">q</th></tr></thead><tbody>
+            <tr><th scope="row">Основна</th><td>{{ status(row.status) }}</td><td>{{ row.n | number }}</td><td [appSignedChange]="row.estimate">{{ signed(row.estimate) }}</td><td>{{ interval(row.ci95) }}</td><td>{{ probability(row.p) }}</td><td>{{ probability(row.q) }}</td></tr>
+            <tr><th scope="row">Стабилни списъци</th><td>{{ status(stable.status) }}</td><td>{{ stable.n ?? 'няма данни' }}</td><td [appSignedChange]="stable.estimate">{{ signed(stable.estimate) }}</td><td>{{ interval(stable.ci95) }}</td><td>{{ probability(stable.p) }}</td><td>{{ probability(stable.q) }}</td></tr>
+          </tbody></table></div>
+        }
+        @if (row.method) {<p><strong>Метод:</strong> {{ row.method }}</p>}
+        <ul class="limitations">@for (limitation of row.limitations; track $index) {<li>{{ limitation }}</li>}</ul>
+        <p class="guide">Статистическият сигнал описва асоциация и не доказва нарушение.</p>
+        <details class="technical"><summary>Контролни коефициенти и изчисления</summary><pre>{{ row.details | json }}</pre></details>
+      </section>
+    }
   `,
   styleUrl: './forensics-hypotheses.scss',
 })
 export class ForensicsHypothesesComponent {
+  private static nextId = 0;
   readonly rows = input<ForensicsHypothesis[]>([]);
+  readonly activeId = signal('');
+  readonly tabPrefix = `forensics-check-${++ForensicsHypothesesComponent.nextId}`;
+  readonly selectedRow = computed<ForensicsHypothesis | null>(() => this.rows().find(row => row.id === this.activeId()) ?? this.rows()[0] ?? null);
+  readonly tabs = computed<ViewTab[]>(() => this.rows().map(row => ({ id: row.id, label: `${row.id} · ${this.shortLabel(row)}` })));
+  readonly selectedSensitivity = computed(() => this.sensitivities().find(row => row.id === this.selectedRow()?.id) ?? null);
   readonly signed = signed;
   shortLabel(row: ForensicsHypothesis): string {
     return ({ H1: 'Размер на секцията', H2: 'Исторически партиен дял', H3: 'Метод на гласуване',

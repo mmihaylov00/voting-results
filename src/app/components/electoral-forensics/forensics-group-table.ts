@@ -5,6 +5,7 @@ import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directi
 import { MapIconComponent } from '../ui/map-icon/map-icon';
 import { TableColumns, TableControlsComponent } from '../ui/table-controls/table-controls';
 import { SortableTableHeaderComponent } from '../ui/sortable-table-header/sortable-table-header';
+import { SignedChangeDirective } from '../ui/signed-change/signed-change';
 
 interface GeographicGroup extends ForensicsGroup {
   paperN?: number;
@@ -14,7 +15,7 @@ interface GeographicGroup extends ForensicsGroup {
 
 @Component({
   selector: 'app-forensics-group-table',
-  imports: [HlmButtonDirective, MapIconComponent, TableControlsComponent, SortableTableHeaderComponent],
+  imports: [HlmButtonDirective, MapIconComponent, TableControlsComponent, SortableTableHeaderComponent, SignedChangeDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
       <app-table-controls class="w-full min-w-0 sm:flex-1" [rows]="rows()" [columns]="tableColumns"
@@ -52,16 +53,16 @@ interface GeographicGroup extends ForensicsGroup {
           <tr>
             <th scope="row">{{ groupName(row.name) }}@if (row.region && row.region !== row.name) {<small>{{ row.region }}</small>}</th>
             <td [attr.aria-label]="count(row.eligibleN) + ' сравними от ' + count(row.n) + ' общо'">{{ count(row.eligibleN) }} <span class="text-muted-foreground">/ {{ count(row.n) }}</span></td>
-            <td>{{ signed(row.deltaTurnoutPp) }}</td><td>{{ signed(row.deltaVoted, 0) }}</td>
-            <td>{{ signed(candidateGain(row, '4'), 0) }}@if (showDetails()) {@if (candidate(row, '4'); as pair) {<small>{{ count(pair.votes1) }} → {{ count(pair.votes2) }}</small>}}</td>
-            <td>{{ signed(candidateGain(row, '25'), 0) }}@if (showDetails()) {@if (candidate(row, '25'); as pair) {<small>{{ count(pair.votes1) }} → {{ count(pair.votes2) }}</small>}}</td>
+            <td [appSignedChange]="row.deltaTurnoutPp">{{ signed(row.deltaTurnoutPp) }}</td><td [appSignedChange]="row.deltaVoted">{{ signed(row.deltaVoted, 0) }}</td>
+            <td><span [appSignedChange]="candidateGain(row, '4')">{{ signed(candidateGain(row, '4'), 0) }}</span>@if (showDetails()) {@if (candidate(row, '4'); as pair) {<small>{{ count(pair.votes1) }} → {{ count(pair.votes2) }}</small>}}</td>
+            <td><span [appSignedChange]="candidateGain(row, '25')">{{ signed(candidateGain(row, '25'), 0) }}</span>@if (showDetails()) {@if (candidate(row, '25'); as pair) {<small>{{ count(pair.votes1) }} → {{ count(pair.votes2) }}</small>}}</td>
             <td>{{ count(row.flaggedN) }}</td>
             @if (showDetails()) {
               <td>{{ count(row.registered1) }} / {{ count(row.registered2) }}</td>
               <td>{{ count(row.voted1) }} / {{ count(row.voted2) }}</td>
               <td>{{ percent(row.turnout1) }} / {{ percent(row.turnout2) }}</td>
-              <td>{{ signed(row.meanDeltaPp) }} п.п.</td>
-              <td>{{ count(row.added1) }} / {{ count(row.added2) }}<small>Δ {{ signed(row.deltaAdded, 0) }}</small></td>
+              <td [appSignedChange]="row.meanDeltaPp">{{ signed(row.meanDeltaPp) }} п.п.</td>
+              <td>{{ count(row.added1) }} / {{ count(row.added2) }}<small class="opacity-100!">Δ <span [appSignedChange]="row.deltaAdded">{{ signed(row.deltaAdded, 0) }}</span></small></td>
               <td>{{ count(row.addedReviewN) }}</td>
               <td>{{ count(row.paperN) }} / {{ count(row.machineN) }} / {{ count(row.unknownMethodN) }}</td>
               <td>{{ count(row.smallN) }}</td>

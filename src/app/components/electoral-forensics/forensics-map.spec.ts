@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import * as L from 'leaflet';
 import { candidateFixture, sectionFixture } from './forensics.fixtures';
 import { ForensicsMapComponent } from './forensics-map';
 
@@ -31,5 +32,39 @@ describe('joint map indicators', () => {
     expect(lines).toHaveLength(6);
     expect(lines.every(line => line.length > 0)).toBe(true);
     expect(lines.some(line => line.startsWith('Преглед:'))).toBe(false);
+  });
+
+  it('defers fitting new filtered rows while hidden and fits them when the map view returns', () => {
+    let resize: () => void = () => {};
+    vi.stubGlobal('ResizeObserver', class {
+      constructor(callback: () => void) { resize = callback; }
+      observe() {}
+      disconnect() {}
+    });
+    const fit = vi.spyOn(L.Map.prototype, 'fitBounds').mockReturnThis();
+    vi.spyOn(L.LayerGroup.prototype, 'addLayer').mockReturnThis();
+    const fixture = TestBed.createComponent(ForensicsMapComponent);
+    let width = 400;
+    try {
+      const container = (fixture.nativeElement as HTMLElement).querySelector('.research-map')!;
+      vi.spyOn(container, 'clientWidth', 'get').mockImplementation(() => width);
+      vi.spyOn(container, 'clientHeight', 'get').mockReturnValue(350);
+      fixture.componentRef.setInput('rows', [sectionFixture({ latitude: 43, longitude: 25 })]);
+      fixture.detectChanges();
+      expect(fit).toHaveBeenCalledTimes(1);
+      width = 0;
+      fixture.componentRef.setInput('rows', [sectionFixture({ latitude: 44, longitude: 26 })]);
+      fixture.detectChanges();
+      resize();
+      expect(fit).toHaveBeenCalledTimes(1);
+      width = 400;
+      resize();
+      expect(fit).toHaveBeenCalledTimes(2);
+      expect(fit.mock.calls[1][0]).toEqual(L.latLngBounds([[44, 26]]));
+    } finally {
+      fixture.destroy();
+      vi.restoreAllMocks();
+      vi.unstubAllGlobals();
+    }
   });
 });

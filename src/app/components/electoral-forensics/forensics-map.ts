@@ -39,6 +39,7 @@ export class ForensicsMapComponent implements AfterViewInit, OnChanges, OnDestro
   private observer?: ResizeObserver;
   private frame?: number;
   private generation = 0;
+  private refitOnReveal = false;
 
   ngAfterViewInit(): void {
     this.map = L.map(this.container.nativeElement, { preferCanvas: true, scrollWheelZoom: false, zoomControl: false }).setView([43.05, 25.3], 7);
@@ -47,7 +48,11 @@ export class ForensicsMapComponent implements AfterViewInit, OnChanges, OnDestro
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>', maxZoom: 18,
     }).addTo(this.map);
     this.layer = L.layerGroup().addTo(this.map);
-    this.observer = new ResizeObserver(() => this.map?.invalidateSize({ pan: false }));
+    this.observer = new ResizeObserver(() => {
+      if (!this.container.nativeElement.clientWidth || !this.container.nativeElement.clientHeight) return;
+      this.map?.invalidateSize({ pan: false });
+      if (this.refitOnReveal) this.render();
+    });
     this.observer.observe(this.container.nativeElement);
     this.render();
   }
@@ -101,12 +106,17 @@ export class ForensicsMapComponent implements AfterViewInit, OnChanges, OnDestro
     if (!this.map || !this.layer) return;
     const generation = ++this.generation;
     if (this.frame !== undefined) cancelAnimationFrame(this.frame);
+    if (!this.container.nativeElement.clientWidth || !this.container.nativeElement.clientHeight) {
+      this.refitOnReveal ||= fitBounds;
+      return;
+    }
     this.layer.clearLayers();
     const located = this.rows.flatMap(row => {
       const coordinates = this.coordinates(row);
       return coordinates ? [{ row, coordinates }] : [];
     });
-    if (fitBounds && located.length) this.map.fitBounds(L.latLngBounds(located.map(item => item.coordinates)), { padding: [24, 24], maxZoom: 11 });
+    if ((fitBounds || this.refitOnReveal) && located.length) this.map.fitBounds(L.latLngBounds(located.map(item => item.coordinates)), { padding: [24, 24], maxZoom: 11 });
+    this.refitOnReveal = false;
     let index = 0;
     const batch = () => {
       if (generation !== this.generation || !this.layer) return;

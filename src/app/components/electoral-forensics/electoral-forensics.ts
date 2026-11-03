@@ -21,6 +21,8 @@ import { getPartyColor } from '../../utils/party-colors';
 import { ThemeService } from '../../services/theme.service';
 import { ForensicsHistoryComponent } from './forensics-history';
 import { ForensicsVoteSummaryComponent } from './forensics-vote-summary';
+import { ViewTab, ViewTabsComponent } from '../ui/view-tabs/view-tabs';
+import { SignedChangeDirective } from '../ui/signed-change/signed-change';
 
 const DATA_ROOT = '/data/forensics/2026';
 const initialFilters: SectionFilters = {
@@ -30,7 +32,7 @@ const initialFilters: SectionFilters = {
 
 @Component({
   selector: 'app-electoral-forensics',
-  imports: [CommonModule, FormsModule, RouterLink, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent],
+  imports: [CommonModule, FormsModule, RouterLink, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective],
   templateUrl: './electoral-forensics.html',
   styleUrls: ['./electoral-forensics.scss', './forensics-workspace.scss', './forensics-tables.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -62,7 +64,34 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   readonly detailError = signal('');
   readonly pageSize = 30;
   readonly showSectionDetails = signal(false);
-  readonly placeLevel = signal<'municipalities' | 'settlements'>('municipalities');
+  readonly placeLevel = signal('municipalities');
+  readonly overviewView = signal('charts');
+  readonly explorerView = signal('map');
+  readonly reviewView = signal(this.route.snapshot.fragment === 'candidate-review' ? 'candidate' : this.route.snapshot.fragment === 'added-review' ? 'added' : 'turnout');
+  readonly statsView = signal(this.route.snapshot.fragment === 'hypotheses' ? 'general' : 'candidates');
+  readonly inspectorRound = signal('2026.10.25');
+  readonly inspectorHistoryDate = signal('2026.04.19');
+  readonly overviewTabs: ViewTab[] = [
+    { id: 'charts', label: 'Графики' }, { id: 'regions', label: 'Райони' },
+    { id: 'size', label: 'Размер на секцията' }, { id: 'method', label: 'Метод на гласуване' },
+    { id: 'controls', label: 'Сходни секции' }, { id: 'observations', label: 'Наблюдения' },
+  ];
+  readonly explorerTabs: ViewTab[] = [{ id: 'map', label: 'Карта' }, { id: 'table', label: 'Секционна таблица' }];
+  readonly placeTabs: ViewTab[] = [{ id: 'municipalities', label: 'Общини' }, { id: 'settlements', label: 'Населени места' }];
+  readonly statsTabs: ViewTab[] = [
+    { id: 'candidates', label: 'Кандидатски ръст' },
+    { id: 'general', label: this.focus ? 'H1-H5 · До 400 избиратели' : 'Активност · H1-H5' },
+    ...(this.focus ? [{ id: 'national', label: 'H1-H5 · Всички размери' }] : []),
+  ];
+  readonly roundTabs: ViewTab[] = [{ id: '2026.10.25', label: 'I тур · 25 октомври' }, { id: '2026.11.01', label: 'II тур · 1 ноември' }];
+  readonly reviewTabs = computed<ViewTab[]>(() => [
+    { id: 'turnout', label: 'Активност', count: this.findings().length },
+    { id: 'candidate', label: 'Кандидатски ръст', count: this.query()?.candidateReview?.length ?? 0 },
+    { id: 'added', label: 'Дописани избиратели', count: this.query()?.addedElectorReview?.length ?? 0 },
+    { id: 'clusters', label: 'Териториални групи', count: this.clusters().length },
+  ]);
+  readonly historyTabs = computed<ViewTab[]>(() => Object.keys(this.selected()?.history ?? {}).sort().reverse().map(date => ({ id: date, label: date })));
+  readonly selectedHistoryDate = computed(() => this.historyTabs().some(tab => tab.id === this.inspectorHistoryDate()) ? this.inspectorHistoryDate() : this.historyTabs()[0]?.id ?? '');
   readonly activeSection = signal('results');
   readonly navigation: { id: string; label: string; icon: MapIconName }[] = [
     { id: 'results', label: 'Обобщение', icon: 'summary' },
@@ -152,7 +181,6 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
     const ids = this.query()?.clusterIds ?? [];
     return report.clusters.filter(cluster => !this.focus || ids.includes(cluster.id));
   });
-  readonly candidateTotals = computed(() => this.jointTotals().candidates);
 
   ngOnInit(): void {
     this.meta.updateTag({ name: 'robots', content: 'noindex,nofollow,noarchive' });
@@ -201,6 +229,12 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   resetFilters(): void {
     this.filters.update(filters => ({ ...initialFilters, focus: this.focus, sort: filters.sort, descending: filters.descending }));
     this.page.set(0);
+  }
+
+  navigateSection(id: string): void {
+    if (!this.navigation.some(section => section.id === id)) return;
+    this.activeSection.set(id);
+    window.location.hash = id;
   }
 
   toggleSectionDetails(): void {
@@ -294,7 +328,10 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
 
   openFinding(sectionId: string): void {
     const row = this.sectionIndex().get(sectionId);
-    if (row) this.selectSection(row);
+    if (row) {
+      this.explorerView.set('table');
+      this.selectSection(row);
+    }
   }
 
   percent(value: number | null | undefined): string {

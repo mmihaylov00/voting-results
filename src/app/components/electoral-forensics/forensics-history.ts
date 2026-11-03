@@ -1,5 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
@@ -7,53 +7,63 @@ import { MapIconComponent } from '../ui/map-icon/map-icon';
 import { HistoricalRunoffBenchmark } from './forensics.models';
 import { isOfficialSource, signed } from './forensics.util';
 import { getPresidentialCandidateName } from '../../utils/candidate-label';
+import { ViewTabsComponent, ViewTab } from '../ui/view-tabs/view-tabs';
+import { SignedChangeDirective } from '../ui/signed-change/signed-change';
 
 @Component({
   selector: 'app-forensics-history',
-  imports: [DecimalPipe, HighchartsChartComponent, HlmButtonDirective, MapIconComponent],
+  imports: [DecimalPipe, HighchartsChartComponent, HlmButtonDirective, MapIconComponent, ViewTabsComponent, SignedChangeDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <highcharts-chart class="block w-full" [options]="chart()" />
     <p class="note">Различни годишни извадки и изборен контекст. 2016/2021: липсват адреси и потвърдени флагове за специални секции. @if (hasArchiveRebuild()) {Архивните възстановки са без нова проверка на ZIP.} Сравнението е описателно.</p>
     <div class="table-scroll" tabindex="0" role="region" aria-label="Сравнение с историческите балотажи"><table class="history-summary">
-      <caption>Една и съща извадка за всички стойности в съответната година.</caption>
+      <caption>Изберете година от графиката, таблицата или табовете за пълните стойности.</caption>
       <thead><tr><th scope="col">Година</th><th scope="col">Сравними секции</th><th scope="col">Δ активност</th><th scope="col">Δ гласували</th><th scope="col">Δ финалист 1</th><th scope="col">Δ финалист 2</th></tr></thead>
       <tbody>@for (row of ordered(); track row.cycle) {<tr>
-        <th scope="row">{{ row.cycle }}@if (row.context) {<small [title]="row.context">{{ contextLabel(row) }}</small>}</th>
+        <th scope="row"><button hlmBtn variant="ghost" size="sm" type="button" [attr.aria-pressed]="selectedYear() === row.cycle.toString()" [title]="'Покажи данните за ' + row.cycle" (click)="selectCycle(row.cycle)">{{ row.cycle }}</button>@if (row.context) {<small [title]="row.context">{{ contextLabel(row) }}</small>}</th>
         <td>{{ row.eligibleN ?? row.n | number }}<small>от {{ row.sections | number }}</small></td>
-        <td><strong>{{ signed(row.deltaTurnoutPp) }}</strong><small>п.п.</small></td>
-        <td>{{ signed(row.deltaVoted, 0) }}</td>
-        @for (index of [0, 1]; track index) {<td class="finalist">@if (row.finalists[index]; as candidate) {<strong>{{ signed(candidate.deltaVotes, 0) }}</strong><small [title]="candidate.name">{{ candidateName(candidate.name) }}</small>} @else {няма данни}</td>}
+        <td><strong [appSignedChange]="row.deltaTurnoutPp">{{ signed(row.deltaTurnoutPp) }}</strong><small>п.п.</small></td>
+        <td><span [appSignedChange]="row.deltaVoted">{{ signed(row.deltaVoted, 0) }}</span></td>
+        @for (index of [0, 1]; track index) {<td class="finalist">@if (row.finalists[index]; as candidate) {<strong [appSignedChange]="candidate.deltaVotes">{{ signed(candidate.deltaVotes, 0) }}</strong><small [title]="candidate.name">{{ candidateName(candidate.name) }}</small>} @else {няма данни}</td>}
       </tr>}</tbody>
     </table></div>
-    @for (row of ordered(); track row.cycle) {
-      <details class="cycle-details" [attr.data-cycle]="row.cycle">
-        <summary><app-map-icon name="history" />{{ row.cycle }} · Базови стойности, контекст и източници</summary>
-        <div class="cycle-body">
-          <p>{{ row.cohortDefinition }}</p>
-          <p class="note">{{ matching(row.matchingConfidence) }} · {{ row.excludedN | number }} изключени секции.</p>
-          @if (row.context) {<p>{{ row.context }} @if (isOfficialSource(row.contextSourceUrl)) {<a hlmBtn variant="outline" size="sm" class="gap-2" [href]="row.contextSourceUrl" target="_blank" rel="noopener noreferrer" title="Контекст на изборите: ЦИК"><app-map-icon name="share" />ЦИК</a>}</p>}
-          <div class="table-scroll" tabindex="0" role="region" [attr.aria-label]="'Базови стойности ' + row.cycle"><table><thead><tr><th scope="col">Показател</th><th scope="col">I тур · {{ row.round1Date }}</th><th scope="col">II тур · {{ row.round2Date }}</th></tr></thead><tbody>
-            <tr><th scope="row">По списък</th><td>{{ row.registered1 | number }}</td><td>{{ row.registered2 | number }}</td></tr>
-            <tr><th scope="row">Дописани</th><td>{{ row.added1 | number }}</td><td>{{ row.added2 | number }}</td></tr>
-            <tr><th scope="row">Гласували</th><td>{{ row.voted1 | number }}</td><td>{{ row.voted2 | number }}</td></tr>
-            <tr><th scope="row">Активност</th><td>{{ percent(row.turnout1) }}</td><td>{{ percent(row.turnout2) }}</td></tr>
-          </tbody></table></div>
-          <p class="note">Средна секционна промяна: {{ signed(row.meanDeltaPp) }} п.п. Общата промяна в графиката използва сумите на гласувалите и избирателите по списък.</p>
-          <div class="table-scroll" tabindex="0" role="region" [attr.aria-label]="'Кандидатски резултати ' + row.cycle"><table><caption>Дяловете включват всички действителни гласове, включително „Не подкрепям никого“.</caption><thead><tr><th scope="col">Кандидатска двойка</th><th scope="col">Гласове I / II</th><th scope="col">Δ гласове</th><th scope="col">Дял I / II</th><th scope="col">Δ дял, п.п.</th></tr></thead><tbody>@for (candidate of row.finalists; track candidate.name) {<tr><th scope="row">{{ candidate.name }}<small>Бюлетина {{ candidate.ballot1 }} / {{ candidate.ballot2 }}</small></th><td>{{ candidate.votes1 | number }} / {{ candidate.votes2 | number }}</td><td>{{ signed(candidate.deltaVotes, 0) }}</td><td>{{ percent(candidate.share1) }} / {{ percent(candidate.share2) }}</td><td>{{ signed(candidate.deltaSharePp) }}</td></tr>}</tbody></table></div>
-          @if (row.stableListSensitivity; as stable) {<p>Стабилни списъци: {{ stable.n | number }} секции · Δ активност {{ signed(stable.deltaTurnoutPp) }} п.п. · Δ гласували {{ signed(stable.deltaVoted, 0) }}.</p>}
-          <details class="limits"><summary>Ограничения на сравнението</summary><ul>@for (limitation of row.limitations; track $index) {<li>{{ limitation }}</li>}</ul></details>
-          @if (needsArchiveNote(row)) {<p class="note">Архивна възстановка по документиран източник; ZIP не е повторно проверен.</p>}
-          <div class="sources">@for (source of row.sources; track source.date) {@if (isOfficialSource(source.sourceUrl)) {<a hlmBtn variant="outline" size="sm" class="gap-2" [href]="source.sourceUrl" target="_blank" rel="noopener noreferrer" [title]="'Официален източник ' + source.date"><app-map-icon name="share" />{{ source.date }}</a>}@if (isSourceDocumentation(source.sourceDocumentationUrl)) {<a hlmBtn variant="outline" size="sm" class="gap-2" [href]="source.sourceDocumentationUrl" target="_blank" rel="noopener noreferrer" [title]="'Запазена документация ' + source.date"><app-map-icon name="history" />{{ source.date }} · SOURCE.md</a>}}</div>
-        </div>
-      </details>
+    <app-view-tabs [tabs]="tabs()" [value]="selectedYear()" (valueChange)="activeCycle.set($event)" label="Година на балотажа" [idPrefix]="tabPrefix" [panelId]="tabPrefix + '-panel'" />
+    @if (selectedBenchmark(); as row) {
+      <section class="cycle-panel" role="tabpanel" tabindex="0" [id]="tabPrefix + '-panel'" [attr.aria-labelledby]="tabPrefix + '-tab-' + selectedYear()" [attr.data-cycle]="row.cycle">
+        <h3>{{ row.cycle }} · Стойности по турове</h3>
+        <p>{{ row.cohortDefinition }}</p>
+        <p class="note">{{ matching(row.matchingConfidence) }} · {{ row.excludedN | number }} изключени секции.</p>
+        @if (row.context) {<p class="context">{{ row.context }} @if (isOfficialSource(row.contextSourceUrl)) {<a hlmBtn variant="outline" size="sm" class="gap-2" [href]="row.contextSourceUrl" target="_blank" rel="noopener noreferrer" title="Контекст на изборите: ЦИК"><app-map-icon name="share" />ЦИК</a>}</p>}
+        <div class="table-scroll" tabindex="0" role="region" [attr.aria-label]="'Базови стойности ' + row.cycle"><table><thead><tr><th scope="col">Показател</th><th scope="col">I тур · {{ row.round1Date }}</th><th scope="col">II тур · {{ row.round2Date }}</th></tr></thead><tbody>
+          <tr><th scope="row">По списък</th><td>{{ row.registered1 | number }}</td><td>{{ row.registered2 | number }}</td></tr>
+          <tr><th scope="row">Дописани</th><td>{{ row.added1 | number }}</td><td>{{ row.added2 | number }}</td></tr>
+          <tr><th scope="row">Гласували</th><td>{{ row.voted1 | number }}</td><td>{{ row.voted2 | number }}</td></tr>
+          <tr><th scope="row">Активност</th><td>{{ percent(row.turnout1) }}</td><td>{{ percent(row.turnout2) }}</td></tr>
+        </tbody></table></div>
+        <p class="note with-changes">Средна секционна промяна: <span [appSignedChange]="row.meanDeltaPp">{{ signed(row.meanDeltaPp) }}</span> п.п. Общата промяна в графиката използва сумите на гласувалите и избирателите по списък.</p>
+        <div class="table-scroll" tabindex="0" role="region" [attr.aria-label]="'Кандидатски резултати ' + row.cycle"><table><caption>Дяловете включват всички действителни гласове, включително „Не подкрепям никого“.</caption><thead><tr><th scope="col">Кандидатска двойка</th><th scope="col">Гласове I / II</th><th scope="col">Δ гласове</th><th scope="col">Дял I / II</th><th scope="col">Δ дял, п.п.</th></tr></thead><tbody>@for (candidate of row.finalists; track candidate.name) {<tr><th scope="row">{{ candidate.name }}<small>Бюлетина {{ candidate.ballot1 }} / {{ candidate.ballot2 }}</small></th><td>{{ candidate.votes1 | number }} / {{ candidate.votes2 | number }}</td><td><span [appSignedChange]="candidate.deltaVotes">{{ signed(candidate.deltaVotes, 0) }}</span></td><td>{{ percent(candidate.share1) }} / {{ percent(candidate.share2) }}</td><td><span [appSignedChange]="candidate.deltaSharePp">{{ signed(candidate.deltaSharePp) }}</span></td></tr>}</tbody></table></div>
+        @if (row.stableListSensitivity; as stable) {<p>Стабилни списъци: {{ stable.n | number }} секции · Δ активност <span [appSignedChange]="stable.deltaTurnoutPp">{{ signed(stable.deltaTurnoutPp) }}</span> п.п. · Δ гласували <span [appSignedChange]="stable.deltaVoted">{{ signed(stable.deltaVoted, 0) }}</span>.</p>}
+        <h4>Ограничения на сравнението</h4><ul>@for (limitation of row.limitations; track $index) {<li>{{ limitation }}</li>}</ul>
+        @if (needsArchiveNote(row)) {<p class="note">Архивна възстановка по документиран източник; ZIP не е повторно проверен.</p>}
+        <div class="sources">@for (source of row.sources; track source.date) {@if (isOfficialSource(source.sourceUrl)) {<a hlmBtn variant="outline" size="sm" class="gap-2" [href]="source.sourceUrl" target="_blank" rel="noopener noreferrer" [title]="'Официален източник ' + source.date"><app-map-icon name="share" />{{ source.date }}</a>}@if (isSourceDocumentation(source.sourceDocumentationUrl)) {<a hlmBtn variant="outline" size="sm" class="gap-2" [href]="source.sourceDocumentationUrl" target="_blank" rel="noopener noreferrer" [title]="'Запазена документация ' + source.date"><app-map-icon name="history" />{{ source.date }} · SOURCE.md</a>}}</div>
+      </section>
     }
   `,
   styleUrl: './forensics-history.scss',
 })
 export class ForensicsHistoryComponent {
+  private static nextId = 0;
   readonly benchmarks = input<HistoricalRunoffBenchmark[]>([]);
+  readonly activeCycle = signal('');
+  readonly tabPrefix = `forensics-history-${++ForensicsHistoryComponent.nextId}`;
   readonly ordered = computed(() => [...this.benchmarks()].sort((a, b) => a.cycle - b.cycle));
+  readonly selectedBenchmark = computed(() => this.ordered().find(row => row.cycle.toString() === this.activeCycle()) ?? this.ordered().at(-1) ?? null);
+  readonly selectedYear = computed(() => this.selectedBenchmark()?.cycle.toString() ?? '');
+  readonly tabs = computed<ViewTab[]>(() => this.ordered().map(row => ({ id: row.cycle.toString(), label: row.cycle.toString(), count: row.eligibleN ?? row.n })));
+  selectCycle(cycle: number): void {
+    if (this.ordered().some(row => row.cycle === cycle)) this.activeCycle.set(cycle.toString());
+  }
   readonly signed = signed;
   readonly isOfficialSource = isOfficialSource;
   readonly hasArchiveRebuild = computed(() => this.ordered().some(row => this.needsArchiveNote(row)));
@@ -62,15 +72,20 @@ export class ForensicsHistoryComponent {
     const context = row.context?.toLocaleLowerCase('bg') ?? '';
     return context.includes('референдум') ? 'С референдум' : context.includes('парламентар') ? 'С парламентарен вот' : 'Изборен контекст';
   }
-  readonly chart = computed<Highcharts.Options>(() => ({
+  readonly chart = computed<Highcharts.Options>(() => {
+    const select = (index: number) => {
+      const row = this.ordered()[index];
+      if (row) this.selectCycle(row.cycle);
+    };
+    return {
     chart: { type: 'column', height: 280, backgroundColor: 'transparent', style: { fontFamily: 'inherit' } },
     title: { text: 'Промяна в общата активност по балотажи', style: { color: 'var(--research-ink)', fontSize: '15px' } },
     xAxis: { categories: this.ordered().map(row => String(row.cycle)), labels: { style: { color: 'var(--research-ink)' } } },
     yAxis: { title: { text: 'Процентни пункта', style: { color: 'var(--research-ink)' } }, labels: { style: { color: 'var(--research-ink)' } }, gridLineColor: 'var(--research-rule)', plotLines: [{ value: 0, color: '#81909c', width: 1 }] },
     legend: { enabled: false }, credits: { enabled: false }, tooltip: { valueDecimals: 2, valueSuffix: ' п.п.' },
-    plotOptions: { series: { animation: false, dataLabels: { enabled: true, format: '{point.y:.2f} п.п.', style: { color: 'var(--research-ink)', textOutline: 'none' } } } },
+    plotOptions: { series: { animation: false, cursor: 'pointer', point: { events: { click() { select(this.index); } } }, dataLabels: { enabled: true, format: '{point.y:.2f} п.п.', style: { color: 'var(--research-ink)', textOutline: 'none' } } } },
     series: [{ type: 'column', name: 'Δ активност', color: '#81909c', data: this.ordered().map(row => row.deltaTurnoutPp) }],
-  }));
+  }; });
   percent(value: number | null): string {
     return value === null ? 'няма данни' : value.toLocaleString('bg-BG', { maximumFractionDigits: 2 }) + '%';
   }

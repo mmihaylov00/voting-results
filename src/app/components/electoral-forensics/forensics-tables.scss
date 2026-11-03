@@ -10,6 +10,7 @@ thead th { position: sticky; top: 0; z-index: 1; background: hsl(var(--muted)); 
 tbody th { font-weight: 500; background: hsl(var(--background)); }
 tbody tr:hover > * { background: hsl(var(--muted)); }
 small { display: block; font-weight: 400; opacity: .7; margin-top: .2rem; }
+small:has([data-change]) { opacity: 1; }
 .geography-table { min-width: 760px; }
 .geography-table :is(th, td):first-child { position: sticky; left: 0; z-index: 2; min-width: 150px; max-width: 240px; white-space: normal; border-right: 1px solid var(--research-rule, hsl(var(--border))); }
 .geography-table thead th:first-child { z-index: 3; }

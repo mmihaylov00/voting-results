@@ -15,6 +15,8 @@ import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directi
 import { MapIconComponent } from '../ui/map-icon/map-icon';
 import { ForensicsHistoryComponent } from './forensics-history';
 import { ForensicsVoteSummaryComponent } from './forensics-vote-summary';
+import { ViewTabsComponent } from '../ui/view-tabs/view-tabs';
+import { SignedChangeDirective } from '../ui/signed-change/signed-change';
 
 @Component({ selector: 'highcharts-chart', template: '' })
 class ChartStub { @Input() options: unknown; }
@@ -23,14 +25,14 @@ class MapStub { @Input() rows: ForensicsSection[] = []; @Output() sectionSelect 
 @Component({ selector: 'app-forensics-group-table', template: '' })
 class GroupStub { @Input() rows: ForensicsGroup[] = []; @Input() label = ''; }
 
-function setup(query = 'query1') {
+function setup(query = 'query1', fragment?: string) {
   TestBed.configureTestingModule({
     imports: [ElectoralForensicsComponent],
     providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([]),
-      { provide: ActivatedRoute, useValue: { snapshot: { data: { researchQuery: query } } } }],
+      { provide: ActivatedRoute, useValue: { snapshot: { data: { researchQuery: query }, fragment } } }],
   });
   TestBed.overrideComponent(ElectoralForensicsComponent, {
-    set: { imports: [CommonModule, FormsModule, RouterLink, ChartStub, MapStub, GroupStub, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent] },
+    set: { imports: [CommonModule, FormsModule, RouterLink, ChartStub, MapStub, GroupStub, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective] },
   });
   return TestBed.createComponent(ElectoralForensicsComponent);
 }
@@ -286,7 +288,7 @@ describe('hidden electoral research pages', () => {
     const expected = rows.filter(row => row.regionId === '1' && (query !== 'query2' || row.small400));
     expect(fixture.componentInstance.filtered()).toEqual(expected);
     expect(fixture.debugElement.query(By.directive(MapStub)).componentInstance.rows).toEqual(expected);
-    expect(element.querySelectorAll('#geography > .table-scroll tbody tr').length).toBe(expected.length);
+    expect(element.querySelectorAll('#section-results-table tbody tr').length).toBe(expected.length);
     expect(fixture.componentInstance.totals().voted1).toBe(expected.reduce((sum, row) => sum + row.voted1!, 0));
     expect(element.textContent).not.toContain('Четирите приоритетни области');
     fixture.destroy();
@@ -315,6 +317,109 @@ describe('hidden electoral research pages', () => {
       expect(height).toBeLessThanOrEqual(420);
     }
     fixture.destroy();
+  });
+
+  it('exposes summary groupings through tabs and keeps filters when switching between map and table', () => {
+    const fixture = setup();
+    const page = fixture.componentInstance;
+    page.report.set(reportFixture());
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const panel = (id: string) => element.querySelector<HTMLElement>(id)!;
+    expect(panel('#overview-panel-charts').hidden).toBe(false);
+    element.querySelector<HTMLButtonElement>('#overview-tab-method')!.click();
+    fixture.detectChanges();
+    expect(panel('#overview-panel-method').hidden).toBe(false);
+    expect(panel('#overview-panel-charts').hidden).toBe(true);
+    expect(panel('#overview-panel-method').closest('details')).toBeNull();
+    page.setFilter('regionId', '5');
+    element.querySelector<HTMLButtonElement>('#explorer-tab-table')!.click();
+    fixture.detectChanges();
+    expect(panel('#explorer-panel-table').hidden).toBe(false);
+    expect(panel('#explorer-panel-map').hidden).toBe(true);
+    element.querySelector<HTMLButtonElement>('#explorer-tab-map')!.click();
+    fixture.detectChanges();
+    expect(panel('#explorer-panel-map').hidden).toBe(false);
+    expect(page.filters().regionId).toBe('5');
+    fixture.destroy();
+  });
+
+  it('colors signed section changes without coloring baseline counts', () => {
+    const fixture = setup();
+    const page = fixture.componentInstance;
+    page.report.set(reportFixture());
+    page.sections.set([
+      sectionFixture({ deltaTurnoutPp: 3, deltaVoted: 5,
+        candidateChanges: [candidateFixture('4', 10, 8), candidateFixture('25', 10, 17)] }),
+      sectionFixture({ sectionId: '050100002', deltaTurnoutPp: 0, deltaVoted: 0,
+        candidateChanges: [candidateFixture('4', 10, 10), candidateFixture('25', 10, 10)] }),
+    ]);
+    page.showSectionDetails.set(true);
+    fixture.detectChanges();
+    const rows = (fixture.nativeElement as HTMLElement).querySelectorAll('#section-results-table tbody tr');
+    expect([...rows[0].querySelectorAll('[data-change]')].map(node => node.getAttribute('data-change'))).toEqual(['up', 'up', 'down', 'up', 'missing']);
+    expect([...rows[1].querySelectorAll('[data-change]')].slice(0, 4).map(node => node.getAttribute('data-change'))).toEqual(['flat', 'flat', 'flat', 'flat']);
+    expect(rows[0].querySelector('td')?.querySelector('[data-change]')).toBeNull();
+    fixture.destroy();
+  });
+
+  it('connects every active and inactive view tab to an existing uniquely named panel', () => {
+    const fixture = setup('query2');
+    fixture.componentInstance.report.set(reportFixture());
+    fixture.componentInstance.selected.set(sectionFixture());
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    for (const tab of element.querySelectorAll('[role="tab"]')) {
+      const target = tab.getAttribute('aria-controls');
+      expect(target).toBeTruthy();
+      expect(element.querySelectorAll(`[id="${target}"]`)).toHaveLength(1);
+    }
+    const ids = [...element.querySelectorAll('[id]')].map(node => node.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    fixture.destroy();
+  });
+
+  it.each([['candidate-review', 'candidate'], ['added-review', 'added']])('opens the appropriate review tab for the existing #%s link', (fragment, expected) => {
+    const fixture = setup('query2', fragment);
+    fixture.componentInstance.report.set(reportFixture());
+    fixture.detectChanges();
+    const panel = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>(`#review-panel-${expected}`)!;
+    expect(panel.hidden).toBe(false);
+    expect(panel.closest('details')).toBeNull();
+    fixture.destroy();
+  });
+
+  it('exposes national checks separately from the small-section checks and preserves their scope', () => {
+    const fixture = setup('query2', 'hypotheses');
+    fixture.componentInstance.report.set(reportFixture());
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelector<HTMLElement>('#checks-panel-general')?.hidden).toBe(false);
+    element.querySelector<HTMLButtonElement>('#checks-tab-national')!.click();
+    fixture.detectChanges();
+    expect(element.querySelector<HTMLElement>('#checks-panel-national')?.hidden).toBe(false);
+    expect(element.querySelector('#checks-panel-national')?.textContent).toContain('всички размери');
+    expect(fixture.componentInstance.focus).toBe(true);
+    fixture.destroy();
+  });
+
+  it('navigates to a named section through the mobile selector and ignores unknown destinations', () => {
+    const originalUrl = window.location.href;
+    const fixture = setup();
+    try {
+      fixture.componentInstance.report.set(reportFixture());
+      fixture.detectChanges();
+      const selector = (fixture.nativeElement as HTMLElement).querySelector<HTMLSelectElement>('.mobile-section-select select')!;
+      selector.value = 'review';
+      selector.dispatchEvent(new Event('change'));
+      expect(fixture.componentInstance.activeSection()).toBe('review');
+      expect(window.location.hash).toBe('#review');
+      fixture.componentInstance.navigateSection('unknown');
+      expect(window.location.hash).toBe('#review');
+    } finally {
+      fixture.destroy();
+      window.history.replaceState(null, '', originalUrl);
+    }
   });
 
   it('keeps the overview independent of filters and resets the small-section view to its eligible cohort', () => {
@@ -389,8 +494,8 @@ describe('hidden electoral research pages', () => {
       frame(0);
       updateNavigation();
       expect(fixture.componentInstance.activeSection()).toBe('candidate-checks');
-      const hypotheses = element.querySelector('#hypotheses')!;
-      vi.mocked(hypotheses.getBoundingClientRect).mockReturnValue(new DOMRect(0, 128, 100, 400));
+      fixture.componentInstance.statsView.set('general');
+      fixture.detectChanges();
       updateNavigation();
       expect(fixture.componentInstance.activeSection()).toBe('candidate-checks');
       sections.forEach((section, index) => vi.mocked(section.getBoundingClientRect).mockReturnValue(new DOMRect(0, 300 + index * 400, 100, 400)));
@@ -436,7 +541,10 @@ describe('hidden electoral research pages', () => {
     const totals = element.querySelector('[data-joint-totals]');
     expect(totals?.textContent).toContain('+30');
     expect(totals?.textContent).toContain('+60');
-    expect(element.querySelector('#candidate-checks')?.textContent).toContain('Стабилна извадка.');
+    element.querySelector<HTMLButtonElement>('#review-tab-candidate')!.click();
+    fixture.detectChanges();
+    expect(element.querySelector<HTMLElement>('#review-panel-candidate')?.hidden).toBe(false);
+    expect(element.querySelector('#review-panel-candidate')?.textContent).toContain('Стабилна извадка.');
     expect(element.querySelector('[aria-label="Протоколни проверки за дописани избиратели"] tbody')?.textContent).toContain('050100002');
     expect(element.querySelector('[aria-label="Протоколни проверки за дописани избиратели"] tbody')?.textContent).toContain('Не');
     expect(element.querySelectorAll('.section-nav a a')).toHaveLength(0);
