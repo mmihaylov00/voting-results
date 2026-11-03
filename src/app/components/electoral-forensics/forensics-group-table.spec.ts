@@ -7,6 +7,21 @@ import { TableControlsComponent } from '../ui/table-controls/table-controls';
 import { ForensicsGroup } from './forensics.models';
 
 describe('national district summary', () => {
+  it('stacks a full-width mobile search and opts into readable mobile input sizing', () => {
+    const fixture = TestBed.createComponent(ForensicsGroupTableComponent);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const controls = element.querySelector<HTMLElement>('app-table-controls')!;
+    const input = controls.querySelector('input')!;
+    expect(controls.parentElement?.classList.contains('flex-col')).toBe(true);
+    expect(controls.parentElement?.classList.contains('sm:flex-row')).toBe(true);
+    expect(controls.classList.contains('w-full')).toBe(true);
+    expect(controls.classList.contains('sm:flex-1')).toBe(true);
+    for (const name of ['text-base!', 'sm:text-sm!', 'min-h-11', 'sm:min-h-9']) {
+      expect(input.classList.contains(name)).toBe(true);
+    }
+  });
+
   it('keeps all 31 districts in one keyboard-scrollable table with sticky headers', () => {
     const fixture = TestBed.createComponent(ForensicsGroupTableComponent);
     fixture.componentRef.setInput('rows', Array.from({ length: 31 }, (_, i) => groupFixture({ key: String(i + 1), name: `Район ${i + 1}` })));

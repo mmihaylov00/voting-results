@@ -16,10 +16,11 @@ interface GeographicGroup extends ForensicsGroup {
   selector: 'app-forensics-group-table',
   imports: [HlmButtonDirective, MapIconComponent, TableControlsComponent, SortableTableHeaderComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<div class="flex flex-wrap items-start justify-between gap-3">
-      <app-table-controls class="min-w-0 flex-1" [rows]="rows()" [columns]="tableColumns"
+  template: `<div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <app-table-controls class="w-full min-w-0 sm:flex-1" [rows]="rows()" [columns]="tableColumns"
+        searchInputClass="text-base! sm:text-sm! min-h-11 sm:min-h-9"
         label="Търсене на район, община или населено място" #groupTable />
-      <button hlmBtn variant="outline" size="sm" class="gap-2" type="button"
+      <button hlmBtn variant="outline" size="sm" class="gap-2 self-start sm:self-auto" type="button"
         [attr.aria-expanded]="showDetails()" [attr.aria-controls]="tableId" (click)="toggleDetails()">
         <app-map-icon name="summary" />
         {{ showDetails() ? 'Основни показатели' : 'Всички показатели' }}

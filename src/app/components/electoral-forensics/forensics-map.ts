@@ -19,7 +19,7 @@ import { candidateDelta, hasReviewFlag } from './forensics-candidates.util';
     .map-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;font-size:.8rem;margin-bottom:.7rem}.map-toolbar select{color:inherit;background:hsl(var(--background));border:1px solid hsl(var(--foreground)/.3);padding:.5rem;border-radius:.25rem}
     .map-key{display:flex;flex-wrap:wrap;gap:.6rem 1rem;margin-top:.8rem;font-size:.78rem}.map-key span{display:flex;align-items:center;gap:.35rem}
     i{display:inline-block;width:14px;height:14px;border-radius:50%}.map-note{font-size:.8rem;opacity:.75;margin:.65rem 0}
-    @media(max-width:640px){.research-map{height:350px}}`,
+    @media(max-width:640px){.research-map{height:350px}.map-toolbar select{width:100%;max-width:100%;min-width:0;min-height:44px;font-size:1rem}}`,
 })
 export class ForensicsMapComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() rows: ForensicsSection[] = [];

@@ -20,7 +20,7 @@ export interface TableSorting {
     <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
       <div class="w-full sm:w-72">
         <label class="sr-only" [for]="searchId">{{ label() }}</label>
-        <app-search-filter [inputId]="searchId" [value]="query()" (valueChange)="query.set($event)" />
+        <app-search-filter [inputId]="searchId" [value]="query()" [inputClass]="searchInputClass()" (valueChange)="query.set($event)" />
       </div>
       <p class="text-xs text-muted-foreground" aria-live="polite">{{ viewRows().length | number }} от {{ rows().length | number }}</p>
     </div>
@@ -33,6 +33,7 @@ export class TableControlsComponent<T> implements TableSorting {
   readonly rows = input.required<readonly T[]>();
   readonly columns = input.required<TableColumns<T>>();
   readonly label = input('Търсене в таблицата');
+  readonly searchInputClass = input('');
   readonly query = signal('');
   readonly sortColumn = signal('');
   readonly direction = signal<SortDirection>('asc');

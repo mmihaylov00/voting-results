@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import { TableColumns, TableControlsComponent } from './table-controls';
 import { SortableTableHeaderComponent, SortableHeaderKeyboardDirective } from '../sortable-table-header/sortable-table-header';
 import { VirtualTableDirective } from '../virtual-table/virtual-table';
+import { SearchFilterComponent } from '../search-filter/search-filter';
 
 interface Row { id: number; name: string; votes: number | null; }
 
@@ -54,6 +55,23 @@ describe('shared table controls', () => {
     expect(table.viewRows().map(row => row.id)).toEqual([5]);
     table.query.set('няма'); await fixture.whenStable();
     expect(table.viewRows()).toEqual([]);
+  });
+
+  it('forwards optional search-input classes without changing the default used by other tables', () => {
+    const fixture = TestBed.createComponent(TableControlsComponent<Row>);
+    fixture.componentRef.setInput('rows', []);
+    fixture.componentRef.setInput('columns', { name: (row: Row) => row.name });
+    fixture.detectChanges();
+    const search = fixture.debugElement.query(By.directive(SearchFilterComponent)).componentInstance as SearchFilterComponent;
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    expect(search.inputClass).toBe('');
+    expect(input.classList.contains('text-sm')).toBe(true);
+    expect(input.classList.contains('text-base!')).toBe(false);
+    const classes = 'text-base! sm:text-sm! min-h-11 sm:min-h-9';
+    fixture.componentRef.setInput('searchInputClass', classes);
+    fixture.detectChanges();
+    expect(search.inputClass).toBe(classes);
+    for (const name of classes.split(' ')) expect(input.classList.contains(name)).toBe(true);
   });
 
   it('toggles numeric and text columns with click, Enter and Space and keeps missing values last', async () => {
