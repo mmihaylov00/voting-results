@@ -15,6 +15,15 @@ class WorkspaceDestinationComponent {
 }
 
 describe('Election routes', () => {
+  it.each([
+    ['research/electoral-forensics-2026', 'query1'],
+    ['research/runoff-mobilization-2026', 'query2'],
+  ])('keeps %s available as a direct research route', (path, query) => {
+    const route = routes.find(candidate => candidate.path === path);
+    expect(route?.data?.['researchQuery']).toBe(query);
+    expect(route?.loadComponent).toBeTypeOf('function');
+    expect(routes.indexOf(route!)).toBeLessThan(routes.findIndex(candidate => candidate.path === '**'));
+  });
   it.each(['governmental', 'presidential'])('opens the %s directory in its election data scope', async type => {
     const archive = routes.find(route => route.path === type)!;
     const directory = archive.children!.find(route => route.path === 'contestants')!;

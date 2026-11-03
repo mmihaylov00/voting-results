@@ -2,6 +2,16 @@
 command = "npm run build"
 publish = "dist/votes-frontend/browser"
 
+[[headers]]
+  for = "/research/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+
+[[headers]]
+  for = "/data/forensics/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

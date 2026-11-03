@@ -1,0 +1,13 @@
+# Provisional presidential results, 2026.11.01, round 2
+
+Source: https://results.cik.bg/pvr202610/tur2/rezultati/index.html
+
+Published snapshot: 2026-11-02T09:15:00+02:00; processed 100.0%. Imported 12717 reported sections from 12717 listed sections.
+
+Unprocessed sections, omitted rather than assigned zero results: none.
+
+Published source discrepancy: Varna section protocols sum to 119,623 machine receipts, while the RIK protocol reports 119,624. The constituent protocol of section 030601037 reports one machine receipt while the regional aggregation includes two. The section value is preserved, and both aggregates are recorded in `source-results.json`. Every candidate and no-support total still agrees.
+
+Source HTML was parsed without executing JavaScript. Each section uses its combined numerical summary when published, otherwise its paper protocol. Mixed paper/machine sections use the explicit constituent tables in the main protocol for ballot-type splits. Zero values for absent voting channels are not-applicable values established by the published protocol form. Machine protocol totals count all cast control receipts, including unreadable receipts, just as paper totals include invalid ballots. RIK confirmed-machine counts exclude unreadable receipts, so the regional cross-check adds that separately published count. Both measures are preserved in `source-results.json`. EKATTE identifiers reuse the official first-round section only when both section ID and settlement match, otherwise using unique existing municipality and settlement identities. Sofia fallback uses the existing district codes in section IDs and the district-center EKATTE for Sofia city. Unmatched domestic sections without an EKATTE: 0; their IDs are retained in `source-results.json`. Coordinates for 12455 sections come from https://map.cik.bg/pvr202610/data.json, matched by unique section ID; map hash and unlocated IDs remain in `source-results.json`. Original protocol inconsistencies are preserved. Presidential preferences are not applicable.
+
+Every candidate and no-support count was checked against all 32 regional results and the national result. Electors, added electors, voted, invalid votes and ballot-type totals were checked against all 32 numerical RIK protocols. The national snapshot was checked again before publishing. Official CIK percentages are retained in `source-results.json`; the site keeps its existing percentage denominator (signed-in voters), which can differ from CIK percentages based on valid votes including no-support votes. National result SHA-256: `2da18580c5c27fb4fe2f9d6204f2381005c90385882c023d1905036380263574`.

@@ -1,9 +1,10 @@
-"""Import the provisional 25 October 2026 presidential snapshot from published CIK pages.
+"""Import a provisional 2026 presidential round from published CIK pages.
 
 Run with: uv run --no-project --with curl-cffi python scripts/import-cik-pages.py
 """
 
 import argparse
+import csv
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
@@ -12,6 +13,7 @@ import hashlib
 from html.parser import HTMLParser
 import io
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -26,6 +28,13 @@ from zoneinfo import ZoneInfo
 BASE = 'https://results.cik.bg/pvr202610/'
 DATE = '2026.10.25'
 SOURCE = BASE + 'rezultati/index.html'
+MAP_BASE = 'https://map.cik.bg/pvr202610/'
+ROUNDS = {
+    1: {'date': DATE, 'name': 'Октомври 2026 - Тур 1', 'base': BASE,
+        'ballots': {str(i) for i in range(1, 28)}},
+    2: {'date': '2026.11.01', 'name': 'Ноември 2026 - Тур 2', 'base': BASE + 'tur2/',
+        'ballots': {'4', '25'}},
+}
 PROTOCOL_FIELDS = ['totalA', 'totalB', 'voted', 'discardedVotes', 'noVotesPaper',
                    'noVotesMachine', 'protocolPaperVotes', 'protocolMachineVotes']
 OBLASTS = dict(zip(map(str, range(1, 32)),
@@ -213,9 +222,9 @@ def protocol_plan(inventory):
 
 
 class Fetcher:
-    def __init__(self, cache):
+    def __init__(self, cache, base=BASE):
         from curl_cffi import requests
-        self.requests, self.cache, self.local = requests, cache, threading.local()
+        self.requests, self.cache, self.local, self.base = requests, cache, threading.local(), base
 
     def get(self, relative, fresh=False):
         source_path = Path(urlsplit(relative).path)
@@ -230,7 +239,7 @@ class Fetcher:
             self.local.session = self.requests.Session(impersonate='chrome')
         for attempt in range(4):
             try:
-                response = self.local.session.get(BASE + relative, timeout=30)
+                response = self.local.session.get(self.base + relative, timeout=30)
                 response.raise_for_status()
                 text = response.content.decode('utf-8-sig')
                 if relative.split('?', 1)[0].endswith('.html') and '<table' not in text.lower() and 'listing' not in text:
@@ -356,22 +365,66 @@ def settlement_resolver(municipalities, settlements):
     return resolve
 
 
+def map_coordinates(data):
+    coordinates = {}
+    for markers in data['data'].values():
+        for marker in markers:
+            longitude, latitude = marker['lng'], marker['lat']
+            if (not isinstance(longitude, (int, float)) or not isinstance(latitude, (int, float))
+                    or not math.isfinite(longitude) or not math.isfinite(latitude)
+                    or not -180 <= longitude <= 180 or not -90 <= latitude <= 90):
+                raise ValueError('Invalid public map coordinates')
+            for section_id in marker['s']:
+                if not isinstance(section_id, str) or not re.fullmatch(r'\d{9}', section_id):
+                    raise ValueError('Invalid public map section ID')
+                point = (longitude, latitude)
+                if section_id in coordinates and coordinates[section_id] != point:
+                    raise ValueError(f'Conflicting public map coordinates: {section_id}')
+                coordinates[section_id] = point
+    return coordinates
+
+
+def previous_section_geography(root, sections):
+    path = root / 'public/data' / DATE / 'sections.txt.gz'
+    with gzip.open(path, 'rt', encoding='utf-8') as source:
+        return {row['sectionId']: row['municipalityId'] for row in csv.DictReader(source, delimiter=';')
+                if row['sectionId'] in sections and clean(row['cityName']).casefold()
+                == clean(sections[row['sectionId']]['cityName']).casefold()}
+
+
+def validate_protocol_totals(region, actual, expected, round_number, updated_at):
+    discrepancies = []
+    for field, total in expected.items():
+        if actual[field] == total:
+            continue
+        # Section 030601037 declares one machine receipt, while its RIK aggregation includes two.
+        if (round_number, updated_at, region, field, actual[field], total) != (
+                2, '2026-11-02T09:15:00+02:00', '3', 'protocolMachineVotes', 119623, 119624):
+            raise ValueError(f'Section {field} disagrees with RIK protocol {region}: {actual[field]} != {total}')
+        discrepancies.append({'regionId': region, 'field': field, 'sectionsTotal': actual[field],
+                              'rikTotal': total, 'sectionId': '030601037'})
+    return discrepancies
+
+
 def publish(root, directory, entry):
+    date, round_number = entry['date'], entry.get('round', 1)
+    if round_number not in ROUNDS or date != ROUNDS[round_number]['date']:
+        raise ValueError('Conflicting election date or presidential round')
     catalog_path = root / 'src/assets/elections.json'
     catalog = json.loads(catalog_path.read_text())
-    existing = next((item for item in catalog if item['date'] == DATE), None)
-    destination = root / 'public/data' / DATE
+    existing = next((item for item in catalog if item['date'] == date), None)
+    destination = root / 'public/data' / date
     if existing and not existing.get('provisional'):
         raise ValueError('Refusing to overwrite a final election')
-    if existing and (existing.get('type') != 'presidential' or existing.get('round') != 1):
+    if existing and (existing.get('type') != 'presidential' or existing.get('round') != round_number):
         raise ValueError('Conflicting election type or presidential round')
     if destination.exists() and not existing:
         raise ValueError('Refusing to overwrite an unregistered dataset')
-    catalog = [item for item in catalog if item['date'] != DATE] + [entry]
+    catalog = [item for item in catalog if item['date'] != date] + [entry]
     catalog.sort(key=lambda item: item['date'], reverse=True)
     temporary_catalog = catalog_path.with_suffix('.json.cik-import')
     temporary_catalog.write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + '\n')
-    backup = destination.with_name(f'.{DATE}-previous-{os.getpid()}')
+    backup = destination.with_name(f'.{date}-previous-{os.getpid()}')
     moved = False
     try:
         if destination.exists():
@@ -390,18 +443,21 @@ def publish(root, directory, entry):
         shutil.rmtree(backup)
 
 
-def import_pages(root, cache):
+def import_pages(root, cache, round_number=1):
+    config = ROUNDS[round_number]
+    date, base = config['date'], config['base']
+    source = base + 'rezultati/index.html'
     root, cache = root.resolve(), cache.resolve()
     if cache.is_relative_to(root):
         raise ValueError('The raw HTML cache must be outside the repository')
     catalog = json.loads((root / 'src/assets/elections.json').read_text())
-    if any(item['date'] == DATE and not item.get('provisional') for item in catalog):
+    if any(item['date'] == date and not item.get('provisional') for item in catalog):
         raise ValueError('Refusing to overwrite a final election')
-    fetcher = Fetcher(cache)
+    fetcher = Fetcher(cache, base)
     initial_html = fetcher.get('rezultati/index.html', fresh=True)
     initial_page = Page(initial_html)
     initial = snapshot(initial_page)
-    if '25 октомври 2026' not in clean(' '.join(initial_page.text)).lower() or set(initial['votes']) != {str(i) for i in range(1, 28)}:
+    if '25 октомври 2026' not in clean(' '.join(initial_page.text)).lower() or set(initial['votes']) != config['ballots']:
         raise ValueError('Unexpected election date or presidential ballot options')
     fingerprint = hashlib.sha256(json.dumps(initial, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
     marker = cache / 'snapshot-fingerprint.json'
@@ -410,7 +466,7 @@ def import_pages(root, cache):
         snapshot(Page(cached_national.read_text())) if cached_national.exists() else initial)
     if pinned != initial:
         cache = cache / 'snapshots' / fingerprint
-        fetcher = Fetcher(cache)
+        fetcher = Fetcher(cache, base)
         marker = cache / 'snapshot-fingerprint.json'
         cached_national = cache / 'rezultati/index.html'
     cached_national.parent.mkdir(parents=True, exist_ok=True)
@@ -418,15 +474,15 @@ def import_pages(root, cache):
     marker.write_text(json.dumps(initial, ensure_ascii=False, indent=2) + '\n')
     regions = {}
     for href, name in initial_page.links:
-        match = re.fullmatch(r'.*/rezultati/(\d{2})\.html', urljoin(SOURCE, href))
+        match = re.fullmatch(r'.*/rezultati/(\d{2})\.html', urljoin(source, href))
         if match and 1 <= int(match[1]) <= 32:
             regions[str(int(match[1]))] = 'Чужбина' if match[1] == '32' else name
     if set(regions) != {str(i) for i in range(1, 33)}:
         raise ValueError('Missing regional result links')
     search = Page(fetcher.get('search/index.html'), read_sections=True)
-    inventory_url = next(urljoin(BASE + 'search/index.html', src) for src in search.scripts
-                         if urljoin(BASE + 'search/index.html', src).startswith(BASE + 'protokoli/data.js'))
-    inventory_path = inventory_url.removeprefix(BASE)
+    inventory_url = next(urljoin(base + 'search/index.html', src) for src in search.scripts
+                         if urljoin(base + 'search/index.html', src).startswith(base + 'protokoli/data.js'))
+    inventory_path = inventory_url.removeprefix(base)
     plans = protocol_plan(assignment(fetcher.get(inventory_path), 'HAS_PROTO'))
     if not plans or not set(plans) <= set(search.sections):
         raise ValueError('Protocol inventory does not match the public section directory')
@@ -434,10 +490,22 @@ def import_pages(root, cache):
     reported_percent = round(len(plans) / len(search.sections) * 100, 2)
     if abs(reported_percent - initial['processedPercent']) > 0.01:
         raise ValueError('Section coverage does not match the published processing percentage')
+    if initial['processedPercent'] == 100 and missing:
+        raise ValueError('A 100% snapshot must contain every listed section')
     regional = {region: snapshot(Page(fetcher.get(f'rezultati/{int(region):02d}.html')))
                 for region in regions}
     if any(value['updatedAt'] != initial['updatedAt'] for value in regional.values()):
         raise ValueError('Regional pages belong to different source snapshots')
+    if initial['processedPercent'] == 100 and any(value['processedPercent'] != 100 for value in regional.values()):
+        raise ValueError('Regional pages do not match national processing coverage')
+    coordinates, geography = {}, {}
+    if round_number == 2:
+        map_html = Fetcher(cache / 'map', MAP_BASE).get('data.json')
+        coordinates = map_coordinates(json.loads(map_html))
+        geography = {'sourceUrl': MAP_BASE + 'data.json',
+                     'sha256': hashlib.sha256(map_html.encode()).hexdigest(),
+                     'locatedSections': sum(section in coordinates for section in plans),
+                     'unlocatedSections': sorted(set(plans) - set(coordinates))}
 
     def load(item):
         section_id, (main, component, form) = item
@@ -462,6 +530,7 @@ def import_pages(root, cache):
         aggregates[region]['metrics'].update({field: result[field] for field in PROTOCOL_FIELDS})
     national_votes, national_no_votes = Counter(), 0
     regional_protocol_totals = {}
+    protocol_discrepancies = []
     for region, aggregate in aggregates.items():
         if dict(aggregate['votes']) != regional[region]['votes']:
             raise ValueError(f'Section candidate totals disagree with regional results: {region}')
@@ -482,33 +551,34 @@ def import_pages(root, cache):
         }
         regional_protocol_totals[region] = {**checks, 'confirmedMachineVotes': confirmed_machine,
                                            'unreadableMachineReceipts': unreadable}
-        for field, expected in checks.items():
-            if aggregate['metrics'][field] != expected:
-                raise ValueError(f'Section {field} disagrees with RIK protocol {region}: {aggregate["metrics"][field]} != {expected}')
+        protocol_discrepancies.extend(validate_protocol_totals(
+            region, aggregate['metrics'], checks, round_number, initial['updatedAt']))
         national_votes.update(aggregate['votes'])
         national_no_votes += none
     if dict(national_votes) != initial['votes'] or national_no_votes != initial['noVotes']:
         raise ValueError('Section totals disagree with the national result')
     if snapshot(Page(fetcher.get('rezultati/index.html', fresh=True))) != initial:
         raise ValueError('The source snapshot changed during extraction; nothing was published')
-    metadata = {'sourceUrl': SOURCE, 'updatedAt': initial['updatedAt'],
+    metadata = {'sourceUrl': source, 'updatedAt': initial['updatedAt'],
                 'processedPercent': initial['processedPercent'], 'reportedSections': len(results),
                 'totalSections': len(search.sections)}
-    entry = {'date': DATE, 'name': 'Октомври 2026 - Тур 1', 'type': 'presidential',
-             'round': 1, 'provisional': metadata}
-    directory = Path(tempfile.mkdtemp(prefix=f'.{DATE}-', dir=root / 'public/data'))
+    entry = {'date': date, 'name': config['name'], 'type': 'presidential',
+             'round': round_number, 'provisional': metadata}
+    directory = Path(tempfile.mkdtemp(prefix=f'.{date}-', dir=root / 'public/data'))
     try:
         section_ids = sorted(results)
         resolve_settlement = settlement_resolver(json.loads((root / 'public/municipalities.json').read_text()),
                                                 json.loads((root / 'public/settlements.json').read_text()))
-        ekatte = {section_id: resolve_settlement(section_id, search.sections[section_id]) for section_id in section_ids}
+        previous_geography = previous_section_geography(root, search.sections) if round_number == 2 else {}
+        ekatte = {section_id: previous_geography.get(section_id) or resolve_settlement(section_id, search.sections[section_id])
+                  for section_id in section_ids}
         unmapped = [section_id for section_id in section_ids
                     if search.sections[section_id]['regionId'] != '32' and not ekatte[section_id]]
         write_table(directory, 'sections',
-            ['sectionId', 'regionId', 'regionName', 'municipalityId', 'cityName', 'sectionName', 'municipalityName'],
+            ['sectionId', 'regionId', 'regionName', 'municipalityId', 'cityName', 'sectionName', 'municipalityName', 'lat', 'lan'],
             ([section_id, search.sections[section_id]['regionId'], regions[search.sections[section_id]['regionId']], ekatte[section_id],
               search.sections[section_id]['cityName'], search.sections[section_id]['sectionName'],
-              search.sections[section_id]['municipalityName']] for section_id in section_ids))
+              search.sections[section_id]['municipalityName'], *coordinates.get(section_id, ('', ''))] for section_id in section_ids))
         write_table(directory, 'protocols', ['sectionId', *PROTOCOL_FIELDS],
             ([section_id, *(results[section_id][field] for field in PROTOCOL_FIELDS)] for section_id in section_ids))
         parties = sorted(initial['votes'], key=int)
@@ -520,15 +590,23 @@ def import_pages(root, cache):
                     ([party, initial['names'][party]] for party in parties))
         digest = hashlib.sha256(json.dumps(initial, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
         (directory / 'source-results.json').write_text(json.dumps(
-            {'sourceUrl': SOURCE, 'national': initial, 'regions': regional,
+            {'sourceUrl': source, 'national': initial, 'regions': regional,
              'regionalProtocolTotals': regional_protocol_totals,
-             'unprocessedSections': missing, 'unmappedDomesticSections': unmapped},
+             'protocolDiscrepancies': protocol_discrepancies,
+             'unprocessedSections': missing, 'unmappedDomesticSections': unmapped,
+             **({'geography': geography} if geography else {})},
             ensure_ascii=False, indent=2) + '\n')
         (directory / 'SOURCE.md').write_text(
-            f'# Provisional presidential results, 25 October 2026, round 1\n\nSource: {SOURCE}\n\n'
+            f'# Provisional presidential results, {date}, round {round_number}\n\nSource: {source}\n\n'
             f'Published snapshot: {metadata["updatedAt"]}; processed {metadata["processedPercent"]}%. '
             f'Imported {len(results)} reported sections from {len(search.sections)} listed sections.\n\n'
-            f'Unprocessed sections, omitted rather than assigned zero results: {", ".join(missing)}.\n\n'
+            f'Unprocessed sections, omitted rather than assigned zero results: {", ".join(missing) or "none"}.\n\n'
+            + ('Published source discrepancy: Varna section protocols sum to 119,623 machine receipts, '
+               'while the RIK protocol reports 119,624. The constituent protocol of section 030601037 '
+               'reports one machine receipt while the regional aggregation includes two. The section '
+               'value is preserved, and both aggregates are recorded in `source-results.json`. '
+               'Every candidate and no-support total still agrees.\n\n' if protocol_discrepancies else '')
+            +
             'Source HTML was parsed without executing JavaScript. Each section uses its combined numerical '
             'summary when published, otherwise its paper protocol. Mixed paper/machine sections use the '
             'explicit constituent tables in the main protocol for ballot-type splits. Zero values for '
@@ -537,10 +615,15 @@ def import_pages(root, cache):
             'just as paper totals include invalid ballots. RIK confirmed-machine counts exclude unreadable '
             'receipts, so the regional cross-check adds that separately published count. Both measures '
             'are preserved in `source-results.json`. '
-            'EKATTE identifiers use unique existing municipality and settlement identities. Sofia uses the '
+            'EKATTE identifiers reuse the official first-round section only when both section ID and settlement match, '
+            'otherwise using unique existing municipality and settlement identities. Sofia fallback uses the '
             'existing district codes in section IDs and the district-center EKATTE for Sofia city. '
             f'Unmatched domestic sections without an EKATTE: {len(unmapped)}; their IDs are retained in '
-            '`source-results.json`. Physical section coordinates remain unavailable. Original protocol inconsistencies '
+            '`source-results.json`. '
+            + (f'Coordinates for {geography["locatedSections"]} sections come from {geography["sourceUrl"]}, '
+               'matched by unique section ID; map hash and unlocated IDs remain in `source-results.json`. '
+               if geography else 'Physical section coordinates remain unavailable. ')
+            + 'Original protocol inconsistencies '
             'are preserved. Presidential preferences are not applicable.\n\n'
             'Every candidate and no-support count was checked against all 32 regional results and the '
             'national result. Electors, added electors, voted, invalid votes and ballot-type totals were '
@@ -553,11 +636,13 @@ def import_pages(root, cache):
     finally:
         if directory.exists():
             shutil.rmtree(directory)
-    print(f'Published {DATE}: {len(results)}/{len(search.sections)} sections, {metadata["processedPercent"]}% processed', flush=True)
+    print(f'Published {date}: {len(results)}/{len(search.sections)} sections, {metadata["processedPercent"]}% processed', flush=True)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--cache-dir', type=Path, default=Path(tempfile.gettempdir()) / 'cik-pvr202610-cache')
+    parser.add_argument('--round', type=int, choices=[1, 2], default=1, dest='round_number')
+    parser.add_argument('--cache-dir', type=Path)
     args = parser.parse_args()
-    import_pages(Path(__file__).resolve().parent.parent, args.cache_dir)
+    cache = args.cache_dir or Path(tempfile.gettempdir()) / ('cik-pvr202610-cache' if args.round_number == 1 else 'cik-pvr202610-tur2-cache')
+    import_pages(Path(__file__).resolve().parent.parent, cache, args.round_number)

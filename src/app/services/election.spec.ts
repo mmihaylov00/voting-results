@@ -7,6 +7,7 @@ import { vi } from 'vitest';
 import { ElectionService } from './election';
 import { ELECTION_TYPE } from '../utils/election-type';
 import { ElectionDataWorker, ElectionWorkerUnavailableError } from './election-data-worker';
+import { getCikUrl } from '../utils/election-links';
 
 function responseBuffer(value: object): ArrayBuffer {
   const bytes = new TextEncoder().encode(JSON.stringify(value));
@@ -67,6 +68,15 @@ describe('ElectionService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('keeps the November runoff separate from the October first round', () => {
+    const dates = service.getDates(true);
+    expect(dates.find(election => election.date === '2026.11.01')).toMatchObject({ type: 'presidential', round: 2 });
+    expect(dates.find(election => election.date === '2026.10.25')).toMatchObject({ type: 'presidential', round: 1 });
+    expect(service.getOfficialNationalElectors('2026.11.01')).toBe(6637274);
+    expect(getCikUrl('2026.11.01')).toBe('https://results.cik.bg/pvr202610/tur2/rezultati/index.html');
+    expect(getCikUrl('2026.10.25')).toBe('https://results.cik.bg/pvr202610/rezultati/index.html');
   });
 
   it('loads only presidential summaries in the presidential archive', async () => {

@@ -110,6 +110,7 @@ type FullDataV2 = {
 export class ElectionService {
   readonly electionType = inject(ELECTION_TYPE);
   private readonly officialNationalElectorsByDate: Record<string, number> = {
+    '2026.11.01': 6637274,
     '2026.10.25': 6637238,
     '2026.04.19': 6575151,
     '2024.10.27': 6601262,

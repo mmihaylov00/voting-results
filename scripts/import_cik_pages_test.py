@@ -131,7 +131,7 @@ class CikPageTests(unittest.TestCase):
             response = SimpleNamespace(content=b'<table>current snapshot</table>', raise_for_status=lambda: None)
             session = SimpleNamespace(get=lambda *args, **kwargs: response)
             fetcher = module['Fetcher'].__new__(module['Fetcher'])
-            fetcher.cache, fetcher.local = cache, SimpleNamespace(session=session)
+            fetcher.cache, fetcher.local, fetcher.base = cache, SimpleNamespace(session=session), module['BASE']
             with patch('time.sleep'):
                 current = fetcher.get('rezultati/index.html', fresh=True)
             self.assertEqual(current, '<table>current snapshot</table>')
@@ -171,6 +171,78 @@ class CikPageTests(unittest.TestCase):
             self.assertEqual((destination / 'previous.txt').read_text(), 'verified previous results')
             self.assertEqual(catalog.read_text(), original)
             self.assertFalse((destination / 'new.txt').exists())
+
+    def test_runoff_requests_stay_under_the_runoff_source(self):
+        calls = []
+        response = SimpleNamespace(content=b'<table>runoff</table>', raise_for_status=lambda: None)
+        session = SimpleNamespace(get=lambda url, **kwargs: (calls.append(url), response)[1])
+        with tempfile.TemporaryDirectory() as temporary:
+            fetcher = module['Fetcher'].__new__(module['Fetcher'])
+            fetcher.cache = Path(temporary)
+            fetcher.local = SimpleNamespace(session=session)
+            fetcher.base = module['ROUNDS'][2]['base']
+            with patch('time.sleep'):
+                fetcher.get('rezultati/index.html')
+            self.assertEqual(calls, ['https://results.cik.bg/pvr202610/tur2/rezultati/index.html'])
+        self.assertEqual(module['ROUNDS'][2]['ballots'], {'4', '25'})
+        self.assertEqual(module['ROUNDS'][2]['date'], '2026.11.01')
+
+    def test_runoff_publication_keeps_the_official_first_round_unchanged(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'src/assets').mkdir(parents=True)
+            (root / 'public/data').mkdir(parents=True)
+            catalog = root / 'src/assets/elections.json'
+            first = dict(date=module['DATE'], type='presidential', round=1)
+            catalog.write_text(json.dumps([first]))
+            stage = root / 'stage'
+            stage.mkdir()
+            entry = dict(date='2026.11.01', type='presidential', round=2, provisional={'processedPercent': 100})
+            module['publish'](root, stage, entry)
+            self.assertEqual(json.loads(catalog.read_text()), [entry, first])
+            self.assertTrue((root / 'public/data/2026.11.01').is_dir())
+            with self.assertRaisesRegex(ValueError, 'date or presidential round'):
+                module['publish'](root, stage, dict(entry, date=module['DATE']))
+
+    def test_map_coordinates_preserve_axis_order_and_reject_conflicting_locations(self):
+        marker = {'s': ['010100001'], 'lng': 23.4, 'lat': 41.8}
+        data = {'data': {'1': [marker]}}
+        self.assertEqual(module['map_coordinates'](data), {'010100001': (23.4, 41.8)})
+        data['data']['1'].append(dict(marker))
+        self.assertEqual(len(module['map_coordinates'](data)), 1)
+        for invalid in [dict(marker, lng=24), dict(marker, lat=float('nan')), dict(marker, s=['wrong'])]:
+            with self.assertRaises(ValueError):
+                module['map_coordinates']({'data': {'1': [marker, invalid]}})
+
+    def test_first_round_ekatte_requires_the_same_section_and_settlement(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            path = root / 'public/data' / module['DATE'] / 'sections.txt.gz'
+            path.parent.mkdir(parents=True)
+            with gzip.open(path, 'wt') as output:
+                output.write('sectionId;municipalityId;cityName;sectionName\n010100001;02676;гр.Банско;Училище\n')
+            sections = {'010100001': dict(cityName='гр.Банско', sectionName=' УЧИЛИЩЕ ')}
+            self.assertEqual(module['previous_section_geography'](root, sections), {'010100001': '02676'})
+            sections['010100001']['sectionName'] = 'Друг адрес'
+            self.assertEqual(module['previous_section_geography'](root, sections), {'010100001': '02676'})
+            sections['010100001']['cityName'] = 'с.Друго село'
+            self.assertEqual(module['previous_section_geography'](root, sections), {})
+
+    def test_only_the_verified_varna_source_discrepancy_is_retained(self):
+        validate = module['validate_protocol_totals']
+        actual, expected = {'protocolMachineVotes': 119623}, {'protocolMachineVotes': 119624}
+        stamp = '2026-11-02T09:15:00+02:00'
+        self.assertEqual(validate('3', actual, actual, 2, stamp), [])
+        self.assertEqual(validate('3', actual, expected, 2, stamp), [{
+            'regionId': '3', 'field': 'protocolMachineVotes', 'sectionsTotal': 119623,
+            'rikTotal': 119624, 'sectionId': '030601037',
+        }])
+        for region, counts, round_number, updated_at in [
+            ('4', actual, 2, stamp), ('3', {'protocolMachineVotes': 119622}, 2, stamp),
+            ('3', actual, 1, stamp), ('3', actual, 2, '2026-11-03T09:15:00+02:00'),
+        ]:
+            with self.assertRaisesRegex(ValueError, 'disagrees with RIK'):
+                validate(region, counts, expected, round_number, updated_at)
 
 
 if __name__ == '__main__':

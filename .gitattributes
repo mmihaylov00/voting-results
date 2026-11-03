@@ -1,0 +1,2 @@
+# Preserve export bytes so the published checksums survive a Git checkout.
+public/data/forensics/**/*.csv -text -diff

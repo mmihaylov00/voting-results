@@ -1,5 +1,6 @@
 export function getCikUrl(date: string): string {
   const historicalPaths: Record<string, string> = {
+    '2026.11.01': 'pvr202610/tur2',
     '2026.10.25': 'pvr202610',
     '2022.10.02': 'ns2022',
     '2021.11.21': 'pvrns2021/tur2',

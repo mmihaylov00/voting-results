@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "elections": {
+    "2026.10.25": {
+      "date": "2026.10.25",
+      "label": "Окончателна база, решение 416-ПВР от 27.10.2026 г.",
+      "verification": {
+        "status": "verified",
+        "date": "2026.10.25",
+        "sourceUrl": "https://results.cik.bg/pvr202610/opendata/export.zip",
+        "sha256": "fab23a6837b247f8892c7ee23bbfdb40c9b2b73e5aa4f15cee330e506cc8f314",
+        "tables": {
+          "protocols": {
+            "matched": true,
+            "canonicalRows": 12719,
+            "officialRows": 12719,
+            "missingRows": 0,
+            "extraRows": 0,
+            "canonicalSha256": "98cad430098fb6038e4c87b639f8be945664d713d92b58c9caa26044cf16f08f"
+          },
+          "votes": {
+            "matched": true,
+            "canonicalRows": 12719,
+            "officialRows": 12719,
+            "missingRows": 0,
+            "extraRows": 0,
+            "canonicalSha256": "d907f2eb524d8078782112e72f789685e5a2b2fc46c8ddd5fd13975ca4eabd5f"
+          },
+          "sections": {
+            "matched": true,
+            "canonicalRows": 12719,
+            "officialRows": 12719,
+            "missingRows": 0,
+            "extraRows": 0,
+            "canonicalSha256": "055b6523e40043d4ed67f8bbced8ff3f54971ad8e7450118988e6eff8bdf3446"
+          },
+          "cik_parties": {
+            "matched": true,
+            "canonicalRows": 27,
+            "officialRows": 27,
+            "missingRows": 0,
+            "extraRows": 0,
+            "canonicalSha256": "f92e9fb4c8f6687a46af75f67e93f063b6abbc6b24c1f19313e09e16e3b7aefd"
+          }
+        },
+        "members": {
+          "sections": {
+            "member": "Ç¬Γπá½¿º¿αá¡á íáºá ñá¡¡¿/sections_25.10.2026.txt",
+            "sha256": "d2382e7ac1e2d346e0a235428a034bfca43e46a626e8e03c7c71c9a6d9bcfda0",
+            "rows": 12719
+          },
+          "protocols": {
+            "member": "Ç¬Γπá½¿º¿αá¡á íáºá ñá¡¡¿/protocols_25.10.2026.txt",
+            "sha256": "6afa57aa668fb9470827b48037634693e9ed4b975b5b941ab4ae1b171338d2ec",
+            "rows": 24558
+          },
+          "votes": {
+            "member": "Ç¬Γπá½¿º¿αá¡á íáºá ñá¡¡¿/votes_25.10.2026.txt",
+            "sha256": "eb12f98755842f4ff1325885ed3b64ed2e32b1c7f9c0a6dcf7ea61b993ce4c52",
+            "rows": 12719
+          },
+          "cik_parties": {
+            "member": "Ç¬Γπá½¿º¿αá¡á íáºá ñá¡¡¿/cik_parties_25.10.2026.txt",
+            "sha256": "df758b73c7d4ad32f3bf51f2fd070af29321350730236da4c7032a25213832ad",
+            "rows": 27
+          },
+          "cik_candidates": {
+            "member": "Ç¬Γπá½¿º¿αá¡á íáºá ñá¡¡¿/cik_candidates_25.10.2026.txt",
+            "sha256": "e5a82a6f04e94de0daa1191a942e8c53a06a42f94166248dc940cf80b6bdd9e3",
+            "rows": 27
+          }
+        }
+      },
+      "methodEvidence": {
+        "kind": "official_archive_protocol_text",
+        "file": "2026.10.25.official-protocols.txt.gz",
+        "sourceUrl": "https://results.cik.bg/pvr202610/opendata/export.zip",
+        "archiveMember": "Ç¬Γπá½¿º¿αá¡á íáºá ñá¡¡¿/protocols_25.10.2026.txt",
+        "archiveSha256": "fab23a6837b247f8892c7ee23bbfdb40c9b2b73e5aa4f15cee330e506cc8f314",
+        "sha256": "e057464e6551f0e200d295ca761f55eefcbdea9fe2ea1c7dbb00a08eee4794d8",
+        "contentSha256": "6afa57aa668fb9470827b48037634693e9ed4b975b5b941ab4ae1b171338d2ec"
+      }
+    },
+    "2026.04.19": {
+      "date": "2026.04.19",
+      "label": "Официална база за парламентарните избори от 19.04.2026 г.",
+      "verification": {
+        "status": "verified",
+        "date": "2026.04.19",
+        "sourceUrl": "https://results.cik.bg/pe202604/opendata/export.zip",
+        "sha256": "40da58a58d220b0080cacc7fe8f391dd1726262630fb807c558b5a8a4b3a7f4a",
+        "tables": {
+          "sections": {
+            "matched": true,
+            "canonicalRows": 12721,
+            "officialRows": 12721,
+            "missingRows": 0,
+            "extraRows": 0,
+            "canonicalSha256": "1f7d1dddf95cdeebab78d726498bcbafcadd78d1a937158e6fbf26b30a9e9cc4"
+          },
+          "protocols": {
+            "matched": true,
+            "canonicalRows": 12721,
+            "officialRows": 12721,
+            "missingRows": 0,
+            "extraRows": 0,
+            "canonicalSha256": "3609471fbd7fba4ef19ee1a4f49d955e03b1a392f3aa92920fb6341866945482"
+          },
+          "votes": {
+            "matched": true,
+            "canonicalRows": 12721,
+            "officialRows": 12721,
+            "missingRows": 0,
+            "extraRows": 0,
+            "canonicalSha256": "1e51c17cfa56353063278965ff8ee9acb83ee71606f9f5707c000ff74c3265f3"
+          },
+          "cik_parties": {
+            "matched": true,
+            "canonicalRows": 24,
+            "officialRows": 24,
+            "missingRows": 0,
+            "extraRows": 0,
+            "canonicalSha256": "fcd8cce6e46a5b9812818e921e4db146148cc51976b63db9c53a0fdfda28a838"
+          },
+          "local_candidates": {
+            "matched": true,
+            "canonicalRows": 5802,
+            "officialRows": 5802,
+            "missingRows": 0,
+            "extraRows": 0,
+            "canonicalSha256": "6ea15a639a3088d88b2f930d9b73be664dbe6a91bf4b36c9fe00fba6d4050069"
+          }
+        },
+        "members": {
+          "sections": {
+            "member": "Ç¬Γπá½¿º¿αá¡á íáºá ñá¡¡¿/sections_19.04.2026.txt",
+            "sha256": "b143abcc8a35dbb06dd3a26411cab7c5a9966c7658bac86af94a27abbbf2bf84",
+            "rows": 12721
+          },
+          "protocols": {
+            "member": "Ç¬Γπá½¿º¿αá¡á íáºá ñá¡¡¿/protocols_19.04.2026.txt",
+            "sha256": "a5ad8f94fa9ca6beb5438e2d8738e941fc70a0f3a4862b4d6b325877c335d595",
+            "rows": 12721
+          },
+          "votes": {
+            "member": "Ç¬Γπá½¿º¿αá¡á íáºá ñá¡¡¿/votes_19.04.2026.txt",
+            "sha256": "99e70fe771b4378adbf0ff11a6b0dad0cf4166126e1ead5e3d1808f191501ef5",
+            "rows": 12721
+          },
+          "cik_parties": {
+            "member": "Ç¬Γπá½¿º¿αá¡á íáºá ñá¡¡¿/cik_parties_19.04.2026.txt",
+            "sha256": "9b9982cf24716689e53b0b75bcf8de9bbde79e1e6ed4d99b457eaa1bdd01b8ba",
+            "rows": 24
+          },
+          "local_candidates": {
+            "member": "Ç¬Γπá½¿º¿αá¡á íáºá ñá¡¡¿/local_candidates_19.04.2026.txt",
+            "sha256": "6fbc74e11792f7c17c7a213a8c27c7e784ede802d4b23f2fd28441efe3d7db78",
+            "rows": 5802
+          }
+        }
+      }
+    },
+    "2026.11.01": {
+      "date": "2026.11.01",
+      "label": "Публикувани протоколи към 02.11.2026 г., 09:15 ч., обработени 100%",
+      "methodEvidence": {
+        "kind": "official_protocol_inventory",
+        "file": "2026.11.01.protocol-inventory.js.gz",
+        "sourceUrl": "https://results.cik.bg/pvr202610/tur2/protokoli/data.js",
+        "sha256": "66e5ff9fdf642c8309f0c7af751924349e649b620b1ae6d07799af3aa1f65bac",
+        "contentSha256": "d03cb4dc529d51adaa49d9b0c0a69bd1bdca5b3e20baaeb84e35e3edf8757658"
+      }
+    }
+  }
+}

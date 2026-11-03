@@ -1,0 +1,14 @@
+:host { display: block; min-width: 0; }
+.table-scroll { overflow: auto; max-width: 100%; border-bottom: 1px solid hsl(var(--foreground) / .2); }
+table { border-collapse: collapse; width: 100%; font-size: .83rem; font-variant-numeric: tabular-nums; }
+caption { text-align: left; font-size: .78rem; opacity: .7; padding: .5rem 0; }
+th, td { padding: .75rem .65rem; border-bottom: 1px solid hsl(var(--foreground) / .12); text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { background: hsl(var(--muted)); font-weight: 600; }
+tbody th { font-weight: 500; }
+tbody tr:hover { background: hsl(var(--muted) / .6); }
+small { display: block; font-weight: 400; opacity: .7; margin-top: .2rem; }
+button { cursor: pointer; }
+button:disabled { opacity: .4; cursor: default; }
+button, input, select { color: inherit; background: hsl(var(--background)); border: 1px solid hsl(var(--foreground) / .25); border-radius: .25rem; padding: .45rem .65rem; }
+.pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: .8rem; margin: .85rem 0; font-size: .8rem; }

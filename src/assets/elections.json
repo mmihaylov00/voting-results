@@ -1,5 +1,18 @@
 [
   {
+    "date": "2026.11.01",
+    "name": "Ноември 2026 - Тур 2",
+    "type": "presidential",
+    "round": 2,
+    "provisional": {
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/index.html",
+      "updatedAt": "2026-11-02T09:15:00+02:00",
+      "processedPercent": 100.0,
+      "reportedSections": 12717,
+      "totalSections": 12717
+    }
+  },
+  {
     "date": "2026.10.25",
     "name": "Октомври 2026 - Тур 1",
     "type": "presidential",

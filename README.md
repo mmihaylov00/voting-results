@@ -8,7 +8,7 @@ Tailwind CSS 4 is processed through PostCSS in `src/tailwind.css`, before the cu
 
 ## Election data
 
-The archive contains eight parliamentary elections (2017-2026), both rounds of the 2016 and 2021 presidential elections, and official results for the 25 October 2026 presidential election. `/governmental` and `/presidential` share the result views, with separate datasets and comparisons. Presidential results show candidate tickets and do not expose parliamentary preference or PP-DB targeting controls.
+The archive contains eight parliamentary elections (2017-2026), both rounds of the 2016 and 2021 presidential elections, official first-round results for 25 October 2026, and a preliminary snapshot of the 1 November 2026 runoff. `/governmental` and `/presidential` share the result views, with separate datasets and comparisons. Presidential results show candidate tickets and do not expose parliamentary preference or PP-DB targeting controls.
 
 `src/assets/elections.json` is the catalog. Each entry has a real election `date` (`YYYY.MM.DD`), `name`, and `type` (`governmental` or `presidential`); presidential entries also have `round` (`1` or `2`). Canonical semicolon-delimited tables live in `public/data/<date>/` as `.txt` or `.txt.gz`. The compiler writes versioned summary and full datasets plus `public/data/compiled/manifest.json`.
 
@@ -62,6 +62,24 @@ The importer validates the new protocol layouts and paper/machine vote component
 Finalizing a snapshot requires a full compilation so it becomes available in historical comparisons throughout the archive. The `--date` compiler mode is available for later data-only corrections, preserving other manifest entries. The earlier `scripts/import-cik-pages.py` scraper is retained for provenance and refuses to overwrite a final election. No recurring refresh is scheduled.
 
 The site retains its existing share denominator (signed-in voters); CIK's percentages use valid candidate votes plus no-support votes. Published inconsistencies are preserved: October 2026 candidate rows sum to 1,454,357 versus the CIK protocol headline 1,454,359, and candidate plus no-support rows sum to 1,521,710 versus the headline valid-vote total 1,521,723. The site uses the individual candidate vote rows.
+
+### Preliminary November 2026 runoff
+
+The 1 November runoff is stored separately as `2026.11.01`, presidential round 2. Its snapshot comes from the [published runoff protocols](https://results.cik.bg/pvr202610/tur2/rezultati/index.html), with the preliminary badge showing CIK's update time and processing percentage. The current source lists all 12,717 sections at 100%, updated at 09:15 Sofia time on 2 November. The official first-round dataset remains unchanged.
+
+```bash
+uv run --no-project --with curl-cffi python scripts/import-cik-pages.py --round 2 --cache-dir /tmp/cik-pvr202610-tur2-cache
+python3 scripts/import_cik_pages_test.py
+npm run compile-data -- --date 2026.11.01
+npm run verify:data
+npm run build
+```
+
+The same importer serves both rounds, keeping separate source URLs, cache directories, ballot identities and catalog dates. It cross-checks every candidate and no-support total against the national result and all 32 regions, checks protocol metrics against numerical RIK protocols, and refuses publication if the national snapshot changes during extraction. A 100% snapshot must include every listed section and all regional pages must also report 100%. A final election cannot be overwritten by the scraper.
+
+The [public election map](https://map.cik.bg/pvr202610/) supplies coordinates for 12,455 runoff section IDs; 262 have no map point. EKATTE identifiers reuse official first-round data only when the same section ID and settlement match, with the existing settlement resolver as a fallback. Source hashes, geography coverage, published percentages and all cross-check totals are retained in `public/data/2026.11.01/source-results.json` and its `SOURCE.md`. Results stay preliminary and excluded from comparison baselines until verified official open data replaces them. No refresh is scheduled.
+
+One verified source discrepancy is retained: Varna's section protocols sum to 119,623 machine receipts while its RIK protocol reports 119,624. The constituent protocol of section 030601037 reports one machine receipt, while the regional aggregation includes two. Every candidate and no-support total agrees. The importer permits only these exact values for this snapshot; any other protocol mismatch still stops publication.
 
 ## Maps and analysis
 
@@ -128,6 +146,33 @@ The **Мандати и коалиции** page has **Мандати** and **С�
 The parliamentary **География** view has separate tabs for the ten largest domestic electoral districts, vote origins and demographic correlations by municipality. Panels load on first visit and remain mounted when switching tabs. Demographic indicators stay grouped by category, with ages in ascending order; alternating row backgrounds and party/value tooltips support reading across the plot. **Социологически агенции** has separate accuracy and poll/results tabs. The results table defaults to all agencies, with optional single-agency selection, ordinary percentage columns and highlights for the closest estimate per party, including ties. Its footer shows each agency's MAE and coverage, highlighting the lowest MAE. Missing estimates remain unavailable. Original publications, sample sizes, adjusted shares, original published shares and the number of parties compared are preserved. Demographic categories and agency selections reuse loaded data. The polling agency is stored in the URL. Context snapshots are refreshed with `npm run import:context` and validated before any existing file is replaced. Sources, caveats and the duplicate-row correction are documented in [public/data/context/SOURCES.md](public/data/context/SOURCES.md) and in each view's information dialog.
 
 **Откъде дойдоха гласовете**, within Geography, shows estimated incoming vote flows for all parties by default, with a proportional flow diagram and one horizontal 100% stacked bar per destination party. Connection and segment tooltips show the source, destination, election dates, estimated votes and share on hover or keyboard focus. Source colours and segment order stay consistent across bars, and expandable ranked lists provide exact values on small screens. Its dropdown can isolate one party or restore all parties. It loads independently from the other sections; changing the party or theme reuses the same local matrix. These are ecological estimates from Наясно's matched-section model, including non-voters and changes to the electoral rolls. Counts, coverage, omitted-flow effects and imperfect balancing are identified explicitly. Percentages use the displayed incoming flows for each destination, rather than presenting model totals as official national vote counts.
+
+## Hidden electoral-forensics reports
+
+Two direct routes answer the requested 2026 runoff research queries:
+
+- `/research/electoral-forensics-2026`: regional and national section comparisons, hypotheses H1-H5, municipal and settlement summaries.
+- `/research/runoff-mobilization-2026`: all sections with 1-400 registered electors at the first round in Vidin, Vratsa, Montana and Ruse.
+
+Both include charts, a filtered map, section tables, candidate changes, exact historical party registrations, a protocol-review queue and downloadable CSV data. They have no main-navigation links, set `noindex, nofollow, noarchive`, and restore the document metadata when closed. Netlify also sends these directives for the report and analysis-data paths. These are unlisted public pages, not access-controlled pages.
+
+Generate the reports without starting a service or changing election source tables:
+
+```bash
+python3 scripts/analyze_electoral_forensics.py
+```
+
+The analysis requires Python with NumPy. The existing workspace runtime at `/Users/mmihaylov/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3` already provides it. The script uses retained evidence under `public/data/forensics/2026/input-evidence` and writes deterministic JSON, per-section evidence and CSV exports under `public/data/forensics/2026`. Optional `--archive DATE=/path/to/export.zip` arguments recheck a retained original CIK archive. `--seed` and `--permutations` control the reproducible spatial screening, with at least 999 permutations.
+
+Turnout uses each section's registered list (`totalA`), with added electors (`totalB`) shown separately and an alternative denominator check. First-round registered lists determine size groups; boundary changes are reported. Identity matching checks section number, municipality, EKATTE, settlement and address. Changed, missing, special and arithmetically inconsistent records remain visible with exclusions. Formal comparisons use a narrower eligible sample; sensitivity summaries describe a broader matched sample. Party registrations are never merged across elections. The optional October 2024 archive remains outside formal historical conclusions until its official archive is verified.
+
+The runoff remains the preliminary CIK snapshot dated 2 November 2026 at 09:15 Sofia time, even at 100% processing. Statistical flags and proximity groups are leads for protocol review. They do not identify individual vote transfers, organizers, coercion or electoral violations. Methods, sample coverage, source hashes, confidence-interval limitations and multiple-testing adjustments are published with the results.
+
+Focused checks:
+
+```bash
+python3 -m unittest discover -s scripts -p 'electoral_forensics*_test.py'
+```
 
 ## Development server
 
