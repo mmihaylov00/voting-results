@@ -17,7 +17,7 @@
   @if (error()) {<div class="error py-8" role="alert"><p>{{ error() }}</p><button type="button" (click)="load()">Опитайте отново</button></div>}
   @if (report(); as data) {
     @if (unverifiedHistorical()) {<p class="source-note">Данните от 27.10.2024 са допълнителна историческа справка с незавършена проверка на оригиналния официален архив. Те са отделени от формалните статистически модели.</p>}
-    <nav class="section-nav" aria-label="Раздели на анализа"><a href="#results">Наблюдения</a><a href="#hypotheses">Проверки H1-H5</a><a href="#geography">Карта и секции</a><a href="#places">Обобщения</a><a href="#review">За преглед</a><a href="#sources">Източници и метод</a></nav>
+    <nav class="section-nav" aria-label="Раздели на анализа"><a [href]="pagePath + '#results'">Наблюдения</a><a [href]="pagePath + '#hypotheses'">Проверки H1-H5</a><a [href]="pagePath + '#geography'">Карта и секции</a><a [href]="pagePath + '#places'">Обобщения</a><a [href]="pagePath + '#review'">За преглед</a><a [href]="pagePath + '#sources'">Източници и метод</a></nav>
 
     <section id="results" aria-labelledby="results-title">
       <div class="section-heading"><h2 id="results-title">Наблюдения и обхват</h2><a [href]="dataRoot + '/report.json'" download>Пълен отчет · JSON</a></div>
@@ -88,11 +88,17 @@
             </details>
           }
           <h4>Проверка спрямо подобни секции</h4>
-          <p>Контролна група: {{ row.signal.peerN }} секции · медиана {{ signed(row.signal.peerMedian) }} п.п. · медианно абсолютно отклонение {{ display(row.signal.peerMad) }} · устойчив стандартизиран показател {{ display(row.signal.robustZ) }} · коригирана вероятност {{ display(row.signal.adjustedTail) }}.</p>
+          <p>Контролна група: {{ row.signal.peerN }} секции · медиана {{ signed(row.signal.peerMedian) }} п.п. · медианно абсолютно отклонение {{ display(row.signal.peerMad) }} · устойчив стандартизиран показател {{ display(row.signal.robustZ) }}.</p>
+          <p>Описателен дял на сравнимите секции с промяна поне колкото наблюдаваната: {{ percent(row.signal.empiricalUpperTail === null ? null : row.signal.empiricalUpperTail * 100) }}. Това не е p-стойност.</p>
           <p>Съседни места: {{ row.signal.neighborCount }} · средно отклонение след контролите {{ signed(row.signal.neighborMean) }} п.п. · пространствена p-стойност {{ display(row.signal.spatialP) }} · коригирана q-стойност {{ display(row.signal.spatialQ) }}.</p>
           @if (row.signal.flags.length) {<p><strong>Основания за преглед:</strong> {{ display(row.signal.flags) }}</p>}
           <ul>@for (explanation of row.signal.alternativeExplanations; track $index) {<li>{{ explanation }}</li>}</ul>
           <h4>Проверими източници на ЦИК</h4><div class="source-links">@for (source of safeSourceLinks(row); track $index) {<a [href]="source.url" target="_blank" rel="noopener noreferrer">{{ source.date }} · източник {{ $index + 1 }}</a>}</div>
+          <h4>Официални флагове и адресни маркери по избори</h4>
+          <p class="note">Адресният маркер е текстов сигнал за проверка на протокола. Той не определя официална категория „специална секция“.</p>
+          <div class="table-scroll institution-evidence"><table><thead><tr><th scope="col">Избори</th><th scope="col">Официален специален флаг</th><th scope="col">Официално основание</th><th scope="col">Текстов маркер в адреса</th></tr></thead><tbody>
+            @for (election of row.elections | keyvalue; track election.key) {@if (election.value; as record) {<tr><th scope="row">{{ election.key }}</th><td>{{ record.special === true ? 'Да' : record.special === false ? 'Няма посочен' : 'Няма данни' }}</td><td>{{ record.specialReasons?.length ? display(record.specialReasons) : 'Няма посочено основание' }}</td><td>{{ record.institutionReviewFlag === true ? 'Има обозначение за институция - нужна е проверка' : record.institutionReviewFlag === false ? 'Няма открит маркер' : 'Няма данни' }}</td></tr>}}
+          </tbody></table></div>
           @for (election of row.elections | keyvalue; track election.key) {@if (election.value?.sourceDiscrepancies?.length) {<p class="source-note"><strong>{{ election.key }} · Несъответствие между публикувани източници:</strong> {{ display(election.value.sourceDiscrepancies) }}</p>}}
           <h4>Запазени оригинални протоколни таблици</h4><div class="source-links">@for (source of canonicalLinks(row); track source.date) {<a [href]="source.url" download>{{ source.date }} · оригинална таблица</a>}</div>
           <p class="note">Показателите за дялове са изчислени от запазените бройки. Нулевите резултати се показват за всяка регистрирана кандидатура; партийните имена са от съответния изборен справочник. Оригиналният ред е посочен в пълния запис. Контролните суми на таблиците са в произхода на данните.</p>
@@ -113,7 +119,7 @@
       <p class="note">Групирането използва сходство и пространствена близост. Близки точки не установяват общ организатор или нарушение. Пълните изчисления и източници са в секционните данни.</p>
       <h3>Териториални групи</h3>
       @for (cluster of clusters(); track cluster.id) {<details><summary>{{ cluster.regionName }} / {{ cluster.municipalityName }} · {{ cluster.targetSectionCount ?? cluster.sectionCount }} секции от извадката · {{ cluster.sectionCount }} в пълната група</summary>
-        <dl class="evidence-list"><div><dt>Статус</dt><dd>{{ enumLabel(cluster.status) }}</dd></div><div><dt>Различни места за гласуване</dt><dd>{{ cluster.siteCount | number }}</dd></div><div><dt>Средна промяна в пълната група</dt><dd>{{ signed(cluster.meanDeltaPp) }} п.п.</dd></div><div><dt>Минимални p / q на съставните места</dt><dd>{{ display(cluster.p) }} / {{ display(cluster.q) }}. Това не е самостоятелен статистически тест на групата.</dd></div><div><dt>Критерий за групиране</dt><dd>{{ cluster.definition }}</dd></div></dl>
+        <dl class="evidence-list"><div><dt>Статус</dt><dd>{{ enumLabel(cluster.status) }}</dd></div><div><dt>Различни места за гласуване</dt><dd>{{ cluster.siteCount | number }}</dd></div><div><dt>Средна промяна в пълната група</dt><dd>{{ signed(cluster.meanDeltaPp) }} п.п.</dd></div><div><dt>Минимална p / максимална q на съставните места</dt><dd>{{ display(cluster.p) }} / {{ display(cluster.q) }}. Това не е самостоятелен статистически тест на групата.</dd></div><div><dt>Критерий за групиране</dt><dd>{{ cluster.definition }}</dd></div></dl>
         <h4>Секции от извадката на страницата</h4><div class="source-links">@for (id of cluster.targetSectionIds ?? cluster.sectionIds; track id) {<button type="button" class="text-button" (click)="openFinding(id)">{{ id }}</button>}</div>
         <ul>@for (limitation of cluster.limitations; track $index) {<li>{{ limitation }}</li>}</ul>
       </details>}
@@ -126,7 +132,7 @@
           <details><summary>Изчисления и алтернативни обяснения</summary><ul>@for (calculation of finding.calculations; track $index) {<li>{{ calculation }}</li>}</ul><h4>Алтернативни обяснения</h4><ul>@for (explanation of finding.alternativeExplanations; track $index) {<li>{{ explanation }}</li>}</ul></details>
         </article>
       }
-      <p><a href="#geography" (click)="setFilter('flaggedOnly', true)">Покажи секциите с основания за преглед в таблицата</a></p>
+      <p><a [href]="pagePath + '#geography'" (click)="setFilter('flaggedOnly', true)">Покажи секциите с основания за преглед в таблицата</a></p>
     </section>
 
     <section id="sources" aria-labelledby="sources-title"><h2 id="sources-title">Източници, качество и метод</h2>

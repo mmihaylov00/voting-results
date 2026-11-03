@@ -39,6 +39,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   private detailSubscription?: Subscription;
   private readonly detailCache = new Map<string, ForensicsSection>();
   readonly focus = this.route.snapshot.data['researchQuery'] === 'query2';
+  readonly pagePath = this.focus ? '/research/runoff-mobilization-2026' : '/research/electoral-forensics-2026';
   readonly report = signal<ForensicsReport | null>(null);
   readonly sections = signal<ForensicsSection[]>([]);
   readonly error = signal('');
@@ -170,7 +171,13 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
             if (detail.sectionId !== row.sectionId) {
               this.detailError.set('Полученият запис е за различна секция. Източниците не са показани.');
             } else {
-              const fullRow = hydrateSectionRecord({ ...row, ...detail }, this.report()?.registrations);
+              const merged = { ...row, ...detail };
+              const explanations = merged.signal.alternativeExplanations;
+              const finding = explanations?.length ? undefined
+                : this.report()?.findings.find(item => item.sectionId === row.sectionId);
+              const fullRow = hydrateSectionRecord({ ...merged, signal: { ...merged.signal,
+                alternativeExplanations: explanations?.length ? explanations : finding?.alternativeExplanations ?? [],
+              } }, this.report()?.registrations);
               this.selected.set(fullRow);
               this.detailCache.set(row.sectionId, fullRow);
               if (this.detailCache.size > 20) this.detailCache.delete(this.detailCache.keys().next().value!);
@@ -283,6 +290,11 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
       valid_votes_exceed_voters: 'Действителните гласове надвишават гласувалите',
       ballots_do_not_equal_signed_voters: 'Бюлетините се различават от подписите на гласувалите',
       unknown_voting_method: 'Методът на гласуване не е установен',
+      absolute_change_ge10pp_and_abs_robust_z_ge3: 'Промяна поне 10 процентни пункта и устойчив стандартизиран показател с абсолютна стойност поне 3',
+      registered_electorate_change_over5pct: 'Броят избиратели по списък се е променил с повече от 5%',
+      official_mobile_flag: 'Официално обозначена подвижна секция',
+      official_ship_flag: 'Официално обозначена корабна секция',
+      unchanged_first_round_official_special_flag: 'Официалният флаг от I тур е пренесен при непроменена идентичност на секцията',
     };
     if (value.startsWith('candidate_components_disagree:')) return `Несъответствие на компонентите за бюлетина № ${value.split(':')[1]}`;
     return labels[value] ?? value;

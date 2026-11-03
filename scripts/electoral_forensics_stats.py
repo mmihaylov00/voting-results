@@ -39,8 +39,8 @@ def mean_interval(values, clusters):
     return {'mean': mean, 'ci95': [mean - margin, mean + margin], 'clusters': count}
 
 
-def fixed_effect_model(y, features, names, clusters):
-    """Within-municipality OLS with a municipality-cluster sandwich covariance.
+def fixed_effect_model(y, features, names, clusters, fixed_effects=None):
+    """Within-group OLS with a municipality-cluster sandwich covariance.
 
     Zero or dependent columns are removed in declared order, and exposed in the
     result. They are never interpreted as identifiable zero effects.
@@ -54,9 +54,14 @@ def fixed_effect_model(y, features, names, clusters):
     groups = defaultdict(list)
     for index, cluster in enumerate(clusters):
         groups[cluster].append(index)
+    if fixed_effects is not None and len(fixed_effects) != len(y):
+        raise ValueError('Fixed-effect groups must align with regression rows')
+    effects = defaultdict(list)
+    for index, group in enumerate(fixed_effects if fixed_effects is not None else clusters):
+        effects[group].append(index)
     centered_y = y.copy()
     centered_x = x.copy()
-    for indices in groups.values():
+    for indices in effects.values():
         centered_y[indices] -= y[indices].mean()
         centered_x[indices] -= x[indices].mean(axis=0)
     scale = np.sqrt(np.mean(centered_x ** 2, axis=0))
@@ -66,13 +71,14 @@ def fixed_effect_model(y, features, names, clusters):
         proposed = keep + [index]
         if scale[index] > 1e-10 and np.linalg.matrix_rank(scaled[:, proposed], tol=1e-9) > len(keep):
             keep.append(index)
-    result = {'n': len(y), 'municipalities': len(groups), 'rank': len(keep),
+    effect_label = 'населени места' if fixed_effects is not None else 'общини'
+    result = {'n': len(y), 'municipalities': len(groups), 'fixedEffectGroups': len(effects), 'rank': len(keep),
               'dropped': [name for i, name in enumerate(names) if i not in keep],
-              'coefficients': {}, 'method': 'Линейна регресия с фиксирани общински ефекти; '
+              'coefficients': {}, 'method': f'Линейна регресия с фиксирани ефекти за {effect_label}; '
               'CR1 ковариация по общински клъстери; асимптотични нормални 95% интервали и двустранни p стойности.',
               'limitations': ['Коефициентите показват асоциации; секциите не са разпределени случайно.',
                               'Нормалните интервали може да са неточни при малко общини.']}
-    if not keep or len(y) <= len(keep) + len(groups) or len(groups) < 2:
+    if not keep or len(y) <= len(keep) + len(effects) or len(groups) < 2:
         result['status'] = 'insufficient_support'
         result['residuals'] = centered_y.tolist()
         return result
@@ -84,7 +90,7 @@ def fixed_effect_model(y, features, names, clusters):
     for indices in groups.values():
         score = design[indices].T @ residuals[indices]
         meat += np.outer(score, score)
-    degrees = len(y) - len(keep) - len(groups)
+    degrees = len(y) - len(keep) - len(effects)
     correction = len(groups) / (len(groups) - 1) * (len(y) - 1) / degrees
     covariance = correction * bread @ meat @ bread
     for offset, index in enumerate(keep):

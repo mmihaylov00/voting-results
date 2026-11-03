@@ -147,4 +147,113 @@ describe('hidden electoral research pages', () => {
     expect(fixture.componentInstance.findings().map(row => row.sectionId)).toEqual(['050100001']);
     fixture.destroy();
   });
+
+  it.each([
+    ['query1', '/research/electoral-forensics-2026'],
+    ['query2', '/research/runoff-mobilization-2026'],
+  ])('keeps all %s section anchors on the current research route with a root base URL', (query, path) => {
+    const existingBase = document.head.querySelector('base');
+    const base = existingBase ?? document.createElement('base');
+    const originalHref = existingBase?.getAttribute('href') ?? null;
+    base.setAttribute('href', '/');
+    if (!existingBase) document.head.appendChild(base);
+    const fixture = setup(query);
+    try {
+      fixture.componentInstance.report.set(reportFixture());
+      fixture.detectChanges();
+      const anchors = [...(fixture.nativeElement as HTMLElement).querySelectorAll<HTMLAnchorElement>('a[href*="#"]')];
+      expect(anchors.length).toBe(7);
+      for (const anchor of anchors) {
+        const destination = new URL(anchor.href);
+        expect(destination.pathname).toBe(path);
+        expect(destination.hash).not.toBe('');
+      }
+    } finally {
+      fixture.destroy();
+      if (!existingBase) base.remove();
+      else if (originalHref === null) base.removeAttribute('href');
+      else base.setAttribute('href', originalHref);
+    }
+  });
+
+  it('explains the stable review criterion codes in Bulgarian', () => {
+    const fixture = setup();
+    expect(fixture.componentInstance.enumLabel('absolute_change_ge10pp_and_abs_robust_z_ge3'))
+      .toContain('Промяна поне 10 процентни пункта');
+    expect(fixture.componentInstance.enumLabel('registered_electorate_change_over5pct'))
+      .toBe('Броят избиратели по списък се е променил с повече от 5%');
+    fixture.destroy();
+  });
+
+  it('shows descriptive peer fractions and keeps address markers separate from official special flags', () => {
+    const fixture = setup();
+    fixture.detectChanges();
+    const http = TestBed.inject(HttpTestingController);
+    http.expectOne('/data/forensics/2026/report.json').flush(reportFixture());
+    http.expectOne('/data/forensics/2026/sections.json').flush([]);
+    const row = sectionFixture();
+    row.signal.empiricalUpperTail = .125;
+    fixture.componentInstance.selectSection(row);
+    http.expectOne('/data/forensics/2026/section-records/050100001.json').flush({ sectionId: row.sectionId, elections: {
+      '2026.10.25': { registered: 250, voted: 90, turnout: 36, sourceUrls: {}, votesByParty: {},
+        special: false, specialReasons: [], institutionReviewFlag: true },
+      '2026.11.01': { registered: 250, voted: 170, turnout: 68, sourceUrls: {}, votesByParty: {},
+        special: true, specialReasons: ['official_mobile_flag'], institutionReviewFlag: false },
+    } });
+    fixture.detectChanges();
+    const inspector = (fixture.nativeElement as HTMLElement).querySelector('#section-inspector');
+    expect(inspector?.textContent).toContain('12,5%');
+    expect(inspector?.textContent).toContain('Това не е p-стойност');
+    expect(inspector?.textContent).not.toContain('коригирана вероятност');
+    const rows = inspector?.querySelectorAll('.institution-evidence tbody tr');
+    expect(rows?.[0].textContent).toContain('Няма посочен');
+    expect(rows?.[0].textContent).toContain('Има обозначение за институция');
+    expect(rows?.[1].textContent).toContain('Официално обозначена подвижна секция');
+    expect(rows?.[1].textContent).toContain('Няма открит маркер');
+    expect(inspector?.textContent).toContain('Той не определя официална категория');
+    fixture.destroy();
+    http.verify();
+  });
+
+  it('labels the cluster probability summaries as minimum p and maximum q', () => {
+    const fixture = setup();
+    const report = reportFixture();
+    report.query1.clusters = [{ id: 'cluster1', sectionIds: ['050100001'], siteCount: 3, sectionCount: 1,
+      regionName: 'Видин', municipalityName: 'Белоградчик', meanDeltaPp: 10, p: .001, q: .8,
+      status: 'exploratory', definition: 'Териториална близост.', limitations: [] }];
+    fixture.componentInstance.report.set(report);
+    fixture.detectChanges();
+    const review = (fixture.nativeElement as HTMLElement).querySelector('#review');
+    expect(review?.textContent).toContain('Минимална p / максимална q на съставните места');
+    expect(review?.textContent).not.toContain('Минимални p / q');
+    fixture.destroy();
+  });
+
+  it('restores missing lazy-record explanations from the global finding even outside the page review queue', () => {
+    const fixture = setup();
+    fixture.detectChanges();
+    const http = TestBed.inject(HttpTestingController);
+    const report = reportFixture();
+    report.findings = [{
+      sectionId: '010100001', regionName: 'Благоевград', municipalityName: 'Банско', settlementName: 'Банско',
+      deltaTurnoutPp: 20, deltaVoted: 40, registered1: 200, registered2: 200, voted1: 80, voted2: 120,
+      turnout1: 40, turnout2: 60, robustZ: 3, peerN: 50, peerMedian: 2, criteria: [], calculations: [],
+      alternativeExplanations: ['Нормална балотажна мобилизация.', 'Промяна на кандидатския избор.'],
+      spatialQ: null, priority: false, small400: true,
+    }];
+    report.query1.findings = [];
+    http.expectOne('/data/forensics/2026/report.json').flush(report);
+    http.expectOne('/data/forensics/2026/sections.json').flush([]);
+    const row = sectionFixture({ sectionId: '010100001', priority: false });
+    fixture.componentInstance.selectSection(row);
+    http.expectOne('/data/forensics/2026/section-records/010100001.json').flush({ sectionId: row.sectionId, elections: {} });
+    fixture.detectChanges();
+    expect(fixture.componentInstance.selected()?.signal.alternativeExplanations)
+      .toEqual(report.findings[0].alternativeExplanations);
+    const inspector = (fixture.nativeElement as HTMLElement).querySelector('#section-inspector');
+    expect(inspector?.textContent).toContain('Нормална балотажна мобилизация.');
+    expect(inspector?.textContent).toContain('Промяна на кандидатския избор.');
+    fixture.destroy();
+    http.verify();
+  });
 });

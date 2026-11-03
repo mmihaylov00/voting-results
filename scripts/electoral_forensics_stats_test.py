@@ -6,7 +6,7 @@ import unittest
 import numpy as np
 
 from analyze_electoral_forensics import (APRIL, FIRST_ROUND, OCTOBER_2024, SECOND_ROUND,
-                                         compact_detail, enrich_rows, group_rows, spatial_clusters)
+                                         compact_detail, enrich_rows, group_rows, method_overlap, spatial_clusters)
 from electoral_forensics_stats import (bh_adjust, collapse_sites, fixed_effect_model,
                                        matched_controls, spatial_test)
 
@@ -78,6 +78,7 @@ class ForensicsDefinitionsTest(unittest.TestCase):
         source = section()
         for date, record in source['elections'].items():
             record.update(electorateWithAdded=252, methodEvidence=None,
+                          special=False, specialReasons=[], institutionReviewFlag=True,
                           sourceUrls={'canonical': '/table.txt', 'protocol': 'https://results.cik.bg/example'},
                           sourceRefs={'votes': {'line': 17, 'url': '/votes.txt'}})
             for party in record['votesByParty'].values():
@@ -90,6 +91,8 @@ class ForensicsDefinitionsTest(unittest.TestCase):
         self.assertNotIn('99', detail['elections'][FIRST_ROUND]['votesByParty'])
         self.assertEqual(detail['elections'][FIRST_ROUND]['votesByParty']['4']['total'], 40)
         self.assertEqual(detail['elections'][FIRST_ROUND]['sourceRefs']['votes']['line'], 17)
+        self.assertFalse(detail['elections'][FIRST_ROUND]['special'])
+        self.assertTrue(detail['elections'][FIRST_ROUND]['institutionReviewFlag'])
 
     def test_missing_runoff_does_not_become_zero_eliminated_vote_pool(self):
         row = section()
@@ -104,6 +107,15 @@ class ForensicsDefinitionsTest(unittest.TestCase):
         self.assertAlmostEqual(group['turnout1'], 100 * 190 / 750)
         self.assertAlmostEqual(group['turnout2'], 100 * 320 / 850)
         self.assertNotEqual(group['deltaTurnoutPp'], group['meanDeltaPp'])
+
+    def test_different_settlements_are_not_within_place_method_overlap(self):
+        rows = enrich_rows([section('050100001'), section('050100002')])
+        rows[1].update(settlementEkatte='00002', method1='machine', method2='machine')
+        stable, overlap = method_overlap(rows)
+        self.assertEqual(len(stable), 2)
+        self.assertEqual(overlap, [])
+        rows[1]['settlementEkatte'] = rows[0]['settlementEkatte']
+        self.assertEqual(len(method_overlap(rows)[1]), 2)
 
 
 class StatisticalToolsTest(unittest.TestCase):
@@ -137,6 +149,18 @@ class StatisticalToolsTest(unittest.TestCase):
         model = fixed_effect_model(y, x[:, None], ['null'], municipalities)
         self.assertAlmostEqual(model['coefficients']['null']['estimate'], 0, places=10)
         self.assertGreater(model['coefficients']['null']['p'], .99)
+
+    def test_settlement_effects_are_separate_from_municipality_uncertainty(self):
+        rng = np.random.default_rng(99)
+        settlements = np.repeat(np.arange(72), 10)
+        municipalities = settlements // 3
+        local_effect = np.sin(settlements) * 10
+        x = local_effect + rng.normal(size=720)
+        y = local_effect * 4 + 2 * x + rng.normal(scale=.1, size=720)
+        model = fixed_effect_model(y, x[:, None], ['effect'], municipalities, fixed_effects=settlements)
+        self.assertAlmostEqual(model['coefficients']['effect']['estimate'], 2, delta=.03)
+        self.assertEqual(model['fixedEffectGroups'], 72)
+        self.assertEqual(model['municipalities'], 24)
 
     def test_spatial_collapses_colocated_and_permutation_is_deterministic(self):
         rows = enrich_rows([section(f'050100{i:03d}') for i in range(10)])

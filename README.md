@@ -166,6 +166,8 @@ The analysis requires Python with NumPy. The existing workspace runtime at `/Use
 
 Turnout uses each section's registered list (`totalA`), with added electors (`totalB`) shown separately and an alternative denominator check. First-round registered lists determine size groups; boundary changes are reported. Identity matching checks section number, municipality, EKATTE, settlement and address. Changed, missing, special and arithmetically inconsistent records remain visible with exclusions. Formal comparisons use a narrower eligible sample; sensitivity summaries describe a broader matched sample. Party registrations are never merged across elections. The optional October 2024 archive remains outside formal historical conclusions until its official archive is verified.
 
+Address markers for care homes and hospitals trigger a conservative institution review exclusion, separately from official special-section flags. The method comparison requires paper and machine sections within the same settlement; insufficient overlap is reported without estimating a separate method effect.
+
 The runoff remains the preliminary CIK snapshot dated 2 November 2026 at 09:15 Sofia time, even at 100% processing. Statistical flags and proximity groups are leads for protocol review. They do not identify individual vote transfers, organizers, coercion or electoral violations. Methods, sample coverage, source hashes, confidence-interval limitations and multiple-testing adjustments are published with the results.
 
 Focused checks:

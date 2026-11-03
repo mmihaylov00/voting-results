@@ -27,6 +27,12 @@ SOURCE_BASES = {
     '2024.10.27': 'https://results.cik.bg/pe202410/',
 }
 EVIDENCE_DIRECTORY = Path('public/data/forensics/2026/input-evidence')
+INSTITUTION_REVIEW_PATTERN = re.compile(
+    r'ПОДВИЖН|ПСИК|БОЛНИЦ|МБАЛ|УМБАЛ|ЗАТВОР|АРЕСТ|'
+    r'(?<![А-Я])(?:ДСХ|ДПХ|ДПБ|ЦНСТ[А-Я]*|СБАЛ[А-Я]*|СБПЛББ|СБР)(?![А-Я])|'
+    r'СТАРЧЕСКИ\s+ДОМ|ДОМ(?:А)?\s+ЗА\s+(?:СТАРИ|ПЪЛНОЛЕТНИ|ЛИЦА)|'
+    r'ОНКОЛОГИЧЕН\s+ЦЕНТЪР|ЦЕНТЪР\s+ЗА\s+ПСИХИЧНО\s+ЗДРАВЕ'
+)
 DEFINITIONS = {
     'registered': 'totalA: избиратели по списъка при предаването му на СИК. Дописаните в изборния ден '
                   'избиратели (totalB) се пазят отделно.',
@@ -424,8 +430,7 @@ def _section(values, header, settlements, municipalities):
             special_reasons.append(label)
     # Explicit institution names are leads for protocol review, not inferred
     # legal section categories. They remain distinct from official flags.
-    institution = bool(re.search(r'ПОДВИЖН|ПСИК|БОЛНИЦ|МБАЛ|УМБАЛ|ЗАТВОР|АРЕСТ|ДОМ ЗА СТАРИ|ДОМА ЗА СТАРИ',
-                                 row.get('sectionName', '').upper()))
+    institution = bool(INSTITUTION_REVIEW_PATTERN.search(row.get('sectionName', '').upper()))
     return {
         'sectionId': section_id, 'regionId': region,
         'regionName': re.sub(r'^\d+\.\s*', '', row.get('regionName', '')),

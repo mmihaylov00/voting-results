@@ -5,6 +5,9 @@ export interface ForensicsElection {
   sourceUrls: Record<string, string | null>;
   votesByParty: Record<string, { name?: string; total: number; paper: number; machine: number; share?: number | null; [key: string]: unknown }>;
   sourceDiscrepancies?: unknown[];
+  special?: boolean;
+  specialReasons?: string[];
+  institutionReviewFlag?: boolean;
   [key: string]: unknown;
 }
 

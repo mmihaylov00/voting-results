@@ -87,6 +87,22 @@ class ForensicsDataTests(unittest.TestCase):
         self.assertTrue(section['special'])
         self.assertEqual(normalize_identity('№3'), normalize_identity('No3'))
 
+    def test_care_institutions_are_review_flags_and_ordinary_venues_remain_regular(self):
+        header = 'sectionId;regionId;regionName;municipalityId;cityName;sectionName;lat;lan;isMobile;isShip;machineCount'.split(';')
+        positive = ['село Гара Орешец, ДСХ ул. Георги Димитров №14', 'ЦНСТПЛФУ, ул. Шест №2',
+                    'СБАЛПФЗ гр. Враца', 'СБПЛББ-Роман', 'СБР "Свети Мина"',
+                    'Дом за пълнолетни лица с физически увреждания', 'Старчески дом "Приста"',
+                    'Център за психично здраве', 'Комплексен онкологичен център', 'ДПБ', 'ДПХ']
+        negative = ['С. КУТОВО, училище "Св. Св. Кирил и Методий"', 'Салон на читалището',
+                    'Младежки дом', 'Културен дом', 'Пенсионерски клуб', 'Бивш здравен дом',
+                    'Център за социална рехабилитация и интеграция (клуб)']
+        for address in positive + negative:
+            values = ['051600025', '5', 'Видин', '00014', 'с. Орешец', address, '', '', '0', '0', '0']
+            with self.subTest(address=address):
+                section = _section(values, header, {}, {})
+                self.assertEqual(section['institutionReviewFlag'], address in positive)
+                self.assertFalse(section['special'])
+
     def test_loader_retains_raw_denominators_and_does_not_invent_method(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

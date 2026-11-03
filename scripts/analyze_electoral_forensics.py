@@ -132,14 +132,16 @@ BASE_NAMES = ['logRegistered', 'logRegisteredSquared', 'baselineTurnout', 'basel
               'registeredChangePct', 'rural']
 
 
-def fit(rows, extra_names=(), extra=None, date=None):
+def fit(rows, extra_names=(), extra=None, date=None, settlement_effects=False):
     selected = [row for row in rows if row['rural'] is not None
                 and (not date or row['history'][date]['eligibleForModel'])]
     if not selected:
         return {'status': 'insufficient_support', 'n': 0, 'coefficients': {}, 'residuals': [], 'dropped': []}, []
     features = [base_features(row) + (extra(row) if extra else []) for row in selected]
     model = fixed_effect_model([row['deltaTurnoutPp'] for row in selected], features,
-                               BASE_NAMES + list(extra_names), [row['municipalityCode'] for row in selected])
+                               BASE_NAMES + list(extra_names), [row['municipalityCode'] for row in selected],
+                               fixed_effects=[(row['municipalityCode'], row['settlementEkatte']) for row in selected]
+                               if settlement_effects else None)
     return model, selected
 
 
@@ -230,6 +232,20 @@ def hypothesis(identifier, title, model=None, term=None, summary='', **extra):
             'details': {key: value for key, value in (model or {}).items() if key != 'residuals'}, **extra}
 
 
+def method_overlap(rows):
+    """Only within-settlement comparisons count as overlap for H3."""
+    stable = [row for row in rows if row['method1'] == row['method2']
+              and row['method1'] in ('paper', 'machine') and row['rural'] is not None
+              and row['settlementEkatte']]
+    strata = defaultdict(list)
+    for row in stable:
+        strata[(row['municipalityCode'], row['settlementEkatte'], row['sizeGroup'], row['rural'],
+                int(row['turnout1'] // 20))].append(row)
+    overlap = [row for members in strata.values() if len({row['method1'] for row in members}) == 2
+               for row in members]
+    return stable, overlap
+
+
 def analyze_hypotheses(rows):
     h1_model, rural_rows = fit([row for row in rows if row['rural']], ['small400'],
                               lambda row: [float(row['small400'])])
@@ -293,28 +309,26 @@ def analyze_hypotheses(rows):
             'Съществуващите канонични записи се пазят отделно с отбелязана проверка.')
     h2['limitations'].append('ДПС-Ново начало (2024) е отделна регистрация и не е обединена с ДПС (2026) или АПС.')
 
-    method_rows = [row for row in rows if row['method1'] == row['method2']
-                   and row['method1'] in ('paper', 'machine') and row['rural'] is not None]
-    strata = defaultdict(list)
-    for row in method_rows:
-        strata[(row['municipalityCode'], row['sizeGroup'], row['rural'],
-                int(row['turnout1'] // 20))].append(row)
-    overlap = [row for members in strata.values() if len({row['method1'] for row in members}) == 2
-               for row in members]
+    method_rows, overlap = method_overlap(rows)
     arms = Counter(row['method1'] for row in overlap)
     municipalities = len({row['municipalityCode'] for row in overlap})
     support = len(overlap) >= 50 and arms['paper'] >= 20 and arms['machine'] >= 20 and municipalities >= 10
-    method_model, _ = fit(overlap, ['machine'], lambda row: [float(row['method1'] == 'machine')]) if support \
+    method_model, _ = fit(overlap, ['machine'], lambda row: [float(row['method1'] == 'machine')],
+                           settlement_effects=True) if support \
         else ({'n': len(overlap), 'coefficients': {}, 'limitations': []}, [])
     h3 = hypothesis('H3', 'Метод на гласуване и обща подкрепа между групите', method_model, 'machine',
-                    'Стабилен метод в двата тура; обща подкрепа по община, размер, град/село и начална активност.')
+                    'Стабилен метод в двата тура; обща подкрепа в едно и също населено място, община, '
+                    'размер и начална активност; при достатъчно данни моделът използва фиксирани ефекти '
+                    'за населено място и неопределеност по общински клъстери.')
     h3['details'].update(stableMethodN=len(method_rows), overlapN=len(overlap), overlapArms=dict(arms),
                          overlapMunicipalities=municipalities, minimumSupport={'n': 50, 'eachArm': 20, 'municipalities': 10},
+                         overlapSettlements=len({(row['municipalityCode'], row['settlementEkatte']) for row in overlap}),
                          descriptive=group_rows(method_rows, 'method1'))
     if not support or 'machine' not in method_model.get('coefficients', {}):
         h3.update(status='not_identifiable', p=None, estimate=None, ci95=None)
     h3['limitations'].extend(['Методът е силно свързан с размера и правилото за 300 избиратели.',
-                             'При недостатъчно припокриване няма надежден отделен ефект на метода.',
+                             'Секции в различни населени места не се броят като обща подкрепа за H3. '
+                             'При недостатъчно припокриване в едно населено място няма надежден отделен ефект на метода.',
                              'Дори при припокриване коефициентът е асоциация, а не причинен ефект.'])
     h5 = hypothesis('H5', 'Нормална балотажна мобилизация и алтернативни обяснения', n=len(rows),
                     summary='Описателна проверка на дописаните избиратели, изменението на списъците, '
@@ -635,7 +649,7 @@ def build_report(dataset, permutations=999, seed=20261101):
                   'candidateShares': 'Гласове за кандидат / (всички кандидатски гласове + НПН); отделно дял от подписалите се.',
                   'historicShares': 'Точните регистрации на конкретните избори; дял от действителните гласове за листи без НПН.',
                   'highHistoricalShare': 'Предварително определен праг >=50% за всяка априлска регистрация поотделно; непрекъснат анализ за 10 пр.п. дял.',
-                  'models': 'Линейни модели с общински ефекти; логаритъм и квадрат на логаритъма на списъка, начална активност и нейния квадрат, промяна на списъка, град/село; H2 добавя предишна активност.',
+                  'models': 'Линейни модели с общински ефекти; логаритъм и квадрат на логаритъма на списъка, начална активност и нейния квадрат, промяна на списъка, град/село; H2 добавя предишна активност. H3 изисква припокриване и фиксирани ефекти по населено място; неопределеността остава по общински клъстери.',
                   'uncertainty': 'CR1 по общински клъстери; асимптотични нормални 95% интервали. За група с една община няма интервал.',
                   'multiplicity': 'BH за определимите първични H1-H4 тестове поотделно за националната и всяка целева извадка; H2 използва вътрешно Bonferroni за двете партии. Историческият модел е проучвателен. Всички тествани места в страната имат отделна обща BH корекция.',
                   'screening': 'Проучвателно правило |robust z|>=3 и |промяна на активността|>=10 пр.п.; промяна на списъка >5% е сигнал за проверка, а не статистическо отклонение. Това не са p стойности.',
@@ -685,6 +699,9 @@ def compact_detail(row):
                                                                     'retainedSourceUrl'] if key in evidence} if evidence else None
         snapshot['sourceDiscrepancies'] = election.get('sourceDiscrepancies', [])
         snapshot['settlementEkatteSource'] = election.get('settlementEkatteSource', 'not_recorded')
+        snapshot['special'] = election.get('special', False)
+        snapshot['specialReasons'] = election.get('specialReasons', [])
+        snapshot['institutionReviewFlag'] = election.get('institutionReviewFlag', False)
         snapshot['sourceUrls'] = {key: value for key, value in election['sourceUrls'].items()
                                    if key in ('protocol', 'canonical')}
         snapshot['sourceRefs'] = {table: {'table': date + ':' + table, 'url': reference['url'], 'line': reference['line']}
