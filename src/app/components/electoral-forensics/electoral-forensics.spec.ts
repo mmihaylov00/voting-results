@@ -6,7 +6,7 @@ import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By, Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, provideRouter, RouterLink } from '@angular/router';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ElectoralForensicsComponent } from './electoral-forensics';
 import { CandidateAnalysisSummary, ForensicsFinding, ForensicsGroup, ForensicsSection } from './forensics.models';
 import { candidateFixture, groupFixture, reportFixture, sectionFixture } from './forensics.fixtures';
@@ -360,6 +360,44 @@ describe('hidden electoral research pages', () => {
     expect(page.filters()).toMatchObject({ sort: 'deltaTurnoutPp', descending: true });
     expect(page.page()).toBe(0);
     fixture.destroy();
+  });
+
+  it('highlights the section below the sticky navigation when the previous section is still visible', () => {
+    let frame: FrameRequestCallback = () => {};
+    let updateNavigation: () => void = () => {};
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => { frame = callback; return 1; });
+    vi.stubGlobal('cancelAnimationFrame', vi.fn());
+    vi.stubGlobal('IntersectionObserver', class {
+      constructor(callback: () => void) { updateNavigation = callback; }
+      observe() {}
+      disconnect() {}
+    });
+    const fixture = setup();
+    try {
+      fixture.detectChanges();
+      const http = TestBed.inject(HttpTestingController);
+      http.expectOne('/data/forensics/2026/report.json').flush(reportFixture());
+      http.expectOne('/data/forensics/2026/sections.json').flush([]);
+      fixture.detectChanges();
+      const element = fixture.nativeElement as HTMLElement;
+      vi.spyOn(element.querySelector('.section-nav')!, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 64, 100, 56));
+      const sections = [...element.querySelectorAll('section[id]')];
+      sections.forEach((section, index) => {
+        const top = index < 4 ? -800 + index * 200 : 128 + (index - 4) * 400;
+        vi.spyOn(section, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, top, 100, 400));
+      });
+      frame(0);
+      updateNavigation();
+      expect(fixture.componentInstance.activeSection()).toBe('candidate-checks');
+      const hypotheses = element.querySelector('#hypotheses')!;
+      vi.mocked(hypotheses.getBoundingClientRect).mockReturnValue(new DOMRect(0, 128, 100, 400));
+      updateNavigation();
+      expect(fixture.componentInstance.activeSection()).toBe('candidate-checks');
+      http.verify();
+    } finally {
+      fixture.destroy();
+      vi.unstubAllGlobals();
+    }
   });
 
   it('keeps joint counts paired and candidate-screen and added-voter checks visibly separate', () => {

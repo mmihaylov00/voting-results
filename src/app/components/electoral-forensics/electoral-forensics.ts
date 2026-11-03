@@ -216,11 +216,13 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
     if (this.observationFrame !== undefined) cancelAnimationFrame(this.observationFrame);
     this.observationFrame = requestAnimationFrame(() => {
       this.sectionObserver?.disconnect();
-      this.sectionObserver = new IntersectionObserver(entries => {
-        const first = entries.filter(entry => entry.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        if (first) this.activeSection.set(first.target.id === 'hypotheses' ? 'candidate-checks' : first.target.id);
+      const sections = [...this.element.nativeElement.querySelectorAll<HTMLElement>('section[id]')];
+      this.sectionObserver = new IntersectionObserver(() => {
+        const navigationBottom = this.element.nativeElement.querySelector('.section-nav')?.getBoundingClientRect().bottom ?? 120;
+        const current = [...sections].reverse().find(section => section.getBoundingClientRect().top <= navigationBottom + 24);
+        if (current) this.activeSection.set(current.id === 'hypotheses' ? 'candidate-checks' : current.id);
       }, { rootMargin: '-120px 0px -60% 0px' });
-      this.element.nativeElement.querySelectorAll('section[id]').forEach(section => this.sectionObserver?.observe(section));
+      sections.forEach(section => this.sectionObserver?.observe(section));
     });
   }
 

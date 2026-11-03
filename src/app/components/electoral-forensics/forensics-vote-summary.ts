@@ -12,7 +12,7 @@ import { signed } from './forensics.util';
       <div class="metric" [style.--metric-color]="metric.color">
         <dt><span class="metric-dot" aria-hidden="true"></span>{{ metric.label }}</dt>
         <dd>{{ metric.value }}<span class="unit">{{ metric.unit }}</span></dd>
-        <dd class="baseline">{{ metric.before }} <span aria-hidden="true">→</span> {{ metric.after }}</dd>
+        <dd class="baseline" [attr.aria-label]="'I тур: ' + metric.before + '; II тур: ' + metric.after">{{ metric.before }} <span aria-hidden="true">→</span> {{ metric.after }}</dd>
       </div>
     }
   </dl>`,
@@ -44,7 +44,7 @@ export class ForensicsVoteSummaryComponent {
       ...(['4', '25'] as const).map(id => {
         const candidate = summary.candidates.find(row => row.id === id);
         const label = id === '4' ? 'Андрей Гюров' : 'Илияна Йотова';
-        return { id, label, value: signed(candidate?.deltaVotes, 0), unit: 'гласа',
+        return { id, label, value: signed(candidate?.deltaVotes, 0), unit: Math.abs(candidate?.deltaVotes ?? 0) === 1 ? 'глас' : 'гласа',
           before: count(candidate?.votes1 ?? null), after: count(candidate?.votes2 ?? null),
           color: getPartyColor(candidate?.name ?? label, this.theme.darkMode()) };
       }),
