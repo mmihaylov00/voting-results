@@ -36,6 +36,9 @@ type ProvisionalElection = {
                 </a>
               </li>
             }
+            @if (isResearch()) {
+              <li class="flex shrink-0 items-center px-2 py-2 font-medium" aria-current="page">Изследвания</li>
+            } @else {
             <li class="flex shrink-0 items-center">
               <app-select controlId="navigation-type" label="Вид избори" appearance="breadcrumb" class="max-w-[17rem]"
                 [value]="type()" (valueChange)="changeType($event)" [options]="typeOptions" />
@@ -58,6 +61,7 @@ type ProvisionalElection = {
                 <app-select controlId="navigation-region" label="Район" icon="region" appearance="breadcrumb" class="max-w-[17rem]"
                   [value]="region()" (valueChange)="changeRegion($event)" [options]="regionOptions" />
               </li>
+            }
             }
           </ol>
         </nav>
@@ -111,6 +115,7 @@ export class AppHeaderComponent {
   readonly date = computed(() => this.dates().find(election => election.date === this.segments()[2])?.date ?? this.dates()[0]?.date ?? '');
   readonly isElection = computed(() => this.segments()[1] === 'election');
   readonly isDirectory = computed(() => this.segments()[1] === 'contestants');
+  readonly isResearch = computed(() => this.segments()[0] === 'research');
   readonly backLink = computed(() => {
     if (!this.segments().length) return null;
     if (!this.isElection()) return ['/'];

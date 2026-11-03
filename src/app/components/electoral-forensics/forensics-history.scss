@@ -1,0 +1,13 @@
+@use './forensics-tables.scss';
+.note { font-size: .78rem; line-height: 1.6; opacity: .7; margin: .6rem 0 1rem; }
+.history-summary th, .history-summary td { padding-top: 1rem; padding-bottom: 1rem; }
+.history-summary strong { font-size: .95rem; font-weight: 600; }
+.history-summary .finalist small { max-width: 180px; white-space: normal; }
+.cycle-details { border-top: 1px solid var(--research-rule); margin-top: .6rem; font-size: .82rem; }
+.cycle-details > summary { display: flex; align-items: center; gap: .6rem; padding: .85rem 0; font-weight: 550; cursor: pointer; }
+.cycle-body { padding-bottom: 1rem; }
+.cycle-body th:first-child { white-space: normal; }
+p, li { line-height: 1.65; }
+ul { list-style: disc; padding-left: 1.2rem; }
+.limits { margin: .8rem 0; } summary { cursor: pointer; }
+.sources { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .8rem; }

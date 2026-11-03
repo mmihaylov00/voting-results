@@ -14,7 +14,8 @@ describe('hypothesis result presentation', () => {
     const fixture = TestBed.createComponent(ForensicsHypothesesComponent);
     fixture.componentRef.setInput('rows', [hypothesis()]);
     fixture.detectChanges();
-    const row = (fixture.nativeElement as HTMLElement).querySelector('tbody tr');
+    const row = (fixture.nativeElement as HTMLElement).querySelector('.check');
+    expect(row?.querySelector('summary')?.textContent).toContain('Недостатъчна подкрепа в данните');
     expect(row?.textContent).toContain('Неустановим ефект');
     expect(row?.textContent).toContain('няма данни');
     expect(row?.textContent).toContain('няма оценка');
@@ -35,7 +36,8 @@ describe('hypothesis result presentation', () => {
     expect(partyTable?.textContent).toContain('ГЕРБ-СДС');
     expect(partyTable?.textContent).toContain('Движение за права и свободи - ДПС');
     expect(partyTable?.textContent).toContain('некоригирани');
-    expect(element.querySelector('tbody tr')?.textContent).toContain('0,24');
+    expect(element.querySelector('.check-q')?.textContent).toContain('0,24');
+    expect(element.querySelector<HTMLDetailsElement>('.check')?.open).toBe(false);
     expect(fixture.componentInstance.partyEstimates()[0].coefficients[0].ci95).toEqual([-.2, .7]);
   });
 
@@ -50,5 +52,51 @@ describe('hypothesis result presentation', () => {
     expect(sensitivity?.textContent).toContain('-0,70');
     expect(sensitivity?.textContent).toContain('0,03');
     expect(fixture.componentInstance.sensitivities()[0].ci95).toEqual([-1, -.4]);
+  });
+
+  it('keeps methods and raw calculations behind a closed row while exposing the estimate, interval, q and sample', () => {
+    const fixture = TestBed.createComponent(ForensicsHypothesesComponent);
+    fixture.componentRef.setInput('rows', [hypothesis({ id: 'C1', estimate: -.5, ci95: [-.8, -.2], q: .02,
+      p: .006, n: 80, status: 'estimated', method: 'Регресия с общински контроли.',
+      details: { coefficient: -.5, sourceCheck: 'Запазено изчисление' } })]);
+    fixture.detectChanges();
+    const row = (fixture.nativeElement as HTMLElement).querySelector<HTMLDetailsElement>('.check')!;
+    expect(row.open).toBe(false);
+    expect(row.querySelector('summary')?.textContent).toContain('-0,50');
+    expect(row.querySelector('summary')?.textContent).toContain('[-0,80; -0,20]');
+    expect(row.querySelector('summary')?.textContent).toContain('0,02');
+    expect(row.querySelector('summary')?.textContent).toContain('80');
+    expect(row.querySelector('summary')?.textContent).not.toContain('Регресия');
+    expect(row.querySelector('.status-chip')?.textContent).toBe('Сигнал за асоциация');
+    row.open = true;
+    expect(row.querySelector('.check-body')?.textContent).toContain('Регресия с общински контроли.');
+    expect(row.querySelector('.technical-values')?.textContent).toContain('0,006');
+    expect(row.querySelector('pre')?.textContent).toContain('Запазено изчисление');
+    expect(fixture.componentInstance.badge(hypothesis({ status: 'estimated', q: .2 }))).toBe('Без ясен сигнал');
+  });
+
+  it('labels H4 observations as distinct polling locations and other checks as sections', () => {
+    const fixture = TestBed.createComponent(ForensicsHypothesesComponent);
+    fixture.componentRef.setInput('rows', [hypothesis({ id: 'H4', n: 4470 }), hypothesis({ id: 'H1', n: 80 })]);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelector('.check-head')?.textContent).toContain('Наблюдения');
+    expect(element.querySelector('[data-check-id="H4"] .check-n')?.textContent).toContain('Места за гласуване');
+    expect(element.querySelector('[data-check-id="H1"] .check-n')?.textContent).toContain('Секции');
+    expect(element.querySelector('[data-check-id="H4"] .check-n')?.textContent).not.toContain('Секции');
+  });
+
+  it('keeps effect, q and observation labels available to screen readers on desktop', () => {
+    const fixture = TestBed.createComponent(ForensicsHypothesesComponent);
+    fixture.componentRef.setInput('rows', [hypothesis()]);
+    fixture.detectChanges();
+    const labels = [...(fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.check summary .mobile-label')];
+    expect(labels.map(label => label.textContent?.trim())).toEqual(['Оценка · 95% интервал', 'q', 'Наблюдения']);
+    for (const label of labels) {
+      expect(getComputedStyle(label).display).not.toBe('none');
+      expect(getComputedStyle(label).visibility).not.toBe('hidden');
+      expect(getComputedStyle(label).position).toBe('absolute');
+      expect(label.getAttribute('aria-hidden')).not.toBe('true');
+    }
   });
 });

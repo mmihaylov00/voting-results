@@ -2,6 +2,7 @@ import { DecimalPipe, JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { ForensicsHypothesis } from './forensics.models';
 import { signed } from './forensics.util';
+import { MapIconComponent } from '../ui/map-icon/map-icon';
 
 type Coefficient = { name: string; estimate: number | null; ci95: [number, number] | null; p: number | null };
 
@@ -12,22 +13,56 @@ function numericInterval(value: unknown): [number, number] | null {
 
 @Component({
   selector: 'app-forensics-hypotheses',
-  imports: [DecimalPipe, JsonPipe],
+  imports: [DecimalPipe, JsonPipe, MapIconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<div class="table-scroll" tabindex="0" role="region" aria-label="Резултати от статистическите проверки"><table>
-    <caption>Оценка, 95% доверителен интервал, p-стойност и коригирана q-стойност. Липсваща оценка означава описателна или неустановима проверка.</caption>
-    <thead><tr><th scope="col">Хипотеза и сравнение</th><th scope="col">Статус</th><th scope="col">N</th><th scope="col">Оценка</th><th scope="col">95% интервал</th><th scope="col">p</th><th scope="col">q</th></tr></thead>
-    <tbody>@for (row of rows(); track row.id) {<tr><th scope="row">{{ row.id }} · {{ row.title }}<small>{{ row.summary }}</small></th><td>{{ status(row.status) }}</td><td>{{ row.n | number }}</td><td>{{ row.id === 'H2' && row.estimate === null ? 'Партийни оценки по-долу' : signed(row.estimate) }}<small>{{ row.unit }}</small></td><td>{{ interval(row.ci95) }}</td><td>{{ probability(row.p) }}</td><td>{{ probability(row.q) }}</td></tr>}</tbody>
-    </table></div>
+  template: `
+    <p class="guide">Изберете проверка за метода, p-стойността и ограниченията. Статистическият сигнал не доказва нарушение.</p>
+    <div class="table-scroll checks" tabindex="0" role="region" aria-label="Резултати от статистическите проверки">
+      <div class="check-grid check-head" aria-hidden="true"><span>Проверка</span><span>Оценка и 95% интервал</span><span>q</span><span>Наблюдения</span><span></span></div>
+      @for (row of rows(); track row.id) {
+        <details class="check" [attr.data-check-id]="row.id">
+          <summary class="check-grid">
+            <span class="check-label"><strong>{{ row.id }} · {{ shortLabel(row) }}</strong><span class="status-chip" [class.signal]="hasSignal(row)" [attr.title]="hasSignal(row) ? 'q < 0,05: асоциация в рамките на модела, а не доказателство за нарушение' : status(row.status)">{{ badge(row) }}</span></span>
+            <span class="check-effect"><small class="mobile-label">Оценка · 95% интервал</small><strong>{{ row.id === 'H2' && row.estimate === null ? 'Две партийни оценки' : signed(row.estimate) }}</strong><small>{{ interval(row.ci95) }}@if (row.estimate !== null) { · {{ row.id.startsWith('C') ? 'п.п. / +10 п.п.' : 'п.п.' }}}</small></span>
+            <span class="check-q" [attr.title]="row.q"><small class="mobile-label">q</small>{{ probability(row.q) }}</span>
+            <span class="check-n"><small class="mobile-label">Наблюдения</small>{{ row.n | number }}<small>{{ row.id === 'H4' ? 'Места за гласуване' : 'Секции' }}</small></span>
+            <app-map-icon class="toggle-icon" name="chevron-right" />
+          </summary>
+          <div class="check-body">
+            <h4>{{ row.title }}</h4><p>{{ row.summary }}</p>
+            <dl class="technical-values"><div><dt>p</dt><dd [attr.title]="row.p">{{ probability(row.p) }}</dd></div><div><dt>Мерна единица</dt><dd>{{ row.unit }}</dd></div><div><dt>Статус на оценката</dt><dd>{{ status(row.status) }}</dd></div></dl>
+            @if (row.id === 'H2') {
+              @for (party of partyEstimates(); track party.id) {
+                <div class="party-estimates"><div class="table-scroll" tabindex="0" role="region" aria-label="Партийни оценки и доверителни интервали"><table><caption>За +10 п.п. исторически партиен дял. Отделните p-стойности са некоригирани; общата q-стойност за H2 е показана по-горе.</caption><thead><tr><th scope="col">Регистрация от 19.04.2026</th><th scope="col">Оценка, п.п.</th><th scope="col">95% интервал</th><th scope="col">p</th></tr></thead><tbody>@for (coefficient of party.coefficients; track coefficient.name) {<tr><th scope="row">{{ coefficient.name }}</th><td>{{ signed(coefficient.estimate) }}</td><td>{{ interval(coefficient.ci95) }}</td><td>{{ probability(coefficient.p) }}</td></tr>}</tbody></table></div></div>
+              }
+            }
+            @if (row.method) {<p><strong>Метод:</strong> {{ row.method }}</p>}
+            <ul>@for (limitation of row.limitations; track $index) {<li>{{ limitation }}</li>}</ul>
+            <details class="technical"><summary>Всички контролни коефициенти и изчисления</summary><pre>{{ row.details | json }}</pre></details>
+          </div>
+        </details>
+      }
+    </div>
     @if (sensitivities().length) {<details><summary>Същите кандидатски проверки при стабилни списъци</summary><div class="table-scroll" tabindex="0" role="region" aria-label="Кандидатски проверки при стабилни списъци"><table><caption>Отделна извадка със стабилни списъци. Показани са публикуваните оценки и корекции за тази проверка.</caption><thead><tr><th scope="col">Проверка</th><th scope="col">Статус</th><th scope="col">N</th><th scope="col">Оценка</th><th scope="col">95% интервал</th><th scope="col">p</th><th scope="col">q</th></tr></thead><tbody>@for (row of sensitivities(); track row.id) {<tr><th scope="row">{{ row.id }}</th><td>{{ status(row.status) }}</td><td>{{ row.n ?? 'няма данни' }}</td><td>{{ signed(row.estimate) }}</td><td>{{ interval(row.ci95) }}</td><td>{{ probability(row.p) }}</td><td>{{ probability(row.q) }}</td></tr>}</tbody></table></div></details>}
-    @for (row of partyEstimates(); track row.id) {<div class="party-estimates"><h4>{{ row.id }} · Партийни оценки</h4><div class="table-scroll" tabindex="0" role="region" aria-label="Партийни оценки и доверителни интервали"><table><caption>Промяна в активността за +10 п.п. исторически партиен дял. p-стойностите на отделните коефициенти са некоригирани; основната q-стойност за H2 е в общата таблица.</caption><thead><tr><th scope="col">Отделна регистрация от 19.04.2026</th><th scope="col">Оценка, п.п.</th><th scope="col">95% интервал</th><th scope="col">p</th></tr></thead><tbody>@for (coefficient of row.coefficients; track coefficient.name) {<tr><th scope="row">{{ coefficient.name }}</th><td>{{ signed(coefficient.estimate) }}</td><td>{{ interval(coefficient.ci95) }}</td><td>{{ probability(coefficient.p) }}</td></tr>}</tbody></table></div></div>}
-    @for (row of rows(); track row.id) {<details><summary>{{ row.id }} · Метод, контроли и ограничения</summary><p>{{ row.method }}</p><ul>@for (limitation of row.limitations; track $index) {<li>{{ limitation }}</li>}</ul><details><summary>Технически резултат и всички контролни коефициенти</summary><pre>{{ row.details | json }}</pre></details></details>}`,
-  styleUrl: './forensics-tables.scss',
-  styles: `th:first-child{min-width:260px;max-width:510px;white-space:normal}th small{line-height:1.6}td small{max-width:210px;white-space:normal}.party-estimates{margin:1.2rem 0}h4{font-weight:600;font-size:.9rem}details{font-size:.84rem;padding:.8rem 0;border-top:1px solid hsl(var(--foreground)/.12)}summary{cursor:pointer;font-weight:550}p,li{line-height:1.7}ul{list-style:disc;padding-left:1.2rem}pre{max-height:420px;overflow:auto;font-size:.72rem;white-space:pre-wrap;overflow-wrap:anywhere}`,
+  `,
+  styleUrl: './forensics-hypotheses.scss',
 })
 export class ForensicsHypothesesComponent {
   readonly rows = input<ForensicsHypothesis[]>([]);
   readonly signed = signed;
+  shortLabel(row: ForensicsHypothesis): string {
+    return ({ H1: 'Размер на секцията', H2: 'Исторически партиен дял', H3: 'Метод на гласуване',
+      H4: 'Териториално сходство', H5: 'Алтернативни обяснения', C1: 'Активност и дял на Йотова',
+      C2: 'ГЕРБ и дял на Йотова', C3: 'ДПС и дял на Йотова' } as Record<string, string>)[row.id] ?? row.title;
+  }
+  hasSignal(row: ForensicsHypothesis): boolean {
+    return row.status === 'estimated' && row.q !== null && row.q < .05;
+  }
+  badge(row: ForensicsHypothesis): string {
+    if (row.status === 'not_identifiable' || row.status === 'insufficient_support') return 'Недостатъчна подкрепа в данните';
+    if (row.status === 'estimated' && row.q !== null) return this.hasSignal(row) ? 'Сигнал за асоциация' : 'Без ясен сигнал';
+    return this.status(row.status);
+  }
   readonly partyEstimates = computed(() => this.rows().filter(row => row.id === 'H2').map(row => ({
     id: row.id, coefficients: this.coefficients(row),
   })).filter(row => row.coefficients.length));

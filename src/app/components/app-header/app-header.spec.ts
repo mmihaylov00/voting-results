@@ -72,6 +72,40 @@ describe('AppHeaderComponent breadcrumb navigation', () => {
     expect(element.querySelector('a[aria-label="Изборни резултати - начало"]')).not.toBeNull();
   });
 
+  it.each(['/research/electoral-forensics-2026', '/research/runoff-mobilization-2026'])
+    ('shows a research breadcrumb without election selectors on %s', async url => {
+      const { element } = await render(url);
+      const navigation = element.querySelector('nav[aria-label="Навигационна пътека"]')!;
+      expect(navigation.querySelector('[aria-current="page"]')?.textContent?.trim()).toBe('Изследвания');
+      expect(navigation.querySelector('a[aria-label="Назад"]')?.getAttribute('href')).toBe('/');
+      expect(navigation.querySelectorAll('app-select')).toHaveLength(0);
+      expect(element.querySelector('#navigation-type--trigger')).toBeNull();
+      expect(element.querySelector('#navigation-date--trigger')).toBeNull();
+      expect(element.querySelector('#navigation-region--trigger')).toBeNull();
+      expect(element.querySelector('[role="status"]')).toBeNull();
+      expect(element.querySelector('a[aria-label="Изборни резултати - начало"]')?.getAttribute('href')).toBe('/');
+    });
+
+  it('updates the research breadcrumb and restores election selectors when navigating between views', async () => {
+    const { fixture, element, router } = await render('/presidential/election/2021.11.21/region/23');
+    expect(element.querySelector('#navigation-date--trigger')).not.toBeNull();
+    await router.navigateByUrl('/research/runoff-mobilization-2026#results');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(element.querySelector('nav [aria-current="page"]')?.textContent?.trim()).toBe('Изследвания');
+    expect(element.querySelector('nav app-select')).toBeNull();
+    expect(element.querySelector('a[aria-label="Назад"]')?.getAttribute('href')).toBe('/');
+    await router.navigateByUrl('/presidential/election/2021.11.14/region/24');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(element.querySelector('#navigation-type--trigger')?.textContent).toContain('Президентски');
+    expect(element.querySelector('#navigation-date--trigger')?.textContent).toContain('Тур 1');
+    expect(element.querySelector('#navigation-region--trigger')?.textContent).toContain('СОФИЯ 24 МИР');
+    expect(element.querySelector('nav')?.textContent).not.toContain('Изследвания');
+  });
+
   it.each([
     ['governmental', 'presidential', 'Парламентарни', 'Президентски'],
     ['presidential', 'governmental', 'Президентски', 'Парламентарни'],

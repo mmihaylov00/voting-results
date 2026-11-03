@@ -14,6 +14,7 @@ import { ForensicsHypothesesComponent } from './forensics-hypotheses';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
 import { MapIconComponent } from '../ui/map-icon/map-icon';
 import { ForensicsHistoryComponent } from './forensics-history';
+import { ForensicsVoteSummaryComponent } from './forensics-vote-summary';
 
 @Component({ selector: 'highcharts-chart', template: '' })
 class ChartStub { @Input() options: unknown; }
@@ -29,7 +30,7 @@ function setup(query = 'query1') {
       { provide: ActivatedRoute, useValue: { snapshot: { data: { researchQuery: query } } } }],
   });
   TestBed.overrideComponent(ElectoralForensicsComponent, {
-    set: { imports: [CommonModule, FormsModule, RouterLink, ChartStub, MapStub, GroupStub, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent] },
+    set: { imports: [CommonModule, FormsModule, RouterLink, ChartStub, MapStub, GroupStub, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent] },
   });
   return TestBed.createComponent(ElectoralForensicsComponent);
 }
@@ -165,11 +166,12 @@ describe('hidden electoral research pages', () => {
       fixture.componentInstance.report.set(reportFixture());
       fixture.detectChanges();
       const anchors = [...(fixture.nativeElement as HTMLElement).querySelectorAll<HTMLAnchorElement>('a[href*="#"]')];
-      expect(anchors.length).toBe(9);
+      expect(anchors.length).toBeGreaterThanOrEqual(fixture.componentInstance.navigation.length);
       for (const anchor of anchors) {
         const destination = new URL(anchor.href);
         expect(destination.pathname).toBe(path);
         expect(destination.hash).not.toBe('');
+        expect((fixture.nativeElement as HTMLElement).querySelector(destination.hash)).not.toBeNull();
       }
     } finally {
       fixture.destroy();
@@ -312,6 +314,51 @@ describe('hidden electoral research pages', () => {
       expect(height).toBeGreaterThanOrEqual(360);
       expect(height).toBeLessThanOrEqual(420);
     }
+    fixture.destroy();
+  });
+
+  it('keeps the overview independent of filters and resets the small-section view to its eligible cohort', () => {
+    const fixture = setup('query2');
+    const page = fixture.componentInstance;
+    const candidateChanges = [candidateFixture('4', 20, 50), candidateFixture('25', 30, 90)];
+    page.sections.set([
+      sectionFixture({ candidateChanges }), sectionFixture({ sectionId: '010100001', regionId: '1', candidateChanges }),
+      sectionFixture({ sectionId: '010100002', regionId: '1', small400: false, candidateChanges }),
+      sectionFixture({ sectionId: '010100003', regionId: '1', eligible: false, candidateChanges }),
+    ]);
+    page.setFilter('regionId', '1');
+    expect(page.jointTotals().n).toBe(1);
+    expect(page.overviewTotals().n).toBe(2);
+    page.setFilter('comparableOnly', false);
+    page.setFilter('flaggedOnly', true);
+    page.sort('candidate25Delta');
+    page.page.set(2);
+    expect(page.activeFilterCount()).toBe(3);
+    page.resetFilters();
+    expect(page.filters()).toMatchObject({ focus: true, comparableOnly: true, flaggedOnly: false, regionId: '', sort: 'candidate25Delta' });
+    expect(page.filtered()).toHaveLength(2);
+    expect(page.page()).toBe(0);
+    expect(page.activeFilterCount()).toBe(0);
+    fixture.destroy();
+  });
+
+  it('starts with core section columns and restores visible sorting when details are collapsed', () => {
+    const fixture = setup();
+    const page = fixture.componentInstance;
+    page.report.set(reportFixture());
+    fixture.detectChanges();
+    const table = () => (fixture.nativeElement as HTMLElement).querySelector('#section-results-table')!;
+    expect(table().querySelectorAll('thead th')).toHaveLength(6);
+    page.toggleSectionDetails();
+    fixture.detectChanges();
+    expect(table().querySelectorAll('thead th')).toHaveLength(13);
+    page.sort('registered1');
+    page.page.set(2);
+    page.toggleSectionDetails();
+    fixture.detectChanges();
+    expect(table().querySelectorAll('thead th')).toHaveLength(6);
+    expect(page.filters()).toMatchObject({ sort: 'deltaTurnoutPp', descending: true });
+    expect(page.page()).toBe(0);
     fixture.destroy();
   });
 
