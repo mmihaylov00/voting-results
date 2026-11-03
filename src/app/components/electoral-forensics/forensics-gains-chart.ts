@@ -104,6 +104,7 @@ export class ForensicsGainsChartComponent {
 
   readonly chart = computed<Highcharts.Options>(() => {
     const points = this.points();
+    const pointsById = new Map(points.map(point => [point.row.sectionId, point]));
     const xValue = (point: SectionGainPoint) => this.comparison() === 'gyurov' ? point.gyurov : point.turnout;
     const extremeIds = new Set(this.orderedByMagnitude().filter(point => point.yotova !== 0).slice(0, 5).map(point => point.row.sectionId));
     let minX = 0; let maxX = 0; let minY = 0; let maxY = 0;
@@ -114,8 +115,14 @@ export class ForensicsGainsChartComponent {
     const start = Math.max(minX, minY); const end = Math.min(maxX, maxY);
     const positive = getPartyColor('Илияна Йотова', this.theme.darkMode());
     const negative = this.theme.darkMode() ? '#fb7185' : '#be123c';
-    const openPoint = (index: number) => { if (points[index]) this.sectionSelect.emit(points[index].row); };
-    const tooltip = (index: number) => points[index] ? this.tooltip(points[index]) : '';
+    const openPoint = (id: string | undefined) => {
+      const point = id === undefined ? undefined : pointsById.get(id);
+      if (point) this.sectionSelect.emit(point.row);
+    };
+    const tooltip = (id: string | undefined) => {
+      const point = id === undefined ? undefined : pointsById.get(id);
+      return point ? this.tooltip(point) : '';
+    };
     return {
       chart: { type: 'scatter', height: 500, backgroundColor: 'transparent', style: { fontFamily: 'inherit' }, zooming: { type: 'xy', pinchType: 'xy' } },
       title: { text: 'Всяка точка е избирателна секция', align: 'left', style: { color: 'var(--research-ink)', fontSize: '15px' } },
@@ -126,9 +133,9 @@ export class ForensicsGainsChartComponent {
       legend: { align: 'left', itemStyle: { color: 'var(--research-ink)', fontSize: '11px' } }, credits: { enabled: false },
       lang: { resetZoom: 'Всички точки', resetZoomTitle: 'Нулирай увеличението' },
       tooltip: { useHTML: false, outside: false, backgroundColor: 'hsl(var(--background))', borderColor: '#81909c', style: { color: 'var(--research-ink)', fontSize: '12px' },
-        formatter() { return tooltip(this.index); } },
+        formatter() { return tooltip(this.options.id); } },
       plotOptions: { series: { animation: false }, scatter: { turboThreshold: 0, cursor: 'pointer', marker: { radius: 3, lineWidth: 0 },
-        point: { events: { click() { openPoint(this.index); } } }, dataLabels: { enabled: false, format: '{point.name}', allowOverlap: false, style: { color: 'var(--research-ink)', textOutline: 'none', fontSize: '10px' } } } },
+        point: { events: { click() { openPoint(this.options.id); } } }, dataLabels: { enabled: false, format: '{point.name}', allowOverlap: false, style: { color: 'var(--research-ink)', textOutline: 'none', fontSize: '10px' } } } },
       series: [
         { type: 'line', name: 'Равен абсолютен прираст (описателна линия)', color: '#81909c', dashStyle: 'Dash', lineWidth: 1,
           marker: { enabled: false }, enableMouseTracking: false, data: [[start, start], [end, end]] },
@@ -136,7 +143,7 @@ export class ForensicsGainsChartComponent {
           const extreme = extremeIds.has(point.row.sectionId);
           const changedList = point.listChangePct > 5;
           const color = point.yotova > 0 ? positive : point.yotova < 0 ? negative : '#81909c';
-          return { x: xValue(point), y: point.yotova, name: escapeText(point.row.sectionId), dataLabels: { enabled: extreme },
+          return { id: point.row.sectionId, x: xValue(point), y: point.yotova, name: escapeText(point.row.sectionId), dataLabels: { enabled: extreme },
             marker: { radius: extreme ? 5 : 3, fillColor: Highcharts.color(color).setOpacity(extreme ? 1 : .35).get(),
               lineColor: changedList ? '#b58118' : 'var(--research-ink)', lineWidth: changedList ? 1.5 : extreme ? 1 : 0 } };
         }) },

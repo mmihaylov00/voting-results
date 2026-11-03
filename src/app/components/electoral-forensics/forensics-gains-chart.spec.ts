@@ -1,5 +1,6 @@
 import { Component, Input, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import * as Highcharts from 'highcharts';
 import type { SeriesScatterOptions } from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { describe, expect, it } from 'vitest';
@@ -112,11 +113,78 @@ describe('section gain graph and ranking', () => {
     component.sectionSelect.subscribe(section => selected.push(section));
     const click = component.chart().plotOptions?.scatter?.point?.events?.click;
     if (!click) throw new Error('Missing section chart selection handler');
-    Reflect.apply(click, { index: 1 }, [{}]);
+    Reflect.apply(click, { index: 0, options: { id: 'zero' } }, [{}]);
     (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('.section-link')!.click();
     expect(selected).toEqual([zero, negative]);
     expect(selected[0]).toBe(zero);
     expect(component.chart().series?.[1]).toMatchObject({ data: [{ x: -10, y: -30 }, { x: 0, y: 0 }] });
+  });
+
+  it('uses section identities for callbacks even when display indexes differ or a previous filtered point no longer exists', () => {
+    const first = row({ sectionId: 'first' });
+    const second = row({ sectionId: 'second', registered2: 300 });
+    const fixture = setup([first, second]);
+    const component = fixture.componentInstance;
+    component.comparison.set('gyurov');
+    const options = component.chart();
+    expect(options.series?.[1]).toMatchObject({ data: [{ id: 'first', x: 20 }, { id: 'second', x: 20 }] });
+    const click = options.plotOptions?.scatter?.point?.events?.click;
+    const tooltip = options.tooltip?.formatter;
+    if (!click || !tooltip) throw new Error('Missing section chart identity callbacks');
+    const selected: ForensicsSection[] = [];
+    component.sectionSelect.subscribe(section => selected.push(section));
+    Reflect.apply(click, { index: 0, options: { id: 'second' } }, [{}]);
+    expect(selected).toEqual([second]);
+    expect(Reflect.apply(tooltip, { index: 0, options: { id: 'second' } }, [{}])).toContain('<b>second</b>');
+    component.stableOnly.set(true);
+    const filtered = component.chart();
+    const filteredClick = filtered.plotOptions?.scatter?.point?.events?.click;
+    const filteredTooltip = filtered.tooltip?.formatter;
+    if (!filteredClick || !filteredTooltip) throw new Error('Missing filtered section chart callbacks');
+    Reflect.apply(filteredClick, { index: 0, options: { id: 'second' } }, [{}]);
+    expect(selected).toEqual([second]);
+    expect(Reflect.apply(filteredTooltip, { index: 0, options: { id: 'second' } }, [{}])).toBe('');
+    expect(Reflect.apply(filteredTooltip, { index: 10, options: {} }, [{}])).toBe('');
+  });
+
+  it('retains each section, extreme marker and tooltip through real Highcharts updates with duplicate x coordinates', () => {
+    const rows = [
+      row({ sectionId: 'top', deltaVoted: 184, candidateChanges: [candidateFixture('4', 10, 27), candidateFixture('25', 20, 213)] }),
+      row({ sectionId: 'second', deltaVoted: 142, candidateChanges: [candidateFixture('4', 10, 16), candidateFixture('25', 20, 195)] }),
+      row({ sectionId: 'third', deltaVoted: 100, candidateChanges: [candidateFixture('4', 10, 16), candidateFixture('25', 20, 180)] }),
+      row({ sectionId: 'fourth', deltaVoted: 80, candidateChanges: [candidateFixture('4', 10, 27), candidateFixture('25', 20, 170)] }),
+      row({ sectionId: 'fifth', deltaVoted: 60, candidateChanges: [candidateFixture('4', 10, 11), candidateFixture('25', 20, 160)] }),
+      row({ sectionId: 'loss', deltaVoted: 40, candidateChanges: [candidateFixture('4', 10, 27), candidateFixture('25', 100, 74)] }),
+      row({ sectionId: 'changed-list', deltaVoted: 70, registered2: 300,
+        candidateChanges: [candidateFixture('4', 10, 16), candidateFixture('25', 20, 200)] }),
+    ];
+    const fixture = setup(rows);
+    const component = fixture.componentInstance;
+    const container = document.createElement('div');
+    document.body.append(container);
+    const initial = component.chart();
+    const chart = Highcharts.chart(container, { ...initial, chart: { ...initial.chart, width: 700, height: 500, animation: false },
+      accessibility: { enabled: false } });
+    try {
+      component.comparison.set('gyurov');
+      chart.update(component.chart(), true, false);
+      component.stableOnly.set(true);
+      chart.update(component.chart(), true, false);
+      const scatter = chart.series.find(series => series.type === 'scatter');
+      if (!scatter) throw new Error('Missing updated scatter series');
+      const top = scatter.points.find(point => point.options.id === 'top');
+      const loss = scatter.points.find(point => point.options.id === 'loss');
+      expect(scatter.points.map(point => point.options.id)).toEqual(['top', 'second', 'third', 'fourth', 'fifth', 'loss']);
+      expect(top).toMatchObject({ x: 17, y: 193, options: { dataLabels: { enabled: true }, marker: { radius: 5 } } });
+      expect(loss).toMatchObject({ x: 17, y: -26, options: { dataLabels: { enabled: false }, marker: { radius: 3 } } });
+      const tooltip = chart.options.tooltip?.formatter;
+      if (!top || !tooltip) throw new Error('Missing updated top point or tooltip');
+      expect(Reflect.apply(tooltip, top, [{}])).toContain('<b>top</b>');
+      expect(Reflect.apply(tooltip, top, [{}])).toContain('Δ +193');
+    } finally {
+      chart.destroy();
+      container.remove();
+    }
   });
 
   it('labels only five nonzero candidate-gain extremes', () => {
