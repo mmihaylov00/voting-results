@@ -229,11 +229,9 @@ export interface ForensicsReport {
 }
 
 export type SectionSort = 'sectionId' | 'registered1' | 'voted1' | 'voted2' | 'turnout1' | 'turnout2' | 'deltaTurnoutPp' | 'deltaVoted';
-export type ResearchScope = 'priority' | 'national';
-
 export interface SectionFilters {
   focus: boolean;
-  scope: ResearchScope;
+  regionId: string;
   search: string;
   size: string;
   method: string;

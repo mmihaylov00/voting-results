@@ -18,8 +18,8 @@ export function sectionLabel(row: ForensicsSection): string {
 export function filterSections(rows: ForensicsSection[], filters: SectionFilters): ForensicsSection[] {
   const search = filters.search.trim().toLocaleLowerCase('bg');
   const matches = rows.filter(row => {
-    if (filters.focus && (!row.priority || !row.small400)) return false;
-    if (!filters.focus && filters.scope === 'priority' && !row.priority) return false;
+    if (filters.focus && !row.small400) return false;
+    if (filters.regionId && Number(row.regionId) !== Number(filters.regionId)) return false;
     if (filters.comparableOnly && (!row.comparableRoundPair || row['eligible'] === false)) return false;
     if (filters.flaggedOnly && !row.signal.flags.length) return false;
     if (filters.size && row.sizeGroup !== filters.size) return false;

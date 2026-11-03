@@ -4,16 +4,23 @@ import { SectionFilters } from './forensics.models';
 import { filterSections, safeSourceLinks, signed } from './forensics.util';
 
 const filters: SectionFilters = {
-  focus: false, scope: 'priority', search: '', size: '', method: '', comparableOnly: true,
+  focus: false, regionId: '', search: '', size: '', method: '', comparableOnly: true,
   flaggedOnly: false, sort: 'deltaTurnoutPp', descending: true,
 };
 
 describe('research section selection', () => {
-  it('keeps the focused sample at <=400 registered electors in the priority regions', () => {
+  it('keeps the focused sample at <=400 registered electors across the whole country', () => {
     const rows = [sectionFixture(), sectionFixture({ sectionId: '2', registered1: 401, small400: false }),
       sectionFixture({ sectionId: '3', priority: false }), sectionFixture({ sectionId: '4', comparableRoundPair: false })];
-    expect(filterSections(rows, { ...filters, focus: true, scope: 'national' }).map(row => row.sectionId)).toEqual(['050100001']);
-    expect(filterSections(rows, { ...filters, focus: true, comparableOnly: false }).map(row => row.sectionId)).toEqual(['4', '050100001']);
+    expect(filterSections(rows, { ...filters, focus: true }).map(row => row.sectionId)).toEqual(['3', '050100001']);
+    expect(filterSections(rows, { ...filters, focus: true, comparableOnly: false }).map(row => row.sectionId)).toEqual(['3', '4', '050100001']);
+  });
+
+  it('applies an optional election district consistently to the national small-section population', () => {
+    const rows = [sectionFixture(), sectionFixture({ sectionId: '010100001', regionId: '1', priority: false }),
+      sectionFixture({ sectionId: '010100002', regionId: '1', priority: false, small400: false })];
+    expect(filterSections(rows, { ...filters, focus: true, regionId: '01' }).map(row => row.sectionId)).toEqual(['010100001']);
+    expect(filterSections(rows, { ...filters, regionId: '1' }).map(row => row.sectionId)).toEqual(['010100001', '010100002']);
   });
 
   it('searches Bulgarian geography and EKATTE and combines method, size and review filters', () => {

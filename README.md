@@ -151,10 +151,14 @@ The parliamentary **География** view has separate tabs for the ten larg
 
 Two direct routes answer the requested 2026 runoff research queries:
 
-- `/research/electoral-forensics-2026`: regional and national section comparisons, hypotheses H1-H5, municipal and settlement summaries.
-- `/research/runoff-mobilization-2026`: all sections with 1-400 registered electors at the first round in Vidin, Vratsa, Montana and Ruse.
+- `/research/electoral-forensics-2026`: nationwide domestic section comparisons, hypotheses H1-H5, and summaries for all 31 CIK election districts, municipalities and settlements.
+- `/research/runoff-mobilization-2026`: all domestic sections with 1-400 registered electors at the first round, with the same nationwide regional summaries.
 
-Both include charts, a filtered map, section tables, candidate changes, exact historical party registrations, a protocol-review queue and downloadable CSV data. They have no main-navigation links, set `noindex, nofollow, noarchive`, and restore the document metadata when closed. Netlify also sends these directives for the report and analysis-data paths. These are unlisted public pages, not access-controlled pages.
+Both include compact results, regional summaries, charts, a filtered map, internally scrollable tables, section evidence and icon buttons for downloads. Detailed methods and source notes are collapsible. Comparison controls come from outside each target section's own election district, with the existing matching rules and reuse limitations retained. The 31 districts follow CIK's published geography; Sofia's three city districts and Plovdiv city/district remain separate.
+
+Municipal grouping follows CIK's district-and-municipality codes. Its 267 groups include Sofia city separately in districts 23, 24 and 25; they are not the 265 administrative municipalities.
+
+The reports have no main-navigation links, set `noindex, nofollow, noarchive`, and restore the document metadata when closed. Netlify also sends these directives for the report and analysis-data paths. These are unlisted public pages, not access-controlled pages.
 
 Generate the reports without starting a service or changing election source tables:
 

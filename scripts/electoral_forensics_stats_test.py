@@ -6,7 +6,8 @@ import unittest
 import numpy as np
 
 from analyze_electoral_forensics import (APRIL, FIRST_ROUND, OCTOBER_2024, SECOND_ROUND,
-                                         compact_detail, enrich_rows, group_rows, method_overlap, spatial_clusters)
+                                         compact_detail, enrich_rows, findings_for, group_rows, method_overlap, query_block,
+                                         spatial_clusters)
 from electoral_forensics_stats import (bh_adjust, collapse_sites, fixed_effect_model,
                                        matched_controls, spatial_test)
 
@@ -184,6 +185,33 @@ class StatisticalToolsTest(unittest.TestCase):
         self.assertEqual(result['matchedN'], 1)
         self.assertEqual(result['pairs'][0]['controlIds'], [good['sectionId']])
         self.assertEqual(result['meanDifferencePp'], 0)
+
+    def test_national_controls_exclude_self_and_same_electoral_district(self):
+        target, same_district, other_district = enrich_rows([
+            section(), section('050100002'), section('010100001', '1')])
+        result = matched_controls([target], [target, same_district, other_district])
+        self.assertEqual(result['pairs'][0]['controlIds'], [other_district['sectionId']])
+        result = matched_controls([target, other_district], [target, same_district, other_district])
+        regions = {row['sectionId']: row['regionId'] for row in [target, same_district, other_district]}
+        for pair in result['pairs']:
+            self.assertTrue(all(regions[sid] != regions[pair['sectionId']] for sid in pair['controlIds']))
+
+    def test_nationwide_query_scope_keeps_nonpriority_sections_and_district_ids(self):
+        rows = enrich_rows([section(), section('010100001', '1')])
+        query = query_block('query1', 'National', rows, rows, [], [])
+        self.assertEqual(query['summary']['eligibleSections'], 2)
+        self.assertEqual([row['regionId'] for row in query['regions']], ['1', '5'])
+        self.assertEqual(query['comparison']['matchedN'], 2)
+
+    def test_national_finding_rank_has_no_former_priority_region_preference(self):
+        rows = enrich_rows([section(), section('010100001', '1')])
+        for row, z in zip(rows, [3, 5]):
+            row['signal'].update(flags=['screen'], robustZ=z, peerN=30,
+                                 peerMedian=row['deltaTurnoutPp'] - z * 1.4826, peerMad=1)
+            for election_record in row['elections'].values():
+                election_record['sourceUrls'] = {}
+        findings = findings_for(rows)
+        self.assertEqual(findings[0]['sectionId'], rows[1]['sectionId'])
 
     def test_cluster_components_use_undirected_neighbor_connectivity(self):
         rows = enrich_rows([section(f'050100{i:03d}') for i in range(3)])

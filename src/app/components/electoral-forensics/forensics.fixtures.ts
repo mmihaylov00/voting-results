@@ -1,4 +1,10 @@
-import { ForensicsReport, ForensicsSection } from './forensics.models';
+import { ForensicsGroup, ForensicsReport, ForensicsSection } from './forensics.models';
+
+export function groupFixture(overrides: Partial<ForensicsGroup> = {}): ForensicsGroup {
+  return { key: '5', name: 'Видин', n: 1, registered1: 250, registered2: 250, voted1: 90, voted2: 170,
+    turnout1: 36, turnout2: 68, deltaTurnoutPp: 32, meanDeltaPp: 32, deltaVoted: 80,
+    eligibleN: 1, flaggedN: 0, smallN: 1, ...overrides };
+}
 
 export function sectionFixture(overrides: Partial<ForensicsSection> = {}): ForensicsSection {
   return {

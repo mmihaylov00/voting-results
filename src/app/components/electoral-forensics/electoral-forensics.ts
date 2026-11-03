@@ -14,16 +14,18 @@ import { ForensicsGroupTableComponent } from './forensics-group-table';
 import { ForensicsMapComponent } from './forensics-map';
 import { hydrateSectionRecord } from './forensics-record.util';
 import { ForensicsHypothesesComponent } from './forensics-hypotheses';
+import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
+import { MapIconComponent } from '../ui/map-icon/map-icon';
 
 const DATA_ROOT = '/data/forensics/2026';
 const initialFilters: SectionFilters = {
-  focus: false, scope: 'priority', search: '', size: '', method: '', comparableOnly: true,
+  focus: false, regionId: '', search: '', size: '', method: '', comparableOnly: true,
   flaggedOnly: false, sort: 'deltaTurnoutPp', descending: true,
 };
 
 @Component({
   selector: 'app-electoral-forensics',
-  imports: [CommonModule, FormsModule, RouterLink, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent],
+  imports: [CommonModule, FormsModule, RouterLink, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent],
   templateUrl: './electoral-forensics.html',
   styleUrl: './electoral-forensics.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -67,16 +69,34 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   readonly methods = computed(() => [...new Set(this.sections().map(row => row.method2))].sort());
   readonly unverifiedHistorical = computed(() => this.sections().some(row => row.history['2024.10.27']?.verified === false));
   readonly sizes = computed(() => [...new Set(this.sections().filter(row => !this.focus || row.small400).map(row => row.sizeGroup))]);
-  readonly priorityRegions = computed(() => this.query()?.regions ?? []);
+  readonly regionSummary = computed(() => this.query()?.regions ?? []);
+  readonly districts = computed(() => (this.report()?.regions ?? []).filter(row => Number(row.key) <= 31).sort((a, b) => Number(a.key) - Number(b.key)));
   readonly currentGroups = computed(() => this.query()?.municipalities ?? []);
   readonly currentSettlements = computed(() => this.query()?.settlements ?? []);
-  readonly regionChart = computed(() => this.groupChart(this.priorityRegions(), 'Промяна в активността по области'));
+  readonly regionChart = computed(() => this.groupChart(this.regionSummary(), 'Промяна по изборни райони', true));
   readonly binChart = computed(() => this.groupChart(this.query()?.binSummary ?? [], 'Промяна по размер на секцията'));
   readonly flagged = computed(() => this.filtered().filter(row => row.signal.flags.length));
   private readonly sectionIndex = computed(() => new Map(this.sections().map(row => [row.sectionId, row])));
   readonly findings = computed(() => {
     const ids = new Set(this.query()?.findings ?? []);
     return (this.report()?.findings ?? []).filter(row => ids.has(row.sectionId));
+  });
+  readonly selectedFinding = computed(() => this.report()?.findings.find(row => row.sectionId === this.selected()?.sectionId));
+  readonly sampleCounts = computed(() => {
+    const rows = this.sections().filter(row => !this.focus || row.small400);
+    return { sections: rows.length, eligible: rows.filter(row => row.eligible !== false && row.comparableRoundPair).length, review: this.findings().length };
+  });
+  readonly keyResults = computed(() => {
+    const query = this.query();
+    if (!query) return [];
+    const mean = query.summary['meanDeltaPp'];
+    const ci = query.summary['meanDeltaCi95'];
+    const interval = Array.isArray(ci) && ci.length === 2 ? ` (95% интервал ${signed(ci[0])} до ${signed(ci[1])})` : '';
+    return [
+      typeof mean === 'number' ? `Средна секционна промяна: ${signed(mean)} п.п.${interval}.` : '',
+      typeof query.summary['positiveDeltaN'] === 'number' ? `Ръст на активността в ${this.count(query.summary['positiveDeltaN'])} сравними секции.` : '',
+      `${this.count(query.comparison.matchedN)} от ${this.count(query.comparison.targetN)} секции имат съпоставени контроли от друг изборен район.`,
+    ].filter(Boolean);
   });
   readonly totals = computed(() => this.filtered().reduce((sum, row) => ({
     registered1: sum.registered1 + (row.registered1 ?? 0), registered2: sum.registered2 + (row.registered2 ?? 0),
@@ -144,7 +164,6 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
 
   inputValue(event: Event): string { return (event.target as HTMLInputElement).value; }
   checked(event: Event): boolean { return (event.target as HTMLInputElement).checked; }
-  setScope(event: Event): void { this.setFilter('scope', this.inputValue(event) === 'national' ? 'national' : 'priority'); }
 
   sort(key: SectionSort): void {
     this.filters.update(filters => ({ ...filters, sort: key, descending: filters.sort === key ? !filters.descending : key !== 'sectionId' }));
@@ -248,7 +267,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
       p: 'p-стойност', pValue: 'p-стойност', q: 'Коригирана q-стойност', adjustedP: 'Коригирана p-стойност',
       n: 'Секции', sampleN: 'Размер на извадката', method: 'Метод', controls: 'Контролни променливи',
       reason: 'Причина', reasons: 'Причини', limitations: 'Ограничения', description: 'Описание', result: 'Резултат',
-      sectionIds: 'Секционни номера', sections: 'Секции', members: 'Секции в групата', region: 'Област', regionName: 'Област',
+      sectionIds: 'Секционни номера', sections: 'Секции', members: 'Секции в групата', region: 'Изборен район', regionName: 'Изборен район',
       municipality: 'Община', municipalityName: 'Община', settlement: 'Населено място', settlementName: 'Населено място',
       meanDeltaPp: 'Средна промяна, п.п.', medianDeltaPp: 'Медианна промяна, п.п.', deltaTurnoutPp: 'Промяна в активността, п.п.',
       alternativeExplanations: 'Алтернативни обяснения', calculations: 'Изчисления', evidence: 'Данни',
@@ -268,7 +287,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
       sourceType: 'Вид на източника', sourceSnapshot: 'Момент на извличане',
       provisional: 'Предварителни данни', snapshot: 'Момент на извличане', snapshotAt: 'Момент на извличане',
       comparable: 'Сравнима', matched: 'Съвпадаща', possibleSplitMerge: 'Възможно разделяне или сливане',
-      regionId: 'Код на област', municipalityCode: 'Код на община', ekatte: 'ЕКАТТЕ', address: 'Адрес',
+      regionId: 'Код на изборен район', municipalityCode: 'Код на община', ekatte: 'ЕКАТТЕ', address: 'Адрес',
       population: 'Обхват', reference: 'Сравнителна група', target: 'Основна група',
     };
     return labels[key] ?? this.enumLabel(key);
@@ -281,7 +300,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
       estimated: 'оценено', insufficient_support: 'недостатъчна сравнима извадка', not_identified: 'ефектът не е установим',
       not_identifiable: 'ефектът не е установим', descriptive: 'описателна проверка',
       exploratory: 'изследователско наблюдение', under300: 'под 300', '300to400': '300-400', '401to700': '401-700', over700: 'над 700',
-      sectionId_changed_or_missing: 'Променен или липсващ секционен номер', region_changed_or_missing: 'Променена или липсваща област',
+      sectionId_changed_or_missing: 'Променен или липсващ секционен номер', region_changed_or_missing: 'Променен или липсващ изборен район',
       municipality_changed_or_missing: 'Променена или липсваща община', ekatte_changed_or_missing: 'Променен или липсващ ЕКАТТЕ',
       settlement_changed_or_missing: 'Променено или липсващо населено място', address_changed_or_missing: 'Променен или липсващ адрес',
       special_or_institution_section: 'Специална или институционална секция', missing_election_record: 'Липсва запис за изборите',
@@ -312,16 +331,16 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
     return Object.entries(value).map(([key, item]) => ({ key, value: item }));
   }
 
-  private groupChart(rows: ForensicsGroup[], title: string): Highcharts.Options {
+  private groupChart(rows: ForensicsGroup[], title: string, districts = false): Highcharts.Options {
     return {
-      chart: { type: 'bar', height: Math.max(280, rows.length * 55 + 100), backgroundColor: 'transparent', style: { fontFamily: 'inherit' } },
+      chart: { type: districts ? 'column' : 'bar', height: 360, backgroundColor: 'transparent', style: { fontFamily: 'inherit' } },
       title: { text: title, style: { color: 'var(--research-ink)', fontSize: '15px' } },
-      xAxis: { categories: rows.map(row => this.sizeLabel(row.name)), labels: { style: { color: 'var(--research-ink)' } } },
+      xAxis: { categories: rows.map(row => districts ? `${row.key}. ${row.name}` : this.sizeLabel(row.name)), labels: { rotation: districts ? -60 : 0, style: { color: 'var(--research-ink)', fontSize: '10px' } } },
       yAxis: { title: { text: 'Процентни пункта', style: { color: 'var(--research-ink)' } }, labels: { style: { color: 'var(--research-ink)' } }, plotLines: [{ value: 0, color: '#89949c', width: 1 }], gridLineColor: 'var(--research-rule)' },
       legend: { enabled: false }, credits: { enabled: false },
       tooltip: { valueDecimals: 2, valueSuffix: ' п.п.' },
       plotOptions: { series: { animation: false }, bar: { borderWidth: 0, borderRadius: 2 } },
-      series: [{ type: 'bar', name: 'Промяна в активността', data: rows.map(row => ({ y: row.deltaTurnoutPp, color: (row.deltaTurnoutPp ?? 0) >= 0 ? '#d18b32' : '#3788b8' })) }],
+      series: [{ type: districts ? 'column' : 'bar', name: 'Промяна в активността', data: rows.map(row => ({ y: row.deltaTurnoutPp, color: (row.deltaTurnoutPp ?? 0) >= 0 ? '#d18b32' : '#3788b8' })) }],
     };
   }
 }

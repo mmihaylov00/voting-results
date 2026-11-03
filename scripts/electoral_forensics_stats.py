@@ -123,6 +123,8 @@ def matched_controls(targets, controls, max_controls=5):
     for row in targets:
         candidates = []
         for other in strata[(row['rural'], row['sizeGroup'], row['method1'])]:
+            if other['sectionId'] == row['sectionId'] or other['regionId'] == row['regionId']:
+                continue
             baseline = abs(row['turnout1'] - other['turnout1'])
             size = abs(math.log(row['registered1'] / other['registered1']))
             list_change = abs(row['registeredChangePct'] - other['registeredChangePct'])
@@ -142,7 +144,8 @@ def matched_controls(targets, controls, max_controls=5):
             'uniqueControlN': len({sid for pair in pairs for sid in pair['controlIds']}),
             'meanDifferencePp': interval['mean'], 'ci95': interval['ci95'],
             'municipalities': interval['clusters'], 'pairs': pairs,
-            'method': 'До пет най-близки контроли от други области; еднакви град/село, размер и метод; '
+            'method': 'До пет най-близки контроли извън собствения избирателен район на всяка секция; '
+                      'еднакви град/село, размер и метод; '
                       'начална активност ±10 пр.п., отношение на списъците до 1.3, промяна на списъка ±5 пр.п. '
                       'Нормален интервал по общински клъстери.',
             'limitations': ['Една контролна секция може да участва повече от веднъж; съпоставянето е наблюдателно.',

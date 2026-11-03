@@ -4,13 +4,15 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { Meta, Title } from '@angular/platform-browser';
+import { By, Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, provideRouter, RouterLink } from '@angular/router';
 import { afterEach, describe, expect, it } from 'vitest';
 import { ElectoralForensicsComponent } from './electoral-forensics';
 import { ForensicsFinding, ForensicsGroup, ForensicsSection } from './forensics.models';
-import { reportFixture, sectionFixture } from './forensics.fixtures';
+import { groupFixture, reportFixture, sectionFixture } from './forensics.fixtures';
 import { ForensicsHypothesesComponent } from './forensics-hypotheses';
+import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
+import { MapIconComponent } from '../ui/map-icon/map-icon';
 
 @Component({ selector: 'highcharts-chart', template: '' })
 class ChartStub { @Input() options: unknown; }
@@ -26,7 +28,7 @@ function setup(query = 'query1') {
       { provide: ActivatedRoute, useValue: { snapshot: { data: { researchQuery: query } } } }],
   });
   TestBed.overrideComponent(ElectoralForensicsComponent, {
-    set: { imports: [CommonModule, FormsModule, RouterLink, ChartStub, MapStub, GroupStub, ForensicsHypothesesComponent] },
+    set: { imports: [CommonModule, FormsModule, RouterLink, ChartStub, MapStub, GroupStub, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent] },
   });
   return TestBed.createComponent(ElectoralForensicsComponent);
 }
@@ -255,5 +257,60 @@ describe('hidden electoral research pages', () => {
     expect(inspector?.textContent).toContain('Промяна на кандидатския избор.');
     fixture.destroy();
     http.verify();
+  });
+
+  it.each(['query1', 'query2'])('defaults %s to all districts and shares district filters between map, totals and section table', query => {
+    const fixture = setup(query);
+    fixture.detectChanges();
+    const http = TestBed.inject(HttpTestingController);
+    const report = reportFixture();
+    report.regions = Array.from({ length: 31 }, (_, index) => groupFixture({ key: String(index + 1), name: `Район ${index + 1}` }));
+    report.query1.regions = report.regions;
+    report.query2.regions = report.regions;
+    http.expectOne('/data/forensics/2026/report.json').flush(report);
+    const rows = [sectionFixture(), sectionFixture({ sectionId: '010100001', regionId: '1', priority: false }),
+      sectionFixture({ sectionId: '010100002', regionId: '1', priority: false, small400: false })];
+    http.expectOne('/data/forensics/2026/sections.json').flush(rows);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const selector = element.querySelector('select[aria-label="Филтър по изборен район"]') as HTMLSelectElement;
+    expect(selector.options.length).toBe(32);
+    expect(selector.value).toBe('');
+    expect(fixture.componentInstance.filtered().length).toBe(query === 'query1' ? 3 : 2);
+    selector.value = '1';
+    selector.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    const expected = rows.filter(row => row.regionId === '1' && (query !== 'query2' || row.small400));
+    expect(fixture.componentInstance.filtered()).toEqual(expected);
+    expect(fixture.debugElement.query(By.directive(MapStub)).componentInstance.rows).toEqual(expected);
+    expect(element.querySelectorAll('#geography > .table-scroll tbody tr').length).toBe(expected.length);
+    expect(fixture.componentInstance.totals().voted1).toBe(expected.reduce((sum, row) => sum + row.voted1!, 0));
+    expect(element.textContent).not.toContain('Четирите приоритетни области');
+    fixture.destroy();
+    http.verify();
+  });
+
+  it('uses labelled icon download controls and focusable bounded table regions', () => {
+    const fixture = setup();
+    fixture.componentInstance.report.set(reportFixture());
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    for (const control of element.querySelectorAll('a[download]')) {
+      expect(control.hasAttribute('hlmBtn')).toBe(true);
+      expect(control.getAttribute('aria-label')).toBeTruthy();
+      expect(control.getAttribute('title')).toBeTruthy();
+      expect(control.querySelector('svg')).not.toBeNull();
+    }
+    const nationalCsv = element.querySelector('a[href$="/sections.csv"]');
+    expect(nationalCsv?.getAttribute('aria-label')).toContain('независимо от филтрите');
+    for (const region of element.querySelectorAll<HTMLElement>('.table-scroll')) {
+      expect(region.tabIndex).toBe(0);
+      expect(region.getAttribute('role')).toBe('region');
+      expect(region.getAttribute('aria-label')).toBeTruthy();
+      const height = Number.parseFloat(getComputedStyle(region).maxHeight);
+      expect(height).toBeGreaterThanOrEqual(360);
+      expect(height).toBeLessThanOrEqual(420);
+    }
+    fixture.destroy();
   });
 });

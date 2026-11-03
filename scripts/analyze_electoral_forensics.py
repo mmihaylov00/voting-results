@@ -192,7 +192,7 @@ def group_rows(rows, field):
             key = str(row[field])
         grouped[key].append(row)
     result = []
-    for key, members in sorted(grouped.items()):
+    for key, members in sorted(grouped.items(), key=lambda item: int(item[0]) if field == 'regionId' else item[0]):
         eligible = [row for row in members if row['eligible']]
         first = members[0]
         name_field = {'regionId': 'regionName', 'municipalityCode': 'municipalityName',
@@ -206,13 +206,15 @@ def group_rows(rows, field):
         interval = mean_interval([row['deltaTurnoutPp'] for row in eligible],
                                  [row['municipalityCode'] for row in eligible])
         result.append({'key': key, 'name': first[name_field] if name_field else BIN_NAMES.get(key, key),
-                       'region': first['regionName'], 'municipalityCode': first['municipalityCode'],
+                       'region': first['regionName'], 'regionId': first['regionId'],
+                       'municipalityCode': first['municipalityCode'],
                        'settlementEkatte': first['settlementEkatte'], 'n': len(members),
                        'registered1': registered1, 'registered2': registered2, 'voted1': voted1, 'voted2': voted2,
                        'turnout1': turnout1, 'turnout2': turnout2,
                        'deltaTurnoutPp': difference(turnout2, turnout1), 'meanDeltaPp': interval['mean'],
                        'meanDeltaCi95': interval['ci95'], 'municipalityClusters': interval['clusters'],
                        'deltaVoted': voted2 - voted1, 'eligibleN': len(eligible),
+                       'excludedN': len(members) - len(eligible),
                        'flaggedN': sum(bool(row['signal']['flags']) for row in eligible),
                        'smallN': sum(row['small400'] for row in eligible),
                        'paperN': sum(row['method1'] == 'paper' for row in eligible),
@@ -417,8 +419,8 @@ def findings_for(rows):
             finding['calculations'].append(f"Robust z = (Δ - {signal['peerMedian']:.6f}) / "
                                            f"(1.4826 × {signal['peerMad']:.6f}) = {signal['robustZ']:.6f}; "
                                            f"сравнима група n={signal['peerN']}.")
-    return sorted(result, key=lambda row: (not row['priority'], not row['small400'],
-                                          -abs(row['robustZ'] or 0), -abs(row['deltaTurnoutPp']), row['sectionId']))
+    return sorted(result, key=lambda row: (-abs(row['robustZ'] or 0),
+                                          -abs(row['deltaTurnoutPp']), row['sectionId']))
 
 
 def query_block(identifier, title, selected, controls, findings, clusters):
@@ -437,8 +439,8 @@ def query_block(identifier, title, selected, controls, findings, clusters):
                'reviewN': len(selected_findings), 'clusterN': len(selected_clusters),
                'unknownMethodN': sum(row['method1'] == 'unknown' or row['method2'] == 'unknown' for row in eligible)}
     return {'id': identifier, 'title': title,
-            'filter': 'Четирите приоритетни области; R1 totalA <=400' if identifier == 'query2'
-                      else 'Четирите приоритетни области; всички размери, с национална сравнителна извадка',
+            'filter': 'Цялата страна; 1-400 избиратели по списък totalA на първия тур' if identifier == 'query2'
+                      else 'Цялата страна; всички размери; 31 избирателни района на ЦИК',
             'summary': summary, 'regions': group_rows(selected, 'regionId'),
             'municipalities': group_rows(selected, 'municipalityCode'),
             'settlements': group_rows(selected, 'settlementEkatte'),
@@ -448,16 +450,13 @@ def query_block(identifier, title, selected, controls, findings, clusters):
             'clusters': selected_clusters,
             'comparison': comparison,
             'report': {
-                'facts': [f"Обхватът съдържа {len(selected)} секции; {len(eligible)} са съпоставими и аритметично валидни.",
-                          'Размерът и активността използват избирателите по списък totalA; дописаните totalB са отделни.',
-                          'Данните за балотажа са предварителна официална публикация на ЦИК, а не финален отворен архив.'],
-                'observations': [f"Положителна промяна в активността има в {summary['positiveDeltaN']} съпоставими секции.",
-                                 f"Описателните правила дават {len(selected_findings)} секции за проверка на протоколи.",
-                                 'Таблиците разграничават претеглената обща активност от средната секционна промяна.',
-                                 f"Съпоставени с други области са {comparison['matchedN']} от {comparison['targetN']} секции."],
-                'hypotheses': ['Организационна мобилизация е възможна хипотеза, но механизмът и организаторът не се наблюдават.',
-                               'Същите модели могат да възникнат от нормална балотажна мобилизация, променен избор или местни особености.',
-                               'Статистическо отклонение не доказва купен, корпоративен, контролиран вот или индивидуален трансфер.']}}
+                'facts': [f"31 избирателни района на ЦИК; {len(selected)} секции, {len(eligible)} съпоставими и валидни.",
+                          'Размер и активност по totalA; дописаните totalB са отделни. Балотажът е предварителна публикация.'],
+                'observations': [f"Положителна промяна: {summary['positiveDeltaN']} секции. "
+                                 f"За проверка на протоколи: {len(selected_findings)}.",
+                                 f"Контроли извън собствения район: {comparison['matchedN']} от {comparison['targetN']} секции."],
+                'hypotheses': ['Мобилизация, променен кандидатски избор и местни особености остават възможни обяснения.',
+                               'Резултатите не доказват организатор, натиск, нарушение или индивидуален трансфер.']}}
 
 
 def write_csv(path, rows):
@@ -534,15 +533,15 @@ def build_report(dataset, permutations=999, seed=20261101):
     for hypothesis_row, q in zip(hypotheses, bh_adjust([entry['p'] for entry in hypotheses])):
         hypothesis_row['q'] = q
     findings = findings_for(eligible)
-    priority = [row for row in domestic if row['priority']]
-    focus = [row for row in priority if row['small400']]
-    controls = [row for row in eligible if not row['priority']]
-    query1 = query_block('query1', 'Анализ на малките избирателни секции', priority, controls, findings, clusters)
-    query2 = query_block('query2', 'Повтарящи се модели в секциите до 400 избиратели', focus, controls, findings, clusters)
-    for query, selected in [(query1, priority), (query2, focus)]:
-        query['hypotheses'] = analyze_hypotheses([row for row in selected if row['eligible']])
-        for entry, adjusted in zip(query['hypotheses'], bh_adjust([entry['p'] for entry in query['hypotheses']])):
-            entry['q'] = adjusted
+    focus = [row for row in domestic if row['small400']]
+    query1 = query_block('query1', 'Секционен анализ за цялата страна', domestic, eligible, findings, clusters)
+    query2 = query_block('query2', 'Секции до 400 избиратели в цялата страна', focus, eligible, findings, clusters)
+    for query, selected in [(query1, domestic), (query2, focus)]:
+        query['hypotheses'] = hypotheses if query['id'] == 'query1' else analyze_hypotheses(
+            [row for row in selected if row['eligible']])
+        if query['id'] == 'query2':
+            for entry, adjusted in zip(query['hypotheses'], bh_adjust([entry['p'] for entry in query['hypotheses']])):
+                entry['q'] = adjusted
         query['hypothesisScope'] = query['filter']
         query['spatialSummary'] = {
             'scope': 'Националните локални тестове се коригират заедно; тук са показани само местата в избрания обхват.',
@@ -556,39 +555,43 @@ def build_report(dataset, permutations=999, seed=20261101):
                                        fdrSites=len({row['signal'].get('spatialSiteId') for row in selected
                                                      if row['eligible'] and row['signal']['spatialQ'] is not None
                                                      and row['signal']['spatialQ'] <= .05}))
-        scoped_h4 = hypothesis('H4', 'Териториално сходство в избрания обхват', n=len(local_sites),
-                               summary='Показани са локалните тестове и клъстери в този обхват. '
-                               'Корекцията за множествени сравнения обхваща всички тествани места в страната; '
-                               'тук не се изчислява нов общ p тест.')
-        scoped_h4['details'] = query['spatialSummary']
-        scoped_h4['method'] = spatial.get('method', '')
-        scoped_h4['limitations'] = spatial.get('limitations', [])
-        query['hypotheses'].insert(3, scoped_h4)
-        query['report']['observations'].append('Моделите H1-H3 по-долу използват само този географски обхват; '
-                                                'националните модели са отделна сравнителна проверка.')
-    eligible_priority = [row for row in priority if row['eligible']]
+        if query['id'] == 'query2':
+            scoped_h4 = hypothesis('H4', 'Териториално сходство в малките секции', n=len(local_sites),
+                                   summary='Локални тестове от общата национална мрежа; '
+                                   'BH корекция за всички тествани места в страната, без нов общ тест за малките секции.')
+            scoped_h4['details'] = query['spatialSummary']
+            scoped_h4['method'] = spatial.get('method', '')
+            scoped_h4['limitations'] = spatial.get('limitations', [])
+            query['hypotheses'].insert(3, scoped_h4)
+        h2 = next(entry for entry in query['hypotheses'] if entry['id'] == 'H2')
+        if h2['q'] is not None:
+            signal = 'статистическа асоциация' if h2['q'] <= .05 else 'без статистически сигнал след корекция'
+            query['report']['observations'].append(f"H2: {signal} (q={h2['q']:.3f}; n={h2['n']}).")
+        query['report']['observations'].append(
+            f"Пространствени сигнали след националната корекция: {query['spatialSummary']['fdrSites']} места.")
     query2['selectionSensitivity'] = {
         'basis': 'Членството се определя от totalA на първия тур, не от броя гласували.',
-        'r1SmallN': sum(row['registered1'] <= 400 for row in eligible_priority),
-        'r2SmallN': sum(row['registered2'] <= 400 for row in eligible_priority),
-        'bothSmallN': sum(row['registered1'] <= 400 and row['registered2'] <= 400 for row in eligible_priority),
-        'r1OnlySmallN': sum(row['registered1'] <= 400 < row['registered2'] for row in eligible_priority),
-        'r2OnlySmallN': sum(row['registered2'] <= 400 < row['registered1'] for row in eligible_priority),
-        'r2SmallMeanDeltaPp': statistics.mean(row['deltaTurnoutPp'] for row in eligible_priority
+        'r1SmallN': sum(row['registered1'] <= 400 for row in eligible),
+        'r2SmallN': sum(row['registered2'] <= 400 for row in eligible),
+        'bothSmallN': sum(row['registered1'] <= 400 and row['registered2'] <= 400 for row in eligible),
+        'r1OnlySmallN': sum(row['registered1'] <= 400 < row['registered2'] for row in eligible),
+        'r2OnlySmallN': sum(row['registered2'] <= 400 < row['registered1'] for row in eligible),
+        'r2SmallMeanDeltaPp': statistics.mean(row['deltaTurnoutPp'] for row in eligible
                                               if row['registered2'] <= 400) if any(row['registered2'] <= 400
-                                                                                 for row in eligible_priority) else None,
+                                                                                 for row in eligible) else None,
     }
     selection = query2['selectionSensitivity']
     if selection['r2SmallMeanDeltaPp'] is not None and query2['summary']['meanDeltaPp'] is not None:
         query2['report']['observations'].append(
-            f"Ако прагът <=400 се приложи по списъка на балотажа, извадката е {selection['r2SmallN']} секции "
-            f"и средната промяна е {selection['r2SmallMeanDeltaPp']:.2f} пр.п., вместо "
-            f"{query2['summary']['meanDeltaPp']:.2f} пр.п. по предварително избрания списък на първия тур. "
-            f"Секции с големи промени в списъците могат да влияят силно на средните стойности; "
-            f"{selection['r1OnlySmallN']} секции излизат, {selection['r2OnlySmallN']} влизат в границата.")
+            f"Праг по балотажа: {selection['r2SmallN']} секции, средно {selection['r2SmallMeanDeltaPp']:.2f} пр.п.; "
+            f"по първия тур: {selection['r1SmallN']}, {query2['summary']['meanDeltaPp']:.2f} пр.п.")
     metadata = {'title': 'Electoral Forensics - Bulgaria 2026',
                 'dates': {'parliamentary': APRIL, 'round1': FIRST_ROUND, 'round2': SECOND_ROUND,
                           'historical': OCTOBER_2024}, 'priorityRegionIds': sorted(PRIORITY_REGIONS, key=int),
+                'scope': 'nationwide_domestic',
+                'geography': {'type': 'cik_electoral_district', 'count': 31,
+                              'label': 'Избирателни райони на ЦИК',
+                              'definition': '31 избирателни района, включително отделните райони в София и Пловдив; не са 28 административни области.'},
                 'percentUnits': 'Активност и дялове в 0-100%; промени в процентни пункта.',
                 'seed': seed, 'permutations': permutations, 'provisional': True,
                 'generatedBy': 'scripts/analyze_electoral_forensics.py', 'sectionCount': len(domestic),
@@ -617,9 +620,9 @@ def build_report(dataset, permutations=999, seed=20261101):
     sensitivity = {}
     for scope, strict_rows, relaxed_rows in [
             ('national', eligible, relaxed),
-            ('query1', eligible_priority, [row for row in relaxed if row['priority']]),
+            ('query1', eligible, relaxed),
             ('query2', [row for row in focus if row['eligible']],
-             [row for row in relaxed if row['priority'] and row['small400']])]:
+             [row for row in relaxed if row['small400']])]:
         models = analyze_hypotheses(relaxed_rows)
         sensitivity[scope] = {
             'strictN': len(strict_rows), 'relaxedN': len(relaxed_rows),
@@ -644,6 +647,7 @@ def build_report(dataset, permutations=999, seed=20261101):
               'hypotheses': hypotheses, 'clusters': clusters, 'findings': findings,
               'methodology': {
                   'scope': 'Съпоставими редовни секции в страната без аритметични противоречия; променените, специалните и липсващите записи се пазят с причина за изключване.',
+                  'geography': 'Регионалните обобщения използват 31 избирателни района на ЦИК, не 28 административни области. Четирите първоначални приоритетни района са само исторически метаданни.',
                   'size': 'Избиратели totalA на първия тур: <300, 300-400, 401-700, >700. Фокусът включва всички секции <=400, включително градските.',
                   'turnout': '100 * подписали се / totalA за всеки тур; отделна проверка с totalA+totalB.',
                   'candidateShares': 'Гласове за кандидат / (всички кандидатски гласове + НПН); отделно дял от подписалите се.',
@@ -653,11 +657,12 @@ def build_report(dataset, permutations=999, seed=20261101):
                   'uncertainty': 'CR1 по общински клъстери; асимптотични нормални 95% интервали. За група с една община няма интервал.',
                   'multiplicity': 'BH за определимите първични H1-H4 тестове поотделно за националната и всяка целева извадка; H2 използва вътрешно Bonferroni за двете партии. Историческият модел е проучвателен. Всички тествани места в страната имат отделна обща BH корекция.',
                   'screening': 'Проучвателно правило |robust z|>=3 и |промяна на активността|>=10 пр.п.; промяна на списъка >5% е сигнал за проверка, а не статистическо отклонение. Това не са p стойности.',
-                  'peers': 'Еднакви размер, град/село, официален метод, начална активност в интервал от 20 пр.п., промяна на списъка (<-5%, ±5%, >5%); поне 30 секции, първо в общината, после областта, после страната.',
+                  'peers': 'Еднакви размер, град/село, официален метод, начална активност в интервал от 20 пр.п., промяна на списъка (<-5%, ±5%, >5%); поне 30 секции, първо в общината, после избирателния район, после страната.',
                   'spatial': spatial.get('method', ''), 'spatialFamily': spatial.get('family', ''),
                   'spatialSensitivity': 'Секциите с еднакви координати са едно място; връзки с нулево разстояние се изключват. Съвместно разположените секции не се тълкуват като независими места.',
                   'caution': 'Агрегираните резултати не установяват индивидуално прехвърляне, организатори, мотиви, натиск или нарушения.',
                   'limitations': ['Наблюдателни агрегирани данни; остават неизмерени местни фактори и административни промени.',
+                                  'Националното групиране има 267 единици РИК + общински код на ЦИК; София е разделена в 23/24/25, така че това не са 265 административни общини.',
                                   'Публикацията за балотажа е предварителна дори при 100% обработка.',
                                   'Няма проверени общи граници на секции или социално-икономически контроли; близостта е приближение.',
                                   'Списъкът и проучвателните клъстери са насоки за проверка на протоколи, а не установени нарушения.']}}
