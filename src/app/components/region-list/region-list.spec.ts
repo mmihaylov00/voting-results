@@ -63,7 +63,7 @@ describe('national saved presidential comparisons', () => {
       expect(analysis?.loading).toBe(false);
     });
     expect(harness.routeNativeElement?.querySelector('app-select button[aria-label="Сравнение с"]')?.textContent).toContain('Ноември 2026');
-    expect(harness.routeNativeElement?.querySelector('app-select button[aria-label="Сравнение с"]')?.textContent).toContain('предварителни');
+    expect(harness.routeNativeElement?.querySelector('app-select button[aria-label="Сравнение с"]')?.textContent).not.toContain('предварителни');
     expect(TestBed.inject(Router).url).toBe(url);
     await harness.navigateByUrl('/presidential/election/2026.10.25?panel=comparison&baseline=2021.11.14');
     await vi.waitFor(() => {

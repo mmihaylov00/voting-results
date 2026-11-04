@@ -52,24 +52,19 @@ DEFINITIONS = {
     'sizeGroup': 'Групиране само по totalA: под 300; от 300 до 400 включително; от 401 до 700 включително; над 700.',
     'matching': 'Изискват се еднакви секционен номер, област, община, ЕКАТТЕ, населено място и адрес. '
                 'Уеднаквяват се само пунктуация, главни/малки букви и интервали. Променените секции '
-                'не участват в сравненията между избори. ЕКАТТЕ за балотажа е пренесен от първия тур '
-                'или определен чрез административния каталог и не е независимо потвърждение от ЦИК.',
+                'не участват в сравненията между избори. ЕКАТТЕ за двата тура е проверен в отделните официални архиви.',
     'possibleSplitMerge': 'Променен или липсващ номер на същия адрес и в същото населено място е основание '
                           'за проверка на протоколите, а не доказателство за разделена или слята секция.',
     'votingMethod': 'Методът се определя от официалния вид протокол и изричните секционни флагове, '
                     'без да се извежда от броя машинни гласове. Парламентарният смесен протокол допуска '
                     'хартия и машина; президентският протокол за преустановена машина се пази отделно. '
                     'Без достатъчно данни методът остава неизвестен.',
-    'geography': 'В проверените архиви ЕКАТТЕ е официално поле. За балотажа кодът е пренесен от първия '
-                 'тур или изведен чрез административния каталог. Липсващи общински имена в старите '
+    'geography': 'В проверените архиви за двата тура ЕКАТТЕ, координатите и секционните флагове са официални полета. Липсващи общински имена в старите '
                  'таблици се допълват от същия каталог. Координатите описват '
                  'изборно помещение или център на населено място, а не местоположение на избиратели '
                  'или доказана териториална съседност.',
-    'runoffEkatte': 'Публикуваните страници за балотажа не съдържат независимо секционно ЕКАТТЕ. '
-                   'Каноничният импорт го пренася от официалния първи тур при еднакъв секционен номер '
-                   'и еднакво изписано населено място след уеднаквяване на интервали и главни/малки букви. '
-                   'Останалите случаи се разрешават чрез административния каталог. Съвпадението на този '
-                   'код е проверка за вътрешна съгласуваност, а не отделно потвърждение на секционната идентичност.',
+    'runoffEkatte': 'ЕКАТТЕ за балотажа идва от официалния архив от 1 ноември 2026 г. '
+                   'Съпоставя се независимо с официалния първи тур, заедно със секционния номер, населеното място и адреса.',
 }
 
 
@@ -245,7 +240,7 @@ def verify_official_archive(root, date, path, source_url=None):
     root, path = Path(root), Path(path)
     original = _archive_tables(path, date)
     expected = {}
-    if date == FIRST_ROUND:
+    if date in {FIRST_ROUND, SECOND_ROUND}:
         specification = importlib.util.spec_from_file_location('cik_official_repair', root / 'scripts/repair-cik-data.py')
         repair = importlib.util.module_from_spec(specification)
         specification.loader.exec_module(repair)
@@ -297,7 +292,7 @@ def retain_input_evidence(root, date, archive=None, inventory_path=None, source_
         if verification['status'] != 'verified':
             raise ValueError(f'Cannot pin mismatched official archive: {verification}')
         entry['verification'] = verification
-        if date == FIRST_ROUND:
+        if date in {FIRST_ROUND, SECOND_ROUND}:
             tables = _archive_tables(archive, date)
             member = tables['protocols']['member']
             with zipfile.ZipFile(archive) as original:
@@ -573,8 +568,8 @@ def load_election(root, date, settlements, municipalities, cache_dirs=None, arch
         protocol_url = (evidence or {}).get('protocolUrl', base + 'search/index.html#' + section_id)
         records[section_id] = {
             **geography, 'date': date, 'registered': registered, 'added': added,
-            'settlementEkatteSource': 'derived_first_round_or_administrative_catalog' if date == SECOND_ROUND else
-                                     'official_archive' if archive_verification else 'canonical_section_table',
+            'settlementEkatteSource': 'official_archive' if archive_verification else
+                                     'derived_first_round_or_administrative_catalog' if date == SECOND_ROUND else 'canonical_section_table',
             'electorateWithAdded': registered + added, 'voted': voted,
             'turnout': percentage(voted, registered),
             'turnoutWithAdded': percentage(voted, registered + added), 'sizeGroup': size_group(registered),
@@ -597,7 +592,7 @@ def load_election(root, date, settlements, municipalities, cache_dirs=None, arch
             records[section_id]['sourceRefs']['votes']['lines'] = [line for line, _ in vote_rows[section_id]]
             records[section_id]['raw']['voteRows'] = [values for _, values in vote_rows[section_id]]
     metadata_file = root / 'public/data' / date / 'source-results.json'
-    snapshot = json.loads(metadata_file.read_text()) if metadata_file.exists() else None
+    snapshot = json.loads(metadata_file.read_text()) if metadata_file.exists() and not archive_verification else None
     for discrepancy in (snapshot or {}).get('protocolDiscrepancies', []):
         affected = records.get(discrepancy.get('sectionId'))
         if affected:
@@ -613,7 +608,7 @@ def load_election(root, date, settlements, municipalities, cache_dirs=None, arch
     return {'records': records, 'parties': parties,
             'regionalParties': {region + ':' + ballot: name for (region, ballot), name in regional_parties.items()},
             'metadata': {'date': date, 'sourceUrl': base + ('rezultati/index.html' if snapshot else 'opendata/export.zip'),
-                         'provisional': date == SECOND_ROUND, 'recordCount': len(records),
+                         'provisional': date == SECOND_ROUND and not archive_verification, 'recordCount': len(records),
                          'snapshot': snapshot, 'methodSource': method_source,
                          'canonicalArchiveVerification': archive_verification['status'] if archive_verification else
                                                          'not_recorded' if date in {'2024.10.27', '2026.04.19'} else 'existing_source_documentation',
@@ -646,7 +641,7 @@ def match_records(left, right):
         notes.append('municipality_name_not_available_in_both_official_election_tables')
     if not names_equal:
         notes.append('municipality_display_labels_differ')
-    if any(record.get('date') == SECOND_ROUND for record in [left, right]):
+    if any(record.get('date') == SECOND_ROUND and record.get('settlementEkatteSource') != 'official_archive' for record in [left, right]):
         notes.append('runoff_ekatte_derived_not_independent_confirmation')
     reasons = [key + '_changed_or_missing' for key, equal in checks.items() if not equal]
     if left['special'] or right['special'] or left.get('institutionReviewFlag') or right.get('institutionReviewFlag'):
@@ -699,6 +694,8 @@ def load_dataset(root=None, dates=ANALYSIS_DATES, cache_dirs=None, archives=None
     reference = elections[FIRST_ROUND]['records']
     runoff = elections[SECOND_ROUND]['records']
     for section_id, current in runoff.items():
+        if current['settlementEkatteSource'] == 'official_archive':
+            continue
         earlier = reference.get(section_id)
         same_source_place = earlier and ' '.join(earlier['settlementName'].split()).casefold() == \
                                        ' '.join(current['settlementName'].split()).casefold()
@@ -710,6 +707,8 @@ def load_dataset(root=None, dates=ANALYSIS_DATES, cache_dirs=None, archives=None
     # across an otherwise identical identity, and disclose its origin.
     for section_id in set(reference) & set(runoff):
         earlier, current = reference[section_id], runoff[section_id]
+        if current['settlementEkatteSource'] == 'official_archive':
+            continue
         checks = match_records(earlier, current)['identityChecks']
         if earlier['special'] and all(checks.values()):
             current['special'] = True

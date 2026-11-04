@@ -186,8 +186,8 @@ describe('election analysis loading', () => {
     expect(component.timeline.map(point => point.date)).toEqual(presidential);
     expect(component.timeline).toHaveLength(6);
     expect(component.comparisonOptions.map(option => option.value)).toEqual(presidential.filter(value => value !== date));
-    if (baseline === '2026.11.01') expect(component.comparisonOptions.find(option => option.value === baseline)?.label).toContain('предварителни');
-    expect(component.timeline.find(point => point.date === '2026.11.01')?.name).toContain('предварителни');
+    if (baseline === '2026.11.01') expect(component.comparisonOptions.find(option => option.value === baseline)?.label).not.toContain('предварителни');
+    expect(component.timeline.find(point => point.date === '2026.11.01')?.name).not.toContain('предварителни');
     expect(component.comparisonDate).toBe(baseline);
     expect(component.rows[0].current.votes).toBe(currentVotes);
     expect(component.rows[0].previous?.votes).toBe(previousVotes);

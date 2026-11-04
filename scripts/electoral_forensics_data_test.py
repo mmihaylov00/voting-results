@@ -63,6 +63,27 @@ class ForensicsDataTests(unittest.TestCase):
         left['municipalityNameSource'] = 'election_record'
         self.assertFalse(match_records(left, right)['comparable'])
 
+    def test_verified_runoff_ekatte_is_an_independent_official_identity_field(self):
+        left, right = self.record(), self.record()
+        right.update(date='2026.11.01', settlementEkatteSource='official_archive')
+        self.assertNotIn('runoff_ekatte_derived_not_independent_confirmation', match_records(left, right)['identityNotes'])
+        right['settlementEkatteSource'] = 'carried_first_round_section_id_and_settlement'
+        self.assertIn('runoff_ekatte_derived_not_independent_confirmation', match_records(left, right)['identityNotes'])
+
+    def test_published_runoff_uses_pinned_official_archive_and_original_protocol_forms(self):
+        root = Path(__file__).resolve().parent.parent
+        data = load_election(root, '2026.11.01', {}, {})
+        self.assertFalse(data['metadata']['provisional'])
+        self.assertIsNone(data['metadata']['snapshot'])
+        self.assertEqual(data['metadata']['canonicalArchiveVerification'], 'verified')
+        self.assertEqual(data['metadata']['sourceUrl'], 'https://results.cik.bg/pvr202610/tur2/opendata/export.zip')
+        self.assertEqual(data['metadata']['methodSource']['kind'], 'official_archive_protocol_text')
+        self.assertEqual(len(data['records']), 12717)
+        self.assertTrue(all(record['settlementEkatteSource'] == 'official_archive' for record in data['records'].values()))
+        self.assertTrue(all(record['votingMethod'] != 'unknown' for record in data['records'].values()))
+        self.assertEqual(sum(record['voted'] for record in data['records'].values()), 1902933)
+        self.assertEqual(data['records']['030601037']['methodEvidence']['form'], 26)
+
     def test_original_party_registrations_and_second_machine_are_preserved(self):
         header = ['form', 'sectionId', 'region', 'partyId', 'total', 'paper', 'machine', 'extra'] * 1
         values = ['26', '050100001', '5', '8', '114', '108', '5', '1', '13', '6', '6', '0', '0']

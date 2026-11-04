@@ -484,7 +484,7 @@ def review_rows(rows, flag_field):
     return [{key: row[key] for key in fields} for row in rows if row[flag_field]]
 
 
-def query_block(identifier, title, selected, controls, findings, clusters):
+def query_block(identifier, title, selected, controls, findings, clusters, provisional=True):
     eligible = [row for row in selected if row['eligible']]
     interval = mean_interval([row['deltaTurnoutPp'] for row in eligible], [row['municipalityCode'] for row in eligible])
     comparison = matched_controls(eligible, controls)
@@ -518,7 +518,8 @@ def query_block(identifier, title, selected, controls, findings, clusters):
             'comparison': comparison,
             'report': {
                 'facts': [f"31 избирателни района на ЦИК; {len(selected)} секции, {len(eligible)} съпоставими и валидни.",
-                          'Размер и активност по totalA; дописаните totalB са отделни. Балотажът е предварителна публикация.'],
+                          'Размер и активност по totalA; дописаните totalB са отделни.',
+                          'Балотажът е предварителна публикация.' if provisional else 'Двата тура използват окончателните официални бази на ЦИК.'],
                 'observations': [f"Положителна промяна: {summary['positiveDeltaN']} секции. "
                                  f"За проверка на протоколи: {len(selected_findings)}.",
                                  f"Контроли извън собствения район: {comparison['matchedN']} от {comparison['targetN']} секции."],
@@ -583,6 +584,7 @@ def clean_json(value):
 
 
 def build_report(dataset, permutations=999, seed=20261101, historical_benchmarks=None):
+    provisional = dataset['elections'][SECOND_ROUND]['metadata']['provisional']
     verified_dates = {date for date, election in dataset['elections'].items()
                       if election['metadata'].get('canonicalArchiveVerification') == 'verified'}
     rows = enrich_rows(dataset['rows'], verified_dates)
@@ -604,8 +606,8 @@ def build_report(dataset, permutations=999, seed=20261101, historical_benchmarks
         hypothesis_row['q'] = q
     findings = findings_for(eligible)
     focus = [row for row in domestic if row['small400']]
-    query1 = query_block('query1', 'Секционен анализ за цялата страна', domestic, eligible, findings, clusters)
-    query2 = query_block('query2', 'Секции до 400 избиратели в цялата страна', focus, eligible, findings, clusters)
+    query1 = query_block('query1', 'Секционен анализ за цялата страна', domestic, eligible, findings, clusters, provisional)
+    query2 = query_block('query2', 'Секции до 400 избиратели в цялата страна', focus, eligible, findings, clusters, provisional)
     historical_benchmarks = historical_benchmarks or {'query1': [], 'query2': [], 'metadata': {}}
     for query, selected in [(query1, domestic), (query2, focus)]:
         current_benchmark = build_runoff_benchmark(
@@ -675,7 +677,7 @@ def build_report(dataset, permutations=999, seed=20261101, historical_benchmarks
                               'label': 'Избирателни райони на ЦИК',
                               'definition': '31 избирателни района, включително отделните райони в София и Пловдив; не са 28 административни области.'},
                 'percentUnits': 'Активност и дялове в 0-100%; промени в процентни пункта.',
-                'seed': seed, 'permutations': permutations, 'provisional': True,
+                'seed': seed, 'permutations': permutations, 'provisional': provisional,
                 'generatedBy': 'scripts/analyze_electoral_forensics.py', 'sectionCount': len(domestic),
                 'eligibleCount': len(eligible),
                 'analysisCodeHashes': {path.name: hashlib.sha256(path.read_bytes()).hexdigest()
@@ -758,7 +760,7 @@ def build_report(dataset, permutations=999, seed=20261101, historical_benchmarks
                   'caution': 'Агрегираните резултати не установяват индивидуално прехвърляне, организатори, мотиви, натиск или нарушения.',
                   'limitations': ['Наблюдателни агрегирани данни; остават неизмерени местни фактори и административни промени.',
                                   'Националното групиране има 267 единици РИК + общински код на ЦИК; София е разделена в 23/24/25, така че това не са 265 административни общини.',
-                                  'Публикацията за балотажа е предварителна дори при 100% обработка.',
+                                  *(['Публикацията за балотажа е предварителна дори при 100% обработка.'] if provisional else []),
                                   'Няма проверени общи граници на секции или социално-икономически контроли; близостта е приближение.',
                                   'Списъкът и проучвателните клъстери са насоки за проверка на протоколи, а не установени нарушения.']}}
     return clean_json(report), clean_json(domestic)

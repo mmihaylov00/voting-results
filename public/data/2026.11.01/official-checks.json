@@ -1,0 +1,401 @@
+{
+  "archiveUrl": "https://results.cik.bg/pvr202610/tur2/opendata/export.zip",
+  "archiveSha256": "64edd702d8621f30ebaa9b52d22ffd2dd0695b41b11cc6b56f16bec2c35a34c4",
+  "resultChecks": [
+    {
+      "regionId": 0,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/index.html",
+      "sourceSha256": "bfc1b822beee4a90fb34e39512ba2604f30d6aded21d8652ab6a997b7b307fc2",
+      "candidateVotes": {
+        "4": 750251,
+        "25": 1093852
+      },
+      "noSupport": 56080,
+      "matched": true
+    },
+    {
+      "regionId": 1,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/01.html",
+      "sourceSha256": "e99950749e47af0f5260b8202df4c4344e9868c9625696d81171bf513d5e21c0",
+      "candidateVotes": {
+        "4": 31624,
+        "25": 53752
+      },
+      "noSupport": 2310,
+      "matched": true
+    },
+    {
+      "regionId": 2,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/02.html",
+      "sourceSha256": "91589db4292675510c8f6387f65f27b6d00bd4cac0b95805baf7f7bde699cb8a",
+      "candidateVotes": {
+        "4": 33407,
+        "25": 61628
+      },
+      "noSupport": 3173,
+      "matched": true
+    },
+    {
+      "regionId": 3,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/03.html",
+      "sourceSha256": "a8af7c083613452cf55c0b2a24acfadbd539d4575233bd12013bd0bf21ad5d2d",
+      "candidateVotes": {
+        "4": 45265,
+        "25": 76235
+      },
+      "noSupport": 4141,
+      "matched": true
+    },
+    {
+      "regionId": 4,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/04.html",
+      "sourceSha256": "3a55deea5e8396ed56131b0d91bd6f3ee7ccaa3b215b3f455e1f1c782fba97fa",
+      "candidateVotes": {
+        "4": 15458,
+        "25": 38732
+      },
+      "noSupport": 1657,
+      "matched": true
+    },
+    {
+      "regionId": 5,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/05.html",
+      "sourceSha256": "b62231b9c206148c4e0a2b99d21ddfa4020b63e3a0ba298d19656863dc4a8484",
+      "candidateVotes": {
+        "4": 6610,
+        "25": 13629
+      },
+      "noSupport": 651,
+      "matched": true
+    },
+    {
+      "regionId": 6,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/06.html",
+      "sourceSha256": "c73431992c5894a16ded95e915dfc3a60f939716c2e824d316f3e6b2a6712a2d",
+      "candidateVotes": {
+        "4": 9370,
+        "25": 27558
+      },
+      "noSupport": 1129,
+      "matched": true
+    },
+    {
+      "regionId": 7,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/07.html",
+      "sourceSha256": "684e19d3e5485a524544e82f5b18e920ad370c2009f31e91d4dd586a2c6279b1",
+      "candidateVotes": {
+        "4": 8941,
+        "25": 17213
+      },
+      "noSupport": 924,
+      "matched": true
+    },
+    {
+      "regionId": 8,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/08.html",
+      "sourceSha256": "9c1f0d1b9dbda522806ee77e2ade833fece02418038afe0101ae01459007bbcc",
+      "candidateVotes": {
+        "4": 9939,
+        "25": 28193
+      },
+      "noSupport": 1123,
+      "matched": true
+    },
+    {
+      "regionId": 9,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/09.html",
+      "sourceSha256": "7553c3570c7f285bd45a230addb308c0e4b4ca0231b79e86fbb11fd7a25402e2",
+      "candidateVotes": {
+        "4": 21482,
+        "25": 14223
+      },
+      "noSupport": 1037,
+      "matched": true
+    },
+    {
+      "regionId": 10,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/10.html",
+      "sourceSha256": "95460d92c74770dfd0e3eb04308a2bdd35345e1a360fbf7fc63f73bb7a89fe31",
+      "candidateVotes": {
+        "4": 10218,
+        "25": 20123
+      },
+      "noSupport": 1122,
+      "matched": true
+    },
+    {
+      "regionId": 11,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/11.html",
+      "sourceSha256": "2bddb7112063825fb36f48df89c4b97797b721d50fc15a9ca2687d8ef7f344f2",
+      "candidateVotes": {
+        "4": 8722,
+        "25": 17716
+      },
+      "noSupport": 786,
+      "matched": true
+    },
+    {
+      "regionId": 12,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/12.html",
+      "sourceSha256": "573ce4b9c8bf52c2aa49e0039cd8adf1ccf0ce636014dfcc9246767fd53ba4bc",
+      "candidateVotes": {
+        "4": 6678,
+        "25": 20275
+      },
+      "noSupport": 876,
+      "matched": true
+    },
+    {
+      "regionId": 13,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/13.html",
+      "sourceSha256": "40ea839cca3c74d8a1add4fd51dbcea963d30b2bb64a71b2f503efb1d423211f",
+      "candidateVotes": {
+        "4": 16035,
+        "25": 36160
+      },
+      "noSupport": 1535,
+      "matched": true
+    },
+    {
+      "regionId": 14,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/14.html",
+      "sourceSha256": "28ab0126d8ce29ae756520dcc076ef28adde32d3679d2a1e258306118b1f6363",
+      "candidateVotes": {
+        "4": 9949,
+        "25": 21209
+      },
+      "noSupport": 1202,
+      "matched": true
+    },
+    {
+      "regionId": 15,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/15.html",
+      "sourceSha256": "7085d33ef906dd9e4cac97d1a4bb9f11e9063d9e215d2341d3a961e881e23e8d",
+      "candidateVotes": {
+        "4": 15445,
+        "25": 36793
+      },
+      "noSupport": 1521,
+      "matched": true
+    },
+    {
+      "regionId": 16,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/16.html",
+      "sourceSha256": "4ab3573972023fe98e01a9740e65143a7deb32ba8d5f0e7168a1e1a82f563e34",
+      "candidateVotes": {
+        "4": 42594,
+        "25": 49307
+      },
+      "noSupport": 2827,
+      "matched": true
+    },
+    {
+      "regionId": 17,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/17.html",
+      "sourceSha256": "c98f7a3e82631d4d76b4842ada5ddede9ab278e78d2748e31fc2dc2befd6ca8b",
+      "candidateVotes": {
+        "4": 21441,
+        "25": 46323
+      },
+      "noSupport": 2003,
+      "matched": true
+    },
+    {
+      "regionId": 18,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/18.html",
+      "sourceSha256": "aaee2b842f4d91f1ab80bb079750a11d7ad2a09d1c870306ccd4e9ae33c69310",
+      "candidateVotes": {
+        "4": 8646,
+        "25": 14406
+      },
+      "noSupport": 860,
+      "matched": true
+    },
+    {
+      "regionId": 19,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/19.html",
+      "sourceSha256": "deefe76d2c82df738547b83d6952f293a7c5b36d616842d33dc626c21b935eab",
+      "candidateVotes": {
+        "4": 15783,
+        "25": 33340
+      },
+      "noSupport": 1616,
+      "matched": true
+    },
+    {
+      "regionId": 20,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/20.html",
+      "sourceSha256": "86e86c95f1d1ee4fb587510cbf736a00fd79851fcc8b98c4cf6f0f4a08476016",
+      "candidateVotes": {
+        "4": 7163,
+        "25": 16461
+      },
+      "noSupport": 776,
+      "matched": true
+    },
+    {
+      "regionId": 21,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/21.html",
+      "sourceSha256": "79ec4e2de394a872b93eea19c669454a5aa356238e4d2be016dc89f22d32b233",
+      "candidateVotes": {
+        "4": 9293,
+        "25": 22910
+      },
+      "noSupport": 1013,
+      "matched": true
+    },
+    {
+      "regionId": 22,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/22.html",
+      "sourceSha256": "454a67f18372ed992b215e6d1cae6822fe04c992e0aca1008b0c9d233f59866b",
+      "candidateVotes": {
+        "4": 6936,
+        "25": 17069
+      },
+      "noSupport": 821,
+      "matched": true
+    },
+    {
+      "regionId": 23,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/23.html",
+      "sourceSha256": "11c5ba1230bd3d800831a719037f673e1a94432ae50ecbf1137d32e91bdc726f",
+      "candidateVotes": {
+        "4": 116710,
+        "25": 73269
+      },
+      "noSupport": 4920,
+      "matched": true
+    },
+    {
+      "regionId": 24,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/24.html",
+      "sourceSha256": "de1cd3007effb6ce21a98bf1551705f47e9626037580d8e9bd974e6727fbf571",
+      "candidateVotes": {
+        "4": 70600,
+        "25": 51553
+      },
+      "noSupport": 3481,
+      "matched": true
+    },
+    {
+      "regionId": 25,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/25.html",
+      "sourceSha256": "7a54041b42a861c64086943c1d06668b46b84d2ea0d7b0c78c41a18d3ff6d612",
+      "candidateVotes": {
+        "4": 54627,
+        "25": 58957
+      },
+      "noSupport": 3871,
+      "matched": true
+    },
+    {
+      "regionId": 26,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/26.html",
+      "sourceSha256": "6ace4aec954af24bada82976605cb1fa376fa2e3cc107bfc8ad6b1d91e109f45",
+      "candidateVotes": {
+        "4": 17526,
+        "25": 36473
+      },
+      "noSupport": 1963,
+      "matched": true
+    },
+    {
+      "regionId": 27,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/27.html",
+      "sourceSha256": "650d64fb19a650e24e839299bf4df2d28398d0c910ba34ce3d633a1aa19dec71",
+      "candidateVotes": {
+        "4": 22436,
+        "25": 50044
+      },
+      "noSupport": 2201,
+      "matched": true
+    },
+    {
+      "regionId": 28,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/28.html",
+      "sourceSha256": "c89249af51fc91171b195e64b8843e461054ce5e6b5d917cd5c334ca4f0a6aea",
+      "candidateVotes": {
+        "4": 9227,
+        "25": 14786
+      },
+      "noSupport": 828,
+      "matched": true
+    },
+    {
+      "regionId": 29,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/29.html",
+      "sourceSha256": "266fa3b3ee1e4636e272acdb54a11c5e5d8eab0d4d49a6828e7a999a5665773d",
+      "candidateVotes": {
+        "4": 15085,
+        "25": 39570
+      },
+      "noSupport": 1398,
+      "matched": true
+    },
+    {
+      "regionId": 30,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/30.html",
+      "sourceSha256": "daa63b52776c42676271f407960951c3cdae053a3f995ea1c5eeacd69e3aeb3f",
+      "candidateVotes": {
+        "4": 15914,
+        "25": 23173
+      },
+      "noSupport": 1209,
+      "matched": true
+    },
+    {
+      "regionId": 31,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/31.html",
+      "sourceSha256": "bbb3ccf144cd6300ac2457d0cefb72a13b99986e946e14cc04aef6186748398b",
+      "candidateVotes": {
+        "4": 6714,
+        "25": 18359
+      },
+      "noSupport": 746,
+      "matched": true
+    },
+    {
+      "regionId": 32,
+      "sourceUrl": "https://results.cik.bg/pvr202610/tur2/rezultati/32.html",
+      "sourceSha256": "9ee7f5ecad216e00f91f96900a2826062f17b00ecd3c7ef02e2e976c210836ae",
+      "candidateVotes": {
+        "4": 60413,
+        "25": 44413
+      },
+      "noSupport": 2360,
+      "matched": true
+    }
+  ],
+  "nationalProtocolChecks": {
+    "totalA": {
+      "archive": 6591952,
+      "published": 6591952,
+      "matched": true
+    },
+    "totalB": {
+      "archive": 171497,
+      "published": 171497,
+      "matched": true
+    },
+    "voted": {
+      "archive": 1902933,
+      "published": 1902933,
+      "matched": true
+    },
+    "discardedVotes": {
+      "archive": 2612,
+      "published": 2612,
+      "matched": true
+    },
+    "protocolPaperVotes": {
+      "archive": 170520,
+      "published": 170520,
+      "matched": true
+    },
+    "protocolMachineVotes": {
+      "archive": 1732163,
+      "published": 1732164,
+      "matched": false
+    }
+  }
+}

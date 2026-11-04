@@ -78,6 +78,7 @@ class HistoricalDataTests(unittest.TestCase):
 
     def test_imported_protocol_totals_match_original_cik_fields(self):
         expected = {
+            '2026.11.01': (12717, 1902933, 2612, 56080),
             '2026.10.25': (12719, 1525034, 3279, 67353),
             '2022.10.02': (12932, 2601900, 9042, 87635),
             '2021.11.14': (13238, 2687307, 9487, 60786),
@@ -160,25 +161,28 @@ class Official2026Tests(unittest.TestCase):
                 sections_2026([invalid])
 
     def fixture(self, root):
+        runoff = self.date == '2026.11.01'
+        source_date = '.'.join(reversed(self.date.split('.')))
+        ballots = [4, 25] if runoff else range(1, 28)
         dataset = root / 'public/data' / self.date
         dataset.mkdir(parents=True)
         (dataset / 'source-results.json').write_text('previous snapshot')
         catalog = root / 'src/assets/elections.json'
         catalog.parent.mkdir(parents=True)
-        catalog.write_text(json.dumps([{'date': self.date, 'type': 'presidential', 'round': 1,
+        catalog.write_text(json.dumps([{'date': self.date, 'type': 'presidential', 'round': 2 if runoff else 1,
                                        'provisional': {'processedPercent': 100}}]))
         archive = root / 'export.zip'
         main = row(24, {9: 600, 10: 0, 11: 2, 12: 2, 13: 0, 17: 1}, 28)
         main[2] = '1'
         with zipfile.ZipFile(archive, 'w') as z:
             for name, text in {
-                'readme': 'ПРЕЗИДЕНТ 10.2026',
+                'readme': 'ПРЕЗИДЕНТ 10.2026' + (', ВТОРИ ТУР' if runoff else ''),
                 'sections': '010100001;1;01. БЛАГОЕВГРАД;02676;гр.Банско;Адрес;23.4;41.8;0;0;0',
                 'protocols': ';'.join(main),
-                'cik_candidates': '\n'.join(f'{i};Партия {i};1;Кандидат {i}' for i in range(1, 28)),
-                'votes': '010100001;1;' + ';'.join(f'{i};0;0;0;0;0' for i in range(1, 28)),
+                'cik_candidates': '\n'.join(f'{i};Партия {i};1;Кандидат {i}' for i in ballots),
+                'votes': '010100001;1;' + ';'.join(f'{i};0;0;0;0;0' for i in ballots),
             }.items():
-                z.writestr(f'data/{name}_25.10.2026.txt', text)
+                z.writestr(f'data/{name}_{source_date}.txt', text)
         return archive, dataset, catalog
 
     def test_official_import_removes_provisional_state_and_can_be_repeated(self):
@@ -208,6 +212,26 @@ class Official2026Tests(unittest.TestCase):
             self.assertEqual((dataset / 'source-results.json').read_text(), 'previous snapshot')
             self.assertEqual(catalog.read_bytes(), before)
             self.assertEqual(list(dataset.parent.iterdir()), [dataset])
+
+
+class OfficialRunoff2026Tests(Official2026Tests):
+    date = '2026.11.01'
+
+    def test_wrong_round_archive_is_rejected_before_replacing_the_snapshot(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            archive, dataset, catalog = self.fixture(root)
+            before = catalog.read_bytes()
+            with zipfile.ZipFile(archive) as z:
+                members = {name: z.read(name) for name in z.namelist()}
+            members['data/readme_01.11.2026.txt'] = b'wrong election'
+            with zipfile.ZipFile(archive, 'w') as z:
+                for name, content in members.items():
+                    z.writestr(name, content)
+            with self.assertRaisesRegex(ValueError, 'Unexpected election'):
+                repair['repair'](archive, self.date, root)
+            self.assertEqual((dataset / 'source-results.json').read_text(), 'previous snapshot')
+            self.assertEqual(catalog.read_bytes(), before)
 
 
 if __name__ == '__main__':

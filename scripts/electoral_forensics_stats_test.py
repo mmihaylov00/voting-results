@@ -240,6 +240,10 @@ class StatisticalToolsTest(unittest.TestCase):
         self.assertEqual(query['summary']['eligibleSections'], 2)
         self.assertEqual([row['regionId'] for row in query['regions']], ['1', '5'])
         self.assertEqual(query['comparison']['matchedN'], 2)
+        self.assertTrue(any('предварителна' in fact for fact in query['report']['facts']))
+        final = query_block('query1', 'National', rows, rows, [], [], provisional=False)
+        self.assertFalse(any('предварителна' in fact for fact in final['report']['facts']))
+        self.assertTrue(any('окончателните официални' in fact for fact in final['report']['facts']))
 
     def test_national_finding_rank_has_no_former_priority_region_preference(self):
         rows = enrich_rows([section(), section('010100001', '1')])

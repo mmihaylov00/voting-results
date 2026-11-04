@@ -152,7 +152,7 @@ describe('ElectionService', () => {
     http.verify();
   });
 
-  it('includes the provisional runoff in first-round display comparisons and reuses it in reverse', async () => {
+  it('compares both finalized 2026 rounds and reuses loaded results in reverse', async () => {
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({providers: [
       provideHttpClient(), provideHttpClientTesting(), {provide: ELECTION_TYPE, useValue: 'presidential'},
@@ -176,8 +176,9 @@ describe('ElectionService', () => {
     const runoffComparisons = (await firstValueFrom(presidential.getSections(runoff, undefined, true)))[0].comparisons?.['voted'];
     expect(runoffComparisons).toContainEqual({d: firstRound, v: 85});
     expect(runoffComparisons?.some(value => value.d === runoff)).toBe(false);
-    expect(presidential.getDates().find(election => election.date === runoff)?.provisional)
-      .toMatchObject({processedPercent: 100, updatedAt: '2026-11-02T09:15:00+02:00'});
+    const runoffEntry = presidential.getDates().find(election => election.date === runoff);
+    expect(runoffEntry).toMatchObject({type: 'presidential', round: 2});
+    expect(runoffEntry).not.toHaveProperty('provisional');
     http.verify();
   });
 

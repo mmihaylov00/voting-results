@@ -20,7 +20,8 @@ PROTOCOL_HEADERS = 'sectionId;totalA;totalB;voted;discardedVotes;noVotesPaper;no
 MACHINE_FORMS = {27, 31, 32, 41}
 MAIN_FORMS = {24, 25, 26, 28, 29, 30}
 DATES = {'2016.11.06', '2016.11.13', '2017.03.26', '2021.04.04',
-         '2021.07.11', '2021.11.14', '2021.11.21', '2022.10.02', '2026.10.25'}
+         '2021.07.11', '2021.11.14', '2021.11.21', '2022.10.02', '2026.10.25', '2026.11.01'}
+PRESIDENTIAL_2026 = {'2026.10.25', '2026.11.01'}
 SECTION_HEADERS = 'sectionId;regionId;regionName;municipalityId;cityName;sectionName;lat;lan;isMobile;isShip;machineCount'
 
 
@@ -51,7 +52,7 @@ def write_rows(directory, name, header, rows):
 
 
 def protocols(rows, date):
-    if date == '2026.10.25':
+    if date in PRESIDENTIAL_2026:
         return protocols_2026(rows)
     sections = {}
     forms = {}
@@ -108,7 +109,7 @@ def protocols_2026(rows):
     machine_no_votes = collections.Counter()
     for parts in rows:
         if len(parts) != 28:
-            raise ValueError('Expected 28 fields in the October 2026 protocol')
+            raise ValueError('Expected 28 fields in the 2026 presidential protocol')
         form, section_id = int(parts[0]), parts[1]
         if not re.fullmatch(r'\d{9}', section_id) or int(section_id[:2]) != int(parts[2]):
             raise ValueError(f'Invalid protocol section or region: {section_id}')
@@ -143,9 +144,9 @@ def protocols_2026(rows):
 
 def votes(rows, date, forms):
     for parts in rows:
-        if date == '2026.10.25':
+        if date in PRESIDENTIAL_2026:
             if len(parts) < 8 or (len(parts) - 2) % 6:
-                raise ValueError('Invalid October 2026 vote columns')
+                raise ValueError('Invalid 2026 presidential vote columns')
             section_id, region_id = parts[:2]
             blocks = []
             for index in range(2, len(parts), 6):
@@ -222,21 +223,26 @@ def sections_2026(rows):
     return sections
 
 
-def repair_official_2026(archive_path, root):
-    date = '2026.10.25'
+def repair_official_2026(archive_path, root, date):
+    runoff = date == '2026.11.01'
+    round_number = 2 if runoff else 1
+    source_date = '.'.join(reversed(date.split('.')))
+    source_base = 'https://results.cik.bg/pvr202610/' + ('tur2/' if runoff else '')
+    decision = '440-ПВР of 3 November 2026' if runoff else '416-ПВР of 27 October 2026'
+    decision_url = 'https://www.cik.bg/bg/decisions/' + ('440/2026-11-03' if runoff else '416/2026-10-27')
     catalog_path = root / 'src/assets/elections.json'
     catalog = json.loads(catalog_path.read_text())
     entries = [item for item in catalog if item['date'] == date]
-    if len(entries) != 1 or entries[0].get('type') != 'presidential' or entries[0].get('round') != 1:
-        raise ValueError('Expected the registered October 2026 presidential first round')
+    if len(entries) != 1 or entries[0].get('type') != 'presidential' or entries[0].get('round') != round_number:
+        raise ValueError(f'Expected the registered 2026 presidential round {round_number}')
     with zipfile.ZipFile(archive_path) as archive:
         def source(name):
-            matches = [item for item in archive.namelist() if item.rsplit('/', 1)[-1] == f'{name}_25.10.2026.txt']
+            matches = [item for item in archive.namelist() if item.rsplit('/', 1)[-1] == f'{name}_{source_date}.txt']
             if len(matches) != 1:
                 raise ValueError(f'Missing or duplicate official source: {name}')
             return list(read_rows(archive, matches[0]))
         readme = source('readme')
-        if 'ПРЕЗИДЕНТ' not in str(readme) or '10.2026' not in str(readme):
+        if 'ПРЕЗИДЕНТ' not in str(readme) or '10.2026' not in str(readme) or runoff != ('ВТОРИ ТУР' in str(readme)):
             raise ValueError('Unexpected election in the official archive readme')
         sections = sections_2026(source('sections'))
         protocol_rows, forms = protocols(source('protocols'), date)
@@ -245,7 +251,8 @@ def repair_official_2026(archive_path, root):
         if any(len(row) != 4 or row[2] != '1' or not row[3].strip() for row in candidates):
             raise ValueError('Invalid presidential candidate tickets')
         parties = {row[0]: row[3] for row in candidates}
-        if len(parties) != len(candidates) or set(parties) != set(map(str, range(1, 28))):
+        expected_ballots = {'4', '25'} if runoff else set(map(str, range(1, 28)))
+        if len(parties) != len(candidates) or set(parties) != expected_ballots:
             raise ValueError('Unexpected presidential ballot options')
         if not sections or set(sections) != set(protocol_rows) or len(vote_rows) != len(sections):
             raise ValueError('Section, protocol and vote coverage differ')
@@ -271,13 +278,12 @@ def repair_official_2026(archive_path, root):
         write_rows(directory, 'votes', 'sectionId;regionId' + ';partyId;total;paper;machine' * len(parties), vote_rows)
         write_rows(directory, 'cik_parties', 'partyId;partyName', parties.items())
         (directory / 'SOURCE.md').write_text(
-            '# Official presidential results, 25 October 2026, round 1\n\n'
-            'Source: https://results.cik.bg/pvr202610/opendata/export.zip\n\n'
-            'Final updated database approved by CIK Decision 416-ПВР of 27 October 2026: '
-            'https://www.cik.bg/bg/decisions/416/2026-10-27\n\n'
+            f'# Official presidential results, {source_date}, round {round_number}\n\n'
+            f'Source: {source_base}opendata/export.zip\n\n'
+            f'Final updated database approved by CIK Decision {decision}: {decision_url}\n\n'
             f'Archive SHA-256: `{digest}`.\n\n'
             f'Reproduce with `python3 scripts/repair-cik-data.py {date} /path/to/export.zip`. '
-            'The numbered fields below follow the bundled `readme_25.10.2026.txt`.\n\n'
+            f'The numbered fields below follow the bundled `readme_{source_date}.txt`.\n\n'
             '- Main forms 24-26 and 28-30: electors, added electors and signed voters use fields 9-11. '
             'Paper ballots, invalid paper votes and paper no-support votes use fields 12, 13 and 17.\n'
             '- Machine-only forms 25/29 use field 14 for confirmed machine votes and sum no-support '
@@ -314,8 +320,8 @@ def repair_official_2026(archive_path, root):
 
 
 def repair(archive_path, date, root):
-    if date == '2026.10.25':
-        return repair_official_2026(archive_path, root)
+    if date in PRESIDENTIAL_2026:
+        return repair_official_2026(archive_path, root, date)
     directory = root / 'public/data' / date
     if not directory.is_dir():
         raise ValueError(f'Import SHTABO data first: {directory}')

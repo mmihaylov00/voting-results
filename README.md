@@ -8,7 +8,7 @@ Tailwind CSS 4 is processed through PostCSS in `src/tailwind.css`, before the cu
 
 ## Election data
 
-The archive contains eight parliamentary elections (2017-2026), both rounds of the 2016 and 2021 presidential elections, official first-round results for 25 October 2026, and a preliminary snapshot of the 1 November 2026 runoff. `/governmental` and `/presidential` share the result views, with separate datasets and comparisons. Presidential results show candidate tickets and do not expose parliamentary preference or PP-DB targeting controls.
+The archive contains eight parliamentary elections (2017-2026), both rounds of the 2016 and 2021 presidential elections, official first-round results for 25 October 2026, and official results for the 1 November 2026 runoff. `/governmental` and `/presidential` share the result views, with separate datasets and comparisons. Presidential results show candidate tickets and do not expose parliamentary preference or PP-DB targeting controls.
 
 `src/assets/elections.json` is the catalog. Each entry has a real election `date` (`YYYY.MM.DD`), `name`, and `type` (`governmental` or `presidential`); presidential entries also have `round` (`1` or `2`). Canonical semicolon-delimited tables live in `public/data/<date>/` as `.txt` or `.txt.gz`. The compiler writes versioned summary and full datasets plus `public/data/compiled/manifest.json`.
 
@@ -24,7 +24,7 @@ Existing datasets are preserved. Import validates structure, dates, and paths, b
 python3 scripts/repair-cik-data.py 2022.10.02 /path/to/export.zip
 ```
 
-The correction script covers the eight imported historical dates and the official October 2026 export. For a new official export, verify its CIK readme and canonical field mappings before compiling.
+The correction script covers the eight imported historical dates and both official 2026 presidential exports. For a new official export, verify its CIK readme and canonical field mappings before compiling.
 
 ```bash
 npm run test:data
@@ -63,23 +63,21 @@ Finalizing a snapshot requires a full compilation so it becomes available in his
 
 The site retains its existing share denominator (signed-in voters); CIK's percentages use valid candidate votes plus no-support votes. Published inconsistencies are preserved: October 2026 candidate rows sum to 1,454,357 versus the CIK protocol headline 1,454,359, and candidate plus no-support rows sum to 1,521,710 versus the headline valid-vote total 1,521,723. The site uses the individual candidate vote rows.
 
-### Preliminary November 2026 runoff
+### Official November 2026 runoff
 
-The 1 November runoff is stored separately as `2026.11.01`, presidential round 2. Its snapshot comes from the [published runoff protocols](https://results.cik.bg/pvr202610/tur2/rezultati/index.html), with the preliminary badge showing CIK's update time and processing percentage. The current source lists all 12,717 sections at 100%, updated at 09:15 Sofia time on 2 November. The official first-round dataset remains unchanged.
+The 1 November runoff is stored separately as `2026.11.01`, presidential round 2. It uses the [official CIK archive](https://results.cik.bg/pvr202610/tur2/opendata/export.zip), approved by [Decision 440-ПВР of 3 November 2026](https://www.cik.bg/bg/decisions/440/2026-11-03). It replaces the mined page snapshot, removes preliminary metadata and includes all 12,717 sections. Official EKATTE, coordinates and mobile/ship flags replace inferred geography; 12,454 sections have coordinates and 263 do not.
 
 ```bash
-uv run --no-project --with curl-cffi python scripts/import-cik-pages.py --round 2 --cache-dir /tmp/cik-pvr202610-tur2-cache
-python3 scripts/import_cik_pages_test.py
-npm run compile-data -- --date 2026.11.01
+python3 scripts/repair-cik-data.py 2026.11.01 /path/to/export.zip
+python3 scripts/repair_cik_data_test.py
+npm run compile-data
 npm run verify:data
 npm run build
 ```
 
-The same importer serves both rounds, keeping separate source URLs, cache directories, ballot identities and catalog dates. It cross-checks every candidate and no-support total against the national result and all 32 regions, checks protocol metrics against numerical RIK protocols, and refuses publication if the national snapshot changes during extraction. A 100% snapshot must include every listed section and all regional pages must also report 100%. A final election cannot be overwritten by the scraper.
+The importer shares the verified first-round field mapping and validates the runoff's two ballot identities (4 and 25), vote components and complete section coverage before replacing source tables and catalog together. Candidate and no-support sums match the final national page and all 32 regional result pages. The official dataset corrects protocol fields in 61 sections: signed voters decrease by 42, registered electors increase by 1,919 and added electors decrease by 134; candidate votes are unchanged. The archive hash, field mapping, checks and preserved headline discrepancies are recorded in [SOURCE.md](public/data/2026.11.01/SOURCE.md) and [official-checks.json](public/data/2026.11.01/official-checks.json).
 
-The [public election map](https://map.cik.bg/pvr202610/) supplies coordinates for 12,455 runoff section IDs; 262 have no map point. EKATTE identifiers reuse official first-round data only when the same section ID and settlement match, with the existing settlement resolver as a fallback. Source hashes, geography coverage, published percentages and all cross-check totals are retained in `public/data/2026.11.01/source-results.json` and its `SOURCE.md`. Results stay preliminary and excluded from comparison baselines until verified official open data replaces them. No refresh is scheduled.
-
-One verified source discrepancy is retained: Varna's section protocols sum to 119,623 machine receipts while its RIK protocol reports 119,624. The constituent protocol of section 030601037 reports one machine receipt, while the regional aggregation includes two. Every candidate and no-support total agrees. The importer permits only these exact values for this snapshot; any other protocol mismatch still stops publication.
+The research input manifest pins the final archive and canonical table hashes, retaining its original protocol text for method evidence. After an import, refresh that pin explicitly with `retain_input_evidence` in `scripts/electoral_forensics_data.py`, then run `scripts/analyze_electoral_forensics.py` to rebuild both scopes, review queues, section evidence, exports and historical runoff benchmarks. Ordinary rebuilds use only retained local evidence. The preliminary scraper is retained for provenance and refuses to overwrite this final election. No refresh is scheduled.
 
 ## Maps and analysis
 
@@ -184,7 +182,7 @@ Turnout uses each section's registered list (`totalA`), with added electors (`to
 
 Address markers for care homes and hospitals trigger a conservative institution review exclusion, separately from official special-section flags. The method comparison requires paper and machine sections within the same settlement; insufficient overlap is reported without estimating a separate method effect.
 
-The runoff remains the preliminary CIK snapshot dated 2 November 2026 at 09:15 Sofia time, even at 100% processing. Statistical flags and proximity groups are leads for protocol review. They do not identify individual vote transfers, organizers, coercion or electoral violations. Methods, sample coverage, source hashes, confidence-interval limitations and multiple-testing adjustments are published with the results.
+Both 2026 rounds now use the final official CIK archives, including independent runoff EKATTE and section flags. The earlier mined runoff snapshot and its protocol inventory are no longer active inputs. Statistical flags and proximity groups are leads for protocol review. They do not identify individual vote transfers, organizers, coercion or electoral violations. Methods, sample coverage, source hashes, confidence-interval limitations and multiple-testing adjustments are published with the results.
 
 Focused checks:
 

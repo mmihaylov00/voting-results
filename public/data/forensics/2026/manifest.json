@@ -1,160 +1,160 @@
 {
   "added-elector-findings.csv": {
     "bytes": 4855,
-    "sha256": "72385e502144f0ccf6124562fafd7c654c408b241bfc59e9b583a8539fe454ef"
+    "sha256": "1831e6702f56563c51990860e6d95313a857391f35ef5010b623650043dd4cf9"
   },
   "added-elector-findings.csv.gz": {
-    "bytes": 1362,
-    "sha256": "6c5cd7b19f310cd11674841de18fdd89d76536b95fc4ac311fa761851b29f550"
+    "bytes": 1382,
+    "sha256": "746f60afe2cca451f9aeec2968710e0d0da0b4455b625414aa834bc74ab0a100"
   },
   "candidate-findings.csv": {
-    "bytes": 722887,
-    "sha256": "d92c9a34837708ea24753513b5325a1a6e06b589d41f16034321c44a9f882507"
+    "bytes": 724223,
+    "sha256": "183bc1d5b3a2db4eee3682d0dbf19c11e48551c9963088d73c2d7245d48b079e"
   },
   "candidate-findings.csv.gz": {
-    "bytes": 117720,
-    "sha256": "24de92f40bd650759904e1ff0eed762ae288051bc541ae28c2b705b56b505edc"
+    "bytes": 118355,
+    "sha256": "c8fdc839cb31fc3efef5ed9c74c46b71ceb57adbe3d35964366012ce3758c767"
   },
   "findings.csv": {
-    "bytes": 3312278,
-    "sha256": "a630852fbd86fb42cea313c1b33424069e4d287cff4d010de106281e257a9d05"
+    "bytes": 3284423,
+    "sha256": "9a52d6b37445559bcecc20c6fba3df76f845bc16d111b7d9d879e7ebbcbba45d"
   },
   "findings.csv.gz": {
-    "bytes": 251741,
-    "sha256": "1557e46022a6449b784f5d7c794ea4bbaec8b194d28473080e07272b0bfc1ffd"
+    "bytes": 250187,
+    "sha256": "d859346aeb9f6daad903282dcd62e6a01d41032867d4696e29349db38b7368ea"
   },
   "municipalities.csv": {
-    "bytes": 143243,
-    "sha256": "503d786cf253f4344eb51da8bb4ee0076a1695bd3fa926718b91aeb55886c6cf"
+    "bytes": 143204,
+    "sha256": "f4eeb71c15eb7cc7fa0327f8fb1482c1eef4b5c48664778bada45ca478086161"
   },
   "municipalities.csv.gz": {
-    "bytes": 31668,
-    "sha256": "c9930307c697cf1267938a29386ede652d4d74f0add9a478ce3dbfdf5c25ae47"
+    "bytes": 31866,
+    "sha256": "5d6eb6f57b5c3b01e95834f360a99481a0876280b6c5df6515a403daa9c2228e"
   },
   "query1-candidate-checks.csv": {
-    "bytes": 7484,
-    "sha256": "f76ad4e1166b2b03ceafb646107999f6c035b558d94026a28f251443cd2d5b59"
+    "bytes": 7481,
+    "sha256": "153815c0d334cac9948506f1939d1d9ba7f55076b7add75df7600a2b0c168f9c"
   },
   "query1-candidate-checks.csv.gz": {
-    "bytes": 1491,
-    "sha256": "496dc388cff96c04ab247ae2a2ec2f0fe45fbea1f1f55b77318a4fd34b643df2"
+    "bytes": 1486,
+    "sha256": "68dfc9e29449855ddc382ad9ce1be350ac21ac760671073895469d033d58eb13"
   },
   "query1-historical-runoffs.csv": {
-    "bytes": 24328,
-    "sha256": "6ea7d7654b677e01dfb6d2e458c9969cf0db723e56966e2918429073579095d4"
+    "bytes": 23469,
+    "sha256": "b8152286c36eae88a169a2586c8a42ac3e0b32bdf97d9a69d12cd04fcd2347d5"
   },
   "query1-historical-runoffs.csv.gz": {
-    "bytes": 4146,
-    "sha256": "94af93eee0e0438fb581e52ef4976275995770d5c8c22d0594cda65363988d94"
+    "bytes": 4108,
+    "sha256": "a7e700b342bda204f72625ce4a869cbcff314331230e74042519d124e9acff41"
   },
   "query1-municipalities.csv": {
-    "bytes": 143243,
-    "sha256": "503d786cf253f4344eb51da8bb4ee0076a1695bd3fa926718b91aeb55886c6cf"
+    "bytes": 143204,
+    "sha256": "f4eeb71c15eb7cc7fa0327f8fb1482c1eef4b5c48664778bada45ca478086161"
   },
   "query1-municipalities.csv.gz": {
-    "bytes": 31668,
-    "sha256": "c9930307c697cf1267938a29386ede652d4d74f0add9a478ce3dbfdf5c25ae47"
+    "bytes": 31866,
+    "sha256": "5d6eb6f57b5c3b01e95834f360a99481a0876280b6c5df6515a403daa9c2228e"
   },
   "query1-regions.csv": {
-    "bytes": 18495,
-    "sha256": "a7d9ff1d9963f39e008bc0ad024c9fefa70fa06c8e4837f54a4e1f859b2db8a5"
+    "bytes": 18486,
+    "sha256": "8af3bc6660c905c8012f871b817473a502e3528de7c02ac98e2ccd1602ae50ae"
   },
   "query1-regions.csv.gz": {
-    "bytes": 5263,
-    "sha256": "cb4cf1169593f1a6fee5ffba53515166756c29d31ff88ed560cc95bfaf0fe0d7"
+    "bytes": 5271,
+    "sha256": "f9204e6fb46d9adbf222bc0d617de6f7467f6be4030d3a039e061c863cc77464"
   },
   "query1-settlements.csv": {
-    "bytes": 2136765,
-    "sha256": "279dfe5c5f9140ec2c80f63fc448a9c82dea31e0c45ea46c6f793677f692be86"
+    "bytes": 2137915,
+    "sha256": "a190c61a41c8ccd20d1c86bef6b72c56b9028b1047fee2c2efa7422f6b1fbd06"
   },
   "query1-settlements.csv.gz": {
-    "bytes": 332369,
-    "sha256": "53c7bb571ce036e56359717b5960d500a9db2039503db3c17d53e17661c8a2d4"
+    "bytes": 332892,
+    "sha256": "2db9dc14ce5a19be831e6bdd4ccf1d29780bdc138cbf64a471948760928bf90a"
   },
   "query2-candidate-checks.csv": {
-    "bytes": 7482,
-    "sha256": "28f0ad62c03ae180bf290bc110d9abf53d2401bba92a17f53c9f41d04725d4d5"
+    "bytes": 7474,
+    "sha256": "5276224d0eb8b8a1934993257dbaf818050461b6582836039bc1ed21400c3ec7"
   },
   "query2-candidate-checks.csv.gz": {
-    "bytes": 1486,
-    "sha256": "02521f6e164f3696fef978069bbb462eccdcd5ee102193d0b2cf3c6321ff4ea4"
+    "bytes": 1490,
+    "sha256": "db90bf0f07eaa15752c6e400c606f74cc0c45f0449510e9eda46fbde26d9239c"
   },
   "query2-historical-runoffs.csv": {
-    "bytes": 23773,
-    "sha256": "a9bcfa52a4524ecf567e42882c39a6e42557bf9c68b44f92f6533b2e06a42743"
+    "bytes": 22915,
+    "sha256": "edfaec24d207c36714d7ea26719288242855c71da0c4c48ef1116f03f879ac66"
   },
   "query2-historical-runoffs.csv.gz": {
-    "bytes": 4053,
-    "sha256": "b92addbc4c7f79ef957b40b1d77b4c84b158c374563db62ae024a5ffae85be18"
+    "bytes": 4014,
+    "sha256": "a3f284099f76c7ebf1eb139b2c78755bee22b61424bd795b4efb1b6fda8815bc"
   },
   "query2-municipalities.csv": {
-    "bytes": 134907,
-    "sha256": "7aaf69b4d7db19ae1b9f74e17a1dfe67860b4e74a9575ce359b4a38047c38f93"
+    "bytes": 134871,
+    "sha256": "7b608563946dcd391d66ae62f2705ef24a06354c49ac02791ffabdff48a53d12"
   },
   "query2-municipalities.csv.gz": {
-    "bytes": 28317,
-    "sha256": "bde38c26227b7b2c1655b69a9fd71809832bf84cd4c10bb17be427bf5dad77f2"
+    "bytes": 28546,
+    "sha256": "9d43f16dbd9fc10a720009f55182353e61b0aab0824e2fb160656ca5ec67e6f7"
   },
   "query2-regions.csv": {
-    "bytes": 18049,
-    "sha256": "41724c5852653a3df75b51b0b11c739145cf03aea352c2131845d40c1c12c0c4"
+    "bytes": 18031,
+    "sha256": "13400f1d049283b643296c20c5a6d2013d3fb4246b58cd138821c07458e2b889"
   },
   "query2-regions.csv.gz": {
-    "bytes": 5006,
-    "sha256": "c300ad8adfc3dfd8166c48b605d7f4da54521e51913b40550a3222dada5aaee0"
+    "bytes": 5012,
+    "sha256": "0c7dca99917375b0da8e6221603a725fee1212fd22d15c05ba56baf2e2c08186"
   },
   "query2-settlements.csv": {
-    "bytes": 1396416,
-    "sha256": "86d7c5d1648577d5c000618629b0f70b640cbed996766de13215519734f59938"
+    "bytes": 1396417,
+    "sha256": "2e3d081ddfe34d4d6376772e670110782a94587beae5a375afa6dff34d018064"
   },
   "query2-settlements.csv.gz": {
-    "bytes": 200623,
-    "sha256": "cd8cf97090b1a0b528df30b4c59d070ef9b96a124cb0db9af052130894145e55"
+    "bytes": 200952,
+    "sha256": "1007ac7686497f7c7cbf2e3af9f0981538005188f910e670c5f3b21ffc8e13c5"
   },
   "regions.csv": {
-    "bytes": 18495,
-    "sha256": "a7d9ff1d9963f39e008bc0ad024c9fefa70fa06c8e4837f54a4e1f859b2db8a5"
+    "bytes": 18486,
+    "sha256": "8af3bc6660c905c8012f871b817473a502e3528de7c02ac98e2ccd1602ae50ae"
   },
   "regions.csv.gz": {
-    "bytes": 5263,
-    "sha256": "cb4cf1169593f1a6fee5ffba53515166756c29d31ff88ed560cc95bfaf0fe0d7"
+    "bytes": 5271,
+    "sha256": "f9204e6fb46d9adbf222bc0d617de6f7467f6be4030d3a039e061c863cc77464"
   },
   "report.json": {
-    "bytes": 19844409,
-    "sha256": "9d464d2ad1f31607f9dab1437e050501e15d1223ea1cb35d8a144468b04f71f8"
+    "bytes": 19810326,
+    "sha256": "5eb7ecd6362ed53eb9a02a78e4abf1eab65f40d69bd3802bdc274eaa3eab1ba3"
   },
   "report.json.gz": {
-    "bytes": 2435685,
-    "sha256": "4115519d795720f97092246ff5ab7be790304e2525dc0dd6e358d45f9eb19bc7"
+    "bytes": 2435276,
+    "sha256": "0deeed61861e259129e0009776ffb587b67634171637b6259322a58511ed6f7f"
   },
   "sections.csv": {
-    "bytes": 25893753,
-    "sha256": "62fbe3bbc54b69d5dc9b29df46a3289cbec59acc3176feb8efe4035508bd33e2"
+    "bytes": 25852634,
+    "sha256": "a3cdd3ed96684513d8d6c9a21884c0667ac17d00459e703d7513b9bd357c0911"
   },
   "sections.csv.gz": {
-    "bytes": 5945419,
-    "sha256": "3932a1b4fda224d0067d36b698199ab46ea53e43b5aa65b3b2b6aa6fcb03034f"
+    "bytes": 5922992,
+    "sha256": "539287651e3e6096b607ec26b95993d5c0c5f6f5f16d6b427839b632376edcd4"
   },
   "sections.json": {
-    "bytes": 32596836,
-    "sha256": "e4963687902e5e30f65128449d0cab4db13d6cf3723aba544102abd74f9261c0"
+    "bytes": 32557141,
+    "sha256": "3eae99c502759445f01a306af87c7308f6d7956130b5d22b32d9b348b712c820"
   },
   "sections.json.gz": {
-    "bytes": 4385661,
-    "sha256": "adc66c6b25726ac12a31d9fd5e9ca4b6bcd27ac9c9fc9790ee6441b89deeb5bd"
+    "bytes": 4380537,
+    "sha256": "3d43fca2c229347b4f9ca720f60e4b6672c5bab54349794288fac3c5f94ed7bb"
   },
   "settlements.csv": {
-    "bytes": 2136765,
-    "sha256": "279dfe5c5f9140ec2c80f63fc448a9c82dea31e0c45ea46c6f793677f692be86"
+    "bytes": 2137915,
+    "sha256": "a190c61a41c8ccd20d1c86bef6b72c56b9028b1047fee2c2efa7422f6b1fbd06"
   },
   "settlements.csv.gz": {
-    "bytes": 332369,
-    "sha256": "53c7bb571ce036e56359717b5960d500a9db2039503db3c17d53e17661c8a2d4"
+    "bytes": 332892,
+    "sha256": "2db9dc14ce5a19be831e6bdd4ccf1d29780bdc138cbf64a471948760928bf90a"
   },
   "section-records": {
     "files": 12106,
-    "bytes": 87002039,
-    "sha256": "365e0cd4804f9b253bf2cfa4df19f46f4a95dc8c886d29d0c7825878a3fca59f",
+    "bytes": 85065586,
+    "sha256": "df40a144d703276ec2b3c52ff807234ab7621c9e5c1248e0a7703d294a6a8df5",
     "hashMethod": "SHA256 of sorted filename + NUL + file bytes for every active section."
   }
 }
