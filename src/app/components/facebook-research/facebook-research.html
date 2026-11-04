@@ -13,13 +13,6 @@
   }
   @if (report(); as data) {
     <div class="dataset-status"><span class="status-dot" aria-hidden="true"></span><strong>Частична извадка</strong><span>Броячи към 04.11.2026 · Твърденията не са проверени.</span></div>
-    <dl class="overview-numbers">
-      <div><dt>Публикации</dt><dd>{{ data.posts.length }}</dd><small>{{ data.collectionPostCount }} в началната извадка + {{ data.posts.length - data.collectionPostCount }} съвпадения</small></div>
-      <div><dt>Facebook страници</dt><dd>{{ data.pages.length }}</dd><small>Различен обхват на събиране</small></div>
-      <div><dt>Съвпадащи публикации</dt><dd>{{ data.matches.length }}</dd><small>Заглавие или основен текст</small></div>
-      <div><dt>Проверки на твърдения</dt><dd>{{ data.reviews.length }}</dd><small>Подбрани за последващ преглед</small></div>
-    </dl>
-
     <nav class="workspace-tabs" aria-label="Изгледи на Facebook изследването">
       <app-view-tabs [tabs]="tabs()" [value]="view()" (valueChange)="setView($event)" [scrollable]="true" label="Facebook изследване" idPrefix="facebook-view" panelId="facebook-panel" />
     </nav>
