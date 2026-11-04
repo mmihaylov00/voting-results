@@ -1,5 +1,20 @@
 export type FacebookMetric = 'reactions' | 'comments' | 'shares';
 export type FacebookOrigin = 'collection' | 'discovery';
+export type FacebookCandidate = 'gyurov' | 'yotova';
+export type FacebookTone = 'supportive' | 'critical' | 'mixed' | 'neutral' | 'unclear';
+export type FacebookStanceLabel = FacebookTone | 'not-mentioned' | 'unreviewed';
+
+export interface FacebookPostStance {
+  gyurov: FacebookTone | null;
+  yotova: FacebookTone | null;
+  reason: string;
+  sourceTextSha256: string;
+}
+
+export type FacebookStanceSummary = Record<FacebookCandidate, {
+  label: FacebookStanceLabel;
+  counts: Record<FacebookStanceLabel, number>;
+}>;
 
 export interface FacebookImage {
   src: string;
@@ -44,6 +59,7 @@ export interface FacebookPost {
   keywords: { keyword: string; source: string; evidence: string }[];
   metrics: Record<FacebookMetric, FacebookCounter>;
   sourceTextSha256: string;
+  stance?: FacebookPostStance;
   images?: FacebookImage[];
 }
 
@@ -89,4 +105,5 @@ export interface FacebookPageSummary extends FacebookPage {
   postCount: number;
   collectionPosts: number;
   totals: Record<FacebookMetric, FacebookTotal>;
+  stance: FacebookStanceSummary;
 }

@@ -1,9 +1,36 @@
-import { FacebookImage, FacebookMetric, FacebookPageSummary, FacebookPost, FacebookReport, FacebookTotal } from './facebook-research.models';
+import { FacebookCandidate, FacebookImage, FacebookMetric, FacebookPageSummary, FacebookPost, FacebookReport, FacebookStanceLabel, FacebookStanceSummary, FacebookTone, FacebookTotal } from './facebook-research.models';
 
 export const FACEBOOK_METRICS: readonly FacebookMetric[] = ['reactions', 'comments', 'shares'];
 export const FACEBOOK_METRIC_LABELS: Record<FacebookMetric, string> = {
   reactions: 'Реакции', comments: 'Коментари', shares: 'Споделяния',
 };
+export const FACEBOOK_CANDIDATES: readonly FacebookCandidate[] = ['gyurov', 'yotova'];
+export const FACEBOOK_CANDIDATE_LABELS: Record<FacebookCandidate, string> = { gyurov: 'Гюров', yotova: 'Йотова' };
+export const FACEBOOK_TONE_LABELS: Record<FacebookStanceLabel, string> = {
+  supportive: 'В подкрепа', critical: 'Критичен', mixed: 'Смесен', neutral: 'Информативен',
+  unclear: 'Неясен', 'not-mentioned': 'Не засяга', unreviewed: 'Неоценен',
+};
+export const FACEBOOK_TONE_COUNTS: Record<FacebookStanceLabel, string> = {
+  supportive: 'В подкрепа', critical: 'Критични', mixed: 'Смесени', neutral: 'Информативни',
+  unclear: 'Неясни', 'not-mentioned': 'Не засягат', unreviewed: 'Неоценени',
+};
+export const FACEBOOK_TONES: readonly FacebookTone[] = ['supportive', 'critical', 'mixed', 'neutral', 'unclear'];
+export const FACEBOOK_STANCE_BUCKETS: readonly FacebookStanceLabel[] = [...FACEBOOK_TONES, 'not-mentioned', 'unreviewed'];
+
+/** Count each caption once per candidate, without treating criticism as support for the opponent. */
+export function facebookStanceSummary(posts: readonly FacebookPost[]): FacebookStanceSummary {
+  const summarize = (candidate: FacebookCandidate): FacebookStanceSummary[FacebookCandidate] => {
+    const counts: Record<FacebookStanceLabel, number> = {
+      supportive: 0, critical: 0, mixed: 0, neutral: 0, unclear: 0, 'not-mentioned': 0, unreviewed: 0,
+    };
+    for (const post of posts) counts[post.stance ? post.stance[candidate] ?? 'not-mentioned' : 'unreviewed']++;
+    const label = counts.mixed || counts.supportive && counts.critical ? 'mixed'
+      : counts.supportive ? 'supportive' : counts.critical ? 'critical' : counts.neutral ? 'neutral'
+        : counts.unclear ? 'unclear' : counts['not-mentioned'] ? 'not-mentioned' : 'unreviewed';
+    return { label, counts };
+  };
+  return { gyurov: summarize('gyurov'), yotova: summarize('yotova') };
+}
 
 export function facebookTotal(posts: readonly FacebookPost[], metric: FacebookMetric): FacebookTotal {
   const known = posts.map(post => post.metrics[metric]).filter(counter => counter.value !== null);
@@ -20,6 +47,7 @@ export function facebookPageSummaries(report: FacebookReport): FacebookPageSumma
     return {
       ...page, postCount: posts.length,
       collectionPosts: posts.filter(post => post.origin === 'collection').length,
+      stance: facebookStanceSummary(posts),
       totals: {
         reactions: facebookTotal(posts, 'reactions'), comments: facebookTotal(posts, 'comments'),
         shares: facebookTotal(posts, 'shares'),
@@ -91,6 +119,10 @@ export function validFacebookReport(report: FacebookReport): boolean {
       && post.keywords.every(match => match && typeof match.keyword === 'string' && keywords.has(match.keyword))
       && (!post.publishedAt || Number.isFinite(Date.parse(post.publishedAt)))
       && Number.isFinite(Date.parse(post.collectedAt))
+      && (post.stance === undefined || !!post.stance
+        && FACEBOOK_CANDIDATES.every(candidate => post.stance![candidate] === null || FACEBOOK_TONES.includes(post.stance![candidate]!))
+        && typeof post.stance.reason === 'string' && post.stance.reason.trim().length > 0
+        && /^[a-f0-9]{64}$/.test(post.stance.sourceTextSha256) && post.stance.sourceTextSha256 === post.sourceTextSha256)
       && (post.images === undefined || Array.isArray(post.images) && post.images.every(image => validImage(image, post.url)))
       && (post.origin === 'collection' || post.origin === 'discovery')
       && (post.date ? octoberDate(post.date) : !!post.interval && octoberDate(post.interval.start)

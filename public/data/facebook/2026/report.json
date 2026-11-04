@@ -259,7 +259,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "eabb725c372a47edda8d53c94c48d957a1b8966545df5d1c88074e0d9dd8aa16"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Критиката е към посрещането, организирано от кмета; двамата кандидати са споменати без пряка оценка.",
+        "sourceTextSha256": "5d8587e203ef4a8a8b13ce626c5ac9e8496030ab335d18ce70e455a885fa8987"
+      }
     },
     {
       "id": "post:pfbid02xBHQG3oNTv5Fn74pzZ2znxx7XGj8CEvZ6j6TEEih8kCyYKKQkftHhWepqmw62Ttvl",
@@ -332,7 +338,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "eabb725c372a47edda8d53c94c48d957a1b8966545df5d1c88074e0d9dd8aa16"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Оценъчният език е насочен към кмета; кандидатите са контекст към цитирания спор.",
+        "sourceTextSha256": "42c2670d5e69a7dd9da6223b8cd301975a6858519e6ed76cfb15181d5ba78a16"
+      }
     },
     {
       "id": "post:pfbid02m5AM3UjX6s5P61kxMT15xB7VjMHvG1xaivvUUN8ewZhVBEV66zUDcjM33pR64ojml",
@@ -397,7 +409,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "503407f3986010512b2a13e24feab0be89a41ab7b72386d0cd0c021555f30b92"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Пряка подигравка с компетентността и политическите позиции на Гюров.",
+        "sourceTextSha256": "d23cbbb093ff9565e456f5cab7a3e01dfa135a1b5a6283c7ef3466cf7105f54f"
+      }
     },
     {
       "id": "post:pfbid0mDnqBwtyiQuvDPsUuSLyFfrNZ8hCzmYwfYpUCeWUxHa8KrHDuSdaDAfzHxkphbvNl",
@@ -457,7 +475,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "b90de9ee97b22f6949288ed9123634bf5d53bac3d3c8215a220e446d58854c36"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "unclear",
+        "yotova": "unclear",
+        "reason": "Частичният надпис пита за дебат на други участници; не е достатъчен за оценка към двамата кандидати.",
+        "sourceTextSha256": "4424340170e9dcf49c6f8c3f9423ddcfff90e5adb040b85f8ee21f0276b613e7"
+      }
     },
     {
       "id": "post:pfbid02u9M2ZYvSrtZ2KZkeDNeVdbxwfGDKn4RixnrqaRRR8g4aUGkxx7u9rvRLk2aVcaoHl",
@@ -517,7 +541,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "1019f428a1b2db79dd77cabe7ea3ccefb761cff213b19e8458383fae4626dd59"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Надписът осъжда помилване, приписва отговорност на Йотова и отхвърля кандидатурата ѝ.",
+        "sourceTextSha256": "632fae6ce32cf2ffc61cfb4b96247a23b1bc69ef0bc7af015f1d177eb2b4ff46"
+      }
     },
     {
       "id": "post:pfbid0QDSecz5EpgCPLRwyp5JtEVPJ3uXdP9pkvUhAkVb3MW71szWmGE18eg6cNuY5h3fCl",
@@ -587,7 +617,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "9f51427bb21523567a32087a016ddea1bb2303577d8038c3cf86f0b22cb6a372"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Обвинителен език към Йотова за помилването и отказа да поеме отговорност.",
+        "sourceTextSha256": "a9a8019ec06c6db6d8bedabdcd59c2df8b669d8195d2383559901f6070ec582a"
+      }
     },
     {
       "id": "post:pfbid02m8f3HxtJot1ghwe3G1VnzseGj9vwEYeTSSUSLgW1YFudMHBiXJUU9jKaGh2H6cjNl",
@@ -667,7 +703,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "0cd5a4bc5dd01cb8f505f4badcb268876f2f4639d863505037d26fe72fe51ebc"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Гюров е представен като зависим от спонсори и заплаха за държавните институции.",
+        "sourceTextSha256": "b2946ef6b784c0e33a38594ae28af93fa9bc3adafddabf3aecb427c990cba5ca"
+      }
     },
     {
       "id": "post:pfbid031KzVh7UKdSRowGx3pHBj5Qb8hu6DQNaKz1thvjzv3ZasBSHsaPKDRPzwcRU3PJqQl",
@@ -722,7 +764,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "ee1dde1cf66369151b11b26ea491b8cc74496f91d3fca122145aa0d4ebcc1fa7"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "unclear",
+        "reason": "Надписът осмива помилванията без да назовава Йотова; изображението не е включено в оценката на тона.",
+        "sourceTextSha256": "28b20a5c4fad4895136b4cf813e8c3d3fb574338e8dde8ebf5a750cebe0edf1d"
+      }
     },
     {
       "id": "post:pfbid02S9i8g73PkvdreHCK14M8RjcDRaKuKV8mbemEz9uumawLedfsSSvBnxnrTxrr7dHfl",
@@ -782,7 +830,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "955b32bb610c06a5cb29b24c13f47c3b5cd980b706e58f59037d74cd425e7d03"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "unclear",
+        "yotova": null,
+        "reason": "Подигравката в частичния надпис е към Кандев; не я пренасяме автоматично към Гюров.",
+        "sourceTextSha256": "86723b291a1d9f9c2c3b047c8c7d569bc8af70eefea8b79db09230707b5a8917"
+      }
     },
     {
       "id": "post:pfbid0dqaVDHafaSqYgUEasHmN3Ani9oHcw4YwbwBJxneq4Jj6qTkAxyTJGyvhoSYwdoQtl",
@@ -837,7 +891,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "019e10580166601578f822c1e640079be3a051f57d193ea1a1ce99cc02dda5b9"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "supportive",
+        "reason": "Заглавният цитат от Радев изрично подкрепя Йотова. Това е тонът на публикувания цитат, не доказателство за позицията на редакцията.",
+        "sourceTextSha256": "b827dc32194fd1d61cf07801aa0d9fedf6138a0a986e556e57b057d48420845b"
+      }
     },
     {
       "id": "post:pfbid028x5LkjYB6qV5HeJCjWWtGgkZLQL3eEEyFHRf5sw8WCy1cA16RRuz3doXBuV92zewl",
@@ -897,7 +957,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "3479e638cbd74166d215cb29512769fb00b7c4966ec2e20eb0aaacc8883b78f4"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Рекламира интервю за избора между Радев и Пеевски без пряка оценка към Гюров или Йотова.",
+        "sourceTextSha256": "c6aae28f695f4a341602a7bbe06a8512f4c2a65cd572b6d61cf92bdc768a4c17"
+      }
     },
     {
       "id": "post:pfbid02mC3RbUvRRrwn4FWqivPzEWAmRwnA5N2DWjq8Uoq7RsNYGRy5ULep8wyc1NouSHY2l",
@@ -992,7 +1058,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "71a16d202b7eb14983f9c7cb47d5af40da3f948b0a45cfe47b7db179e50730cf"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Гюров е описан с обидни определения и като изпълнител на чужди интереси.",
+        "sourceTextSha256": "2017b50610fd9bc83439021519f7f7c59ff431e9db10d15c65034d64fb3cd8ef"
+      }
     },
     {
       "id": "post:pfbid02orFJ7ecCHXmDARycYMhD5N21fPcvRydaUUaJQL3jc6fHXY3n1onf2kudGCfHpunNl",
@@ -1087,7 +1159,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "35b21537f0a52ed9d250381ff61b17e519c77fa95bd8f801c809d4819b845ce3"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Риторични въпроси обвързват Гюров с кървави пари и зависимости от войната.",
+        "sourceTextSha256": "ea9570041c9b10bd4804cb2e3b06a827fd38448646ccb7639d078b9d148ee3e7"
+      }
     },
     {
       "id": "post:pfbid02upmeKUjzAUKYiFtZ87Tos1bACTjUg6bq9FiWZQuVLrwdXhGVnTZ4TE4X6SfG5N7Hl",
@@ -1142,7 +1220,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "4d493d96079f13785d9ecf95be4cc6d306b6245f402ebafb06fc05cd216d11cc"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Надписът нарича Гюров кукла на конци и представя интервюто му като нелепо.",
+        "sourceTextSha256": "b790ab2805a81c0d26b839bc260bc92e940cf591e4fb3591d00db5dac611ae12"
+      }
     },
     {
       "id": "post:pfbid03rZ6MY8CN5E94AuM95mPh9MrXcuksP24zHiZn46EcQ3RhpWrxMiooYHwUAnocvbyl",
@@ -1207,7 +1291,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "dce890972a355b4c6c15b2f1599e31de7a3a2b8d2e7acbfcb2bc389cdabaed16"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Обвинява Йотова за помилване и използва пряко осъдителен език към нея.",
+        "sourceTextSha256": "780d014eef3eaa30f626fe4e0db9aa96e8cf9b7480b82a2a895c51885e34c9c3"
+      }
     },
     {
       "id": "post:pfbid0BHVnuGJsi6ub8GXhMMHfnBdKKnQE7cadFT1LBkfrfGTWubjtRahR29KDYiyCPg6bl",
@@ -1292,7 +1382,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "d6a93623217929374c3401255d2d10ea1771779f89ce9afd6a44c4d80385a2a2"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Твърдяната сделка за Гюров е представена като завера; истинността на твърдението не е оценена.",
+        "sourceTextSha256": "86f841e434cdb07a1ee991214a5dcf92fc653fa6cc0983ff239cb8b76aad3245"
+      }
     },
     {
       "id": "post:pfbid0KisFpBdsttQ3mTPPqpPgaxPDyddQ5s6EuS3aFRAVTwBDYGCNnGDY8LDpYNn5ZkBZl",
@@ -1367,7 +1463,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "705a725a3b3e859ff49717a3f716ccf9eb504118aeb62bb2fe6e5d092963bc31"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Свързва новина за кораб с твърдение за спонсор на Гюров и изказване на Йотова, без пряка похвала или обида към тях.",
+        "sourceTextSha256": "2d85c80715dcafae270d5a7c2fe4202abac9e55acf8c8f4bffce4d53816ebaf5"
+      }
     },
     {
       "id": "post:pfbid0Moetda1iWfTHG8QCvYmjFbLuDCH2RSNszUecXCcoKurF41vuCJizBws5DAQwsDjLl",
@@ -1457,7 +1559,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "50de1122713f1d000a0df50b6906771ecdd260ad83f32cd5cf5aa015303230ef"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Кампанията около Гюров е представена като капан за наивници и скрит партиен проект.",
+        "sourceTextSha256": "e4d26ad6e7a7c8e920bc38394f2b17d5e6c903811fa64dd07765c42b87f82197"
+      }
     },
     {
       "id": "post:pfbid0mnE5t943SWc4MH9KheNhCi5UYKCLnWUP3kxWAv3wd2WESpMJHHTLYfLp6rtWTHNal",
@@ -1558,7 +1666,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "0fb788b02a5400f5762b91867b49566977ac4b5eb102df8b41254acd11c6e2ce"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Представя твърдение за среща, изричното му отричане и липсата на публични доказателства.",
+        "sourceTextSha256": "ee95015bf22964ffb883f99cd744992c73e093579e964de749d3ccad511e327f"
+      }
     },
     {
       "id": "post:pfbid0oApgxUQcjgrRURbhK9a5YVoZY2bHiH29tiaq8AnPkZVwNeGCqHVmZoYDuDjWcgXMl",
@@ -1653,7 +1767,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "f506240452f5766420fe56844656d3100a30f160a0d6130808856d064e710e0a"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "neutral",
+        "reason": "Обвързва Гюров с военен бизнес и зависимости; Йотова е цитирана като източник, без пряка похвала към нея.",
+        "sourceTextSha256": "bc8f05456a03f369931efd0baeb2804c2e69444b74038dc2557a1a7f79da83e9"
+      }
     },
     {
       "id": "post:pfbid0252oshkJ5KmtXCKjdgoUHZjwS3xabtSgHBJHMag8dzEtKQ42gZRcUVsRJMwcyG6EXl",
@@ -1703,7 +1823,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "57412b4f3e1c585228150e3b45d7a9fbdbb6680d5f670a5d05686a75f8e7f8df"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "unclear",
+        "yotova": null,
+        "reason": "Краткият надпис визира Кандев и изборно меню; няма достатъчна пряка оценка към Гюров.",
+        "sourceTextSha256": "5bd000f46953052009324809568f7cd2c8675f674277dae69592d88718fcce02"
+      }
     },
     {
       "id": "post:pfbid02EJT5FUrZgtrk7tTa1XHeNT7wT3XcPNuGQZes7tnF3PRfkc79CJDyuhzJiouTS6Uyl",
@@ -1778,7 +1904,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "60d6495196b86ef8129fe27eeebf7c4511733b6ff3c303e519f5d7b9a0fa0e99"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Иронизира твърденията на Гюров за връзките му с партиите и намеква за купуване на гласове.",
+        "sourceTextSha256": "12adb37a3f8dd4c035f070e64b5c7627d6ceb0e71af0cc019bf944fb6791adba"
+      }
     },
     {
       "id": "post:pfbid03V9bKpCNQKJu4Ba9HckG1GKZfbUfiW7sHoXSmrEjTToa9hCfLCpeSshKajdgAmE9l",
@@ -1853,7 +1985,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "8bce272fc85d39305ec8361e42ac7492483a53dc617ffba144130ab97266a759"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "supportive",
+        "reason": "Йотова е похвалена като подготвена и категорична, а Гюров е осмян за поведението си в дебата.",
+        "sourceTextSha256": "be37c6897a506bc3d6a900a92485f533a513200a82ddcbaf1b859f75ccbae242"
+      }
     },
     {
       "id": "post:pfbid0RU4rkXLGMKMbo43LNk2dHiAbnzXzZnvisSWW69RqrDm96ZnFzxbKc3GXvx2PfgWbl",
@@ -1913,7 +2051,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "0914093e99916c57f9a3e2874cabec0c7204fc67172c94183ccca52b453c5d90"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Обвинението е към партии и купувачи на гласове; двамата кандидати не са назовани в събрания надпис.",
+        "sourceTextSha256": "addd2840ae82947887bd5ec8385787e97b6f0736c2365b9aacffe9fe21036fc7"
+      }
     },
     {
       "id": "video:2050433183027183",
@@ -1973,7 +2117,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "f902783c7c03c15816008eb4233358352495012676e39101a32ef3408951228c"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Представя гласа за Гюров като избор на Пеевски с подигравателна формулировка.",
+        "sourceTextSha256": "3a8096537d191f6ac4961170016f9e04a334e594873b6d45b4087e454a0998b3"
+      }
     },
     {
       "id": "post:pfbid02PK2BQUuFmxmeJrgDxK5YH3SjzYKhdospmacVbHE4EvxXqFzhcnAeTA2VRh2uBxBml",
@@ -2038,7 +2188,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "6af9907d207c7bbee8202c0c5747aeda7615ff05bdba60667528276afa08fc87"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "neutral",
+        "reason": "Подиграва се на Гюров след дебата; Йотова е спомената като опонент, без отделна оценка.",
+        "sourceTextSha256": "3d37deb2225a1f4359508ab1167932051905e814d5f15aa97737047c2fa17259"
+      }
     },
     {
       "id": "post:pfbid02etWsuvBeLS3Ku119BoMWHjdWvXzMaARnc96tfyJJtMEDJBrhPwwiUpdcMfrsWSb8l",
@@ -2088,7 +2244,13 @@
         }
       },
       "sourceTextSha256": "709a868dfd8d5509ec834cf3ed7ffd15b736a86ab4fb2f52851f5c380eeb0184",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "critical",
+        "reason": "Обвинява Йотова в липса на емпатия и отговорност; споменаването на Гюров не съдържа пряка похвала.",
+        "sourceTextSha256": "709a868dfd8d5509ec834cf3ed7ffd15b736a86ab4fb2f52851f5c380eeb0184"
+      }
     },
     {
       "id": "post:pfbid02sTbvxAS9yNW2ninfFGXuGB6HskJV5F9TUEkvh6xeVWfAmP6EXftsSyaHVjrsvH8xl",
@@ -2163,7 +2325,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "88ba722c22855b225de873f65fc4b04d9c46260b5450ef29bc090f2f4a32bbca"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Предупреждение за зависимости свързва евентуален президент Гюров с интересите на Пеевски.",
+        "sourceTextSha256": "3d7d9877d1d0dc5d0bf42b18c6d2ceec82cca238d53bb44ae0d7d14fb2aea73a"
+      }
     },
     {
       "id": "post:pfbid02yYngwbFJKYGVPJiqoahxFCb3cXeW7T9QjGz93rwXjiustzsoUTefJXQzMxkgkuUel",
@@ -2203,7 +2371,13 @@
         }
       },
       "sourceTextSha256": "2ea3571dea9daffaa3286f74bc0462bb1bb0a97601ef425cc2197cec8837ded3",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Пряко обвинение, че Йотова лъже, и призив да се разпространяват видеа срещу нея.",
+        "sourceTextSha256": "2ea3571dea9daffaa3286f74bc0462bb1bb0a97601ef425cc2197cec8837ded3"
+      }
     },
     {
       "id": "post:pfbid032257kFpWVw9H3xfrZnwCgVFGDo8J72jGTsLpViBujApt8kz4aZsEbnbv9AtUWksgl",
@@ -2288,7 +2462,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "2c2b2c3e3270d85e20cbf3fc8495bc919a625ec1764971a4864f8bbeac608f3a"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "neutral",
+        "reason": "Описва представянето на Гюров като слабо и го осмива; Йотова е само контекст към дебата.",
+        "sourceTextSha256": "f5a5223c96c0ed52a44c37c8ec624c65d39862e7161dc5db881071199992b759"
+      }
     },
     {
       "id": "post:pfbid08UZBktF8as1FA3sS9DHowHJKXLd5RcRd4zUX5bCmuHuaTYbqxVF1CXq4jwzGPcDxl",
@@ -2353,7 +2533,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "d342ab7bba80b3af3817a97a1380832c42ee9875b101dfee3fa0903d1435dfbc"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "След президентския дебат иронично представя Кандев като по-умния в двойката, принизявайки Гюров.",
+        "sourceTextSha256": "d082ee6b29b5749f54b2348f1dd694ad3e5abb922f61fe4781fa79c5d6e0eef6"
+      }
     },
     {
       "id": "post:pfbid0P8eVWT6q1cjqVuUx6W7jFS8kQkPJEAge5cbuYiQxP2U5dSU6EqczFMqnrL3fX5qFl",
@@ -2433,7 +2619,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "f40427d55a7804b7c79849b6ed63e2b69685511bd845e59c0d5bad4ba897bb41"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Представя Гюров като зависим от задкулисни ментори и военен бизнес.",
+        "sourceTextSha256": "5e74ef1b1a464648863f556bf1c4837047d91fe4ad0e8ea3ce11361165efb673"
+      }
     },
     {
       "id": "post:pfbid0vpmBVZ3aQ5eoa91QNqEBGQG5UxQsACejjUe4ouYUHNijU5fDxX63Chjff4SJgMD8l",
@@ -2533,7 +2725,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "6bbd5b874353840d43a2943640be2552308a506cf7b69ed5ce04f27fc9a30665"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Свързва Гюров със задкулисие, военен спонсор и изпиране на политически имидж.",
+        "sourceTextSha256": "9b5862997074aec861814a7bf03b7c297097f4cf63798a79d9ab28ac483454f4"
+      }
     },
     {
       "id": "video:1446707520759625",
@@ -2583,7 +2781,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "e8a284e32443f5a76da602c0ff99356dd81fdf11cbda58ce6c58bac9163a8bb1"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Саркастично обвинява Йотова в лъжа; оценен е надписът, без проверка на видеото.",
+        "sourceTextSha256": "4dd5aef971ae4e92f1e21c6222fe12c429dd739a61977ef2e08845ea8c430861"
+      }
     },
     {
       "id": "post:pfbid01Qgxf35raAqu1iVK5AsUoCz4nGd8f3nZ3ufBYResZrTtimqQzNaAo19uTfN7HrgMl",
@@ -2648,7 +2852,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "4f07b95ff389ef513dc372d7bb112c165717796b71e5b6dfa4456b3db2e9387a"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "neutral",
+        "reason": "Представя подкрепата за Гюров като фарс; прогнозата за гласуване за Йотова не е подкрепа от страницата.",
+        "sourceTextSha256": "38c10632afe23c3e425c7fd18af01864499529454124ab0f4949e93446f67008"
+      }
     },
     {
       "id": "post:pfbid026QRXCj8swnem74Z265Ft27ukZ6cThufy3xmoJKztLyGjL3LdXatA8k3DespK89uzl",
@@ -2693,7 +2903,13 @@
         }
       },
       "sourceTextSha256": "0b7dc17d88e6dfe1fca08763f852cdab0fe564d72dcc9050f5b1a3973e74b4bc",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Осмива като незначително посоченото постижение на Йотова.",
+        "sourceTextSha256": "0b7dc17d88e6dfe1fca08763f852cdab0fe564d72dcc9050f5b1a3973e74b4bc"
+      }
     },
     {
       "id": "post:pfbid026qyin9k9BgRa4wQ6EiLTy3fdgNpTc7ubXhbMjUP8em1wCjk6qf7yVvRdzCaFtXGdl",
@@ -2748,7 +2964,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "7936ce1a181c0a6a8ce26cef1a8512d34543fbb40885a486a639e9b924ebfdd9"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Надписът рекламира интервю за Борисов без пряка оценка към двамата кандидати.",
+        "sourceTextSha256": "fb1e5755a4c3cc95a3c59ddcf3e5a960e0adb9857afa147369d1d329475a7115"
+      }
     },
     {
       "id": "post:pfbid02PjhhvHUKazdRWLaoBwbzKiEQb7hM945KZtAMcp4hFGrR8mDfyKzygx4oTCznvw74l",
@@ -2812,7 +3034,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "0e57a18283011388cf2617fd42fd2b51f400939a3338c93230b4476bd93d1403"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "unclear",
+        "yotova": null,
+        "reason": "Цитира призив за номер 4 и го нарича скандал; кандидатът не е назован, затова не приписваме пряк тон към Гюров.",
+        "sourceTextSha256": "f708ce73ff8a7b9bfab4bb8929cfeb71520859132539c5fdd27a07d1b069f111"
+      }
     },
     {
       "id": "post:pfbid02TnWBWnWfk1vHjhGTVHLtjQ2uwXroeCAftqzQGra8B65TXMugVuMXq3a7isUaP6Cql",
@@ -2887,7 +3115,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "4d427815953d1689a92d31866065953ffb17df1c6ec82796f485dd0717202ad7"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "След заглавния цитат следва вулгарна подигравка с позицията на Гюров за Русия.",
+        "sourceTextSha256": "e4de8552d6aaeb88a995d90bab7f9fb3ff81c448744ba95ceae35843d0f9a8fe"
+      }
     },
     {
       "id": "post:pfbid02Y2zTwSb6uoJjdYAV4TqNi7aCS4WgDuhzArpgDiC2H8XhJXkRAsM4kHsVnBjmTqpql",
@@ -2937,7 +3171,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "a414a65b05ace73196d2297135534edff11a12ca1b3968dfca99537198cc66b7"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Саркастично оспорва последователността на Йотова и призовава избирателите да помислят преди вота.",
+        "sourceTextSha256": "13d579621ee573b3abd0f2ff8b754f3529c6f6b1492864d40644add2b7f962aa"
+      }
     },
     {
       "id": "post:pfbid02tsQEfxjMKW48USs5CoMaPQ3pqzx6VGsw3CZxFCUe3b7YssvS3kC9dmBMjYrfdsRUl",
@@ -2987,7 +3227,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "a833dd37c2ccb886b30e49fb0994bf8b8bd7c011251abd2a56ded658752dcf6f"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "unclear",
+        "yotova": "unclear",
+        "reason": "Събраният частичен надпис за имоти на кандидат-вицепрезиденти не позволява оценка към двамата кандидати.",
+        "sourceTextSha256": "068cd439756af106e53671de385f67d12ea6811b081422719440697b1d204203"
+      }
     },
     {
       "id": "post:pfbid031bcFzrkzYYGxLaGg93g6Mah7mcbdwioCZBpqPgEaYTkgEkzNPfyyCcGBiFnFDB2sl",
@@ -3037,7 +3283,13 @@
         }
       },
       "sourceTextSha256": "74cec5a5a32ec219b99071ae3a851217fb24f24ed3a5e5432ce23e0314bf130b",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Представя евентуалната победа на Йотова като средство за задържане на Радев на власт.",
+        "sourceTextSha256": "74cec5a5a32ec219b99071ae3a851217fb24f24ed3a5e5432ce23e0314bf130b"
+      }
     },
     {
       "id": "post:pfbid05pTdBgg2pBhFRS5yMBEnCNE4vA8zi6vGDD6muBMNRcs2YKTBWZT57evyo32iC9eSl",
@@ -3102,7 +3354,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "e420a143115292511d0b9acd3cc09d31d7a36f38ed880db9306e2b1b61449a92"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "unclear",
+        "yotova": null,
+        "reason": "Говори за мобилизация за номер 4 без да назовава Гюров; партийният контекст не е достатъчен за пряка оценка.",
+        "sourceTextSha256": "cf7a353ae01c409cc8796a405a8535788670632c9437eaada8f0d74cdba0f4c7"
+      }
     },
     {
       "id": "post:pfbid0Q4vZKwZiaCnHsiE2qKiWSzDD7TTqbbxDCVf8YkB5yS3TSMu2XHi4zPUkjKtjq4SFl",
@@ -3172,7 +3430,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "390a32b44b2ad796eaa4cf25a35a3c027919a027ffa784040c5c254a591a24d7"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Предава заявена дипломатическа позиция на Йотова без пряко одобрение или неодобрение.",
+        "sourceTextSha256": "cf7f7104bd3222a16b911b11d41a780272cc5860d7866ec6a12bf12eab826f06"
+      }
     },
     {
       "id": "post:pfbid0QeTBHPudRNmcQ2nKeMdTsAwfoi7JLAAytBrVaCAeGFEi29sqJ3cig9BLbdu3QqFNl",
@@ -3212,7 +3476,13 @@
         }
       },
       "sourceTextSha256": "fce8c58cb4371089f6f8c650a170a9e0d11c9c9bd646d24b76fe6bdfe8c4e3ca",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": null,
+        "reason": "Изрично хвали Гюров за честна и модерна кампания без лъжи и манипулации.",
+        "sourceTextSha256": "fce8c58cb4371089f6f8c650a170a9e0d11c9c9bd646d24b76fe6bdfe8c4e3ca"
+      }
     },
     {
       "id": "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl",
@@ -3282,7 +3552,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "6865a18b00f3c444a25f728e30bd0a515f7d3fbc8bd71698265495b0ddfe42da"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Осмива двойката чрез прякори и я свързва с организиран превоз на избиратели и подкрепа от Пеевски.",
+        "sourceTextSha256": "16ea965e1d1db950ce07577f890cb5f238bcad5f42e6132a7c49dfb5984c6629"
+      }
     },
     {
       "id": "post:pfbid0r5fND2sHqXbM1JCJbmJo5rLUWxMFnaZFSd5dC4qUh2PqVagZSQANr79TZeYQWPQyl",
@@ -3337,7 +3613,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "28127ec3fb17cf7993b1c4f59a1bab46f6bf51511e20de3b3f7e500e2ce9688b"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Дава числова прогноза за резултата; очаквана победа не е равнозначна на подкрепа.",
+        "sourceTextSha256": "87b49c1a602e756c4344df5eab531061ac7ae818e9a988d284394620e2e508af"
+      }
     },
     {
       "id": "video:1113050341136376",
@@ -3387,7 +3669,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "e985b958e479543bf932780737ab67612e098e050b013ee532d0814469b096c3"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Приписва на Йотова неспособност да смята или опит за подвеждащо внушение.",
+        "sourceTextSha256": "a84060458abed8e7472b1ade69a8eac8c4d3dabf5d66f8e63315327b089cb84f"
+      }
     },
     {
       "id": "video:1670123841398564",
@@ -3442,7 +3730,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "a716d07e8e99b30d79e71c4854b8b7ba30a6d43355868d5e02a499d43c9571d8"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Саркастично свързва Йотова с лъжа за бюджета; истинността на твърдението не е оценена.",
+        "sourceTextSha256": "d096303f0d51d6e71af958230d6b34fcc54a67d485a4aa16349434f07bec0c24"
+      }
     },
     {
       "id": "post:pfbid06fPN7iSAZg1NDCkj4vUhLbHSK9D9FNTo21sBWewezxQiGAWuh89CdrfMVvSY4wR7l",
@@ -3702,7 +3996,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "1cc7a38eb482c27f972a7a6a1e38065b4a08e812a449d81013edc8aa64a153c3"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Самостоятелно предава заглавен цитат за позиция на Гюров, без оценъчната добавка от публикацията на BNews.",
+        "sourceTextSha256": "e3d7548634c2c19f0c85e64f1dbb5a8d45997613d7fc0aeb8b924e59392ccd61"
+      }
     },
     {
       "id": "post:pfbid0TmJbD1kQoSpxLcJADuGeJ1SGjW3Lz9Z7zX7LNNzzU5GgymXPXKkibkGJF6TbXC6Pl",
@@ -3767,7 +4067,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "a242cfbbf3f7f8161822eb84634162d53518ccf3fafc70bfe1841db28fe03f25"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "unclear",
+        "yotova": null,
+        "reason": "Надписът за мобилизация назовава партии и номер 4, но не оценява пряко Гюров.",
+        "sourceTextSha256": "c250e16cb821389f85175339a8b6473fa06952509a316606d6d88bbfad81494b"
+      }
     },
     {
       "id": "post:pfbid0317sNmP4Ejrj3qwFsSCrGXNaLCMypad1TQ2u27dzNgTzBzpa7w7qRu7CyF2kBQvKtl",
@@ -3817,7 +4123,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "7d3cbcbfce386eb04e76c8ed474b7ac03de31a575cfe83b3276a504074be9a6a"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Анонс за интервю с Бареков; няма пряка оценка към Гюров или Йотова.",
+        "sourceTextSha256": "dcdb3f98c7afac54b96538d3e040be820652da8be56143536d7c6fcd6a155045"
+      }
     },
     {
       "id": "post:pfbid0W91zvaUDUbjGfAT4RRDMfMrmwpLeYGcXbPq2tTiWfJihYoGSugJDqd2Meg3SNU9Gl",
@@ -3892,7 +4204,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "ad9f8d5d03834b0b82c6e8184dcc48755f53fc7ffdaf0ae506ed00fced367454"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Предава призив и съобщение за мобилизация за Гюров без пряко одобрение или обида към него.",
+        "sourceTextSha256": "63e0784bd3f683cd6749209f42712cf774444c52e451bdb6291e759c4b1a3ef7"
+      }
     },
     {
       "id": "post:pfbid02BwihQyZqD3td346wvdEipSrUavMA5D9U3zho7XrgtXnRNBuY4NDqw9LoUUZ38ykgl",
@@ -3952,7 +4270,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "df015d2af9aca2250575de417946ee630c67eebca53c1c7b49eff7746e4198f2"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Надписът е за превоз на избиратели и ДПС, без пряко споменаване на двамата кандидати.",
+        "sourceTextSha256": "8890f1ebe5f385e3a36f6d4dfe5bfdf17a14799e4c173fb1852b8f87e9fac8f2"
+      }
     },
     {
       "id": "post:pfbid0K5jf6Wfc67p2HwjBYkg4BSZegkKPfbDV8vaGLyiVwVaWuPnJQ1NhiJ1VpsVjauDzl",
@@ -4017,7 +4341,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "aa085c7703d29126f75ae08ab3bf462e14a25d8f71da34c7c0fb1c9a3c98a584"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Твърди как ще гласува Борисов; самото прогнозиране на подкрепа не е кандидатска оценка.",
+        "sourceTextSha256": "2bfa71fc114634965019146e5cbc7f390f5aaaf040d92bfffd469783aef44ed9"
+      }
     },
     {
       "id": "post:pfbid0txCzz6qbbi7BezLje1uFVANeUa5eskGN76mkPQ9tWYNx97JCMjEFDndbPFtwYAzYl",
@@ -4087,7 +4417,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "a401ac07e2cd438e2dfe3b1e1c12269427d5aa745dec0cf8202fc22c5d0e1468"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Предава дипломатическата позиция на Йотова, без да я хвали или критикува.",
+        "sourceTextSha256": "872aed96b3e073fa6827550f8a76b0ea2be934420a1d9da169b954036d96caac"
+      }
     },
     {
       "id": "post:pfbid02DjFWK74BJbFdAYJQGreHngD2m3evycaLdCeHeK7PykkWGR9zzHpNMQNt6XciHXB5l",
@@ -4152,7 +4488,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "c4ca1a9d3a8ca232fe0628e8956cccb285674872c4e07611e02901aaead1c858"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Оценъчният език е насочен към Борисов и партиите, не към двамата кандидати.",
+        "sourceTextSha256": "b16a1700220e4c05d13e8932bfd2b99770cbec7f134dae2f8163b9ff217bc476"
+      }
     },
     {
       "id": "post:pfbid02jZo2EaavFLqQPxHZdxjr3vGNSMWBLz4z2gcn92scncuZ3fWGrh3Kes6Tw9gcbWeUl",
@@ -4207,7 +4549,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "a3a62b8730737062d471feb1412d4ae82921f1ed005e651bb90d27fcd88a8614"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "unclear",
+        "yotova": null,
+        "reason": "Отрицателният език е за изпиране на Борисов чрез подкрепа за Гюров; краткият надпис не изяснява отделна оценка към кандидата.",
+        "sourceTextSha256": "244c2b27386defebbb689ebce969592b9439e8bdd915411c4e3e6f39ddffb10c"
+      }
     },
     {
       "id": "post:pfbid0DKLNwwfhRLsUCAvwvSTVqxjXo14Ybg7hQBM4QkapDncqik1b8BY8ryNsYbzq47XRl",
@@ -4282,7 +4630,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "15ead1a8652c1bf4d72c9ec7d9c2bac6ac4fdbb5aa6664921972d0b1831836a5"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Свързва Гюров със сив кардинал, военни дронове и политическа сглобка.",
+        "sourceTextSha256": "5a56f124ab6fccb06cb5fe02104816f8e7f35bd1af51126254dc89e873c4be1a"
+      }
     },
     {
       "id": "post:pfbid02BXNCV1uC2F5nUAmYRGGg96tyrbqpW8yvnUEmRHnYD4D27yaZBWEHLuvp67B29zkdl",
@@ -4352,7 +4706,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "2562574f20a9f9c7a867dbf65b03dfa8db51bd74504b612acf00c3fe4336ad97"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Цитира предупреждение за зависимост на евентуален президент Гюров от Пеевски.",
+        "sourceTextSha256": "d09282d3e0df635b2f07e3366d974cd4e6880c6c0ea891762e3b43cc3736ccbe"
+      }
     },
     {
       "id": "post:pfbid0tVtTjFwus7LNtbv6zFgLKxtYFg5bhXGi1TKv8jN6XNoHAZP5G6ssz9EqAFo9XnGYl",
@@ -4402,7 +4762,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "f639a8fd5c13ad7558bd55981ae68368fec4c8327db996fe44771609d03522a5"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Привидният призив за Гюров е саркастичен и използва унизително сравнение, а не подкрепящ тон.",
+        "sourceTextSha256": "b1710e3ad4377853fe4d40240aa7c62feaa23ab67a2b717276a43e9e6969215f"
+      }
     },
     {
       "id": "post:pfbid09m9SDJjCfAtU4pqLC9SBbnyHxx32WDQnEjS4xVs9oJ8Pd6BYFWfWZshFR3N9qoA6l",
@@ -4487,7 +4853,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "c03d9372356d8b2edd605fce0f042a47ec2532ec611e1aa77a5d37948dee0ad9"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "neutral",
+        "reason": "Осмива Гюров и му приписва увъртане и зависимост от военен бизнес; Йотова е само контекст към дебата.",
+        "sourceTextSha256": "92580576ad7f54a9ce8b5d385e0d267cf2513ac529980a2b0c97624d9d7293c9"
+      }
     },
     {
       "id": "post:pfbid02aZDv5aYEA7tJk17xqQ4aagnket1qJ2SbkPTPeh7VVdvQpCwkkqNdN4dyREEfXfKjl",
@@ -4562,7 +4934,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "25d79a3c01c0e9298ec048b1b1a8d3c2985b1df2fcb383d5564c1e3762b50e37"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "supportive",
+        "reason": "Възхвалява Йотова като победител с рецитал и представя Гюров като разгромен.",
+        "sourceTextSha256": "0fc90b7df63ce65ae63b43d1992ba5408fcde16072f0646f7e204f9a26e5d5cc"
+      }
     },
     {
       "id": "post:pfbid02ZgmYfBVT6EehBcBnfE7EdG1bcKBkPYYTvFQqxM6UJ4a5jYGswBqW6bLsSwmCwzE4l",
@@ -4642,7 +5020,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "2ea47e793ea3d5d89b5f638f57b6936913af909441f665d8a363475567bf85ac"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Съобщава прогнозни изборни резултати и ниска активност; не изразява кандидатска подкрепа.",
+        "sourceTextSha256": "597c3a2a2c69a3611d19cd770bc194a6c46611992408f6594a433b4bbf328345"
+      }
     },
     {
       "id": "post:pfbid0VYwjVLzXpkkkERa8B8nj2WYinTRjHSpMdpuWSyDxxZJhLRDPWNATZtj8DDT8ctk2l",
@@ -4697,7 +5081,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "b3768bb432b3d470ec63cd1b9584300378403b8f34032f9834684bf54de36db9"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Подигравката е към Борисов; фактът, че подкрепя Гюров, не определя сам по себе си тона към кандидата.",
+        "sourceTextSha256": "f2fc3382e7c2329217c2cd76213ac2b31c58f386095a36092146760097cac8cf"
+      }
     },
     {
       "id": "post:pfbid09Sad8rRWqTxk99V9nGjpQUbjHdGrtZGSXroqjhzQo5q2ctWbmhTkNe4EzjY3npHTl",
@@ -4757,7 +5147,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "8bfe603d3babcbe8bc2fa0295ec040682f47c54f1437c2cde13cdddd10cfddc0"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Съобщава за партиен бойкот, без пряка оценка към двамата кандидати.",
+        "sourceTextSha256": "77cc7405ff2011002d3240db50a81351038e4f98552bac82ffe8e425f6453604"
+      }
     },
     {
       "id": "post:pfbid02vGKsL8zMEvmywHc7uP3xwpLXUHrhUT7ejLDpiAhhysMjEyCKoCdSuB9DwHv2bNCyl",
@@ -4837,7 +5233,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "88a3d6f392eba2b19acf0731da11db24adab0f7be6492c002347d896d2782146"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Напада партии и кампанията им; не пренасяме тази оценка автоматично към неназован кандидат.",
+        "sourceTextSha256": "3b87dff4203aecfac15b0cc354c98768a373e58fbfc1194f37bad887a43d8821"
+      }
     },
     {
       "id": "post:pfbid0yvjwnnVGCEKzWJ87u6jAREm31LCAspnuyNayxzuuqSqG757ccMxprVzLxhzUJonRl",
@@ -4917,7 +5319,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "5922bb56ea6f85a1244fa08265428f831c91da5ac6c00d06efba4f060baa4572"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Обвързва кампанията на Гюров и Кандев с компромат и инсценировка.",
+        "sourceTextSha256": "e679ce2629ba1920974410eff04e052320c7d33f894e7a73d718e8bb562c14c9"
+      }
     },
     {
       "id": "post:pfbid02tThk3DbMhisnWdDR8unNbSYnscWG59LYwRh9dbEYBBianprQ2XkFxv8j4x9Kskpnl",
@@ -4977,7 +5385,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "e149fc5cad58e2dadae6e72bdfc749f7836bda175c5e409999ba93688bf0f1d8"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Анонсира интервю за партии и избори, без пряка кандидатска оценка.",
+        "sourceTextSha256": "20fd0cd330368d7c9542ad801bd1c9deff21bfe6da18bf1eb81ab4b917449ce8"
+      }
     },
     {
       "id": "post:pfbid0f6K4AGEZsdACjuQQAeYcsdGykKTfbAVaLq8QXZeKqai38PPEP4s1ZLrPs2jEB1JFl",
@@ -5032,7 +5446,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "7df8bd83ae3842c7ab8ec871f0e4665fdbdcab8fd28c32b419507eccb9c131b8"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Възмутеното заглавие свързва агитката на Гюров с изгаряне на руско знаме.",
+        "sourceTextSha256": "8db52a41d32fb6778aaa4a20990459572476e72933a7fdc5356f94d0d796b169"
+      }
     },
     {
       "id": "photo:1578411577634217",
@@ -5092,7 +5512,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "48369e6807bc3497c4c061c71738a0326567443be8b5e1d8671098749bdccc55"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Представя подкрепата за Гюров като засада и средство за възкресяване на политически трупове.",
+        "sourceTextSha256": "5cfff3342ac408702a31ed8f7c0ce290964215ec78c51ce6c40b64e32582f3f3"
+      }
     },
     {
       "id": "photo:1582677773874264",
@@ -5147,7 +5573,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "0e2f308db22bba21ae59e81d3d5822a4d2578d4aaefc07ec048296e171205d83"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Съобщава за убиеца на бащата на Йотова без пряко одобрение или неодобрение към кандидатката.",
+        "sourceTextSha256": "4bf6ff05268d5e9a05f78d41a84639d6e0aa06c16ac85f0bf1b2c174edafa4ad"
+      }
     },
     {
       "id": "post:pfbid02qSkMMJsJcds8vDmtJj3UZiRV5uSQQ8gPTX8RHfJhRb7MPoEDun8qaGKbC3TKzpgbl",
@@ -5202,7 +5634,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "e03dd90ad7008303a262f268ff5c19fc246e459a478d94bfbd79d629f2b45d84"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": "critical",
+        "reason": "Публикуваният цитат хвали Гюров като ново поколение и отхвърля Йотова като изхабена; това не установява позиция на редакцията.",
+        "sourceTextSha256": "7920f392355d0d09edd1b6d6e62a22a8b34dbcbaab4d9a16b4193901dece4d12"
+      }
     },
     {
       "id": "photo:1151255573914194",
@@ -5262,7 +5700,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "302f51623c4e99ca56cdab4741c1cb12d1c274f34950b954931731d63b2aa610"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Съобщава за активността и участниците в балотажа, без пряка кандидатска оценка.",
+        "sourceTextSha256": "fcc34d6a7650001f192cb4e0e2cdd9a6ccdb960032c2d345383039d1767a5a84"
+      }
     },
     {
       "id": "photo:1156012400105178",
@@ -5322,7 +5766,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "2e0ad6996e6ae875b42c996ba522d0e8483423308e2f91f2cb581a437fe65d65"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Осъдителен въпрос представя подкрепата за Гюров като срамна и мазна.",
+        "sourceTextSha256": "3167a1bb65fcb7a390bcd35ef87b06b6e606e5a712d72a4c62f37d67c411eb08"
+      }
     },
     {
       "id": "photo:1154893593550392",
@@ -5392,7 +5842,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "6a88ad3a43944445b15f93af170ac473de313578c33ce7bee6dd333eeacffd23"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Сензационно заглавие свързва Гюров с твърдяна търговия с гласове; истинността не е оценена.",
+        "sourceTextSha256": "2245bd67a54b85da4f5aee6c73703382dd1c348f5a1642566e663bdf13dd8962"
+      }
     },
     {
       "id": "post:pfbid0KHXkSQBGMSU7Psop2D3hKFqbRTnR1HRY1JckvXZX3QkJkf1K31jUjfpZbGT9ubRal",
@@ -5447,7 +5903,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "c53c8aa7c40c21d5daa0f5dc081fbe6dab30a38e3a0791248a75b26f6242dabf"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Лайфстайл заглавие за приготвяне на питка, без изрична политическа похвала или критика.",
+        "sourceTextSha256": "14867d51c7acc6e9fa9259031afe418673a9ec39fd8cbb58f09b29e4f11e87a5"
+      }
     },
     {
       "id": "post:pfbid02onrwFNDBWRfaeL5NoXdnX25M3M9FERJuAVu3RiA2zy6MiUSAM7LtXtNhmRTFRGRYl",
@@ -5502,7 +5964,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "84980235183ee20f25e6e8f10acea08adb976435d284b72623181ebb50cdd598"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": "critical",
+        "reason": "Възторжено представя Гюров като пишещ история и отхвърля Йотова като принадлежаща на миналото.",
+        "sourceTextSha256": "62c3c79c23f3d88c7a407d000b603f4caa7d82121f67a8b36c8ef57f9232bb47"
+      }
     },
     {
       "id": "post:pfbid0T5YyJUfYiM2zYDx1SxGs6Fi7ShK6WfkngqK9B4M493WbGg1oJTpRvUQPRfu9aDpxl",
@@ -5557,7 +6025,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "df9a1cb64303f777b68d8056f45bef2ce18eba4e97375721d0b45f1a8798c4f1"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "unclear",
+        "yotova": "unclear",
+        "reason": "Недовършеното сензационно заглавие не позволява да се определи тонът към който и да е кандидат.",
+        "sourceTextSha256": "30dca2cc802da46a7dbf0ec7b9d863a1296c8218d7a6e5cd1dc028f543444f09"
+      }
     },
     {
       "id": "post:pfbid0r7r3s5xnQNZ4uT3hzAGhJzZJ2xdE26WgoF853EUaq4D8Ub3ciyFMVg3Gc6NJJXhol",
@@ -5617,7 +6091,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "4d118f55ce5c974f68f9bc9fdf5af1fa9e2b3284b5451c9588a2592fec24dd55"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Публикуваният цитат изрично отхвърля гласуване за Гюров; не установява лична позиция на редакцията.",
+        "sourceTextSha256": "a5f1b20046c24aea1c0218e2cff84d30a7fa3abbb020b96d1a01f768952088e2"
+      }
     },
     {
       "id": "post:pfbid02GgPBAgj24C7gwiozhdTf9UxyvQwse9Ji3ZwDb7WppQXbyRAtL23FJB4Q5QE4UBb5l",
@@ -5687,7 +6167,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "6eb4889d2c5b3604da8e640dfcc95bbf14932dff7bf77c82c4fa036cc8fce91e"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Цитира отрицателна рамка за подкрепата за Гюров като поредна сглобка.",
+        "sourceTextSha256": "7ae5baf83e81eaa9f08562eb728d07345c6b1b31a1aa7365d088fbb01edbf85b"
+      }
     },
     {
       "id": "post:pfbid02SrLT5VoZ7KvxvA5zrvTisM26PJ1gCNqJacQMZU2bd2hZuP5NupX4pk8uR4bpefWCl",
@@ -5752,7 +6238,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "a9a0269daaecf8e4c3d4d7969e6452fea49cb8b4283844ae2ab4d71e9d917cac"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "unclear",
+        "yotova": "unclear",
+        "reason": "Цитатът не прави разлика между кандидатите, но краткият надпис не изяснява дали сравнението е положително или отрицателно.",
+        "sourceTextSha256": "06cd68b2b675eb267e2ff07009bf9aa0bad4bdf8a43cc90f8de0b89be9675bcb"
+      }
     },
     {
       "id": "post:pfbid0abr2AuC5iF7qrfVaV4tpCTmdtBWNUtXcGj5WEr3kf6w5ebjJNugMTe2dC7T2zSkql",
@@ -5812,7 +6304,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "abafce795056e64160806547971ebe7160b18f5f096566c2ae2ca94fb92be2e8"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Осъдителен въпрос представя подкрепата за Гюров като срамна и мазна.",
+        "sourceTextSha256": "3167a1bb65fcb7a390bcd35ef87b06b6e606e5a712d72a4c62f37d67c411eb08"
+      }
     }
   ],
   "matches": [

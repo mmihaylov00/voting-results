@@ -1,11 +1,61 @@
 import { describe, expect, it } from 'vitest';
 import snapshot from '../../../../public/data/facebook/2026/report.json';
 import { FacebookPost, FacebookReport } from './facebook-research.models';
-import { facebookCount, facebookDailyCounts, facebookDate, facebookPageSummaries, facebookTime, facebookTotal, validFacebookReport } from './facebook-research.util';
+import { FACEBOOK_CANDIDATES, facebookCount, facebookDailyCounts, facebookDate, facebookPageSummaries, facebookStanceSummary, facebookTime, facebookTotal, validFacebookReport } from './facebook-research.util';
 
 const report = snapshot as FacebookReport;
 
 describe('Facebook research data', () => {
+  it('keeps candidate assessments independent, counts every post and preserves unreviewed captions', () => {
+    const pages = facebookPageSummaries(report);
+    for (const page of pages) {
+      for (const candidate of FACEBOOK_CANDIDATES) {
+        expect(Object.values(page.stance[candidate].counts).reduce((sum, count) => sum + count, 0)).toBe(page.postCount);
+      }
+    }
+    expect(report.posts.filter(post => post.stance)).toHaveLength(83);
+    const bnews = pages.find(page => page.name === 'BNews Bg')!;
+    expect(bnews.stance.gyurov.label).toBe('critical');
+    expect(bnews.stance.gyurov.counts.critical).toBe(15);
+    const bunker = pages.find(page => page.name === 'Бункер нюз')!;
+    expect(bunker.stance.gyurov.counts.supportive).toBe(1);
+    expect(bunker.stance.yotova.counts.critical).toBe(8);
+    const criticalOnly = report.posts.find(post => post.stance?.yotova === 'critical' && post.stance.gyurov === null)!;
+    expect(facebookStanceSummary([criticalOnly]).gyurov.label).toBe('not-mentioned');
+    expect(facebookStanceSummary([report.posts[49]]).gyurov.label).toBe('unreviewed');
+    expect(pages.find(page => page.name === 'Новини на фокус')!.stance.gyurov.label).toBe('mixed');
+  });
+
+  it('does not weight tone by engagement or confuse informative and unclear captions with support', () => {
+    const positive = structuredClone(report.posts.find(post => post.stance?.gyurov === 'supportive')!);
+    const negative = structuredClone(report.posts.find(post => post.stance?.gyurov === 'critical')!);
+    positive.metrics.reactions.value = 1_000_000;
+    negative.metrics.reactions.value = 0;
+    const summary = facebookStanceSummary([positive, negative]).gyurov;
+    expect(summary.label).toBe('mixed');
+    expect(summary.counts.supportive).toBe(1);
+    expect(summary.counts.critical).toBe(1);
+    const neutral = report.posts.find(post => post.stance?.gyurov === 'neutral')!;
+    const unclear = report.posts.find(post => post.stance?.gyurov === 'unclear')!;
+    expect(facebookStanceSummary([neutral]).gyurov.label).toBe('neutral');
+    expect(facebookStanceSummary([unclear]).gyurov.label).toBe('unclear');
+    expect(facebookStanceSummary([]).gyurov.label).toBe('unreviewed');
+    positive.stance!.gyurov = 'mixed';
+    expect(facebookStanceSummary([positive]).gyurov.label).toBe('mixed');
+  });
+
+  it('validates annotated tones, reasons and source hashes while accepting older unreviewed snapshots', () => {
+    for (const invalid of [null, {}, { ...report.posts[0].stance!, gyurov: 'fake-news' },
+      { ...report.posts[0].stance!, reason: ' ' }, { ...report.posts[0].stance!, sourceTextSha256: 'a'.repeat(64) }]) {
+      const wrong = structuredClone(report);
+      wrong.posts[0].stance = invalid as unknown as FacebookPost['stance'];
+      expect(validFacebookReport(wrong)).toBe(false);
+    }
+    const legacy = structuredClone(report);
+    for (const post of legacy.posts) delete post.stance;
+    expect(validFacebookReport(legacy)).toBe(true);
+  });
+
   it('keeps the collection and later matches separate with valid public-source references', () => {
     expect(validFacebookReport(report)).toBe(true);
     expect(report.posts).toHaveLength(86);

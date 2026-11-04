@@ -24,10 +24,12 @@
         </div>
         <app-facebook-research-charts [pages]="pageTable.viewRows()" [posts]="data.posts" (pageSelect)="showPagePosts($event)" />
         <div class="section-heading table-heading"><h2>Страници в събраните данни</h2><span class="note">≈ закръглен брояч · — липсващ брояч</span></div>
-        <div class="table-scroll" tabindex="0" role="region" aria-label="Сравнение на Facebook страниците" [virtualRows]="pageTable.viewRows()" #pageRows="virtualRows">
+        <p class="note">Наклонът е ръчна оценка на събраните надписи, включително цитати и сатира. Критика към единия кандидат не означава подкрепа за другия.</p>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Сравнение на Facebook страниците" [virtualRows]="pageTable.viewRows()" [virtualRowHeight]="120" #pageRows="virtualRows">
           <table class="page-table" aria-label="Публикации и видими взаимодействия по страници" [attr.aria-rowcount]="pageTable.viewRows().length + 1">
             <thead><tr>
               <th scope="col" app-sortable-table-header columnKey="name" label="Страница" [table]="pageTable" align="left"></th>
+              <th scope="col" app-sortable-table-header columnKey="stance" label="Наклон в извадката" [table]="pageTable" align="left"></th>
               <th scope="col" app-sortable-table-header columnKey="followers" label="Последователи" [table]="pageTable" align="right"></th>
               <th scope="col" app-sortable-table-header columnKey="posts" label="Публикации" [table]="pageTable" align="right"></th>
               <th scope="col" app-sortable-table-header columnKey="reactions" label="Реакции" [table]="pageTable" align="right"></th>
@@ -35,18 +37,19 @@
               <th scope="col" app-sortable-table-header columnKey="shares" label="Споделяния" [table]="pageTable" align="right"></th>
             </tr></thead>
             <tbody>
-              @if (pageRows.window().top) {<tr aria-hidden="true"><td colspan="6" [style.height.px]="pageRows.window().top" class="virtual-spacer"></td></tr>}
+              @if (pageRows.window().top) {<tr aria-hidden="true"><td colspan="7" [style.height.px]="pageRows.window().top" class="virtual-spacer"></td></tr>}
               @for (page of pageRows.rows(); track page.id) {
                 <tr [attr.data-virtual-index]="pageRows.window().start + $index" [attr.aria-rowindex]="pageRows.window().start + $index + 2">
                   <th scope="row"><button class="text-button page-name" type="button" (click)="showPagePosts(page.id)"><app-facebook-research-image [image]="page.avatar" [label]="shortName(page.name)" variant="avatar" /><span class="min-w-0 flex-1">{{ shortName(page.name) }}</span><app-map-icon name="chevron-right" /></button>
                     @if (page.satire) {<small>Сатира / пародия</small>}
                     @if (page.origin === 'discovery') {<small>Намерена при сравнение</small>}
                   </th>
+                  <td class="min-w-60 max-w-72 whitespace-normal! text-left!"><button type="button" class="w-full cursor-pointer rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current" [attr.aria-label]="'Публикации и основания за наклона на ' + shortName(page.name)" (click)="showPagePosts(page.id)"><app-facebook-research-stance [summary]="page.stance" /></button></td>
                   <td>{{ count(page.followers, page.followersApproximate) }}</td><td>{{ count(page.postCount) }}</td>
                   @for (metric of metrics; track metric) {<td><span [hlmTooltip]="totalNote(page.totals[metric])" [attr.tabindex]="page.totals[metric].approximate || page.totals[metric].missing ? 0 : null">{{ totalLabel(page.totals[metric]) }}</span>@if (page.totals[metric].missing) {<small>{{ page.totals[metric].missing }} без брояч</small>}</td>}
                 </tr>
-              } @empty {<tr><td colspan="6" class="empty-state">Няма страници по това търсене.</td></tr>}
-              @if (pageRows.window().bottom) {<tr aria-hidden="true"><td colspan="6" [style.height.px]="pageRows.window().bottom" class="virtual-spacer"></td></tr>}
+              } @empty {<tr><td colspan="7" class="empty-state">Няма страници по това търсене.</td></tr>}
+              @if (pageRows.window().bottom) {<tr aria-hidden="true"><td colspan="7" [style.height.px]="pageRows.window().bottom" class="virtual-spacer"></td></tr>}
             </tbody>
           </table>
         </div>
@@ -147,6 +150,11 @@
       <span class="status-label">Твърдението не е проверено</span>
       <blockquote>{{ post.excerpt }}</blockquote>
       <p>{{ post.summary }}</p>
+      <section class="my-5 max-w-lg" aria-label="Тон на публикацията">
+        <h3>Тон към кандидатите</h3>
+        <app-facebook-research-stance [summary]="selectedPostStance()" [showCounts]="false" />
+        <p class="note">{{ post.stance?.reason ?? 'Надписът все още не е оценен.' }}</p>
+      </section>
       @if (post.images?.length) {
         <div class="grid gap-4 my-4" aria-label="Изображения от публикацията">
           @for (image of post.images; track $index) {

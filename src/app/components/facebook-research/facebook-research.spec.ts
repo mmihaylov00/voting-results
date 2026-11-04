@@ -81,6 +81,39 @@ describe('Facebook research workspace', () => {
     fixture.destroy();
   });
 
+  it('shows candidate tone counts with source-level reasons and includes them in both CSV exports', () => {
+    const fixture = loaded();
+    const component = fixture.componentInstance;
+    const element = fixture.nativeElement as HTMLElement;
+    const bnews = component.pages().find(page => page.name === 'BNews Bg')!;
+    const bunker = component.pages().find(page => page.name === 'Бункер нюз')!;
+    const row = [...element.querySelectorAll('.page-table tbody tr')].find(row => row.textContent?.includes('BNews Bg'))!;
+    expect(row.querySelector('[data-tone="critical"]')?.textContent).toContain('Критичен');
+    expect(row.textContent).toContain('Критични: 15');
+    component.exportPages([bnews, bunker]);
+    let csv = component.csvData()!;
+    expect(csv.rows[0][csv.headers.indexOf('Гюров, Критични')]).toBe(15);
+    expect(csv.rows[1][csv.headers.indexOf('Гюров, В подкрепа')]).toBe(1);
+    expect(csv.rows.every(row => row.length === csv.headers.length)).toBe(true);
+    component.csvData.set(null);
+    const post = report.posts.find(post => post.pageId === bunker.id && post.stance?.gyurov === 'supportive')!;
+    row.querySelector<HTMLButtonElement>('td button')!.click();
+    fixture.detectChanges();
+    expect(component.view()).toBe('posts');
+    expect(component.pageFilter()).toBe(bnews.id);
+    component.openPost(post.id);
+    fixture.detectChanges();
+    expect(element.querySelector('dialog [aria-label="Тон на публикацията"]')?.textContent).toContain(post.stance!.reason);
+    expect(element.querySelector('dialog [data-tone="supportive"]')?.textContent).toContain('В подкрепа');
+    component.exportPosts([post]);
+    csv = component.csvData()!;
+    expect(csv.rows[0][csv.headers.indexOf('Гюров, тон в надписа')]).toBe('В подкрепа');
+    expect(csv.rows[0][csv.headers.indexOf('Основание за тона')]).toBe(post.stance!.reason);
+    expect(csv.rows[0]).toContain(post.url);
+    expect(csv.rows[0].length).toBe(csv.headers.length);
+    fixture.destroy();
+  });
+
   it('opens matched posts and fact-check leads in mutually exclusive source modals', () => {
     const fixture = loaded('duplicates');
     const component = fixture.componentInstance;

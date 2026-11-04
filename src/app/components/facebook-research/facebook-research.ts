@@ -18,8 +18,9 @@ import { ViewTabsComponent } from '../ui/view-tabs/view-tabs';
 import { VirtualTableDirective } from '../ui/virtual-table/virtual-table';
 import { FacebookResearchChartsComponent } from './facebook-research-charts';
 import { FacebookResearchImageComponent } from './facebook-research-image';
+import { FacebookResearchStanceComponent } from './facebook-research-stance';
 import { FacebookPageSummary, FacebookPost, FacebookReport, FacebookReview, FacebookTotal } from './facebook-research.models';
-import { FACEBOOK_METRIC_LABELS, FACEBOOK_METRICS, facebookCount, facebookDate, facebookPageSummaries, facebookShortName, facebookTime, validFacebookReport } from './facebook-research.util';
+import { FACEBOOK_CANDIDATES, FACEBOOK_CANDIDATE_LABELS, FACEBOOK_METRIC_LABELS, FACEBOOK_METRICS, FACEBOOK_STANCE_BUCKETS, FACEBOOK_TONE_COUNTS, FACEBOOK_TONE_LABELS, facebookCount, facebookDate, facebookPageSummaries, facebookShortName, facebookStanceSummary, facebookTime, validFacebookReport } from './facebook-research.util';
 
 type KeywordCoverage = FacebookReport['coverage'][number];
 const VIEWS = ['pages', 'posts', 'duplicates', 'review', 'coverage'];
@@ -28,7 +29,7 @@ const VIEWS = ['pages', 'posts', 'duplicates', 'review', 'coverage'];
   selector: 'app-facebook-research',
   imports: [CommonModule, HlmButtonDirective, MapIconComponent, ViewTabsComponent, SelectComponent,
     TableControlsComponent, SortableTableHeaderComponent, VirtualTableDirective, BaseModalComponent,
-    CsvExportModalComponent, LoadingBarComponent, HlmTooltipDirective, FacebookResearchChartsComponent, FacebookResearchImageComponent],
+    CsvExportModalComponent, LoadingBarComponent, HlmTooltipDirective, FacebookResearchChartsComponent, FacebookResearchImageComponent, FacebookResearchStanceComponent],
   templateUrl: './facebook-research.html',
   styleUrl: './facebook-research.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -64,6 +65,7 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
   readonly postMap = computed(() => new Map(this.report()?.posts.map(post => [post.id, post]) ?? []));
   readonly pageMap = computed(() => new Map(this.pages().map(page => [page.id, page])));
   readonly selectedPost = computed(() => this.postMap().get(this.selectedPostId()) ?? null);
+  readonly selectedPostStance = computed(() => facebookStanceSummary(this.selectedPost() ? [this.selectedPost()!] : []));
   readonly selectedPostMatches = computed(() => this.report()?.matches.filter(match =>
     match.sourceId === this.selectedPostId() || match.targetId === this.selectedPostId()) ?? []);
   readonly selectedPostReviews = computed(() => this.report()?.reviews.filter(review => review.postIds.includes(this.selectedPostId())) ?? []);
@@ -92,6 +94,7 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
   });
   readonly pageColumns: TableColumns<FacebookPageSummary> = {
     name: row => row.name, followers: row => row.followers, posts: row => row.postCount,
+    stance: row => FACEBOOK_CANDIDATES.map(candidate => `${FACEBOOK_CANDIDATE_LABELS[candidate]}: ${FACEBOOK_TONE_LABELS[row.stance[candidate].label]}`).join('; '),
     reactions: row => row.totals.reactions.value, comments: row => row.totals.comments.value,
     shares: row => row.totals.shares.value,
   };
@@ -177,8 +180,12 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
   exportPages(rows: readonly FacebookPageSummary[]): void {
     this.csvData.set({ filename: 'facebook-pages-2026.csv',
       headers: ['Страница', 'Последователи при събиране', 'Последователи, приблизително', 'Публикации в извадката',
+        ...FACEBOOK_CANDIDATES.flatMap(candidate => [`${FACEBOOK_CANDIDATE_LABELS[candidate]}, тон в извадката`,
+          ...FACEBOOK_STANCE_BUCKETS.map(bucket => `${FACEBOOK_CANDIDATE_LABELS[candidate]}, ${FACEBOOK_TONE_COUNTS[bucket]}`)]),
         ...FACEBOOK_METRICS.flatMap(metric => [`${FACEBOOK_METRIC_LABELS[metric]}, наличен сбор`, `${FACEBOOK_METRIC_LABELS[metric]}, приблизително`, `${FACEBOOK_METRIC_LABELS[metric]}, липсващи броячи`]), 'Сатира', 'Източник'],
       rows: rows.map(page => [page.name, page.followers, page.followersApproximate ? 'Да' : '', page.postCount,
+        ...FACEBOOK_CANDIDATES.flatMap(candidate => [FACEBOOK_TONE_LABELS[page.stance[candidate].label],
+          ...FACEBOOK_STANCE_BUCKETS.map(bucket => page.stance[candidate].counts[bucket])]),
         ...FACEBOOK_METRICS.flatMap(metric => [page.totals[metric].value, page.totals[metric].approximate ? 'Да' : '', page.totals[metric].missing]), page.satire ? 'Да' : '', page.url]),
     });
   }
@@ -186,9 +193,11 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
   exportPosts(rows: readonly FacebookPost[]): void {
     this.csvData.set({ filename: 'facebook-posts-2026.csv',
       headers: ['Страница', 'Дата / период', 'Час (София)', 'Набор', 'Откъс', 'Обобщение', 'Ключови думи',
+        ...FACEBOOK_CANDIDATES.map(candidate => `${FACEBOOK_CANDIDATE_LABELS[candidate]}, тон в надписа`), 'Основание за тона',
         ...FACEBOOK_METRICS.flatMap(metric => [FACEBOOK_METRIC_LABELS[metric], `${FACEBOOK_METRIC_LABELS[metric]}, приблизително`]), 'Пълен надпис при събиране', 'Събрано на', 'Източник'],
       rows: rows.map(post => [this.pageName(post), facebookDate(post), facebookTime(post), post.origin === 'collection' ? 'Събрана публикация' : 'Намерено при повторения', post.excerpt,
         post.summary, post.keywords.map(match => match.keyword).join('; '),
+        ...FACEBOOK_CANDIDATES.map(candidate => FACEBOOK_TONE_LABELS[post.stance ? post.stance[candidate] ?? 'not-mentioned' : 'unreviewed']), post.stance?.reason ?? '',
         ...FACEBOOK_METRICS.flatMap(metric => [post.metrics[metric].value, post.metrics[metric].approximate ? 'Да' : '']),
         post.captionComplete === null ? '' : post.captionComplete ? 'Да' : 'Не', post.collectedAt, post.url]),
     });
