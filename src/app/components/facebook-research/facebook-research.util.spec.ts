@@ -8,12 +8,12 @@ const report = snapshot as FacebookReport;
 describe('Facebook research data', () => {
   it('keeps the collection and later matches separate with valid public-source references', () => {
     expect(validFacebookReport(report)).toBe(true);
-    expect(report.posts).toHaveLength(52);
-    expect(report.pages).toHaveLength(8);
-    expect(report.posts.filter(post => post.origin === 'collection')).toHaveLength(49);
+    expect(report.posts).toHaveLength(86);
+    expect(report.pages).toHaveLength(10);
+    expect(report.posts.filter(post => post.origin === 'collection')).toHaveLength(83);
     expect(report.posts.filter(post => post.origin === 'discovery')).toHaveLength(3);
-    expect(report.matches).toHaveLength(3);
-    expect(new Set(report.matches.map(match => match.sourceId)).size).toBe(2);
+    expect(report.matches).toHaveLength(11);
+    expect(new Set(report.matches.map(match => match.sourceId)).size).toBe(9);
     for (const match of report.matches) {
       const source = report.posts.find(post => post.id === match.sourceId)!;
       const target = report.posts.find(post => post.id === match.targetId)!;
@@ -24,13 +24,31 @@ describe('Facebook research data', () => {
     expect(JSON.stringify(report)).not.toContain('/Users/');
   });
 
-  it('reconciles every keyword count against the original 49 posts, without adding the discoveries', () => {
-    expect(report.coverage).toHaveLength(34);
+  it('counts each matching post once across the expanded sample and marks caption-derived terms', () => {
+    expect(report.coverage).toHaveLength(54);
+    expect(report.coverage.filter(row => row.fromCaptions)).toHaveLength(20);
     for (const row of report.coverage) {
-      expect(row.count).toBe(report.posts.filter(post => post.origin === 'collection'
-        && post.keywords.some(match => match.keyword === row.keyword)).length);
+      expect(row.count).toBe(report.posts.filter(post => post.keywords.some(match => match.keyword === row.keyword)).length);
       expect(row.count).toBeLessThan(report.keywordTarget);
+      if (row.fromCaptions) expect(row.count).toBeGreaterThan(0);
     }
+    const turkey = report.coverage.find(row => row.keyword === 'Турция')!;
+    expect(turkey.count).toBeGreaterThan(report.posts.filter(post => post.origin === 'collection'
+      && post.keywords.some(match => match.keyword === 'Турция')).length);
+    expect(report.coverage.find(row => row.keyword === 'костадинов')?.count).toBe(2);
+    expect(report.coverage.find(row => row.keyword === 'Колтуклиева')?.count).toBe(1);
+  });
+
+  it('rejects inconsistent counts, duplicate coverage rows and unknown keyword references', () => {
+    const wrongCount = structuredClone(report);
+    wrongCount.coverage[0].count++;
+    expect(validFacebookReport(wrongCount)).toBe(false);
+    const duplicate = structuredClone(report);
+    duplicate.coverage.push(duplicate.coverage[0]);
+    expect(validFacebookReport(duplicate)).toBe(false);
+    const unknown = structuredClone(report);
+    unknown.posts[0].keywords.push({ keyword: 'unknown', source: 'text', evidence: 'unknown' });
+    expect(validFacebookReport(unknown)).toBe(false);
   });
 
   it('preserves missing counters and rounded values in Page totals', () => {
@@ -41,7 +59,7 @@ describe('Facebook research data', () => {
     zero.metrics.shares = { value: 0, approximate: false, raw: '0' };
     expect(facebookTotal([missing, zero], 'shares')).toEqual({ value: 0, approximate: false, missing: 1 });
     const summaries = facebookPageSummaries(report);
-    expect(summaries.reduce((sum, page) => sum + page.postCount, 0)).toBe(52);
+    expect(summaries.reduce((sum, page) => sum + page.postCount, 0)).toBe(86);
     expect(summaries.find(page => page.name === 'BNews Bg')?.totals.shares.missing).toBe(4);
     expect(summaries.find(page => page.name === 'Бункер нюз')?.totals.reactions.approximate).toBe(true);
     expect(facebookCount(null)).toBe('—');
@@ -51,7 +69,7 @@ describe('Facebook research data', () => {
 
   it('does not assign an exact publication day to an interval-dated post', () => {
     const days = facebookDailyCounts(report.posts);
-    expect(days.reduce((sum, day) => sum + day.count, 0)).toBe(51);
+    expect(days.reduce((sum, day) => sum + day.count, 0)).toBe(85);
     const interval = report.posts.find(post => post.interval)!;
     expect(facebookDate(interval)).toContain('28');
     expect(facebookDate(interval)).toContain('30');
@@ -73,7 +91,7 @@ describe('Facebook research data', () => {
 
   it('accepts only local, content-addressed images attributed to their own public source', () => {
     expect(report.pages.every(page => page.avatar?.sourceUrl === page.url)).toBe(true);
-    expect(report.posts.filter(post => post.images?.length)).toHaveLength(47);
+    expect(report.posts.filter(post => post.images?.length)).toHaveLength(81);
     expect(report.posts.filter(post => post.images?.some(image => image.kind === 'video-thumbnail'))).toHaveLength(4);
     for (const value of ['https://external.example/image.jpg', '/images/facebook/2026/../private.jpg', 'javascript:alert(1)']) {
       const wrong = structuredClone(report);

@@ -73,7 +73,7 @@ export interface FacebookReport {
   pages: FacebookPage[];
   posts: FacebookPost[];
   matches: FacebookMatch[];
-  coverage: { keyword: string; count: number }[];
+  coverage: { keyword: string; count: number; fromCaptions?: boolean }[];
   reviews: FacebookReview[];
   sharedArticleUrl: string;
   collectionSha256: string;

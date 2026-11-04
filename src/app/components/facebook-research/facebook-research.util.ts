@@ -72,6 +72,7 @@ export function validFacebookReport(report: FacebookReport): boolean {
   };
   const pages = new Set(report.pages.map(page => page.id));
   const posts = new Set(report.posts.map(post => post.id));
+  const keywords = new Set(report.coverage.map(row => row.keyword));
   const octoberDate = (value: string): boolean => typeof value === 'string' && /^2026-10-(0[1-9]|[12]\d|3[01])$/.test(value);
   const validImage = (image: FacebookImage, sourceUrl: string): boolean => !!image
     && typeof image.sha256 === 'string' && /^[a-f0-9]{64}$/.test(image.sha256)
@@ -82,12 +83,12 @@ export function validFacebookReport(report: FacebookReport): boolean {
   return report.period === '2026-10' && Number.isInteger(report.keywordTarget) && report.keywordTarget > 0
     && Number.isFinite(Date.parse(report.collectionDate))
     && report.collectionPostCount === report.posts.filter(post => post.origin === 'collection').length
-    && pages.size === report.pages.length && posts.size === report.posts.length
+    && pages.size === report.pages.length && posts.size === report.posts.length && keywords.size === report.coverage.length
     && report.pages.every(page => typeof page.name === 'string' && safeFacebookUrl(page.url)
       && (page.avatar === undefined || validImage(page.avatar, page.url) && page.avatar.kind === 'image'))
     && report.posts.every(post => pages.has(post.pageId) && safeFacebookUrl(post.url)
       && typeof post.excerpt === 'string' && typeof post.summary === 'string' && Array.isArray(post.keywords)
-      && post.keywords.every(match => match && typeof match.keyword === 'string')
+      && post.keywords.every(match => match && typeof match.keyword === 'string' && keywords.has(match.keyword))
       && (!post.publishedAt || Number.isFinite(Date.parse(post.publishedAt)))
       && Number.isFinite(Date.parse(post.collectedAt))
       && (post.images === undefined || Array.isArray(post.images) && post.images.every(image => validImage(image, post.url)))
@@ -98,7 +99,9 @@ export function validFacebookReport(report: FacebookReport): boolean {
         && (post.metrics[metric].value === null || Number.isFinite(post.metrics[metric].value) && post.metrics[metric].value! >= 0)))
     && report.matches.every(match => posts.has(match.sourceId) && posts.has(match.targetId)
       && match.sourceId !== match.targetId && (match.kind === 'body' || match.kind === 'headline') && Number.isFinite(match.delayMinutes))
-    && report.coverage.every(row => typeof row.keyword === 'string' && Number.isInteger(row.count) && row.count >= 0)
+    && report.coverage.every(row => typeof row.keyword === 'string' && Number.isInteger(row.count) && row.count >= 0
+      && (row.fromCaptions === undefined || typeof row.fromCaptions === 'boolean')
+      && row.count === report.posts.filter(post => post.keywords.some(match => match.keyword === row.keyword)).length)
     && report.reviews.every(review => typeof review.title === 'string' && typeof review.summary === 'string'
       && Array.isArray(review.checks) && Array.isArray(review.alternatives) && Array.isArray(review.postIds)
       && review.checks.every(check => typeof check === 'string') && review.alternatives.every(text => typeof text === 'string')

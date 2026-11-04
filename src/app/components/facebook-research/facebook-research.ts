@@ -187,7 +187,7 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
     this.csvData.set({ filename: 'facebook-posts-2026.csv',
       headers: ['Страница', 'Дата / период', 'Час (София)', 'Набор', 'Откъс', 'Обобщение', 'Ключови думи',
         ...FACEBOOK_METRICS.flatMap(metric => [FACEBOOK_METRIC_LABELS[metric], `${FACEBOOK_METRIC_LABELS[metric]}, приблизително`]), 'Пълен надпис при събиране', 'Събрано на', 'Източник'],
-      rows: rows.map(post => [this.pageName(post), facebookDate(post), facebookTime(post), post.origin === 'collection' ? 'Начална извадка' : 'Намерено при повторения', post.excerpt,
+      rows: rows.map(post => [this.pageName(post), facebookDate(post), facebookTime(post), post.origin === 'collection' ? 'Събрана публикация' : 'Намерено при повторения', post.excerpt,
         post.summary, post.keywords.map(match => match.keyword).join('; '),
         ...FACEBOOK_METRICS.flatMap(metric => [post.metrics[metric].value, post.metrics[metric].approximate ? 'Да' : '']),
         post.captionComplete === null ? '' : post.captionComplete ? 'Да' : 'Не', post.collectedAt, post.url]),
@@ -203,8 +203,8 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
   }
 
   exportCoverage(rows: readonly KeywordCoverage[]): void {
-    this.csvData.set({ filename: 'facebook-keyword-coverage-2026.csv', headers: ['Ключова дума', 'Публикации в началната извадка', 'Цел', 'Недостиг'],
-      rows: rows.map(row => [row.keyword, row.count, this.report()!.keywordTarget, Math.max(0, this.report()!.keywordTarget - row.count)]),
+    this.csvData.set({ filename: 'facebook-keyword-coverage-2026.csv', headers: ['Ключова дума', 'Произход на думата', 'Публикации', 'Цел', 'Недостиг'],
+      rows: rows.map(row => [row.keyword, row.fromCaptions ? 'От публикациите' : 'Зададена', row.count, this.report()!.keywordTarget, Math.max(0, this.report()!.keywordTarget - row.count)]),
     });
   }
 }

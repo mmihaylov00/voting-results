@@ -51,12 +51,12 @@ describe('Facebook research workspace', () => {
     const fixture = loaded();
     const element = fixture.nativeElement as HTMLElement;
     expect(element.textContent).toContain('Частична извадка');
-    expect(element.querySelectorAll('.page-table tbody tr')).toHaveLength(8);
+    expect(element.querySelectorAll('.page-table tbody tr')).toHaveLength(10);
     expect(element.querySelector('.page-table')?.textContent).toContain('4 без брояч');
     expect(element.querySelector('.workspace-tabs [role="tablist"]')?.classList.contains('scrollable')).toBe(true);
-    expect(element.querySelectorAll('.page-table app-facebook-research-image img')).toHaveLength(8);
+    expect(element.querySelectorAll('.page-table app-facebook-research-image img')).toHaveLength(10);
     fixture.componentInstance.exportPages(fixture.componentInstance.pages());
-    expect(fixture.componentInstance.csvData()?.rows).toHaveLength(8);
+    expect(fixture.componentInstance.csvData()?.rows).toHaveLength(10);
     fixture.destroy();
   });
 
@@ -84,7 +84,7 @@ describe('Facebook research workspace', () => {
   it('opens matched posts and fact-check leads in mutually exclusive source modals', () => {
     const fixture = loaded('duplicates');
     const component = fixture.componentInstance;
-    expect((fixture.nativeElement as HTMLElement).querySelectorAll('.duplicate-group')).toHaveLength(2);
+    expect((fixture.nativeElement as HTMLElement).querySelectorAll('.duplicate-group')).toHaveLength(9);
     expect((fixture.nativeElement as HTMLElement).textContent).toContain('+83 мин');
     component.openPost(report.matches[0].targetId);
     fixture.detectChanges();
@@ -117,7 +117,7 @@ describe('Facebook research workspace', () => {
     http.expectOne(component.dataUrl).flush(report);
     fixture.detectChanges();
     expect(component.error()).toBe('');
-    expect(component.report()?.posts).toHaveLength(52);
+    expect(component.report()?.posts).toHaveLength(86);
     fixture.destroy();
   });
 

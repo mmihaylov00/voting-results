@@ -89,7 +89,7 @@
       }
 
       @if (view() === 'duplicates') {
-        <div class="section-heading"><div><h2>Повтарящо се съдържание</h2><p class="note">{{ data.titleSearchCount }} търсени заглавия и начални надписи · {{ duplicateGroups().length }} публикации със съвпадения</p></div>
+        <div class="section-heading"><div><h2>Повтарящо се съдържание</h2><p class="note">{{ data.posts.length }} публикации · {{ duplicateGroups().length }} групи със съвпадения</p></div>
           <button hlmBtn variant="outline" class="gap-2" type="button" (click)="exportMatches()"><app-map-icon name="download-table" />Експорт CSV</button></div>
         @for (group of duplicateGroups(); track group.source.id) {
           <article class="duplicate-group">
@@ -105,8 +105,7 @@
                 }
               </div>
             </div>
-            <p class="note">{{ group.matches[0].kind === 'body' ? 'Основният текст съвпада след изключване на хаштагове и връзки. Надписите не са изцяло еднакви.' : 'Съвпада заглавието. Двете допълнителни страници имат еднакъв надпис и час на публикуване: 18:58.' }}</p>
-            @if (group.matches[0].kind === 'headline') {<a hlmBtn variant="outline" size="sm" class="gap-2" [href]="data.sharedArticleUrl" target="_blank" rel="noopener noreferrer"><app-map-icon name="globe" />Общата статия · faktibg.com</a>}
+            <p class="note">{{ group.matches[0].kind === 'body' ? 'Основният текст съвпада след изключване на хаштагове и връзки. Надписите не са изцяло еднакви.' : 'Съвпада заглавието; основният текст може да се различава.' }}</p>
           </article>
         }
         <p class="note">Часове: София. Редът по време не установява първоизточник, общ собственик или организатор.</p>
@@ -122,19 +121,19 @@
       }
 
       @if (view() === 'coverage') {
-        <div class="section-heading"><div><h2>Покритие на събирането</h2><p class="note">{{ data.collectionPostCount }} начални публикации · цел {{ data.keywordTarget }} за всяка дума · целта не е достигната</p></div><button hlmBtn variant="outline" class="gap-2" type="button" (click)="exportCoverage(coverageTable.viewRows())"><app-map-icon name="download-table" />Експорт CSV</button></div>
+        <div class="section-heading"><div><h2>Покритие на събирането</h2><p class="note">{{ data.posts.length }} публикации · цел {{ data.keywordTarget }} за всяка дума · целта не е достигната</p></div><button hlmBtn variant="outline" class="gap-2" type="button" (click)="exportCoverage(coverageTable.viewRows())"><app-map-icon name="download-table" />Експорт CSV</button></div>
         <app-table-controls #coverageTable [rows]="data.coverage" [columns]="coverageColumns" label="Търсене на ключова дума" searchInputClass="min-h-11! text-base!" />
         <div class="table-scroll" tabindex="0" role="region" aria-label="Покритие по ключови думи" [virtualRows]="coverageTable.viewRows()" [virtualRowHeight]="49" #coverageRows="virtualRows">
-          <table class="coverage-table" aria-label="Публикации от началната извадка по ключови думи" [attr.aria-rowcount]="coverageTable.viewRows().length + 1">
+          <table class="coverage-table" aria-label="Публикации по ключови думи" [attr.aria-rowcount]="coverageTable.viewRows().length + 1">
             <thead><tr><th scope="col" app-sortable-table-header columnKey="keyword" label="Ключова дума" [table]="coverageTable" align="left"></th><th scope="col" app-sortable-table-header columnKey="count" label="Събрани / цел" [table]="coverageTable" align="right"></th><th scope="col" app-sortable-table-header columnKey="shortfall" label="Недостиг" [table]="coverageTable" align="right"></th></tr></thead>
             <tbody>
               @if (coverageRows.window().top) {<tr aria-hidden="true"><td colspan="3" [style.height.px]="coverageRows.window().top" class="virtual-spacer"></td></tr>}
-              @for (row of coverageRows.rows(); track row.keyword) {<tr [attr.data-virtual-index]="coverageRows.window().start + $index"><th scope="row">{{ row.keyword }}</th><td>{{ row.count }} <span class="muted">/ {{ data.keywordTarget }}</span><span class="coverage-track" aria-hidden="true"><span [style.width.%]="row.count / data.keywordTarget * 100"></span></span></td><td>{{ data.keywordTarget - row.count }}</td></tr>}
+              @for (row of coverageRows.rows(); track row.keyword) {<tr [attr.data-virtual-index]="coverageRows.window().start + $index"><th scope="row">{{ row.keyword }}@if (row.fromCaptions) {<small>От публикациите</small>}</th><td>{{ row.count }} <span class="muted">/ {{ data.keywordTarget }}</span><span class="coverage-track" aria-hidden="true"><span [style.width.%]="row.count / data.keywordTarget * 100"></span></span></td><td>{{ data.keywordTarget - row.count }}</td></tr>}
               @if (coverageRows.window().bottom) {<tr aria-hidden="true"><td colspan="3" [style.height.px]="coverageRows.window().bottom" class="virtual-spacer"></td></tr>}
             </tbody>
           </table>
         </div>
-        <div class="method-notes"><h3>Как да се чете</h3><p>Една публикация може да съдържа няколко ключови думи. Таблицата отчита само началните 49 публикации; трите допълнителни съвпадения са отделно открити.</p><p>Броячите и последователите са моментна снимка към събирането, а не измерване преди гласуването. Закръглените стойности са означени с ≈. Липсващите броячи не са нули.</p><p>Включени са публични Facebook страници. Профили и групи са изключени. Търсенето не е изчерпателно; споделянията не измерват уникален обхват или влияние върху вота.</p></div>
+        <div class="method-notes"><h3>Как да се чете</h3><p>Покритието обхваща всички събрани публикации. Добавените думи са извлечени от надписите и са означени с „От публикациите“.</p><p>Броячите и последователите са моментна снимка към събирането, а не измерване преди гласуването. Закръглените стойности са означени с ≈. Липсващите броячи не са нули.</p><p>Включени са публични Facebook страници. Профили и групи са изключени. Търсенето не е изчерпателно; споделянията не измерват уникален обхват или влияние върху вота.</p></div>
       }
     </div>
   }
@@ -158,7 +157,7 @@
         </div>
       }
       <dl class="post-counters">@for (metric of metrics; track metric) {<div><dt>{{ metricLabels[metric] }}</dt><dd>{{ count(post.metrics[metric].value, post.metrics[metric].approximate === true) }}</dd></div>}<div><dt>Обхват (reach)</dt><dd class="unavailable">Няма данни</dd></div></dl>
-      <div class="post-meta"><span>Събрано на {{ post.collectedAt | date:'dd.MM.yyyy':'UTC' }}</span><span>{{ post.origin === 'collection' ? 'Начална извадка' : 'Намерено при сравнение на заглавия' }}</span>@if (pageMap().get(post.pageId)?.satire) {<span>Страницата е означена като сатира / пародия</span>}@if (post.captionComplete === false) {<span>Събран е частичен надпис</span>}@if (post.interval) {<span>Датата е известна само в посочения период</span>}</div>
+      <div class="post-meta"><span>Събрано на {{ post.collectedAt | date:'dd.MM.yyyy':'UTC' }}</span><span>{{ post.origin === 'collection' ? 'Събрана публикация' : 'Намерено при сравнение на заглавия' }}</span>@if (pageMap().get(post.pageId)?.satire) {<span>Страницата е означена като сатира / пародия</span>}@if (post.captionComplete === false) {<span>Събран е частичен надпис</span>}@if (post.interval) {<span>Датата е известна само в посочения период</span>}</div>
       @if (post.keywords.length) {<h3>Ключови думи</h3><div class="keyword-list">@for (match of post.keywords; track match.keyword) {<span>{{ match.keyword }}@if (match.source === 'image') {<small>в изображение</small>}</span>}</div>}
       @if (selectedPostMatches().length) {<h3>Съвпадащи публикации</h3><div class="related-list">@for (match of selectedPostMatches(); track match.targetId) {@if (postById(match.sourceId === post.id ? match.targetId : match.sourceId); as related) {<button type="button" class="text-button related-row" (click)="openPost(related.id)"><span>{{ shortName(pageName(related)) }}<small>{{ postDate(related) }} · {{ postTime(related) }}</small></span><app-map-icon name="chevron-right" /></button>}}</div>}
       @if (selectedPostReviews().length) {<h3>Основания за преглед</h3>@for (review of selectedPostReviews(); track review.id) {<button class="text-button related-row" type="button" (click)="openReview(review)">{{ review.title }}<app-map-icon name="chevron-right" /></button>}}

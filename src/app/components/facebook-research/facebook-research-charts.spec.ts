@@ -26,15 +26,15 @@ describe('Facebook research charts', () => {
     fixture.detectChanges();
     const bars = component.pageChart().series![0] as Highcharts.SeriesBarOptions;
     const points = bars.data as Highcharts.PointOptionsObject[];
-    expect(points).toHaveLength(8);
+    expect(points).toHaveLength(10);
     expect(points.some(point => point.y === null)).toBe(true);
     component.metric.set('reactions');
     const reactions = component.pageChart().series![0] as Highcharts.SeriesBarOptions;
     expect((reactions.data as Highcharts.PointOptionsObject[]).some(point => point.custom?.['display'].startsWith('≈'))).toBe(true);
-    expect(component.datedPosts()).toBe(51);
+    expect(component.datedPosts()).toBe(85);
     expect(component.intervalPosts()).toBe(1);
     const timeline = component.timelineChart().series![0] as Highcharts.SeriesColumnOptions;
-    expect((timeline.data as number[]).reduce((sum, count) => sum + count, 0)).toBe(51);
+    expect((timeline.data as number[]).reduce((sum, count) => sum + count, 0)).toBe(85);
     const selection = vi.fn();
     component.pageSelect.subscribe(selection);
     component.pageChart().plotOptions!.series!.point!.events!.click!.call({ index: 0 } as Highcharts.Point, {} as Highcharts.PointClickEventObject);

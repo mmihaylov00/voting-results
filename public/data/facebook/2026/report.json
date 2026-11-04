@@ -2,7 +2,7 @@
   "version": 1,
   "period": "2026-10",
   "collectionDate": "2026-11-04",
-  "collectionPostCount": 49,
+  "collectionPostCount": 83,
   "titleSearchCount": 49,
   "keywordTarget": 100,
   "pages": [
@@ -148,6 +148,42 @@
         "kind": "image",
         "capturedAt": "2026-11-04",
         "sha256": "b405da9d92f49c6d753fb969663c74a187e5115864cfb7782f91a65ee069b069"
+      }
+    },
+    {
+      "id": "61591476950404",
+      "name": "Глас Новини",
+      "url": "https://www.facebook.com/profile.php?id=61591476950404",
+      "followers": 17000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection",
+      "avatar": {
+        "src": "/images/facebook/2026/ae57f868d43617e472cd557c94fcd20a5bbf931aa634c804e9dba87a7b444e8d.jpg",
+        "sourceUrl": "https://www.facebook.com/profile.php?id=61591476950404",
+        "width": 480,
+        "height": 480,
+        "kind": "image",
+        "capturedAt": "2026-11-04",
+        "sha256": "ae57f868d43617e472cd557c94fcd20a5bbf931aa634c804e9dba87a7b444e8d"
+      }
+    },
+    {
+      "id": "100063562561986",
+      "name": "Новини от нашата държава и цял свят",
+      "url": "https://www.facebook.com/bulevardnewss",
+      "followers": 63000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection",
+      "avatar": {
+        "src": "/images/facebook/2026/8a8db30b505c01f7f7db95b53ff5e9aa3935f10024318efddf1fac0fd9853ddf.jpg",
+        "sourceUrl": "https://www.facebook.com/bulevardnewss",
+        "width": 480,
+        "height": 480,
+        "kind": "image",
+        "capturedAt": "2026-11-04",
+        "sha256": "8a8db30b505c01f7f7db95b53ff5e9aa3935f10024318efddf1fac0fd9853ddf"
       }
     }
   ],
@@ -381,6 +417,16 @@
           "keyword": "Кандев",
           "source": "text",
           "evidence": "КАНДЕВ"
+        },
+        {
+          "keyword": "дебат",
+          "source": "text",
+          "evidence": "ДЕБАТ"
+        },
+        {
+          "keyword": "Ваня Великова",
+          "source": "text",
+          "evidence": "ВАНЯ ВЕЛИКОВА"
         }
       ],
       "metrics": {
@@ -586,6 +632,11 @@
           "keyword": "дрона",
           "source": "text",
           "evidence": "дронове"
+        },
+        {
+          "keyword": "Калоян Данчев",
+          "source": "text",
+          "evidence": "Калоян Данчев"
         }
       ],
       "metrics": {
@@ -691,6 +742,16 @@
           "keyword": "Кандев",
           "source": "text",
           "evidence": "Кандев"
+        },
+        {
+          "keyword": "дебат",
+          "source": "text",
+          "evidence": "дебат"
+        },
+        {
+          "keyword": "Кирил Вълчев",
+          "source": "text",
+          "evidence": "Кирил Вълчев"
         }
       ],
       "metrics": {
@@ -801,6 +862,11 @@
           "keyword": "радев",
           "source": "text",
           "evidence": "Радев"
+        },
+        {
+          "keyword": "балотаж",
+          "source": "text",
+          "evidence": "балотажа"
         }
       ],
       "metrics": {
@@ -881,6 +947,21 @@
           "keyword": "лева",
           "source": "text",
           "evidence": "лев"
+        },
+        {
+          "keyword": "ГЕРБ",
+          "source": "text",
+          "evidence": "ГЕРБ"
+        },
+        {
+          "keyword": "МЕЧ",
+          "source": "text",
+          "evidence": "МЕЧ"
+        },
+        {
+          "keyword": "Радостин Василев",
+          "source": "text",
+          "evidence": "Радостин Василев"
         }
       ],
       "metrics": {
@@ -966,6 +1047,16 @@
           "keyword": "зеленски",
           "source": "text",
           "evidence": "Зеленски"
+        },
+        {
+          "keyword": "балотаж",
+          "source": "text",
+          "evidence": "балотажа"
+        },
+        {
+          "keyword": "ГЕРБ",
+          "source": "text",
+          "evidence": "ГЕРБ"
         }
       ],
       "metrics": {
@@ -1156,6 +1247,21 @@
           "keyword": "радев",
           "source": "text",
           "evidence": "Радев"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
+        },
+        {
+          "keyword": "Белица",
+          "source": "text",
+          "evidence": "Белица"
+        },
+        {
+          "keyword": "Ревански",
+          "source": "text",
+          "evidence": "Ревански"
         }
       ],
       "metrics": {
@@ -1311,6 +1417,16 @@
           "keyword": "Жълтопаветни",
           "source": "text",
           "evidence": "жълтопаветни"
+        },
+        {
+          "keyword": "ГЕРБ",
+          "source": "text",
+          "evidence": "ГЕРБ"
+        },
+        {
+          "keyword": "Кристияна Стефанова",
+          "source": "text",
+          "evidence": "Кристияна Стефанова"
         }
       ],
       "metrics": {
@@ -1379,6 +1495,21 @@
           "keyword": "ППДБ",
           "source": "text",
           "evidence": "ПП и ДБ"
+        },
+        {
+          "keyword": "балотаж",
+          "source": "text",
+          "evidence": "балотажа"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
+        },
+        {
+          "keyword": "Прогресивна България",
+          "source": "text",
+          "evidence": "Прогресивна България"
         }
       ],
       "metrics": {
@@ -1482,6 +1613,16 @@
           "keyword": "спонсор",
           "source": "text",
           "evidence": "Спонсор"
+        },
+        {
+          "keyword": "Калоян Данчев",
+          "source": "text",
+          "evidence": "Калоян Данчев"
+        },
+        {
+          "keyword": "Кристияна Стефанова",
+          "source": "text",
+          "evidence": "Кристияна Стефанова"
         }
       ],
       "metrics": {
@@ -1592,6 +1733,21 @@
           "keyword": "ППДБ",
           "source": "text",
           "evidence": "ПП и ДБ"
+        },
+        {
+          "keyword": "балотаж",
+          "source": "text",
+          "evidence": "балотажа"
+        },
+        {
+          "keyword": "ГЕРБ",
+          "source": "text",
+          "evidence": "ГЕРБ"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
         }
       ],
       "metrics": {
@@ -1657,6 +1813,16 @@
           "keyword": "президент",
           "source": "text",
           "evidence": "ПРЕЗИДЕНТСКИЯ"
+        },
+        {
+          "keyword": "дебат",
+          "source": "text",
+          "evidence": "ДЕБАТ"
+        },
+        {
+          "keyword": "БНТ",
+          "source": "text",
+          "evidence": "БНТ"
         }
       ],
       "metrics": {
@@ -1707,6 +1873,16 @@
           "keyword": "ППДБ",
           "source": "text",
           "evidence": "ПП и ДБ"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
+        },
+        {
+          "keyword": "МВР",
+          "source": "text",
+          "evidence": "МВР"
         }
       ],
       "metrics": {
@@ -1827,6 +2003,11 @@
           "keyword": "дрона",
           "source": "text",
           "evidence": "дронове"
+        },
+        {
+          "keyword": "дебат",
+          "source": "text",
+          "evidence": "дебата"
         }
       ],
       "metrics": {
@@ -1942,6 +2123,16 @@
           "keyword": "асен василев",
           "source": "text",
           "evidence": "Асен Василев"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
+        },
+        {
+          "keyword": "Прогресивна България",
+          "source": "text",
+          "evidence": "Прогресивна България"
         }
       ],
       "metrics": {
@@ -2062,6 +2253,11 @@
           "keyword": "спонсор",
           "source": "text",
           "evidence": "спонсор"
+        },
+        {
+          "keyword": "БНТ",
+          "source": "text",
+          "evidence": "БНТ"
         }
       ],
       "metrics": {
@@ -2117,6 +2313,16 @@
           "keyword": "президент",
           "source": "text",
           "evidence": "президентски"
+        },
+        {
+          "keyword": "дебат",
+          "source": "text",
+          "evidence": "дебат"
+        },
+        {
+          "keyword": "БНТ",
+          "source": "text",
+          "evidence": "БНТ"
         }
       ],
       "metrics": {
@@ -2292,6 +2498,11 @@
           "keyword": "путин",
           "source": "text",
           "evidence": "Путин"
+        },
+        {
+          "keyword": "ГЕРБ",
+          "source": "text",
+          "evidence": "ГЕРБ"
         }
       ],
       "metrics": {
@@ -2557,6 +2768,11 @@
           "keyword": "пеевски",
           "source": "text",
           "evidence": "Пеевски"
+        },
+        {
+          "keyword": "Ревански",
+          "source": "text",
+          "evidence": "Ревански"
         }
       ],
       "metrics": {
@@ -2636,6 +2852,11 @@
           "keyword": "зеленски",
           "source": "text",
           "evidence": "Зеленски"
+        },
+        {
+          "keyword": "Financial Times",
+          "source": "text",
+          "evidence": "Financial Times"
         }
       ],
       "metrics": {
@@ -2846,6 +3067,11 @@
           "keyword": "ППДБ",
           "source": "text",
           "evidence": "ПП и ДБ"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
         }
       ],
       "metrics": {
@@ -2911,6 +3137,11 @@
           "keyword": "русия",
           "source": "text",
           "evidence": "Русия"
+        },
+        {
+          "keyword": "Financial Times",
+          "source": "text",
+          "evidence": "Financial Times"
         }
       ],
       "metrics": {
@@ -3011,6 +3242,16 @@
           "keyword": "ППДБ",
           "source": "text",
           "evidence": "ПП и ДБ"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
+        },
+        {
+          "keyword": "Турция",
+          "source": "text",
+          "evidence": "Турция"
         }
       ],
       "metrics": {
@@ -3296,6 +3537,11 @@
           "keyword": "избори",
           "source": "text",
           "evidence": "избори"
+        },
+        {
+          "keyword": "Турция",
+          "source": "text",
+          "evidence": "Турция"
         }
       ],
       "metrics": {
@@ -3346,6 +3592,11 @@
           "keyword": "избори",
           "source": "text",
           "evidence": "избори"
+        },
+        {
+          "keyword": "Турция",
+          "source": "text",
+          "evidence": "Турция"
         }
       ],
       "metrics": {
@@ -3377,6 +3628,2191 @@
           "sha256": "ce1fe4f247c0846f4afbb7bb3d1841bfc4ded2c340b0b41cdb385c9fbb5332f5"
         }
       ]
+    },
+    {
+      "id": "post:pfbid0pVveentc1PVrbz9igvuN85ybYYJmAEQvBgaiYQpnrtnW2ei5Mvm6nLFWENhX38Psl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid0pVveentc1PVrbz9igvuN85ybYYJmAEQvBgaiYQpnrtnW2ei5Mvm6nLFWENhX38Psl",
+      "publishedAt": "2026-10-31T20:12:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T12:59:23.838Z",
+      "excerpt": "Гюров пред британския Financial Times: България заедно с Украйна трябва да се готви за ескалация във войната срещу Русия #Гюров #Зеленски",
+      "summary": "Препредава твърдение, приписано на Гюров пред Financial Times, за България, Украйна и ескалацията на войната.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        },
+        {
+          "keyword": "война",
+          "source": "text",
+          "evidence": "войната"
+        },
+        {
+          "keyword": "русия",
+          "source": "text",
+          "evidence": "Русия"
+        },
+        {
+          "keyword": "зеленски",
+          "source": "text",
+          "evidence": "Зеленски"
+        },
+        {
+          "keyword": "Financial Times",
+          "source": "text",
+          "evidence": "Financial Times"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "54",
+          "value": 54,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "22",
+          "value": 22,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "117",
+          "value": 117,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "e3d7548634c2c19f0c85e64f1dbb5a8d45997613d7fc0aeb8b924e59392ccd61",
+      "images": [
+        {
+          "src": "/images/facebook/2026/1cc7a38eb482c27f972a7a6a1e38065b4a08e812a449d81013edc8aa64a153c3.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid0pVveentc1PVrbz9igvuN85ybYYJmAEQvBgaiYQpnrtnW2ei5Mvm6nLFWENhX38Psl",
+          "width": 910,
+          "height": 590,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "1cc7a38eb482c27f972a7a6a1e38065b4a08e812a449d81013edc8aa64a153c3"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0TmJbD1kQoSpxLcJADuGeJ1SGjW3Lz9Z7zX7LNNzzU5GgymXPXKkibkGJF6TbXC6Pl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid0TmJbD1kQoSpxLcJADuGeJ1SGjW3Lz9Z7zX7LNNzzU5GgymXPXKkibkGJF6TbXC6Pl",
+      "publishedAt": "2026-10-31T21:38:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:02:11.452Z",
+      "excerpt": "Пеевски спусна директивата си да се работи дискретно за кандидатите на ПП и ДБ Пред членове на общинските съвети от ДПС в цялата страна е",
+      "summary": "Твърди за указания от Пеевски за мобилизация в подкрепа на кандидатурата на Гюров.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "сглобка",
+          "source": "text",
+          "evidence": "Сглобката"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "ППДБ",
+          "source": "text",
+          "evidence": "ПП и ДБ"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "28",
+          "value": 28,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "7",
+          "value": 7,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "17",
+          "value": 17,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "c250e16cb821389f85175339a8b6473fa06952509a316606d6d88bbfad81494b",
+      "images": [
+        {
+          "src": "/images/facebook/2026/a242cfbbf3f7f8161822eb84634162d53518ccf3fafc70bfe1841db28fe03f25.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid0TmJbD1kQoSpxLcJADuGeJ1SGjW3Lz9Z7zX7LNNzzU5GgymXPXKkibkGJF6TbXC6Pl",
+          "width": 733,
+          "height": 811,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "a242cfbbf3f7f8161822eb84634162d53518ccf3fafc70bfe1841db28fe03f25"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0317sNmP4Ejrj3qwFsSCrGXNaLCMypad1TQ2u27dzNgTzBzpa7w7qRu7CyF2kBQvKtl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid0317sNmP4Ejrj3qwFsSCrGXNaLCMypad1TQ2u27dzNgTzBzpa7w7qRu7CyF2kBQvKtl",
+      "publishedAt": "2026-10-31T20:17:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:02:12.792Z",
+      "excerpt": "Бареков говори ексклузивно пред Карбовски в деня за размисъл Първа част (Видео) вижте в коментари #Бареков #Карбовски",
+      "summary": "Рекламира интервю на Бареков пред Карбовски в деня за размисъл.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Карбовски",
+          "source": "text",
+          "evidence": "Карбовски"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "83",
+          "value": 83,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "7",
+          "value": 7,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "12",
+          "value": 12,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "dcdb3f98c7afac54b96538d3e040be820652da8be56143536d7c6fcd6a155045",
+      "images": [
+        {
+          "src": "/images/facebook/2026/7d3cbcbfce386eb04e76c8ed474b7ac03de31a575cfe83b3276a504074be9a6a.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid0317sNmP4Ejrj3qwFsSCrGXNaLCMypad1TQ2u27dzNgTzBzpa7w7qRu7CyF2kBQvKtl",
+          "width": 891,
+          "height": 587,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "7d3cbcbfce386eb04e76c8ed474b7ac03de31a575cfe83b3276a504074be9a6a"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0W91zvaUDUbjGfAT4RRDMfMrmwpLeYGcXbPq2tTiWfJihYoGSugJDqd2Meg3SNU9Gl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid0W91zvaUDUbjGfAT4RRDMfMrmwpLeYGcXbPq2tTiWfJihYoGSugJDqd2Meg3SNU9Gl",
+      "publishedAt": "2026-10-31T19:37:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:02:14.196Z",
+      "excerpt": "Депутатка на Пеевски: Гласувайте за номер 4, за да подкрепите Ради Ревански Фатима е влиятелен депутат в Белица и Якоруда и по избори нейното мнение",
+      "summary": "Препредава призив за гласуване за номер 4, свързан с подкрепа за Ревански.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "избори"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "ППДБ",
+          "source": "text",
+          "evidence": "ПП и ДБ"
+        },
+        {
+          "keyword": "Белица",
+          "source": "text",
+          "evidence": "Белица"
+        },
+        {
+          "keyword": "Ревански",
+          "source": "text",
+          "evidence": "Ревански"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "126",
+          "value": 126,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "36",
+          "value": 36,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "16",
+          "value": 16,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "63e0784bd3f683cd6749209f42712cf774444c52e451bdb6291e759c4b1a3ef7",
+      "images": [
+        {
+          "src": "/images/facebook/2026/ad9f8d5d03834b0b82c6e8184dcc48755f53fc7ffdaf0ae506ed00fced367454.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid0W91zvaUDUbjGfAT4RRDMfMrmwpLeYGcXbPq2tTiWfJihYoGSugJDqd2Meg3SNU9Gl",
+          "width": 1056,
+          "height": 1092,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "ad9f8d5d03834b0b82c6e8184dcc48755f53fc7ffdaf0ae506ed00fced367454"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02BwihQyZqD3td346wvdEipSrUavMA5D9U3zho7XrgtXnRNBuY4NDqw9LoUUZ38ykgl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid02BwihQyZqD3td346wvdEipSrUavMA5D9U3zho7XrgtXnRNBuY4NDqw9LoUUZ38ykgl",
+      "publishedAt": "2026-10-31T19:24:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:02:15.579Z",
+      "excerpt": "Мощна вълна с автобуси с избиратели от Турция заля България за утрешните избори Областният лидер на ДПС в Хасково отговаря за извозването на избиратели от",
+      "summary": "Твърди за превоз на избиратели от Турция във връзка с предстоящия вот.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "избори"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
+        },
+        {
+          "keyword": "Турция",
+          "source": "text",
+          "evidence": "Турция"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "223",
+          "value": 223,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "74",
+          "value": 74,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "258",
+          "value": 258,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "8890f1ebe5f385e3a36f6d4dfe5bfdf17a14799e4c173fb1852b8f87e9fac8f2",
+      "images": [
+        {
+          "src": "/images/facebook/2026/df015d2af9aca2250575de417946ee630c67eebca53c1c7b49eff7746e4198f2.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid02BwihQyZqD3td346wvdEipSrUavMA5D9U3zho7XrgtXnRNBuY4NDqw9LoUUZ38ykgl",
+          "width": 1192,
+          "height": 885,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "df015d2af9aca2250575de417946ee630c67eebca53c1c7b49eff7746e4198f2"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0K5jf6Wfc67p2HwjBYkg4BSZegkKPfbDV8vaGLyiVwVaWuPnJQ1NhiJ1VpsVjauDzl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid0K5jf6Wfc67p2HwjBYkg4BSZegkKPfbDV8vaGLyiVwVaWuPnJQ1NhiJ1VpsVjauDzl",
+      "publishedAt": "2026-10-31T19:18:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:02:16.941Z",
+      "excerpt": "Бойко Борисов подкрепя на думи Гюров, а на дело – гласува за Йотова Бойко Борисов гласува миналата седмица за Илияна Йотова, а в петък подкрепи",
+      "summary": "Коментира разлика между заявената подкрепа на Борисов за Гюров и предполагаемия му избор.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "ППДБ",
+          "source": "text",
+          "evidence": "ПП и ДБ"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "38",
+          "value": 38,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "8",
+          "value": 8,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "19",
+          "value": 19,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "2bfa71fc114634965019146e5cbc7f390f5aaaf040d92bfffd469783aef44ed9",
+      "images": [
+        {
+          "src": "/images/facebook/2026/aa085c7703d29126f75ae08ab3bf462e14a25d8f71da34c7c0fb1c9a3c98a584.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid0K5jf6Wfc67p2HwjBYkg4BSZegkKPfbDV8vaGLyiVwVaWuPnJQ1NhiJ1VpsVjauDzl",
+          "width": 1011,
+          "height": 655,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "aa085c7703d29126f75ae08ab3bf462e14a25d8f71da34c7c0fb1c9a3c98a584"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0txCzz6qbbi7BezLje1uFVANeUa5eskGN76mkPQ9tWYNx97JCMjEFDndbPFtwYAzYl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid0txCzz6qbbi7BezLje1uFVANeUa5eskGN76mkPQ9tWYNx97JCMjEFDndbPFtwYAzYl",
+      "publishedAt": "2026-10-31T14:57:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:02:18.296Z",
+      "excerpt": "FT: Илияна Йотова предлага България да бъде дипломатически канал между ЕС и Москва България трябва да се превърне в дипломатически канал за диалог между Русия",
+      "summary": "Представя позиция, приписана на Йотова пред Financial Times, за диалога между ЕС и Москва.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "избори"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        },
+        {
+          "keyword": "русия",
+          "source": "text",
+          "evidence": "Русия"
+        },
+        {
+          "keyword": "Financial Times",
+          "source": "text",
+          "evidence": "Financial Times"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "214",
+          "value": 214,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "29",
+          "value": 29,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "27",
+          "value": 27,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "872aed96b3e073fa6827550f8a76b0ea2be934420a1d9da169b954036d96caac",
+      "images": [
+        {
+          "src": "/images/facebook/2026/a401ac07e2cd438e2dfe3b1e1c12269427d5aa745dec0cf8202fc22c5d0e1468.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid0txCzz6qbbi7BezLje1uFVANeUa5eskGN76mkPQ9tWYNx97JCMjEFDndbPFtwYAzYl",
+          "width": 810,
+          "height": 648,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "a401ac07e2cd438e2dfe3b1e1c12269427d5aa745dec0cf8202fc22c5d0e1468"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02DjFWK74BJbFdAYJQGreHngD2m3evycaLdCeHeK7PykkWGR9zzHpNMQNt6XciHXB5l",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid02DjFWK74BJbFdAYJQGreHngD2m3evycaLdCeHeK7PykkWGR9zzHpNMQNt6XciHXB5l",
+      "publishedAt": "2026-10-31T13:12:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:02:21.145Z",
+      "excerpt": "Николай Бареков ексклузивно в Седмицата: Подготвят политическото погребение на Борисов Кой подготвя политическото погребение на Бойко Борисов? Защо забрави за в",
+      "summary": "Рекламира интервю на Бареков с политически коментар и прогноза преди балотажа.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "ППДБ",
+          "source": "text",
+          "evidence": "ПП и ДБ"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        },
+        {
+          "keyword": "ГЕРБ",
+          "source": "text",
+          "evidence": "ГЕРБ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "284",
+          "value": 284,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "47",
+          "value": 47,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "33",
+          "value": 33,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "b16a1700220e4c05d13e8932bfd2b99770cbec7f134dae2f8163b9ff217bc476",
+      "images": [
+        {
+          "src": "/images/facebook/2026/c4ca1a9d3a8ca232fe0628e8956cccb285674872c4e07611e02901aaead1c858.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid02DjFWK74BJbFdAYJQGreHngD2m3evycaLdCeHeK7PykkWGR9zzHpNMQNt6XciHXB5l",
+          "width": 869,
+          "height": 525,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "c4ca1a9d3a8ca232fe0628e8956cccb285674872c4e07611e02901aaead1c858"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02jZo2EaavFLqQPxHZdxjr3vGNSMWBLz4z2gcn92scncuZ3fWGrh3Kes6Tw9gcbWeUl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid02jZo2EaavFLqQPxHZdxjr3vGNSMWBLz4z2gcn92scncuZ3fWGrh3Kes6Tw9gcbWeUl",
+      "publishedAt": "2026-10-30T16:16:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:03:05.204Z",
+      "excerpt": "Костов, Плевнелиев и Васил Терзиев изпраха Борисов преди да го пенсионират с обща подкрепа за Гюров Прочетете в коментари #Борисов #Гюров",
+      "summary": "Коментира публичната подкрепа за Гюров от Костов, Плевнелиев и Терзиев.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "35",
+          "value": 35,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "13",
+          "value": 13,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "11",
+          "value": 11,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "244c2b27386defebbb689ebce969592b9439e8bdd915411c4e3e6f39ddffb10c",
+      "images": [
+        {
+          "src": "/images/facebook/2026/a3a62b8730737062d471feb1412d4ae82921f1ed005e651bb90d27fcd88a8614.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid02jZo2EaavFLqQPxHZdxjr3vGNSMWBLz4z2gcn92scncuZ3fWGrh3Kes6Tw9gcbWeUl",
+          "width": 911,
+          "height": 668,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "a3a62b8730737062d471feb1412d4ae82921f1ed005e651bb90d27fcd88a8614"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0DKLNwwfhRLsUCAvwvSTVqxjXo14Ybg7hQBM4QkapDncqik1b8BY8ryNsYbzq47XRl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid0DKLNwwfhRLsUCAvwvSTVqxjXo14Ybg7hQBM4QkapDncqik1b8BY8ryNsYbzq47XRl",
+      "publishedAt": "2026-10-30T12:10:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:03:06.746Z",
+      "excerpt": "Кирил Петков от премиер с помощни колелета до “сив кардинал” зад Гюров и производител на военни дронове за Украйна Каква е цената на новата Сглобка",
+      "summary": "Твърди за връзки между Кирил Петков, кампанията на Гюров и производството на дронове.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        },
+        {
+          "keyword": "сглобка",
+          "source": "text",
+          "evidence": "Сглобка"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "кирил петков",
+          "source": "text",
+          "evidence": "Кирил Петков"
+        },
+        {
+          "keyword": "дрона",
+          "source": "text",
+          "evidence": "дронове"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "66",
+          "value": 66,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "13",
+          "value": 13,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "78",
+          "value": 78,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "5a56f124ab6fccb06cb5fe02104816f8e7f35bd1af51126254dc89e873c4be1a",
+      "images": [
+        {
+          "src": "/images/facebook/2026/15ead1a8652c1bf4d72c9ec7d9c2bac6ac4fdbb5aa6664921972d0b1831836a5.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid0DKLNwwfhRLsUCAvwvSTVqxjXo14Ybg7hQBM4QkapDncqik1b8BY8ryNsYbzq47XRl",
+          "width": 830,
+          "height": 585,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "15ead1a8652c1bf4d72c9ec7d9c2bac6ac4fdbb5aa6664921972d0b1831836a5"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02BXNCV1uC2F5nUAmYRGGg96tyrbqpW8yvnUEmRHnYD4D27yaZBWEHLuvp67B29zkdl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid02BXNCV1uC2F5nUAmYRGGg96tyrbqpW8yvnUEmRHnYD4D27yaZBWEHLuvp67B29zkdl",
+      "publishedAt": "2026-10-30T10:00:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:03:08.152Z",
+      "excerpt": "От Прогресивна България потвърдиха, че ДПС е най-яростната им опозиция и предупредиха, че с Гюров – президент Пеевски ще си има главен прокурор Вижте още",
+      "summary": "Представя позиция на Прогресивна България за ДПС и кандидатурата на Гюров.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
+        },
+        {
+          "keyword": "Прогресивна България",
+          "source": "text",
+          "evidence": "Прогресивна България"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "66",
+          "value": 66,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "11",
+          "value": 11,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "23",
+          "value": 23,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "d09282d3e0df635b2f07e3366d974cd4e6880c6c0ea891762e3b43cc3736ccbe",
+      "images": [
+        {
+          "src": "/images/facebook/2026/2562574f20a9f9c7a867dbf65b03dfa8db51bd74504b612acf00c3fe4336ad97.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid02BXNCV1uC2F5nUAmYRGGg96tyrbqpW8yvnUEmRHnYD4D27yaZBWEHLuvp67B29zkdl",
+          "width": 796,
+          "height": 522,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "2562574f20a9f9c7a867dbf65b03dfa8db51bd74504b612acf00c3fe4336ad97"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0tVtTjFwus7LNtbv6zFgLKxtYFg5bhXGi1TKv8jN6XNoHAZP5G6ssz9EqAFo9XnGYl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid0tVtTjFwus7LNtbv6zFgLKxtYFg5bhXGi1TKv8jN6XNoHAZP5G6ssz9EqAFo9XnGYl",
+      "publishedAt": "2026-10-30T09:33:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:03:09.436Z",
+      "excerpt": "На който му липсва Росен Плевнелиев, да гласува заедно с циганските махали за Андрей Гюров",
+      "summary": "Публикува политически призив, сравняващ подкрепата за Гюров с тази за Плевнелиев.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "120",
+          "value": 120,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "29",
+          "value": 29,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "10",
+          "value": 10,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "b1710e3ad4377853fe4d40240aa7c62feaa23ab67a2b717276a43e9e6969215f",
+      "images": [
+        {
+          "src": "/images/facebook/2026/f639a8fd5c13ad7558bd55981ae68368fec4c8327db996fe44771609d03522a5.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid0tVtTjFwus7LNtbv6zFgLKxtYFg5bhXGi1TKv8jN6XNoHAZP5G6ssz9EqAFo9XnGYl",
+          "width": 1131,
+          "height": 720,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "f639a8fd5c13ad7558bd55981ae68368fec4c8327db996fe44771609d03522a5"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid09m9SDJjCfAtU4pqLC9SBbnyHxx32WDQnEjS4xVs9oJ8Pd6BYFWfWZshFR3N9qoA6l",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid09m9SDJjCfAtU4pqLC9SBbnyHxx32WDQnEjS4xVs9oJ8Pd6BYFWfWZshFR3N9qoA6l",
+      "publishedAt": "2026-10-30T09:30:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:03:10.759Z",
+      "excerpt": "След слабото представяне по БНТ срещу Илияна Йотова, накрая завалията попадна и Директно срещу Кристиянаа Стефанова! Гюров, също като своя ментор Кирил Петков,",
+      "summary": "Критичен коментар за Гюров след телевизионния дебат и участието му при Кристияна Стефанова.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        },
+        {
+          "keyword": "война",
+          "source": "text",
+          "evidence": "войната"
+        },
+        {
+          "keyword": "кирил петков",
+          "source": "text",
+          "evidence": "Кирил Петков"
+        },
+        {
+          "keyword": "дрона",
+          "source": "text",
+          "evidence": "дронове"
+        },
+        {
+          "keyword": "спонсор",
+          "source": "text",
+          "evidence": "спонсор"
+        },
+        {
+          "keyword": "БНТ",
+          "source": "text",
+          "evidence": "БНТ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "111",
+          "value": 111,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "25",
+          "value": 25,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "37",
+          "value": 37,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "92580576ad7f54a9ce8b5d385e0d267cf2513ac529980a2b0c97624d9d7293c9",
+      "images": [
+        {
+          "src": "/images/facebook/2026/c03d9372356d8b2edd605fce0f042a47ec2532ec611e1aa77a5d37948dee0ad9.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid09m9SDJjCfAtU4pqLC9SBbnyHxx32WDQnEjS4xVs9oJ8Pd6BYFWfWZshFR3N9qoA6l",
+          "width": 1280,
+          "height": 720,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "c03d9372356d8b2edd605fce0f042a47ec2532ec611e1aa77a5d37948dee0ad9"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02aZDv5aYEA7tJk17xqQ4aagnket1qJ2SbkPTPeh7VVdvQpCwkkqNdN4dyREEfXfKjl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid02aZDv5aYEA7tJk17xqQ4aagnket1qJ2SbkPTPeh7VVdvQpCwkkqNdN4dyREEfXfKjl",
+      "publishedAt": "2026-10-29T23:48:00+02:00",
+      "date": "2026-10-29",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:03:12.791Z",
+      "excerpt": "Илияна Йотова безапелационно разгроми Гюров и цялата Сглобка в дебата по БНТ Единственият дебат преди балотажа се състоя по държавната БНТ и бе тотален рецитал",
+      "summary": "Оценява Йотова като победител в телевизионния дебат с Гюров.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "сглобка",
+          "source": "text",
+          "evidence": "Сглобка"
+        },
+        {
+          "keyword": "балотаж",
+          "source": "text",
+          "evidence": "балотажа"
+        },
+        {
+          "keyword": "дебат",
+          "source": "text",
+          "evidence": "дебата"
+        },
+        {
+          "keyword": "БНТ",
+          "source": "text",
+          "evidence": "БНТ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "392",
+          "value": 392,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "44",
+          "value": 44,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "104",
+          "value": 104,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "0fc90b7df63ce65ae63b43d1992ba5408fcde16072f0646f7e204f9a26e5d5cc",
+      "images": [
+        {
+          "src": "/images/facebook/2026/25d79a3c01c0e9298ec048b1b1a8d3c2985b1df2fcb383d5564c1e3762b50e37.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid02aZDv5aYEA7tJk17xqQ4aagnket1qJ2SbkPTPeh7VVdvQpCwkkqNdN4dyREEfXfKjl",
+          "width": 1280,
+          "height": 877,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "25d79a3c01c0e9298ec048b1b1a8d3c2985b1df2fcb383d5564c1e3762b50e37"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02ZgmYfBVT6EehBcBnfE7EdG1bcKBkPYYTvFQqxM6UJ4a5jYGswBqW6bLsSwmCwzE4l",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid02ZgmYfBVT6EehBcBnfE7EdG1bcKBkPYYTvFQqxM6UJ4a5jYGswBqW6bLsSwmCwzE4l",
+      "publishedAt": "2026-10-25T19:50:00+02:00",
+      "date": "2026-10-25",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:04:19.619Z",
+      "excerpt": "Илияна Йотова и Андрей Гюров на балотаж с изненадващо малка разлика помежду си при суперниска избирателна активност Сензационна развръзка на първия тур на избор",
+      "summary": "Представя първоначални резултати от първия тур и коментира разликата между двамата кандидати и активността.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Кандев",
+          "source": "text",
+          "evidence": "Кандев"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "изборите"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        },
+        {
+          "keyword": "балотаж",
+          "source": "text",
+          "evidence": "балотаж"
+        },
+        {
+          "keyword": "БНТ",
+          "source": "text",
+          "evidence": "БНТ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "21",
+          "value": 21,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "16",
+          "value": 16,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "21",
+          "value": 21,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "597c3a2a2c69a3611d19cd770bc194a6c46611992408f6594a433b4bbf328345",
+      "images": [
+        {
+          "src": "/images/facebook/2026/2ea47e793ea3d5d89b5f638f57b6936913af909441f665d8a363475567bf85ac.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid02ZgmYfBVT6EehBcBnfE7EdG1bcKBkPYYTvFQqxM6UJ4a5jYGswBqW6bLsSwmCwzE4l",
+          "width": 1100,
+          "height": 721,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "2ea47e793ea3d5d89b5f638f57b6936913af909441f665d8a363475567bf85ac"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0VYwjVLzXpkkkERa8B8nj2WYinTRjHSpMdpuWSyDxxZJhLRDPWNATZtj8DDT8ctk2l",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid0VYwjVLzXpkkkERa8B8nj2WYinTRjHSpMdpuWSyDxxZJhLRDPWNATZtj8DDT8ctk2l",
+      "publishedAt": "2026-10-25T18:04:00+02:00",
+      "date": "2026-10-25",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:04:21.666Z",
+      "excerpt": "Аналоговият “лидер на дясна партия” Дядо Йоцо от Банкя цифрово подкрепи Гюров Кое днес промени плановете на Борисов и той реши все пак да гласува?",
+      "summary": "Коментира подкрепата на Борисов за Гюров в изборния ден.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "55",
+          "value": 55,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "21",
+          "value": 21,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "26",
+          "value": 26,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "f2fc3382e7c2329217c2cd76213ac2b31c58f386095a36092146760097cac8cf",
+      "images": [
+        {
+          "src": "/images/facebook/2026/b3768bb432b3d470ec63cd1b9584300378403b8f34032f9834684bf54de36db9.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid0VYwjVLzXpkkkERa8B8nj2WYinTRjHSpMdpuWSyDxxZJhLRDPWNATZtj8DDT8ctk2l",
+          "width": 784,
+          "height": 587,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "b3768bb432b3d470ec63cd1b9584300378403b8f34032f9834684bf54de36db9"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid09Sad8rRWqTxk99V9nGjpQUbjHdGrtZGSXroqjhzQo5q2ctWbmhTkNe4EzjY3npHTl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid09Sad8rRWqTxk99V9nGjpQUbjHdGrtZGSXroqjhzQo5q2ctWbmhTkNe4EzjY3npHTl",
+      "publishedAt": "2026-10-25T16:09:00+02:00",
+      "date": "2026-10-25",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:04:24.005Z",
+      "excerpt": "ДПС чу Белица и бойкотира първия тур на изборите заради опандизените си кметове “Не гласувайте“: ДПС сподели апел за бойкот на вота в Белица, от",
+      "summary": "Твърди за призиви към избиратели на ДПС да бойкотират първия тур след арести на кметове.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "изборите"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
+        },
+        {
+          "keyword": "Белица",
+          "source": "text",
+          "evidence": "Белица"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "21",
+          "value": 21,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "10",
+          "value": 10,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "12",
+          "value": 12,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "77cc7405ff2011002d3240db50a81351038e4f98552bac82ffe8e425f6453604",
+      "images": [
+        {
+          "src": "/images/facebook/2026/8bfe603d3babcbe8bc2fa0295ec040682f47c54f1437c2cde13cdddd10cfddc0.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid09Sad8rRWqTxk99V9nGjpQUbjHdGrtZGSXroqjhzQo5q2ctWbmhTkNe4EzjY3npHTl",
+          "width": 913,
+          "height": 660,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "8bfe603d3babcbe8bc2fa0295ec040682f47c54f1437c2cde13cdddd10cfddc0"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02vGKsL8zMEvmywHc7uP3xwpLXUHrhUT7ejLDpiAhhysMjEyCKoCdSuB9DwHv2bNCyl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid02vGKsL8zMEvmywHc7uP3xwpLXUHrhUT7ejLDpiAhhysMjEyCKoCdSuB9DwHv2bNCyl",
+      "publishedAt": "2026-10-25T14:35:00+02:00",
+      "date": "2026-10-25",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:04:25.666Z",
+      "excerpt": "Сглобката отврати хората, за да изпъкне корпоративния вот и стяга кървава война за балотажа С компроматната си кампания Асен Василев, Ивайло Мирчев и неговите с",
+      "summary": "Свързва предизборната кампания с компромати и твърдения за корпоративен вот.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "Избори"
+        },
+        {
+          "keyword": "война",
+          "source": "text",
+          "evidence": "война"
+        },
+        {
+          "keyword": "сглобка",
+          "source": "text",
+          "evidence": "Сглобката"
+        },
+        {
+          "keyword": "асен василев",
+          "source": "text",
+          "evidence": "Асен Василев"
+        },
+        {
+          "keyword": "балотаж",
+          "source": "text",
+          "evidence": "балотажа"
+        },
+        {
+          "keyword": "ГЕРБ",
+          "source": "text",
+          "evidence": "ГЕРБ"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "36",
+          "value": 36,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "9",
+          "value": 9,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "15",
+          "value": 15,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "3b87dff4203aecfac15b0cc354c98768a373e58fbfc1194f37bad887a43d8821",
+      "images": [
+        {
+          "src": "/images/facebook/2026/88a3d6f392eba2b19acf0731da11db24adab0f7be6492c002347d896d2782146.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid02vGKsL8zMEvmywHc7uP3xwpLXUHrhUT7ejLDpiAhhysMjEyCKoCdSuB9DwHv2bNCyl",
+          "width": 1086,
+          "height": 730,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "88a3d6f392eba2b19acf0731da11db24adab0f7be6492c002347d896d2782146"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0yvjwnnVGCEKzWJ87u6jAREm31LCAspnuyNayxzuuqSqG757ccMxprVzLxhzUJonRl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid0yvjwnnVGCEKzWJ87u6jAREm31LCAspnuyNayxzuuqSqG757ccMxprVzLxhzUJonRl",
+      "publishedAt": "2026-10-25T14:28:00+02:00",
+      "date": "2026-10-25",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:04:27.183Z",
+      "excerpt": "ПП и ДБ налапаха като шарани гола кука стръвта на Борисов и Пеевски с полегналата на тротоара Мадам К Кампанията започна с компромат и завърши",
+      "summary": "Представя кампанията на Гюров и Кандев като компроматна и споменава Колтуклиева.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Кандев",
+          "source": "text",
+          "evidence": "Кандев"
+        },
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "Избори"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "ППДБ",
+          "source": "text",
+          "evidence": "ПП и ДБ"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        },
+        {
+          "keyword": "Колтуклиева",
+          "source": "text",
+          "evidence": "Колтуклиева"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "61",
+          "value": 61,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "5",
+          "value": 5,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "29",
+          "value": 29,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "e679ce2629ba1920974410eff04e052320c7d33f894e7a73d718e8bb562c14c9",
+      "images": [
+        {
+          "src": "/images/facebook/2026/5922bb56ea6f85a1244fa08265428f831c91da5ac6c00d06efba4f060baa4572.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid0yvjwnnVGCEKzWJ87u6jAREm31LCAspnuyNayxzuuqSqG757ccMxprVzLxhzUJonRl",
+          "width": 1280,
+          "height": 960,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "5922bb56ea6f85a1244fa08265428f831c91da5ac6c00d06efba4f060baa4572"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02tThk3DbMhisnWdDR8unNbSYnscWG59LYwRh9dbEYBBianprQ2XkFxv8j4x9Kskpnl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid02tThk3DbMhisnWdDR8unNbSYnscWG59LYwRh9dbEYBBianprQ2XkFxv8j4x9Kskpnl",
+      "publishedAt": "2026-10-25T10:43:00+02:00",
+      "date": "2026-10-25",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:04:33.711Z",
+      "excerpt": "Бареков ексклузивно пред Ария ТВ: Пеевски и ДПС, кажете си за Борисов Николай Бареков коментира приключилата изборна кампания и очакваните изборни резултати Виж",
+      "summary": "Рекламира коментар на Бареков за приключилата изборна кампания и очакваните резултати.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "36",
+          "value": 36,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "3",
+          "value": 3,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "14",
+          "value": 14,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "20fd0cd330368d7c9542ad801bd1c9deff21bfe6da18bf1eb81ab4b917449ce8",
+      "images": [
+        {
+          "src": "/images/facebook/2026/e149fc5cad58e2dadae6e72bdfc749f7836bda175c5e409999ba93688bf0f1d8.jpg",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid02tThk3DbMhisnWdDR8unNbSYnscWG59LYwRh9dbEYBBianprQ2XkFxv8j4x9Kskpnl",
+          "width": 888,
+          "height": 532,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "e149fc5cad58e2dadae6e72bdfc749f7836bda175c5e409999ba93688bf0f1d8"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0f6K4AGEZsdACjuQQAeYcsdGykKTfbAVaLq8QXZeKqai38PPEP4s1ZLrPs2jEB1JFl",
+      "pageId": "https://www.facebook.com/noviniotposledniachas",
+      "url": "https://www.facebook.com/noviniotposledniachas/posts/pfbid0f6K4AGEZsdACjuQQAeYcsdGykKTfbAVaLq8QXZeKqai38PPEP4s1ZLrPs2jEB1JFl",
+      "publishedAt": "2026-10-26T20:55:00+02:00",
+      "date": "2026-10-26",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:07:57.845Z",
+      "excerpt": "АГИТКАТА НА ГЮРОВ ИЗГОРИ РУСКОТО ЗНАМЕ ПРЕД КУЛТУРНИЯ ДОМ НА ТАЗИ ДЪРЖАВА В СОФИЯ, И ТО ДВЕ СЕДМИЦИ ПРЕДИ ИЗБОРИТЕ! https://www.faktibg.com/agitkata-na-gjurov-i",
+      "summary": "Твърди, че хора, свързани с Гюров, са изгорили руско знаме преди изборите.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "ГЮРОВ"
+        },
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "ИЗБОРИТЕ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "8",
+          "value": 8,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "2",
+          "value": 2,
+          "approximate": false
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "8db52a41d32fb6778aaa4a20990459572476e72933a7fdc5356f94d0d796b169",
+      "images": [
+        {
+          "src": "/images/facebook/2026/7df8bd83ae3842c7ab8ec871f0e4665fdbdcab8fd28c32b419507eccb9c131b8.jpg",
+          "sourceUrl": "https://www.facebook.com/noviniotposledniachas/posts/pfbid0f6K4AGEZsdACjuQQAeYcsdGykKTfbAVaLq8QXZeKqai38PPEP4s1ZLrPs2jEB1JFl",
+          "width": 1320,
+          "height": 881,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "7df8bd83ae3842c7ab8ec871f0e4665fdbdcab8fd28c32b419507eccb9c131b8"
+        }
+      ]
+    },
+    {
+      "id": "photo:1578411577634217",
+      "pageId": "https://www.facebook.com/noviniotposledniachas",
+      "url": "https://www.facebook.com/photo?fbid=1578411577634217",
+      "publishedAt": "2026-10-26T17:09:00+02:00",
+      "date": "2026-10-26",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:08:00.308Z",
+      "excerpt": "Борисов и Пеевски чакат в засада, за да подкрепят Гюров в опит да възкресят собствените си политически трупове https://www.faktibg.com/borisov-i-peevski-chakat-",
+      "summary": "Описва възможна подкрепа от Борисов и Пеевски за Гюров.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "6",
+          "value": 6,
+          "approximate": false
+        },
+        "comments": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        },
+        "shares": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "5cfff3342ac408702a31ed8f7c0ce290964215ec78c51ce6c40b64e32582f3f3",
+      "images": [
+        {
+          "src": "/images/facebook/2026/48369e6807bc3497c4c061c71738a0326567443be8b5e1d8671098749bdccc55.jpg",
+          "sourceUrl": "https://www.facebook.com/photo?fbid=1578411577634217",
+          "width": 810,
+          "height": 540,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "48369e6807bc3497c4c061c71738a0326567443be8b5e1d8671098749bdccc55"
+        }
+      ]
+    },
+    {
+      "id": "photo:1582677773874264",
+      "pageId": "https://www.facebook.com/noviniotposledniachas",
+      "url": "https://www.facebook.com/photo?fbid=1582677773874264",
+      "publishedAt": "2026-10-30T15:20:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:09:02.076Z",
+      "excerpt": "Убиецът на бащата на Илияна Йотова умря в затвора и не дочака решение по молбата му за помилване https://www.faktibg.com/ubiecat-na-bashtata-na-ilijana.../",
+      "summary": "Разказва за затворник, свързан със смъртта на бащата на Йотова, и молба за помилване.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "помилване",
+          "source": "text",
+          "evidence": "помилване"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        },
+        "comments": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "4bf6ff05268d5e9a05f78d41a84639d6e0aa06c16ac85f0bf1b2c174edafa4ad",
+      "images": [
+        {
+          "src": "/images/facebook/2026/0e2f308db22bba21ae59e81d3d5822a4d2578d4aaefc07ec048296e171205d83.jpg",
+          "sourceUrl": "https://www.facebook.com/photo?fbid=1582677773874264",
+          "width": 1080,
+          "height": 742,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "0e2f308db22bba21ae59e81d3d5822a4d2578d4aaefc07ec048296e171205d83"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02qSkMMJsJcds8vDmtJj3UZiRV5uSQQ8gPTX8RHfJhRb7MPoEDun8qaGKbC3TKzpgbl",
+      "pageId": "https://www.facebook.com/novininafocus",
+      "url": "https://www.facebook.com/novininafocus/posts/pfbid02qSkMMJsJcds8vDmtJj3UZiRV5uSQQ8gPTX8RHfJhRb7MPoEDun8qaGKbC3TKzpgbl",
+      "publishedAt": null,
+      "date": "2026-10-03",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T13:13:12.553Z",
+      "excerpt": "Хампарцумян: Йотова е изхабена, продукт на стария свят, който си отива, Гюров е новото поколение https://www.faktibg.com/hamparcumjan-jotova-e-izhabena.../",
+      "summary": "Препредава оценка на Левон Хампарцумян за Йотова и Гюров.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "5",
+          "value": 5,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "3",
+          "value": 3,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "7920f392355d0d09edd1b6d6e62a22a8b34dbcbaab4d9a16b4193901dece4d12",
+      "images": [
+        {
+          "src": "/images/facebook/2026/e03dd90ad7008303a262f268ff5c19fc246e459a478d94bfbd79d629f2b45d84.jpg",
+          "sourceUrl": "https://www.facebook.com/novininafocus/posts/pfbid02qSkMMJsJcds8vDmtJj3UZiRV5uSQQ8gPTX8RHfJhRb7MPoEDun8qaGKbC3TKzpgbl",
+          "width": 768,
+          "height": 432,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "e03dd90ad7008303a262f268ff5c19fc246e459a478d94bfbd79d629f2b45d84"
+        }
+      ]
+    },
+    {
+      "id": "photo:1151255573914194",
+      "pageId": "https://www.facebook.com/novininafocus",
+      "url": "https://www.facebook.com/photo?fbid=1151255573914194",
+      "publishedAt": "2026-10-26T01:15:00+02:00",
+      "date": "2026-10-26",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:14:42.457Z",
+      "excerpt": "80% от българите не излязоха да гласуват: Йотова и Гюров отиват на балотаж https://www.faktibg.com/80-ot-balgarite-ne-izljazoha-da.../",
+      "summary": "Публикува твърдение за активността на първия тур и участниците в балотажа.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "балотаж",
+          "source": "text",
+          "evidence": "балотаж"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        },
+        "comments": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "fcc34d6a7650001f192cb4e0e2cdd9a6ccdb960032c2d345383039d1767a5a84",
+      "images": [
+        {
+          "src": "/images/facebook/2026/302f51623c4e99ca56cdab4741c1cb12d1c274f34950b954931731d63b2aa610.jpg",
+          "sourceUrl": "https://www.facebook.com/photo?fbid=1151255573914194",
+          "width": 920,
+          "height": 539,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "302f51623c4e99ca56cdab4741c1cb12d1c274f34950b954931731d63b2aa610"
+        }
+      ]
+    },
+    {
+      "id": "photo:1156012400105178",
+      "pageId": "https://www.facebook.com/novininafocus",
+      "url": "https://www.facebook.com/photo?fbid=1156012400105178",
+      "publishedAt": "2026-10-30T17:59:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:15:24.973Z",
+      "excerpt": "Десни хора как не ви е срам от мазната подкрепа на Борисов и Пеевски за Гюров? https://www.faktibg.com/desni-hora-kak-ne-vi-e-sram-ot.../",
+      "summary": "Критичен коментар за политическата подкрепа на Борисов и Пеевски за Гюров.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "2",
+          "value": 2,
+          "approximate": false
+        },
+        "comments": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "3167a1bb65fcb7a390bcd35ef87b06b6e606e5a712d72a4c62f37d67c411eb08",
+      "images": [
+        {
+          "src": "/images/facebook/2026/2e0ad6996e6ae875b42c996ba522d0e8483423308e2f91f2cb581a437fe65d65.jpg",
+          "sourceUrl": "https://www.facebook.com/photo?fbid=1156012400105178",
+          "width": 810,
+          "height": 540,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "2e0ad6996e6ae875b42c996ba522d0e8483423308e2f91f2cb581a437fe65d65"
+        }
+      ]
+    },
+    {
+      "id": "photo:1154893593550392",
+      "pageId": "https://www.facebook.com/novininafocus",
+      "url": "https://www.facebook.com/photo?fbid=1154893593550392",
+      "publishedAt": "2026-10-29T16:15:00+02:00",
+      "date": "2026-10-29",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:15:26.109Z",
+      "excerpt": "СКАНДАЛ! Договорка Пеевски - Асен Василев за балотажа. Тече търговия с гласове за Гюров \"на макс\". Разбита мрежа на близък до ДПС (УНИКАЛНИ СНИМКИ) https://www.",
+      "summary": "Твърди за договорка между Пеевски и Асен Василев и за търговия с гласове преди балотажа.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "асен василев",
+          "source": "text",
+          "evidence": "Асен Василев"
+        },
+        {
+          "keyword": "балотаж",
+          "source": "text",
+          "evidence": "балотажа"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        },
+        "comments": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        },
+        "shares": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "2245bd67a54b85da4f5aee6c73703382dd1c348f5a1642566e663bdf13dd8962",
+      "images": [
+        {
+          "src": "/images/facebook/2026/6a88ad3a43944445b15f93af170ac473de313578c33ce7bee6dd333eeacffd23.jpg",
+          "sourceUrl": "https://www.facebook.com/photo?fbid=1154893593550392",
+          "width": 960,
+          "height": 640,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "6a88ad3a43944445b15f93af170ac473de313578c33ce7bee6dd333eeacffd23"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0KHXkSQBGMSU7Psop2D3hKFqbRTnR1HRY1JckvXZX3QkJkf1K31jUjfpZbGT9ubRal",
+      "pageId": "100063562561986",
+      "url": "https://www.facebook.com/bulevardnewss/posts/pfbid0KHXkSQBGMSU7Psop2D3hKFqbRTnR1HRY1JckvXZX3QkJkf1K31jUjfpZbGT9ubRal",
+      "publishedAt": "2026-10-21T21:14:00+03:00",
+      "date": "2026-10-21",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:19:39.990Z",
+      "excerpt": "Андрей Гюров запретна ръкави – кандидат-президентът приготви питка",
+      "summary": "Споделя заглавие за участие на кандидат-президента Гюров в приготвяне на питка.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президентът"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "6",
+          "value": 6,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "2",
+          "value": 2,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "2",
+          "value": 2,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "14867d51c7acc6e9fa9259031afe418673a9ec39fd8cbb58f09b29e4f11e87a5",
+      "images": [
+        {
+          "src": "/images/facebook/2026/c53c8aa7c40c21d5daa0f5dc081fbe6dab30a38e3a0791248a75b26f6242dabf.jpg",
+          "sourceUrl": "https://www.facebook.com/bulevardnewss/posts/pfbid0KHXkSQBGMSU7Psop2D3hKFqbRTnR1HRY1JckvXZX3QkJkf1K31jUjfpZbGT9ubRal",
+          "width": 1080,
+          "height": 1350,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "c53c8aa7c40c21d5daa0f5dc081fbe6dab30a38e3a0791248a75b26f6242dabf"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02onrwFNDBWRfaeL5NoXdnX25M3M9FERJuAVu3RiA2zy6MiUSAM7LtXtNhmRTFRGRYl",
+      "pageId": "100063562561986",
+      "url": "https://www.facebook.com/bulevardnewss/posts/pfbid02onrwFNDBWRfaeL5NoXdnX25M3M9FERJuAVu3RiA2zy6MiUSAM7LtXtNhmRTFRGRYl",
+      "publishedAt": "2026-10-28T14:53:00+02:00",
+      "date": "2026-10-28",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:19:41.780Z",
+      "excerpt": "И ДА! Гюров HAПИCBA ucmopuя, uзпpaщa Илияна Йотова в мuнaл0тo",
+      "summary": "Публикува заглавие за Гюров и Йотова с главни букви и смесени азбуки.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "13",
+          "value": 13,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "3",
+          "value": 3,
+          "approximate": false
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "62c3c79c23f3d88c7a407d000b603f4caa7d82121f67a8b36c8ef57f9232bb47",
+      "images": [
+        {
+          "src": "/images/facebook/2026/84980235183ee20f25e6e8f10acea08adb976435d284b72623181ebb50cdd598.jpg",
+          "sourceUrl": "https://www.facebook.com/bulevardnewss/posts/pfbid02onrwFNDBWRfaeL5NoXdnX25M3M9FERJuAVu3RiA2zy6MiUSAM7LtXtNhmRTFRGRYl",
+          "width": 526,
+          "height": 526,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "84980235183ee20f25e6e8f10acea08adb976435d284b72623181ebb50cdd598"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0T5YyJUfYiM2zYDx1SxGs6Fi7ShK6WfkngqK9B4M493WbGg1oJTpRvUQPRfu9aDpxl",
+      "pageId": "100063562561986",
+      "url": "https://www.facebook.com/bulevardnewss/posts/pfbid0T5YyJUfYiM2zYDx1SxGs6Fi7ShK6WfkngqK9B4M493WbGg1oJTpRvUQPRfu9aDpxl",
+      "publishedAt": "2026-10-30T17:44:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:19:43.288Z",
+      "excerpt": "Не м0же да бъде! Нещо нeвuждaHo се случва на избopume, Йотова и Гюров ще Ето го решението!",
+      "summary": "Публикува неуточнен анонс за решение, свързано с Гюров, Йотова и изборите.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "30dca2cc802da46a7dbf0ec7b9d863a1296c8218d7a6e5cd1dc028f543444f09",
+      "images": [
+        {
+          "src": "/images/facebook/2026/df9a1cb64303f777b68d8056f45bef2ce18eba4e97375721d0b45f1a8798c4f1.jpg",
+          "sourceUrl": "https://www.facebook.com/bulevardnewss/posts/pfbid0T5YyJUfYiM2zYDx1SxGs6Fi7ShK6WfkngqK9B4M493WbGg1oJTpRvUQPRfu9aDpxl",
+          "width": 1080,
+          "height": 1350,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "df9a1cb64303f777b68d8056f45bef2ce18eba4e97375721d0b45f1a8798c4f1"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0r7r3s5xnQNZ4uT3hzAGhJzZJ2xdE26WgoF853EUaq4D8Ub3ciyFMVg3Gc6NJJXhol",
+      "pageId": "61591476950404",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0r7r3s5xnQNZ4uT3hzAGhJzZJ2xdE26WgoF853EUaq4D8Ub3ciyFMVg3Gc6NJJXhol&id=61591476950404",
+      "publishedAt": "2026-10-30T11:10:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:23:48.573Z",
+      "excerpt": "Възраждане за втория тур: „Нито един възражденец няма да гласува за господин Гюров.“ Костадинов обясни защо",
+      "summary": "Препредава позиция на Костадинов за избирателите на Възраждане и втория тур.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "костадинов",
+          "source": "text",
+          "evidence": "Костадинов"
+        },
+        {
+          "keyword": "Възраждане",
+          "source": "text",
+          "evidence": "Възраждане"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "2",
+          "value": 2,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "2",
+          "value": 2,
+          "approximate": false
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "a5f1b20046c24aea1c0218e2cff84d30a7fa3abbb020b96d1a01f768952088e2",
+      "images": [
+        {
+          "src": "/images/facebook/2026/4d118f55ce5c974f68f9bc9fdf5af1fa9e2b3284b5451c9588a2592fec24dd55.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0r7r3s5xnQNZ4uT3hzAGhJzZJ2xdE26WgoF853EUaq4D8Ub3ciyFMVg3Gc6NJJXhol&id=61591476950404",
+          "width": 278,
+          "height": 430,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "4d118f55ce5c974f68f9bc9fdf5af1fa9e2b3284b5451c9588a2592fec24dd55"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02GgPBAgj24C7gwiozhdTf9UxyvQwse9Ji3ZwDb7WppQXbyRAtL23FJB4Q5QE4UBb5l",
+      "pageId": "61591476950404",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02GgPBAgj24C7gwiozhdTf9UxyvQwse9Ji3ZwDb7WppQXbyRAtL23FJB4Q5QE4UBb5l&id=61591476950404",
+      "publishedAt": "2026-10-30T17:56:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:25:17.290Z",
+      "excerpt": "„И Борисов подкрепи Гюров. Очаквано!“ – Красимир Каракачанов за поредната „сглобка“ преди балотажа в неделя",
+      "summary": "Препредава коментар на Каракачанов за подкрепата на Борисов за Гюров преди балотажа.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "сглобка",
+          "source": "text",
+          "evidence": "сглобка"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        },
+        {
+          "keyword": "балотаж",
+          "source": "text",
+          "evidence": "балотажа"
+        },
+        {
+          "keyword": "Каракачанов",
+          "source": "text",
+          "evidence": "Каракачанов"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        },
+        "comments": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "7ae5baf83e81eaa9f08562eb728d07345c6b1b31a1aa7365d088fbb01edbf85b",
+      "images": [
+        {
+          "src": "/images/facebook/2026/6eb4889d2c5b3604da8e640dfcc95bbf14932dff7bf77c82c4fa036cc8fce91e.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02GgPBAgj24C7gwiozhdTf9UxyvQwse9Ji3ZwDb7WppQXbyRAtL23FJB4Q5QE4UBb5l&id=61591476950404",
+          "width": 1000,
+          "height": 522,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "6eb4889d2c5b3604da8e640dfcc95bbf14932dff7bf77c82c4fa036cc8fce91e"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02SrLT5VoZ7KvxvA5zrvTisM26PJ1gCNqJacQMZU2bd2hZuP5NupX4pk8uR4bpefWCl",
+      "pageId": "61591476950404",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02SrLT5VoZ7KvxvA5zrvTisM26PJ1gCNqJacQMZU2bd2hZuP5NupX4pk8uR4bpefWCl&id=61591476950404",
+      "publishedAt": "2026-10-30T10:52:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:26:10.124Z",
+      "excerpt": "Костадин Костадинов два дни преди втория тур: „Не виждам никаква разлика между Радев, Йотова и Гюров.“ Вижте защо",
+      "summary": "Препредава сравнение на Костадинов между Радев, Йотова и Гюров преди втория тур.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "радев",
+          "source": "text",
+          "evidence": "Радев"
+        },
+        {
+          "keyword": "костадинов",
+          "source": "text",
+          "evidence": "Костадинов"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        },
+        "comments": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "06cd68b2b675eb267e2ff07009bf9aa0bad4bdf8a43cc90f8de0b89be9675bcb",
+      "images": [
+        {
+          "src": "/images/facebook/2026/a9a0269daaecf8e4c3d4d7969e6452fea49cb8b4283844ae2ab4d71e9d917cac.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02SrLT5VoZ7KvxvA5zrvTisM26PJ1gCNqJacQMZU2bd2hZuP5NupX4pk8uR4bpefWCl&id=61591476950404",
+          "width": 1000,
+          "height": 522,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "a9a0269daaecf8e4c3d4d7969e6452fea49cb8b4283844ae2ab4d71e9d917cac"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0abr2AuC5iF7qrfVaV4tpCTmdtBWNUtXcGj5WEr3kf6w5ebjJNugMTe2dC7T2zSkql",
+      "pageId": "https://www.facebook.com/noviniotposledniachas",
+      "url": "https://www.facebook.com/noviniotposledniachas/posts/pfbid0abr2AuC5iF7qrfVaV4tpCTmdtBWNUtXcGj5WEr3kf6w5ebjJNugMTe2dC7T2zSkql",
+      "publishedAt": "2026-10-30T17:59:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T13:26:39.232Z",
+      "excerpt": "Десни хора как не ви е срам от мазната подкрепа на Борисов и Пеевски за Гюров? https://www.faktibg.com/desni-hora-kak-ne-vi-e-sram-ot.../",
+      "summary": "Критичен коментар за политическата подкрепа на Борисов и Пеевски за Гюров.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "3",
+          "value": 3,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "3167a1bb65fcb7a390bcd35ef87b06b6e606e5a712d72a4c62f37d67c411eb08",
+      "images": [
+        {
+          "src": "/images/facebook/2026/abafce795056e64160806547971ebe7160b18f5f096566c2ae2ca94fb92be2e8.jpg",
+          "sourceUrl": "https://www.facebook.com/noviniotposledniachas/posts/pfbid0abr2AuC5iF7qrfVaV4tpCTmdtBWNUtXcGj5WEr3kf6w5ebjJNugMTe2dC7T2zSkql",
+          "width": 810,
+          "height": 540,
+          "kind": "image",
+          "capturedAt": "2026-11-04",
+          "sha256": "abafce795056e64160806547971ebe7160b18f5f096566c2ae2ca94fb92be2e8"
+        }
+      ]
     }
   ],
   "matches": [
@@ -3397,36 +5833,84 @@
       "targetId": "post:pfbid0eboqFNFPZpCoHNvPWGXJeF3nuNhR1UbVNd1zK9GSFWYPCWKLqVWokZiYG8oq9XHbl",
       "kind": "headline",
       "delayMinutes": 83.0
+    },
+    {
+      "sourceId": "post:pfbid032257kFpWVw9H3xfrZnwCgVFGDo8J72jGTsLpViBujApt8kz4aZsEbnbv9AtUWksgl",
+      "targetId": "post:pfbid09m9SDJjCfAtU4pqLC9SBbnyHxx32WDQnEjS4xVs9oJ8Pd6BYFWfWZshFR3N9qoA6l",
+      "kind": "headline",
+      "delayMinutes": 10
+    },
+    {
+      "sourceId": "post:pfbid01Qgxf35raAqu1iVK5AsUoCz4nGd8f3nZ3ufBYResZrTtimqQzNaAo19uTfN7HrgMl",
+      "targetId": "post:pfbid0K5jf6Wfc67p2HwjBYkg4BSZegkKPfbDV8vaGLyiVwVaWuPnJQ1NhiJ1VpsVjauDzl",
+      "kind": "headline",
+      "delayMinutes": 161
+    },
+    {
+      "sourceId": "post:pfbid02PjhhvHUKazdRWLaoBwbzKiEQb7hM945KZtAMcp4hFGrR8mDfyKzygx4oTCznvw74l",
+      "targetId": "post:pfbid0W91zvaUDUbjGfAT4RRDMfMrmwpLeYGcXbPq2tTiWfJihYoGSugJDqd2Meg3SNU9Gl",
+      "kind": "headline",
+      "delayMinutes": 34
+    },
+    {
+      "sourceId": "post:pfbid02TnWBWnWfk1vHjhGTVHLtjQ2uwXroeCAftqzQGra8B65TXMugVuMXq3a7isUaP6Cql",
+      "targetId": "post:pfbid0pVveentc1PVrbz9igvuN85ybYYJmAEQvBgaiYQpnrtnW2ei5Mvm6nLFWENhX38Psl",
+      "kind": "headline",
+      "delayMinutes": 1
+    },
+    {
+      "sourceId": "post:pfbid05pTdBgg2pBhFRS5yMBEnCNE4vA8zi6vGDD6muBMNRcs2YKTBWZT57evyo32iC9eSl",
+      "targetId": "post:pfbid0TmJbD1kQoSpxLcJADuGeJ1SGjW3Lz9Z7zX7LNNzzU5GgymXPXKkibkGJF6TbXC6Pl",
+      "kind": "headline",
+      "delayMinutes": 21
+    },
+    {
+      "sourceId": "post:pfbid0Q4vZKwZiaCnHsiE2qKiWSzDD7TTqbbxDCVf8YkB5yS3TSMu2XHi4zPUkjKtjq4SFl",
+      "targetId": "post:pfbid0txCzz6qbbi7BezLje1uFVANeUa5eskGN76mkPQ9tWYNx97JCMjEFDndbPFtwYAzYl",
+      "kind": "headline",
+      "delayMinutes": 48
+    },
+    {
+      "sourceId": "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl",
+      "targetId": "post:pfbid02BwihQyZqD3td346wvdEipSrUavMA5D9U3zho7XrgtXnRNBuY4NDqw9LoUUZ38ykgl",
+      "kind": "headline",
+      "delayMinutes": 109
+    },
+    {
+      "sourceId": "photo:1156012400105178",
+      "targetId": "post:pfbid0abr2AuC5iF7qrfVaV4tpCTmdtBWNUtXcGj5WEr3kf6w5ebjJNugMTe2dC7T2zSkql",
+      "kind": "headline",
+      "delayMinutes": 0
     }
   ],
   "coverage": [
     {
       "keyword": "Гюров",
-      "count": 25
+      "count": 51
     },
     {
       "keyword": "Кандев",
-      "count": 5
-    },
-    {
-      "keyword": "Йотова",
-      "count": 23
-    },
-    {
-      "keyword": "избори",
-      "count": 10
-    },
-    {
-      "keyword": "украйна",
-      "count": 8
-    },
-    {
-      "keyword": "война",
       "count": 7
     },
     {
+      "keyword": "Йотова",
+      "count": 35
+    },
+    {
+      "keyword": "избори",
+      "count": 20
+    },
+    {
+      "keyword": "украйна",
+      "count": 12
+    },
+    {
+      "keyword": "война",
+      "count": 10
+    },
+    {
       "keyword": "президент",
-      "count": 16
+      "count": 21
     },
     {
       "keyword": "изпращане на войници",
@@ -3434,15 +5918,15 @@
     },
     {
       "keyword": "сглобка",
-      "count": 5
+      "count": 10
     },
     {
       "keyword": "пеевски",
-      "count": 11
+      "count": 22
     },
     {
       "keyword": "ППДБ",
-      "count": 6
+      "count": 11
     },
     {
       "keyword": "наркотрафикант",
@@ -3462,19 +5946,19 @@
     },
     {
       "keyword": "помилване",
-      "count": 2
-    },
-    {
-      "keyword": "асен василев",
       "count": 3
     },
     {
+      "keyword": "асен василев",
+      "count": 5
+    },
+    {
       "keyword": "борисов",
-      "count": 4
+      "count": 14
     },
     {
       "keyword": "радев",
-      "count": 6
+      "count": 7
     },
     {
       "keyword": "лева",
@@ -3486,7 +5970,7 @@
     },
     {
       "keyword": "русия",
-      "count": 2
+      "count": 4
     },
     {
       "keyword": "про-руска",
@@ -3494,23 +5978,23 @@
     },
     {
       "keyword": "костадинов",
-      "count": 0
+      "count": 2
     },
     {
       "keyword": "кирил петков",
-      "count": 7
-    },
-    {
-      "keyword": "дрона",
       "count": 9
     },
     {
+      "keyword": "дрона",
+      "count": 12
+    },
+    {
       "keyword": "Колтуклиева",
-      "count": 0
+      "count": 1
     },
     {
       "keyword": "спонсор",
-      "count": 6
+      "count": 8
     },
     {
       "keyword": "путин",
@@ -3522,7 +6006,7 @@
     },
     {
       "keyword": "зеленски",
-      "count": 3
+      "count": 4
     },
     {
       "keyword": "нсо",
@@ -3535,6 +6019,106 @@
     {
       "keyword": "ППедофили",
       "count": 0
+    },
+    {
+      "keyword": "балотаж",
+      "count": 10,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "дебат",
+      "count": 6,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "ГЕРБ",
+      "count": 7,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "ДПС",
+      "count": 14,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "Белица",
+      "count": 3,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "Турция",
+      "count": 4,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "Калоян Данчев",
+      "count": 2,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "Кристияна Стефанова",
+      "count": 2,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "Кирил Вълчев",
+      "count": 1,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "Ваня Великова",
+      "count": 1,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "МВР",
+      "count": 1,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "БНТ",
+      "count": 6,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "Financial Times",
+      "count": 4,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "Прогресивна България",
+      "count": 3,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "Ревански",
+      "count": 3,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "Карбовски",
+      "count": 1,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "Възраждане",
+      "count": 1,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "МЕЧ",
+      "count": 1,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "Радостин Василев",
+      "count": 1,
+      "fromCaptions": true
+    },
+    {
+      "keyword": "Каракачанов",
+      "count": 1,
+      "fromCaptions": true
     }
   ],
   "reviews": [
@@ -3636,5 +6220,5 @@
     }
   ],
   "sharedArticleUrl": "https://www.faktibg.com/moshtna-valna-s-avtobusi-s-izbirateli-ot-turcija-zalja-balgarija-za-utreshnite-izbori/",
-  "collectionSha256": "e22a922d462d3c825bee193b569294b94e16b0037a0aad2c42155e79866a3098"
+  "collectionSha256": "9a00ddcf145c80e73d9936d7531f5f1033a745054d3dcf86523f8004e6ef21b1"
 }

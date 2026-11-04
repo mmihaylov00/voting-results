@@ -25,8 +25,8 @@ test('every Facebook image resolves to a retained asset with its own public sour
     assert(sources.assets[name].uses.some(use => use.id === row.id && use.sourceUrl === row.url && use.kind === image.kind));
     referenced.add(name);
   }
-  assert.equal(report.pages.filter(page => page.avatar).length, 8);
-  assert.equal(report.posts.filter(post => post.images.length).length, 47);
+  assert.equal(report.pages.filter(page => page.avatar).length, 10);
+  assert.equal(report.posts.filter(post => post.images.length).length, 81);
   assert.equal(Object.keys(sources.assets).length, referenced.size);
   assert.deepEqual(new Set(fs.readdirSync(directory).filter(name => name !== 'SOURCES.json')), referenced);
 });
