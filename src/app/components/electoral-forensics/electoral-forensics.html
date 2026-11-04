@@ -60,21 +60,23 @@
 
     <section id="geography" aria-labelledby="geography-title">
       <div class="section-heading"><div><p class="eyebrow">Текущ филтър</p><h2 id="geography-title">Секционен анализ</h2></div><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/sections.csv'" download aria-label="Изтегли всички секции в страната CSV, независимо от филтрите" title="Всички секции в страната; филтрите не променят файла"><app-map-icon name="download-table" />Всички секции CSV</a></div>
-      <div class="filters">
-        <label>Изборен район<select aria-label="Филтър по изборен район" [value]="filters().regionId" (change)="setFilter('regionId', inputValue($event))"><option value="">Цялата страна</option>@for (district of districts(); track district.key) {<option [value]="district.key">{{ district.key }}. {{ district.name }}</option>}</select></label>
-        <label class="search-field">Търсене<input type="search" [value]="filters().search" (input)="setFilter('search', inputValue($event))" placeholder="Секция, община, населено място, ЕКАТТЕ"></label>
-        <button hlmBtn variant="outline" size="sm" type="button" class="gap-2 reset-filters" [disabled]="!activeFilterCount()" (click)="resetFilters()"><app-map-icon name="reset" />Изчисти {{ activeFilterCount() ? '(' + activeFilterCount() + ')' : '' }}</button>
-      </div>
-      <details class="advanced-filters"><summary><app-map-icon name="filter" />Допълнителни филтри</summary><div class="filters">
-        <label>Избиратели по списък<select [value]="filters().size" (change)="setFilter('size', inputValue($event))"><option value="">Всички размери</option>@for (size of sizes(); track size) {<option [value]="size">{{ sizeLabel(size) }}</option>}</select></label>
-        <label>Метод на II тур<select [value]="filters().method" (change)="setFilter('method', inputValue($event))"><option value="">Всички методи</option>@for (method of methods(); track method) {<option [value]="method">{{ methodLabel(method) }}</option>}</select></label>
-        <label class="checkbox"><input type="checkbox" [checked]="filters().comparableOnly" (change)="setFilter('comparableOnly', checked($event))">Само допустими сравними секции</label>
-        <label class="checkbox"><input type="checkbox" [checked]="filters().flaggedOnly" (change)="setFilter('flaggedOnly', checked($event))">Само за преглед</label>
-      </div></details>
       <p class="scope-label" aria-live="polite"><strong>{{ count(filtered().length) }}</strong> показани · {{ count(jointTotals().n) }} съпоставими за общите суми · {{ count(flagged().length) }} с основание за преглед</p>
       <app-forensics-vote-summary data-joint-totals [summary]="jointTotals()" />
       <p class="note">Картата, таблицата, графиката и тези суми следват текущите филтри.</p>
       <div id="section-gains" class="section-gains-navigation"><app-view-tabs [tabs]="explorerTabs" [(value)]="explorerView" label="Изглед на секциите" idPrefix="explorer" /></div>
+      <div role="group" aria-label="Филтри за избрания изглед">
+        <div class="filters">
+          <label>Изборен район<select aria-label="Филтър по изборен район" [value]="filters().regionId" (change)="setFilter('regionId', inputValue($event))"><option value="">Цялата страна</option>@for (district of districts(); track district.key) {<option [value]="district.key">{{ district.key }}. {{ district.name }}</option>}</select></label>
+          <label class="search-field">Търсене<input type="search" [value]="filters().search" (input)="setFilter('search', inputValue($event))" placeholder="Секция, община, населено място, ЕКАТТЕ"></label>
+          <button hlmBtn variant="outline" size="sm" type="button" class="gap-2 reset-filters" [disabled]="!activeFilterCount()" (click)="resetFilters()"><app-map-icon name="reset" />Изчисти {{ activeFilterCount() ? '(' + activeFilterCount() + ')' : '' }}</button>
+        </div>
+        <details class="advanced-filters"><summary><app-map-icon name="filter" />Допълнителни филтри</summary><div class="filters">
+          <label>Избиратели по списък<select [value]="filters().size" (change)="setFilter('size', inputValue($event))"><option value="">Всички размери</option>@for (size of sizes(); track size) {<option [value]="size">{{ sizeLabel(size) }}</option>}</select></label>
+          <label>Метод на II тур<select [value]="filters().method" (change)="setFilter('method', inputValue($event))"><option value="">Всички методи</option>@for (method of methods(); track method) {<option [value]="method">{{ methodLabel(method) }}</option>}</select></label>
+          <label class="checkbox"><input type="checkbox" [checked]="filters().comparableOnly" (change)="setFilter('comparableOnly', checked($event))">Само допустими сравними секции</label>
+          <label class="checkbox"><input type="checkbox" [checked]="filters().flaggedOnly" (change)="setFilter('flaggedOnly', checked($event))">Само за преглед</label>
+        </div></details>
+      </div>
       <div class="view-panel" role="tabpanel" id="explorer-panel-map" aria-labelledby="explorer-tab-map" [hidden]="explorerView() !== 'map'">
       <app-forensics-map [rows]="filtered()" [exportTitle]="(focus() ? 'До 400 избиратели' : 'Всички секции') + (activeFilterCount() ? ' · Текущ филтър' : '')" (sectionSelect)="selectSection($event)" />
       <p class="note">Контур на точка = основание за проверка на протокола.</p>

@@ -80,6 +80,7 @@ describe('section gain graph and ranking', () => {
     expect(element.textContent).toContain('Промяна над 5%');
     const checkbox = element.querySelector<HTMLInputElement>('input[type="checkbox"]')!;
     expect(checkbox.checked).toBe(false);
+    expect(element.querySelectorAll('input[type=number]')).toHaveLength(0);
     checkbox.checked = true; checkbox.dispatchEvent(new Event('change')); fixture.detectChanges();
     expect(component.points().map(point => point.row.sectionId)).toEqual(['001']);
     expect(element.querySelectorAll('tbody tr')).toHaveLength(1);
@@ -101,66 +102,6 @@ describe('section gain graph and ranking', () => {
     expect(rows[0].sectionId).toBe('000');
     fixture.componentRef.setInput('rows', [row({ sectionId: '002' }), row({ sectionId: '001' })]); fixture.detectChanges();
     expect(component.ranked().map(point => point.row.sectionId)).toEqual(['001', '002']);
-  });
-
-  it('filters candidate and voter-count ranges together, includes zero and negative endpoints and retains their meaning across axis tabs', () => {
-    const rows = [
-      row({ sectionId: 'loss', deltaVoted: -10, candidateChanges: [candidateFixture('4', 30, 25), candidateFixture('25', 60, 30)] }),
-      row({ sectionId: 'zero', deltaVoted: 0, candidateChanges: [candidateFixture('4', 30, 30), candidateFixture('25', 40, 40)] }),
-      row({ sectionId: 'gain', deltaVoted: 20, candidateChanges: [candidateFixture('4', 30, 40), candidateFixture('25', 40, 70)] }),
-    ];
-    const fixture = setup(rows);
-    const component = fixture.componentInstance;
-    const element = fixture.nativeElement as HTMLElement;
-    const setInput = (label: string, value: string) => {
-      const input = element.querySelector<HTMLInputElement>(`input[aria-label="${label}"]`)!;
-      input.value = value; input.dispatchEvent(new Event('input')); fixture.detectChanges();
-    };
-    setInput('Δ Йотова - от', '-30');
-    setInput('Δ Йотова - до', '0');
-    setInput('Δ Гюров - от', '-5');
-    setInput('Δ Гюров - до', '0');
-    setInput('Δ гласували - от', '-10');
-    setInput('Δ гласували - до', '0');
-    expect(component.points().map(point => point.row.sectionId)).toEqual(['loss', 'zero']);
-    expect(component.ranked()).toHaveLength(2);
-    expect(element.querySelectorAll('tbody tr')).toHaveLength(2);
-    component.comparison.set('gyurov'); fixture.detectChanges();
-    expect(component.points().map(point => point.row.sectionId)).toEqual(['loss', 'zero']);
-    expect(component.chart().series?.[1]).toMatchObject({ data: [{ x: -5, y: -30 }, { x: 0, y: 0 }] });
-    setInput('Δ Йотова - до', '');
-    setInput('Δ Гюров - до', '');
-    setInput('Δ гласували - до', '');
-    expect(component.points()).toHaveLength(3);
-    component.stableOnly.set(true); fixture.detectChanges();
-    [...element.querySelectorAll<HTMLButtonElement>('button')].find(button => button.textContent?.includes('Изчисти филтрите'))!.click();
-    fixture.detectChanges();
-    expect(component.hasFilters()).toBe(false);
-    expect(component.points()).toHaveLength(3);
-    expect(component.comparison()).toBe('gyurov');
-    expect([...element.querySelectorAll<HTMLInputElement>('input[type="number"]')].every(input => input.value === '')).toBe(true);
-  });
-
-  it('rejects crossed or non-finite ranges instead of silently widening the cohort', () => {
-    const fixture = setup([row()]);
-    const component = fixture.componentInstance;
-    component.ranges.update(ranges => ({ ...ranges, yotova: { min: 61, max: 60 } }));
-    fixture.detectChanges();
-    expect(component.points()).toEqual([]);
-    expect(component.ranked()).toEqual([]);
-    expect((fixture.nativeElement as HTMLElement).querySelector('[role="alert"]')?.textContent).toContain('От');
-    expect((fixture.nativeElement as HTMLElement).querySelector('highcharts-chart')).toBeNull();
-    component.ranges.update(ranges => ({ ...ranges, yotova: { min: Infinity, max: null } }));
-    fixture.detectChanges();
-    expect(component.rangeError()).toContain('валидни числа');
-    expect(component.rangeInputValue(Infinity)).toBe('');
-    component.resetFilters(); fixture.detectChanges();
-    expect(component.points()).toHaveLength(1);
-    const input = (fixture.nativeElement as HTMLElement).querySelector<HTMLInputElement>('input[aria-label="Δ Йотова - от"]')!;
-    Object.defineProperty(input, 'validity', { value: { badInput: true } });
-    input.dispatchEvent(new Event('input')); fixture.detectChanges();
-    expect(component.rangeError()).toContain('валидни числа');
-    expect(component.points()).toEqual([]);
   });
 
   it('zooms and resets both axes through the visible controls and clears zoom when the candidate view or cohort changes', () => {
