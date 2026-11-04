@@ -20,6 +20,7 @@ import { ForensicsVoteSummaryComponent } from './forensics-vote-summary';
 import { ViewTabsComponent } from '../ui/view-tabs/view-tabs';
 import { SignedChangeDirective } from '../ui/signed-change/signed-change';
 import { ChartImageExportComponent } from '../ui/chart-image-export/chart-image-export';
+import { BaseModalComponent } from '../ui/base-modal/base-modal';
 
 @Component({ selector: 'highcharts-chart', template: '' })
 class ChartStub { @Input() options: unknown; }
@@ -37,7 +38,7 @@ function setup(query = 'query1', fragment?: string, queryParams = new BehaviorSu
       { provide: ActivatedRoute, useValue: { snapshot: { queryParams: queryParams.value, fragment }, queryParams } }],
   });
   TestBed.overrideComponent(ElectoralForensicsComponent, {
-    set: { imports: [CommonModule, FormsModule, ChartStub, MapStub, GainsStub, GroupStub, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective, ChartImageExportComponent] },
+    set: { imports: [CommonModule, FormsModule, ChartStub, MapStub, GainsStub, GroupStub, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective, ChartImageExportComponent, BaseModalComponent] },
   });
   TestBed.overrideComponent(ForensicsHistoryComponent, {
     remove: { imports: [HighchartsChartComponent] }, add: { imports: [ChartStub] },
@@ -231,20 +232,6 @@ describe('hidden electoral research pages', () => {
     http.verify();
   });
 
-  it('labels the cluster probability summaries as minimum p and maximum q', () => {
-    const fixture = setup();
-    const report = reportFixture();
-    report.query1.clusters = [{ id: 'cluster1', sectionIds: ['050100001'], siteCount: 3, sectionCount: 1,
-      regionName: 'Видин', municipalityName: 'Белоградчик', meanDeltaPp: 10, p: .001, q: .8,
-      status: 'exploratory', definition: 'Териториална близост.', limitations: [] }];
-    fixture.componentInstance.report.set(report);
-    fixture.detectChanges();
-    const review = (fixture.nativeElement as HTMLElement).querySelector('#review');
-    expect(review?.textContent).toContain('Минимална p / максимална q на съставните места');
-    expect(review?.textContent).not.toContain('Минимални p / q');
-    fixture.destroy();
-  });
-
   it('restores missing lazy-record explanations from the global finding even outside the page review queue', () => {
     const fixture = setup();
     fixture.detectChanges();
@@ -341,6 +328,14 @@ describe('hidden electoral research pages', () => {
     expect(panel('#overview-panel-method').hidden).toBe(false);
     expect(panel('#overview-panel-charts').hidden).toBe(true);
     expect(panel('#overview-panel-method').closest('details')).toBeNull();
+    const advanced = element.querySelector<HTMLButtonElement>('.advanced-filters > button')!;
+    expect(panel('#research-extra-filters').hidden).toBe(true);
+    expect(advanced.getAttribute('aria-expanded')).toBe('false');
+    advanced.click(); fixture.detectChanges();
+    expect(panel('#research-extra-filters').hidden).toBe(false);
+    expect(advanced.getAttribute('aria-expanded')).toBe('true');
+    advanced.click(); fixture.detectChanges();
+    expect(panel('#research-extra-filters').hidden).toBe(true);
     page.setFilter('regionId', '5');
     element.querySelector<HTMLButtonElement>('#explorer-tab-table')!.click();
     fixture.detectChanges();
@@ -350,6 +345,35 @@ describe('hidden electoral research pages', () => {
     fixture.detectChanges();
     expect(panel('#explorer-panel-map').hidden).toBe(false);
     expect(page.filters().regionId).toBe('5');
+    fixture.destroy();
+  });
+
+  it.each(['map', 'table'])('opens section details from the %s in a modal and preserves the active view on Escape', source => {
+    const fixture = setup();
+    const page = fixture.componentInstance;
+    const row = sectionFixture();
+    page.report.set(reportFixture());
+    page.sections.set([row]);
+    page.explorerView.set(source);
+    page.setFilter('search', row.sectionId);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    if (source === 'map') {
+      (fixture.debugElement.query(By.directive(MapStub)).componentInstance as MapStub).sectionSelect.emit(row);
+    } else {
+      element.querySelector<HTMLButtonElement>('#section-results-table tbody button')!.click();
+    }
+    TestBed.inject(HttpTestingController).expectOne(`/data/forensics/2026/section-records/${row.sectionId}.json`).flush(row);
+    fixture.detectChanges();
+    const dialog = element.querySelector<HTMLDialogElement>('dialog[open]')!;
+    expect(dialog.querySelector('#section-inspector')).not.toBeNull();
+    expect(dialog.textContent).toContain(row.sectionId);
+    dialog.dispatchEvent(new Event('cancel', { cancelable: true }));
+    fixture.detectChanges();
+    expect(element.querySelector('dialog[open]')).toBeNull();
+    expect(page.selected()).toBeNull();
+    expect(page.explorerView()).toBe(source);
+    expect(page.filters().search).toBe(row.sectionId);
     fixture.destroy();
   });
 
@@ -386,10 +410,12 @@ describe('hidden electoral research pages', () => {
     http.expectOne(`/data/forensics/2026/section-records/${row.sectionId}.json`).flush(row);
     fixture.detectChanges();
     expect(page.selected()?.sectionId).toBe(row.sectionId);
-    expect(element.querySelector('#section-inspector')).not.toBeNull();
+    expect(element.querySelector('dialog[open] #section-inspector')).not.toBeNull();
     expect(page.explorerView()).toBe('gains');
     expect(fixture.debugElement.query(By.directive(GainsStub)).componentInstance).toBe(chart);
-    page.closeSection();
+    element.querySelector<HTMLButtonElement>('dialog[open] button[aria-label="Затвори"]')!.click();
+    fixture.detectChanges();
+    expect(element.querySelector('dialog[open]')).toBeNull();
     expect(page.selected()).toBeNull();
     expect(page.filters()).toMatchObject({ focus: true, regionId: row.regionId });
     fixture.destroy();

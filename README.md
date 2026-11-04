@@ -156,7 +156,7 @@ One research page answers both 2026 runoff queries. The sticky header toggles th
 
 The old `/research/runoff-mobilization-2026` link redirects to the small-section scope, preserving query parameters and section anchors.
 
-The page includes compact results, regional summaries, charts, a filtered map, internally scrollable tables, section evidence and icon buttons for downloads. Detailed methods and source notes are collapsible. Comparison controls come from outside each target section's own election district, with the existing matching rules and reuse limitations retained. The 31 districts follow CIK's published geography; Sofia's three city districts and Plovdiv city/district remain separate.
+The page includes compact results, regional summaries, charts, a filtered map, internally scrollable tables, section evidence and icon buttons for downloads. Section selections open the shared details modal without moving the page. Detailed methods and source notes are collapsible. Comparison controls come from outside each target section's own election district, with the existing matching rules and reuse limitations retained. The 31 districts follow CIK's published geography; Sofia's three city districts and Plovdiv city/district remain separate.
 
 The section-gains scatter plot supports drag or pinch zoom, visible zoom/reset controls, and a stable-list filter. Shared district/search controls sit directly below the map/table/graph tabs and filter the active view; the scatter plot and its ranked table use the same cohort. Every research chart and the map has a PNG preview with clipboard copy and download. Exports are rendered locally with the current view, scope and legend; clipboard support depends on the browser.
 

@@ -68,8 +68,7 @@ function escapeText(value: string): string {
           <highcharts-chart #gainsChart class="block w-full" [options]="chart()" (chartInstance)="onChartReady($event)" />
         </app-chart-image-export>
         <p class="note list-key"><span class="list-marker" aria-hidden="true"></span>Жълт контур: над 5% промяна в списъка.</p>
-        <p class="note">Една точка = една секция; еднаквите стойности се застъпват. Изберете точка за секционните данни. Увеличете с бутоните или с влачене; Shift + влачене премества изгледа. На телефон може да използвате и два пръста.</p>
-        <p class="note">Над линията 1:1 прирастът за Йотова е по-голям от {{ comparison() === 'gyurov' ? 'прираста за Гюров' : 'промяната в броя гласували' }}. Промененият кандидатски избор също влияе; графиката не доказва индивидуални прехвърляния или нарушение.</p>
+        <p class="note">Над линията 1:1 прирастът за Йотова е по-голям от {{ comparison() === 'gyurov' ? 'прираста за Гюров' : 'промяната в броя гласували' }}.</p>
       } @else {<p class="empty" role="status">Няма допустими секции с пълни данни за избраните филтри.</p>}
     </div>
     @if (points().length) {
@@ -77,10 +76,10 @@ function escapeText(value: string): string {
         <label>Подреди по<select [value]="ranking()" (change)="changeRanking($event)"><option value="absolute">Най-голяма промяна</option><option value="gain">Най-голям ръст</option></select></label>
       </div>
       <div class="table-scroll" tabindex="0" role="region" aria-label="Секциите с най-големи промени за Йотова">
-        <table class="geography-table"><caption>Първите {{ count(ranked().length) }} от същата извадка. {{ ranking() === 'absolute' ? 'По абсолютната промяна, включително спадове.' : 'По най-големия прираст в гласове.' }} Δ = II тур - I тур.</caption>
+        <table class="geography-table" aria-label="Най-големи промени за Йотова">
           <thead><tr><th scope="col">Секция / място</th><th scope="col">Δ Йотова</th><th scope="col">Δ Гюров</th><th scope="col">Δ гласували</th><th scope="col">Δ активност, п.п.</th><th scope="col">По списък I / II</th></tr></thead>
           <tbody>@for (point of ranked(); track point.row.sectionId) {<tr>
-            <th scope="row"><button hlmBtn variant="ghost" size="sm" class="section-link gap-1" type="button" [attr.aria-label]="'Отвори секция ' + point.row.sectionId" (click)="sectionSelect.emit(point.row)"><app-map-icon name="section" />{{ point.row.sectionId }}</button><small>{{ sectionLabel(point.row) }}</small></th>
+            <th scope="row"><button hlmBtn variant="ghost" size="sm" class="section-link gap-1" type="button" [attr.aria-label]="'Отвори секция ' + point.row.sectionId" aria-haspopup="dialog" (click)="sectionSelect.emit(point.row)"><app-map-icon name="section" />{{ point.row.sectionId }}</button><small>{{ sectionLabel(point.row) }}</small></th>
             <td><strong [appSignedChange]="point.yotova">{{ signed(point.yotova, 0) }}</strong><small>{{ candidateVotes(point.row, '25', 'votes1') }} → {{ candidateVotes(point.row, '25', 'votes2') }}</small></td>
             <td><span [appSignedChange]="point.gyurov">{{ signed(point.gyurov, 0) }}</span></td>
             <td><span [appSignedChange]="point.turnout">{{ signed(point.turnout, 0) }}</span></td>

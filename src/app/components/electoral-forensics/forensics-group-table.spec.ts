@@ -49,7 +49,7 @@ describe('national district summary', () => {
     expect(element.querySelector('thead')?.textContent).not.toContain('Дописани: преглед');
     expect(element.querySelector('tbody')?.textContent).toContain('+30');
     expect(element.querySelector('tbody')?.textContent).toContain('+50');
-    expect(element.querySelector('caption')?.textContent).toContain('допустимите сравними секции');
+    expect(element.querySelector('table')?.getAttribute('aria-label')).toBe('Обобщени данни');
     const toggle = element.querySelector<HTMLButtonElement>('button[aria-expanded]')!;
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
     toggle.click();

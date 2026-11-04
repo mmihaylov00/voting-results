@@ -28,8 +28,7 @@ interface GeographicGroup extends ForensicsGroup {
       </button>
     </div>
     <div class="table-scroll" tabindex="0" role="region" [attr.aria-label]="label()">
-      <table class="geography-table" [id]="tableId">
-        <caption>{{ label() }}. Сумите са за допустимите сравними секции; Δ = II тур - I тур.</caption>
+      <table class="geography-table" [id]="tableId" [attr.aria-label]="label()">
         <thead><tr>
           <th scope="col" app-sortable-table-header columnKey="name" label="Място" [table]="groupTable" align="left"></th>
           <th scope="col" app-sortable-table-header columnKey="eligibleN" label="Сравними / всички" [table]="groupTable" align="right"></th>

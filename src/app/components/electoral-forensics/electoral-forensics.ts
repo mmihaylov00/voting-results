@@ -25,6 +25,7 @@ import { ViewTab, ViewTabsComponent } from '../ui/view-tabs/view-tabs';
 import { SignedChangeDirective } from '../ui/signed-change/signed-change';
 import { ForensicsGainsChartComponent } from './forensics-gains-chart';
 import { ChartImageExportComponent } from '../ui/chart-image-export/chart-image-export';
+import { BaseModalComponent } from '../ui/base-modal/base-modal';
 
 const DATA_ROOT = '/data/forensics/2026';
 const initialFilters: Omit<SectionFilters, 'focus'> = {
@@ -34,7 +35,7 @@ const initialFilters: Omit<SectionFilters, 'focus'> = {
 
 @Component({
   selector: 'app-electoral-forensics',
-  imports: [CommonModule, FormsModule, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective, ForensicsGainsChartComponent, ChartImageExportComponent],
+  imports: [CommonModule, FormsModule, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective, ForensicsGainsChartComponent, ChartImageExportComponent, BaseModalComponent],
   templateUrl: './electoral-forensics.html',
   styleUrls: ['./electoral-forensics.scss', './forensics-workspace.scss', './forensics-tables.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -70,6 +71,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   readonly detailError = signal('');
   readonly pageSize = 30;
   readonly showSectionDetails = signal(false);
+  readonly advancedFiltersOpen = signal(false);
   readonly placeLevel = signal('municipalities');
   readonly overviewView = signal('charts');
   readonly explorerView = signal(this.route.snapshot.fragment === 'section-gains' ? 'gains' : 'map');
@@ -80,7 +82,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   readonly overviewTabs: ViewTab[] = [
     { id: 'charts', label: 'Графики' }, { id: 'regions', label: 'Райони' },
     { id: 'size', label: 'Размер на секцията' }, { id: 'method', label: 'Метод на гласуване' },
-    { id: 'controls', label: 'Сходни секции' }, { id: 'observations', label: 'Наблюдения' },
+    { id: 'controls', label: 'Сходни секции' },
   ];
   readonly explorerTabs: ViewTab[] = [
     { id: 'map', label: 'Карта' }, { id: 'table', label: 'Секционна таблица' }, { id: 'gains', label: 'Прираст по секции' },
@@ -95,7 +97,6 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
     { id: 'turnout', label: 'Активност', count: this.findings().length },
     { id: 'candidate', label: 'Кандидатски ръст', count: this.query()?.candidateReview?.length ?? 0 },
     { id: 'added', label: 'Дописани избиратели', count: this.query()?.addedElectorReview?.length ?? 0 },
-    { id: 'clusters', label: 'Териториални групи', count: this.clusters().length },
   ]);
   readonly historyTabs = computed<ViewTab[]>(() => Object.keys(this.selected()?.history ?? {}).sort().reverse().map(date => ({ id: date, label: date })));
   readonly selectedHistoryDate = computed(() => this.historyTabs().some(tab => tab.id === this.inspectorHistoryDate()) ? this.inspectorHistoryDate() : this.historyTabs()[0]?.id ?? '');
@@ -164,31 +165,10 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
     const rows = this.sections().filter(row => !this.focus() || row.small400);
     return { sections: rows.length, eligible: rows.filter(row => row.eligible !== false && row.comparableRoundPair).length, review: this.findings().length };
   });
-  readonly keyResults = computed(() => {
-    const query = this.query();
-    if (!query) return [];
-    const mean = query.summary['meanDeltaPp'];
-    const ci = query.summary['meanDeltaCi95'];
-    const interval = Array.isArray(ci) && ci.length === 2 ? ` (95% интервал ${signed(ci[0])} до ${signed(ci[1])})` : '';
-    return [
-      typeof mean === 'number' ? `Средна секционна промяна: ${signed(mean)} п.п.${interval}.` : '',
-      typeof query.summary['positiveDeltaN'] === 'number' ? `Ръст на активността в ${this.count(query.summary['positiveDeltaN'])} сравними секции.` : '',
-      `${this.count(query.comparison.matchedN)} от ${this.count(query.comparison.targetN)} секции имат съпоставени контроли от друг изборен район.`,
-    ].filter(Boolean);
-  });
   readonly totals = computed(() => this.filtered().reduce((sum, row) => ({
     registered1: sum.registered1 + (row.registered1 ?? 0), registered2: sum.registered2 + (row.registered2 ?? 0),
     voted1: sum.voted1 + (row.voted1 ?? 0), voted2: sum.voted2 + (row.voted2 ?? 0),
   }), { registered1: 0, registered2: 0, voted1: 0, voted2: 0 }));
-  readonly clusters = computed(() => {
-    const report = this.report();
-    if (!report) return [];
-    const scoped = this.query()?.clusters;
-    if (scoped) return scoped;
-    const ids = this.query()?.clusterIds ?? [];
-    return report.clusters.filter(cluster => !this.focus() || ids.includes(cluster.id));
-  });
-
   constructor() {
     effect(() => {
       const focus = this.focus();
@@ -340,7 +320,6 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
           },
         });
     }
-    requestAnimationFrame(() => document.getElementById('section-inspector')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }));
   }
 
   closeSection(): void {
@@ -348,15 +327,11 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
     this.selected.set(null);
     this.detailLoading.set(false);
     this.detailError.set('');
-    if (this.explorerView() === 'gains') {
-      requestAnimationFrame(() => this.element.nativeElement.querySelector('#section-gains')?.scrollIntoView({ block: 'start' }));
-    }
   }
 
   openFinding(sectionId: string): void {
     const row = this.sectionIndex().get(sectionId);
     if (row) {
-      this.explorerView.set('table');
       this.selectSection(row);
     }
   }

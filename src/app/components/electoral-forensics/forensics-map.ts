@@ -16,12 +16,11 @@ import { createMapImage } from '../../utils/map-image-export.util';
       @for (item of legend; track item.label) {
         <span><i [style.background]="item.color"></i>{{ item.label }}</span>
       }
-    </div>
-    <p class="map-note">{{ locatedCount }} от {{ rows.length }} секции имат координати. {{ metric === 'turnout' ? 'Цвят: промяна в активността, п.п.' : 'Цвят: промяна в кандидатски гласове на 100 избиратели по списъка на I тур.' }} Съвпадащите адреси се застъпват.</p>`,
+    </div>`,
   styles: `:host{display:block;min-width:0}.research-map{height:460px;width:100%;background:#e9edef;z-index:0}
     .map-toolbar{display:flex;align-items:center;justify-content:space-between;gap:.7rem;font-size:.8rem;margin-bottom:.7rem}.map-toolbar label{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;min-width:0}.map-toolbar app-image-export{flex-shrink:0}.map-toolbar select{color:inherit;background:hsl(var(--background));border:1px solid hsl(var(--foreground)/.3);padding:.5rem;border-radius:.25rem}
     .map-key{display:flex;flex-wrap:wrap;gap:.6rem 1rem;margin-top:.8rem;font-size:.78rem}.map-key span{display:flex;align-items:center;gap:.35rem}
-    i{display:inline-block;width:14px;height:14px;border-radius:50%}.map-note{font-size:.8rem;opacity:.75;margin:.65rem 0}
+    i{display:inline-block;width:14px;height:14px;border-radius:50%}
     @media(max-width:640px){.research-map{height:350px}.map-toolbar select{width:100%;max-width:100%;min-width:0;min-height:44px;font-size:1rem}}`,
 })
 export class ForensicsMapComponent implements AfterViewInit, OnChanges, OnDestroy {
