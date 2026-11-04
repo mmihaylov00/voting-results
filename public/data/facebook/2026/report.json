@@ -1,0 +1,2983 @@
+{
+  "version": 1,
+  "period": "2026-10",
+  "collectionDate": "2026-11-04",
+  "collectionPostCount": 49,
+  "titleSearchCount": 49,
+  "keywordTarget": 100,
+  "pages": [
+    {
+      "id": "100069720181353",
+      "name": "Struma News",
+      "url": "https://www.facebook.com/strumanewsbg",
+      "followers": 51000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection"
+    },
+    {
+      "id": "138363261435366",
+      "name": "SIK.BG",
+      "url": "https://www.facebook.com/comunikatornews",
+      "followers": 52000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection"
+    },
+    {
+      "id": "61583481685886",
+      "name": "Информационна агенция PLIK.news",
+      "url": "https://www.facebook.com/profile.php?id=61583481685886",
+      "followers": 4500,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection"
+    },
+    {
+      "id": "61577398061794",
+      "name": "Бункер нюз",
+      "url": "https://www.facebook.com/profile.php?id=61577398061794",
+      "followers": 35000,
+      "followersApproximate": true,
+      "satire": true,
+      "origin": "collection"
+    },
+    {
+      "id": "104575425050525",
+      "name": "BNews Bg",
+      "url": "https://www.facebook.com/bnews.bg",
+      "followers": 34000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection"
+    },
+    {
+      "id": "https://www.facebook.com/n.barekov",
+      "name": "Николай Бареков",
+      "url": "https://www.facebook.com/n.barekov",
+      "followers": 8100,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "discovery"
+    },
+    {
+      "id": "https://www.facebook.com/noviniotposledniachas",
+      "name": "Новини от последния час",
+      "url": "https://www.facebook.com/noviniotposledniachas",
+      "followers": 50000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "discovery"
+    },
+    {
+      "id": "https://www.facebook.com/novininafocus",
+      "name": "Новини на фокус",
+      "url": "https://www.facebook.com/novininafocus",
+      "followers": 2800,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "discovery"
+    }
+  ],
+  "posts": [
+    {
+      "id": "post:pfbid02mU6YsGsHu3nW7F6Q6onUsvLYnyT2C1Vr8H688j4o6HCQozQNQAraqxpv5SJa7dWQl",
+      "pageId": "100069720181353",
+      "url": "https://www.facebook.com/strumanewsbg/posts/pfbid02mU6YsGsHu3nW7F6Q6onUsvLYnyT2C1Vr8H688j4o6HCQozQNQAraqxpv5SJa7dWQl/",
+      "publishedAt": null,
+      "date": "2026-10-03",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T09:32:39.108Z",
+      "excerpt": "Господин Байкушев, дръжте ниво – властта не е всичко! Господин Байкушев, гледаме снимките и видеата от днешната възстановка и посрещането на Йотова. Много",
+      "summary": "Struma News критикува посрещането на Йотова от кмета Байкушев и отбелязва подкрепата на неговата партия за Гюров.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "67",
+          "value": 67,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "20",
+          "value": 20,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "15",
+          "value": 15,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "5d8587e203ef4a8a8b13ce626c5ac9e8496030ab335d18ce70e455a885fa8987"
+    },
+    {
+      "id": "post:pfbid02xBHQG3oNTv5Fn74pzZ2znxx7XGj8CEvZ6j6TEEih8kCyYKKQkftHhWepqmw62Ttvl",
+      "pageId": "100069720181353",
+      "url": "https://www.facebook.com/strumanewsbg/posts/pfbid02xBHQG3oNTv5Fn74pzZ2znxx7XGj8CEvZ6j6TEEih8kCyYKKQkftHhWepqmw62Ttvl/",
+      "publishedAt": null,
+      "date": "2026-10-04",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T09:32:39.109Z",
+      "excerpt": "Панчо Панайотов изригна срещу Байкушев: Пенюга и Боклук Панчо Панайотов, символът на демокрацията, нарече във Фейсбук кмета на Благоевград „Пенюга“ и „Боклук“ заради",
+      "summary": "Struma News предава обидна критика към Байкушев за посрещането на Йотова и посочва, че авторът ѝ е в инициативния комитет на Гюров.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "47",
+          "value": 47,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "23",
+          "value": 23,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "52",
+          "value": 52,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "42c2670d5e69a7dd9da6223b8cd301975a6858519e6ed76cfb15181d5ba78a16"
+    },
+    {
+      "id": "post:pfbid02m5AM3UjX6s5P61kxMT15xB7VjMHvG1xaivvUUN8ewZhVBEV66zUDcjM33pR64ojml",
+      "pageId": "138363261435366",
+      "url": "https://www.facebook.com/comunikatornews/posts/pfbid02m5AM3UjX6s5P61kxMT15xB7VjMHvG1xaivvUUN8ewZhVBEV66zUDcjM33pR64ojml/",
+      "publishedAt": null,
+      "date": "2026-10-09",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T10:31:17.533Z",
+      "excerpt": "ПОЛИТИЧЕСКИ КАСТРИРАНИ: КОГАТО ЕДИН БАНКЕР СЕ ПРЕВЪРНЕ ВЪВ ВЪРХОВЕН ГЛАВНОКОМАНДВАЩ Андрей Гюров изведнъж свали сакото, обу кубинките и реши да ни",
+      "summary": "SIK.BG критикува кандидатурата на Гюров и негови изявления за Черно море, дронове и противовъздушна отбрана, като поставя под въпрос подготовката му за върховен главнокомандващ.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "изборите"
+        },
+        {
+          "keyword": "Жълтопаветни",
+          "source": "text",
+          "evidence": "жълтопаветни"
+        },
+        {
+          "keyword": "дрона",
+          "source": "text",
+          "evidence": "дронове"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "126",
+          "value": 126,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "7",
+          "value": 7,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "35",
+          "value": 35,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "d23cbbb093ff9565e456f5cab7a3e01dfa135a1b5a6283c7ef3466cf7105f54f"
+    },
+    {
+      "id": "post:pfbid0mDnqBwtyiQuvDPsUuSLyFfrNZ8hCzmYwfYpUCeWUxHa8KrHDuSdaDAfzHxkphbvNl",
+      "pageId": "100069720181353",
+      "url": "https://www.facebook.com/strumanewsbg/posts/pfbid0mDnqBwtyiQuvDPsUuSLyFfrNZ8hCzmYwfYpUCeWUxHa8KrHDuSdaDAfzHxkphbvNl/",
+      "publishedAt": null,
+      "date": "2026-10-11",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T09:37:18.269Z",
+      "excerpt": "ИСКАТЕ ЛИ ПУБЛИЧЕН ДЕБАТ МЕЖДУ ГЕОРГИ КАНДЕВ И ВАНЯ ВЕЛИКОВА?…",
+      "summary": "Struma News пита читателите дали искат дебат между кандидатите за вицепрезидент Кандев и Великова. Запазеният надпис е непълен.",
+      "captionComplete": false,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Кандев",
+          "source": "text",
+          "evidence": "КАНДЕВ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "11",
+          "value": 11,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "11",
+          "value": 11,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "3",
+          "value": 3,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "4424340170e9dcf49c6f8c3f9423ddcfff90e5adb040b85f8ee21f0276b613e7"
+    },
+    {
+      "id": "post:pfbid02u9M2ZYvSrtZ2KZkeDNeVdbxwfGDKn4RixnrqaRRR8g4aUGkxx7u9rvRLk2aVcaoHl",
+      "pageId": "61583481685886",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02u9M2ZYvSrtZ2KZkeDNeVdbxwfGDKn4RixnrqaRRR8g4aUGkxx7u9rvRLk2aVcaoHl&id=61583481685886",
+      "publishedAt": null,
+      "date": "2026-10-12",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T10:32:49.807Z",
+      "excerpt": "ПЕТРИЧКИЯТ ЕСКОБАР - помилваният от Йотова наркотрафикант и побойник. Не е латино сериал, а българската държава под ботуша на Йотова и нейните",
+      "summary": "PLIK.news твърди, че помилваният Огнян Атанасов е бил агресор преди освобождаването си и по-късно е заловен с кокаин; използва твърденията срещу кандидатурата на Йотова.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "наркотрафикант",
+          "source": "text",
+          "evidence": "наркотрафикант"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президентството"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "213",
+          "value": 213,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "39",
+          "value": 39,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "22",
+          "value": 22,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "632fae6ce32cf2ffc61cfb4b96247a23b1bc69ef0bc7af015f1d177eb2b4ff46"
+    },
+    {
+      "id": "post:pfbid0QDSecz5EpgCPLRwyp5JtEVPJ3uXdP9pkvUhAkVb3MW71szWmGE18eg6cNuY5h3fCl",
+      "pageId": "61583481685886",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0QDSecz5EpgCPLRwyp5JtEVPJ3uXdP9pkvUhAkVb3MW71szWmGE18eg6cNuY5h3fCl&id=61583481685886",
+      "publishedAt": null,
+      "date": "2026-10-14",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T10:33:22.205Z",
+      "excerpt": "ПОМИЛВАНИЯТ НАРКОТРАФИКАНТ НА ЙОТОВА – ПЕТРИЧКИЯТ ЕСКОБАР СЕ СМЕЕ НА ЗАКОНА, А НИЕ ПЛАЩАМЕ СЪС СТРАХ! Докато ние се чудим",
+      "summary": "PLIK.news твърди, че помилваният през 2022 г. Огнян Атанасов е заловен с кокаин година по-късно, и свързва обвинението с кандидатурата на Йотова.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "ЙОТОВА"
+        },
+        {
+          "keyword": "наркотрафикант",
+          "source": "text",
+          "evidence": "НАРКОТРАФИКАНТ"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президентските"
+        },
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "избори"
+        },
+        {
+          "keyword": "лева",
+          "source": "text",
+          "evidence": "лева"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "13",
+          "value": 13,
+          "approximate": false
+        },
+        "comments": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        },
+        "shares": {
+          "raw": "5",
+          "value": 5,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "a9a8019ec06c6db6d8bedabdcd59c2df8b669d8195d2383559901f6070ec582a"
+    },
+    {
+      "id": "post:pfbid02m8f3HxtJot1ghwe3G1VnzseGj9vwEYeTSSUSLgW1YFudMHBiXJUU9jKaGh2H6cjNl",
+      "pageId": "138363261435366",
+      "url": "https://www.facebook.com/comunikatornews/posts/pfbid02m8f3HxtJot1ghwe3G1VnzseGj9vwEYeTSSUSLgW1YFudMHBiXJUU9jKaGh2H6cjNl/",
+      "publishedAt": null,
+      "date": "2026-10-17",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T10:30:46.685Z",
+      "excerpt": "ДОНДУКОВ 2 НА НА СИСТЕМА: Президентският стол на Гюров е купен с украински дронове и милиони от газовия",
+      "summary": "SIK.BG твърди, че кампанията на Гюров и Кандев е финансирана предимно от Калоян Данчев, и свързва даренията с газов лиценз, дронове и Кирил Петков.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Кандев",
+          "source": "text",
+          "evidence": "Кандев"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "Президентският"
+        },
+        {
+          "keyword": "кирил петков",
+          "source": "text",
+          "evidence": "Кирил Петков"
+        },
+        {
+          "keyword": "спонсор",
+          "source": "text",
+          "evidence": "спонсор"
+        },
+        {
+          "keyword": "дрона",
+          "source": "text",
+          "evidence": "дронове"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "107",
+          "value": 107,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "19",
+          "value": 19,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "635",
+          "value": 635,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "b2946ef6b784c0e33a38594ae28af93fa9bc3adafddabf3aecb427c990cba5ca"
+    },
+    {
+      "id": "post:pfbid031KzVh7UKdSRowGx3pHBj5Qb8hu6DQNaKz1thvjzv3ZasBSHsaPKDRPzwcRU3PJqQl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid031KzVh7UKdSRowGx3pHBj5Qb8hu6DQNaKz1thvjzv3ZasBSHsaPKDRPzwcRU3PJqQl&id=61577398061794",
+      "publishedAt": null,
+      "date": "2026-10-26",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T10:18:06.811Z",
+      "excerpt": "В България редовно се гласува по “интереси”. Явно много кандидати за помилване има.",
+      "summary": "Бункер нюз свързва иронично гласуването с помилвания и публикува изображение с твърдение, че Йотова печели вота в Централния софийски затвор.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "помилване",
+          "source": "text",
+          "evidence": "помилване"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "image",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "127",
+          "value": 127,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "3",
+          "value": 3,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "4",
+          "value": 4,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "28b20a5c4fad4895136b4cf813e8c3d3fb574338e8dde8ebf5a750cebe0edf1d"
+    },
+    {
+      "id": "post:pfbid02S9i8g73PkvdreHCK14M8RjcDRaKuKV8mbemEz9uumawLedfsSSvBnxnrTxrr7dHfl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid02S9i8g73PkvdreHCK14M8RjcDRaKuKV8mbemEz9uumawLedfsSSvBnxnrTxrr7dHfl/",
+      "publishedAt": "2026-10-27T17:07:00+02:00",
+      "date": "2026-10-27",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T10:11:39.999Z",
+      "excerpt": "“Мъжът” Кандев се уплаши и избяга от дебат с Кирил Вълчев …",
+      "summary": "BNews Bg твърди, че Кандев е избегнал дебат с Кирил Вълчев. Прегледан е само видимият, съкратен надпис.",
+      "captionComplete": false,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Кандев",
+          "source": "text",
+          "evidence": "Кандев"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "55",
+          "value": 55,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "7",
+          "value": 7,
+          "approximate": false
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "86723b291a1d9f9c2c3b047c8c7d569bc8af70eefea8b79db09230707b5a8917"
+    },
+    {
+      "id": "post:pfbid0dqaVDHafaSqYgUEasHmN3Ani9oHcw4YwbwBJxneq4Jj6qTkAxyTJGyvhoSYwdoQtl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid0dqaVDHafaSqYgUEasHmN3Ani9oHcw4YwbwBJxneq4Jj6qTkAxyTJGyvhoSYwdoQtl/",
+      "publishedAt": "2026-10-27T19:36:00+02:00",
+      "date": "2026-10-27",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T10:11:27.674Z",
+      "excerpt": "Румен Радев: Кална и недостойна кампания!Подкрепяме госпожа Йотова! Ще внесем бюджета до края на месеца #…",
+      "summary": "BNews Bg цитира подкрепа на Радев за Йотова и критика към кампанията заедно с анонс за бюджета. Прегледан е само видимият надпис.",
+      "captionComplete": false,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "радев",
+          "source": "text",
+          "evidence": "Радев"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "87",
+          "value": 87,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "2",
+          "value": 2,
+          "approximate": false
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "b827dc32194fd1d61cf07801aa0d9fedf6138a0a986e556e57b057d48420845b"
+    },
+    {
+      "id": "post:pfbid028x5LkjYB6qV5HeJCjWWtGgkZLQL3eEEyFHRf5sw8WCy1cA16RRuz3doXBuV92zewl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid028x5LkjYB6qV5HeJCjWWtGgkZLQL3eEEyFHRf5sw8WCy1cA16RRuz3doXBuV92zewl/",
+      "publishedAt": "2026-10-28T21:11:00+02:00",
+      "date": "2026-10-28",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:50:00.683Z",
+      "excerpt": "Ще има ли още убийства преди балотажа? В Директно с Кристияна говори Николай Бареков! Какво избираме в неделя? Защо изборът е между Радев",
+      "summary": "BNews Bg рекламира интервю за балотажа и представя избора като противопоставяне между Радев и Пеевски.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "радев",
+          "source": "text",
+          "evidence": "Радев"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "39",
+          "value": 39,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "c6aae28f695f4a341602a7bbe06a8512f4c2a65cd572b6d61cf92bdc768a4c17"
+    },
+    {
+      "id": "post:pfbid02mC3RbUvRRrwn4FWqivPzEWAmRwnA5N2DWjq8Uoq7RsNYGRy5ULep8wyc1NouSHY2l",
+      "pageId": "138363261435366",
+      "url": "https://www.facebook.com/comunikatornews/posts/pfbid02mC3RbUvRRrwn4FWqivPzEWAmRwnA5N2DWjq8Uoq7RsNYGRy5ULep8wyc1NouSHY2l/",
+      "publishedAt": null,
+      "date": "2026-10-28",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T10:30:22.647Z",
+      "excerpt": "КАРТОНЕНИЯТ МЕЧ СЕ СЧУПИ В ПОСОЛСТВОТО! Как Радостин Василев продаде патриотите на украински слуга Андрей Гюров от Тони",
+      "summary": "SIK.BG обвинява Радостин Василев, че е подкрепил Гюров за балотажа, и представя подкрепата като подчинение на външни интереси.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        },
+        {
+          "keyword": "война",
+          "source": "text",
+          "evidence": "войната"
+        },
+        {
+          "keyword": "зеленски",
+          "source": "text",
+          "evidence": "Зеленски"
+        },
+        {
+          "keyword": "сглобка",
+          "source": "text",
+          "evidence": "сглобките"
+        },
+        {
+          "keyword": "ППДБ",
+          "source": "text",
+          "evidence": "ПП-ДБ"
+        },
+        {
+          "keyword": "лева",
+          "source": "text",
+          "evidence": "лев"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "1.4K",
+          "value": 1400,
+          "approximate": true
+        },
+        "comments": {
+          "raw": "209",
+          "value": 209,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "1K",
+          "value": 1000,
+          "approximate": true
+        }
+      },
+      "sourceTextSha256": "2017b50610fd9bc83439021519f7f7c59ff431e9db10d15c65034d64fb3cd8ef"
+    },
+    {
+      "id": "post:pfbid02orFJ7ecCHXmDARycYMhD5N21fPcvRydaUUaJQL3jc6fHXY3n1onf2kudGCfHpunNl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid02orFJ7ecCHXmDARycYMhD5N21fPcvRydaUUaJQL3jc6fHXY3n1onf2kudGCfHpunNl/",
+      "publishedAt": "2026-10-28T17:56:00+02:00",
+      "date": "2026-10-28",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:52:50.590Z",
+      "excerpt": "Искате ли президент на България, зависим от кървавите пари от войната в Украйна? #Зеленски #АндрейГюров #Украйна",
+      "summary": "BNews Bg твърди, че дарител за Гюров печели от производство на дронове за Украйна, и прави предположения за финансова зависимост.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        },
+        {
+          "keyword": "война",
+          "source": "text",
+          "evidence": "войната"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        },
+        {
+          "keyword": "кирил петков",
+          "source": "text",
+          "evidence": "Кирил Петков"
+        },
+        {
+          "keyword": "дрона",
+          "source": "text",
+          "evidence": "дроновете"
+        },
+        {
+          "keyword": "спонсор",
+          "source": "text",
+          "evidence": "спонсор"
+        },
+        {
+          "keyword": "зеленски",
+          "source": "text",
+          "evidence": "Зеленски"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "89",
+          "value": 89,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "8",
+          "value": 8,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "25",
+          "value": 25,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "ea9570041c9b10bd4804cb2e3b06a827fd38448646ccb7639d078b9d148ee3e7"
+    },
+    {
+      "id": "post:pfbid02upmeKUjzAUKYiFtZ87Tos1bACTjUg6bq9FiWZQuVLrwdXhGVnTZ4TE4X6SfG5N7Hl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid02upmeKUjzAUKYiFtZ87Tos1bACTjUg6bq9FiWZQuVLrwdXhGVnTZ4TE4X6SfG5N7Hl/",
+      "publishedAt": "2026-10-28T19:43:00+02:00",
+      "date": "2026-10-28",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:50:32.005Z",
+      "excerpt": "Куклата на конци Гюров няма как да види господаря си Пеевски #Гюров #Пеевски #Мъпет Много нелепо интерво на Андрей Гюров по БТВ, но",
+      "summary": "BNews Bg представя Гюров като зависим от Пеевски и описва балотажа като вот за или против Пеевски.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "251",
+          "value": 251,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "42",
+          "value": 42,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "14",
+          "value": 14,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "b790ab2805a81c0d26b839bc260bc92e940cf591e4fb3591d00db5dac611ae12"
+    },
+    {
+      "id": "post:pfbid03rZ6MY8CN5E94AuM95mPh9MrXcuksP24zHiZn46EcQ3RhpWrxMiooYHwUAnocvbyl",
+      "pageId": "61583481685886",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid03rZ6MY8CN5E94AuM95mPh9MrXcuksP24zHiZn46EcQ3RhpWrxMiooYHwUAnocvbyl&id=61583481685886",
+      "publishedAt": null,
+      "date": "2026-10-28",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T10:25:57.008Z",
+      "excerpt": "НОВ ШАМАР ЗА СПРАВЕДЛИВОСТТА! Илияна Йотова пак разписа помилване – този път: доживотен затворник, осъден за двойно убийство и грабеж! Докато",
+      "summary": "PLIK.news твърди, че Йотова е помилвала доживотно осъден за двойно убийство и грабеж, и свързва това с предишно помилване на наркотрафикант.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "помилване",
+          "source": "text",
+          "evidence": "помилване"
+        },
+        {
+          "keyword": "наркотрафикант",
+          "source": "text",
+          "evidence": "наркотрафикант"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президентството"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "179",
+          "value": 179,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "31",
+          "value": 31,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "59",
+          "value": 59,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "780d014eef3eaa30f626fe4e0db9aa96e8cf9b7480b82a2a895c51885e34c9c3"
+    },
+    {
+      "id": "post:pfbid0BHVnuGJsi6ub8GXhMMHfnBdKKnQE7cadFT1LBkfrfGTWubjtRahR29KDYiyCPg6bl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid0BHVnuGJsi6ub8GXhMMHfnBdKKnQE7cadFT1LBkfrfGTWubjtRahR29KDYiyCPg6bl/",
+      "publishedAt": "2026-10-28T10:43:00+02:00",
+      "date": "2026-10-28",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:55:33.867Z",
+      "excerpt": "BNEWS.BG: Шофьорът на Асен Василев: Шефът се разбра с Делян Пеевски заради Гюров и за да стане премиер! #Пеевски",
+      "summary": "BNews Bg твърди за изборна договорка между Василев и Пеевски и прогнозира силна подкрепа за Гюров в Белица.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "изборите"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "асен василев",
+          "source": "text",
+          "evidence": "Асен Василев"
+        },
+        {
+          "keyword": "радев",
+          "source": "text",
+          "evidence": "Радев"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "610",
+          "value": 610,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "73",
+          "value": 73,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "171",
+          "value": 171,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "86f841e434cdb07a1ee991214a5dcf92fc653fa6cc0983ff239cb8b76aad3245"
+    },
+    {
+      "id": "post:pfbid0KisFpBdsttQ3mTPPqpPgaxPDyddQ5s6EuS3aFRAVTwBDYGCNnGDY8LDpYNn5ZkBZl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid0KisFpBdsttQ3mTPPqpPgaxPDyddQ5s6EuS3aFRAVTwBDYGCNnGDY8LDpYNn5ZkBZl/",
+      "publishedAt": "2026-10-28T13:54:00+02:00",
+      "date": "2026-10-28",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:53:34.251Z",
+      "excerpt": "Кораб с контейнери бе ударен близо до България на път за Констанца, Румъния #Дрон #ЧерноМоре Новината идва на фона",
+      "summary": "BNews Bg свързва съобщение за удар по кораб с твърдение за производител на дронове, финансиращ кампанията на Гюров, и приписва подобно изказване на Йотова.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        },
+        {
+          "keyword": "дрона",
+          "source": "text",
+          "evidence": "Дрон"
+        },
+        {
+          "keyword": "спонсор",
+          "source": "text",
+          "evidence": "спонсор"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "34",
+          "value": 34,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "6",
+          "value": 6,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "2",
+          "value": 2,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "2d85c80715dcafae270d5a7c2fe4202abac9e55acf8c8f4bffce4d53816ebaf5"
+    },
+    {
+      "id": "post:pfbid0Moetda1iWfTHG8QCvYmjFbLuDCH2RSNszUecXCcoKurF41vuCJizBws5DAQwsDjLl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid0Moetda1iWfTHG8QCvYmjFbLuDCH2RSNszUecXCcoKurF41vuCJizBws5DAQwsDjLl/",
+      "publishedAt": "2026-10-28T13:01:00+02:00",
+      "date": "2026-10-28",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:54:21.520Z",
+      "excerpt": "Страшна дилема пред Бойко Борисов – ако подкрепи Гюров, копае собствения си гроб (Видео) #Борисов #ГЕРБ #Гроб",
+      "summary": "BNews Bg коментира възможните последици за Борисов от подкрепа за Гюров и свързва избора с Пеевски, мира и партийни размествания.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "избори"
+        },
+        {
+          "keyword": "сглобка",
+          "source": "text",
+          "evidence": "Сглобката"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        },
+        {
+          "keyword": "кирил петков",
+          "source": "text",
+          "evidence": "Кирил Петков"
+        },
+        {
+          "keyword": "Жълтопаветни",
+          "source": "text",
+          "evidence": "жълтопаветни"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "50",
+          "value": 50,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "6",
+          "value": 6,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "e4d26ad6e7a7c8e920bc38394f2b17d5e6c903811fa64dd07765c42b87f82197"
+    },
+    {
+      "id": "post:pfbid0mnE5t943SWc4MH9KheNhCi5UYKCLnWUP3kxWAv3wd2WESpMJHHTLYfLp6rtWTHNal",
+      "pageId": "100069720181353",
+      "url": "https://www.facebook.com/strumanewsbg/posts/pfbid0mnE5t943SWc4MH9KheNhCi5UYKCLnWUP3kxWAv3wd2WESpMJHHTLYfLp6rtWTHNal/",
+      "publishedAt": null,
+      "date": null,
+      "interval": {
+        "start": "2026-10-28",
+        "end": "2026-10-30"
+      },
+      "datePrecision": "interval",
+      "collectedAt": "2026-11-04T09:32:39.108Z",
+      "excerpt": "Напрежение преди балотажа: Витанов твърди за среща между Гюров и Пеевски, кандидатът отрича Петър Витанов, председател на парламентарната група",
+      "summary": "Struma News предава твърдение на Витанов за среща между Гюров и Пеевски, отрицанието на Гюров и липсата на публично представени доказателства.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "Избори2026"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "ППДБ",
+          "source": "text",
+          "evidence": "ПП и ДБ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "63",
+          "value": 63,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "65",
+          "value": 65,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "4",
+          "value": 4,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "ee95015bf22964ffb883f99cd744992c73e093579e964de749d3ccad511e327f"
+    },
+    {
+      "id": "post:pfbid0oApgxUQcjgrRURbhK9a5YVoZY2bHiH29tiaq8AnPkZVwNeGCqHVmZoYDuDjWcgXMl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid0oApgxUQcjgrRURbhK9a5YVoZY2bHiH29tiaq8AnPkZVwNeGCqHVmZoYDuDjWcgXMl/",
+      "publishedAt": "2026-10-28T09:40:00+02:00",
+      "date": "2026-10-28",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T10:09:34.875Z",
+      "excerpt": "Илияна Йотова потвърди разкритието на BNEWS: Спонсор на Гюров продава дронове за войната в Украйна #ИлиянаЙотова",
+      "summary": "BNews Bg предава твърдения на Йотова за украински бизнес с дронове на спонсор на Гюров и за възможни зависимости на бъдещ президент.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        },
+        {
+          "keyword": "война",
+          "source": "text",
+          "evidence": "войната"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        },
+        {
+          "keyword": "кирил петков",
+          "source": "text",
+          "evidence": "Кирил Петков"
+        },
+        {
+          "keyword": "дрона",
+          "source": "text",
+          "evidence": "дронове"
+        },
+        {
+          "keyword": "спонсор",
+          "source": "text",
+          "evidence": "Спонсор"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "83",
+          "value": 83,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "7",
+          "value": 7,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "6",
+          "value": 6,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "bc8f05456a03f369931efd0baeb2804c2e69444b74038dc2557a1a7f79da83e9"
+    },
+    {
+      "id": "post:pfbid0252oshkJ5KmtXCKjdgoUHZjwS3xabtSgHBJHMag8dzEtKQ42gZRcUVsRJMwcyG6EXl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid0252oshkJ5KmtXCKjdgoUHZjwS3xabtSgHBJHMag8dzEtKQ42gZRcUVsRJMwcyG6EXl/",
+      "publishedAt": "2026-10-29T12:31:00+02:00",
+      "date": "2026-10-29",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:39:54.443Z",
+      "excerpt": "Гюрсел, Кандев и ценоразписа на изборното меню в Махалата Виж линка в първия коментар",
+      "summary": "BNews Bg публикува предизборно внушение за Кандев и предполагаем ценоразпис, без подкрепящи подробности във видимия надпис.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Кандев",
+          "source": "text",
+          "evidence": "Кандев"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "58",
+          "value": 58,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "4",
+          "value": 4,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "5bd000f46953052009324809568f7cd2c8675f674277dae69592d88718fcce02"
+    },
+    {
+      "id": "post:pfbid02EJT5FUrZgtrk7tTa1XHeNT7wT3XcPNuGQZes7tnF3PRfkc79CJDyuhzJiouTS6Uyl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid02EJT5FUrZgtrk7tTa1XHeNT7wT3XcPNuGQZes7tnF3PRfkc79CJDyuhzJiouTS6Uyl/",
+      "publishedAt": "2026-10-29T22:20:00+02:00",
+      "date": "2026-10-29",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:39:13.481Z",
+      "excerpt": "Гюров иначе не лъжел, ама вика: Нямам връзка с подкрепящите ме партии ПП и ДБ. Същият Гюров бе шеф на",
+      "summary": "BNews Bg оспорва заявена независимост на Гюров от ПП и ДБ и прави твърдения за разходи на Пеевски по време на балотажа.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "ППДБ",
+          "source": "text",
+          "evidence": "ПП и ДБ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "615",
+          "value": 615,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "49",
+          "value": 49,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "27",
+          "value": 27,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "12adb37a3f8dd4c035f070e64b5c7627d6ceb0e71af0cc019bf944fb6791adba"
+    },
+    {
+      "id": "post:pfbid03V9bKpCNQKJu4Ba9HckG1GKZfbUfiW7sHoXSmrEjTToa9hCfLCpeSshKajdgAmE9l",
+      "pageId": "100069720181353",
+      "url": "https://www.facebook.com/strumanewsbg/posts/pfbid03V9bKpCNQKJu4Ba9HckG1GKZfbUfiW7sHoXSmrEjTToa9hCfLCpeSshKajdgAmE9l/",
+      "publishedAt": null,
+      "date": "2026-10-29",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T09:32:39.108Z",
+      "excerpt": "ЙОТОВА РАЗМАЗА ГЮРОВ В ПРЕЗИДЕНТСКИЯ ДЕБАТ ПО БНТ! ПОДГОТВЕНА, КАТЕГОРИЧНА, ПРЯМА! Йотова демонстрира увереност, ясна позиция и решителност във всяка своя",
+      "summary": "Struma News хвали представянето на Йотова в президентския дебат и критикува Гюров. Публикацията съдържа оценъчен коментар.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "ГЮРОВ"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "ЙОТОВА"
+        },
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "Избори2026"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "ПРЕЗИДЕНТСКИЯ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "3.4K",
+          "value": 3400,
+          "approximate": true
+        },
+        "comments": {
+          "raw": "648",
+          "value": 648,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "154",
+          "value": 154,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "be37c6897a506bc3d6a900a92485f533a513200a82ddcbaf1b859f75ccbae242"
+    },
+    {
+      "id": "post:pfbid0RU4rkXLGMKMbo43LNk2dHiAbnzXzZnvisSWW69RqrDm96ZnFzxbKc3GXvx2PfgWbl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid0RU4rkXLGMKMbo43LNk2dHiAbnzXzZnvisSWW69RqrDm96ZnFzxbKc3GXvx2PfgWbl/",
+      "publishedAt": "2026-10-29T08:56:00+02:00",
+      "date": "2026-10-29",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:43:56.570Z",
+      "excerpt": "Извънредно! МВР залови купувачи на гласове в София, активирани след сделката на ДПС с ПП и ДБ (СНИМКИ) Ето за #КОЙ КОЙ",
+      "summary": "BNews Bg твърди, че полицията е заловила купувачи на гласове в София, и ги свързва с предполагаема договорка между ДПС и ПП-ДБ.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "ППДБ",
+          "source": "text",
+          "evidence": "ПП и ДБ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "485",
+          "value": 485,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "29",
+          "value": 29,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "43",
+          "value": 43,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "addd2840ae82947887bd5ec8385787e97b6f0736c2365b9aacffe9fe21036fc7"
+    },
+    {
+      "id": "video:2050433183027183",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/reel/2050433183027183/",
+      "publishedAt": "2026-10-29T20:10:00+02:00",
+      "date": "2026-10-29",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:39:22.233Z",
+      "excerpt": "Стана много интересен разговор с Кристиян Коев в ТВ Ария на тема: За какво гласуваме в неделя. Накратко - Ако мразиш Румен",
+      "summary": "BNews Bg рекламира политическо интервю и представя гласуването за Гюров като избор на Пеевски срещу Радев.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "радев",
+          "source": "text",
+          "evidence": "Радев"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "144",
+          "value": 144,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "6",
+          "value": 6,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "11",
+          "value": 11,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "3a8096537d191f6ac4961170016f9e04a334e594873b6d45b4087e454a0998b3"
+    },
+    {
+      "id": "post:pfbid02PK2BQUuFmxmeJrgDxK5YH3SjzYKhdospmacVbHE4EvxXqFzhcnAeTA2VRh2uBxBml",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid02PK2BQUuFmxmeJrgDxK5YH3SjzYKhdospmacVbHE4EvxXqFzhcnAeTA2VRh2uBxBml/",
+      "publishedAt": "2026-10-30T00:10:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:39:03.401Z",
+      "excerpt": "Гюров топъл - топъл от боя след дебата с Йотова си призна и за парите от украинските дронове за неговата кампания!",
+      "summary": "BNews Bg твърди, че след дебата с Йотова Гюров е признал финансиране на кампанията, свързано с украински дронове.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "дрона",
+          "source": "text",
+          "evidence": "дронове"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "54",
+          "value": 54,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "19",
+          "value": 19,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "3",
+          "value": 3,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "3d37deb2225a1f4359508ab1167932051905e814d5f15aa97737047c2fa17259"
+    },
+    {
+      "id": "post:pfbid02etWsuvBeLS3Ku119BoMWHjdWvXzMaARnc96tfyJJtMEDJBrhPwwiUpdcMfrsWSb8l",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02etWsuvBeLS3Ku119BoMWHjdWvXzMaARnc96tfyJJtMEDJBrhPwwiUpdcMfrsWSb8l&id=61577398061794",
+      "publishedAt": null,
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T09:50:49.354Z",
+      "excerpt": "Г-жо Йотова, вчера преминахте една съвсем обикновена човешка граница - тази на емпатията. Има неща, които не подхождат на никого, още по-малко",
+      "summary": "Бункер нюз критикува Йотова за предполагаема липса на емпатия към семейства, засегнати от наркотици, и към Гюров; запазеният текст е непълен.",
+      "captionComplete": false,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "1.7K",
+          "value": 1700,
+          "approximate": true
+        },
+        "comments": {
+          "raw": "61",
+          "value": 61,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "52",
+          "value": 52,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "709a868dfd8d5509ec834cf3ed7ffd15b736a86ab4fb2f52851f5c380eeb0184"
+    },
+    {
+      "id": "post:pfbid02sTbvxAS9yNW2ninfFGXuGB6HskJV5F9TUEkvh6xeVWfAmP6EXftsSyaHVjrsvH8xl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid02sTbvxAS9yNW2ninfFGXuGB6HskJV5F9TUEkvh6xeVWfAmP6EXftsSyaHVjrsvH8xl/",
+      "publishedAt": "2026-10-30T09:52:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:37:22.470Z",
+      "excerpt": "От ПБ потвърдиха, че ДПС е най-яростната им опозиция и предупредиха, че с Гюров – президент Пеевски ще си има",
+      "summary": "BNews Bg повтаря политически твърдения за договорки или възможна среща с участието на Гюров, Пеевски и Асен Василев.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "асен василев",
+          "source": "text",
+          "evidence": "Асен Василев"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "129",
+          "value": 129,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "18",
+          "value": 18,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "5",
+          "value": 5,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "3d7d9877d1d0dc5d0bf42b18c6d2ceec82cca238d53bb44ae0d7d14fb2aea73a"
+    },
+    {
+      "id": "post:pfbid02yYngwbFJKYGVPJiqoahxFCb3cXeW7T9QjGz93rwXjiustzsoUTefJXQzMxkgkuUel",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02yYngwbFJKYGVPJiqoahxFCb3cXeW7T9QjGz93rwXjiustzsoUTefJXQzMxkgkuUel&id=61577398061794",
+      "publishedAt": null,
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T09:48:52.621Z",
+      "excerpt": "Йотова изрече толкова много лъжи! Харесвайте, коментирайте и споделяйте видеата, които ги разобличават! Нека хората разберат истината, а на нея да ѝ побелее косата",
+      "summary": "Бункер нюз обвинява Йотова в лъжи и призовава читателите да разпространяват видеа, които според страницата ги опровергават.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "378",
+          "value": 378,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "20",
+          "value": 20,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "3",
+          "value": 3,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "2ea3571dea9daffaa3286f74bc0462bb1bb0a97601ef425cc2197cec8837ded3"
+    },
+    {
+      "id": "post:pfbid032257kFpWVw9H3xfrZnwCgVFGDo8J72jGTsLpViBujApt8kz4aZsEbnbv9AtUWksgl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid032257kFpWVw9H3xfrZnwCgVFGDo8J72jGTsLpViBujApt8kz4aZsEbnbv9AtUWksgl/",
+      "publishedAt": "2026-10-30T09:20:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:37:27.877Z",
+      "excerpt": "След слабото представяне по БНТ срещу Илияна Йотова, накрая завалията попадна и Директно срещу Кристиянаа Стефанова! Гюров,",
+      "summary": "BNews Bg критикува представянето на Гюров в дебата и твърди, че негов спонсор произвежда военни дронове за Украйна.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        },
+        {
+          "keyword": "война",
+          "source": "text",
+          "evidence": "войната"
+        },
+        {
+          "keyword": "кирил петков",
+          "source": "text",
+          "evidence": "Кирил Петков"
+        },
+        {
+          "keyword": "дрона",
+          "source": "text",
+          "evidence": "дронове"
+        },
+        {
+          "keyword": "спонсор",
+          "source": "text",
+          "evidence": "спонсор"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "64",
+          "value": 64,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "6",
+          "value": 6,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "2",
+          "value": 2,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "f5a5223c96c0ed52a44c37c8ec624c65d39862e7161dc5db881071199992b759"
+    },
+    {
+      "id": "post:pfbid08UZBktF8as1FA3sS9DHowHJKXLd5RcRd4zUX5bCmuHuaTYbqxVF1CXq4jwzGPcDxl",
+      "pageId": "100069720181353",
+      "url": "https://www.facebook.com/strumanewsbg/posts/pfbid08UZBktF8as1FA3sS9DHowHJKXLd5RcRd4zUX5bCmuHuaTYbqxVF1CXq4jwzGPcDxl/",
+      "publishedAt": null,
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T09:37:18.269Z",
+      "excerpt": "С ГОЛЯМО ПРИСКЪРБИЕ СЪОБЩАВАМЕ… След вчерашния президентски дебат по БНТ се наложи да приемем една изключително тежка истина… ОКАЗА СЕ, ЧЕ КАНДЕВ Е",
+      "summary": "Struma News използва ироничен траурен анонс, за да сравни Кандев с участниците в президентския дебат. Надписът е коментар.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Кандев",
+          "source": "text",
+          "evidence": "КАНДЕВ"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президентски"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "54",
+          "value": 54,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "11",
+          "value": 11,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "4",
+          "value": 4,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "d082ee6b29b5749f54b2348f1dd694ad3e5abb922f61fe4781fa79c5d6e0eef6"
+    },
+    {
+      "id": "post:pfbid0P8eVWT6q1cjqVuUx6W7jFS8kQkPJEAge5cbuYiQxP2U5dSU6EqczFMqnrL3fX5qFl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid0P8eVWT6q1cjqVuUx6W7jFS8kQkPJEAge5cbuYiQxP2U5dSU6EqczFMqnrL3fX5qFl/",
+      "publishedAt": "2026-10-30T12:09:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:37:16.932Z",
+      "excerpt": "Доживяхме да видим Кирил Петков от премиер с помощни колелета до “сив кардинал” зад Гюров и",
+      "summary": "BNews Bg представя Кирил Петков и Асен Василев като фигури зад Гюров и прави твърдения за оръжеен бизнес и дронове.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        },
+        {
+          "keyword": "война",
+          "source": "text",
+          "evidence": "войната"
+        },
+        {
+          "keyword": "сглобка",
+          "source": "text",
+          "evidence": "сглобки"
+        },
+        {
+          "keyword": "асен василев",
+          "source": "text",
+          "evidence": "Асен Василев"
+        },
+        {
+          "keyword": "кирил петков",
+          "source": "text",
+          "evidence": "Кирил Петков"
+        },
+        {
+          "keyword": "дрона",
+          "source": "text",
+          "evidence": "дронове"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "69",
+          "value": 69,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "8",
+          "value": 8,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "3",
+          "value": 3,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "5e74ef1b1a464648863f556bf1c4837047d91fe4ad0e8ea3ce11361165efb673"
+    },
+    {
+      "id": "post:pfbid0vpmBVZ3aQ5eoa91QNqEBGQG5UxQsACejjUe4ouYUHNijU5fDxX63Chjff4SJgMD8l",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid0vpmBVZ3aQ5eoa91QNqEBGQG5UxQsACejjUe4ouYUHNijU5fDxX63Chjff4SJgMD8l/",
+      "publishedAt": "2026-10-30T15:50:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:37:09.997Z",
+      "excerpt": "Костов, Плвенелиев и Васил Терзиев изпраха Борисов преди да го пенсионират с обща подкрепа",
+      "summary": "BNews Bg критикува подкрепата за Гюров и твърди за връзки между кампанията му, Кирил Петков и производител на дронове.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "избори"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        },
+        {
+          "keyword": "война",
+          "source": "text",
+          "evidence": "войната"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        },
+        {
+          "keyword": "кирил петков",
+          "source": "text",
+          "evidence": "Кирил Петков"
+        },
+        {
+          "keyword": "дрона",
+          "source": "text",
+          "evidence": "дронове"
+        },
+        {
+          "keyword": "спонсор",
+          "source": "text",
+          "evidence": "спонсор"
+        },
+        {
+          "keyword": "путин",
+          "source": "text",
+          "evidence": "Путин"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "52",
+          "value": 52,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "11",
+          "value": 11,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "11",
+          "value": 11,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "9b5862997074aec861814a7bf03b7c297097f4cf63798a79d9ab28ac483454f4"
+    },
+    {
+      "id": "video:1446707520759625",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1446707520759625/",
+      "publishedAt": null,
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T09:49:01.009Z",
+      "excerpt": "Йотова е излъгала? Не може да бъде!",
+      "summary": "Бункер нюз иронично обвинява Йотова в лъжа; конкретното твърдение не се вижда в запазения надпис.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "296",
+          "value": 296,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "8",
+          "value": 8,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "53",
+          "value": 53,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "4dd5aef971ae4e92f1e21c6222fe12c429dd739a61977ef2e08845ea8c430861"
+    },
+    {
+      "id": "post:pfbid01Qgxf35raAqu1iVK5AsUoCz4nGd8f3nZ3ufBYResZrTtimqQzNaAo19uTfN7HrgMl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid01Qgxf35raAqu1iVK5AsUoCz4nGd8f3nZ3ufBYResZrTtimqQzNaAo19uTfN7HrgMl/",
+      "publishedAt": "2026-10-31T16:37:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:46:53.486Z",
+      "excerpt": "Бойко Борисов подкрепя на думи Гюров, а на дело - гласува за Йотова #БойкоБорисов #Гюров #Йотова Трагикомедията с Борисовата подкрепа за",
+      "summary": "BNews Bg твърди, че Борисов публично подкрепя Гюров, но на практика предпочита Йотова.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "сглобка",
+          "source": "text",
+          "evidence": "Сглобката"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "25",
+          "value": 25,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "3",
+          "value": 3,
+          "approximate": false
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "38c10632afe23c3e425c7fd18af01864499529454124ab0f4949e93446f67008"
+    },
+    {
+      "id": "post:pfbid026QRXCj8swnem74Z265Ft27ukZ6cThufy3xmoJKztLyGjL3LdXatA8k3DespK89uzl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid026QRXCj8swnem74Z265Ft27ukZ6cThufy3xmoJKztLyGjL3LdXatA8k3DespK89uzl&id=61577398061794",
+      "publishedAt": null,
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T09:42:06.498Z",
+      "excerpt": "Най-голямото постижение на Йотова като президент било, че излязла под дъжда. Ооо, уау! Каква смелост, какъв подвиг!",
+      "summary": "Бункер нюз осмива представянето на излизане под дъжда като постижение на Йотова.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "599",
+          "value": 599,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "35",
+          "value": 35,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "10",
+          "value": 10,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "0b7dc17d88e6dfe1fca08763f852cdab0fe564d72dcc9050f5b1a3973e74b4bc"
+    },
+    {
+      "id": "post:pfbid026qyin9k9BgRa4wQ6EiLTy3fdgNpTc7ubXhbMjUP8em1wCjk6qf7yVvRdzCaFtXGdl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid026qyin9k9BgRa4wQ6EiLTy3fdgNpTc7ubXhbMjUP8em1wCjk6qf7yVvRdzCaFtXGdl/",
+      "publishedAt": "2026-10-31T11:55:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:37:02.300Z",
+      "excerpt": "Николай Бареков екслузивно в Седмицата: Подготвят политическия край на Борисов #Бареков #Борисов #Избори Кой подготвя политическото погребение на Бойко Борисов? Защо забрави за",
+      "summary": "BNews Bg рекламира интервю с Николай Бареков за политическото бъдеще на Борисов с предизборен хаштаг.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "Избори"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "67",
+          "value": 67,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "6",
+          "value": 6,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "fb1e5755a4c3cc95a3c59ddcf3e5a960e0adb9857afa147369d1d329475a7115"
+    },
+    {
+      "id": "post:pfbid02PjhhvHUKazdRWLaoBwbzKiEQb7hM945KZtAMcp4hFGrR8mDfyKzygx4oTCznvw74l",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid02PjhhvHUKazdRWLaoBwbzKiEQb7hM945KZtAMcp4hFGrR8mDfyKzygx4oTCznvw74l/",
+      "publishedAt": "2026-10-31T19:03:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:46:48.084Z",
+      "excerpt": "Депутатка на Пеевски: Гласувайте за номер 4, за да подкрепите Ради Ревански Скандалът е страшен Виж в линка на първия коментар",
+      "summary": "BNews Bg твърди, че депутатка, свързана с Пеевски, е призовала за гласуване с номер 4.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "269",
+          "value": 269,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "110",
+          "value": 110,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "94",
+          "value": 94,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "f708ce73ff8a7b9bfab4bb8929cfeb71520859132539c5fdd27a07d1b069f111"
+    },
+    {
+      "id": "post:pfbid02TnWBWnWfk1vHjhGTVHLtjQ2uwXroeCAftqzQGra8B65TXMugVuMXq3a7isUaP6Cql",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid02TnWBWnWfk1vHjhGTVHLtjQ2uwXroeCAftqzQGra8B65TXMugVuMXq3a7isUaP6Cql/",
+      "publishedAt": "2026-10-31T20:11:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:34:14.547Z",
+      "excerpt": "Гюров пред британския Financial Times: България заедно с Украйна трябва да се готви за ескалация във войната срещу Русия #Гюров",
+      "summary": "BNews Bg приписва на Гюров позиция за ескалация на войната между Украйна и Русия, като цитира Financial Times.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        },
+        {
+          "keyword": "война",
+          "source": "text",
+          "evidence": "войната"
+        },
+        {
+          "keyword": "русия",
+          "source": "text",
+          "evidence": "Русия"
+        },
+        {
+          "keyword": "зеленски",
+          "source": "text",
+          "evidence": "Зеленски"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "54",
+          "value": 54,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "17",
+          "value": 17,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "12",
+          "value": 12,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "e4de8552d6aaeb88a995d90bab7f9fb3ff81c448744ba95ceae35843d0f9a8fe"
+    },
+    {
+      "id": "post:pfbid02Y2zTwSb6uoJjdYAV4TqNi7aCS4WgDuhzArpgDiC2H8XhJXkRAsM4kHsVnBjmTqpql",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02Y2zTwSb6uoJjdYAV4TqNi7aCS4WgDuhzArpgDiC2H8XhJXkRAsM4kHsVnBjmTqpql&id=61577398061794",
+      "publishedAt": null,
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T10:16:45.513Z",
+      "excerpt": "Йотова постоянно говори различни неща? Не, не може да бъде! Мислете добре утре за каква България ще гласувате!",
+      "summary": "Бункер нюз обвинява Йотова в противоречиви изказвания и призовава читателите да обмислят гласа си на следващия ден.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "793",
+          "value": 793,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "66",
+          "value": 66,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "55",
+          "value": 55,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "13d579621ee573b3abd0f2ff8b754f3529c6f6b1492864d40644add2b7f962aa"
+    },
+    {
+      "id": "post:pfbid02tsQEfxjMKW48USs5CoMaPQ3pqzx6VGsw3CZxFCUe3b7YssvS3kC9dmBMjYrfdsRUl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02tsQEfxjMKW48USs5CoMaPQ3pqzx6VGsw3CZxFCUe3b7YssvS3kC9dmBMjYrfdsRUl&id=61577398061794",
+      "publishedAt": null,
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T09:43:27.227Z",
+      "excerpt": "Имотите на кандидат-вицепрезидентите …",
+      "summary": "Бункер нюз анонсира материал за имотите на кандидатите за вицепрезидент; подробностите не се виждат в запазения откъс.",
+      "captionComplete": false,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "43",
+          "value": 43,
+          "approximate": false
+        },
+        "comments": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "068cd439756af106e53671de385f67d12ea6811b081422719440697b1d204203"
+    },
+    {
+      "id": "post:pfbid031bcFzrkzYYGxLaGg93g6Mah7mcbdwioCZBpqPgEaYTkgEkzNPfyyCcGBiFnFDB2sl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid031bcFzrkzYYGxLaGg93g6Mah7mcbdwioCZBpqPgEaYTkgEkzNPfyyCcGBiFnFDB2sl&id=61577398061794",
+      "publishedAt": null,
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T09:34:55.731Z",
+      "excerpt": "Радев сякаш си мисли, че ако Йотова стане президент, това ще го задържи на власт и ще му даде легитимност. Хайде първо",
+      "summary": "Бункер нюз коментира предполагаема политическа полза за Радев от победа на Йотова и настоява за представяне на бюджета.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        },
+        {
+          "keyword": "радев",
+          "source": "text",
+          "evidence": "Радев"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "975",
+          "value": 975,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "69",
+          "value": 69,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "8",
+          "value": 8,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "74cec5a5a32ec219b99071ae3a851217fb24f24ed3a5e5432ce23e0314bf130b"
+    },
+    {
+      "id": "post:pfbid05pTdBgg2pBhFRS5yMBEnCNE4vA8zi6vGDD6muBMNRcs2YKTBWZT57evyo32iC9eSl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid05pTdBgg2pBhFRS5yMBEnCNE4vA8zi6vGDD6muBMNRcs2YKTBWZT57evyo32iC9eSl/",
+      "publishedAt": "2026-10-31T21:17:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:32:52.676Z",
+      "excerpt": "Пеевски спусна директивата си да се работи дискретно за кандидатите на ПП и ДБ Кодът за действие е номер 4",
+      "summary": "BNews Bg твърди, че Пеевски е наредил дискретна мобилизация за номер 4 и подкрепените от ПП и ДБ кандидати.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "сглобка",
+          "source": "text",
+          "evidence": "Сглобката"
+        },
+        {
+          "keyword": "ППДБ",
+          "source": "text",
+          "evidence": "ПП и ДБ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "28",
+          "value": 28,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "6 comments",
+          "value": 6,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "2",
+          "value": 2,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "cf7a353ae01c409cc8796a405a8535788670632c9437eaada8f0d74cdba0f4c7"
+    },
+    {
+      "id": "post:pfbid0Q4vZKwZiaCnHsiE2qKiWSzDD7TTqbbxDCVf8YkB5yS3TSMu2XHi4zPUkjKtjq4SFl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid0Q4vZKwZiaCnHsiE2qKiWSzDD7TTqbbxDCVf8YkB5yS3TSMu2XHi4zPUkjKtjq4SFl/",
+      "publishedAt": "2026-10-31T14:09:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:47:02.144Z",
+      "excerpt": "FT: Илияна Йотова предлага България да бъде дипломатически канал между ЕС и Москва България трябва да се превърне в дипломатически канал",
+      "summary": "BNews Bg приписва на Йотова предложение България да бъде дипломатически канал между ЕС и Москва, като цитира Financial Times.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "избори"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        },
+        {
+          "keyword": "русия",
+          "source": "text",
+          "evidence": "Русия"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "129",
+          "value": 129,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "13",
+          "value": 13,
+          "approximate": false
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "cf7f7104bd3222a16b911b11d41a780272cc5860d7866ec6a12bf12eab826f06"
+    },
+    {
+      "id": "post:pfbid0QeTBHPudRNmcQ2nKeMdTsAwfoi7JLAAytBrVaCAeGFEi29sqJ3cig9BLbdu3QqFNl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0QeTBHPudRNmcQ2nKeMdTsAwfoi7JLAAytBrVaCAeGFEi29sqJ3cig9BLbdu3QqFNl&id=61577398061794",
+      "publishedAt": null,
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T09:42:23.183Z",
+      "excerpt": "Гюров показа нещо много важно. Показа, че в България може да се води честна, модерна и различна кампания - без нападки, без лъжи и",
+      "summary": "Бункер нюз хвали кампанията на Гюров като честна и без нападки, лъжи или манипулации.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "1.2K",
+          "value": 1200,
+          "approximate": true
+        },
+        "comments": {
+          "raw": "103",
+          "value": 103,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "16",
+          "value": 16,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "fce8c58cb4371089f6f8c650a170a9e0d11c9c9bd646d24b76fe6bdfe8c4e3ca"
+    },
+    {
+      "id": "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl/",
+      "publishedAt": "2026-10-31T17:35:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:46:50.775Z",
+      "excerpt": "Мощна вълна с автобуси с избиратели от Турция заля България за утрешните избори #Пеевски #ДПС #Турция След заявената подкрепа от",
+      "summary": "BNews Bg твърди, че автобуси от Турция са превозили избиратели до България преди вота в подкрепа на кандидатите на ПП и ДБ.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "избори"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "ППДБ",
+          "source": "text",
+          "evidence": "ПП и ДБ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "752",
+          "value": 752,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "243",
+          "value": 243,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "297",
+          "value": 297,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "16ea965e1d1db950ce07577f890cb5f238bcad5f42e6132a7c49dfb5984c6629"
+    },
+    {
+      "id": "post:pfbid0r5fND2sHqXbM1JCJbmJo5rLUWxMFnaZFSd5dC4qUh2PqVagZSQANr79TZeYQWPQyl",
+      "pageId": "104575425050525",
+      "url": "https://www.facebook.com/bnews.bg/posts/pfbid0r5fND2sHqXbM1JCJbmJo5rLUWxMFnaZFSd5dC4qUh2PqVagZSQANr79TZeYQWPQyl/",
+      "publishedAt": "2026-10-31T15:55:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T09:46:56.589Z",
+      "excerpt": "Николай Бареков: Моята прогноза за утре - 53- 55% на 45-47% за Илияна Йотова срещу Андрей Гюров. Ще гласуват около 1,6М до 1,9М",
+      "summary": "BNews Bg публикува прогноза на Николай Бареков за победа на Йотова на балотажа с очаквана активност и брой гласове.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "1.1K",
+          "value": 1100,
+          "approximate": true
+        },
+        "comments": {
+          "raw": "165",
+          "value": 165,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "21",
+          "value": 21,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "87b49c1a602e756c4344df5eab531061ac7ae818e9a988d284394620e2e508af"
+    },
+    {
+      "id": "video:1113050341136376",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1113050341136376/",
+      "publishedAt": null,
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T09:36:09.482Z",
+      "excerpt": "Йотовата или не може да смята, или се опитва да внуши, че прогресивните управляват от по-малко време. Защото, както и да го смятам, от",
+      "summary": "Бункер нюз оспорва как Йотова представя продължителността на управлението, като се позовава на периода от април до края на октомври.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотовата"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "217",
+          "value": 217,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "17",
+          "value": 17,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "4",
+          "value": 4,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "a84060458abed8e7472b1ade69a8eac8c4d3dabf5d66f8e63315327b089cb84f"
+    },
+    {
+      "id": "video:1670123841398564",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1670123841398564/",
+      "publishedAt": null,
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-04T09:31:26.677Z",
+      "excerpt": "Не, бе, не! Радев не лъже. Също като Йотова. Ама днес е краят на месеца, а бюджет няма.",
+      "summary": "Бункер нюз иронизира Радев и Йотова и твърди, че бюджетът още не е представен.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "радев",
+          "source": "text",
+          "evidence": "Радев"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "666",
+          "value": 666,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "60",
+          "value": 60,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "85",
+          "value": 85,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "d096303f0d51d6e71af958230d6b34fcc54a67d485a4aa16349434f07bec0c24"
+    },
+    {
+      "id": "post:pfbid06fPN7iSAZg1NDCkj4vUhLbHSK9D9FNTo21sBWewezxQiGAWuh89CdrfMVvSY4wR7l",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "url": "https://www.facebook.com/n.barekov/posts/pfbid06fPN7iSAZg1NDCkj4vUhLbHSK9D9FNTo21sBWewezxQiGAWuh89CdrfMVvSY4wR7l/",
+      "publishedAt": "2026-10-28T14:20:00+02:00",
+      "date": "2026-10-28",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T11:11:28.899Z",
+      "excerpt": "Кораб с контейнери бе ударен близо до България на път за Констанца, Румъния",
+      "summary": "Страницата повтаря заглавието и основния текст на BNews за удар по кораб и свързаното предизборно твърдение. Хаштаговете и връзките се различават.",
+      "captionComplete": true,
+      "origin": "discovery",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        },
+        {
+          "keyword": "дрона",
+          "source": "text",
+          "evidence": "дронове"
+        },
+        {
+          "keyword": "спонсор",
+          "source": "text",
+          "evidence": "спонсор"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "32",
+          "value": 32,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "13",
+          "value": 13,
+          "approximate": false
+        },
+        "shares": {
+          "raw": "17",
+          "value": 17,
+          "approximate": false
+        }
+      },
+      "sourceTextSha256": "249720b93d1c56e088373b343a3cdb24975f7462f59d4ab7622cea8cd96ca104"
+    },
+    {
+      "id": "post:pfbid02tLVduNW2khzhW98qhibyp3ypkXkbKrEwvFFZSsjruPoGFgXFQ3k747dimeRm6V8zl",
+      "pageId": "https://www.facebook.com/noviniotposledniachas",
+      "url": "https://www.facebook.com/noviniotposledniachas/posts/pfbid02tLVduNW2khzhW98qhibyp3ypkXkbKrEwvFFZSsjruPoGFgXFQ3k747dimeRm6V8zl/",
+      "publishedAt": "2026-10-31T18:58:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T11:08:22.514Z",
+      "excerpt": "Мощна вълна с автобуси с избиратели от Турция заля България за утрешните избори",
+      "summary": "Страницата публикува същото заглавие за превоз на избиратели като BNews и добавя връзка към статия във faktibg.com.",
+      "captionComplete": true,
+      "origin": "discovery",
+      "keywords": [
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "избори"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "6",
+          "value": 6,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "1",
+          "value": 1,
+          "approximate": false
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "e0743d4d4a5ecbf40844840ee86d5e686e173227e8772e4fe214fd545f2ce599"
+    },
+    {
+      "id": "post:pfbid0eboqFNFPZpCoHNvPWGXJeF3nuNhR1UbVNd1zK9GSFWYPCWKLqVWokZiYG8oq9XHbl",
+      "pageId": "https://www.facebook.com/novininafocus",
+      "url": "https://www.facebook.com/novininafocus/posts/pfbid0eboqFNFPZpCoHNvPWGXJeF3nuNhR1UbVNd1zK9GSFWYPCWKLqVWokZiYG8oq9XHbl/",
+      "publishedAt": "2026-10-31T18:58:00+02:00",
+      "date": "2026-10-31",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T11:08:23.152Z",
+      "excerpt": "Мощна вълна с автобуси с избиратели от Турция заля България за утрешните избори",
+      "summary": "Страницата публикува същото заглавие за превоз на избиратели като BNews и добавя връзка към статия във faktibg.com.",
+      "captionComplete": true,
+      "origin": "discovery",
+      "keywords": [
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "избори"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "raw": "7",
+          "value": 7,
+          "approximate": false
+        },
+        "comments": {
+          "raw": "4",
+          "value": 4,
+          "approximate": false
+        },
+        "shares": {
+          "raw": null,
+          "value": null,
+          "approximate": null
+        }
+      },
+      "sourceTextSha256": "e0743d4d4a5ecbf40844840ee86d5e686e173227e8772e4fe214fd545f2ce599"
+    }
+  ],
+  "matches": [
+    {
+      "sourceId": "post:pfbid0KisFpBdsttQ3mTPPqpPgaxPDyddQ5s6EuS3aFRAVTwBDYGCNnGDY8LDpYNn5ZkBZl",
+      "targetId": "post:pfbid06fPN7iSAZg1NDCkj4vUhLbHSK9D9FNTo21sBWewezxQiGAWuh89CdrfMVvSY4wR7l",
+      "kind": "body",
+      "delayMinutes": 26.0
+    },
+    {
+      "sourceId": "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl",
+      "targetId": "post:pfbid02tLVduNW2khzhW98qhibyp3ypkXkbKrEwvFFZSsjruPoGFgXFQ3k747dimeRm6V8zl",
+      "kind": "headline",
+      "delayMinutes": 83.0
+    },
+    {
+      "sourceId": "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl",
+      "targetId": "post:pfbid0eboqFNFPZpCoHNvPWGXJeF3nuNhR1UbVNd1zK9GSFWYPCWKLqVWokZiYG8oq9XHbl",
+      "kind": "headline",
+      "delayMinutes": 83.0
+    }
+  ],
+  "coverage": [
+    {
+      "keyword": "Гюров",
+      "count": 25
+    },
+    {
+      "keyword": "Кандев",
+      "count": 5
+    },
+    {
+      "keyword": "Йотова",
+      "count": 23
+    },
+    {
+      "keyword": "избори",
+      "count": 10
+    },
+    {
+      "keyword": "украйна",
+      "count": 8
+    },
+    {
+      "keyword": "война",
+      "count": 7
+    },
+    {
+      "keyword": "президент",
+      "count": 16
+    },
+    {
+      "keyword": "изпращане на войници",
+      "count": 0
+    },
+    {
+      "keyword": "сглобка",
+      "count": 5
+    },
+    {
+      "keyword": "пеевски",
+      "count": 11
+    },
+    {
+      "keyword": "ППДБ",
+      "count": 6
+    },
+    {
+      "keyword": "наркотрафикант",
+      "count": 3
+    },
+    {
+      "keyword": "гей",
+      "count": 0
+    },
+    {
+      "keyword": "споразумение",
+      "count": 0
+    },
+    {
+      "keyword": "боташ",
+      "count": 0
+    },
+    {
+      "keyword": "помилване",
+      "count": 2
+    },
+    {
+      "keyword": "асен василев",
+      "count": 3
+    },
+    {
+      "keyword": "борисов",
+      "count": 4
+    },
+    {
+      "keyword": "радев",
+      "count": 6
+    },
+    {
+      "keyword": "лева",
+      "count": 2
+    },
+    {
+      "keyword": "еврото",
+      "count": 0
+    },
+    {
+      "keyword": "русия",
+      "count": 2
+    },
+    {
+      "keyword": "про-руска",
+      "count": 0
+    },
+    {
+      "keyword": "костадинов",
+      "count": 0
+    },
+    {
+      "keyword": "кирил петков",
+      "count": 7
+    },
+    {
+      "keyword": "дрона",
+      "count": 9
+    },
+    {
+      "keyword": "Колтуклиева",
+      "count": 0
+    },
+    {
+      "keyword": "спонсор",
+      "count": 6
+    },
+    {
+      "keyword": "путин",
+      "count": 1
+    },
+    {
+      "keyword": "петрохан",
+      "count": 0
+    },
+    {
+      "keyword": "зеленски",
+      "count": 3
+    },
+    {
+      "keyword": "нсо",
+      "count": 0
+    },
+    {
+      "keyword": "Жълтопаветни",
+      "count": 2
+    },
+    {
+      "keyword": "ППедофили",
+      "count": 0
+    }
+  ],
+  "reviews": [
+    {
+      "id": "transport",
+      "title": "Твърдение за превоз на избиратели",
+      "summary": "BNews свързва автобуси от Турция с подкрепа за конкретни кандидати.",
+      "postIds": [
+        "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl"
+      ],
+      "checks": [
+        "Оригинални кадри с проверими дата и място.",
+        "Независими данни за превоза и неговата цел.",
+        "Отделна проверка на твърдението за кандидатска подкрепа."
+      ],
+      "alternatives": [
+        "Пристигане на автобуси не установява как са гласували пътниците."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Кога е представен бюджетът?",
+      "summary": "В сатирична публикация Бункер нюз твърди, че към 31 октомври бюджетът не е представен.",
+      "postIds": [
+        "video:1670123841398564"
+      ],
+      "checks": [
+        "Коя бюджетна година и кой етап се има предвид.",
+        "Дати на съобщенията на Министерството на финансите, Министерския съвет и Народното събрание."
+      ],
+      "alternatives": [
+        "Публично представяне, одобрение и внасяне са различни събития."
+      ]
+    },
+    {
+      "id": "independence",
+      "title": "Изказване на Гюров и публични длъжности",
+      "summary": "BNews оспорва заявена независимост на Гюров и добавя твърдения за изборно финансиране.",
+      "postIds": [
+        "post:pfbid02EJT5FUrZgtrk7tTa1XHeNT7wT3XcPNuGQZes7tnF3PRfkc79CJDyuhzJiouTS6Uyl"
+      ],
+      "checks": [
+        "Пълен запис и точен контекст на цитираното изказване.",
+        "Официални данни за парламентарните и банковите му длъжности.",
+        "Самостоятелни доказателства за твърденията за разходи."
+      ],
+      "alternatives": [
+        "Предишна длъжност не доказва конкретен източник на финансиране."
+      ]
+    },
+    {
+      "id": "belitsa",
+      "title": "Прогнозата за Белица и твърдение за договорка",
+      "summary": "BNews прогнозира силен резултат за Гюров в Белица и твърди за политическа договорка.",
+      "postIds": [
+        "post:pfbid0BHVnuGJsi6ub8GXhMMHfnBdKKnQE7cadFT1LBkfrfGTWubjtRahR29KDYiyCPg6bl"
+      ],
+      "checks": [
+        "Точни секции, географски обхват и знаменател на прогнозата.",
+        "Съпоставка с официалните протоколи на ЦИК.",
+        "Независими доказателства за отделното твърдение за договорка."
+      ],
+      "alternatives": [
+        "Съвпадение на резултата с прогноза не доказва договорка или организатор."
+      ]
+    },
+    {
+      "id": "financing",
+      "title": "Дарения, газов лиценз и бизнес с дронове",
+      "summary": "SIK.BG твърди за размер и дял на дарение, срок за газов лиценз и фирмени връзки.",
+      "postIds": [
+        "post:pfbid02m8f3HxtJot1ghwe3G1VnzseGj9vwEYeTSSUSLgW1YFudMHBiXJUU9jKaGh2H6cjNl"
+      ],
+      "checks": [
+        "Регистри на даренията и точният бюджет, с който е сравнен делът.",
+        "Решенията на КЕВР и датите по лицензионната процедура.",
+        "Фирмени регистри и доказателства за посочените управленски връзки."
+      ],
+      "alternatives": [
+        "Проверимите фирмени факти се разглеждат отделно от политическите внушения."
+      ]
+    },
+    {
+      "id": "pardon-dates",
+      "title": "Различни срокове в две публикации за помилване",
+      "summary": "PLIK.news посочва три години след 2022 г. на 12 октомври и една година на 14 октомври за предполагаемо последващо залавяне.",
+      "postIds": [
+        "post:pfbid02u9M2ZYvSrtZ2KZkeDNeVdbxwfGDKn4RixnrqaRRR8g4aUGkxx7u9rvRLk2aVcaoHl",
+        "post:pfbid0QDSecz5EpgCPLRwyp5JtEVPJ3uXdP9pkvUhAkVb3MW71szWmGE18eg6cNuY5h3fCl"
+      ],
+      "checks": [
+        "Дали двата текста описват един и същ инцидент и човек.",
+        "Оригинални официални сведения за помилването и последващото събитие.",
+        "Разграничаване на датата на събитието от датата на съобщаването му."
+      ],
+      "alternatives": [
+        "Възможни са различни инциденти, различни дати, повторение на стара новина или грешка."
+      ]
+    }
+  ],
+  "sharedArticleUrl": "https://www.faktibg.com/moshtna-valna-s-avtobusi-s-izbirateli-ot-turcija-zalja-balgarija-za-utreshnite-izbori/",
+  "collectionSha256": "e22a922d462d3c825bee193b569294b94e16b0037a0aad2c42155e79866a3098"
+}

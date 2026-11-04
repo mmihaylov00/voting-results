@@ -1,0 +1,170 @@
+<div class="research-page">
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">Изследване · Октомври 2026</p>
+      <h1>Facebook и изборите</h1>
+      <p class="intro">Публични публикации, взаимодействия и повтарящо се съдържание.</p>
+    </div>
+    <a hlmBtn variant="outline" class="gap-2" [href]="dataUrl" download="facebook-research-2026.json"><app-map-icon name="download" />Данни JSON</a>
+  </header>
+  <app-loading-bar [loading]="loading()" label="Зареждане на Facebook изследването" />
+  @if (error()) {
+    <div class="error-state" role="alert"><p>{{ error() }}</p><button hlmBtn variant="outline" type="button" (click)="load()"><app-map-icon name="reset" />Опитай отново</button></div>
+  }
+  @if (report(); as data) {
+    <div class="dataset-status"><span class="status-dot" aria-hidden="true"></span><strong>Частична извадка</strong><span>Броячи към 04.11.2026 · Твърденията не са проверени.</span></div>
+    <dl class="overview-numbers">
+      <div><dt>Публикации</dt><dd>{{ data.posts.length }}</dd><small>{{ data.collectionPostCount }} в началната извадка + {{ data.posts.length - data.collectionPostCount }} съвпадения</small></div>
+      <div><dt>Facebook страници</dt><dd>{{ data.pages.length }}</dd><small>Различен обхват на събиране</small></div>
+      <div><dt>Съвпадащи публикации</dt><dd>{{ data.matches.length }}</dd><small>Заглавие или основен текст</small></div>
+      <div><dt>Проверки на твърдения</dt><dd>{{ data.reviews.length }}</dd><small>Подбрани за последващ преглед</small></div>
+    </dl>
+
+    <nav class="workspace-tabs" aria-label="Изгледи на Facebook изследването">
+      <app-view-tabs [tabs]="tabs()" [value]="view()" (valueChange)="setView($event)" [scrollable]="true" label="Facebook изследване" idPrefix="facebook-view" panelId="facebook-panel" />
+    </nav>
+    <div id="facebook-panel" class="workspace-panel" role="tabpanel" [attr.aria-labelledby]="'facebook-view-tab-' + view()">
+      @if (view() === 'pages') {
+        <div class="toolbar">
+          <app-table-controls #pageTable [rows]="pages()" [columns]="pageColumns" label="Търсене на Facebook страница" searchInputClass="min-h-11! text-base!" />
+          <button hlmBtn variant="outline" class="gap-2" type="button" [disabled]="!pageTable.viewRows().length" (click)="exportPages(pageTable.viewRows())"><app-map-icon name="download-table" />Експорт CSV</button>
+        </div>
+        <app-facebook-research-charts [pages]="pageTable.viewRows()" [posts]="data.posts" (pageSelect)="showPagePosts($event)" />
+        <div class="section-heading table-heading"><h2>Страници в събраните данни</h2><span class="note">≈ закръглен брояч · — липсващ брояч</span></div>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Сравнение на Facebook страниците" [virtualRows]="pageTable.viewRows()" #pageRows="virtualRows">
+          <table class="page-table" aria-label="Публикации и видими взаимодействия по страници" [attr.aria-rowcount]="pageTable.viewRows().length + 1">
+            <thead><tr>
+              <th scope="col" app-sortable-table-header columnKey="name" label="Страница" [table]="pageTable" align="left"></th>
+              <th scope="col" app-sortable-table-header columnKey="followers" label="Последователи" [table]="pageTable" align="right"></th>
+              <th scope="col" app-sortable-table-header columnKey="posts" label="Публикации" [table]="pageTable" align="right"></th>
+              <th scope="col" app-sortable-table-header columnKey="reactions" label="Реакции" [table]="pageTable" align="right"></th>
+              <th scope="col" app-sortable-table-header columnKey="comments" label="Коментари" [table]="pageTable" align="right"></th>
+              <th scope="col" app-sortable-table-header columnKey="shares" label="Споделяния" [table]="pageTable" align="right"></th>
+            </tr></thead>
+            <tbody>
+              @if (pageRows.window().top) {<tr aria-hidden="true"><td colspan="6" [style.height.px]="pageRows.window().top" class="virtual-spacer"></td></tr>}
+              @for (page of pageRows.rows(); track page.id) {
+                <tr [attr.data-virtual-index]="pageRows.window().start + $index" [attr.aria-rowindex]="pageRows.window().start + $index + 2">
+                  <th scope="row"><button class="text-button page-name" type="button" (click)="showPagePosts(page.id)">{{ shortName(page.name) }}<app-map-icon name="chevron-right" /></button>
+                    @if (page.satire) {<small>Сатира / пародия</small>}
+                    @if (page.origin === 'discovery') {<small>Намерена при сравнение</small>}
+                  </th>
+                  <td>{{ count(page.followers, page.followersApproximate) }}</td><td>{{ count(page.postCount) }}</td>
+                  @for (metric of metrics; track metric) {<td><span [hlmTooltip]="totalNote(page.totals[metric])" [attr.tabindex]="page.totals[metric].approximate || page.totals[metric].missing ? 0 : null">{{ totalLabel(page.totals[metric]) }}</span>@if (page.totals[metric].missing) {<small>{{ page.totals[metric].missing }} без брояч</small>}</td>}
+                </tr>
+              } @empty {<tr><td colspan="6" class="empty-state">Няма страници по това търсене.</td></tr>}
+              @if (pageRows.window().bottom) {<tr aria-hidden="true"><td colspan="6" [style.height.px]="pageRows.window().bottom" class="virtual-spacer"></td></tr>}
+            </tbody>
+          </table>
+        </div>
+      }
+
+      @if (view() === 'posts') {
+        <div class="post-filters">
+          <div><label for="facebook-page--trigger">Страница</label><app-select controlId="facebook-page" label="Facebook страница" [options]="pageOptions()" [value]="pageFilter()" (valueChange)="pageFilter.set($event)" icon="globe" /></div>
+          <div><label for="facebook-keyword--trigger">Ключова дума</label><app-select controlId="facebook-keyword" label="Ключова дума" [options]="keywordOptions()" [value]="keywordFilter()" (valueChange)="keywordFilter.set($event)" icon="filter" /></div>
+        </div>
+        <div class="toolbar">
+          <app-table-controls #postTable [rows]="filteredPosts()" [columns]="postColumns" label="Търсене в публикациите" searchInputClass="min-h-11! text-base!" />
+          <div class="button-row"><button hlmBtn variant="outline" size="icon" type="button" aria-label="Изчисти филтрите" title="Изчисти филтрите" (click)="pageFilter.set(''); keywordFilter.set(''); postTable.query.set('')"><app-map-icon name="reset" /></button>
+            <button hlmBtn variant="outline" class="gap-2" type="button" [disabled]="!postTable.viewRows().length" (click)="exportPosts(postTable.viewRows())"><app-map-icon name="download-table" />Експорт CSV</button></div>
+        </div>
+        <div class="table-scroll post-table-scroll" tabindex="0" role="region" aria-label="Публикации по текущите филтри" [virtualRows]="postTable.viewRows()" [virtualRowHeight]="94" #postRows="virtualRows">
+          <table class="post-table" aria-label="Публикации и видими броячи" [attr.aria-rowcount]="postTable.viewRows().length + 1">
+            <thead><tr>
+              <th scope="col" app-sortable-table-header columnKey="title" label="Публикация" [table]="postTable" align="left"></th>
+              <th scope="col" app-sortable-table-header columnKey="page" label="Страница" [table]="postTable" align="left"></th>
+              <th scope="col" app-sortable-table-header columnKey="date" label="Дата" [table]="postTable" align="left"></th>
+              <th scope="col" app-sortable-table-header columnKey="reactions" label="Реакции" [table]="postTable" align="right"></th>
+              <th scope="col" app-sortable-table-header columnKey="comments" label="Коментари" [table]="postTable" align="right"></th>
+              <th scope="col" app-sortable-table-header columnKey="shares" label="Споделяния" [table]="postTable" align="right"></th>
+            </tr></thead>
+            <tbody>
+              @if (postRows.window().top) {<tr aria-hidden="true"><td colspan="6" [style.height.px]="postRows.window().top" class="virtual-spacer"></td></tr>}
+              @for (post of postRows.rows(); track post.id) {
+                <tr [attr.data-virtual-index]="postRows.window().start + $index" [attr.aria-rowindex]="postRows.window().start + $index + 2">
+                  <th scope="row"><button type="button" class="text-button post-excerpt" (click)="openPost(post.id)">{{ post.excerpt || post.summary }}</button>@if (post.origin === 'discovery') {<small>Намерена при сравнение</small>}</th>
+                  <td class="wrap-cell">{{ shortName(pageName(post)) }}</td><td class="date-cell">{{ postDate(post) }}<small>{{ postTime(post) }}</small></td>
+                  @for (metric of metrics; track metric) {<td>{{ count(post.metrics[metric].value, post.metrics[metric].approximate === true) }}</td>}
+                </tr>
+              } @empty {<tr><td colspan="6" class="empty-state">Няма публикации по тези филтри.</td></tr>}
+              @if (postRows.window().bottom) {<tr aria-hidden="true"><td colspan="6" [style.height.px]="postRows.window().bottom" class="virtual-spacer"></td></tr>}
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Сортиране чрез заглавията на колоните. Обхват (reach) не е наличен.</p>
+      }
+
+      @if (view() === 'duplicates') {
+        <div class="section-heading"><div><h2>Повтарящо се съдържание</h2><p class="note">{{ data.titleSearchCount }} търсени заглавия и начални надписи · {{ duplicateGroups().length }} публикации със съвпадения</p></div>
+          <button hlmBtn variant="outline" class="gap-2" type="button" (click)="exportMatches()"><app-map-icon name="download-table" />Експорт CSV</button></div>
+        @for (group of duplicateGroups(); track group.source.id) {
+          <article class="duplicate-group">
+            <div class="duplicate-heading"><span class="eyebrow">{{ group.matches[0].kind === 'body' ? 'Заглавие и основен текст' : 'Еднакво заглавие' }}</span><span class="match-count">{{ group.matches.length }} съвпадения</span></div>
+            <button type="button" class="text-button duplicate-title" (click)="openPost(group.source.id)">{{ group.source.excerpt }}</button>
+            <div class="publication-chain">
+              <div class="publication-source"><span class="chain-label">Публикация от извадката</span><strong>{{ shortName(pageName(group.source)) }}</strong><time [attr.datetime]="group.source.publishedAt">{{ postDate(group.source) }} · {{ postTime(group.source) }}</time><button hlmBtn variant="outline" size="sm" class="gap-1" type="button" (click)="openPost(group.source.id)">Преглед<app-map-icon name="chevron-right" /></button></div>
+              <div class="publication-matches">
+                @for (match of group.matches; track match.targetId) {
+                  @if (postById(match.targetId); as post) {
+                    <div class="publication-match"><div><span class="chain-label">Съвпадаща публикация</span><button type="button" class="text-button" (click)="openPost(post.id)">{{ shortName(pageName(post)) }}</button><time [attr.datetime]="post.publishedAt">{{ postDate(post) }} · {{ postTime(post) }}</time></div><span class="time-gap">+{{ match.delayMinutes }} мин</span></div>
+                  }
+                }
+              </div>
+            </div>
+            <p class="note">{{ group.matches[0].kind === 'body' ? 'Основният текст съвпада след изключване на хаштагове и връзки. Надписите не са изцяло еднакви.' : 'Съвпада заглавието. Двете допълнителни страници имат еднакъв надпис и час на публикуване: 18:58.' }}</p>
+            @if (group.matches[0].kind === 'headline') {<a hlmBtn variant="outline" size="sm" class="gap-2" [href]="data.sharedArticleUrl" target="_blank" rel="noopener noreferrer"><app-map-icon name="globe" />Общата статия · faktibg.com</a>}
+          </article>
+        }
+        <p class="note">Часове: София. Редът по време не установява първоизточник, общ собственик или организатор.</p>
+      }
+
+      @if (view() === 'review') {
+        <div class="section-heading"><h2>Твърдения за последваща проверка</h2><span class="status-label">Без оценка за истинност</span></div>
+        <div class="review-list">
+          @for (review of data.reviews; track review.id) {
+            <button type="button" class="review-row" (click)="openReview(review)"><span class="review-number">{{ $index + 1 }}</span><span><strong>{{ review.title }}</strong><span class="review-summary">{{ review.summary }}</span></span><app-map-icon name="chevron-right" /></button>
+          }
+        </div>
+      }
+
+      @if (view() === 'coverage') {
+        <div class="section-heading"><div><h2>Покритие на събирането</h2><p class="note">{{ data.collectionPostCount }} начални публикации · цел {{ data.keywordTarget }} за всяка дума · целта не е достигната</p></div><button hlmBtn variant="outline" class="gap-2" type="button" (click)="exportCoverage(coverageTable.viewRows())"><app-map-icon name="download-table" />Експорт CSV</button></div>
+        <app-table-controls #coverageTable [rows]="data.coverage" [columns]="coverageColumns" label="Търсене на ключова дума" searchInputClass="min-h-11! text-base!" />
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Покритие по ключови думи" [virtualRows]="coverageTable.viewRows()" [virtualRowHeight]="49" #coverageRows="virtualRows">
+          <table class="coverage-table" aria-label="Публикации от началната извадка по ключови думи" [attr.aria-rowcount]="coverageTable.viewRows().length + 1">
+            <thead><tr><th scope="col" app-sortable-table-header columnKey="keyword" label="Ключова дума" [table]="coverageTable" align="left"></th><th scope="col" app-sortable-table-header columnKey="count" label="Събрани / цел" [table]="coverageTable" align="right"></th><th scope="col" app-sortable-table-header columnKey="shortfall" label="Недостиг" [table]="coverageTable" align="right"></th></tr></thead>
+            <tbody>
+              @if (coverageRows.window().top) {<tr aria-hidden="true"><td colspan="3" [style.height.px]="coverageRows.window().top" class="virtual-spacer"></td></tr>}
+              @for (row of coverageRows.rows(); track row.keyword) {<tr [attr.data-virtual-index]="coverageRows.window().start + $index"><th scope="row">{{ row.keyword }}</th><td>{{ row.count }} <span class="muted">/ {{ data.keywordTarget }}</span><span class="coverage-track" aria-hidden="true"><span [style.width.%]="row.count / data.keywordTarget * 100"></span></span></td><td>{{ data.keywordTarget - row.count }}</td></tr>}
+              @if (coverageRows.window().bottom) {<tr aria-hidden="true"><td colspan="3" [style.height.px]="coverageRows.window().bottom" class="virtual-spacer"></td></tr>}
+            </tbody>
+          </table>
+        </div>
+        <div class="method-notes"><h3>Как да се чете</h3><p>Една публикация може да съдържа няколко ключови думи. Таблицата отчита само началните 49 публикации; трите допълнителни съвпадения са отделно открити.</p><p>Броячите и последователите са моментна снимка към събирането, а не измерване преди гласуването. Закръглените стойности са означени с ≈. Липсващите броячи не са нули.</p><p>Включени са публични Facebook страници. Профили и групи са изключени. Търсенето не е изчерпателно; споделянията не измерват уникален обхват или влияние върху вота.</p></div>
+      }
+    </div>
+  }
+</div>
+
+@if (selectedPost(); as post) {
+  <app-base-modal [title]="pageName(post)" [subtitle]="postDate(post) + (postTime(post) ? ' · ' + postTime(post) + ' · София' : '')" maxWidth="max-w-3xl" (close)="selectedPostId.set('')">
+    <ng-template #headerActions><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="post.url" target="_blank" rel="noopener noreferrer"><app-map-icon name="globe" />Facebook</a></ng-template>
+    <div class="post-detail">
+      <span class="status-label">Твърдението не е проверено</span>
+      <blockquote>{{ post.excerpt }}</blockquote>
+      <p>{{ post.summary }}</p>
+      <dl class="post-counters">@for (metric of metrics; track metric) {<div><dt>{{ metricLabels[metric] }}</dt><dd>{{ count(post.metrics[metric].value, post.metrics[metric].approximate === true) }}</dd></div>}<div><dt>Обхват (reach)</dt><dd class="unavailable">Няма данни</dd></div></dl>
+      <div class="post-meta"><span>Събрано на {{ post.collectedAt | date:'dd.MM.yyyy':'UTC' }}</span><span>{{ post.origin === 'collection' ? 'Начална извадка' : 'Намерено при сравнение на заглавия' }}</span>@if (pageMap().get(post.pageId)?.satire) {<span>Страницата е означена като сатира / пародия</span>}@if (post.captionComplete === false) {<span>Събран е частичен надпис</span>}@if (post.interval) {<span>Датата е известна само в посочения период</span>}</div>
+      @if (post.keywords.length) {<h3>Ключови думи</h3><div class="keyword-list">@for (match of post.keywords; track match.keyword) {<span>{{ match.keyword }}@if (match.source === 'image') {<small>в изображение</small>}</span>}</div>}
+      @if (selectedPostMatches().length) {<h3>Съвпадащи публикации</h3><div class="related-list">@for (match of selectedPostMatches(); track match.targetId) {@if (postById(match.sourceId === post.id ? match.targetId : match.sourceId); as related) {<button type="button" class="text-button related-row" (click)="openPost(related.id)"><span>{{ shortName(pageName(related)) }}<small>{{ postDate(related) }} · {{ postTime(related) }}</small></span><app-map-icon name="chevron-right" /></button>}}</div>}
+      @if (selectedPostReviews().length) {<h3>Основания за преглед</h3>@for (review of selectedPostReviews(); track review.id) {<button class="text-button related-row" type="button" (click)="openReview(review)">{{ review.title }}<app-map-icon name="chevron-right" /></button>}}
+    </div>
+  </app-base-modal>
+}
+@if (selectedReview(); as review) {
+  <app-base-modal [title]="review.title" subtitle="Предстои проверка на фактите" maxWidth="max-w-3xl" (close)="selectedReview.set(null)">
+    <div class="review-detail"><p>{{ review.summary }}</p><h3>Какво да се провери</h3><ul>@for (check of review.checks; track $index) {<li>{{ check }}</li>}</ul><h3>Контекст и алтернативни обяснения</h3><ul>@for (alternative of review.alternatives; track $index) {<li>{{ alternative }}</li>}</ul><h3>Публикации</h3>@for (id of review.postIds; track id) {@if (postById(id); as post) {<button type="button" class="text-button related-row" (click)="openPost(id)"><span>{{ shortName(pageName(post)) }}<small>{{ postDate(post) }}</small></span><app-map-icon name="chevron-right" /></button>}}</div>
+  </app-base-modal>
+}
+@if (csvData(); as csv) {<app-csv-export-modal [data]="csv" (close)="csvData.set(null)" />}

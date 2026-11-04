@@ -192,6 +192,14 @@ Focused checks:
 python3 -m unittest discover -s scripts -p 'electoral_forensics*_test.py'
 ```
 
+## Hidden Facebook research
+
+`/research/facebook-elections-2026` displays the October 2026 public-Page research. Visible tabs cover Pages, sortable posts, repeated content, six fact-check leads and keyword coverage. Tables scroll internally; source details open in the shared modal. Charts support PNG export, tables export the current filtered rows to CSV, and the sanitized snapshot is available as JSON.
+
+The snapshot in `public/data/facebook/2026/report.json` retains 49 initially collected posts and three later title-search matches across eight Pages. Three matches involve two source posts; headline-only matches are distinguished from matching body text. Post URLs, dates or date intervals, collection dates, keyword evidence and snapshot hashes are retained. Raw browser captures, personal profiles and commenters are excluded from the published asset.
+
+This is a partial, nonrepresentative sample. None of the 34 keywords reached the requested 100 posts. Coverage counts refer only to the initial 49 posts. Missing counters remain unavailable, rounded counters are marked approximate, and reach is unavailable. All claims await verification; engagement and repeated wording do not establish electoral influence, truth, ownership or coordination. The page is unlisted and uses the same noindex headers and metadata as the electoral research.
+
 ## Development server
 
 To start a local development server, run:

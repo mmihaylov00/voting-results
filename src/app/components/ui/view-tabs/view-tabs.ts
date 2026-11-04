@@ -11,7 +11,7 @@ export interface ViewTab {
   selector: 'app-view-tabs',
   imports: [HlmButtonDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<div class="view-tabs" role="tablist" [attr.aria-label]="label()">
+  template: `<div class="view-tabs" [class.scrollable]="scrollable()" role="tablist" [attr.aria-label]="label()">
     @for (tab of tabs(); track tab.id; let index = $index) {
       <button #tabButton hlmBtn variant="line" class="view-tab" type="button" role="tab"
         [id]="idPrefix() + '-tab-' + tab.id" [attr.aria-controls]="panelId() || idPrefix() + '-panel-' + tab.id"
@@ -31,6 +31,8 @@ export interface ViewTab {
     .view-tab:hover{color:hsl(var(--foreground));background:hsl(var(--muted))}
     .view-tab:focus-visible{outline:2px solid hsl(var(--foreground));outline-offset:-2px}
     .count{margin-left:.45rem;padding:.1rem .4rem;border-radius:999px;background:hsl(var(--foreground)/.08);font-size:.75rem;font-variant-numeric:tabular-nums}
+    .view-tabs.scrollable{flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain}
+    .view-tabs.scrollable .view-tab{max-width:none;white-space:nowrap}
     @media(max-width:640px){.view-tab{max-width:100%;height:auto;white-space:normal;text-align:left}}
     @media(prefers-reduced-motion:reduce){.view-tab{transition:none}}
   `,
@@ -41,6 +43,7 @@ export class ViewTabsComponent {
   readonly label = input.required<string>();
   readonly idPrefix = input.required<string>();
   readonly panelId = input<string>();
+  readonly scrollable = input(false);
   private readonly buttons = viewChildren<unknown, ElementRef<HTMLButtonElement>>('tabButton', { read: ElementRef });
 
   onKeydown(event: KeyboardEvent, index: number): void {

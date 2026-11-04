@@ -8,6 +8,11 @@ publish = "dist/votes-frontend/browser"
     X-Robots-Tag = "noindex, nofollow, noarchive"
 
 [[headers]]
+  for = "/data/facebook/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+
+[[headers]]
   for = "/data/forensics/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow, noarchive"
