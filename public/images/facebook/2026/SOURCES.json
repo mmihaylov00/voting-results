@@ -1,0 +1,742 @@
+{
+  "capturedAt": "2026-11-04",
+  "assets": {
+    "6f0dedb6138a67d1bf98d827bee22e8149f45bbef39482e83223c3a09f47eb0a.jpg": {
+      "sha256": "6f0dedb6138a67d1bf98d827bee22e8149f45bbef39482e83223c3a09f47eb0a",
+      "width": 480,
+      "height": 480,
+      "uses": [
+        {
+          "id": "page:104575425050525",
+          "sourceUrl": "https://www.facebook.com/bnews.bg",
+          "kind": "image"
+        }
+      ]
+    },
+    "042e759776bdc20bcbadce151153dcf1f4f26d306a0d069b4cef56a65572e7d5.jpg": {
+      "sha256": "042e759776bdc20bcbadce151153dcf1f4f26d306a0d069b4cef56a65572e7d5",
+      "width": 480,
+      "height": 480,
+      "uses": [
+        {
+          "id": "page:100069720181353",
+          "sourceUrl": "https://www.facebook.com/strumanewsbg",
+          "kind": "image"
+        }
+      ]
+    },
+    "af0972b2442b02af92efc79661f41babf9ec97caff528dd6e1c1dfabb5818c52.jpg": {
+      "sha256": "af0972b2442b02af92efc79661f41babf9ec97caff528dd6e1c1dfabb5818c52",
+      "width": 480,
+      "height": 480,
+      "uses": [
+        {
+          "id": "page:138363261435366",
+          "sourceUrl": "https://www.facebook.com/comunikatornews",
+          "kind": "image"
+        }
+      ]
+    },
+    "d64c08b3eea624081f4b6f01673f06c117ab26b972b6919f37efa3e72b962df3.jpg": {
+      "sha256": "d64c08b3eea624081f4b6f01673f06c117ab26b972b6919f37efa3e72b962df3",
+      "width": 480,
+      "height": 480,
+      "uses": [
+        {
+          "id": "page:61583481685886",
+          "sourceUrl": "https://www.facebook.com/profile.php?id=61583481685886",
+          "kind": "image"
+        }
+      ]
+    },
+    "3072b1ccdfe3449aae0f3d7502346facd9529bdaa11cc41347678a845f0bc173.jpg": {
+      "sha256": "3072b1ccdfe3449aae0f3d7502346facd9529bdaa11cc41347678a845f0bc173",
+      "width": 80,
+      "height": 80,
+      "uses": [
+        {
+          "id": "page:61577398061794",
+          "sourceUrl": "https://www.facebook.com/profile.php?id=61577398061794",
+          "kind": "image"
+        }
+      ]
+    },
+    "115dea60003f086fc49eb0c17408367350aa84819717260b859b51b2be888ce9.jpg": {
+      "sha256": "115dea60003f086fc49eb0c17408367350aa84819717260b859b51b2be888ce9",
+      "width": 479,
+      "height": 480,
+      "uses": [
+        {
+          "id": "page:https://www.facebook.com/n.barekov",
+          "sourceUrl": "https://www.facebook.com/n.barekov",
+          "kind": "image"
+        }
+      ]
+    },
+    "78f6256c896e79d8a5850cea044f4199034f34ead1370dd904b180dfd18259d4.jpg": {
+      "sha256": "78f6256c896e79d8a5850cea044f4199034f34ead1370dd904b180dfd18259d4",
+      "width": 80,
+      "height": 81,
+      "uses": [
+        {
+          "id": "page:https://www.facebook.com/noviniotposledniachas",
+          "sourceUrl": "https://www.facebook.com/noviniotposledniachas",
+          "kind": "image"
+        }
+      ]
+    },
+    "b405da9d92f49c6d753fb969663c74a187e5115864cfb7782f91a65ee069b069.avif": {
+      "sha256": "b405da9d92f49c6d753fb969663c74a187e5115864cfb7782f91a65ee069b069",
+      "width": 80,
+      "height": 80,
+      "uses": [
+        {
+          "id": "page:https://www.facebook.com/novininafocus",
+          "sourceUrl": "https://www.facebook.com/novininafocus",
+          "kind": "image"
+        }
+      ]
+    },
+    "9be5b0c4eb93e1798fa3c71b421abc21f799381d0b2733f09a4712390ebd815a.jpg": {
+      "sha256": "9be5b0c4eb93e1798fa3c71b421abc21f799381d0b2733f09a4712390ebd815a",
+      "width": 1440,
+      "height": 960,
+      "uses": [
+        {
+          "id": "post:pfbid02mU6YsGsHu3nW7F6Q6onUsvLYnyT2C1Vr8H688j4o6HCQozQNQAraqxpv5SJa7dWQl",
+          "sourceUrl": "https://www.facebook.com/strumanewsbg/posts/pfbid02mU6YsGsHu3nW7F6Q6onUsvLYnyT2C1Vr8H688j4o6HCQozQNQAraqxpv5SJa7dWQl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "ea97dac9bca8b4bf0a56b3c7b5a8ba39819084744192d0f67cb03723cff68b78.jpg": {
+      "sha256": "ea97dac9bca8b4bf0a56b3c7b5a8ba39819084744192d0f67cb03723cff68b78",
+      "width": 1443,
+      "height": 960,
+      "uses": [
+        {
+          "id": "post:pfbid02mU6YsGsHu3nW7F6Q6onUsvLYnyT2C1Vr8H688j4o6HCQozQNQAraqxpv5SJa7dWQl",
+          "sourceUrl": "https://www.facebook.com/strumanewsbg/posts/pfbid02mU6YsGsHu3nW7F6Q6onUsvLYnyT2C1Vr8H688j4o6HCQozQNQAraqxpv5SJa7dWQl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "eabb725c372a47edda8d53c94c48d957a1b8966545df5d1c88074e0d9dd8aa16.jpg": {
+      "sha256": "eabb725c372a47edda8d53c94c48d957a1b8966545df5d1c88074e0d9dd8aa16",
+      "width": 1443,
+      "height": 960,
+      "uses": [
+        {
+          "id": "post:pfbid02mU6YsGsHu3nW7F6Q6onUsvLYnyT2C1Vr8H688j4o6HCQozQNQAraqxpv5SJa7dWQl",
+          "sourceUrl": "https://www.facebook.com/strumanewsbg/posts/pfbid02mU6YsGsHu3nW7F6Q6onUsvLYnyT2C1Vr8H688j4o6HCQozQNQAraqxpv5SJa7dWQl/",
+          "kind": "image"
+        },
+        {
+          "id": "post:pfbid02xBHQG3oNTv5Fn74pzZ2znxx7XGj8CEvZ6j6TEEih8kCyYKKQkftHhWepqmw62Ttvl",
+          "sourceUrl": "https://www.facebook.com/strumanewsbg/posts/pfbid02xBHQG3oNTv5Fn74pzZ2znxx7XGj8CEvZ6j6TEEih8kCyYKKQkftHhWepqmw62Ttvl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "23fbd5b2e285645f8d841c5573466c8f7487e9794d0a73f85e8435e1f5b6649f.jpg": {
+      "sha256": "23fbd5b2e285645f8d841c5573466c8f7487e9794d0a73f85e8435e1f5b6649f",
+      "width": 720,
+      "height": 729,
+      "uses": [
+        {
+          "id": "post:pfbid02xBHQG3oNTv5Fn74pzZ2znxx7XGj8CEvZ6j6TEEih8kCyYKKQkftHhWepqmw62Ttvl",
+          "sourceUrl": "https://www.facebook.com/strumanewsbg/posts/pfbid02xBHQG3oNTv5Fn74pzZ2znxx7XGj8CEvZ6j6TEEih8kCyYKKQkftHhWepqmw62Ttvl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "2bee5c090effa3a086e4294c91f9e2dabc4fc0c3fad410b5777dcdda41fb4356.jpg": {
+      "sha256": "2bee5c090effa3a086e4294c91f9e2dabc4fc0c3fad410b5777dcdda41fb4356",
+      "width": 1080,
+      "height": 1011,
+      "uses": [
+        {
+          "id": "post:pfbid02xBHQG3oNTv5Fn74pzZ2znxx7XGj8CEvZ6j6TEEih8kCyYKKQkftHhWepqmw62Ttvl",
+          "sourceUrl": "https://www.facebook.com/strumanewsbg/posts/pfbid02xBHQG3oNTv5Fn74pzZ2znxx7XGj8CEvZ6j6TEEih8kCyYKKQkftHhWepqmw62Ttvl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "503407f3986010512b2a13e24feab0be89a41ab7b72386d0cd0c021555f30b92.jpg": {
+      "sha256": "503407f3986010512b2a13e24feab0be89a41ab7b72386d0cd0c021555f30b92",
+      "width": 1920,
+      "height": 1080,
+      "uses": [
+        {
+          "id": "post:pfbid02m5AM3UjX6s5P61kxMT15xB7VjMHvG1xaivvUUN8ewZhVBEV66zUDcjM33pR64ojml",
+          "sourceUrl": "https://www.facebook.com/comunikatornews/posts/pfbid02m5AM3UjX6s5P61kxMT15xB7VjMHvG1xaivvUUN8ewZhVBEV66zUDcjM33pR64ojml/",
+          "kind": "image"
+        }
+      ]
+    },
+    "b90de9ee97b22f6949288ed9123634bf5d53bac3d3c8215a220e446d58854c36.jpg": {
+      "sha256": "b90de9ee97b22f6949288ed9123634bf5d53bac3d3c8215a220e446d58854c36",
+      "width": 2048,
+      "height": 1036,
+      "uses": [
+        {
+          "id": "post:pfbid0mDnqBwtyiQuvDPsUuSLyFfrNZ8hCzmYwfYpUCeWUxHa8KrHDuSdaDAfzHxkphbvNl",
+          "sourceUrl": "https://www.facebook.com/strumanewsbg/posts/pfbid0mDnqBwtyiQuvDPsUuSLyFfrNZ8hCzmYwfYpUCeWUxHa8KrHDuSdaDAfzHxkphbvNl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "1019f428a1b2db79dd77cabe7ea3ccefb761cff213b19e8458383fae4626dd59.jpg": {
+      "sha256": "1019f428a1b2db79dd77cabe7ea3ccefb761cff213b19e8458383fae4626dd59",
+      "width": 1080,
+      "height": 1080,
+      "uses": [
+        {
+          "id": "post:pfbid02u9M2ZYvSrtZ2KZkeDNeVdbxwfGDKn4RixnrqaRRR8g4aUGkxx7u9rvRLk2aVcaoHl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02u9M2ZYvSrtZ2KZkeDNeVdbxwfGDKn4RixnrqaRRR8g4aUGkxx7u9rvRLk2aVcaoHl&id=61583481685886",
+          "kind": "image"
+        }
+      ]
+    },
+    "9f51427bb21523567a32087a016ddea1bb2303577d8038c3cf86f0b22cb6a372.jpg": {
+      "sha256": "9f51427bb21523567a32087a016ddea1bb2303577d8038c3cf86f0b22cb6a372",
+      "width": 1080,
+      "height": 1080,
+      "uses": [
+        {
+          "id": "post:pfbid0QDSecz5EpgCPLRwyp5JtEVPJ3uXdP9pkvUhAkVb3MW71szWmGE18eg6cNuY5h3fCl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0QDSecz5EpgCPLRwyp5JtEVPJ3uXdP9pkvUhAkVb3MW71szWmGE18eg6cNuY5h3fCl&id=61583481685886",
+          "kind": "image"
+        }
+      ]
+    },
+    "0cd5a4bc5dd01cb8f505f4badcb268876f2f4639d863505037d26fe72fe51ebc.jpg": {
+      "sha256": "0cd5a4bc5dd01cb8f505f4badcb268876f2f4639d863505037d26fe72fe51ebc",
+      "width": 1080,
+      "height": 1088,
+      "uses": [
+        {
+          "id": "post:pfbid02m8f3HxtJot1ghwe3G1VnzseGj9vwEYeTSSUSLgW1YFudMHBiXJUU9jKaGh2H6cjNl",
+          "sourceUrl": "https://www.facebook.com/comunikatornews/posts/pfbid02m8f3HxtJot1ghwe3G1VnzseGj9vwEYeTSSUSLgW1YFudMHBiXJUU9jKaGh2H6cjNl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "ee1dde1cf66369151b11b26ea491b8cc74496f91d3fca122145aa0d4ebcc1fa7.jpg": {
+      "sha256": "ee1dde1cf66369151b11b26ea491b8cc74496f91d3fca122145aa0d4ebcc1fa7",
+      "width": 1206,
+      "height": 912,
+      "uses": [
+        {
+          "id": "post:pfbid031KzVh7UKdSRowGx3pHBj5Qb8hu6DQNaKz1thvjzv3ZasBSHsaPKDRPzwcRU3PJqQl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid031KzVh7UKdSRowGx3pHBj5Qb8hu6DQNaKz1thvjzv3ZasBSHsaPKDRPzwcRU3PJqQl&id=61577398061794",
+          "kind": "image"
+        }
+      ]
+    },
+    "955b32bb610c06a5cb29b24c13f47c3b5cd980b706e58f59037d74cd425e7d03.jpg": {
+      "sha256": "955b32bb610c06a5cb29b24c13f47c3b5cd980b706e58f59037d74cd425e7d03",
+      "width": 1170,
+      "height": 660,
+      "uses": [
+        {
+          "id": "post:pfbid02S9i8g73PkvdreHCK14M8RjcDRaKuKV8mbemEz9uumawLedfsSSvBnxnrTxrr7dHfl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid02S9i8g73PkvdreHCK14M8RjcDRaKuKV8mbemEz9uumawLedfsSSvBnxnrTxrr7dHfl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "019e10580166601578f822c1e640079be3a051f57d193ea1a1ce99cc02dda5b9.jpg": {
+      "sha256": "019e10580166601578f822c1e640079be3a051f57d193ea1a1ce99cc02dda5b9",
+      "width": 2048,
+      "height": 1365,
+      "uses": [
+        {
+          "id": "post:pfbid0dqaVDHafaSqYgUEasHmN3Ani9oHcw4YwbwBJxneq4Jj6qTkAxyTJGyvhoSYwdoQtl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid0dqaVDHafaSqYgUEasHmN3Ani9oHcw4YwbwBJxneq4Jj6qTkAxyTJGyvhoSYwdoQtl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "3479e638cbd74166d215cb29512769fb00b7c4966ec2e20eb0aaacc8883b78f4.jpg": {
+      "sha256": "3479e638cbd74166d215cb29512769fb00b7c4966ec2e20eb0aaacc8883b78f4",
+      "width": 1672,
+      "height": 941,
+      "uses": [
+        {
+          "id": "post:pfbid028x5LkjYB6qV5HeJCjWWtGgkZLQL3eEEyFHRf5sw8WCy1cA16RRuz3doXBuV92zewl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid028x5LkjYB6qV5HeJCjWWtGgkZLQL3eEEyFHRf5sw8WCy1cA16RRuz3doXBuV92zewl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "71a16d202b7eb14983f9c7cb47d5af40da3f948b0a45cfe47b7db179e50730cf.jpg": {
+      "sha256": "71a16d202b7eb14983f9c7cb47d5af40da3f948b0a45cfe47b7db179e50730cf",
+      "width": 1200,
+      "height": 675,
+      "uses": [
+        {
+          "id": "post:pfbid02mC3RbUvRRrwn4FWqivPzEWAmRwnA5N2DWjq8Uoq7RsNYGRy5ULep8wyc1NouSHY2l",
+          "sourceUrl": "https://www.facebook.com/comunikatornews/posts/pfbid02mC3RbUvRRrwn4FWqivPzEWAmRwnA5N2DWjq8Uoq7RsNYGRy5ULep8wyc1NouSHY2l/",
+          "kind": "image"
+        }
+      ]
+    },
+    "35b21537f0a52ed9d250381ff61b17e519c77fa95bd8f801c809d4819b845ce3.jpg": {
+      "sha256": "35b21537f0a52ed9d250381ff61b17e519c77fa95bd8f801c809d4819b845ce3",
+      "width": 1200,
+      "height": 800,
+      "uses": [
+        {
+          "id": "post:pfbid02orFJ7ecCHXmDARycYMhD5N21fPcvRydaUUaJQL3jc6fHXY3n1onf2kudGCfHpunNl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid02orFJ7ecCHXmDARycYMhD5N21fPcvRydaUUaJQL3jc6fHXY3n1onf2kudGCfHpunNl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "4d493d96079f13785d9ecf95be4cc6d306b6245f402ebafb06fc05cd216d11cc.jpg": {
+      "sha256": "4d493d96079f13785d9ecf95be4cc6d306b6245f402ebafb06fc05cd216d11cc",
+      "width": 1169,
+      "height": 655,
+      "uses": [
+        {
+          "id": "post:pfbid02upmeKUjzAUKYiFtZ87Tos1bACTjUg6bq9FiWZQuVLrwdXhGVnTZ4TE4X6SfG5N7Hl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid02upmeKUjzAUKYiFtZ87Tos1bACTjUg6bq9FiWZQuVLrwdXhGVnTZ4TE4X6SfG5N7Hl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "dce890972a355b4c6c15b2f1599e31de7a3a2b8d2e7acbfcb2bc389cdabaed16.jpg": {
+      "sha256": "dce890972a355b4c6c15b2f1599e31de7a3a2b8d2e7acbfcb2bc389cdabaed16",
+      "width": 1080,
+      "height": 1080,
+      "uses": [
+        {
+          "id": "post:pfbid03rZ6MY8CN5E94AuM95mPh9MrXcuksP24zHiZn46EcQ3RhpWrxMiooYHwUAnocvbyl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid03rZ6MY8CN5E94AuM95mPh9MrXcuksP24zHiZn46EcQ3RhpWrxMiooYHwUAnocvbyl&id=61583481685886",
+          "kind": "image"
+        }
+      ]
+    },
+    "d6a93623217929374c3401255d2d10ea1771779f89ce9afd6a44c4d80385a2a2.jpg": {
+      "sha256": "d6a93623217929374c3401255d2d10ea1771779f89ce9afd6a44c4d80385a2a2",
+      "width": 1280,
+      "height": 853,
+      "uses": [
+        {
+          "id": "post:pfbid0BHVnuGJsi6ub8GXhMMHfnBdKKnQE7cadFT1LBkfrfGTWubjtRahR29KDYiyCPg6bl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid0BHVnuGJsi6ub8GXhMMHfnBdKKnQE7cadFT1LBkfrfGTWubjtRahR29KDYiyCPg6bl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "705a725a3b3e859ff49717a3f716ccf9eb504118aeb62bb2fe6e5d092963bc31.jpg": {
+      "sha256": "705a725a3b3e859ff49717a3f716ccf9eb504118aeb62bb2fe6e5d092963bc31",
+      "width": 840,
+      "height": 525,
+      "uses": [
+        {
+          "id": "post:pfbid0KisFpBdsttQ3mTPPqpPgaxPDyddQ5s6EuS3aFRAVTwBDYGCNnGDY8LDpYNn5ZkBZl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid0KisFpBdsttQ3mTPPqpPgaxPDyddQ5s6EuS3aFRAVTwBDYGCNnGDY8LDpYNn5ZkBZl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "50de1122713f1d000a0df50b6906771ecdd260ad83f32cd5cf5aa015303230ef.jpg": {
+      "sha256": "50de1122713f1d000a0df50b6906771ecdd260ad83f32cd5cf5aa015303230ef",
+      "width": 1537,
+      "height": 1252,
+      "uses": [
+        {
+          "id": "post:pfbid0Moetda1iWfTHG8QCvYmjFbLuDCH2RSNszUecXCcoKurF41vuCJizBws5DAQwsDjLl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid0Moetda1iWfTHG8QCvYmjFbLuDCH2RSNszUecXCcoKurF41vuCJizBws5DAQwsDjLl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "90437cfbd4ad3bad3339a1b10429e1daf2175427e68b2fe32d4a0b02c43265b1.jpg": {
+      "sha256": "90437cfbd4ad3bad3339a1b10429e1daf2175427e68b2fe32d4a0b02c43265b1",
+      "width": 960,
+      "height": 1200,
+      "uses": [
+        {
+          "id": "post:pfbid0mnE5t943SWc4MH9KheNhCi5UYKCLnWUP3kxWAv3wd2WESpMJHHTLYfLp6rtWTHNal",
+          "sourceUrl": "https://www.facebook.com/strumanewsbg/posts/pfbid0mnE5t943SWc4MH9KheNhCi5UYKCLnWUP3kxWAv3wd2WESpMJHHTLYfLp6rtWTHNal/",
+          "kind": "image"
+        }
+      ]
+    },
+    "997a12ef04819346732cd1ff10d2fc66b2759faf294fc5824675416a051e1196.jpg": {
+      "sha256": "997a12ef04819346732cd1ff10d2fc66b2759faf294fc5824675416a051e1196",
+      "width": 1080,
+      "height": 815,
+      "uses": [
+        {
+          "id": "post:pfbid0mnE5t943SWc4MH9KheNhCi5UYKCLnWUP3kxWAv3wd2WESpMJHHTLYfLp6rtWTHNal",
+          "sourceUrl": "https://www.facebook.com/strumanewsbg/posts/pfbid0mnE5t943SWc4MH9KheNhCi5UYKCLnWUP3kxWAv3wd2WESpMJHHTLYfLp6rtWTHNal/",
+          "kind": "image"
+        }
+      ]
+    },
+    "0fb788b02a5400f5762b91867b49566977ac4b5eb102df8b41254acd11c6e2ce.jpg": {
+      "sha256": "0fb788b02a5400f5762b91867b49566977ac4b5eb102df8b41254acd11c6e2ce",
+      "width": 960,
+      "height": 582,
+      "uses": [
+        {
+          "id": "post:pfbid0mnE5t943SWc4MH9KheNhCi5UYKCLnWUP3kxWAv3wd2WESpMJHHTLYfLp6rtWTHNal",
+          "sourceUrl": "https://www.facebook.com/strumanewsbg/posts/pfbid0mnE5t943SWc4MH9KheNhCi5UYKCLnWUP3kxWAv3wd2WESpMJHHTLYfLp6rtWTHNal/",
+          "kind": "image"
+        }
+      ]
+    },
+    "f506240452f5766420fe56844656d3100a30f160a0d6130808856d064e710e0a.jpg": {
+      "sha256": "f506240452f5766420fe56844656d3100a30f160a0d6130808856d064e710e0a",
+      "width": 1170,
+      "height": 650,
+      "uses": [
+        {
+          "id": "post:pfbid0oApgxUQcjgrRURbhK9a5YVoZY2bHiH29tiaq8AnPkZVwNeGCqHVmZoYDuDjWcgXMl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid0oApgxUQcjgrRURbhK9a5YVoZY2bHiH29tiaq8AnPkZVwNeGCqHVmZoYDuDjWcgXMl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "57412b4f3e1c585228150e3b45d7a9fbdbb6680d5f670a5d05686a75f8e7f8df.jpg": {
+      "sha256": "57412b4f3e1c585228150e3b45d7a9fbdbb6680d5f670a5d05686a75f8e7f8df",
+      "width": 1200,
+      "height": 900,
+      "uses": [
+        {
+          "id": "post:pfbid0252oshkJ5KmtXCKjdgoUHZjwS3xabtSgHBJHMag8dzEtKQ42gZRcUVsRJMwcyG6EXl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid0252oshkJ5KmtXCKjdgoUHZjwS3xabtSgHBJHMag8dzEtKQ42gZRcUVsRJMwcyG6EXl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "60d6495196b86ef8129fe27eeebf7c4511733b6ff3c303e519f5d7b9a0fa0e99.jpg": {
+      "sha256": "60d6495196b86ef8129fe27eeebf7c4511733b6ff3c303e519f5d7b9a0fa0e99",
+      "width": 2048,
+      "height": 1404,
+      "uses": [
+        {
+          "id": "post:pfbid02EJT5FUrZgtrk7tTa1XHeNT7wT3XcPNuGQZes7tnF3PRfkc79CJDyuhzJiouTS6Uyl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid02EJT5FUrZgtrk7tTa1XHeNT7wT3XcPNuGQZes7tnF3PRfkc79CJDyuhzJiouTS6Uyl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "8bce272fc85d39305ec8361e42ac7492483a53dc617ffba144130ab97266a759.jpg": {
+      "sha256": "8bce272fc85d39305ec8361e42ac7492483a53dc617ffba144130ab97266a759",
+      "width": 1600,
+      "height": 900,
+      "uses": [
+        {
+          "id": "post:pfbid03V9bKpCNQKJu4Ba9HckG1GKZfbUfiW7sHoXSmrEjTToa9hCfLCpeSshKajdgAmE9l",
+          "sourceUrl": "https://www.facebook.com/strumanewsbg/posts/pfbid03V9bKpCNQKJu4Ba9HckG1GKZfbUfiW7sHoXSmrEjTToa9hCfLCpeSshKajdgAmE9l/",
+          "kind": "image"
+        }
+      ]
+    },
+    "0914093e99916c57f9a3e2874cabec0c7204fc67172c94183ccca52b453c5d90.jpg": {
+      "sha256": "0914093e99916c57f9a3e2874cabec0c7204fc67172c94183ccca52b453c5d90",
+      "width": 840,
+      "height": 473,
+      "uses": [
+        {
+          "id": "post:pfbid0RU4rkXLGMKMbo43LNk2dHiAbnzXzZnvisSWW69RqrDm96ZnFzxbKc3GXvx2PfgWbl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid0RU4rkXLGMKMbo43LNk2dHiAbnzXzZnvisSWW69RqrDm96ZnFzxbKc3GXvx2PfgWbl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "6af9907d207c7bbee8202c0c5747aeda7615ff05bdba60667528276afa08fc87.jpg": {
+      "sha256": "6af9907d207c7bbee8202c0c5747aeda7615ff05bdba60667528276afa08fc87",
+      "width": 1000,
+      "height": 522,
+      "uses": [
+        {
+          "id": "post:pfbid02PK2BQUuFmxmeJrgDxK5YH3SjzYKhdospmacVbHE4EvxXqFzhcnAeTA2VRh2uBxBml",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid02PK2BQUuFmxmeJrgDxK5YH3SjzYKhdospmacVbHE4EvxXqFzhcnAeTA2VRh2uBxBml/",
+          "kind": "image"
+        }
+      ]
+    },
+    "88ba722c22855b225de873f65fc4b04d9c46260b5450ef29bc090f2f4a32bbca.jpg": {
+      "sha256": "88ba722c22855b225de873f65fc4b04d9c46260b5450ef29bc090f2f4a32bbca",
+      "width": 1179,
+      "height": 655,
+      "uses": [
+        {
+          "id": "post:pfbid02sTbvxAS9yNW2ninfFGXuGB6HskJV5F9TUEkvh6xeVWfAmP6EXftsSyaHVjrsvH8xl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid02sTbvxAS9yNW2ninfFGXuGB6HskJV5F9TUEkvh6xeVWfAmP6EXftsSyaHVjrsvH8xl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "2c2b2c3e3270d85e20cbf3fc8495bc919a625ec1764971a4864f8bbeac608f3a.jpg": {
+      "sha256": "2c2b2c3e3270d85e20cbf3fc8495bc919a625ec1764971a4864f8bbeac608f3a",
+      "width": 1672,
+      "height": 941,
+      "uses": [
+        {
+          "id": "post:pfbid032257kFpWVw9H3xfrZnwCgVFGDo8J72jGTsLpViBujApt8kz4aZsEbnbv9AtUWksgl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid032257kFpWVw9H3xfrZnwCgVFGDo8J72jGTsLpViBujApt8kz4aZsEbnbv9AtUWksgl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "d342ab7bba80b3af3817a97a1380832c42ee9875b101dfee3fa0903d1435dfbc.jpg": {
+      "sha256": "d342ab7bba80b3af3817a97a1380832c42ee9875b101dfee3fa0903d1435dfbc",
+      "width": 1200,
+      "height": 810,
+      "uses": [
+        {
+          "id": "post:pfbid08UZBktF8as1FA3sS9DHowHJKXLd5RcRd4zUX5bCmuHuaTYbqxVF1CXq4jwzGPcDxl",
+          "sourceUrl": "https://www.facebook.com/strumanewsbg/posts/pfbid08UZBktF8as1FA3sS9DHowHJKXLd5RcRd4zUX5bCmuHuaTYbqxVF1CXq4jwzGPcDxl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "f40427d55a7804b7c79849b6ed63e2b69685511bd845e59c0d5bad4ba897bb41.jpg": {
+      "sha256": "f40427d55a7804b7c79849b6ed63e2b69685511bd845e59c0d5bad4ba897bb41",
+      "width": 1000,
+      "height": 522,
+      "uses": [
+        {
+          "id": "post:pfbid0P8eVWT6q1cjqVuUx6W7jFS8kQkPJEAge5cbuYiQxP2U5dSU6EqczFMqnrL3fX5qFl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid0P8eVWT6q1cjqVuUx6W7jFS8kQkPJEAge5cbuYiQxP2U5dSU6EqczFMqnrL3fX5qFl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "6bbd5b874353840d43a2943640be2552308a506cf7b69ed5ce04f27fc9a30665.jpg": {
+      "sha256": "6bbd5b874353840d43a2943640be2552308a506cf7b69ed5ce04f27fc9a30665",
+      "width": 1179,
+      "height": 668,
+      "uses": [
+        {
+          "id": "post:pfbid0vpmBVZ3aQ5eoa91QNqEBGQG5UxQsACejjUe4ouYUHNijU5fDxX63Chjff4SJgMD8l",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid0vpmBVZ3aQ5eoa91QNqEBGQG5UxQsACejjUe4ouYUHNijU5fDxX63Chjff4SJgMD8l/",
+          "kind": "image"
+        }
+      ]
+    },
+    "4f07b95ff389ef513dc372d7bb112c165717796b71e5b6dfa4456b3db2e9387a.jpg": {
+      "sha256": "4f07b95ff389ef513dc372d7bb112c165717796b71e5b6dfa4456b3db2e9387a",
+      "width": 1080,
+      "height": 655,
+      "uses": [
+        {
+          "id": "post:pfbid01Qgxf35raAqu1iVK5AsUoCz4nGd8f3nZ3ufBYResZrTtimqQzNaAo19uTfN7HrgMl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid01Qgxf35raAqu1iVK5AsUoCz4nGd8f3nZ3ufBYResZrTtimqQzNaAo19uTfN7HrgMl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "7936ce1a181c0a6a8ce26cef1a8512d34543fbb40885a486a639e9b924ebfdd9.jpg": {
+      "sha256": "7936ce1a181c0a6a8ce26cef1a8512d34543fbb40885a486a639e9b924ebfdd9",
+      "width": 1170,
+      "height": 655,
+      "uses": [
+        {
+          "id": "post:pfbid026qyin9k9BgRa4wQ6EiLTy3fdgNpTc7ubXhbMjUP8em1wCjk6qf7yVvRdzCaFtXGdl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid026qyin9k9BgRa4wQ6EiLTy3fdgNpTc7ubXhbMjUP8em1wCjk6qf7yVvRdzCaFtXGdl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "5348fc2ecaeee9ef323500a41aa2a9d85fb7c976806c114923cc7b9081ef48d7.jpg": {
+      "sha256": "5348fc2ecaeee9ef323500a41aa2a9d85fb7c976806c114923cc7b9081ef48d7",
+      "width": 2048,
+      "height": 2048,
+      "uses": [
+        {
+          "id": "post:pfbid02PjhhvHUKazdRWLaoBwbzKiEQb7hM945KZtAMcp4hFGrR8mDfyKzygx4oTCznvw74l",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid02PjhhvHUKazdRWLaoBwbzKiEQb7hM945KZtAMcp4hFGrR8mDfyKzygx4oTCznvw74l/",
+          "kind": "image"
+        }
+      ]
+    },
+    "0e57a18283011388cf2617fd42fd2b51f400939a3338c93230b4476bd93d1403.jpg": {
+      "sha256": "0e57a18283011388cf2617fd42fd2b51f400939a3338c93230b4476bd93d1403",
+      "width": 720,
+      "height": 1305,
+      "uses": [
+        {
+          "id": "post:pfbid02PjhhvHUKazdRWLaoBwbzKiEQb7hM945KZtAMcp4hFGrR8mDfyKzygx4oTCznvw74l",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid02PjhhvHUKazdRWLaoBwbzKiEQb7hM945KZtAMcp4hFGrR8mDfyKzygx4oTCznvw74l/",
+          "kind": "image"
+        }
+      ]
+    },
+    "4d427815953d1689a92d31866065953ffb17df1c6ec82796f485dd0717202ad7.jpg": {
+      "sha256": "4d427815953d1689a92d31866065953ffb17df1c6ec82796f485dd0717202ad7",
+      "width": 1179,
+      "height": 660,
+      "uses": [
+        {
+          "id": "post:pfbid02TnWBWnWfk1vHjhGTVHLtjQ2uwXroeCAftqzQGra8B65TXMugVuMXq3a7isUaP6Cql",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid02TnWBWnWfk1vHjhGTVHLtjQ2uwXroeCAftqzQGra8B65TXMugVuMXq3a7isUaP6Cql/",
+          "kind": "image"
+        }
+      ]
+    },
+    "a414a65b05ace73196d2297135534edff11a12ca1b3968dfca99537198cc66b7.jpg": {
+      "sha256": "a414a65b05ace73196d2297135534edff11a12ca1b3968dfca99537198cc66b7",
+      "width": 1080,
+      "height": 1159,
+      "uses": [
+        {
+          "id": "post:pfbid02Y2zTwSb6uoJjdYAV4TqNi7aCS4WgDuhzArpgDiC2H8XhJXkRAsM4kHsVnBjmTqpql",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02Y2zTwSb6uoJjdYAV4TqNi7aCS4WgDuhzArpgDiC2H8XhJXkRAsM4kHsVnBjmTqpql&id=61577398061794",
+          "kind": "image"
+        }
+      ]
+    },
+    "a833dd37c2ccb886b30e49fb0994bf8b8bd7c011251abd2a56ded658752dcf6f.jpg": {
+      "sha256": "a833dd37c2ccb886b30e49fb0994bf8b8bd7c011251abd2a56ded658752dcf6f",
+      "width": 1080,
+      "height": 1920,
+      "uses": [
+        {
+          "id": "post:pfbid02tsQEfxjMKW48USs5CoMaPQ3pqzx6VGsw3CZxFCUe3b7YssvS3kC9dmBMjYrfdsRUl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02tsQEfxjMKW48USs5CoMaPQ3pqzx6VGsw3CZxFCUe3b7YssvS3kC9dmBMjYrfdsRUl&id=61577398061794",
+          "kind": "image"
+        }
+      ]
+    },
+    "e420a143115292511d0b9acd3cc09d31d7a36f38ed880db9306e2b1b61449a92.jpg": {
+      "sha256": "e420a143115292511d0b9acd3cc09d31d7a36f38ed880db9306e2b1b61449a92",
+      "width": 733,
+      "height": 839,
+      "uses": [
+        {
+          "id": "post:pfbid05pTdBgg2pBhFRS5yMBEnCNE4vA8zi6vGDD6muBMNRcs2YKTBWZT57evyo32iC9eSl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid05pTdBgg2pBhFRS5yMBEnCNE4vA8zi6vGDD6muBMNRcs2YKTBWZT57evyo32iC9eSl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "390a32b44b2ad796eaa4cf25a35a3c027919a027ffa784040c5c254a591a24d7.jpg": {
+      "sha256": "390a32b44b2ad796eaa4cf25a35a3c027919a027ffa784040c5c254a591a24d7",
+      "width": 480,
+      "height": 270,
+      "uses": [
+        {
+          "id": "post:pfbid0Q4vZKwZiaCnHsiE2qKiWSzDD7TTqbbxDCVf8YkB5yS3TSMu2XHi4zPUkjKtjq4SFl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid0Q4vZKwZiaCnHsiE2qKiWSzDD7TTqbbxDCVf8YkB5yS3TSMu2XHi4zPUkjKtjq4SFl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "6865a18b00f3c444a25f728e30bd0a515f7d3fbc8bd71698265495b0ddfe42da.jpg": {
+      "sha256": "6865a18b00f3c444a25f728e30bd0a515f7d3fbc8bd71698265495b0ddfe42da",
+      "width": 383,
+      "height": 371,
+      "uses": [
+        {
+          "id": "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "28127ec3fb17cf7993b1c4f59a1bab46f6bf51511e20de3b3f7e500e2ce9688b.jpg": {
+      "sha256": "28127ec3fb17cf7993b1c4f59a1bab46f6bf51511e20de3b3f7e500e2ce9688b",
+      "width": 1179,
+      "height": 768,
+      "uses": [
+        {
+          "id": "post:pfbid0r5fND2sHqXbM1JCJbmJo5rLUWxMFnaZFSd5dC4qUh2PqVagZSQANr79TZeYQWPQyl",
+          "sourceUrl": "https://www.facebook.com/bnews.bg/posts/pfbid0r5fND2sHqXbM1JCJbmJo5rLUWxMFnaZFSd5dC4qUh2PqVagZSQANr79TZeYQWPQyl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "21d5b87cb583d33b809c005e6731d80ba2d1ffc3ce551aa1d339367734c3ae59.jpg": {
+      "sha256": "21d5b87cb583d33b809c005e6731d80ba2d1ffc3ce551aa1d339367734c3ae59",
+      "width": 1155,
+      "height": 709,
+      "uses": [
+        {
+          "id": "post:pfbid06fPN7iSAZg1NDCkj4vUhLbHSK9D9FNTo21sBWewezxQiGAWuh89CdrfMVvSY4wR7l",
+          "sourceUrl": "https://www.facebook.com/n.barekov/posts/pfbid06fPN7iSAZg1NDCkj4vUhLbHSK9D9FNTo21sBWewezxQiGAWuh89CdrfMVvSY4wR7l/",
+          "kind": "image"
+        }
+      ]
+    },
+    "b9ef23db76b3c3b7c220f112b39c0a2194d021536c4e9f998d79afe0c4a63597.jpg": {
+      "sha256": "b9ef23db76b3c3b7c220f112b39c0a2194d021536c4e9f998d79afe0c4a63597",
+      "width": 1200,
+      "height": 675,
+      "uses": [
+        {
+          "id": "post:pfbid02tLVduNW2khzhW98qhibyp3ypkXkbKrEwvFFZSsjruPoGFgXFQ3k747dimeRm6V8zl",
+          "sourceUrl": "https://www.facebook.com/noviniotposledniachas/posts/pfbid02tLVduNW2khzhW98qhibyp3ypkXkbKrEwvFFZSsjruPoGFgXFQ3k747dimeRm6V8zl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "ce1fe4f247c0846f4afbb7bb3d1841bfc4ded2c340b0b41cdb385c9fbb5332f5.jpg": {
+      "sha256": "ce1fe4f247c0846f4afbb7bb3d1841bfc4ded2c340b0b41cdb385c9fbb5332f5",
+      "width": 1200,
+      "height": 675,
+      "uses": [
+        {
+          "id": "post:pfbid0eboqFNFPZpCoHNvPWGXJeF3nuNhR1UbVNd1zK9GSFWYPCWKLqVWokZiYG8oq9XHbl",
+          "sourceUrl": "https://www.facebook.com/novininafocus/posts/pfbid0eboqFNFPZpCoHNvPWGXJeF3nuNhR1UbVNd1zK9GSFWYPCWKLqVWokZiYG8oq9XHbl/",
+          "kind": "image"
+        }
+      ]
+    },
+    "f902783c7c03c15816008eb4233358352495012676e39101a32ef3408951228c.jpg": {
+      "sha256": "f902783c7c03c15816008eb4233358352495012676e39101a32ef3408951228c",
+      "width": 960,
+      "height": 1707,
+      "uses": [
+        {
+          "id": "video:2050433183027183",
+          "sourceUrl": "https://www.facebook.com/reel/2050433183027183/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "e8a284e32443f5a76da602c0ff99356dd81fdf11cbda58ce6c58bac9163a8bb1.jpg": {
+      "sha256": "e8a284e32443f5a76da602c0ff99356dd81fdf11cbda58ce6c58bac9163a8bb1",
+      "width": 720,
+      "height": 1280,
+      "uses": [
+        {
+          "id": "video:1446707520759625",
+          "sourceUrl": "https://www.facebook.com/reel/1446707520759625/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "e985b958e479543bf932780737ab67612e098e050b013ee532d0814469b096c3.jpg": {
+      "sha256": "e985b958e479543bf932780737ab67612e098e050b013ee532d0814469b096c3",
+      "width": 1206,
+      "height": 666,
+      "uses": [
+        {
+          "id": "video:1113050341136376",
+          "sourceUrl": "https://www.facebook.com/reel/1113050341136376/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "a716d07e8e99b30d79e71c4854b8b7ba30a6d43355868d5e02a499d43c9571d8.jpg": {
+      "sha256": "a716d07e8e99b30d79e71c4854b8b7ba30a6d43355868d5e02a499d43c9571d8",
+      "width": 1280,
+      "height": 720,
+      "uses": [
+        {
+          "id": "video:1670123841398564",
+          "sourceUrl": "https://www.facebook.com/reel/1670123841398564/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    }
+  }
+}

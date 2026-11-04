@@ -17,6 +17,7 @@ import { HlmTooltipDirective } from '../ui/tooltip-helm/src/lib/hlm-tooltip.dire
 import { ViewTabsComponent } from '../ui/view-tabs/view-tabs';
 import { VirtualTableDirective } from '../ui/virtual-table/virtual-table';
 import { FacebookResearchChartsComponent } from './facebook-research-charts';
+import { FacebookResearchImageComponent } from './facebook-research-image';
 import { FacebookPageSummary, FacebookPost, FacebookReport, FacebookReview, FacebookTotal } from './facebook-research.models';
 import { FACEBOOK_METRIC_LABELS, FACEBOOK_METRICS, facebookCount, facebookDate, facebookPageSummaries, facebookShortName, facebookTime, validFacebookReport } from './facebook-research.util';
 
@@ -27,7 +28,7 @@ const VIEWS = ['pages', 'posts', 'duplicates', 'review', 'coverage'];
   selector: 'app-facebook-research',
   imports: [CommonModule, HlmButtonDirective, MapIconComponent, ViewTabsComponent, SelectComponent,
     TableControlsComponent, SortableTableHeaderComponent, VirtualTableDirective, BaseModalComponent,
-    CsvExportModalComponent, LoadingBarComponent, HlmTooltipDirective, FacebookResearchChartsComponent],
+    CsvExportModalComponent, LoadingBarComponent, HlmTooltipDirective, FacebookResearchChartsComponent, FacebookResearchImageComponent],
   templateUrl: './facebook-research.html',
   styleUrl: './facebook-research.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

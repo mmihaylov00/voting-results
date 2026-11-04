@@ -70,4 +70,25 @@ describe('Facebook research data', () => {
     malformed.posts[0] = null as unknown as FacebookPost;
     expect(validFacebookReport(malformed)).toBe(false);
   });
+
+  it('accepts only local, content-addressed images attributed to their own public source', () => {
+    expect(report.pages.every(page => page.avatar?.sourceUrl === page.url)).toBe(true);
+    expect(report.posts.filter(post => post.images?.length)).toHaveLength(47);
+    expect(report.posts.filter(post => post.images?.some(image => image.kind === 'video-thumbnail'))).toHaveLength(4);
+    for (const value of ['https://external.example/image.jpg', '/images/facebook/2026/../private.jpg', 'javascript:alert(1)']) {
+      const wrong = structuredClone(report);
+      wrong.pages[0].avatar!.src = value;
+      expect(validFacebookReport(wrong)).toBe(false);
+    }
+    const wrongSource = structuredClone(report);
+    wrongSource.posts[0].images![0].sourceUrl = report.posts[1].url;
+    expect(validFacebookReport(wrongSource)).toBe(false);
+    const wrongSize = structuredClone(report);
+    wrongSize.posts[0].images![0].height = 0;
+    expect(validFacebookReport(wrongSize)).toBe(false);
+    const noImages = structuredClone(report);
+    for (const page of noImages.pages) delete page.avatar;
+    for (const post of noImages.posts) delete post.images;
+    expect(validFacebookReport(noImages)).toBe(true);
+  });
 });

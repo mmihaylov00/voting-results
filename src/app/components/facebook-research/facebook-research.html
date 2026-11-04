@@ -45,7 +45,7 @@
               @if (pageRows.window().top) {<tr aria-hidden="true"><td colspan="6" [style.height.px]="pageRows.window().top" class="virtual-spacer"></td></tr>}
               @for (page of pageRows.rows(); track page.id) {
                 <tr [attr.data-virtual-index]="pageRows.window().start + $index" [attr.aria-rowindex]="pageRows.window().start + $index + 2">
-                  <th scope="row"><button class="text-button page-name" type="button" (click)="showPagePosts(page.id)">{{ shortName(page.name) }}<app-map-icon name="chevron-right" /></button>
+                  <th scope="row"><button class="text-button page-name" type="button" (click)="showPagePosts(page.id)"><app-facebook-research-image [image]="page.avatar" [label]="shortName(page.name)" variant="avatar" /><span class="min-w-0 flex-1">{{ shortName(page.name) }}</span><app-map-icon name="chevron-right" /></button>
                     @if (page.satire) {<small>Сатира / пародия</small>}
                     @if (page.origin === 'discovery') {<small>Намерена при сравнение</small>}
                   </th>
@@ -83,8 +83,8 @@
               @if (postRows.window().top) {<tr aria-hidden="true"><td colspan="6" [style.height.px]="postRows.window().top" class="virtual-spacer"></td></tr>}
               @for (post of postRows.rows(); track post.id) {
                 <tr [attr.data-virtual-index]="postRows.window().start + $index" [attr.aria-rowindex]="postRows.window().start + $index + 2">
-                  <th scope="row"><button type="button" class="text-button post-excerpt" (click)="openPost(post.id)">{{ post.excerpt || post.summary }}</button>@if (post.origin === 'discovery') {<small>Намерена при сравнение</small>}</th>
-                  <td class="wrap-cell">{{ shortName(pageName(post)) }}</td><td class="date-cell">{{ postDate(post) }}<small>{{ postTime(post) }}</small></td>
+                  <th scope="row"><button type="button" class="text-button flex! items-start gap-3 w-full" (click)="openPost(post.id)"><app-facebook-research-image [image]="post.images?.[0]" [label]="shortName(pageName(post))" /><span class="post-excerpt min-w-0 flex-1">{{ post.excerpt || post.summary }}</span></button>@if (post.origin === 'discovery') {<small>Намерена при сравнение</small>}</th>
+                  <td class="wrap-cell"><span class="inline-flex items-center gap-2"><app-facebook-research-image [image]="pageMap().get(post.pageId)?.avatar" [label]="shortName(pageName(post))" variant="avatar" /><span>{{ shortName(pageName(post)) }}</span></span></td><td class="date-cell">{{ postDate(post) }}<small>{{ postTime(post) }}</small></td>
                   @for (metric of metrics; track metric) {<td>{{ count(post.metrics[metric].value, post.metrics[metric].approximate === true) }}</td>}
                 </tr>
               } @empty {<tr><td colspan="6" class="empty-state">Няма публикации по тези филтри.</td></tr>}
@@ -101,13 +101,13 @@
         @for (group of duplicateGroups(); track group.source.id) {
           <article class="duplicate-group">
             <div class="duplicate-heading"><span class="eyebrow">{{ group.matches[0].kind === 'body' ? 'Заглавие и основен текст' : 'Еднакво заглавие' }}</span><span class="match-count">{{ group.matches.length }} съвпадения</span></div>
-            <button type="button" class="text-button duplicate-title" (click)="openPost(group.source.id)">{{ group.source.excerpt }}</button>
+            <button type="button" class="text-button duplicate-title flex! items-center gap-3" (click)="openPost(group.source.id)"><app-facebook-research-image [image]="group.source.images?.[0]" [label]="shortName(pageName(group.source))" /><span>{{ group.source.excerpt }}</span></button>
             <div class="publication-chain">
-              <div class="publication-source"><span class="chain-label">Публикация от извадката</span><strong>{{ shortName(pageName(group.source)) }}</strong><time [attr.datetime]="group.source.publishedAt">{{ postDate(group.source) }} · {{ postTime(group.source) }}</time><button hlmBtn variant="outline" size="sm" class="gap-1" type="button" (click)="openPost(group.source.id)">Преглед<app-map-icon name="chevron-right" /></button></div>
+              <div class="publication-source"><span class="chain-label">Публикация от извадката</span><strong class="inline-flex items-center gap-2"><app-facebook-research-image [image]="pageMap().get(group.source.pageId)?.avatar" [label]="shortName(pageName(group.source))" variant="avatar" />{{ shortName(pageName(group.source)) }}</strong><time [attr.datetime]="group.source.publishedAt">{{ postDate(group.source) }} · {{ postTime(group.source) }}</time><button hlmBtn variant="outline" size="sm" class="gap-1" type="button" (click)="openPost(group.source.id)">Преглед<app-map-icon name="chevron-right" /></button></div>
               <div class="publication-matches">
                 @for (match of group.matches; track match.targetId) {
                   @if (postById(match.targetId); as post) {
-                    <div class="publication-match"><div><span class="chain-label">Съвпадаща публикация</span><button type="button" class="text-button" (click)="openPost(post.id)">{{ shortName(pageName(post)) }}</button><time [attr.datetime]="post.publishedAt">{{ postDate(post) }} · {{ postTime(post) }}</time></div><span class="time-gap">+{{ match.delayMinutes }} мин</span></div>
+                    <div class="publication-match"><div><span class="chain-label">Съвпадаща публикация</span><button type="button" class="text-button inline-flex! items-center gap-2" (click)="openPost(post.id)"><app-facebook-research-image [image]="pageMap().get(post.pageId)?.avatar" [label]="shortName(pageName(post))" variant="avatar" />{{ shortName(pageName(post)) }}</button><time [attr.datetime]="post.publishedAt">{{ postDate(post) }} · {{ postTime(post) }}</time></div><span class="time-gap">+{{ match.delayMinutes }} мин</span></div>
                   }
                 }
               </div>
@@ -149,11 +149,21 @@
 
 @if (selectedPost(); as post) {
   <app-base-modal [title]="pageName(post)" [subtitle]="postDate(post) + (postTime(post) ? ' · ' + postTime(post) + ' · София' : '')" maxWidth="max-w-3xl" (close)="selectedPostId.set('')">
+    <ng-template #headerImage><app-facebook-research-image [image]="pageMap().get(post.pageId)?.avatar" [label]="shortName(pageName(post))" variant="avatar" /></ng-template>
     <ng-template #headerActions><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="post.url" target="_blank" rel="noopener noreferrer"><app-map-icon name="globe" />Facebook</a></ng-template>
     <div class="post-detail">
       <span class="status-label">Твърдението не е проверено</span>
       <blockquote>{{ post.excerpt }}</blockquote>
       <p>{{ post.summary }}</p>
+      @if (post.images?.length) {
+        <div class="grid gap-4 my-4" aria-label="Изображения от публикацията">
+          @for (image of post.images; track $index) {
+            <a [href]="image.sourceUrl" target="_blank" rel="noopener noreferrer" [attr.aria-label]="'Отвори ' + (image.kind === 'video-thumbnail' ? 'видеото' : 'изображението') + ' във Facebook'">
+              <app-facebook-research-image [image]="image" [label]="'Изображение ' + ($index + 1) + ' към публикация от ' + shortName(pageName(post))" variant="detail" />
+            </a>
+          }
+        </div>
+      }
       <dl class="post-counters">@for (metric of metrics; track metric) {<div><dt>{{ metricLabels[metric] }}</dt><dd>{{ count(post.metrics[metric].value, post.metrics[metric].approximate === true) }}</dd></div>}<div><dt>Обхват (reach)</dt><dd class="unavailable">Няма данни</dd></div></dl>
       <div class="post-meta"><span>Събрано на {{ post.collectedAt | date:'dd.MM.yyyy':'UTC' }}</span><span>{{ post.origin === 'collection' ? 'Начална извадка' : 'Намерено при сравнение на заглавия' }}</span>@if (pageMap().get(post.pageId)?.satire) {<span>Страницата е означена като сатира / пародия</span>}@if (post.captionComplete === false) {<span>Събран е частичен надпис</span>}@if (post.interval) {<span>Датата е известна само в посочения период</span>}</div>
       @if (post.keywords.length) {<h3>Ключови думи</h3><div class="keyword-list">@for (match of post.keywords; track match.keyword) {<span>{{ match.keyword }}@if (match.source === 'image') {<small>в изображение</small>}</span>}</div>}

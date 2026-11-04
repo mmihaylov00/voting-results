@@ -196,6 +196,8 @@ python3 -m unittest discover -s scripts -p 'electoral_forensics*_test.py'
 
 The snapshot in `public/data/facebook/2026/report.json` retains 49 initially collected posts and three later title-search matches across eight Pages. Three matches involve two source posts; headline-only matches are distinguished from matching body text. Post URLs, dates or date intervals, collection dates, keyword evidence and snapshot hashes are retained. Raw browser captures, personal profiles and commenters are excluded from the published asset.
 
+Public Facebook media captured on 4 November 2026 supplies eight Page avatars and images for 47 posts, including four video thumbnails; five posts are text-only. Original image files are retained locally under `public/images/facebook/2026`, with content hashes and public Page/post sources in `SOURCES.json`; expiring Facebook image URLs and commenter images are excluded.
+
 This is a partial, nonrepresentative sample. None of the 34 keywords reached the requested 100 posts. Coverage counts refer only to the initial 49 posts. Missing counters remain unavailable, rounded counters are marked approximate, and reach is unavailable. All claims await verification; engagement and repeated wording do not establish electoral influence, truth, ownership or coordination. The page is unlisted and uses the same noindex headers and metadata as the electoral research.
 
 ## Development server

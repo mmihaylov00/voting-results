@@ -1,6 +1,16 @@
 export type FacebookMetric = 'reactions' | 'comments' | 'shares';
 export type FacebookOrigin = 'collection' | 'discovery';
 
+export interface FacebookImage {
+  src: string;
+  sourceUrl: string;
+  width: number;
+  height: number;
+  kind: 'image' | 'video-thumbnail';
+  capturedAt: string;
+  sha256: string;
+}
+
 export interface FacebookCounter {
   value: number | null;
   approximate: boolean | null;
@@ -15,6 +25,7 @@ export interface FacebookPage {
   followersApproximate: boolean;
   satire: boolean;
   origin: FacebookOrigin;
+  avatar?: FacebookImage;
 }
 
 export interface FacebookPost {
@@ -33,6 +44,7 @@ export interface FacebookPost {
   keywords: { keyword: string; source: string; evidence: string }[];
   metrics: Record<FacebookMetric, FacebookCounter>;
   sourceTextSha256: string;
+  images?: FacebookImage[];
 }
 
 export interface FacebookMatch {

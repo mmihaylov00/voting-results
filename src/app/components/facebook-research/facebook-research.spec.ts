@@ -54,6 +54,7 @@ describe('Facebook research workspace', () => {
     expect(element.querySelectorAll('.page-table tbody tr')).toHaveLength(8);
     expect(element.querySelector('.page-table')?.textContent).toContain('4 без брояч');
     expect(element.querySelector('.workspace-tabs [role="tablist"]')?.classList.contains('scrollable')).toBe(true);
+    expect(element.querySelectorAll('.page-table app-facebook-research-image img')).toHaveLength(8);
     fixture.componentInstance.exportPages(fixture.componentInstance.pages());
     expect(fixture.componentInstance.csvData()?.rows).toHaveLength(8);
     fixture.destroy();
@@ -117,6 +118,25 @@ describe('Facebook research workspace', () => {
     fixture.detectChanges();
     expect(component.error()).toBe('');
     expect(component.report()?.posts).toHaveLength(52);
+    fixture.destroy();
+  });
+
+  it('opens the complete captured photo set and preserves text-only and video post states', () => {
+    const fixture = loaded('posts');
+    const component = fixture.componentInstance;
+    component.openPost(report.posts[0].id);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelectorAll('dialog app-facebook-research-image.detail img')).toHaveLength(3);
+    expect(element.querySelector('dialog a[aria-label="Отвори изображението във Facebook"]')?.getAttribute('href')).toBe(report.posts[0].url);
+    component.openPost(report.posts.find(post => post.images?.some(image => image.kind === 'video-thumbnail'))!.id);
+    fixture.detectChanges();
+    expect(element.querySelector('dialog [aria-label="Миниатюра на видео"]')).not.toBeNull();
+    expect(element.querySelector('dialog a[aria-label="Отвори видеото във Facebook"]')).not.toBeNull();
+    component.openPost(report.posts.find(post => !post.images?.length)!.id);
+    fixture.detectChanges();
+    expect(element.querySelector('dialog [aria-label="Изображения от публикацията"]')).toBeNull();
+    expect(element.querySelector('dialog .post-detail')?.textContent).toContain('Твърдението не е проверено');
     fixture.destroy();
   });
 

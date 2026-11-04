@@ -1,4 +1,4 @@
-import { FacebookMetric, FacebookPageSummary, FacebookPost, FacebookReport, FacebookTotal } from './facebook-research.models';
+import { FacebookImage, FacebookMetric, FacebookPageSummary, FacebookPost, FacebookReport, FacebookTotal } from './facebook-research.models';
 
 export const FACEBOOK_METRICS: readonly FacebookMetric[] = ['reactions', 'comments', 'shares'];
 export const FACEBOOK_METRIC_LABELS: Record<FacebookMetric, string> = {
@@ -73,16 +73,24 @@ export function validFacebookReport(report: FacebookReport): boolean {
   const pages = new Set(report.pages.map(page => page.id));
   const posts = new Set(report.posts.map(post => post.id));
   const octoberDate = (value: string): boolean => typeof value === 'string' && /^2026-10-(0[1-9]|[12]\d|3[01])$/.test(value);
+  const validImage = (image: FacebookImage, sourceUrl: string): boolean => !!image
+    && typeof image.sha256 === 'string' && /^[a-f0-9]{64}$/.test(image.sha256)
+    && new RegExp(`^/images/facebook/2026/${image.sha256}\\.(jpg|avif)$`).test(image.src)
+    && image.sourceUrl === sourceUrl && safeFacebookUrl(image.sourceUrl)
+    && Number.isInteger(image.width) && image.width > 0 && Number.isInteger(image.height) && image.height > 0
+    && (image.kind === 'image' || image.kind === 'video-thumbnail') && Number.isFinite(Date.parse(image.capturedAt));
   return report.period === '2026-10' && Number.isInteger(report.keywordTarget) && report.keywordTarget > 0
     && Number.isFinite(Date.parse(report.collectionDate))
     && report.collectionPostCount === report.posts.filter(post => post.origin === 'collection').length
     && pages.size === report.pages.length && posts.size === report.posts.length
-    && report.pages.every(page => typeof page.name === 'string' && safeFacebookUrl(page.url))
+    && report.pages.every(page => typeof page.name === 'string' && safeFacebookUrl(page.url)
+      && (page.avatar === undefined || validImage(page.avatar, page.url) && page.avatar.kind === 'image'))
     && report.posts.every(post => pages.has(post.pageId) && safeFacebookUrl(post.url)
       && typeof post.excerpt === 'string' && typeof post.summary === 'string' && Array.isArray(post.keywords)
       && post.keywords.every(match => match && typeof match.keyword === 'string')
       && (!post.publishedAt || Number.isFinite(Date.parse(post.publishedAt)))
       && Number.isFinite(Date.parse(post.collectedAt))
+      && (post.images === undefined || Array.isArray(post.images) && post.images.every(image => validImage(image, post.url)))
       && (post.origin === 'collection' || post.origin === 'discovery')
       && (post.date ? octoberDate(post.date) : !!post.interval && octoberDate(post.interval.start)
         && octoberDate(post.interval.end) && post.interval.start <= post.interval.end)
