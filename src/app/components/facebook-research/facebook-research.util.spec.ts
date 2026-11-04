@@ -1,11 +1,95 @@
 import { describe, expect, it } from 'vitest';
 import snapshot from '../../../../public/data/facebook/2026/report.json';
-import { FacebookPost, FacebookReport } from './facebook-research.models';
-import { FACEBOOK_CANDIDATES, facebookCount, facebookDailyCounts, facebookDate, facebookPageSummaries, facebookStanceSummary, facebookTime, facebookTotal, validFacebookReport } from './facebook-research.util';
+import { FacebookDirectory, FacebookPost, FacebookReport } from './facebook-research.models';
+import { FACEBOOK_CANDIDATES, facebookCount, facebookDailyCounts, facebookDate, facebookPageSummaries, facebookStanceSummary, facebookTime, facebookTotal, validFacebookDirectory, validFacebookReport } from './facebook-research.util';
 
 const report = snapshot as FacebookReport;
 
+function directoryFixture(): FacebookDirectory {
+  return { checkedAt: '2026-11-04', entries: [{
+    id: 'publisher', name: 'Издател', aliases: ['Друго име'], status: 'publisher-linked',
+    facebookUrl: 'https://www.facebook.com/publisher', websiteUrl: 'https://www.publisher.example/',
+    regional: true, coverage: 'Варна и областта', regions: ['Варна'],
+    sources: [{ url: 'https://publisher.example/about', note: 'Сайтът посочва обхвата и Facebook връзката.' }],
+    notes: [], samplePageId: null,
+  }, {
+    id: 'lead', name: 'Име за проверка', aliases: [], status: 'unresolved',
+    facebookUrl: null, websiteUrl: null, regional: null, coverage: '', regions: [],
+    sources: [], notes: [], samplePageId: null,
+  }] };
+}
+
 describe('Facebook research data', () => {
+  it('validates a separately sourced directory while keeping older reports without it valid', () => {
+    const directory = directoryFixture();
+    expect(validFacebookDirectory(directory, report.pages)).toBe(true);
+    expect(validFacebookReport({ ...report, directory })).toBe(true);
+    const legacy = { ...report };
+    delete legacy.directory;
+    expect(validFacebookReport(legacy)).toBe(true);
+    for (const invalid of [null, { checkedAt: 'bad', entries: [] }, { checkedAt: '2026-11-04', entries: null }]) {
+      expect(validFacebookReport({ ...report, directory: invalid as unknown as FacebookDirectory })).toBe(false);
+    }
+  });
+
+  it('rejects duplicated directory identities, unsafe sources, unsupported regional claims and publisher links without primary evidence', () => {
+    const mutations: ((directory: FacebookDirectory) => void)[] = [
+      directory => directory.entries.push(directory.entries[0]),
+      directory => directory.entries.push({ ...directory.entries[0], id: 'duplicate-url', facebookUrl: 'https://www.facebook.com/PUBLISHER/' }),
+      directory => directory.entries[0].name = ' ',
+      directory => directory.entries[0].aliases = null as unknown as string[],
+      directory => directory.entries[0].status = 'fake-news' as FacebookDirectory['entries'][number]['status'],
+      directory => directory.entries[0].facebookUrl = 'https://facebook.com/publisher',
+      directory => directory.entries[0].facebookUrl = 'https://www.facebook.com.attacker.example/publisher',
+      directory => directory.entries[0].websiteUrl = 'javascript:alert(1)',
+      directory => directory.entries[0].sources[0].url = 'https://user:password@publisher.example/about',
+      directory => directory.entries[0].regions = [],
+      directory => directory.entries[0].coverage = '',
+      directory => directory.entries[0].sources = [],
+      directory => directory.entries[0].sources[0].url = 'https://unrelated.example/about',
+      directory => directory.entries[0].facebookUrl = null,
+      directory => directory.entries[1].regions = ['Варна'],
+    ];
+    for (const mutate of mutations) {
+      const directory = directoryFixture();
+      mutate(directory);
+      expect(validFacebookReport({ ...report, directory })).toBe(false);
+    }
+  });
+
+  it('keeps same-name Pages separate by ID while rejecting duplicate numeric and legacy Page URLs', () => {
+    const directory = directoryFixture();
+    const first = directory.entries[0];
+    first.status = 'page-verified';
+    first.facebookUrl = 'https://www.facebook.com/profile.php?id=123456789012345';
+    directory.entries[1] = { ...first, id: 'other-page', facebookUrl: 'https://www.facebook.com/123456789012346' };
+    expect(validFacebookDirectory(directory, report.pages)).toBe(true);
+    directory.entries[1].facebookUrl = 'https://www.facebook.com/123456789012345';
+    expect(validFacebookDirectory(directory, report.pages)).toBe(false);
+    directory.entries[1].facebookUrl = 'https://www.facebook.com/Publisher-123456789012345/';
+    expect(validFacebookDirectory(directory, report.pages)).toBe(false);
+  });
+
+  it('matches sample Page IDs and canonical URLs without merging other identities', () => {
+    const page = report.pages.find(page => !page.url.includes('profile.php'))!;
+    const directory = directoryFixture();
+    const entry = directory.entries[0];
+    entry.status = 'in-sample';
+    entry.samplePageId = page.id;
+    entry.facebookUrl = `${page.url.toUpperCase().replace(/\/+$/, '')}/`;
+    expect(validFacebookDirectory(directory, report.pages)).toBe(true);
+    const numericPage = report.pages.find(page => page.url.includes('profile.php?id='))!;
+    entry.samplePageId = numericPage.id;
+    entry.facebookUrl = `https://www.facebook.com/people/Name/${new URL(numericPage.url).searchParams.get('id')}/`;
+    expect(validFacebookDirectory(directory, report.pages)).toBe(true);
+    entry.samplePageId = 'unknown';
+    expect(validFacebookDirectory(directory, report.pages)).toBe(false);
+    entry.samplePageId = null;
+    expect(validFacebookDirectory(directory, report.pages)).toBe(false);
+    entry.samplePageId = page.id;
+    expect(validFacebookDirectory(directory, report.pages)).toBe(false);
+  });
+
   it('keeps candidate assessments independent, counts every post and preserves unreviewed captions', () => {
     const pages = facebookPageSummaries(report);
     for (const page of pages) {

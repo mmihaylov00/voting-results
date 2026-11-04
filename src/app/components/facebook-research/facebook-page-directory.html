@@ -1,0 +1,64 @@
+<section aria-label="Каталог на Facebook страници">
+  <div class="directory-heading">
+    <div><h2>Каталог на страници</h2><p class="note">Актуализирано на {{ directory().checkedAt | date:'dd.MM.yyyy':'UTC' }} · Взаимодействията са само за събраната извадка.</p></div>
+  </div>
+
+  <div class="directory-filters">
+    <div><label for="directory-status--trigger">Проверка</label><app-select controlId="directory-status" label="Статус на проверката" [options]="statusOptions" [value]="statusFilter()" (valueChange)="statusFilter.set($event)" /></div>
+    <div><label for="directory-scope--trigger">Обхват</label><app-select controlId="directory-scope" label="Географски обхват" [options]="scopeOptions" [value]="scopeFilter()" (valueChange)="scopeFilter.set($event)" icon="region" /></div>
+    <div><label for="directory-region--trigger">Регион / град</label><app-select controlId="directory-region" label="Регион или град" [options]="regionOptions()" [value]="regionFilter()" (valueChange)="regionFilter.set($event)" icon="section" /></div>
+  </div>
+  <div class="directory-toolbar">
+    <app-table-controls #directoryTable [rows]="filteredEntries()" [columns]="columns" label="Търсене по име, друго име, място или адрес" searchInputClass="min-h-11! text-base!" />
+    <button hlmBtn variant="outline" size="icon" type="button" aria-label="Изчисти филтрите на каталога" title="Изчисти филтрите" (click)="resetFilters()"><app-map-icon name="reset" /></button>
+    <button hlmBtn variant="outline" type="button" class="gap-2" data-directory-export [disabled]="!directoryTable.viewRows().length" (click)="exportCurrent()"><app-map-icon name="download-table" />Експорт CSV</button>
+  </div>
+  <p class="note status-key">„Връзка от издател“: сайтът сочи към Facebook; самата страница още не е потвърдена.</p>
+
+  <div class="directory-scroll" tabindex="0" role="region" aria-label="Каталог по текущите филтри" [virtualRows]="directoryTable.viewRows()" [virtualRowHeight]="94" #directoryRows="virtualRows">
+    <table [attr.aria-rowcount]="directoryTable.viewRows().length + 1" aria-label="Страници, проверка и регионален обхват">
+      <thead><tr>
+        <th scope="col" app-sortable-table-header columnKey="name" label="Страница / издател" [table]="directoryTable" align="left"></th>
+        <th scope="col" app-sortable-table-header columnKey="status" label="Проверка" [table]="directoryTable" align="left"></th>
+        <th scope="col" app-sortable-table-header columnKey="coverage" label="Обхват" [table]="directoryTable" align="left"></th>
+        <th scope="col">Връзки</th>
+      </tr></thead>
+      <tbody>
+        @if (directoryRows.window().top) {<tr aria-hidden="true"><td colspan="4" [style.height.px]="directoryRows.window().top" class="virtual-spacer"></td></tr>}
+        @for (entry of directoryRows.rows(); track entry.id) {
+          <tr class="directory-row" [attr.data-virtual-index]="directoryRows.window().start + $index" [attr.aria-rowindex]="directoryRows.window().start + $index + 2" (click)="openEntry(entry)">
+            <th scope="row"><button type="button" class="entry-name" [attr.aria-label]="'Източници и подробности за ' + entry.name" (click)="$event.stopPropagation(); openEntry(entry)"><span>{{ entry.name }}</span><app-map-icon name="chevron-right" /></button></th>
+            <td><span class="status-badge" [attr.data-status]="entry.status">{{ statusLabels[entry.status] }}</span></td>
+            <td class="coverage-cell"><span class="scope-label" [class.regional]="entry.regional === true"><app-map-icon [name]="entry.regional === true ? 'region' : 'globe'" />{{ scopeLabel(entry) }}</span><small>{{ entry.coverage || 'Неуточнен' }}</small></td>
+            <td><div class="entry-links">
+              @if (entry.facebookUrl) {<a hlmBtn variant="outline" size="sm" class="gap-1" [href]="entry.facebookUrl" target="_blank" rel="noopener noreferrer" [attr.aria-label]="entry.name + ' във Facebook'" (click)="$event.stopPropagation()"><app-map-icon name="globe" />Facebook</a>}
+              @if (entry.websiteUrl) {<a hlmBtn variant="outline" size="sm" class="gap-1" [href]="entry.websiteUrl" target="_blank" rel="noopener noreferrer" [attr.aria-label]="'Сайт на ' + entry.name" (click)="$event.stopPropagation()"><app-map-icon name="share" />Сайт</a>}
+              @if (!entry.facebookUrl && !entry.websiteUrl) {<span class="note">Няма потвърдена връзка</span>}
+            </div></td>
+          </tr>
+        } @empty {<tr><td colspan="4" class="empty-state">Няма страници по тези филтри.</td></tr>}
+        @if (directoryRows.window().bottom) {<tr aria-hidden="true"><td colspan="4" [style.height.px]="directoryRows.window().bottom" class="virtual-spacer"></td></tr>}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+@if (selectedEntry(); as entry) {
+  <app-base-modal [title]="entry.name" [subtitle]="statusLabels[entry.status]" maxWidth="max-w-3xl" (close)="selectedEntry.set(null)">
+    <div class="directory-detail">
+      <p class="verification-detail" [attr.data-status]="entry.status">{{ statusDetails[entry.status] }}</p>
+      <div class="detail-links">
+        @if (entry.facebookUrl) {<a hlmBtn variant="outline" class="gap-2" [href]="entry.facebookUrl" target="_blank" rel="noopener noreferrer"><app-map-icon name="globe" />Facebook</a>}
+        @if (entry.websiteUrl) {<a hlmBtn variant="outline" class="gap-2" [href]="entry.websiteUrl" target="_blank" rel="noopener noreferrer"><app-map-icon name="share" />Сайт</a>}
+      </div>
+      <dl><div><dt>Обхват</dt><dd><span class="scope-label" [class.regional]="entry.regional === true"><app-map-icon [name]="entry.regional === true ? 'region' : 'globe'" />{{ scopeLabel(entry) }}</span> · {{ entry.coverage || 'Неуточнен' }}</dd></div>
+        @if (entry.aliases.length) {<div><dt>Други имена</dt><dd>{{ entry.aliases.join(' · ') }}</dd></div>}
+      </dl>
+      @if (entry.notes.length) {<h3>Бележки</h3><ul class="detail-notes">@for (note of entry.notes; track $index) {<li>{{ note }}</li>}</ul>}
+      <h3>Източници</h3>
+      <div class="source-list">@for (source of entry.sources; track $index) {<div class="source-row"><p>{{ source.note }}</p><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="source.url" target="_blank" rel="noopener noreferrer"><app-map-icon name="share" />Отвори източника</a></div>} @empty {<p class="note">Няма потвърден източник.</p>}</div>
+    </div>
+    @if (entry.samplePageId) {<ng-template #footer><button hlmBtn type="button" class="gap-2" (click)="showPosts(entry)"><app-map-icon name="summary" />Публикации</button></ng-template>}
+  </app-base-modal>
+}
+@if (csvData(); as csv) {<app-csv-export-modal [data]="csv" (close)="csvData.set(null)" />}

@@ -1,4 +1,4 @@
-import { FacebookCandidate, FacebookImage, FacebookMetric, FacebookPageSummary, FacebookPost, FacebookReport, FacebookStanceLabel, FacebookStanceSummary, FacebookTone, FacebookTotal } from './facebook-research.models';
+import { FacebookCandidate, FacebookDirectory, FacebookImage, FacebookMetric, FacebookPage, FacebookPageSummary, FacebookPost, FacebookReport, FacebookStanceLabel, FacebookStanceSummary, FacebookTone, FacebookTotal } from './facebook-research.models';
 
 export const FACEBOOK_METRICS: readonly FacebookMetric[] = ['reactions', 'comments', 'shares'];
 export const FACEBOOK_METRIC_LABELS: Record<FacebookMetric, string> = {
@@ -87,6 +87,68 @@ export function facebookShortName(name: string): string {
   return name.replace(/^Информационна агенция\s+/, '');
 }
 
+function safeHttpsUrl(value: unknown): boolean {
+  if (typeof value !== 'string') return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && !url.username && !url.password;
+  } catch { return false; }
+}
+
+function safeFacebookUrl(value: unknown): boolean {
+  return safeHttpsUrl(value) && new URL(value as string).hostname === 'www.facebook.com';
+}
+
+function facebookPageIdentity(value: string): string {
+  const url = new URL(value);
+  const path = url.pathname.replace(/\/+$/, '').toLowerCase();
+  const profileId = path === '/profile.php' ? url.searchParams.get('id') : null;
+  const numericPath = path.match(/^\/(?:people\/[^/]+\/)?(\d+)$/)?.[1];
+  const legacyId = path.match(/-(\d{9,})$/)?.[1];
+  return profileId && /^\d+$/.test(profileId) ? profileId : numericPath ?? legacyId ?? path;
+}
+
+/** The directory is optional and never contributes Pages or posts to the observed sample. */
+export function validFacebookDirectory(directory: FacebookDirectory, pages: readonly FacebookPage[]): boolean {
+  if (!directory || typeof directory.checkedAt !== 'string' || !Number.isFinite(Date.parse(directory.checkedAt))
+    || !Array.isArray(directory.entries)) return false;
+  const nonempty = (value: unknown): value is string => typeof value === 'string' && value.trim().length > 0;
+  const strings = (value: unknown): value is string[] => Array.isArray(value) && value.every(nonempty);
+  const samplePages = new Map(pages.map(page => [page.id, page]));
+  const ids = new Set<string>();
+  const facebookIdentities = new Set<string>();
+  const statuses = ['in-sample', 'page-verified', 'publisher-linked', 'unresolved', 'ambiguous'];
+  const hostname = (value: string): string => new URL(value).hostname.replace(/^www\./, '');
+  return directory.entries.every(entry => {
+    if (!entry || !nonempty(entry.id) || ids.has(entry.id) || !nonempty(entry.name)
+      || !strings(entry.aliases) || !strings(entry.notes) || !strings(entry.regions)
+      || !statuses.includes(entry.status) || typeof entry.coverage !== 'string'
+      || entry.regional !== null && typeof entry.regional !== 'boolean'
+      || entry.facebookUrl !== null && !safeFacebookUrl(entry.facebookUrl)
+      || entry.websiteUrl !== null && !safeHttpsUrl(entry.websiteUrl)
+      || !Array.isArray(entry.sources) || !entry.sources.every(source => source && safeHttpsUrl(source.url) && nonempty(source.note))
+      || entry.samplePageId !== null && !nonempty(entry.samplePageId)) return false;
+    ids.add(entry.id);
+    if (entry.facebookUrl !== null) {
+      const identity = facebookPageIdentity(entry.facebookUrl);
+      if (facebookIdentities.has(identity)) return false;
+      facebookIdentities.add(identity);
+    }
+    if (entry.regional === true && (!nonempty(entry.coverage) || !entry.regions.length || !entry.sources.length)) return false;
+    if (entry.regional !== true && entry.regions.length) return false;
+    if (entry.status === 'in-sample' && entry.samplePageId === null) return false;
+    if (entry.status === 'page-verified' && entry.facebookUrl === null) return false;
+    if (entry.samplePageId !== null) {
+      const page = samplePages.get(entry.samplePageId);
+      if (!page || !safeFacebookUrl(page.url) || !entry.facebookUrl
+        || facebookPageIdentity(entry.facebookUrl) !== facebookPageIdentity(page.url)) return false;
+    }
+    return entry.status !== 'publisher-linked' || !!entry.facebookUrl && !!entry.websiteUrl
+      && hostname(entry.websiteUrl) !== 'facebook.com'
+      && entry.sources.some(source => hostname(source.url) === hostname(entry.websiteUrl!));
+  });
+}
+
 /** Validate published files before the view reads references or renders external links. */
 export function validFacebookReport(report: FacebookReport): boolean {
   if (report?.version !== 1 || !Array.isArray(report.pages) || !Array.isArray(report.posts)
@@ -94,10 +156,6 @@ export function validFacebookReport(report: FacebookReport): boolean {
   if (!report.pages.every(page => page && typeof page.id === 'string')
     || !report.posts.every(post => post && typeof post.id === 'string')
     || !report.matches.every(Boolean) || !report.coverage.every(Boolean) || !report.reviews.every(Boolean)) return false;
-  const safeFacebookUrl = (value: string): boolean => {
-    try { const url = new URL(value); return url.protocol === 'https:' && url.hostname === 'www.facebook.com'; }
-    catch { return false; }
-  };
   const pages = new Set(report.pages.map(page => page.id));
   const posts = new Set(report.posts.map(post => post.id));
   const keywords = new Set(report.coverage.map(row => row.keyword));
@@ -112,6 +170,7 @@ export function validFacebookReport(report: FacebookReport): boolean {
     && Number.isFinite(Date.parse(report.collectionDate))
     && report.collectionPostCount === report.posts.filter(post => post.origin === 'collection').length
     && pages.size === report.pages.length && posts.size === report.posts.length && keywords.size === report.coverage.length
+    && (report.directory === undefined || validFacebookDirectory(report.directory, report.pages))
     && report.pages.every(page => typeof page.name === 'string' && safeFacebookUrl(page.url)
       && (page.avatar === undefined || validImage(page.avatar, page.url) && page.avatar.kind === 'image'))
     && report.posts.every(post => pages.has(post.pageId) && safeFacebookUrl(post.url)

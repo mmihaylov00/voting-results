@@ -19,17 +19,18 @@ import { VirtualTableDirective } from '../ui/virtual-table/virtual-table';
 import { FacebookResearchChartsComponent } from './facebook-research-charts';
 import { FacebookResearchImageComponent } from './facebook-research-image';
 import { FacebookResearchStanceComponent } from './facebook-research-stance';
-import { FacebookPageSummary, FacebookPost, FacebookReport, FacebookReview, FacebookTotal } from './facebook-research.models';
+import { FacebookPageDirectoryComponent } from './facebook-page-directory';
+import { FacebookDirectoryEntry, FacebookPageSummary, FacebookPost, FacebookReport, FacebookReview, FacebookTotal } from './facebook-research.models';
 import { FACEBOOK_CANDIDATES, FACEBOOK_CANDIDATE_LABELS, FACEBOOK_METRIC_LABELS, FACEBOOK_METRICS, FACEBOOK_STANCE_BUCKETS, FACEBOOK_TONE_COUNTS, FACEBOOK_TONE_LABELS, facebookCount, facebookDate, facebookPageSummaries, facebookShortName, facebookStanceSummary, facebookTime, validFacebookReport } from './facebook-research.util';
 
 type KeywordCoverage = FacebookReport['coverage'][number];
-const VIEWS = ['pages', 'posts', 'duplicates', 'review', 'coverage'];
+const VIEWS = ['pages', 'directory', 'posts', 'duplicates', 'review', 'coverage'];
 
 @Component({
   selector: 'app-facebook-research',
   imports: [CommonModule, HlmButtonDirective, MapIconComponent, ViewTabsComponent, SelectComponent,
     TableControlsComponent, SortableTableHeaderComponent, VirtualTableDirective, BaseModalComponent,
-    CsvExportModalComponent, LoadingBarComponent, HlmTooltipDirective, FacebookResearchChartsComponent, FacebookResearchImageComponent, FacebookResearchStanceComponent],
+    CsvExportModalComponent, LoadingBarComponent, HlmTooltipDirective, FacebookResearchChartsComponent, FacebookResearchImageComponent, FacebookResearchStanceComponent, FacebookPageDirectoryComponent],
   templateUrl: './facebook-research.html',
   styleUrl: './facebook-research.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -64,6 +65,13 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
   readonly pages = computed(() => this.report() ? facebookPageSummaries(this.report()!) : []);
   readonly postMap = computed(() => new Map(this.report()?.posts.map(post => [post.id, post]) ?? []));
   readonly pageMap = computed(() => new Map(this.pages().map(page => [page.id, page])));
+  readonly pageDirectory = computed(() => {
+    const entries = new Map<string, FacebookDirectoryEntry>();
+    for (const entry of this.report()?.directory?.entries ?? []) {
+      if (entry.samplePageId) entries.set(entry.samplePageId, entry);
+    }
+    return entries;
+  });
   readonly selectedPost = computed(() => this.postMap().get(this.selectedPostId()) ?? null);
   readonly selectedPostStance = computed(() => facebookStanceSummary(this.selectedPost() ? [this.selectedPost()!] : []));
   readonly selectedPostMatches = computed(() => this.report()?.matches.filter(match =>
@@ -78,6 +86,7 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
     ...(this.report()?.coverage.map(row => ({ value: row.keyword, label: row.keyword })) ?? [])]);
   readonly tabs = computed(() => [
     { id: 'pages', label: 'Страници', count: this.pages().length },
+    ...(this.report()?.directory ? [{ id: 'directory', label: 'Каталог', count: this.report()!.directory!.entries.length }] : []),
     { id: 'posts', label: 'Публикации', count: this.report()?.posts.length ?? 0 },
     { id: 'duplicates', label: 'Повторения', count: this.report()?.matches.length ?? 0 },
     { id: 'review', label: 'За проверка', count: this.report()?.reviews.length ?? 0 },
@@ -97,6 +106,10 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
     stance: row => FACEBOOK_CANDIDATES.map(candidate => `${FACEBOOK_CANDIDATE_LABELS[candidate]}: ${FACEBOOK_TONE_LABELS[row.stance[candidate].label]}`).join('; '),
     reactions: row => row.totals.reactions.value, comments: row => row.totals.comments.value,
     shares: row => row.totals.shares.value,
+    search: row => {
+      const entry = this.pageDirectory().get(row.id);
+      return entry ? `${entry.coverage} ${entry.regions.join(' ')}` : '';
+    },
   };
   readonly postColumns: TableColumns<FacebookPost> = {
     title: row => row.excerpt, page: row => this.pageName(row), date: row => row.date ?? row.interval?.start,
@@ -135,7 +148,10 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
     this.loading.set(true);
     this.http.get<FacebookReport>(this.dataUrl).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: report => {
-        if (validFacebookReport(report)) this.report.set(report);
+        if (validFacebookReport(report)) {
+          this.report.set(report);
+          if (this.view() === 'directory' && !report.directory) this.setView('pages');
+        }
         else this.error.set('Файлът с изследването е непълен. Опитайте отново след обновяване на данните.');
         this.loading.set(false);
       },
@@ -147,12 +163,13 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
   }
 
   setView(value: string): void {
-    if (!VIEWS.includes(value)) return;
+    if (!VIEWS.includes(value) || value === 'directory' && !this.report()?.directory) return;
     this.view.set(value);
     void this.router.navigate([], { relativeTo: this.route, queryParams: { view: value === 'pages' ? null : value }, queryParamsHandling: 'merge', replaceUrl: true });
   }
 
   showPagePosts(pageId: string): void {
+    if (!this.pageMap().has(pageId)) return;
     this.pageFilter.set(pageId);
     this.keywordFilter.set('');
     this.setView('posts');
@@ -170,6 +187,10 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
   }
 
   pageName(post: FacebookPost): string { return this.pageMap().get(post.pageId)?.name ?? ''; }
+  regionalCoverage(pageId: string): string {
+    const entry = this.pageDirectory().get(pageId);
+    return entry?.regional === true ? entry.coverage : '';
+  }
   postById(id: string): FacebookPost | undefined { return this.postMap().get(id); }
   totalLabel(total: FacebookTotal): string { return facebookCount(total.value, total.approximate); }
   totalNote(total: FacebookTotal): string {
@@ -179,11 +200,14 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
 
   exportPages(rows: readonly FacebookPageSummary[]): void {
     this.csvData.set({ filename: 'facebook-pages-2026.csv',
-      headers: ['Страница', 'Последователи при събиране', 'Последователи, приблизително', 'Публикации в извадката',
+      headers: ['Страница', 'Регионална страница', 'Обхват', 'Региони', 'Последователи при събиране', 'Последователи, приблизително', 'Публикации в извадката',
         ...FACEBOOK_CANDIDATES.flatMap(candidate => [`${FACEBOOK_CANDIDATE_LABELS[candidate]}, тон в извадката`,
           ...FACEBOOK_STANCE_BUCKETS.map(bucket => `${FACEBOOK_CANDIDATE_LABELS[candidate]}, ${FACEBOOK_TONE_COUNTS[bucket]}`)]),
         ...FACEBOOK_METRICS.flatMap(metric => [`${FACEBOOK_METRIC_LABELS[metric]}, наличен сбор`, `${FACEBOOK_METRIC_LABELS[metric]}, приблизително`, `${FACEBOOK_METRIC_LABELS[metric]}, липсващи броячи`]), 'Сатира', 'Източник'],
-      rows: rows.map(page => [page.name, page.followers, page.followersApproximate ? 'Да' : '', page.postCount,
+      rows: rows.map(page => [page.name,
+        this.pageDirectory().get(page.id)?.regional === true ? 'Да' : this.pageDirectory().get(page.id)?.regional === false ? 'Не' : 'Неуточнено',
+        this.pageDirectory().get(page.id)?.coverage ?? '', this.pageDirectory().get(page.id)?.regions.join('; ') ?? '',
+        page.followers, page.followersApproximate ? 'Да' : '', page.postCount,
         ...FACEBOOK_CANDIDATES.flatMap(candidate => [FACEBOOK_TONE_LABELS[page.stance[candidate].label],
           ...FACEBOOK_STANCE_BUCKETS.map(bucket => page.stance[candidate].counts[bucket])]),
         ...FACEBOOK_METRICS.flatMap(metric => [page.totals[metric].value, page.totals[metric].approximate ? 'Да' : '', page.totals[metric].missing]), page.satire ? 'Да' : '', page.url]),

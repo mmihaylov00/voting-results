@@ -4,6 +4,28 @@ export type FacebookCandidate = 'gyurov' | 'yotova';
 export type FacebookTone = 'supportive' | 'critical' | 'mixed' | 'neutral' | 'unclear';
 export type FacebookStanceLabel = FacebookTone | 'not-mentioned' | 'unreviewed';
 
+export type FacebookDirectoryStatus = 'in-sample' | 'page-verified' | 'publisher-linked' | 'unresolved' | 'ambiguous';
+
+export interface FacebookDirectoryEntry {
+  id: string;
+  name: string;
+  aliases: string[];
+  status: FacebookDirectoryStatus;
+  facebookUrl: string | null;
+  websiteUrl: string | null;
+  regional: boolean | null;
+  coverage: string;
+  regions: string[];
+  sources: { url: string; note: string }[];
+  notes: string[];
+  samplePageId: string | null;
+}
+
+export interface FacebookDirectory {
+  checkedAt: string;
+  entries: FacebookDirectoryEntry[];
+}
+
 export interface FacebookPostStance {
   gyurov: FacebookTone | null;
   yotova: FacebookTone | null;
@@ -95,6 +117,7 @@ export interface FacebookReport {
   reviews: FacebookReview[];
   sharedArticleUrl: string;
   collectionSha256: string;
+  directory?: FacebookDirectory;
 }
 
 export interface FacebookTotal {

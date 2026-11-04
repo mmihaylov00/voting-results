@@ -2,13 +2,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Meta, Title } from '@angular/platform-browser';
+import { By, Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import snapshot from '../../../../public/data/facebook/2026/report.json';
 import { FacebookResearchComponent } from './facebook-research';
 import { FacebookResearchChartsComponent } from './facebook-research-charts';
-import { FacebookPageSummary, FacebookPost, FacebookReport } from './facebook-research.models';
+import { FacebookPageDirectoryComponent } from './facebook-page-directory';
+import { FacebookDirectory, FacebookPageSummary, FacebookPost, FacebookReport } from './facebook-research.models';
 
 @Component({ selector: 'app-facebook-research-charts', template: '' })
 class ChartsStub {
@@ -18,6 +19,20 @@ class ChartsStub {
 }
 
 const report = snapshot as FacebookReport;
+const directory: FacebookDirectory = {
+  checkedAt: '2026-11-04',
+  entries: [{
+    id: 'regional-sample', name: report.pages[0].name, aliases: [], status: 'in-sample',
+    facebookUrl: report.pages[0].url, websiteUrl: 'https://strumanews.bg/', regional: true,
+    coverage: 'Благоевград и Югозападна България', regions: ['Благоевград'],
+    sources: [{ url: 'https://strumanews.bg/', note: 'Обхват от сайта на издателя.' }],
+    notes: [], samplePageId: report.pages[0].id,
+  }, {
+    id: 'unresolved-lead', name: 'Нова страница за проверка', aliases: [], status: 'unresolved',
+    facebookUrl: null, websiteUrl: null, regional: null, coverage: '', regions: [],
+    sources: [], notes: [], samplePageId: null,
+  }],
+};
 
 function setup(view = 'pages') {
   TestBed.configureTestingModule({
@@ -34,9 +49,9 @@ function setup(view = 'pages') {
   return fixture;
 }
 
-function loaded(view = 'pages') {
+function loaded(view = 'pages', data = report) {
   const fixture = setup(view);
-  TestBed.inject(HttpTestingController).expectOne(fixture.componentInstance.dataUrl).flush(report);
+  TestBed.inject(HttpTestingController).expectOne(fixture.componentInstance.dataUrl).flush(data);
   fixture.detectChanges();
   return fixture;
 }
@@ -45,6 +60,52 @@ describe('Facebook research workspace', () => {
   afterEach(() => {
     TestBed.inject(HttpTestingController).verify();
     TestBed.inject(Meta).removeTag('name="robots"');
+  });
+
+  it('opens the directory URL without adding leads to the observed sample and cross-navigates to collected posts', () => {
+    const fixture = loaded('directory', { ...report, directory });
+    const component = fixture.componentInstance;
+    expect(component.tabs().find(tab => tab.id === 'directory')).toEqual({ id: 'directory', label: 'Каталог', count: 2 });
+    expect(component.tabs().find(tab => tab.id === 'pages')?.count).toBe(19);
+    expect(component.tabs().find(tab => tab.id === 'posts')?.count).toBe(97);
+    expect(fixture.nativeElement.querySelector('app-facebook-research-charts')).toBeNull();
+    fixture.debugElement.query(By.directive(FacebookPageDirectoryComponent)).triggerEventHandler('pageSelect', report.pages[0].id);
+    fixture.detectChanges();
+    expect(component.view()).toBe('posts');
+    expect(component.pageFilter()).toBe(report.pages[0].id);
+    expect(component.filteredPosts().length).toBe(report.posts.filter(post => post.pageId === report.pages[0].id).length);
+    expect(TestBed.inject(Router).navigate).toHaveBeenCalledWith([], expect.objectContaining({ queryParams: { view: 'posts' } }));
+    component.showPagePosts('unresolved-lead');
+    expect(component.pageFilter()).toBe(report.pages[0].id);
+    fixture.destroy();
+  });
+
+  it('shows verified regional coverage, searches it and exports it from the directory without changing Page models', () => {
+    const fixture = loaded('pages', { ...report, directory });
+    const component = fixture.componentInstance;
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelector('[data-regional-coverage]')?.textContent).toContain(directory.entries[0].coverage);
+    component.pageTable()!.query.set('Югозападна');
+    fixture.detectChanges();
+    expect(component.pageTable()!.viewRows().map(page => page.id)).toEqual([report.pages[0].id]);
+    component.exportPages(component.pageTable()!.viewRows());
+    const csv = component.csvData()!;
+    expect(csv.rows[0][csv.headers.indexOf('Регионална страница')]).toBe('Да');
+    expect(csv.rows[0][csv.headers.indexOf('Обхват')]).toBe(directory.entries[0].coverage);
+    expect(csv.rows[0][csv.headers.indexOf('Региони')]).toBe('Благоевград');
+    expect(csv.rows[0].length).toBe(csv.headers.length);
+    expect(component.pages()[0]).not.toHaveProperty('regional');
+    fixture.destroy();
+  });
+
+  it('accepts legacy reports without a directory and falls back from a stale directory link', () => {
+    const legacy = { ...report };
+    delete legacy.directory;
+    const fixture = loaded('directory', legacy);
+    expect(fixture.componentInstance.view()).toBe('pages');
+    expect(fixture.componentInstance.tabs().some(tab => tab.id === 'directory')).toBe(false);
+    expect(fixture.nativeElement.querySelector('app-facebook-page-directory')).toBeNull();
+    fixture.destroy();
   });
 
   it('shows the partial sample, scrollable tabs and Page rankings with missing counters', () => {

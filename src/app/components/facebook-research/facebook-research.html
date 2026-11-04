@@ -17,6 +17,9 @@
       <app-view-tabs [tabs]="tabs()" [value]="view()" (valueChange)="setView($event)" [scrollable]="true" label="Facebook изследване" idPrefix="facebook-view" panelId="facebook-panel" />
     </nav>
     <div id="facebook-panel" class="workspace-panel" role="tabpanel" [attr.aria-labelledby]="'facebook-view-tab-' + view()">
+      @if (view() === 'directory' && data.directory) {
+        <app-facebook-page-directory [directory]="data.directory" (pageSelect)="showPagePosts($event)" />
+      }
       @if (view() === 'pages') {
         <div class="toolbar">
           <app-table-controls #pageTable [rows]="pages()" [columns]="pageColumns" label="Търсене на Facebook страница" searchInputClass="min-h-11! text-base!" />
@@ -41,6 +44,7 @@
               @for (page of pageRows.rows(); track page.id) {
                 <tr [attr.data-virtual-index]="pageRows.window().start + $index" [attr.aria-rowindex]="pageRows.window().start + $index + 2">
                   <th scope="row"><button class="text-button page-name" type="button" (click)="showPagePosts(page.id)"><app-facebook-research-image [image]="page.avatar" [label]="shortName(page.name)" variant="avatar" /><span class="min-w-0 flex-1">{{ shortName(page.name) }}</span><app-map-icon name="chevron-right" /></button>
+                    @if (regionalCoverage(page.id); as coverage) {<small class="font-semibold text-sky-800 dark:text-sky-300" data-regional-coverage>Регионална · {{ coverage }}</small>}
                     @if (page.satire) {<small>Сатира / пародия</small>}
                     @if (page.origin === 'discovery') {<small>Намерена при сравнение</small>}
                   </th>
