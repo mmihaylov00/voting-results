@@ -24,6 +24,7 @@ import { ForensicsVoteSummaryComponent } from './forensics-vote-summary';
 import { ViewTab, ViewTabsComponent } from '../ui/view-tabs/view-tabs';
 import { SignedChangeDirective } from '../ui/signed-change/signed-change';
 import { ForensicsGainsChartComponent } from './forensics-gains-chart';
+import { ChartImageExportComponent } from '../ui/chart-image-export/chart-image-export';
 
 const DATA_ROOT = '/data/forensics/2026';
 const initialFilters: Omit<SectionFilters, 'focus'> = {
@@ -33,7 +34,7 @@ const initialFilters: Omit<SectionFilters, 'focus'> = {
 
 @Component({
   selector: 'app-electoral-forensics',
-  imports: [CommonModule, FormsModule, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective, ForensicsGainsChartComponent],
+  imports: [CommonModule, FormsModule, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective, ForensicsGainsChartComponent, ChartImageExportComponent],
   templateUrl: './electoral-forensics.html',
   styleUrls: ['./electoral-forensics.scss', './forensics-workspace.scss', './forensics-tables.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -3,11 +3,14 @@ import * as L from 'leaflet';
 import { ForensicsSection } from './forensics.models';
 import { sectionLabel, signed, turnoutColor } from './forensics.util';
 import { candidateDelta, hasReviewFlag } from './forensics-candidates.util';
+import { ImageExportComponent } from '../ui/image-export/image-export';
+import { createMapImage } from '../../utils/map-image-export.util';
 
 @Component({
   selector: 'app-forensics-map',
+  imports: [ImageExportComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<label class="map-toolbar">Цвят на картата <select [value]="metric" (change)="changeMetric($event)" aria-label="Показател за цвета на картата"><option value="turnout">Δ активност, п.п.</option><option value="candidate4">Δ Гюров на 100 избиратели I тур</option><option value="candidate25">Δ Йотова на 100 избиратели I тур</option></select></label>
+  template: `<div class="map-toolbar"><label>Цвят на картата <select [value]="metric" (change)="changeMetric($event)" aria-label="Показател за цвета на картата"><option value="turnout">Δ активност, п.п.</option><option value="candidate4">Δ Гюров на 100 избиратели I тур</option><option value="candidate25">Δ Йотова на 100 избиратели I тур</option></select></label><app-image-export [createImage]="createImage" [title]="'Карта на промените между двата тура · ' + exportTitle" filename="presidential-2026-section-map.png" /></div>
     <div #map class="research-map" role="region" aria-label="Карта на промените между двата тура"></div>
     <div class="map-key" [attr.aria-label]="metric === 'turnout' ? 'Легенда, процентни пункта' : 'Легенда, промяна на 100 избиратели по списъка на първия тур'">
       @for (item of legend; track item.label) {
@@ -16,13 +19,14 @@ import { candidateDelta, hasReviewFlag } from './forensics-candidates.util';
     </div>
     <p class="map-note">{{ locatedCount }} от {{ rows.length }} секции имат координати. {{ metric === 'turnout' ? 'Цвят: промяна в активността, п.п.' : 'Цвят: промяна в кандидатски гласове на 100 избиратели по списъка на I тур.' }} Съвпадащите адреси се застъпват.</p>`,
   styles: `:host{display:block;min-width:0}.research-map{height:460px;width:100%;background:#e9edef;z-index:0}
-    .map-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;font-size:.8rem;margin-bottom:.7rem}.map-toolbar select{color:inherit;background:hsl(var(--background));border:1px solid hsl(var(--foreground)/.3);padding:.5rem;border-radius:.25rem}
+    .map-toolbar{display:flex;align-items:center;justify-content:space-between;gap:.7rem;font-size:.8rem;margin-bottom:.7rem}.map-toolbar label{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;min-width:0}.map-toolbar app-image-export{flex-shrink:0}.map-toolbar select{color:inherit;background:hsl(var(--background));border:1px solid hsl(var(--foreground)/.3);padding:.5rem;border-radius:.25rem}
     .map-key{display:flex;flex-wrap:wrap;gap:.6rem 1rem;margin-top:.8rem;font-size:.78rem}.map-key span{display:flex;align-items:center;gap:.35rem}
     i{display:inline-block;width:14px;height:14px;border-radius:50%}.map-note{font-size:.8rem;opacity:.75;margin:.65rem 0}
     @media(max-width:640px){.research-map{height:350px}.map-toolbar select{width:100%;max-width:100%;min-width:0;min-height:44px;font-size:1rem}}`,
 })
 export class ForensicsMapComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() rows: ForensicsSection[] = [];
+  @Input() exportTitle = 'Всички секции';
   @Output() sectionSelect = new EventEmitter<ForensicsSection>();
   @ViewChild('map', { static: true }) container!: ElementRef<HTMLElement>;
   metric: 'turnout' | 'candidate4' | 'candidate25' = 'turnout';
@@ -40,12 +44,31 @@ export class ForensicsMapComponent implements AfterViewInit, OnChanges, OnDestro
   private frame?: number;
   private generation = 0;
   private refitOnReveal = false;
+  private rendering = false;
+  readonly createImage = async (): Promise<Blob> => {
+    if (this.rendering) throw new Error('Изчакайте секциите на картата да се заредят преди експорт.');
+    const generation = this.generation;
+    // Leaflet paints Canvas markers on the frame after the last marker batch.
+    await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+    if (this.rendering || generation !== this.generation) throw new Error('Картата се промени по време на експорта. Опитайте отново.');
+    return createMapImage(this.container.nativeElement, {
+      election: 'Президентски избори 2026 · 25 октомври → 1 ноември',
+      metricLabel: this.metric === 'turnout' ? 'Δ активност, п.п.'
+        : this.metric === 'candidate4' ? 'Δ Гюров на 100 избиратели I тур' : 'Δ Йотова на 100 избиратели I тур',
+      place: `${this.exportTitle} · ${this.locatedCount} от ${this.rows.length} секции с координати`,
+    }, {
+      title: 'Промяна между двата тура',
+      description: 'Контур: основание за преглед на протокола. Съвпадащите адреси се застъпват.',
+      items: this.legend.slice(0, -1), noDataColor: turnoutColor(null),
+    }, 'България');
+  };
 
   ngAfterViewInit(): void {
     this.map = L.map(this.container.nativeElement, { preferCanvas: true, scrollWheelZoom: false, zoomControl: false }).setView([43.05, 25.3], 7);
     L.control.zoom({ zoomInTitle: 'Приближи', zoomOutTitle: 'Отдалечи' }).addTo(this.map);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>', maxZoom: 18,
+      crossOrigin: 'anonymous',
     }).addTo(this.map);
     this.layer = L.layerGroup().addTo(this.map);
     this.observer = new ResizeObserver(() => {
@@ -106,6 +129,7 @@ export class ForensicsMapComponent implements AfterViewInit, OnChanges, OnDestro
     if (!this.map || !this.layer) return;
     const generation = ++this.generation;
     if (this.frame !== undefined) cancelAnimationFrame(this.frame);
+    this.rendering = false;
     if (!this.container.nativeElement.clientWidth || !this.container.nativeElement.clientHeight) {
       this.refitOnReveal ||= fitBounds;
       return;
@@ -117,6 +141,7 @@ export class ForensicsMapComponent implements AfterViewInit, OnChanges, OnDestro
     });
     if ((fitBounds || this.refitOnReveal) && located.length) this.map.fitBounds(L.latLngBounds(located.map(item => item.coordinates)), { padding: [24, 24], maxZoom: 11 });
     this.refitOnReveal = false;
+    this.rendering = true;
     let index = 0;
     const batch = () => {
       if (generation !== this.generation || !this.layer) return;
@@ -141,6 +166,7 @@ export class ForensicsMapComponent implements AfterViewInit, OnChanges, OnDestro
         marker.addTo(this.layer);
       }
       if (index < located.length) this.frame = requestAnimationFrame(batch);
+      else this.rendering = false;
     };
     batch();
   }

@@ -19,13 +19,14 @@ import { ForensicsHistoryComponent } from './forensics-history';
 import { ForensicsVoteSummaryComponent } from './forensics-vote-summary';
 import { ViewTabsComponent } from '../ui/view-tabs/view-tabs';
 import { SignedChangeDirective } from '../ui/signed-change/signed-change';
+import { ChartImageExportComponent } from '../ui/chart-image-export/chart-image-export';
 
 @Component({ selector: 'highcharts-chart', template: '' })
 class ChartStub { @Input() options: unknown; }
 @Component({ selector: 'app-forensics-map', template: '' })
-class MapStub { @Input() rows: ForensicsSection[] = []; @Output() sectionSelect = new EventEmitter<ForensicsSection>(); }
+class MapStub { @Input() rows: ForensicsSection[] = []; @Input() exportTitle = ''; @Output() sectionSelect = new EventEmitter<ForensicsSection>(); }
 @Component({ selector: 'app-forensics-gains-chart', template: '' })
-class GainsStub { @Input() rows: readonly ForensicsSection[] = []; @Output() sectionSelect = new EventEmitter<ForensicsSection>(); }
+class GainsStub { @Input() rows: readonly ForensicsSection[] = []; @Input() exportTitle = ''; @Output() sectionSelect = new EventEmitter<ForensicsSection>(); }
 @Component({ selector: 'app-forensics-group-table', template: '' })
 class GroupStub { @Input() rows: ForensicsGroup[] = []; @Input() label = ''; }
 
@@ -36,7 +37,7 @@ function setup(query = 'query1', fragment?: string, queryParams = new BehaviorSu
       { provide: ActivatedRoute, useValue: { snapshot: { queryParams: queryParams.value, fragment }, queryParams } }],
   });
   TestBed.overrideComponent(ElectoralForensicsComponent, {
-    set: { imports: [CommonModule, FormsModule, ChartStub, MapStub, GainsStub, GroupStub, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective] },
+    set: { imports: [CommonModule, FormsModule, ChartStub, MapStub, GainsStub, GroupStub, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective, ChartImageExportComponent] },
   });
   TestBed.overrideComponent(ForensicsHistoryComponent, {
     remove: { imports: [HighchartsChartComponent] }, add: { imports: [ChartStub] },
@@ -479,7 +480,9 @@ describe('hidden electoral research pages', () => {
     expect(page.statsView()).toBe('general');
     expect(fixture.debugElement.query(By.directive(GainsStub)).componentInstance).toBe(chart);
     expect(chart.rows).toEqual([small]);
+    expect(chart.exportTitle).toContain('До 400 избиратели');
     expect(history.benchmarks()[0].n).toBe(1);
+    expect(history.exportTitle()).toContain('До 400 избиратели');
     const element = fixture.nativeElement as HTMLElement;
     expect(element.querySelector('.research-heading h1')?.textContent).toBe('Вотът между двата тура');
     expect(element.querySelector('.research-links')).toBeNull();

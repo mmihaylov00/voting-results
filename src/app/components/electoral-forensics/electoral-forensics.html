@@ -34,7 +34,10 @@
         <p class="note">Кандидатският прираст включва и променения избор след отпадането на останалите двойки; не показва броя нови избиратели.</p>
         <app-view-tabs [tabs]="overviewTabs" [(value)]="overviewView" label="Обобщение по показатели" idPrefix="overview" />
       <div class="view-panel" role="tabpanel" id="overview-panel-charts" aria-labelledby="overview-tab-charts" [hidden]="overviewView() !== 'charts'">
-        <div class="charts"><div class="chart-scroll" tabindex="0" role="region" aria-label="Графика по 31 изборни района"><highcharts-chart class="block w-full" [options]="regionChart()" /></div><highcharts-chart class="block w-full" [options]="binChart()" /></div>
+        <div class="charts">
+          <app-chart-image-export [title]="'Кандидатски прираст по райони · 2026 · ' + (focus() ? 'До 400 избиратели' : 'Всички секции')" [filename]="'presidential-2026-' + queryCsvPrefix() + '-districts.png'"><div class="chart-scroll" tabindex="0" role="region" aria-label="Графика по 31 изборни района"><highcharts-chart class="block w-full" [options]="regionChart()" /></div></app-chart-image-export>
+          <app-chart-image-export [title]="'Промяна по размер на секцията · 2026 · ' + (focus() ? 'До 400 избиратели' : 'Всички секции')" [filename]="'presidential-2026-' + queryCsvPrefix() + '-section-size.png'"><highcharts-chart class="block w-full" [options]="binChart()" /></app-chart-image-export>
+        </div>
       </div>
       <div class="view-panel" role="tabpanel" id="overview-panel-regions" aria-labelledby="overview-tab-regions" [hidden]="overviewView() !== 'regions'">
         <div class="section-heading"><h3>31 изборни района</h3><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/' + queryCsvPrefix() + '-regions.csv'" download aria-label="Изтегли обобщението по изборни райони CSV" title="Обобщение по изборни райони"><app-map-icon name="download-table" />CSV</a></div><app-forensics-group-table [rows]="regionSummary()" label="Изборни райони на ЦИК" />
@@ -73,7 +76,7 @@
       <p class="note">Картата, таблицата, графиката и тези суми следват текущите филтри.</p>
       <div id="section-gains" class="section-gains-navigation"><app-view-tabs [tabs]="explorerTabs" [(value)]="explorerView" label="Изглед на секциите" idPrefix="explorer" /></div>
       <div class="view-panel" role="tabpanel" id="explorer-panel-map" aria-labelledby="explorer-tab-map" [hidden]="explorerView() !== 'map'">
-      <app-forensics-map [rows]="filtered()" (sectionSelect)="selectSection($event)" />
+      <app-forensics-map [rows]="filtered()" [exportTitle]="(focus() ? 'До 400 избиратели' : 'Всички секции') + (activeFilterCount() ? ' · Текущ филтър' : '')" (sectionSelect)="selectSection($event)" />
       <p class="note">Контур на точка = основание за проверка на протокола.</p>
 
       </div>
@@ -90,7 +93,7 @@
 
       </div>
       <div class="view-panel" role="tabpanel" id="explorer-panel-gains" aria-labelledby="explorer-tab-gains" [hidden]="explorerView() !== 'gains'">
-        @if (explorerView() === 'gains') {<app-forensics-gains-chart [rows]="filtered()" (sectionSelect)="selectSection($event)" />}
+        @if (explorerView() === 'gains') {<app-forensics-gains-chart [rows]="filtered()" [exportTitle]="'Прираст по секции · 2026 · ' + (focus() ? 'До 400 избиратели' : 'Всички секции') + (activeFilterCount() ? ' · Текущ филтър' : '')" (sectionSelect)="selectSection($event)" />}
       </div>
       @if (selected(); as row) {
         <article id="section-inspector" class="section-inspector p-4 sm:p-6 mt-6 scroll-mt-6 text-sm">
@@ -218,7 +221,7 @@
 
     </section>
 
-    <section id="historical-runoffs" aria-labelledby="historical-title"><div class="section-heading"><h2 id="historical-title">Други президентски балотажи</h2><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/' + queryCsvPrefix() + '-historical-runoffs.csv'" download aria-label="Изтегли историческите балотажи за тази извадка CSV" title="Исторически балотажи CSV"><app-map-icon name="download-table" />CSV</a></div>@if (query()?.historicalRunoffs; as benchmarks) {<app-forensics-history [benchmarks]="benchmarks" />} @else {<p class="note">Историческата справка не е налична в тази версия на отчета.</p>}</section>
+    <section id="historical-runoffs" aria-labelledby="historical-title"><div class="section-heading"><h2 id="historical-title">Други президентски балотажи</h2><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/' + queryCsvPrefix() + '-historical-runoffs.csv'" download aria-label="Изтегли историческите балотажи за тази извадка CSV" title="Исторически балотажи CSV"><app-map-icon name="download-table" />CSV</a></div>@if (query()?.historicalRunoffs; as benchmarks) {<app-forensics-history [benchmarks]="benchmarks" [exportTitle]="'Президентски балотажи · ' + (focus() ? 'До 400 избиратели' : 'Всички секции')" />} @else {<p class="note">Историческата справка не е налична в тази версия на отчета.</p>}</section>
 
     <section id="sources" aria-labelledby="sources-title"><div class="section-heading"><h2 id="sources-title">Източници, качество и метод</h2><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="dataRoot + '/report.json'" download aria-label="Изтегли пълния отчет за всички секции и секциите до 400 избиратели JSON" title="Пълен отчет за двата обхвата JSON"><app-map-icon name="download" />Пълен отчет JSON</a></div>
       <p class="note">Страницата е извън навигацията и е обозначена за неиндексиране. Достъпна е с адреса.</p>

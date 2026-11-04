@@ -1,4 +1,4 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import * as Highcharts from 'highcharts';
 import type { SeriesScatterOptions } from 'highcharts';
@@ -10,7 +10,7 @@ import { ForensicsGainsChartComponent, sectionGainPoints } from './forensics-gai
 import { ForensicsSection } from './forensics.models';
 
 @Component({ selector: 'highcharts-chart', template: '' })
-class ChartStub { @Input() options: unknown; }
+class ChartStub { @Input() options: unknown; @Output() chartInstance = new EventEmitter<Highcharts.Chart>(); }
 
 function row(overrides: Partial<ForensicsSection> = {}): ForensicsSection {
   return sectionFixture({ candidateChanges: [candidateFixture('4', 30, 50), candidateFixture('25', 40, 100)], ...overrides });
@@ -101,6 +101,127 @@ describe('section gain graph and ranking', () => {
     expect(rows[0].sectionId).toBe('000');
     fixture.componentRef.setInput('rows', [row({ sectionId: '002' }), row({ sectionId: '001' })]); fixture.detectChanges();
     expect(component.ranked().map(point => point.row.sectionId)).toEqual(['001', '002']);
+  });
+
+  it('filters candidate and voter-count ranges together, includes zero and negative endpoints and retains their meaning across axis tabs', () => {
+    const rows = [
+      row({ sectionId: 'loss', deltaVoted: -10, candidateChanges: [candidateFixture('4', 30, 25), candidateFixture('25', 60, 30)] }),
+      row({ sectionId: 'zero', deltaVoted: 0, candidateChanges: [candidateFixture('4', 30, 30), candidateFixture('25', 40, 40)] }),
+      row({ sectionId: 'gain', deltaVoted: 20, candidateChanges: [candidateFixture('4', 30, 40), candidateFixture('25', 40, 70)] }),
+    ];
+    const fixture = setup(rows);
+    const component = fixture.componentInstance;
+    const element = fixture.nativeElement as HTMLElement;
+    const setInput = (label: string, value: string) => {
+      const input = element.querySelector<HTMLInputElement>(`input[aria-label="${label}"]`)!;
+      input.value = value; input.dispatchEvent(new Event('input')); fixture.detectChanges();
+    };
+    setInput('Δ Йотова - от', '-30');
+    setInput('Δ Йотова - до', '0');
+    setInput('Δ Гюров - от', '-5');
+    setInput('Δ Гюров - до', '0');
+    setInput('Δ гласували - от', '-10');
+    setInput('Δ гласували - до', '0');
+    expect(component.points().map(point => point.row.sectionId)).toEqual(['loss', 'zero']);
+    expect(component.ranked()).toHaveLength(2);
+    expect(element.querySelectorAll('tbody tr')).toHaveLength(2);
+    component.comparison.set('gyurov'); fixture.detectChanges();
+    expect(component.points().map(point => point.row.sectionId)).toEqual(['loss', 'zero']);
+    expect(component.chart().series?.[1]).toMatchObject({ data: [{ x: -5, y: -30 }, { x: 0, y: 0 }] });
+    setInput('Δ Йотова - до', '');
+    setInput('Δ Гюров - до', '');
+    setInput('Δ гласували - до', '');
+    expect(component.points()).toHaveLength(3);
+    component.stableOnly.set(true); fixture.detectChanges();
+    [...element.querySelectorAll<HTMLButtonElement>('button')].find(button => button.textContent?.includes('Изчисти филтрите'))!.click();
+    fixture.detectChanges();
+    expect(component.hasFilters()).toBe(false);
+    expect(component.points()).toHaveLength(3);
+    expect(component.comparison()).toBe('gyurov');
+    expect([...element.querySelectorAll<HTMLInputElement>('input[type="number"]')].every(input => input.value === '')).toBe(true);
+  });
+
+  it('rejects crossed or non-finite ranges instead of silently widening the cohort', () => {
+    const fixture = setup([row()]);
+    const component = fixture.componentInstance;
+    component.ranges.update(ranges => ({ ...ranges, yotova: { min: 61, max: 60 } }));
+    fixture.detectChanges();
+    expect(component.points()).toEqual([]);
+    expect(component.ranked()).toEqual([]);
+    expect((fixture.nativeElement as HTMLElement).querySelector('[role="alert"]')?.textContent).toContain('От');
+    expect((fixture.nativeElement as HTMLElement).querySelector('highcharts-chart')).toBeNull();
+    component.ranges.update(ranges => ({ ...ranges, yotova: { min: Infinity, max: null } }));
+    fixture.detectChanges();
+    expect(component.rangeError()).toContain('валидни числа');
+    expect(component.rangeInputValue(Infinity)).toBe('');
+    component.resetFilters(); fixture.detectChanges();
+    expect(component.points()).toHaveLength(1);
+    const input = (fixture.nativeElement as HTMLElement).querySelector<HTMLInputElement>('input[aria-label="Δ Йотова - от"]')!;
+    Object.defineProperty(input, 'validity', { value: { badInput: true } });
+    input.dispatchEvent(new Event('input')); fixture.detectChanges();
+    expect(component.rangeError()).toContain('валидни числа');
+    expect(component.points()).toEqual([]);
+  });
+
+  it('zooms and resets both axes through the visible controls and clears zoom when the candidate view or cohort changes', () => {
+    const fixture = setup([
+      row({ sectionId: 'low', deltaVoted: -80, candidateChanges: [candidateFixture('4', 100, 20), candidateFixture('25', 100, 10)] }),
+      row({ sectionId: 'high', deltaVoted: 200, candidateChanges: [candidateFixture('4', 20, 170), candidateFixture('25', 20, 220)] }),
+    ]);
+    const component = fixture.componentInstance;
+    const element = fixture.nativeElement as HTMLElement;
+    const host = element.querySelector<HTMLElement>('highcharts-chart')!;
+    const initial = component.chart();
+    const chart = Highcharts.chart(host, { ...initial, chart: { ...initial.chart, width: 700, height: 500, animation: false }, accessibility: { enabled: false } });
+    try {
+      component.onChartReady(chart); fixture.detectChanges();
+      const ranges = () => [chart.xAxis[0], chart.yAxis[0]].map(axis => { const { min, max } = axis.getExtremes(); return max - min; });
+      const initialRanges = ranges();
+      expect(element.querySelector<HTMLButtonElement>('[aria-label="Увеличи графиката"]')!.disabled).toBe(false);
+      element.querySelector<HTMLButtonElement>('[aria-label="Увеличи графиката"]')!.click(); fixture.detectChanges();
+      expect(ranges()[0]).toBeLessThan(initialRanges[0]);
+      expect(ranges()[1]).toBeLessThan(initialRanges[1]);
+      expect(component.zoomed()).toBe(true);
+      element.querySelector<HTMLButtonElement>('[aria-label="Намали графиката"]')!.click(); fixture.detectChanges();
+      expect(ranges()[0]).toBeGreaterThan(initialRanges[0] / 2);
+      component.zoom(.5); fixture.detectChanges();
+      [...element.querySelectorAll<HTMLButtonElement>('button')].find(button => button.textContent?.includes('Всички точки'))!.click(); fixture.detectChanges();
+      expect(chart.xAxis[0].getExtremes().userMin).toBeUndefined();
+      expect(chart.yAxis[0].getExtremes().userMin).toBeUndefined();
+      expect(component.zoomed()).toBe(false);
+      component.zoom(.5); fixture.detectChanges();
+      component.comparison.set('gyurov'); fixture.detectChanges();
+      expect(component.zoomed()).toBe(false);
+      component.zoom(.5); fixture.detectChanges();
+      fixture.componentRef.setInput('rows', [row()]); fixture.detectChanges();
+      expect(component.zoomed()).toBe(false);
+      chart.destroy();
+      expect(component.chartAvailable()).toBe(false);
+      expect(() => component.zoom(.5)).not.toThrow();
+    } finally {
+      if (chart.renderer) chart.destroy();
+      fixture.destroy();
+    }
+  });
+
+  it('ignores chart instances from removed views, empty cohorts and a destroyed component', () => {
+    const fixture = setup([row()]);
+    const component = fixture.componentInstance;
+    const oldHost = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('highcharts-chart')!;
+    const initial = component.chart();
+    const chart = Highcharts.chart(oldHost, { ...initial, chart: { ...initial.chart, width: 700, height: 500 }, accessibility: { enabled: false } });
+    try {
+      component.onChartReady(chart);
+      fixture.componentRef.setInput('rows', []); fixture.detectChanges();
+      component.onChartReady(chart);
+      expect(component.chartAvailable()).toBe(false);
+      fixture.componentRef.setInput('rows', [row()]); fixture.detectChanges();
+      component.onChartReady(chart);
+      expect(component.chartAvailable()).toBe(false);
+      fixture.destroy();
+      component.onChartReady(chart);
+      expect(component.chartAvailable()).toBe(false);
+    } finally { chart.destroy(); }
   });
 
   it('emits the original section for both chart and ranked-row selection and preserves negative and zero coordinates', () => {

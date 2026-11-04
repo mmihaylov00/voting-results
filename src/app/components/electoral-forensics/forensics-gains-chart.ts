@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, effect, ElementRef, inject, input, output, signal, untracked, viewChild } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { ThemeService } from '../../services/theme.service';
 import { getPartyColor } from '../../utils/party-colors';
+import { ChartImageExportComponent } from '../ui/chart-image-export/chart-image-export';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
 import { MapIconComponent } from '../ui/map-icon/map-icon';
 import { SignedChangeDirective } from '../ui/signed-change/signed-change';
@@ -37,31 +38,63 @@ export function sectionGainPoints(rows: readonly ForensicsSection[]): SectionGai
   });
 }
 
+type GainMetric = 'yotova' | 'gyurov' | 'turnout';
+type RangeBound = 'min' | 'max';
+type GainRanges = Record<GainMetric, Record<RangeBound, number | null>>;
+
+function emptyRanges(): GainRanges {
+  return { yotova: { min: null, max: null }, gyurov: { min: null, max: null }, turnout: { min: null, max: null } };
+}
+
 function escapeText(value: string): string {
   return value.replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]!);
 }
 
 @Component({
   selector: 'app-forensics-gains-chart',
-  imports: [HighchartsChartComponent, ViewTabsComponent, HlmButtonDirective, MapIconComponent, SignedChangeDirective],
+  imports: [HighchartsChartComponent, ViewTabsComponent, HlmButtonDirective, MapIconComponent, SignedChangeDirective, ChartImageExportComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-view-tabs [tabs]="comparisonTabs" [(value)]="comparison" label="Сравнение на секционния прираст"
       [idPrefix]="tabPrefix" [panelId]="tabPrefix + '-panel'" />
+    <div class="gain-filters" aria-label="Филтри за прираст по секции">
+      @for (metric of rangeMetrics; track metric.id) {
+        <fieldset><legend>{{ metric.label }}</legend><div class="range-inputs">
+          @for (bound of rangeBounds; track bound.id) {
+            <label>{{ bound.label }}<input type="number" step="1" inputmode="numeric"
+              [attr.aria-label]="metric.label + ' - ' + bound.label.toLowerCase()"
+              [value]="rangeInputValue(ranges()[metric.id][bound.id])"
+              [attr.aria-invalid]="rangeError() ? true : null"
+              [attr.aria-describedby]="rangeError() ? tabPrefix + '-range-error' : null"
+              (input)="setRange(metric.id, bound.id, $event)" /></label>
+          }
+        </div></fieldset>
+      }
+    </div>
     <div class="chart-controls">
       <label class="stable-filter"><input type="checkbox" [checked]="stableOnly()" (change)="stableOnly.set(checked($event))">Само стабилни списъци (до 5% промяна)</label>
-      <p class="scope" aria-live="polite"><strong>{{ count(points().length) }}</strong> от {{ count(rows().length) }} секции
-        @if (rows().length !== eligiblePoints().length) { · {{ count(rows().length - eligiblePoints().length) }} без допустима пълна двойка}
-        @if (stableOnly()) { · {{ count(eligiblePoints().length - points().length) }} с променени списъци извън графиката}
-      </p>
+      <button hlmBtn variant="outline" size="sm" type="button" class="gap-1" [disabled]="!hasFilters()" (click)="resetFilters()"><app-map-icon name="reset" />Изчисти филтрите на графиката</button>
     </div>
+    @if (rangeError(); as error) {<p class="filter-error" role="alert" [id]="tabPrefix + '-range-error'">{{ error }}</p>}
+    <p class="scope" aria-live="polite"><strong>{{ count(points().length) }}</strong> от {{ count(rows().length) }} секции
+      @if (rows().length !== eligiblePoints().length) { · {{ count(rows().length - eligiblePoints().length) }} без допустима пълна двойка}
+      @if (stableOnly()) { · {{ count(changedListCount()) }} с променени списъци извън графиката}
+    </p>
     <div role="tabpanel" [id]="tabPrefix + '-panel'" [attr.aria-labelledby]="tabPrefix + '-tab-' + comparison()">
       @if (points().length) {
-        <highcharts-chart class="block w-full" [options]="chart()" />
+        <div class="zoom-controls" role="group" aria-label="Увеличение на графиката">
+          <button hlmBtn variant="outline" size="icon" type="button" aria-label="Увеличи графиката" title="Увеличи графиката" [disabled]="!chartAvailable()" (click)="zoom(.5)"><span aria-hidden="true">+</span></button>
+          <button hlmBtn variant="outline" size="icon" type="button" aria-label="Намали графиката" title="Намали графиката" [disabled]="!chartAvailable()" (click)="zoom(2)"><span aria-hidden="true">−</span></button>
+          <button hlmBtn variant="outline" size="sm" type="button" class="gap-1" [disabled]="!zoomed()" (click)="resetZoom()"><app-map-icon name="reset" />Всички точки</button>
+          <span class="note" aria-live="polite">{{ zoomed() ? 'Увеличен изглед' : 'Цялата избрана извадка' }}</span>
+        </div>
+        <app-chart-image-export [title]="exportTitle() + ' · Йотова / ' + (comparison() === 'gyurov' ? 'Гюров' : 'гласували') + ' · ' + count(points().length) + ' секции във филтъра'" filename="presidential-2026-section-gains.png">
+          <highcharts-chart #gainsChart class="block w-full" [options]="chart()" (chartInstance)="onChartReady($event)" />
+        </app-chart-image-export>
         <p class="note list-key"><span class="list-marker" aria-hidden="true"></span>Жълт контур: над 5% промяна в списъка.</p>
-        <p class="note">Една точка = една секция; еднаквите стойности се застъпват. Изберете точка за секционните данни. На компютър може да увеличите област с влачене.</p>
+        <p class="note">Една точка = една секция; еднаквите стойности се застъпват. Изберете точка за секционните данни. Увеличете с бутоните или с влачене; Shift + влачене премества изгледа. На телефон може да използвате и два пръста.</p>
         <p class="note">Над линията 1:1 прирастът за Йотова е по-голям от {{ comparison() === 'gyurov' ? 'прираста за Гюров' : 'промяната в броя гласували' }}. Промененият кандидатски избор също влияе; графиката не доказва индивидуални прехвърляния или нарушение.</p>
-      } @else {<p class="empty" role="status">Няма допустими секции с пълни данни за избраните филтри.</p>}
+      } @else if (!rangeError()) {<p class="empty" role="status">Няма допустими секции с пълни данни за избраните филтри.</p>}
     </div>
     @if (points().length) {
       <div class="rank-heading"><h3>Най-големи промени за Йотова</h3>
@@ -88,6 +121,7 @@ export class ForensicsGainsChartComponent {
   private static nextId = 0;
   readonly tabPrefix = `section-gains-${++ForensicsGainsChartComponent.nextId}`;
   readonly rows = input.required<readonly ForensicsSection[]>();
+  readonly exportTitle = input('Прираст по секции · Президентски избори 2026');
   readonly sectionSelect = output<ForensicsSection>();
   readonly comparison = signal('turnout');
   readonly stableOnly = signal(false);
@@ -96,8 +130,52 @@ export class ForensicsGainsChartComponent {
   readonly signed = signed;
   readonly sectionLabel = sectionLabel;
   private readonly theme = inject(ThemeService);
+  private readonly destroyRef = inject(DestroyRef);
+  private liveChart?: Highcharts.Chart;
+  private readonly chartHost = viewChild<unknown, ElementRef<HTMLElement>>('gainsChart', { read: ElementRef });
+  readonly chartAvailable = signal(false);
+  readonly zoomed = signal(false);
+  readonly ranges = signal<GainRanges>(emptyRanges());
+  readonly rangeMetrics = [
+    { id: 'yotova', label: 'Δ Йотова' }, { id: 'gyurov', label: 'Δ Гюров' }, { id: 'turnout', label: 'Δ гласували' },
+  ] as const;
+  readonly rangeBounds = [{ id: 'min', label: 'От' }, { id: 'max', label: 'До' }] as const;
+  readonly rangeError = computed(() => {
+    for (const metric of this.rangeMetrics) {
+      const { min, max } = this.ranges()[metric.id];
+      if ((min !== null && !finite(min)) || (max !== null && !finite(max))) return `${metric.label}: въведете валидни числа за границите.`;
+      if (min !== null && max !== null && min > max) return `${metric.label}: стойността „От“ не може да е по-голяма от „До“.`;
+    }
+    return '';
+  });
+  readonly hasFilters = computed(() => this.stableOnly() || this.rangeMetrics.some(metric =>
+    this.ranges()[metric.id].min !== null || this.ranges()[metric.id].max !== null));
   readonly eligiblePoints = computed(() => sectionGainPoints(this.rows()));
-  readonly points = computed(() => this.eligiblePoints().filter(point => !this.stableOnly() || point.listChangePct <= 5));
+  readonly changedListCount = computed(() => this.eligiblePoints().filter(point => point.listChangePct > 5).length);
+  readonly points = computed(() => this.rangeError() ? [] : this.eligiblePoints().filter(point =>
+    (!this.stableOnly() || point.listChangePct <= 5) && this.rangeMetrics.every(metric => {
+      const { min, max } = this.ranges()[metric.id];
+      return (min === null || point[metric.id] >= min) && (max === null || point[metric.id] <= max);
+    })));
+
+  constructor() {
+    effect(() => {
+      const points = this.points(); this.comparison();
+      untracked(() => {
+        if (points.length) this.resetZoom();
+        else {
+          this.liveChart = undefined;
+          this.chartAvailable.set(false);
+          this.zoomed.set(false);
+        }
+      });
+    });
+    this.destroyRef.onDestroy(() => {
+      this.liveChart = undefined;
+      this.chartAvailable.set(false);
+      this.zoomed.set(false);
+    });
+  }
   readonly orderedByMagnitude = computed(() => [...this.points()].sort((a, b) => Math.abs(b.yotova) - Math.abs(a.yotova) || a.row.sectionId.localeCompare(b.row.sectionId)));
   readonly ranked = computed(() => (this.ranking() === 'absolute' ? this.orderedByMagnitude()
     : [...this.points()].sort((a, b) => b.yotova - a.yotova || a.row.sectionId.localeCompare(b.row.sectionId))).slice(0, 20));
@@ -124,12 +202,12 @@ export class ForensicsGainsChartComponent {
       return point ? this.tooltip(point) : '';
     };
     return {
-      chart: { type: 'scatter', height: 500, backgroundColor: 'transparent', style: { fontFamily: 'inherit' }, zooming: { type: 'xy', pinchType: 'xy' } },
+      chart: { type: 'scatter', height: 500, backgroundColor: 'transparent', style: { fontFamily: 'inherit' }, zooming: { type: 'xy', pinchType: 'xy' }, panning: { enabled: true, type: 'xy' }, panKey: 'shift' },
       title: { text: 'Всяка точка е избирателна секция', align: 'left', style: { color: 'var(--research-ink)', fontSize: '15px' } },
       xAxis: { title: { text: this.comparison() === 'gyurov' ? 'Δ гласове за Гюров' : 'Δ гласували', style: { color: 'var(--research-ink)' } },
-        allowDecimals: false, minRange: 1, labels: { style: { color: 'var(--research-ink)' } }, gridLineWidth: 1, gridLineColor: 'var(--research-rule)', plotLines: [{ value: 0, color: '#81909c', width: 1 }] },
+        events: { afterSetExtremes: () => this.syncZoom() }, allowDecimals: false, minRange: 1, labels: { style: { color: 'var(--research-ink)' } }, gridLineWidth: 1, gridLineColor: 'var(--research-rule)', plotLines: [{ value: 0, color: '#81909c', width: 1 }] },
       yAxis: { title: { text: 'Δ гласове за Йотова', style: { color: 'var(--research-ink)' } },
-        allowDecimals: false, minRange: 1, labels: { style: { color: 'var(--research-ink)' } }, gridLineColor: 'var(--research-rule)', plotLines: [{ value: 0, color: '#81909c', width: 1 }] },
+        events: { afterSetExtremes: () => this.syncZoom() }, allowDecimals: false, minRange: 1, labels: { style: { color: 'var(--research-ink)' } }, gridLineColor: 'var(--research-rule)', plotLines: [{ value: 0, color: '#81909c', width: 1 }] },
       legend: { align: 'left', itemStyle: { color: 'var(--research-ink)', fontSize: '11px' } }, credits: { enabled: false },
       lang: { resetZoom: 'Всички точки', resetZoomTitle: 'Нулирай увеличението' },
       tooltip: { useHTML: false, outside: false, backgroundColor: 'hsl(var(--background))', borderColor: '#81909c', style: { color: 'var(--research-ink)', fontSize: '12px' },
@@ -154,6 +232,64 @@ export class ForensicsGainsChartComponent {
       responsive: { rules: [{ condition: { maxWidth: 500 }, chartOptions: { chart: { height: 420 }, legend: { itemStyle: { fontSize: '10px' } } } }] },
     };
   });
+
+  rangeInputValue(value: number | null): number | '' { return value !== null && finite(value) ? value : ''; }
+
+  setRange(metric: GainMetric, bound: RangeBound, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = input.validity.badInput ? NaN : input.value.trim() === '' ? null : Number(input.value);
+    this.ranges.update(ranges => ({ ...ranges, [metric]: { ...ranges[metric], [bound]: value } }));
+  }
+
+  resetFilters(): void {
+    this.ranges.set(emptyRanges());
+    this.stableOnly.set(false);
+  }
+
+  onChartReady(chart: Highcharts.Chart): void {
+    if (this.destroyRef.destroyed || !this.points().length || chart.container?.parentElement !== this.chartHost()?.nativeElement || !chart.xAxis?.[0] || !chart.yAxis?.[0]) return;
+    this.liveChart = chart;
+    this.chartAvailable.set(true);
+    this.syncZoom();
+    Highcharts.addEvent(chart, 'destroy', () => {
+      if (this.liveChart === chart) {
+        this.liveChart = undefined;
+        this.chartAvailable.set(false);
+        this.zoomed.set(false);
+      }
+    });
+  }
+
+  zoom(factor: number): void {
+    const chart = this.liveChart;
+    if (!chart?.xAxis?.[0] || !chart.yAxis?.[0] || !finite(factor) || factor <= 0) return;
+    for (const axis of [chart.xAxis[0], chart.yAxis[0]]) {
+      const { min, max, dataMin, dataMax } = axis.getExtremes();
+      if (![min, max, dataMin, dataMax].every(finite) || dataMin === dataMax) continue;
+      const span = Math.max(1, (max - min) * factor);
+      if (factor > 1 && span >= dataMax - dataMin) axis.setExtremes(undefined, undefined, false, false);
+      else {
+        const boundedSpan = Math.min(span, dataMax - dataMin);
+        const start = Math.max(dataMin, Math.min((min + max - boundedSpan) / 2, dataMax - boundedSpan));
+        axis.setExtremes(start, start + boundedSpan, false, false);
+      }
+    }
+    chart.redraw(false);
+    this.syncZoom();
+  }
+
+  resetZoom(): void {
+    const chart = this.liveChart;
+    if (!chart?.xAxis?.[0] || !chart.yAxis?.[0] || !this.zoomed()) return;
+    chart.zoomOut();
+    this.syncZoom();
+  }
+
+  private syncZoom(): void {
+    const chart = this.liveChart;
+    this.zoomed.set(Boolean(chart?.xAxis?.[0] && chart.yAxis?.[0] && [chart.xAxis[0], chart.yAxis[0]]
+      .some(axis => { const { userMin, userMax } = axis.getExtremes(); return finite(userMin) || finite(userMax); })));
+  }
 
   tooltip(point: SectionGainPoint): string {
     const row = point.row;

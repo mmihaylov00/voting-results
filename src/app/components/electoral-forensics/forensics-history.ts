@@ -9,13 +9,14 @@ import { isOfficialSource, signed } from './forensics.util';
 import { getPresidentialCandidateName } from '../../utils/candidate-label';
 import { ViewTabsComponent, ViewTab } from '../ui/view-tabs/view-tabs';
 import { SignedChangeDirective } from '../ui/signed-change/signed-change';
+import { ChartImageExportComponent } from '../ui/chart-image-export/chart-image-export';
 
 @Component({
   selector: 'app-forensics-history',
-  imports: [DecimalPipe, HighchartsChartComponent, HlmButtonDirective, MapIconComponent, ViewTabsComponent, SignedChangeDirective],
+  imports: [DecimalPipe, HighchartsChartComponent, HlmButtonDirective, MapIconComponent, ViewTabsComponent, SignedChangeDirective, ChartImageExportComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <highcharts-chart class="block w-full" [options]="chart()" />
+    <app-chart-image-export [title]="exportTitle()" filename="presidential-historical-runoffs.png"><highcharts-chart class="block w-full" [options]="chart()" /></app-chart-image-export>
     <p class="note">Различни годишни извадки и изборен контекст. 2016/2021: липсват адреси и потвърдени флагове за специални секции. @if (hasArchiveRebuild()) {Архивните възстановки са без нова проверка на ZIP.} Сравнението е описателно.</p>
     <div class="table-scroll" tabindex="0" role="region" aria-label="Сравнение с историческите балотажи"><table class="history-summary">
       <caption>Изберете година от графиката, таблицата или табовете за пълните стойности.</caption>
@@ -55,6 +56,7 @@ import { SignedChangeDirective } from '../ui/signed-change/signed-change';
 export class ForensicsHistoryComponent {
   private static nextId = 0;
   readonly benchmarks = input<HistoricalRunoffBenchmark[]>([]);
+  readonly exportTitle = input('Президентски балотажи · Всички секции');
   readonly activeCycle = signal('');
   readonly tabPrefix = `forensics-history-${++ForensicsHistoryComponent.nextId}`;
   readonly ordered = computed(() => [...this.benchmarks()].sort((a, b) => a.cycle - b.cycle));

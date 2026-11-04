@@ -1,5 +1,6 @@
 import { MapExportContext } from './map-interaction.util';
 import type { MapLegend } from './map-metric.helper';
+import { cloneSvgForExport } from './image-export.util';
 
 export function mapExportTitle(context: MapExportContext | null, legend: MapLegend, place: string): string[] {
   return [context?.election || 'Изборни резултати', context?.metricLabel || legend.title, context?.place || place];
@@ -19,13 +20,13 @@ function loadImage(source: string): Promise<HTMLImageElement> {
   });
 }
 
-/** Exports the visible Leaflet tiles and SVG overlays, without sending election data to a service. */
-export async function exportMapImage(
+/** Renders the visible Leaflet tiles and overlays locally, including Canvas section markers. */
+export async function createMapImage(
   container: HTMLElement,
   context: MapExportContext | null,
   legend: MapLegend,
   place: string,
-): Promise<void> {
+): Promise<Blob> {
   const bounds = container.getBoundingClientRect();
   if (bounds.width <= 0 || bounds.height <= 0) throw new Error('Картата не е видима.');
   const width = Math.round(bounds.width);
@@ -50,6 +51,7 @@ export async function exportMapImage(
 
   const tiles = Array.from(container.querySelectorAll<HTMLImageElement>('.leaflet-tile'));
   if (!tiles.length) throw new Error('Изчакайте картата да се зареди преди експорт.');
+  let visibleTiles = 0;
   for (const tile of tiles) {
     const rect = tile.getBoundingClientRect();
     if (!rect.width || !rect.height || rect.right <= bounds.left || rect.left >= bounds.right ||
@@ -57,12 +59,18 @@ export async function exportMapImage(
     if (!tile.complete || !tile.naturalWidth) throw new Error('Изчакайте картата да се зареди преди експорт.');
     const image = tile.crossOrigin === 'anonymous' ? tile : await loadImage(tile.currentSrc || tile.src);
     drawing.drawImage(image, rect.left - bounds.left, rect.top - bounds.top + headerHeight, rect.width, rect.height);
+    visibleTiles++;
   }
+  if (!visibleTiles) throw new Error('Изчакайте картата да се зареди преди експорт.');
 
-  for (const svg of Array.from(container.querySelectorAll<SVGSVGElement>('.leaflet-overlay-pane svg'))) {
-    const rect = svg.getBoundingClientRect();
+  for (const overlay of Array.from(container.querySelectorAll<SVGSVGElement | HTMLCanvasElement>('.leaflet-overlay-pane svg, .leaflet-overlay-pane canvas'))) {
+    const rect = overlay.getBoundingClientRect();
     if (!rect.width || !rect.height) continue;
-    const clone = svg.cloneNode(true) as SVGSVGElement;
+    if (overlay instanceof HTMLCanvasElement) {
+      drawing.drawImage(overlay, rect.left - bounds.left, rect.top - bounds.top + headerHeight, rect.width, rect.height);
+      continue;
+    }
+    const clone = cloneSvgForExport(overlay);
     clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     clone.setAttribute('width', String(rect.width));
     clone.setAttribute('height', String(rect.height));
@@ -121,6 +129,16 @@ export async function exportMapImage(
     throw new Error('Браузърът блокира експорта на фоновата карта. Опитайте отново след презареждане.');
   }
   if (!png) throw new Error('Изображението не можа да бъде създадено.');
+  return png;
+}
+
+export async function exportMapImage(
+  container: HTMLElement,
+  context: MapExportContext | null,
+  legend: MapLegend,
+  place: string,
+): Promise<void> {
+  const png = await createMapImage(container, context, legend, place);
   const url = URL.createObjectURL(png);
   const link = document.createElement('a');
   link.href = url;
