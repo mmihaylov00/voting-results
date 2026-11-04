@@ -75,6 +75,15 @@ test('regional directory tags retain geographic labels and public source links',
   }
 });
 
+test('original supplied Facebook links remain available alongside publisher-linked addresses', () => {
+  for (const [id, handle] of [['publisher-vestnik-struma', 'vestnik.struma'], ['publisher-dir', 'dir.bg']]) {
+    const entry = entries.find(entry => entry.id === id);
+    const suppliedUrl = `https://www.facebook.com/${handle}`;
+    assert.notEqual(entry.facebookUrl, suppliedUrl);
+    assert(entry.sources.some(source => source.url === suppliedUrl && source.note.includes('не е потвърдена')));
+  }
+});
+
 test('similarly named publishers and supplied slash pairs retain distinct identities', () => {
   const pairs = [
     ['publisher-dnes', 'www.dnes.bg', 'publisher-yantra-dnes', 'www.dnesbg.com'],
