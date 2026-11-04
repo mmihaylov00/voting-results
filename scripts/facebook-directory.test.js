@@ -105,7 +105,7 @@ test('similarly named publishers and supplied slash pairs retain distinct identi
 test('generic city search leads remain distinct from the broader supplied names', () => {
   for (const base of ['Новини Без Цензура', 'Независими Новини']) {
     const names = [base, ...['Варна', 'Пловдив', 'Бургас', 'Русе'].map(city => `${base} - ${city}`)];
-    const leads = names.map(name => entries.filter(entry => entry.name === name));
+    const leads = names.map(name => entries.filter(entry => entry.name === name || entry.aliases.includes(name)));
     for (const [index, matches] of leads.entries()) {
       assert.equal(matches.length, 1, names[index] + ' must have its own directory record');
     }
