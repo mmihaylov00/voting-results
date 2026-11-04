@@ -8767,6 +8767,27 @@
         "samplePageId": null
       },
       {
+        "id": "publisher-offnews",
+        "name": "OFFNews",
+        "aliases": [],
+        "status": "publisher-linked",
+        "facebookUrl": "https://www.facebook.com/OFFNews.bg",
+        "websiteUrl": "https://offnews.bg/",
+        "regional": false,
+        "coverage": "България и свят",
+        "regions": [],
+        "sources": [
+          {
+            "note": "Източник за издателя и публикуван Facebook адрес.",
+            "url": "https://offnews.bg/"
+          }
+        ],
+        "notes": [
+          "Октомврийски публикации от тази страница още не са добавени към изборната извадка."
+        ],
+        "samplePageId": null
+      },
+      {
         "id": "publisher-pernik-news",
         "name": "PernikNews",
         "aliases": [
@@ -10393,25 +10414,6 @@
         "notes": [
           "Подадено име за търсене; текуща Facebook страница не е потвърдена."
         ],
-        "samplePageId": null
-      },
-      {
-        "id": "publisher-offnews",
-        "name": "OFFNews",
-        "aliases": [],
-        "status": "unresolved",
-        "facebookUrl": null,
-        "websiteUrl": "https://offnews.bg/",
-        "regional": false,
-        "coverage": "България и свят",
-        "regions": [],
-        "sources": [
-          {
-            "note": "Източник за издателя; текущата Facebook идентичност се проверява отделно.",
-            "url": "https://offnews.bg/"
-          }
-        ],
-        "notes": [],
         "samplePageId": null
       },
       {
