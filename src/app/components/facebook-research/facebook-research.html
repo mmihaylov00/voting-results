@@ -44,7 +44,7 @@
                     @if (page.satire) {<small>Сатира / пародия</small>}
                     @if (page.origin === 'discovery') {<small>Намерена при сравнение</small>}
                   </th>
-                  <td class="min-w-60 max-w-72 whitespace-normal! text-left!"><button type="button" class="w-full cursor-pointer rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current" [attr.aria-label]="'Публикации и основания за наклона на ' + shortName(page.name)" (click)="showPagePosts(page.id)"><app-facebook-research-stance [summary]="page.stance" /></button></td>
+                  <td class="min-w-48 sm:min-w-60 max-w-72 whitespace-normal! text-left!"><button type="button" class="w-full cursor-pointer rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current" [attr.aria-label]="'Публикации и основания за наклона на ' + shortName(page.name)" (click)="showPagePosts(page.id)"><app-facebook-research-stance [summary]="page.stance" /></button></td>
                   <td>{{ count(page.followers, page.followersApproximate) }}</td><td>{{ count(page.postCount) }}</td>
                   @for (metric of metrics; track metric) {<td><span [hlmTooltip]="totalNote(page.totals[metric])" [attr.tabindex]="page.totals[metric].approximate || page.totals[metric].missing ? 0 : null">{{ totalLabel(page.totals[metric]) }}</span>@if (page.totals[metric].missing) {<small>{{ page.totals[metric].missing }} без брояч</small>}</td>}
                 </tr>

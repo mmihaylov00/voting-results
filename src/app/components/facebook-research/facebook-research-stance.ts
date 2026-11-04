@@ -19,7 +19,7 @@ import { FACEBOOK_CANDIDATES, FACEBOOK_CANDIDATE_LABELS, FACEBOOK_STANCE_BUCKETS
     }
   `,
   styles: `
-    :host{display:block;min-width:215px;text-align:left;white-space:normal;font-weight:400}
+    :host{display:block;min-width:172px;text-align:left;white-space:normal;font-weight:400}
     .candidate-tone+.candidate-tone{margin-top:.65rem}
     .tone-heading{display:flex;align-items:center;justify-content:space-between;gap:.6rem;font-size:.8rem;line-height:1.5}
     strong{font-weight:600}.tone{padding:.12rem .45rem;border-radius:.25rem;font-size:.7rem;background:hsl(var(--muted));color:hsl(var(--muted-foreground));white-space:nowrap}
