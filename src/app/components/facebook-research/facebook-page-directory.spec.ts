@@ -37,6 +37,7 @@ describe('Facebook Page directory', () => {
     const fixture = setup();
     const component = fixture.componentInstance;
     const controls = component.table()!;
+    expect((fixture.nativeElement as HTMLElement).textContent).toContain('Актуализирано на 04.11.2026');
     expect(component.regionOptions().map(option => option.value)).toEqual(['', 'Варна', 'Провадия', 'Русе']);
     component.statusFilter.set('publisher-linked');
     component.scopeFilter.set('regional');
