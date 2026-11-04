@@ -79,7 +79,7 @@
               @if (postRows.window().top) {<tr aria-hidden="true"><td colspan="6" [style.height.px]="postRows.window().top" class="virtual-spacer"></td></tr>}
               @for (post of postRows.rows(); track post.id) {
                 <tr [attr.data-virtual-index]="postRows.window().start + $index" [attr.aria-rowindex]="postRows.window().start + $index + 2">
-                  <th scope="row"><button type="button" class="text-button flex! items-start gap-3 w-full" (click)="openPost(post.id)"><app-facebook-research-image [image]="post.images?.[0]" [label]="shortName(pageName(post))" /><span class="post-excerpt min-w-0 flex-1">{{ post.excerpt || post.summary }}</span></button>@if (post.origin === 'discovery') {<small>Намерена при сравнение</small>}</th>
+                  <th scope="row"><button type="button" class="text-button flex! items-start gap-3 w-full" (click)="openPost(post.id)"><app-facebook-research-image [image]="post.images?.[0]" [label]="shortName(pageName(post))" /><span class="post-excerpt min-w-0 flex-1">{{ post.excerpt || post.summary }}</span></button>@if (post.platformLabels?.length) {@for (label of post.platformLabels; track label) {<small>Facebook: {{ label }}</small>}} @else if (post.origin === 'discovery') {<small>Намерена при сравнение</small>}</th>
                   <td class="wrap-cell"><span class="inline-flex items-center gap-2"><app-facebook-research-image [image]="pageMap().get(post.pageId)?.avatar" [label]="shortName(pageName(post))" variant="avatar" /><span>{{ shortName(pageName(post)) }}</span></span></td><td class="date-cell">{{ postDate(post) }}<small>{{ postTime(post) }}</small></td>
                   @for (metric of metrics; track metric) {<td>{{ count(post.metrics[metric].value, post.metrics[metric].approximate === true) }}</td>}
                 </tr>
@@ -147,8 +147,12 @@
     <ng-template #headerImage><app-facebook-research-image [image]="pageMap().get(post.pageId)?.avatar" [label]="shortName(pageName(post))" variant="avatar" /></ng-template>
     <ng-template #headerActions><a hlmBtn variant="outline" size="sm" class="gap-2" [href]="post.url" target="_blank" rel="noopener noreferrer"><app-map-icon name="globe" />Facebook</a></ng-template>
     <div class="post-detail">
-      <span class="status-label">Твърдението не е проверено</span>
+      <div class="flex flex-wrap gap-x-3 gap-y-1">
+        <span class="status-label">Твърдението не е проверено</span>
+        @for (label of post.platformLabels ?? []; track label) {<span class="status-label">Facebook: {{ label }}</span>}
+      </div>
       <blockquote>{{ post.excerpt }}</blockquote>
+      @if (post.linkHeadline) {<p class="note">Заглавие във връзката: {{ post.linkHeadline }}</p>}
       <p>{{ post.summary }}</p>
       <section class="my-5 max-w-lg" aria-label="Тон на публикацията">
         <h3>Тон към кандидатите</h3>

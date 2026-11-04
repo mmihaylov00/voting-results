@@ -51,12 +51,14 @@ describe('Facebook research workspace', () => {
     const fixture = loaded();
     const element = fixture.nativeElement as HTMLElement;
     expect(element.textContent).toContain('Частична извадка');
-    expect(element.querySelectorAll('.page-table tbody tr')).toHaveLength(10);
+    expect(element.querySelector('.page-table')?.getAttribute('aria-rowcount')).toBe('20');
+    const visibleRows = element.querySelectorAll('.page-table tbody tr[data-virtual-index]');
+    expect(visibleRows.length).toBeGreaterThan(0);
     expect(element.querySelector('.page-table')?.textContent).toContain('4 без брояч');
     expect(element.querySelector('.workspace-tabs [role="tablist"]')?.classList.contains('scrollable')).toBe(true);
-    expect(element.querySelectorAll('.page-table app-facebook-research-image img')).toHaveLength(10);
+    expect(element.querySelectorAll('.page-table app-facebook-research-image img')).toHaveLength(visibleRows.length);
     fixture.componentInstance.exportPages(fixture.componentInstance.pages());
-    expect(fixture.componentInstance.csvData()?.rows).toHaveLength(10);
+    expect(fixture.componentInstance.csvData()?.rows).toHaveLength(19);
     fixture.destroy();
   });
 
@@ -117,7 +119,7 @@ describe('Facebook research workspace', () => {
   it('opens matched posts and fact-check leads in mutually exclusive source modals', () => {
     const fixture = loaded('duplicates');
     const component = fixture.componentInstance;
-    expect((fixture.nativeElement as HTMLElement).querySelectorAll('.duplicate-group')).toHaveLength(9);
+    expect((fixture.nativeElement as HTMLElement).querySelectorAll('.duplicate-group')).toHaveLength(10);
     expect((fixture.nativeElement as HTMLElement).textContent).toContain('+83 мин');
     component.openPost(report.matches[0].targetId);
     fixture.detectChanges();
@@ -150,7 +152,7 @@ describe('Facebook research workspace', () => {
     http.expectOne(component.dataUrl).flush(report);
     fixture.detectChanges();
     expect(component.error()).toBe('');
-    expect(component.report()?.posts).toHaveLength(86);
+    expect(component.report()?.posts).toHaveLength(97);
     fixture.destroy();
   });
 
@@ -170,6 +172,32 @@ describe('Facebook research workspace', () => {
     fixture.detectChanges();
     expect(element.querySelector('dialog [aria-label="Изображения от публикацията"]')).toBeNull();
     expect(element.querySelector('dialog .post-detail')?.textContent).toContain('Твърдението не е проверено');
+    fixture.destroy();
+  });
+
+  it('keeps Facebook AI labels and link-preview headlines visible in details and CSV exports', () => {
+    const fixture = loaded('posts');
+    const component = fixture.componentInstance;
+    const element = fixture.nativeElement as HTMLElement;
+    const aiPost = report.posts.find(post => post.platformLabels?.includes('AI content'))!;
+    component.pageFilter.set(aiPost.pageId);
+    fixture.detectChanges();
+    expect(element.querySelector('.post-table')?.textContent).toContain('Facebook: AI content');
+    component.openPost(aiPost.id);
+    fixture.detectChanges();
+    expect(element.querySelector('dialog .post-detail')?.textContent).toContain('Facebook: AI content');
+    component.exportPosts([aiPost]);
+    let csv = component.csvData()!;
+    expect(csv.rows[0][csv.headers.indexOf('Означения във Facebook')]).toBe('AI content');
+    expect(csv.rows[0].length).toBe(csv.headers.length);
+    component.csvData.set(null);
+    const headlinePost = report.posts.find(post => post.linkHeadline)!;
+    component.openPost(headlinePost.id);
+    fixture.detectChanges();
+    expect(element.querySelector('dialog .post-detail')?.textContent).toContain(headlinePost.linkHeadline);
+    component.exportPosts([headlinePost]);
+    csv = component.csvData()!;
+    expect(csv.rows[0][csv.headers.indexOf('Заглавие във връзката')]).toBe(headlinePost.linkHeadline);
     fixture.destroy();
   });
 

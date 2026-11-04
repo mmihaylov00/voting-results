@@ -8,6 +8,7 @@ const root = path.resolve(__dirname, '..');
 const report = JSON.parse(fs.readFileSync(path.join(root, 'public/data/facebook/2026/report.json'), 'utf8'));
 const directory = path.join(root, 'public/images/facebook/2026');
 const sources = JSON.parse(fs.readFileSync(path.join(directory, 'SOURCES.json'), 'utf8'));
+const discoveries = JSON.parse(fs.readFileSync(path.join(root, 'public/data/facebook/2026/DISCOVERY.json'), 'utf8'));
 
 test('every Facebook image resolves to a retained asset with its own public source and hash', () => {
   const uses = [...report.pages.map(page => ({ id: 'page:' + page.id, url: page.url, images: [page.avatar] })),
@@ -25,8 +26,35 @@ test('every Facebook image resolves to a retained asset with its own public sour
     assert(sources.assets[name].uses.some(use => use.id === row.id && use.sourceUrl === row.url && use.kind === image.kind));
     referenced.add(name);
   }
-  assert.equal(report.pages.filter(page => page.avatar).length, 10);
-  assert.equal(report.posts.filter(post => post.images.length).length, 81);
+  assert.equal(report.pages.filter(page => page.avatar).length, 19);
+  assert.equal(report.posts.filter(post => post.images.length).length, 92);
   assert.equal(Object.keys(sources.assets).length, referenced.size);
   assert.deepEqual(new Set(fs.readdirSync(directory).filter(name => name !== 'SOURCES.json')), referenced);
+});
+
+test('new public Page and post evidence resolves to the published sources, dates and caption hashes', () => {
+  assert.equal(discoveries.pages.length, 9);
+  assert.equal(discoveries.posts.length, 11);
+  assert.match(discoveries.captureSha256, /^[a-f0-9]{64}$/);
+  for (const page of discoveries.pages) {
+    const published = report.pages.find(row => row.id === page.id);
+    assert(published);
+    assert.equal(published.url, page.url);
+    assert.equal(published.name, page.name);
+    assert(page.identityEvidence.length > 0);
+    assert(report.posts.some(post => post.pageId === page.id));
+  }
+  for (const record of discoveries.posts) {
+    const published = report.posts.find(row => row.id === record.id);
+    assert(published);
+    assert.equal(published.url, record.url);
+    assert.equal(published.pageId, record.pageId);
+    assert.equal(published.publishedAt, record.publishedAt);
+    assert.match(published.date, /^2026-10-/);
+    assert.equal(published.sourceTextSha256, record.sourceTextSha256);
+    assert.equal(published.stance.sourceTextSha256, record.sourceTextSha256);
+    assert.deepEqual(published.platformLabels, record.platformLabels);
+  }
+  assert(!JSON.stringify(discoveries).includes('/Users/'));
+  assert(!JSON.stringify(discoveries).includes('fbcdn.net'));
 });

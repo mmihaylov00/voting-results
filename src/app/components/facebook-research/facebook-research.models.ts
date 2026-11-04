@@ -61,6 +61,8 @@ export interface FacebookPost {
   sourceTextSha256: string;
   stance?: FacebookPostStance;
   images?: FacebookImage[];
+  platformLabels?: string[];
+  linkHeadline?: string;
 }
 
 export interface FacebookMatch {

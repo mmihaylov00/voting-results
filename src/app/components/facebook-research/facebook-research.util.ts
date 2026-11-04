@@ -124,6 +124,9 @@ export function validFacebookReport(report: FacebookReport): boolean {
         && typeof post.stance.reason === 'string' && post.stance.reason.trim().length > 0
         && /^[a-f0-9]{64}$/.test(post.stance.sourceTextSha256) && post.stance.sourceTextSha256 === post.sourceTextSha256)
       && (post.images === undefined || Array.isArray(post.images) && post.images.every(image => validImage(image, post.url)))
+      && (post.platformLabels === undefined || Array.isArray(post.platformLabels)
+        && post.platformLabels.every(label => typeof label === 'string' && label.trim().length > 0))
+      && (post.linkHeadline === undefined || typeof post.linkHeadline === 'string' && post.linkHeadline.trim().length > 0)
       && (post.origin === 'collection' || post.origin === 'discovery')
       && (post.date ? octoberDate(post.date) : !!post.interval && octoberDate(post.interval.start)
         && octoberDate(post.interval.end) && post.interval.start <= post.interval.end)

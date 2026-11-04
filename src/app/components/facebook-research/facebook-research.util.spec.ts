@@ -13,7 +13,7 @@ describe('Facebook research data', () => {
         expect(Object.values(page.stance[candidate].counts).reduce((sum, count) => sum + count, 0)).toBe(page.postCount);
       }
     }
-    expect(report.posts.filter(post => post.stance)).toHaveLength(83);
+    expect(report.posts.filter(post => post.stance)).toHaveLength(94);
     const bnews = pages.find(page => page.name === 'BNews Bg')!;
     expect(bnews.stance.gyurov.label).toBe('critical');
     expect(bnews.stance.gyurov.counts.critical).toBe(15);
@@ -58,12 +58,12 @@ describe('Facebook research data', () => {
 
   it('keeps the collection and later matches separate with valid public-source references', () => {
     expect(validFacebookReport(report)).toBe(true);
-    expect(report.posts).toHaveLength(86);
-    expect(report.pages).toHaveLength(10);
+    expect(report.posts).toHaveLength(97);
+    expect(report.pages).toHaveLength(19);
     expect(report.posts.filter(post => post.origin === 'collection')).toHaveLength(83);
-    expect(report.posts.filter(post => post.origin === 'discovery')).toHaveLength(3);
-    expect(report.matches).toHaveLength(11);
-    expect(new Set(report.matches.map(match => match.sourceId)).size).toBe(9);
+    expect(report.posts.filter(post => post.origin === 'discovery')).toHaveLength(14);
+    expect(report.matches).toHaveLength(14);
+    expect(new Set(report.matches.map(match => match.sourceId)).size).toBe(10);
     for (const match of report.matches) {
       const source = report.posts.find(post => post.id === match.sourceId)!;
       const target = report.posts.find(post => post.id === match.targetId)!;
@@ -75,7 +75,7 @@ describe('Facebook research data', () => {
   });
 
   it('counts each matching post once across the expanded sample and marks caption-derived terms', () => {
-    expect(report.coverage).toHaveLength(54);
+    expect(report.coverage).toHaveLength(55);
     expect(report.coverage.filter(row => row.fromCaptions)).toHaveLength(20);
     for (const row of report.coverage) {
       expect(row.count).toBe(report.posts.filter(post => post.keywords.some(match => match.keyword === row.keyword)).length);
@@ -87,6 +87,20 @@ describe('Facebook research data', () => {
       && post.keywords.some(match => match.keyword === 'Турция')).length);
     expect(report.coverage.find(row => row.keyword === 'костадинов')?.count).toBe(2);
     expect(report.coverage.find(row => row.keyword === 'Колтуклиева')?.count).toBe(1);
+    expect(report.coverage.find(row => row.keyword === 'измете')?.count).toBe(5);
+  });
+
+  it('matches the captured link-preview headline without treating the four captions as identical bodies', () => {
+    const source = report.posts.find(post => post.linkHeadline)!;
+    const matches = report.matches.filter(match => match.sourceId === source.id);
+    expect(matches).toHaveLength(3);
+    const headline = source.linkHeadline!.replace(/ - Осата$/, '');
+    for (const match of matches) {
+      expect(match.kind).toBe('headline');
+      expect(match.delayMinutes).toBe(1146);
+      expect(report.posts.find(post => post.id === match.targetId)?.excerpt).toBe(headline);
+    }
+    expect(source.excerpt).not.toBe(headline);
   });
 
   it('rejects inconsistent counts, duplicate coverage rows and unknown keyword references', () => {
@@ -109,7 +123,7 @@ describe('Facebook research data', () => {
     zero.metrics.shares = { value: 0, approximate: false, raw: '0' };
     expect(facebookTotal([missing, zero], 'shares')).toEqual({ value: 0, approximate: false, missing: 1 });
     const summaries = facebookPageSummaries(report);
-    expect(summaries.reduce((sum, page) => sum + page.postCount, 0)).toBe(86);
+    expect(summaries.reduce((sum, page) => sum + page.postCount, 0)).toBe(97);
     expect(summaries.find(page => page.name === 'BNews Bg')?.totals.shares.missing).toBe(4);
     expect(summaries.find(page => page.name === 'Бункер нюз')?.totals.reactions.approximate).toBe(true);
     expect(facebookCount(null)).toBe('—');
@@ -119,7 +133,7 @@ describe('Facebook research data', () => {
 
   it('does not assign an exact publication day to an interval-dated post', () => {
     const days = facebookDailyCounts(report.posts);
-    expect(days.reduce((sum, day) => sum + day.count, 0)).toBe(85);
+    expect(days.reduce((sum, day) => sum + day.count, 0)).toBe(96);
     const interval = report.posts.find(post => post.interval)!;
     expect(facebookDate(interval)).toContain('28');
     expect(facebookDate(interval)).toContain('30');
@@ -141,8 +155,8 @@ describe('Facebook research data', () => {
 
   it('accepts only local, content-addressed images attributed to their own public source', () => {
     expect(report.pages.every(page => page.avatar?.sourceUrl === page.url)).toBe(true);
-    expect(report.posts.filter(post => post.images?.length)).toHaveLength(81);
-    expect(report.posts.filter(post => post.images?.some(image => image.kind === 'video-thumbnail'))).toHaveLength(4);
+    expect(report.posts.filter(post => post.images?.length)).toHaveLength(92);
+    expect(report.posts.filter(post => post.images?.some(image => image.kind === 'video-thumbnail'))).toHaveLength(5);
     for (const value of ['https://external.example/image.jpg', '/images/facebook/2026/../private.jpg', 'javascript:alert(1)']) {
       const wrong = structuredClone(report);
       wrong.pages[0].avatar!.src = value;
@@ -158,5 +172,24 @@ describe('Facebook research data', () => {
     for (const page of noImages.pages) delete page.avatar;
     for (const post of noImages.posts) delete post.images;
     expect(validFacebookReport(noImages)).toBe(true);
+  });
+
+  it('validates optional platform labels and link headlines without requiring them on older records', () => {
+    const legacy = structuredClone(report);
+    for (const post of legacy.posts) {
+      delete post.platformLabels;
+      delete post.linkHeadline;
+    }
+    expect(validFacebookReport(legacy)).toBe(true);
+    for (const invalid of [null, {}, [' '], [null]]) {
+      const wrong = structuredClone(report);
+      wrong.posts[0].platformLabels = invalid as unknown as FacebookPost['platformLabels'];
+      expect(validFacebookReport(wrong)).toBe(false);
+    }
+    for (const invalid of [null, 1, ' ']) {
+      const wrong = structuredClone(report);
+      wrong.posts[0].linkHeadline = invalid as unknown as string;
+      expect(validFacebookReport(wrong)).toBe(false);
+    }
   });
 });

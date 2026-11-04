@@ -1,0 +1,196 @@
+{
+  "capturedOn": "2026-11-04",
+  "timezone": "Europe/Sofia",
+  "method": "Public Facebook Page headers and post views; no personal profiles, groups or commenters retained.",
+  "captureSha256": "85852c0c0ec6884fd29a3cab2d0159cf71327b60f82f58a26eadf4a23432304e",
+  "pages": [
+    {
+      "id": "61594146398840",
+      "name": "Милиционеров",
+      "url": "https://www.facebook.com/militsionerov",
+      "category": "Digital creator",
+      "identityEvidence": "Direct Facebook header and explicit Report Page menu.",
+      "group": "political_commentary_comparison"
+    },
+    {
+      "id": "61578385640569",
+      "name": "Новини и събития",
+      "url": "https://www.facebook.com/noviniisabitia",
+      "category": "News & media website",
+      "identityEvidence": "Facebook header: News & media website; 22K followers; public menu contains Report Page.",
+      "group": "news_branded"
+    },
+    {
+      "id": "100030791183325",
+      "name": "ОСАТА - Гласът на истината, независими и обективни",
+      "url": "https://www.facebook.com/profile.php?id=100030791183325",
+      "category": "News & media website",
+      "identityEvidence": "Facebook header: News & media website, 8K followers; public menu contains Report Page.",
+      "group": "news_branded"
+    },
+    {
+      "id": "61557839147130",
+      "name": "VIP Media Press",
+      "url": "https://www.facebook.com/profile.php?id=61557839147130",
+      "category": "Media/news company",
+      "identityEvidence": "Facebook header: Media/news company; 22K followers; public menu contains Report Page.",
+      "group": "news_branded"
+    },
+    {
+      "id": "61594398383441",
+      "name": "Новини Днес",
+      "url": "https://www.facebook.com/profile.php?id=61594398383441",
+      "category": "Creator",
+      "identityEvidence": "Listed in Facebook Pages search; direct Page header: Creator, 2.4K followers.",
+      "group": "news_branded"
+    },
+    {
+      "id": "100050258929386",
+      "name": "Новини от света и България",
+      "url": "https://www.facebook.com/izvanredno.info",
+      "category": "News & media website",
+      "identityEvidence": "Listed in Facebook Pages search; direct header: News & media website, 217K followers; public menu contains Report Page.",
+      "group": "news_branded"
+    },
+    {
+      "id": "61595732886875",
+      "name": "Пуйло",
+      "url": "https://www.facebook.com/profile.php?id=61595732886875",
+      "category": "Satire/Parody",
+      "identityEvidence": "Listed in Facebook Pages search; direct header: Satire/Parody, 24K followers.",
+      "group": "satire_comparison"
+    },
+    {
+      "id": "100083137130737",
+      "name": "Обединени Пасивни Гербери III: Продължаваме Палачинката",
+      "url": "https://www.facebook.com/PassiveLarpers3",
+      "category": "Personal blog",
+      "identityEvidence": "Facebook header: Personal blog, 4.1K followers; public menu contains Report Page.",
+      "group": "political_commentary_comparison"
+    },
+    {
+      "id": "61572252076131",
+      "name": "Капутин",
+      "url": "https://www.facebook.com/profile.php?id=61572252076131",
+      "category": "Satire/Parody",
+      "identityEvidence": "Listed in Facebook Pages search with Satire/Parody category and 97K followers; header verified directly.",
+      "group": "satire_comparison"
+    }
+  ],
+  "posts": [
+    {
+      "id": "post:pfbid0HhU2jYwFjp9j378vEe2oekycGBn7ZXUmJF9s4ieRECvGqJmfsHnX446P5WHNTnRbl",
+      "pageId": "61594146398840",
+      "url": "https://www.facebook.com/militsionerov/posts/pfbid0HhU2jYwFjp9j378vEe2oekycGBn7ZXUmJF9s4ieRECvGqJmfsHnX446P5WHNTnRbl",
+      "publishedAt": "2026-10-30T08:09:00+02:00",
+      "dateEvidence": "Saved Facebook search-result screenshot displays October 30 at 8:09 AM.",
+      "capturedAt": "2026-11-04T15:42:06.462Z",
+      "sourceTextSha256": "59d3de7799fe91d77241a24b406f8018d82c6317d3c56b5b44bd650e78528728",
+      "captionComplete": true,
+      "platformLabels": [
+        "AI content"
+      ]
+    },
+    {
+      "id": "post:pfbid031Set3UWaG5qXsXkbh5hvgPfzqfgmaLuFKfHEbYDUeVTwkK95BZ3SpBR6J1zXw2EMl",
+      "pageId": "61578385640569",
+      "url": "https://www.facebook.com/noviniisabitia/posts/pfbid031Set3UWaG5qXsXkbh5hvgPfzqfgmaLuFKfHEbYDUeVTwkK95BZ3SpBR6J1zXw2EMl",
+      "publishedAt": "2026-10-30T18:00:00+02:00",
+      "dateEvidence": "Facebook search-result screenshot displayed October 30 at 6:00 PM.",
+      "capturedAt": "2026-11-04T15:45:40.527Z",
+      "sourceTextSha256": "6747026a976971a6ea727c134f8fe8bef1333699aa7c6a0e1c64180e9cea7121",
+      "captionComplete": true
+    },
+    {
+      "id": "post:pfbid0JjkW3RYrCMWhcqKpw2Wq2CxxqYQY8sWwJLEwZy9GF8BeczyNGJtBM8iC92L8oWEZl",
+      "pageId": "100030791183325",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0JjkW3RYrCMWhcqKpw2Wq2CxxqYQY8sWwJLEwZy9GF8BeczyNGJtBM8iC92L8oWEZl&id=100030791183325",
+      "publishedAt": "2026-10-29T22:54:00+02:00",
+      "dateEvidence": "Saved screenshot osata-october-election-post.jpg displays October 29 at 10:54 PM.",
+      "capturedAt": "2026-11-04T15:46:34.361Z",
+      "sourceTextSha256": "10f97d2be0eb12f2c6b6d6331c682cf328d7167a1aef5467df377f255468b8c4",
+      "captionComplete": true
+    },
+    {
+      "id": "post:pfbid0xQAtuBkwSnVUNTxsmH2yguz97eczAXWPuKK1uzJjdrV8v7qh659GU8uTzmgcyRR3l",
+      "pageId": "61557839147130",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0xQAtuBkwSnVUNTxsmH2yguz97eczAXWPuKK1uzJjdrV8v7qh659GU8uTzmgcyRR3l&id=61557839147130",
+      "publishedAt": "2026-10-28T16:56:00+02:00",
+      "dateEvidence": "The Page's own search result displayed October 28 at 4:56 PM.",
+      "capturedAt": "2026-11-04T15:47:43.294Z",
+      "sourceTextSha256": "ac583958fa6c32a18de451b8a8e5a01c76d1a2318af7c8b97649dd59fb40847d",
+      "captionComplete": true
+    },
+    {
+      "id": "post:pfbid01K7wZwET4jScNQVGcGEEB4CzSCWzgGXwwwACQpZAeqK5BTVQKs7nwkXvt6k1eEgGl",
+      "pageId": "61594398383441",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid01K7wZwET4jScNQVGcGEEB4CzSCWzgGXwwwACQpZAeqK5BTVQKs7nwkXvt6k1eEgGl&id=61594398383441",
+      "publishedAt": "2026-10-27T09:03:00+02:00",
+      "dateEvidence": "Saved screenshot novini-dnes-october-election-post.jpg displays October 27 at 9:03 AM.",
+      "capturedAt": "2026-11-04T15:48:01.891Z",
+      "sourceTextSha256": "c113e530e8e700a430e0b985eb34d09c88cb23da0a6f13f8ea7e9abdb7e2eedc",
+      "captionComplete": true
+    },
+    {
+      "id": "post:pfbid02tNu1m4kB1xwUseTxTFtegGqjYgQS1My2E4jvKVm94H3xg4ntHxZgej4HLeKUQZRjl",
+      "pageId": "100050258929386",
+      "url": "https://www.facebook.com/izvanredno.info/posts/pfbid02tNu1m4kB1xwUseTxTFtegGqjYgQS1My2E4jvKVm94H3xg4ntHxZgej4HLeKUQZRjl",
+      "publishedAt": "2026-10-30T08:22:00+02:00",
+      "dateEvidence": "Original post modal displayed October 30 at 8:22 AM.",
+      "capturedAt": "2026-11-04T15:48:32.689Z",
+      "sourceTextSha256": "e1b10ab6df7fd0e1a1cd46fb0c4b03236d2c82308fc1b4c8b2ac6c033611f421",
+      "captionComplete": true
+    },
+    {
+      "id": "post:pfbid0Y3RrwUWN4B2fMGj1BkPdgPJH7L8x15uLKteo7KecmYkkcXCs3n9y6XR4ZsyQY11Tl",
+      "pageId": "61595732886875",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Y3RrwUWN4B2fMGj1BkPdgPJH7L8x15uLKteo7KecmYkkcXCs3n9y6XR4ZsyQY11Tl&id=61595732886875",
+      "publishedAt": "2026-10-27T18:06:00+02:00",
+      "dateEvidence": "Saved screenshot puylo-october-election-post.jpg displays October 27 at 6:06 PM.",
+      "capturedAt": "2026-11-04T15:48:45.054Z",
+      "sourceTextSha256": "1d841fc0af5e2971712cb3d32ce4e6f9fce97081998667c38c555792dd286deb",
+      "captionComplete": true
+    },
+    {
+      "id": "post:pfbid02hpZFowawVBGouTCZPeRnbRnD5XdLyXjbpLKKGbLsfirqpk7JgVqf7SGnGJx19uxDl",
+      "pageId": "100083137130737",
+      "url": "https://www.facebook.com/PassiveLarpers3/posts/pfbid02hpZFowawVBGouTCZPeRnbRnD5XdLyXjbpLKKGbLsfirqpk7JgVqf7SGnGJx19uxDl",
+      "publishedAt": "2026-10-30T17:27:00+02:00",
+      "dateEvidence": "Facebook Page-search screenshot displayed October 30 at 5:27 PM.",
+      "capturedAt": "2026-11-04T15:49:26.630Z",
+      "sourceTextSha256": "d8f4c3b72e96154d504614e5297460f7d60ee3bc531cb890c735db01f0845d73",
+      "captionComplete": true
+    },
+    {
+      "id": "post:1685718766236751",
+      "pageId": "61572252076131",
+      "url": "https://www.facebook.com/reel/1685718766236751",
+      "publishedAt": "2026-10-30T18:47:00+02:00",
+      "dateEvidence": "Facebook Page-search screenshot displayed October 30 at 6:47 PM.",
+      "capturedAt": "2026-11-04T15:49:54.864Z",
+      "sourceTextSha256": "868ce24720c08a0141c2bcf08edd24e7dbd33429abd50947b7d7480d7f82cd70",
+      "captionComplete": true,
+      "mediaNotes": "Frame captured from the publicly displayed video player; underlying footage is labelled March 31, 2026."
+    },
+    {
+      "id": "post:1582826077192767",
+      "pageId": "https://www.facebook.com/noviniotposledniachas",
+      "url": "https://www.facebook.com/1588161933325848/posts/1582826077192767",
+      "publishedAt": "2026-10-30T18:00:00+02:00",
+      "dateEvidence": "Dated Socialinsider export corroborated by the opened public Facebook post.",
+      "capturedAt": "2026-11-04T15:50:23.793Z",
+      "sourceTextSha256": "6747026a976971a6ea727c134f8fe8bef1333699aa7c6a0e1c64180e9cea7121",
+      "captionComplete": true
+    },
+    {
+      "id": "post:1156013503438401",
+      "pageId": "https://www.facebook.com/novininafocus",
+      "url": "https://www.facebook.com/1161063486266736/posts/1156013503438401",
+      "publishedAt": "2026-10-30T18:00:00+02:00",
+      "dateEvidence": "Dated Socialinsider export corroborated by the opened public Facebook post.",
+      "capturedAt": "2026-11-04T15:50:34.254Z",
+      "sourceTextSha256": "6747026a976971a6ea727c134f8fe8bef1333699aa7c6a0e1c64180e9cea7121",
+      "captionComplete": true
+    }
+  ]
+}

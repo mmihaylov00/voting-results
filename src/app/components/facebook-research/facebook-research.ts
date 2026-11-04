@@ -192,11 +192,11 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
 
   exportPosts(rows: readonly FacebookPost[]): void {
     this.csvData.set({ filename: 'facebook-posts-2026.csv',
-      headers: ['Страница', 'Дата / период', 'Час (София)', 'Набор', 'Откъс', 'Обобщение', 'Ключови думи',
+      headers: ['Страница', 'Дата / период', 'Час (София)', 'Набор', 'Откъс', 'Обобщение', 'Означения във Facebook', 'Заглавие във връзката', 'Ключови думи',
         ...FACEBOOK_CANDIDATES.map(candidate => `${FACEBOOK_CANDIDATE_LABELS[candidate]}, тон в надписа`), 'Основание за тона',
         ...FACEBOOK_METRICS.flatMap(metric => [FACEBOOK_METRIC_LABELS[metric], `${FACEBOOK_METRIC_LABELS[metric]}, приблизително`]), 'Пълен надпис при събиране', 'Събрано на', 'Източник'],
       rows: rows.map(post => [this.pageName(post), facebookDate(post), facebookTime(post), post.origin === 'collection' ? 'Събрана публикация' : 'Намерено при повторения', post.excerpt,
-        post.summary, post.keywords.map(match => match.keyword).join('; '),
+        post.summary, post.platformLabels?.join('; ') ?? '', post.linkHeadline ?? '', post.keywords.map(match => match.keyword).join('; '),
         ...FACEBOOK_CANDIDATES.map(candidate => FACEBOOK_TONE_LABELS[post.stance ? post.stance[candidate] ?? 'not-mentioned' : 'unreviewed']), post.stance?.reason ?? '',
         ...FACEBOOK_METRICS.flatMap(metric => [post.metrics[metric].value, post.metrics[metric].approximate ? 'Да' : '']),
         post.captionComplete === null ? '' : post.captionComplete ? 'Да' : 'Не', post.collectedAt, post.url]),

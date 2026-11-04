@@ -185,6 +185,168 @@
         "capturedAt": "2026-11-04",
         "sha256": "8a8db30b505c01f7f7db95b53ff5e9aa3935f10024318efddf1fac0fd9853ddf"
       }
+    },
+    {
+      "id": "61594146398840",
+      "name": "Милиционеров",
+      "url": "https://www.facebook.com/militsionerov",
+      "followers": 1900,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "discovery",
+      "avatar": {
+        "src": "/images/facebook/2026/7443920066b2a4fa03355934fed8ade52955b9a9c94aa4eba7ee36cde29de225.jpg",
+        "sourceUrl": "https://www.facebook.com/militsionerov",
+        "width": 80,
+        "height": 80,
+        "kind": "image",
+        "capturedAt": "2026-11-04T15:42:06.462Z",
+        "sha256": "7443920066b2a4fa03355934fed8ade52955b9a9c94aa4eba7ee36cde29de225"
+      }
+    },
+    {
+      "id": "61578385640569",
+      "name": "Новини и събития",
+      "url": "https://www.facebook.com/noviniisabitia",
+      "followers": 22000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "discovery",
+      "avatar": {
+        "src": "/images/facebook/2026/a46ee4ed6b72e0429bd41d96651904f11003214a436ec14e80911d758bf39c03.jpg",
+        "sourceUrl": "https://www.facebook.com/noviniisabitia",
+        "width": 80,
+        "height": 80,
+        "kind": "image",
+        "capturedAt": "2026-11-04T15:45:40.527Z",
+        "sha256": "a46ee4ed6b72e0429bd41d96651904f11003214a436ec14e80911d758bf39c03"
+      }
+    },
+    {
+      "id": "100030791183325",
+      "name": "ОСАТА - Гласът на истината, независими и обективни",
+      "url": "https://www.facebook.com/profile.php?id=100030791183325",
+      "followers": 8000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "discovery",
+      "avatar": {
+        "src": "/images/facebook/2026/1989abb12f3641c5e915c8d0d377a773fa14b8ff76d6ca34897037f976fd93e9.jpg",
+        "sourceUrl": "https://www.facebook.com/profile.php?id=100030791183325",
+        "width": 80,
+        "height": 80,
+        "kind": "image",
+        "capturedAt": "2026-11-04T15:46:34.361Z",
+        "sha256": "1989abb12f3641c5e915c8d0d377a773fa14b8ff76d6ca34897037f976fd93e9"
+      }
+    },
+    {
+      "id": "61557839147130",
+      "name": "VIP Media Press",
+      "url": "https://www.facebook.com/profile.php?id=61557839147130",
+      "followers": 22000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "discovery",
+      "avatar": {
+        "src": "/images/facebook/2026/4cc09faa55c504db25e12db55f8962f69730d79d0932fef82753ab54ac5ad44a.jpg",
+        "sourceUrl": "https://www.facebook.com/profile.php?id=61557839147130",
+        "width": 80,
+        "height": 80,
+        "kind": "image",
+        "capturedAt": "2026-11-04T15:47:43.294Z",
+        "sha256": "4cc09faa55c504db25e12db55f8962f69730d79d0932fef82753ab54ac5ad44a"
+      }
+    },
+    {
+      "id": "61594398383441",
+      "name": "Новини Днес",
+      "url": "https://www.facebook.com/profile.php?id=61594398383441",
+      "followers": 2400,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "discovery",
+      "avatar": {
+        "src": "/images/facebook/2026/cd63ed795f9b28503fc0fd50892d54bdffdcc902a0674a69cb6621b54eef3b20.jpg",
+        "sourceUrl": "https://www.facebook.com/profile.php?id=61594398383441",
+        "width": 80,
+        "height": 80,
+        "kind": "image",
+        "capturedAt": "2026-11-04T15:48:01.891Z",
+        "sha256": "cd63ed795f9b28503fc0fd50892d54bdffdcc902a0674a69cb6621b54eef3b20"
+      }
+    },
+    {
+      "id": "100050258929386",
+      "name": "Новини от света и България",
+      "url": "https://www.facebook.com/izvanredno.info",
+      "followers": 217000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "discovery",
+      "avatar": {
+        "src": "/images/facebook/2026/37b4b785f37cd9d66f4746dca05b6512892679eaa1f6b9a37e2f1f7df0087d13.jpg",
+        "sourceUrl": "https://www.facebook.com/izvanredno.info",
+        "width": 80,
+        "height": 80,
+        "kind": "image",
+        "capturedAt": "2026-11-04T15:48:32.689Z",
+        "sha256": "37b4b785f37cd9d66f4746dca05b6512892679eaa1f6b9a37e2f1f7df0087d13"
+      }
+    },
+    {
+      "id": "61595732886875",
+      "name": "Пуйло",
+      "url": "https://www.facebook.com/profile.php?id=61595732886875",
+      "followers": 24000,
+      "followersApproximate": true,
+      "satire": true,
+      "origin": "discovery",
+      "avatar": {
+        "src": "/images/facebook/2026/9ffeda778704ed37fd4ca859e4fe545942fead611f147ad7b3933147c77d03a0.jpg",
+        "sourceUrl": "https://www.facebook.com/profile.php?id=61595732886875",
+        "width": 80,
+        "height": 80,
+        "kind": "image",
+        "capturedAt": "2026-11-04T15:48:45.054Z",
+        "sha256": "9ffeda778704ed37fd4ca859e4fe545942fead611f147ad7b3933147c77d03a0"
+      }
+    },
+    {
+      "id": "100083137130737",
+      "name": "Обединени Пасивни Гербери III: Продължаваме Палачинката",
+      "url": "https://www.facebook.com/PassiveLarpers3",
+      "followers": 4100,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "discovery",
+      "avatar": {
+        "src": "/images/facebook/2026/e5a6757fd6f0c19f4d56f751c669cc6fb107bdacfe1f641481d48102c4ae59ba.jpg",
+        "sourceUrl": "https://www.facebook.com/PassiveLarpers3",
+        "width": 82,
+        "height": 80,
+        "kind": "image",
+        "capturedAt": "2026-11-04T15:49:26.630Z",
+        "sha256": "e5a6757fd6f0c19f4d56f751c669cc6fb107bdacfe1f641481d48102c4ae59ba"
+      }
+    },
+    {
+      "id": "61572252076131",
+      "name": "Капутин",
+      "url": "https://www.facebook.com/profile.php?id=61572252076131",
+      "followers": 97000,
+      "followersApproximate": true,
+      "satire": true,
+      "origin": "discovery",
+      "avatar": {
+        "src": "/images/facebook/2026/fb7328144c1ca87bdd39d84761e5d30d78df0a6cf38245fee48b67ac1526b4a7.jpg",
+        "sourceUrl": "https://www.facebook.com/profile.php?id=61572252076131",
+        "width": 80,
+        "height": 80,
+        "kind": "image",
+        "capturedAt": "2026-11-04T15:49:54.864Z",
+        "sha256": "fb7328144c1ca87bdd39d84761e5d30d78df0a6cf38245fee48b67ac1526b4a7"
+      }
     }
   ],
   "posts": [
@@ -6311,6 +6473,775 @@
         "reason": "Осъдителен въпрос представя подкрепата за Гюров като срамна и мазна.",
         "sourceTextSha256": "3167a1bb65fcb7a390bcd35ef87b06b6e606e5a712d72a4c62f37d67c411eb08"
       }
+    },
+    {
+      "id": "post:pfbid0HhU2jYwFjp9j378vEe2oekycGBn7ZXUmJF9s4ieRECvGqJmfsHnX446P5WHNTnRbl",
+      "pageId": "61594146398840",
+      "url": "https://www.facebook.com/militsionerov/posts/pfbid0HhU2jYwFjp9j378vEe2oekycGBn7ZXUmJF9s4ieRECvGqJmfsHnX446P5WHNTnRbl",
+      "publishedAt": "2026-10-30T08:09:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T15:42:06.462Z",
+      "excerpt": "Смущаващи кадри: Служителите на БНТ се опитват да задържат Андрей Гюров в студиото, след като Илияна Йотова буквално измете пода с него по време…",
+      "summary": "Коментар за дебата с изображение, означено от Facebook като AI content.",
+      "captionComplete": true,
+      "origin": "discovery",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "измете",
+          "source": "text",
+          "evidence": "измете"
+        },
+        {
+          "keyword": "дебат",
+          "source": "text",
+          "evidence": "дебат"
+        },
+        {
+          "keyword": "БНТ",
+          "source": "text",
+          "evidence": "БНТ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 1400,
+          "approximate": true,
+          "raw": "1.4K"
+        },
+        "comments": {
+          "value": 277,
+          "approximate": false,
+          "raw": "277"
+        },
+        "shares": {
+          "value": 148,
+          "approximate": false,
+          "raw": "148"
+        }
+      },
+      "sourceTextSha256": "59d3de7799fe91d77241a24b406f8018d82c6317d3c56b5b44bd650e78528728",
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "supportive",
+        "reason": "Осмива Гюров и представя Йотова като надделяла в дебата. Оценката е на надписа; Facebook означава медията като AI content.",
+        "sourceTextSha256": "59d3de7799fe91d77241a24b406f8018d82c6317d3c56b5b44bd650e78528728"
+      },
+      "images": [
+        {
+          "src": "/images/facebook/2026/0290eb5f757da312a0dc8fe91e2cc7e871d31f5b50ecae82ecfdb368104ba83d.jpg",
+          "sourceUrl": "https://www.facebook.com/militsionerov/posts/pfbid0HhU2jYwFjp9j378vEe2oekycGBn7ZXUmJF9s4ieRECvGqJmfsHnX446P5WHNTnRbl",
+          "width": 1080,
+          "height": 1080,
+          "kind": "image",
+          "capturedAt": "2026-11-04T15:42:06.462Z",
+          "sha256": "0290eb5f757da312a0dc8fe91e2cc7e871d31f5b50ecae82ecfdb368104ba83d"
+        }
+      ],
+      "platformLabels": [
+        "AI content"
+      ]
+    },
+    {
+      "id": "post:pfbid031Set3UWaG5qXsXkbh5hvgPfzqfgmaLuFKfHEbYDUeVTwkK95BZ3SpBR6J1zXw2EMl",
+      "pageId": "61578385640569",
+      "url": "https://www.facebook.com/noviniisabitia/posts/pfbid031Set3UWaG5qXsXkbh5hvgPfzqfgmaLuFKfHEbYDUeVTwkK95BZ3SpBR6J1zXw2EMl",
+      "publishedAt": "2026-10-30T18:00:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T15:45:40.527Z",
+      "excerpt": "Национална катастрофа в ефир: Стартира кампания „Спасете Гюров“, след като Йотова измете пода с него по БНТ",
+      "summary": "Публикува заглавие от faktibg.com за представянето на Гюров и Йотова в дебата.",
+      "captionComplete": true,
+      "origin": "discovery",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "измете",
+          "source": "text",
+          "evidence": "измете"
+        },
+        {
+          "keyword": "БНТ",
+          "source": "text",
+          "evidence": "БНТ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 87,
+          "approximate": false,
+          "raw": "87"
+        },
+        "comments": {
+          "value": 14,
+          "approximate": false,
+          "raw": "14"
+        },
+        "shares": {
+          "value": 8,
+          "approximate": false,
+          "raw": "8"
+        }
+      },
+      "sourceTextSha256": "6747026a976971a6ea727c134f8fe8bef1333699aa7c6a0e1c64180e9cea7121",
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "supportive",
+        "reason": "Заглавието осмива представянето на Гюров и изрично представя Йотова като надделяла в дебата.",
+        "sourceTextSha256": "6747026a976971a6ea727c134f8fe8bef1333699aa7c6a0e1c64180e9cea7121"
+      },
+      "images": [
+        {
+          "src": "/images/facebook/2026/12228b15411c2854fb66f1332d956012266fc906ca672f33919200a64d369890.jpg",
+          "sourceUrl": "https://www.facebook.com/noviniisabitia/posts/pfbid031Set3UWaG5qXsXkbh5hvgPfzqfgmaLuFKfHEbYDUeVTwkK95BZ3SpBR6J1zXw2EMl",
+          "width": 500,
+          "height": 697,
+          "kind": "image",
+          "capturedAt": "2026-11-04T15:45:40.527Z",
+          "sha256": "12228b15411c2854fb66f1332d956012266fc906ca672f33919200a64d369890"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0JjkW3RYrCMWhcqKpw2Wq2CxxqYQY8sWwJLEwZy9GF8BeczyNGJtBM8iC92L8oWEZl",
+      "pageId": "100030791183325",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0JjkW3RYrCMWhcqKpw2Wq2CxxqYQY8sWwJLEwZy9GF8BeczyNGJtBM8iC92L8oWEZl&id=100030791183325",
+      "publishedAt": "2026-10-29T22:54:00+02:00",
+      "date": "2026-10-29",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T15:46:34.361Z",
+      "excerpt": "Помощ....Бият беззащитен мъж по телевизията! Йотова буквално измете пода с него, а на клетия Гюров му остана само едно епично „Ъъъъъ“ за спомен",
+      "summary": "Осмива представянето на Гюров. Заглавието в прегледа на връзката съвпада с това в сравнените публикации.",
+      "captionComplete": true,
+      "origin": "discovery",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "измете",
+          "source": "text",
+          "evidence": "измете"
+        },
+        {
+          "keyword": "БНТ",
+          "source": "link-title",
+          "evidence": "БНТ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 124,
+          "approximate": false,
+          "raw": "124"
+        },
+        "comments": {
+          "value": 10,
+          "approximate": false,
+          "raw": "10"
+        },
+        "shares": {
+          "value": 98,
+          "approximate": false,
+          "raw": "98"
+        }
+      },
+      "sourceTextSha256": "10f97d2be0eb12f2c6b6d6331c682cf328d7167a1aef5467df377f255468b8c4",
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "supportive",
+        "reason": "Надписът осмива Гюров и описва Йотова като надделяла. Това е оценка на тона, а не на действителното представяне.",
+        "sourceTextSha256": "10f97d2be0eb12f2c6b6d6331c682cf328d7167a1aef5467df377f255468b8c4"
+      },
+      "images": [
+        {
+          "src": "/images/facebook/2026/654c746a312a2de731028cd850f0fc0acc30bb7b44cabf6a32088043f897c842.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0JjkW3RYrCMWhcqKpw2Wq2CxxqYQY8sWwJLEwZy9GF8BeczyNGJtBM8iC92L8oWEZl&id=100030791183325",
+          "width": 739,
+          "height": 385,
+          "kind": "image",
+          "capturedAt": "2026-11-04T15:46:34.361Z",
+          "sha256": "654c746a312a2de731028cd850f0fc0acc30bb7b44cabf6a32088043f897c842"
+        }
+      ],
+      "linkHeadline": "Национална катастрофа в ефир: Стартира кампания „Спасете Гюров“, след като Йотова измете пода с него по БНТ - Осата"
+    },
+    {
+      "id": "post:pfbid0xQAtuBkwSnVUNTxsmH2yguz97eczAXWPuKK1uzJjdrV8v7qh659GU8uTzmgcyRR3l",
+      "pageId": "61557839147130",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0xQAtuBkwSnVUNTxsmH2yguz97eczAXWPuKK1uzJjdrV8v7qh659GU8uTzmgcyRR3l&id=61557839147130",
+      "publishedAt": "2026-10-28T16:56:00+02:00",
+      "date": "2026-10-28",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T15:47:43.294Z",
+      "excerpt": "Скандал преди балотажа! Петър Витанов твърди, че Андрей Гюров се е срещал с Пеевски, кандидатът отрича Лидерът на парламентарната група на „Прогресивна България“ заяви,…",
+      "summary": "Съобщава твърдение за среща на Гюров с Пеевски, липсата на представени доказателства и отрицанието на кандидата.",
+      "captionComplete": true,
+      "origin": "discovery",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        },
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "балотаж",
+          "source": "text",
+          "evidence": "балотаж"
+        },
+        {
+          "keyword": "ГЕРБ",
+          "source": "text",
+          "evidence": "ГЕРБ"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
+        },
+        {
+          "keyword": "МВР",
+          "source": "text",
+          "evidence": "мвр"
+        },
+        {
+          "keyword": "Прогресивна България",
+          "source": "text",
+          "evidence": "Прогресивна България"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 15,
+          "approximate": false,
+          "raw": "15"
+        },
+        "comments": {
+          "value": 4,
+          "approximate": false,
+          "raw": "4"
+        },
+        "shares": {
+          "value": 5,
+          "approximate": false,
+          "raw": "5"
+        }
+      },
+      "sourceTextSha256": "ac583958fa6c32a18de451b8a8e5a01c76d1a2318af7c8b97649dd59fb40847d",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Съобщава твърдението на Витанов и изричното отрицание на Гюров, включително липсата на представени доказателства; не приема обвинението за установен факт.",
+        "sourceTextSha256": "ac583958fa6c32a18de451b8a8e5a01c76d1a2318af7c8b97649dd59fb40847d"
+      },
+      "images": [
+        {
+          "src": "/images/facebook/2026/c2e7b0dc508c5f7ddba5055f950f82577c4d894cc7c0b3aa1efd2381c5a686c1.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0xQAtuBkwSnVUNTxsmH2yguz97eczAXWPuKK1uzJjdrV8v7qh659GU8uTzmgcyRR3l&id=61557839147130",
+          "width": 1080,
+          "height": 815,
+          "kind": "image",
+          "capturedAt": "2026-11-04T15:47:43.294Z",
+          "sha256": "c2e7b0dc508c5f7ddba5055f950f82577c4d894cc7c0b3aa1efd2381c5a686c1"
+        },
+        {
+          "src": "/images/facebook/2026/a8644c1a3d3e44177dcfcd1c815d33e836d9163fe4b9ade6b96818053536ebb6.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0xQAtuBkwSnVUNTxsmH2yguz97eczAXWPuKK1uzJjdrV8v7qh659GU8uTzmgcyRR3l&id=61557839147130",
+          "width": 1080,
+          "height": 655,
+          "kind": "image",
+          "capturedAt": "2026-11-04T15:47:43.294Z",
+          "sha256": "a8644c1a3d3e44177dcfcd1c815d33e836d9163fe4b9ade6b96818053536ebb6"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid01K7wZwET4jScNQVGcGEEB4CzSCWzgGXwwwACQpZAeqK5BTVQKs7nwkXvt6k1eEgGl",
+      "pageId": "61594398383441",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid01K7wZwET4jScNQVGcGEEB4CzSCWzgGXwwwACQpZAeqK5BTVQKs7nwkXvt6k1eEgGl&id=61594398383441",
+      "publishedAt": "2026-10-27T09:03:00+02:00",
+      "date": "2026-10-27",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T15:48:01.891Z",
+      "excerpt": "Скандал преди балотажа: Щабът на Андрей Гюров даде Румен Радев на ЦИК за незаконна агитация през Министерския съвет Прочетете цялата история в първия коментар",
+      "summary": "Заглавие за жалба на щаба на Гюров до ЦИК срещу агитация от Радев.",
+      "captionComplete": true,
+      "origin": "discovery",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "радев",
+          "source": "text",
+          "evidence": "Радев"
+        },
+        {
+          "keyword": "балотаж",
+          "source": "text",
+          "evidence": "балотаж"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 194,
+          "approximate": false,
+          "raw": "194"
+        },
+        "comments": {
+          "value": 56,
+          "approximate": false,
+          "raw": "56"
+        },
+        "shares": {
+          "value": 2,
+          "approximate": false,
+          "raw": "2"
+        }
+      },
+      "sourceTextSha256": "c113e530e8e700a430e0b985eb34d09c88cb23da0a6f13f8ea7e9abdb7e2eedc",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Съобщава за жалба на щаба на Гюров срещу Радев. Обвинението е към Радев и не се прехвърля като оценка към Йотова.",
+        "sourceTextSha256": "c113e530e8e700a430e0b985eb34d09c88cb23da0a6f13f8ea7e9abdb7e2eedc"
+      },
+      "images": [
+        {
+          "src": "/images/facebook/2026/43f7a73d0f8219fe22a5361ecb173081e78ab34dc90bce48f68a2b4227b1c54b.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid01K7wZwET4jScNQVGcGEEB4CzSCWzgGXwwwACQpZAeqK5BTVQKs7nwkXvt6k1eEgGl&id=61594398383441",
+          "width": 1080,
+          "height": 1080,
+          "kind": "image",
+          "capturedAt": "2026-11-04T15:48:01.891Z",
+          "sha256": "43f7a73d0f8219fe22a5361ecb173081e78ab34dc90bce48f68a2b4227b1c54b"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02tNu1m4kB1xwUseTxTFtegGqjYgQS1My2E4jvKVm94H3xg4ntHxZgej4HLeKUQZRjl",
+      "pageId": "100050258929386",
+      "url": "https://www.facebook.com/izvanredno.info/posts/pfbid02tNu1m4kB1xwUseTxTFtegGqjYgQS1My2E4jvKVm94H3xg4ntHxZgej4HLeKUQZRjl",
+      "publishedAt": "2026-10-30T08:22:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T15:48:32.689Z",
+      "excerpt": "Гюров към Йотова: Обадихте ли се на Путин и получихте ли отговор от него?",
+      "summary": "Публикува цитат от въпрос на Гюров към Йотова за разговор с Путин.",
+      "captionComplete": true,
+      "origin": "discovery",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "путин",
+          "source": "text",
+          "evidence": "Путин"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 31,
+          "approximate": false,
+          "raw": "31"
+        },
+        "comments": {
+          "value": 32,
+          "approximate": false,
+          "raw": "32"
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "e1b10ab6df7fd0e1a1cd46fb0c4b03236d2c82308fc1b4c8b2ac6c033611f421",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "critical",
+        "reason": "Цитира критичен въпрос на Гюров към Йотова за Путин. Самото цитиране не е изрична подкрепа за Гюров.",
+        "sourceTextSha256": "e1b10ab6df7fd0e1a1cd46fb0c4b03236d2c82308fc1b4c8b2ac6c033611f421"
+      },
+      "images": [
+        {
+          "src": "/images/facebook/2026/e058a251febf337b4d4bc0009eb8543258d193d55baddafc31edcc4d274ea53c.jpg",
+          "sourceUrl": "https://www.facebook.com/izvanredno.info/posts/pfbid02tNu1m4kB1xwUseTxTFtegGqjYgQS1My2E4jvKVm94H3xg4ntHxZgej4HLeKUQZRjl",
+          "width": 1200,
+          "height": 800,
+          "kind": "image",
+          "capturedAt": "2026-11-04T15:48:32.689Z",
+          "sha256": "e058a251febf337b4d4bc0009eb8543258d193d55baddafc31edcc4d274ea53c"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0Y3RrwUWN4B2fMGj1BkPdgPJH7L8x15uLKteo7KecmYkkcXCs3n9y6XR4ZsyQY11Tl",
+      "pageId": "61595732886875",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Y3RrwUWN4B2fMGj1BkPdgPJH7L8x15uLKteo7KecmYkkcXCs3n9y6XR4ZsyQY11Tl&id=61595732886875",
+      "publishedAt": "2026-10-27T18:06:00+02:00",
+      "date": "2026-10-27",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T15:48:45.054Z",
+      "excerpt": "Г-жо Йотова, имам въпроси. кога ще говорим?",
+      "summary": "Сатирична страница отправя въпрос към Йотова и прилага изображение със заглавие за интервю.",
+      "captionComplete": true,
+      "origin": "discovery",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 2100,
+          "approximate": true,
+          "raw": "2.1K"
+        },
+        "comments": {
+          "value": 119,
+          "approximate": false,
+          "raw": "119"
+        },
+        "shares": {
+          "value": 83,
+          "approximate": false,
+          "raw": "83"
+        }
+      },
+      "sourceTextSha256": "1d841fc0af5e2971712cb3d32ce4e6f9fce97081998667c38c555792dd286deb",
+      "stance": {
+        "gyurov": null,
+        "yotova": "unclear",
+        "reason": "Краткият надпис отправя въпрос към Йотова без достатъчно изрична оценка. Съдържанието на приложената снимка не е включено в оценката на тона.",
+        "sourceTextSha256": "1d841fc0af5e2971712cb3d32ce4e6f9fce97081998667c38c555792dd286deb"
+      },
+      "images": [
+        {
+          "src": "/images/facebook/2026/9ad2945a645db28226a8825b4ff339b7629ea41bd7f75f666b91af56d4784b21.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Y3RrwUWN4B2fMGj1BkPdgPJH7L8x15uLKteo7KecmYkkcXCs3n9y6XR4ZsyQY11Tl&id=61595732886875",
+          "width": 1060,
+          "height": 1183,
+          "kind": "image",
+          "capturedAt": "2026-11-04T15:48:45.054Z",
+          "sha256": "9ad2945a645db28226a8825b4ff339b7629ea41bd7f75f666b91af56d4784b21"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02hpZFowawVBGouTCZPeRnbRnD5XdLyXjbpLKKGbLsfirqpk7JgVqf7SGnGJx19uxDl",
+      "pageId": "100083137130737",
+      "url": "https://www.facebook.com/PassiveLarpers3/posts/pfbid02hpZFowawVBGouTCZPeRnbRnD5XdLyXjbpLKKGbLsfirqpk7JgVqf7SGnGJx19uxDl",
+      "publishedAt": "2026-10-30T17:27:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T15:49:26.630Z",
+      "excerpt": "Мой познат, присъствал на предизборна среща на Гюров, разказа, че го попитали , дали като Върховен главнокомандващ, би изпратил български войници да се бият…",
+      "summary": "Приписва на Гюров изказване за НАТО и изпращане на войници. Приложената снимка на известия не представлява независима проверка на твърдението.",
+      "captionComplete": true,
+      "origin": "discovery",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 63,
+          "approximate": false,
+          "raw": "63"
+        },
+        "comments": {
+          "value": 19,
+          "approximate": false,
+          "raw": "19"
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "d8f4c3b72e96154d504614e5297460f7d60ee3bc531cb890c735db01f0845d73",
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Надписът обвинява Гюров в готовност да изпраща войници и призовава читателите да вземат това предвид при гласуване; Йотова не е спомената.",
+        "sourceTextSha256": "d8f4c3b72e96154d504614e5297460f7d60ee3bc531cb890c735db01f0845d73"
+      },
+      "images": [
+        {
+          "src": "/images/facebook/2026/2322ac03d407a4ad24bce890c5eac522a153674bcfe03b92a411d3d789f64b93.jpg",
+          "sourceUrl": "https://www.facebook.com/PassiveLarpers3/posts/pfbid02hpZFowawVBGouTCZPeRnbRnD5XdLyXjbpLKKGbLsfirqpk7JgVqf7SGnGJx19uxDl",
+          "width": 1080,
+          "height": 874,
+          "kind": "image",
+          "capturedAt": "2026-11-04T15:49:26.630Z",
+          "sha256": "2322ac03d407a4ad24bce890c5eac522a153674bcfe03b92a411d3d789f64b93"
+        }
+      ]
+    },
+    {
+      "id": "post:1685718766236751",
+      "pageId": "61572252076131",
+      "url": "https://www.facebook.com/reel/1685718766236751",
+      "publishedAt": "2026-10-30T18:47:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T15:49:54.864Z",
+      "excerpt": "Факт чек от Илияна Йотова от 31 март 2026 г. Ако не вярвате на другите проверки, те.",
+      "summary": "Публикувано през октомври видео с кадри, означени като 31 март 2026 г. Собственото описание като факт чек не е независима проверка.",
+      "captionComplete": true,
+      "origin": "discovery",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 2700,
+          "approximate": true,
+          "raw": "2.7K"
+        },
+        "comments": {
+          "value": 182,
+          "approximate": false,
+          "raw": "182"
+        },
+        "shares": {
+          "value": 844,
+          "approximate": false,
+          "raw": "844"
+        }
+      },
+      "sourceTextSha256": "868ce24720c08a0141c2bcf08edd24e7dbd33429abd50947b7d7480d7f82cd70",
+      "stance": {
+        "gyurov": null,
+        "yotova": "unclear",
+        "reason": "Надписът представя старо изказване на Йотова като факт чек, но конкретната оценка зависи от видеото, което не е оценено.",
+        "sourceTextSha256": "868ce24720c08a0141c2bcf08edd24e7dbd33429abd50947b7d7480d7f82cd70"
+      },
+      "images": [
+        {
+          "src": "/images/facebook/2026/42f896792a24d79f8b6261a08e12a8e428d77f2511fb9e4d95de53c4bf66a181.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1685718766236751",
+          "width": 638,
+          "height": 358,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T15:49:54.864Z",
+          "sha256": "42f896792a24d79f8b6261a08e12a8e428d77f2511fb9e4d95de53c4bf66a181"
+        }
+      ]
+    },
+    {
+      "id": "post:1582826077192767",
+      "pageId": "https://www.facebook.com/noviniotposledniachas",
+      "url": "https://www.facebook.com/1588161933325848/posts/1582826077192767",
+      "publishedAt": "2026-10-30T18:00:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T15:50:23.793Z",
+      "excerpt": "Национална катастрофа в ефир: Стартира кампания „Спасете Гюров“, след като Йотова измете пода с него по БНТ",
+      "summary": "Публикува заглавие от faktibg.com за представянето на Гюров и Йотова в дебата.",
+      "captionComplete": true,
+      "origin": "discovery",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "измете",
+          "source": "text",
+          "evidence": "измете"
+        },
+        {
+          "keyword": "БНТ",
+          "source": "text",
+          "evidence": "БНТ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 49,
+          "approximate": false,
+          "raw": "49"
+        },
+        "comments": {
+          "value": 9,
+          "approximate": false,
+          "raw": "9"
+        },
+        "shares": {
+          "value": 1,
+          "approximate": false,
+          "raw": "1"
+        }
+      },
+      "sourceTextSha256": "6747026a976971a6ea727c134f8fe8bef1333699aa7c6a0e1c64180e9cea7121",
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "supportive",
+        "reason": "Заглавието осмива представянето на Гюров и изрично представя Йотова като надделяла в дебата.",
+        "sourceTextSha256": "6747026a976971a6ea727c134f8fe8bef1333699aa7c6a0e1c64180e9cea7121"
+      },
+      "images": [
+        {
+          "src": "/images/facebook/2026/05f8e320a2e42a8474407cf2335fcf175e2c08fbf69f2bdc32698e9e1b81841e.jpg",
+          "sourceUrl": "https://www.facebook.com/1588161933325848/posts/1582826077192767",
+          "width": 500,
+          "height": 697,
+          "kind": "image",
+          "capturedAt": "2026-11-04T15:50:23.793Z",
+          "sha256": "05f8e320a2e42a8474407cf2335fcf175e2c08fbf69f2bdc32698e9e1b81841e"
+        }
+      ]
+    },
+    {
+      "id": "post:1156013503438401",
+      "pageId": "https://www.facebook.com/novininafocus",
+      "url": "https://www.facebook.com/1161063486266736/posts/1156013503438401",
+      "publishedAt": "2026-10-30T18:00:00+02:00",
+      "date": "2026-10-30",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T15:50:34.254Z",
+      "excerpt": "Национална катастрофа в ефир: Стартира кампания „Спасете Гюров“, след като Йотова измете пода с него по БНТ",
+      "summary": "Публикува заглавие от faktibg.com за представянето на Гюров и Йотова в дебата.",
+      "captionComplete": true,
+      "origin": "discovery",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "измете",
+          "source": "text",
+          "evidence": "измете"
+        },
+        {
+          "keyword": "БНТ",
+          "source": "text",
+          "evidence": "БНТ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 13,
+          "approximate": false,
+          "raw": "13"
+        },
+        "comments": {
+          "value": 2,
+          "approximate": false,
+          "raw": "2"
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "6747026a976971a6ea727c134f8fe8bef1333699aa7c6a0e1c64180e9cea7121",
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "supportive",
+        "reason": "Заглавието осмива представянето на Гюров и изрично представя Йотова като надделяла в дебата.",
+        "sourceTextSha256": "6747026a976971a6ea727c134f8fe8bef1333699aa7c6a0e1c64180e9cea7121"
+      },
+      "images": [
+        {
+          "src": "/images/facebook/2026/299e75f99f992cf8756daaee416a4338f6d7737bba2ecef8ef93a20414b28d27.jpg",
+          "sourceUrl": "https://www.facebook.com/1161063486266736/posts/1156013503438401",
+          "width": 500,
+          "height": 697,
+          "kind": "image",
+          "capturedAt": "2026-11-04T15:50:34.254Z",
+          "sha256": "299e75f99f992cf8756daaee416a4338f6d7737bba2ecef8ef93a20414b28d27"
+        }
+      ]
     }
   ],
   "matches": [
@@ -6379,12 +7310,30 @@
       "targetId": "post:pfbid0abr2AuC5iF7qrfVaV4tpCTmdtBWNUtXcGj5WEr3kf6w5ebjJNugMTe2dC7T2zSkql",
       "kind": "headline",
       "delayMinutes": 0
+    },
+    {
+      "sourceId": "post:pfbid0JjkW3RYrCMWhcqKpw2Wq2CxxqYQY8sWwJLEwZy9GF8BeczyNGJtBM8iC92L8oWEZl",
+      "targetId": "post:pfbid031Set3UWaG5qXsXkbh5hvgPfzqfgmaLuFKfHEbYDUeVTwkK95BZ3SpBR6J1zXw2EMl",
+      "kind": "headline",
+      "delayMinutes": 1146.0
+    },
+    {
+      "sourceId": "post:pfbid0JjkW3RYrCMWhcqKpw2Wq2CxxqYQY8sWwJLEwZy9GF8BeczyNGJtBM8iC92L8oWEZl",
+      "targetId": "post:1582826077192767",
+      "kind": "headline",
+      "delayMinutes": 1146.0
+    },
+    {
+      "sourceId": "post:pfbid0JjkW3RYrCMWhcqKpw2Wq2CxxqYQY8sWwJLEwZy9GF8BeczyNGJtBM8iC92L8oWEZl",
+      "targetId": "post:1156013503438401",
+      "kind": "headline",
+      "delayMinutes": 1146.0
     }
   ],
   "coverage": [
     {
       "keyword": "Гюров",
-      "count": 51
+      "count": 60
     },
     {
       "keyword": "Кандев",
@@ -6392,7 +7341,7 @@
     },
     {
       "keyword": "Йотова",
-      "count": 35
+      "count": 43
     },
     {
       "keyword": "избори",
@@ -6400,7 +7349,7 @@
     },
     {
       "keyword": "украйна",
-      "count": 12
+      "count": 13
     },
     {
       "keyword": "война",
@@ -6408,7 +7357,7 @@
     },
     {
       "keyword": "президент",
-      "count": 21
+      "count": 22
     },
     {
       "keyword": "изпращане на войници",
@@ -6420,7 +7369,7 @@
     },
     {
       "keyword": "пеевски",
-      "count": 22
+      "count": 23
     },
     {
       "keyword": "ППДБ",
@@ -6456,7 +7405,7 @@
     },
     {
       "keyword": "радев",
-      "count": 7
+      "count": 8
     },
     {
       "keyword": "лева",
@@ -6496,7 +7445,7 @@
     },
     {
       "keyword": "путин",
-      "count": 1
+      "count": 2
     },
     {
       "keyword": "петрохан",
@@ -6519,23 +7468,27 @@
       "count": 0
     },
     {
+      "keyword": "измете",
+      "count": 5
+    },
+    {
       "keyword": "балотаж",
-      "count": 10,
+      "count": 12,
       "fromCaptions": true
     },
     {
       "keyword": "дебат",
-      "count": 6,
-      "fromCaptions": true
-    },
-    {
-      "keyword": "ГЕРБ",
       "count": 7,
       "fromCaptions": true
     },
     {
+      "keyword": "ГЕРБ",
+      "count": 8,
+      "fromCaptions": true
+    },
+    {
       "keyword": "ДПС",
-      "count": 14,
+      "count": 15,
       "fromCaptions": true
     },
     {
@@ -6570,12 +7523,12 @@
     },
     {
       "keyword": "МВР",
-      "count": 1,
+      "count": 2,
       "fromCaptions": true
     },
     {
       "keyword": "БНТ",
-      "count": 6,
+      "count": 11,
       "fromCaptions": true
     },
     {
@@ -6585,7 +7538,7 @@
     },
     {
       "keyword": "Прогресивна България",
-      "count": 3,
+      "count": 4,
       "fromCaptions": true
     },
     {
