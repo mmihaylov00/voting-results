@@ -158,7 +158,7 @@ export class ForensicsGainsChartComponent {
       return point ? this.tooltip(point) : '';
     };
     return {
-      chart: { type: 'scatter', height: 500, backgroundColor: 'transparent', style: { fontFamily: 'inherit' }, zooming: { type: 'xy', pinchType: 'xy' }, panning: { enabled: true, type: 'xy' }, panKey: 'shift' },
+      chart: { type: 'scatter', animation: false, height: 500, backgroundColor: 'transparent', style: { fontFamily: 'inherit' }, zooming: { type: 'xy', pinchType: 'xy' }, panning: { enabled: true, type: 'xy' }, panKey: 'shift' },
       title: { text: 'Всяка точка е избирателна секция', align: 'left', style: { color: 'var(--research-ink)', fontSize: '15px' } },
       xAxis: { title: { text: this.comparison() === 'gyurov' ? 'Δ гласове за Гюров' : 'Δ гласували', style: { color: 'var(--research-ink)' } },
         events: { afterSetExtremes: () => this.syncZoom() }, allowDecimals: false, minRange: 1, labels: { style: { color: 'var(--research-ink)' } }, gridLineWidth: 1, gridLineColor: 'var(--research-rule)', plotLines: [{ value: 0, color: '#81909c', width: 1 }] },

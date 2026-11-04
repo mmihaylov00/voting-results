@@ -258,6 +258,40 @@ describe('section gain graph and ranking', () => {
     }
   });
 
+  it('removes filtered-out markers immediately and keeps the remaining dot hover and click tied to its section', () => {
+    const remaining = row({ sectionId: 'remaining-section', deltaVoted: 100,
+      candidateChanges: [candidateFixture('4', 20, 30), candidateFixture('25', 30, 120)] });
+    const fixture = setup([row({ sectionId: 'removed-a' }), row({ sectionId: 'removed-b' }), remaining]);
+    const component = fixture.componentInstance;
+    const container = document.createElement('div');
+    document.body.append(container);
+    const initial = component.chart();
+    const chart = Highcharts.chart(container, { ...initial, chart: { ...initial.chart, width: 700, height: 500, margin: [40, 40, 60, 60] },
+      accessibility: { enabled: false } });
+    const selected: ForensicsSection[] = [];
+    component.sectionSelect.subscribe(section => selected.push(section));
+    try {
+      fixture.componentRef.setInput('rows', [remaining]); fixture.detectChanges();
+      chart.update(component.chart(), true, false);
+      const scatter = chart.series.find(series => series.type === 'scatter');
+      expect(scatter?.points).toHaveLength(1);
+      expect(container.querySelectorAll('.highcharts-series-group .highcharts-scatter-series .highcharts-point')).toHaveLength(1);
+      const point = scatter?.points[0];
+      if (!point?.graphic?.element) throw new Error('Missing filtered point marker');
+      point.onMouseOver();
+      expect(chart.hoverPoint).toBe(point);
+      expect(container.querySelector('.highcharts-tooltip')?.textContent).toContain('remaining-section');
+      expect(container.querySelector('.highcharts-tooltip')?.textContent).toContain('Δ +90');
+      point.graphic.element.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      expect(selected).toEqual([remaining]);
+      expect(selected[0]).toBe(remaining);
+    } finally {
+      chart.destroy();
+      container.remove();
+      fixture.destroy();
+    }
+  });
+
   it('labels only five nonzero candidate-gain extremes', () => {
     const fixture = setup(Array.from({ length: 8 }, (_, index) => row({ sectionId: String(index),
       candidateChanges: [candidateFixture('4', 10, 20), candidateFixture('25', 20, 20 + index)] })));
