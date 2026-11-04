@@ -2,7 +2,7 @@
   "version": 1,
   "period": "2026-10",
   "collectionDate": "2026-11-04",
-  "collectionPostCount": 83,
+  "collectionPostCount": 152,
   "titleSearchCount": 49,
   "keywordTarget": 100,
   "pages": [
@@ -346,6 +346,78 @@
         "kind": "image",
         "capturedAt": "2026-11-04T15:49:54.864Z",
         "sha256": "fb7328144c1ca87bdd39d84761e5d30d78df0a6cf38245fee48b67ac1526b4a7"
+      }
+    },
+    {
+      "id": "61557189262331",
+      "name": "Anonymous BG",
+      "url": "https://www.facebook.com/profile.php?id=61557189262331",
+      "followers": 31000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection",
+      "avatar": {
+        "src": "/images/facebook/2026/493cdb391c9632cb781941af4ef4b56d47e847c69d9e3363df9a5975ec69c0eb.avif",
+        "sourceUrl": "https://www.facebook.com/profile.php?id=61557189262331",
+        "width": 80,
+        "height": 80,
+        "kind": "image",
+        "capturedAt": "2026-11-04T19:17:51.453Z",
+        "sha256": "493cdb391c9632cb781941af4ef4b56d47e847c69d9e3363df9a5975ec69c0eb"
+      }
+    },
+    {
+      "id": "https://www.facebook.com/zapiskipobgpolitikata",
+      "name": "Записки по българската политика",
+      "url": "https://www.facebook.com/zapiskipobgpolitikata",
+      "followers": 9900,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection",
+      "avatar": {
+        "src": "/images/facebook/2026/78b0500ef6955bd726c5fb5c3c9dbd79328ebb40b1c8f40a8e1299c3061d0969.jpg",
+        "sourceUrl": "https://www.facebook.com/zapiskipobgpolitikata",
+        "width": 80,
+        "height": 80,
+        "kind": "image",
+        "capturedAt": "2026-11-04T19:22:22.405Z",
+        "sha256": "78b0500ef6955bd726c5fb5c3c9dbd79328ebb40b1c8f40a8e1299c3061d0969"
+      }
+    },
+    {
+      "id": "61585325593477",
+      "name": "Либерална Секта",
+      "url": "https://www.facebook.com/profile.php?id=61585325593477",
+      "followers": 5000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection",
+      "avatar": {
+        "src": "/images/facebook/2026/ee6a54f9482ad2f1e0a9e345e3b96e7154680cb716ccd9535f19eda55391fc15.jpg",
+        "sourceUrl": "https://www.facebook.com/profile.php?id=61585325593477",
+        "width": 480,
+        "height": 480,
+        "kind": "image",
+        "capturedAt": "2026-11-04T19:25:58.779Z",
+        "sha256": "ee6a54f9482ad2f1e0a9e345e3b96e7154680cb716ccd9535f19eda55391fc15"
+      }
+    },
+    {
+      "id": "100076891908016",
+      "name": "Антимедия",
+      "url": "https://www.facebook.com/profile.php?id=100076891908016",
+      "followers": 6000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection",
+      "avatar": {
+        "src": "/images/facebook/2026/85f41820880a70ec583322a8999f025dd0e4ad93a676cc0cdbc322ce77055b13.jpg",
+        "sourceUrl": "https://www.facebook.com/profile.php?id=100076891908016",
+        "width": 80,
+        "height": 80,
+        "kind": "image",
+        "capturedAt": "2026-11-04T19:59:47.340Z",
+        "sha256": "85f41820880a70ec583322a8999f025dd0e4ad93a676cc0cdbc322ce77055b13"
       }
     }
   ],
@@ -7242,6 +7314,3256 @@
           "sha256": "299e75f99f992cf8756daaee416a4338f6d7737bba2ecef8ef93a20414b28d27"
         }
       ]
+    },
+    {
+      "id": "post:pfbid0Szdue84b6ghkUEwm7Vc4bA1S8wXdtNji68WrCZhHshZTrmFkKwhqGYtsgt7FV8nml",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Szdue84b6ghkUEwm7Vc4bA1S8wXdtNji68WrCZhHshZTrmFkKwhqGYtsgt7FV8nml&id=61577398061794",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T19:57:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:14:04.805Z",
+      "excerpt": "Ще настъпим ли мотиката отново?",
+      "summary": "Политическа карикатура пита дали избирателите ще повторят предишен избор.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 128,
+          "approximate": false,
+          "raw": "128"
+        },
+        "comments": {
+          "value": 4,
+          "approximate": false,
+          "raw": "4"
+        },
+        "shares": {
+          "value": 5,
+          "approximate": false,
+          "raw": "5"
+        }
+      },
+      "sourceTextSha256": "6237b8e5bc730b3fe1fea66c6b2c9191e79921f77c6bcbe62749007fe026e904",
+      "images": [
+        {
+          "src": "/images/facebook/2026/44172ecad739b8707398d9b8f1fc7d3664e6a5f47dd0ca270a988b83e9bbe29f.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Szdue84b6ghkUEwm7Vc4bA1S8wXdtNji68WrCZhHshZTrmFkKwhqGYtsgt7FV8nml&id=61577398061794",
+          "width": 1462,
+          "height": 1076,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:14:04.805Z",
+          "sha256": "44172ecad739b8707398d9b8f1fc7d3664e6a5f47dd0ca270a988b83e9bbe29f"
+        }
+      ],
+      "platformLabels": [
+        "AI content"
+      ]
+    },
+    {
+      "id": "post:pfbid0UBSSooYbyLQ1yfNtsMtSWXCH6rGffqExNfACADwoAr9sJyKEupppWT6RbM9xEjVMl",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0UBSSooYbyLQ1yfNtsMtSWXCH6rGffqExNfACADwoAr9sJyKEupppWT6RbM9xEjVMl&id=61557189262331",
+      "date": "2026-10-29",
+      "publishedAt": "2026-10-29T15:08:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:17:51.453Z",
+      "excerpt": "Все повече българи отказват да поглъщат наготово пропагандните послания за Украйна и все по-смело поставят под въпрос официалната линия на Брюксел. Монополът върху истината…",
+      "summary": "Страницата твърди, че все повече българи отхвърлят посланията за Украйна и официалната линия на Брюксел.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        },
+        {
+          "keyword": "Жълтопаветни",
+          "source": "text",
+          "evidence": "жълтопаветни"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 1800,
+          "approximate": true,
+          "raw": "1.8K"
+        },
+        "comments": {
+          "value": 80,
+          "approximate": false,
+          "raw": "80"
+        },
+        "shares": {
+          "value": 282,
+          "approximate": false,
+          "raw": "282"
+        }
+      },
+      "sourceTextSha256": "f7626a773eb29d431ec852dda4bba600e06d72f5364ea27685823809911202b4",
+      "images": [
+        {
+          "src": "/images/facebook/2026/120b17d1d49d5e8d4561a2bd172f4112c144d96e9392279d136d0ca978cb4cff.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0UBSSooYbyLQ1yfNtsMtSWXCH6rGffqExNfACADwoAr9sJyKEupppWT6RbM9xEjVMl&id=61557189262331",
+          "width": 1312,
+          "height": 1199,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:17:51.453Z",
+          "sha256": "120b17d1d49d5e8d4561a2bd172f4112c144d96e9392279d136d0ca978cb4cff"
+        }
+      ],
+      "platformLabels": [
+        "AI content"
+      ]
+    },
+    {
+      "id": "post:pfbid02VWS1ehNessnuMz9N8jgpK1jV3vB3Z9sViSpR3YLYMojPm5JQ8vGmUwQsLLggj2PDl",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "url": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02VWS1ehNessnuMz9N8jgpK1jV3vB3Z9sViSpR3YLYMojPm5JQ8vGmUwQsLLggj2PDl",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T23:14:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:22:22.405Z",
+      "excerpt": "Ех, тези съюзници! Много са ларж. Иначе се теглят кредити и се правят икономии, но за война винаги се намира суха пара в брой!",
+      "summary": "Коментар за кредитите, икономиите и финансирането на военна помощ за Украйна, с приложена публикация на OFFNews.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "война",
+          "source": "text",
+          "evidence": "война"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 14,
+          "approximate": false,
+          "raw": "14"
+        },
+        "comments": {
+          "value": 2,
+          "approximate": false,
+          "raw": "2"
+        },
+        "shares": {
+          "value": 2,
+          "approximate": false,
+          "raw": "2"
+        }
+      },
+      "sourceTextSha256": "005b5fea6527d942846db21b44a778be46b5d3ad96e5c312f6ce99a5b1bdf352",
+      "images": [
+        {
+          "src": "/images/facebook/2026/9537d2f2b71554c35f0ea56c508869b01d4b2952e829055d2fce79dd6fc191a6.jpg",
+          "sourceUrl": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02VWS1ehNessnuMz9N8jgpK1jV3vB3Z9sViSpR3YLYMojPm5JQ8vGmUwQsLLggj2PDl",
+          "width": 1185,
+          "height": 1083,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:22:22.405Z",
+          "sha256": "9537d2f2b71554c35f0ea56c508869b01d4b2952e829055d2fce79dd6fc191a6"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02nWi2KkkD9QQJ5hhEvM7uxJhdtuZMsmXUVjPeLNoxUMzq6NgzeUxMZPKPYFLtiwzJl",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "url": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02nWi2KkkD9QQJ5hhEvM7uxJhdtuZMsmXUVjPeLNoxUMzq6NgzeUxMZPKPYFLtiwzJl",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T21:48:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:23:42.681Z",
+      "excerpt": "Познайте кой ще поеме инсценировката на Сончето Колтуклиева? Хаджигенката. Какво ще…",
+      "summary": "Страницата критикува Николай Хаджигенов за предполагаемото представляване на Соня Колтуклиева и ПИК, като споделя материал на Евроком.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "Колтуклиева",
+          "source": "text",
+          "evidence": "Колтуклиева"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 55,
+          "approximate": false,
+          "raw": "55"
+        },
+        "comments": {
+          "value": 28,
+          "approximate": false,
+          "raw": "28"
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "6b067198dbdf11cb9cb546c9a75fcec63d89cd1202a27ede968a5ef89a89a868",
+      "images": [
+        {
+          "src": "/images/facebook/2026/e7167cce15b521b2aeed8c3cc7c9658b8949b1d63d4704fbe56dbbc7ad65315b.jpg",
+          "sourceUrl": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02nWi2KkkD9QQJ5hhEvM7uxJhdtuZMsmXUVjPeLNoxUMzq6NgzeUxMZPKPYFLtiwzJl",
+          "width": 1000,
+          "height": 522,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:23:42.681Z",
+          "sha256": "e7167cce15b521b2aeed8c3cc7c9658b8949b1d63d4704fbe56dbbc7ad65315b"
+        }
+      ],
+      "linkHeadline": "Адв. Хаджигенов: Ще съдим НСО и председателя на парламента за инцидента с Колтуклиева"
+    },
+    {
+      "id": "video:1316088687265038",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/1316088687265038",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T20:49:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:25:58.779Z",
+      "excerpt": "100 000€ за кампанията на Гюров. Кой ги дава и каква е връзката му с бизнеса с бойни дронове? Проверихме връзките.",
+      "summary": "Публикацията твърди за дарение от 100 000 евро за кампанията на Гюров и поставя въпрос за връзки на дарителя с бойни дронове.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 30,
+          "approximate": false,
+          "raw": "30"
+        },
+        "comments": {
+          "value": 1,
+          "approximate": false,
+          "raw": "1"
+        },
+        "shares": {
+          "value": 87,
+          "approximate": false,
+          "raw": "87"
+        }
+      },
+      "sourceTextSha256": "620ac3f9c0510f895016e1ec86410e5d997f0eebc5530e1f549ac1ea706b94ed",
+      "images": [
+        {
+          "src": "/images/facebook/2026/41b846efe2ee3413ad34d29de22e8711bdd3e8236e0f607fc8bb02c0ed1961b1.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1316088687265038",
+          "width": 360,
+          "height": 640,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:25:58.779Z",
+          "sha256": "41b846efe2ee3413ad34d29de22e8711bdd3e8236e0f607fc8bb02c0ed1961b1"
+        }
+      ]
+    },
+    {
+      "id": "video:2932892587068862",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/2932892587068862",
+      "date": "2026-10-30",
+      "publishedAt": "2026-10-30T18:21:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:27:16.712Z",
+      "excerpt": "Племенник на донора на Андрей Гюров от нарко Мексико Калоян Данчев парадира с ферари, ламборгини, яхти, имоти по цял свят",
+      "summary": "Публикацията разпространява твърдения за имущество на роднина на дарител за кампанията на Андрей Гюров.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Калоян Данчев",
+          "source": "text",
+          "evidence": "Калоян Данчев"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 60,
+          "approximate": false,
+          "raw": "60"
+        },
+        "comments": {
+          "value": 2,
+          "approximate": false,
+          "raw": "2"
+        },
+        "shares": {
+          "value": 167,
+          "approximate": false,
+          "raw": "167"
+        }
+      },
+      "sourceTextSha256": "5663cb364e7211eb9a73e0d8745830b8976ce345d120663984ceaf5bf047926d",
+      "images": [
+        {
+          "src": "/images/facebook/2026/48c69fad117d322c53892eaa5840223502941375c3a0fcbdc58e7c3fc3a8745e.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/2932892587068862",
+          "width": 720,
+          "height": 1280,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:27:16.712Z",
+          "sha256": "48c69fad117d322c53892eaa5840223502941375c3a0fcbdc58e7c3fc3a8745e"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0kyA5L2QH9woHSVbHUbRLNLsVXxo7fjptPJvf6dTqARphjhK32HkoJLL3BYKoATgGl",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0kyA5L2QH9woHSVbHUbRLNLsVXxo7fjptPJvf6dTqARphjhK32HkoJLL3BYKoATgGl&id=61585325593477",
+      "date": "2026-10-30",
+      "publishedAt": "2026-10-30T13:19:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:34:15.234Z",
+      "excerpt": "Извънредно от БНТ: Чистачките масово напускат! Нямало смисъл да работят, след като Гюров собственоръчно измете пода със себе си по време на дебата.",
+      "summary": "Подигравателен текст за представянето на Гюров в дебата, оформен като шеговито съобщение за БНТ.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "измете",
+          "source": "text",
+          "evidence": "измете"
+        },
+        {
+          "keyword": "дебат",
+          "source": "text",
+          "evidence": "дебат"
+        },
+        {
+          "keyword": "БНТ",
+          "source": "text",
+          "evidence": "БНТ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 64,
+          "approximate": false,
+          "raw": "64"
+        },
+        "comments": {
+          "value": 7,
+          "approximate": false,
+          "raw": "7"
+        },
+        "shares": {
+          "value": 46,
+          "approximate": false,
+          "raw": "46"
+        }
+      },
+      "sourceTextSha256": "2f693d027aaf8173f4682fa403cc5f26cb4db924193b6f63ccbaf84a8fd8182d",
+      "images": []
+    },
+    {
+      "id": "post:pfbid0bxazcFzguT9juQznYzRigUnSBxr3JX33dkKRZT7vX142uuXxsi1RWNf94LUf7Ddvl",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0bxazcFzguT9juQznYzRigUnSBxr3JX33dkKRZT7vX142uuXxsi1RWNf94LUf7Ddvl&id=61585325593477",
+      "date": "2026-10-30",
+      "publishedAt": "2026-10-30T00:04:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:34:43.277Z",
+      "excerpt": "ЧЕМОДАН, ВОКЗАЛ, УКРАЙНА! Или на български: Стягай си багажа и заминавай за Украйна!",
+      "summary": "Колажът отправя призив към Гюров да замине за Украйна.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "УКРАЙНА"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 19,
+          "approximate": false,
+          "raw": "19"
+        },
+        "comments": {
+          "value": 1,
+          "approximate": false,
+          "raw": "1"
+        },
+        "shares": {
+          "value": 41,
+          "approximate": false,
+          "raw": "41"
+        }
+      },
+      "sourceTextSha256": "52b537a270be9d19cbb5b6f5729217bfcb2a93da141b34a2216979776e125912",
+      "images": [
+        {
+          "src": "/images/facebook/2026/423131ffccd792635f8d5e4bf743c8ca4e34451ae7c64e09d39f471049a4e821.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0bxazcFzguT9juQznYzRigUnSBxr3JX33dkKRZT7vX142uuXxsi1RWNf94LUf7Ddvl&id=61585325593477",
+          "width": 562,
+          "height": 313,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:34:43.277Z",
+          "sha256": "423131ffccd792635f8d5e4bf743c8ca4e34451ae7c64e09d39f471049a4e821"
+        }
+      ]
+    },
+    {
+      "id": "video:1423330226095881",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/1423330226095881",
+      "date": "2026-10-29",
+      "publishedAt": "2026-10-29T14:37:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:34:54.835Z",
+      "excerpt": "Спонсорът на Андрей Гюров давал работа и на Ивайло Калушев в Мексико",
+      "summary": "Публикацията твърди за връзка между спонсор на Андрей Гюров и работа на Ивайло Калушев в Мексико.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "спонсор",
+          "source": "text",
+          "evidence": "Спонсор"
+        },
+        {
+          "keyword": "нсо",
+          "source": "text",
+          "evidence": "нсо"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 40,
+          "approximate": false,
+          "raw": "40"
+        },
+        "comments": {
+          "value": 1,
+          "approximate": false,
+          "raw": "1"
+        },
+        "shares": {
+          "value": 106,
+          "approximate": false,
+          "raw": "106"
+        }
+      },
+      "sourceTextSha256": "43caf7e093a9108261050bb720b36419ab8abcea69bee036061bc5aa02f1a0ee",
+      "images": [
+        {
+          "src": "/images/facebook/2026/880b7a63f0b25a9dd9dc032fa5321b95579801597a78075331e3a3707ebd0bde.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1423330226095881",
+          "width": 960,
+          "height": 1707,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:34:54.835Z",
+          "sha256": "880b7a63f0b25a9dd9dc032fa5321b95579801597a78075331e3a3707ebd0bde"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0WYiYRntQmkadGMKz3SJoREpkPfVFb2MttNVQwoX97TtSLxk1X4qeFBq31EVJKNTkl",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0WYiYRntQmkadGMKz3SJoREpkPfVFb2MttNVQwoX97TtSLxk1X4qeFBq31EVJKNTkl&id=61585325593477",
+      "date": "2026-10-29",
+      "publishedAt": "2026-10-29T13:09:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:37:51.469Z",
+      "excerpt": "Едно ръкостискане за милиарди. А вие – ЗА или ПРОТИВ сте нашите пари да отиват за Украйна?",
+      "summary": "Колаж с Гюров и Зеленски задава въпрос за разходването на обществени средства за Украйна.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 35,
+          "approximate": false,
+          "raw": "35"
+        },
+        "comments": {
+          "value": 6,
+          "approximate": false,
+          "raw": "6"
+        },
+        "shares": {
+          "value": 93,
+          "approximate": false,
+          "raw": "93"
+        }
+      },
+      "sourceTextSha256": "adba65d6d64f92e7ef17a3cfa4b799c5ca39da9c0bfbac72c73c157835e28754",
+      "images": [
+        {
+          "src": "/images/facebook/2026/82742491d5e54bf0a44042db27a8defd5764d9d116087e5d24690e85f4722d73.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0WYiYRntQmkadGMKz3SJoREpkPfVFb2MttNVQwoX97TtSLxk1X4qeFBq31EVJKNTkl&id=61585325593477",
+          "width": 1080,
+          "height": 1350,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:37:51.469Z",
+          "sha256": "82742491d5e54bf0a44042db27a8defd5764d9d116087e5d24690e85f4722d73"
+        }
+      ]
+    },
+    {
+      "id": "video:1677929967087015",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/1677929967087015",
+      "date": "2026-10-28",
+      "publishedAt": "2026-10-28T18:43:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:39:12.742Z",
+      "excerpt": "Подкрепата на Гюров за Украйна🇺🇦🇺🇦🇺🇦",
+      "summary": "Видео с Андрей Гюров по темата за подкрепата за Украйна.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 41,
+          "approximate": false,
+          "raw": "41"
+        },
+        "comments": {
+          "value": 8,
+          "approximate": false,
+          "raw": "8"
+        },
+        "shares": {
+          "value": 68,
+          "approximate": false,
+          "raw": "68"
+        }
+      },
+      "sourceTextSha256": "fad40d20f3ca3e34c0d61be7f1d57f071fb39f895d5709a7948b7330d63e8fac",
+      "images": [
+        {
+          "src": "/images/facebook/2026/6ff1f90c4c4c687c9d193622ef65dec5603ebf9dc9ccb34a73a88f6665eb4952.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1677929967087015",
+          "width": 960,
+          "height": 1707,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:39:12.742Z",
+          "sha256": "6ff1f90c4c4c687c9d193622ef65dec5603ebf9dc9ccb34a73a88f6665eb4952"
+        }
+      ]
+    },
+    {
+      "id": "video:1472440601695103",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/1472440601695103",
+      "date": "2026-10-27",
+      "publishedAt": "2026-10-27T20:42:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:42:40.062Z",
+      "excerpt": "",
+      "summary": "Видео с карикатурни изображения на Бойко Борисов.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 60,
+          "approximate": false,
+          "raw": "60"
+        },
+        "comments": {
+          "value": 4,
+          "approximate": false,
+          "raw": "4"
+        },
+        "shares": {
+          "value": 68,
+          "approximate": false,
+          "raw": "68"
+        }
+      },
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "images": [
+        {
+          "src": "/images/facebook/2026/00ba0f2938dba4bd0b08052b86c0a49be3d3d20f488132783ad9abf2ef878653.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1472440601695103",
+          "width": 960,
+          "height": 1707,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:42:40.062Z",
+          "sha256": "00ba0f2938dba4bd0b08052b86c0a49be3d3d20f488132783ad9abf2ef878653"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0m5ATPAutDMVviW3E271akkzPhqNQ7vmJ3QJas2DYDDDMoUf2gccbacexUn81zSf1l",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0m5ATPAutDMVviW3E271akkzPhqNQ7vmJ3QJas2DYDDDMoUf2gccbacexUn81zSf1l&id=61585325593477",
+      "date": "2026-10-28",
+      "publishedAt": "2026-10-28T14:21:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:42:42.313Z",
+      "excerpt": "Той не милее за България",
+      "summary": "Колаж критикува Гюров за използването на украинското знаме в профилни снимки.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 42,
+          "approximate": false,
+          "raw": "42"
+        },
+        "comments": {
+          "value": 40,
+          "approximate": false,
+          "raw": "40"
+        },
+        "shares": {
+          "value": 205,
+          "approximate": false,
+          "raw": "205"
+        }
+      },
+      "sourceTextSha256": "5b8e35ad82204e2a12990bf6ad747bb67be599815bafbaee877ddc911721c398",
+      "images": [
+        {
+          "src": "/images/facebook/2026/6e915bb757a3172d0182e9b602f69c80c5c58c3059c184063f927ebc573debcf.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0m5ATPAutDMVviW3E271akkzPhqNQ7vmJ3QJas2DYDDDMoUf2gccbacexUn81zSf1l&id=61585325593477",
+          "width": 1080,
+          "height": 763,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:42:42.313Z",
+          "sha256": "6e915bb757a3172d0182e9b602f69c80c5c58c3059c184063f927ebc573debcf"
+        }
+      ]
+    },
+    {
+      "id": "video:1433388234897669",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/1433388234897669",
+      "date": "2026-10-27",
+      "publishedAt": "2026-10-27T14:29:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:46:20.928Z",
+      "excerpt": "Андрей Гюров е новият президент на Украйна.",
+      "summary": "Видео свързва кандидатурата на Гюров с политиката към Украйна.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 30,
+          "approximate": false,
+          "raw": "30"
+        },
+        "comments": {
+          "value": 8,
+          "approximate": false,
+          "raw": "8"
+        },
+        "shares": {
+          "value": 129,
+          "approximate": false,
+          "raw": "129"
+        }
+      },
+      "sourceTextSha256": "8b42e76b71c2f4af050f22247fd949e5598058607c4d67946521930dbea6c675",
+      "images": [
+        {
+          "src": "/images/facebook/2026/806508be6d98d08d100553f4e8755a66f40a9cc013e4eccb5e0b7e81d19b3ce8.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1433388234897669",
+          "width": 960,
+          "height": 1707,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:46:20.928Z",
+          "sha256": "806508be6d98d08d100553f4e8755a66f40a9cc013e4eccb5e0b7e81d19b3ce8"
+        }
+      ]
+    },
+    {
+      "id": "video:1608628141015918",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/1608628141015918",
+      "date": "2026-10-26",
+      "publishedAt": "2026-10-26T18:24:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:46:40.515Z",
+      "excerpt": "По 50€ за глас",
+      "summary": "Публикация с образа на Гюров и текст за 50 евро на глас; Facebook я обозначава като AI съдържание.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 796,
+          "approximate": false,
+          "raw": "796"
+        },
+        "comments": {
+          "value": 49,
+          "approximate": false,
+          "raw": "49"
+        },
+        "shares": {
+          "value": 255,
+          "approximate": false,
+          "raw": "255"
+        }
+      },
+      "sourceTextSha256": "184563faca9286913fd3ffd3d9c98e269e923aa4bd1b5cfa448d559fa1cb0414",
+      "images": [
+        {
+          "src": "/images/facebook/2026/1d9cf1a657c130d09a8f1c25b1e95711d58e7657a0781b015b25d3953d1eb189.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1608628141015918",
+          "width": 960,
+          "height": 1707,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:46:40.515Z",
+          "sha256": "1d9cf1a657c130d09a8f1c25b1e95711d58e7657a0781b015b25d3953d1eb189"
+        }
+      ],
+      "platformLabels": [
+        "AI content"
+      ]
+    },
+    {
+      "id": "post:pfbid0oZRtdfH4kWzcrRooEgKEhy5Krkhxq8midaY16wKyeNNHPnVRDqPuBjDFvpvTSpPsl",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0oZRtdfH4kWzcrRooEgKEhy5Krkhxq8midaY16wKyeNNHPnVRDqPuBjDFvpvTSpPsl&id=61585325593477",
+      "date": "2026-10-26",
+      "publishedAt": "2026-10-26T13:01:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:47:22.887Z",
+      "excerpt": "ГЮРОВ: ПРЕЗИДЕНТ НА УКРАЙНА ИЛИ НА БЪЛГАРИЯ? Докато се усмихва на чужди господари, народът ни мизерства. НЕ НА НАЦИОНАЛНИТЕ ПРЕДАТЕЛИ!",
+      "summary": "Колаж и критичен текст противопоставят кандидатурата на Гюров на подкрепата за Украйна.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "ГЮРОВ"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "УКРАЙНА"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "ПРЕЗИДЕНТ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 28,
+          "approximate": false,
+          "raw": "28"
+        },
+        "comments": {
+          "value": 17,
+          "approximate": false,
+          "raw": "17"
+        },
+        "shares": {
+          "value": 193,
+          "approximate": false,
+          "raw": "193"
+        }
+      },
+      "sourceTextSha256": "29b0fffac16478adb489b93e795a710f0d6ef0840b436c7f59f0c9b77a340bab",
+      "images": [
+        {
+          "src": "/images/facebook/2026/1009f90f926ffae3039dfae826c8a06d7d0f7c2832e334e535a3c3eb6640c3ef.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0oZRtdfH4kWzcrRooEgKEhy5Krkhxq8midaY16wKyeNNHPnVRDqPuBjDFvpvTSpPsl&id=61585325593477",
+          "width": 1600,
+          "height": 900,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:47:22.887Z",
+          "sha256": "1009f90f926ffae3039dfae826c8a06d7d0f7c2832e334e535a3c3eb6640c3ef"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0bpiw3fev4bkwEAwVgt9AZrcdzUwSAXYJtKZvspxKMVxV4zGJDFt4ZZ7C1wqYmacQl",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0bpiw3fev4bkwEAwVgt9AZrcdzUwSAXYJtKZvspxKMVxV4zGJDFt4ZZ7C1wqYmacQl&id=61585325593477",
+      "date": "2026-10-25",
+      "publishedAt": "2026-10-25T22:48:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:48:53.944Z",
+      "excerpt": "👁️👄👁️",
+      "summary": "Колаж противопоставя избора на Гюров на изразена подкрепа за Украйна.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 36,
+          "approximate": false,
+          "raw": "36"
+        },
+        "comments": {
+          "value": 10,
+          "approximate": false,
+          "raw": "10"
+        },
+        "shares": {
+          "value": 93,
+          "approximate": false,
+          "raw": "93"
+        }
+      },
+      "sourceTextSha256": "b7a15690526b7ba864bea3fe5f28774d35f75e1d2afa95d2a97b537aac69f381",
+      "images": [
+        {
+          "src": "/images/facebook/2026/ade03bd9d2b0162f3b166b0bc1e3d1216da8e7209a4805cb59d71181a5f8ff3f.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0bpiw3fev4bkwEAwVgt9AZrcdzUwSAXYJtKZvspxKMVxV4zGJDFt4ZZ7C1wqYmacQl&id=61585325593477",
+          "width": 1448,
+          "height": 1086,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:48:53.944Z",
+          "sha256": "ade03bd9d2b0162f3b166b0bc1e3d1216da8e7209a4805cb59d71181a5f8ff3f"
+        }
+      ]
+    },
+    {
+      "id": "video:1094888736870133",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/1094888736870133",
+      "date": "2026-10-25",
+      "publishedAt": "2026-10-25T16:39:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:49:14.847Z",
+      "excerpt": "",
+      "summary": "Видео с образа на Андрей Гюров, публикувано в деня на първия президентски тур.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 1300,
+          "approximate": true,
+          "raw": "1.3K"
+        },
+        "comments": {
+          "value": 196,
+          "approximate": false,
+          "raw": "196"
+        },
+        "shares": {
+          "value": 724,
+          "approximate": false,
+          "raw": "724"
+        }
+      },
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "images": [
+        {
+          "src": "/images/facebook/2026/fd7e9cdd6be27a515914ad01b5df43659fc14fce972e443bde1ae4a1a0e4cb33.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1094888736870133",
+          "width": 960,
+          "height": 1707,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:49:14.847Z",
+          "sha256": "fd7e9cdd6be27a515914ad01b5df43659fc14fce972e443bde1ae4a1a0e4cb33"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0ii9gwtsS2eibLyBLVApRigjnj5RWYXjgumzrQULyeD16cLHNySWsPNDkBFiF7TCl",
+      "pageId": "100083137130737",
+      "url": "https://www.facebook.com/PassiveLarpers3/posts/pfbid0ii9gwtsS2eibLyBLVApRigjnj5RWYXjgumzrQULyeD16cLHNySWsPNDkBFiF7TCl",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T15:42:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:54:58.642Z",
+      "excerpt": "The zoomer editor cooked",
+      "summary": "Страницата споделя видео на Андрей Гюров и Георги Кандев с кратък коментар на английски.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 33,
+          "approximate": false,
+          "raw": "33"
+        },
+        "comments": {
+          "value": 4,
+          "approximate": false,
+          "raw": "4"
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "15fb64702830fd35a512ca30cc73c49595da97dca2050181a91a3473f1c7ecfc",
+      "images": [
+        {
+          "src": "/images/facebook/2026/77c2774e44c7505cf6b541eaaf008e315190b868260ef24562fa294e074bd94f.jpg",
+          "sourceUrl": "https://www.facebook.com/PassiveLarpers3/posts/pfbid0ii9gwtsS2eibLyBLVApRigjnj5RWYXjgumzrQULyeD16cLHNySWsPNDkBFiF7TCl",
+          "width": 1707,
+          "height": 960,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:54:58.642Z",
+          "sha256": "77c2774e44c7505cf6b541eaaf008e315190b868260ef24562fa294e074bd94f"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02e9Nu96hmUGCtZQD3gAzFCAmXrUGpjYts7Qrk3bJhZYGonxLukB2C9xBqafFZycsXl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02e9Nu96hmUGCtZQD3gAzFCAmXrUGpjYts7Qrk3bJhZYGonxLukB2C9xBqafFZycsXl&id=61577398061794",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T22:15:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:17:44.572Z",
+      "excerpt": "",
+      "summary": "Споделено събитие призовава да се гласува с номер4 и Йотова да бъде изпратена в пенсия.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 70,
+          "approximate": false,
+          "raw": "70"
+        },
+        "comments": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "images": [
+        {
+          "src": "/images/facebook/2026/96f552bb7381b8837076898efd71f604d9887935e41698e998e868441c88217c.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02e9Nu96hmUGCtZQD3gAzFCAmXrUGpjYts7Qrk3bJhZYGonxLukB2C9xBqafFZycsXl&id=61577398061794",
+          "width": 1004,
+          "height": 565,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:17:44.572Z",
+          "sha256": "96f552bb7381b8837076898efd71f604d9887935e41698e998e868441c88217c"
+        }
+      ],
+      "linkHeadline": "Време ѝ е за пенсия!"
+    },
+    {
+      "id": "post:pfbid0WEb3SuxipYL7kfDXLptWUroskKqZ11LATBVDp6oHvNUAw6cwDDCWVTDVkQhsTBGzl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0WEb3SuxipYL7kfDXLptWUroskKqZ11LATBVDp6oHvNUAw6cwDDCWVTDVkQhsTBGzl&id=61577398061794",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T18:09:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:21:04.171Z",
+      "excerpt": "Госпожата отказа интервю за CNN, но отиде при Карбовски. Е, всеки го влече натам, накъдето му позволяват разбиранията и интелектът.",
+      "summary": "Критичен коментар за интервю на Йотова при Карбовски, съпоставено с твърдение за отказ от CNN.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Карбовски",
+          "source": "text",
+          "evidence": "Карбовски"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 1400,
+          "approximate": true,
+          "raw": "1.4K"
+        },
+        "comments": {
+          "value": 58,
+          "approximate": false,
+          "raw": "58"
+        },
+        "shares": {
+          "value": 81,
+          "approximate": false,
+          "raw": "81"
+        }
+      },
+      "sourceTextSha256": "8884648254a12b0c20a7ed8295e7f065edd913ae05ddf8a92df0c6282e415fd2",
+      "images": [
+        {
+          "src": "/images/facebook/2026/dc07ec2814bb12fcc9529baa669328a1d6d393721529440de526251797fafbae.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0WEb3SuxipYL7kfDXLptWUroskKqZ11LATBVDp6oHvNUAw6cwDDCWVTDVkQhsTBGzl&id=61577398061794",
+          "width": 1206,
+          "height": 695,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:21:04.171Z",
+          "sha256": "dc07ec2814bb12fcc9529baa669328a1d6d393721529440de526251797fafbae"
+        }
+      ]
+    },
+    {
+      "id": "video:1289332556672095",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1289332556672095/",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T18:01:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:23:12.852Z",
+      "excerpt": "❗️ВАЖНО❗️ Студентите могат да гласуват там където учат. За целта са нужни: ✅️ Лична карта. ✅️ Заверена студентска книжка. ✅️ Декларация, която се попълва…",
+      "summary": "Видео на Гюров с информация за гласуването на студенти и призив да се разпространи.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 133,
+          "approximate": false,
+          "raw": "133"
+        },
+        "comments": {
+          "value": 9,
+          "approximate": false,
+          "raw": "9"
+        },
+        "shares": {
+          "value": 8,
+          "approximate": false,
+          "raw": "8"
+        }
+      },
+      "sourceTextSha256": "56f1fb742c1fdac7de4060caf7957ed6a220385bd205d2012d62e96397076327",
+      "images": [
+        {
+          "src": "/images/facebook/2026/c1629bd14a9ba51a2d2a192765cc3745efc5cbd78d53145f2def578e9cdf0436.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1289332556672095/",
+          "width": 720,
+          "height": 1280,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:23:12.852Z",
+          "sha256": "c1629bd14a9ba51a2d2a192765cc3745efc5cbd78d53145f2def578e9cdf0436"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0XrqUF3wKr3CBc3CEU1vzDG2YFK8QtNHDtW3T8guVhywziTDUZRp8d2B9FwfWX7w8l",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0XrqUF3wKr3CBc3CEU1vzDG2YFK8QtNHDtW3T8guVhywziTDUZRp8d2B9FwfWX7w8l&id=61577398061794",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T18:20:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:24:40.148Z",
+      "excerpt": "Абе, Румене, що не показа готиния бюджет?",
+      "summary": "Кратък критичен въпрос към Румен Радев за непредставения бюджет.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 824,
+          "approximate": false,
+          "raw": "824"
+        },
+        "comments": {
+          "value": 59,
+          "approximate": false,
+          "raw": "59"
+        },
+        "shares": {
+          "value": 36,
+          "approximate": false,
+          "raw": "36"
+        }
+      },
+      "sourceTextSha256": "03ea24d997f17097634337c32649978857f521e7de8755ecf45389ecd9832c43",
+      "images": []
+    },
+    {
+      "id": "post:pfbid02EiFx8u2XuizA1gq35fPdyBExfHwkp7bxX1behZsgJUfoHtGjwq6c6odubsSAV1VEl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02EiFx8u2XuizA1gq35fPdyBExfHwkp7bxX1behZsgJUfoHtGjwq6c6odubsSAV1VEl&id=61577398061794",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T13:27:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:27:15.507Z",
+      "excerpt": "Каква ирония! Възрожденците се надъхват да подкрепят госпожата, която очевидно е привърженичка на еврото. Язък им за борбата!",
+      "summary": "Иронизира подкрепа от привърженици на Възраждане за Йотова, като показва нейна позиция за еврото.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "еврото",
+          "source": "text",
+          "evidence": "еврото"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 165,
+          "approximate": false,
+          "raw": "165"
+        },
+        "comments": {
+          "value": 6,
+          "approximate": false,
+          "raw": "6"
+        },
+        "shares": {
+          "value": 3,
+          "approximate": false,
+          "raw": "3"
+        }
+      },
+      "sourceTextSha256": "76c4bad3e266e606636d41c367a27ca704b170f818ab7ce72133accfc2ae99cd",
+      "images": [
+        {
+          "src": "/images/facebook/2026/3f2873a5234084716eb25e3c776a675b78b5b173941c55f463c1b707bcc4db4c.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02EiFx8u2XuizA1gq35fPdyBExfHwkp7bxX1behZsgJUfoHtGjwq6c6odubsSAV1VEl&id=61577398061794",
+          "width": 1206,
+          "height": 735,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:27:15.507Z",
+          "sha256": "3f2873a5234084716eb25e3c776a675b78b5b173941c55f463c1b707bcc4db4c"
+        }
+      ]
+    },
+    {
+      "id": "video:1844092166778591",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1844092166778591/",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T14:11:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:28:08.014Z",
+      "excerpt": "",
+      "summary": "Видео с кандидат-президента Андрей Гюров, без добавен текстов надпис.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 128,
+          "approximate": false,
+          "raw": "128"
+        },
+        "comments": {
+          "value": 3,
+          "approximate": false,
+          "raw": "3"
+        },
+        "shares": {
+          "value": 8,
+          "approximate": false,
+          "raw": "8"
+        }
+      },
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "images": [
+        {
+          "src": "/images/facebook/2026/8e0f5b74a7ca5af1d681c370957c59e12c04140465cd7693e93aa1b45ad56890.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1844092166778591/",
+          "width": 1280,
+          "height": 720,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:28:08.014Z",
+          "sha256": "8e0f5b74a7ca5af1d681c370957c59e12c04140465cd7693e93aa1b45ad56890"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02LiCfkbcVhJXUPw4XeZKbGXkP3NnELWGwotMGH5kpv1FD46nx5yWUKaTDRvFCxZ9Rl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02LiCfkbcVhJXUPw4XeZKbGXkP3NnELWGwotMGH5kpv1FD46nx5yWUKaTDRvFCxZ9Rl&id=61577398061794",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T09:52:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:28:48.498Z",
+      "excerpt": "О, не! Илияна веднага да се коригира и да запази кирилицата! Това е недопустимо!",
+      "summary": "Сатиричен коментар за кирилицата и английския текст във Facebook страницата на Йотова.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 387,
+          "approximate": false,
+          "raw": "387"
+        },
+        "comments": {
+          "value": 16,
+          "approximate": false,
+          "raw": "16"
+        },
+        "shares": {
+          "value": 4,
+          "approximate": false,
+          "raw": "4"
+        }
+      },
+      "sourceTextSha256": "d897e00517c7d36d0a81be508a45e167594e6f40e7c9ebd69638a1fd990e452d",
+      "images": [
+        {
+          "src": "/images/facebook/2026/2903be0f7787cbdc2609ae3352d954c0dc0cc8f4b2b4eeca30ce50a4d4e02e37.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02LiCfkbcVhJXUPw4XeZKbGXkP3NnELWGwotMGH5kpv1FD46nx5yWUKaTDRvFCxZ9Rl&id=61577398061794",
+          "width": 1206,
+          "height": 738,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:28:48.498Z",
+          "sha256": "2903be0f7787cbdc2609ae3352d954c0dc0cc8f4b2b4eeca30ce50a4d4e02e37"
+        }
+      ]
+    },
+    {
+      "id": "video:1157399536729329",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1157399536729329/",
+      "date": "2026-10-30",
+      "publishedAt": "2026-10-30T22:16:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:30:02.354Z",
+      "excerpt": "Някой може ли да му обясни, че българите, когато отидат в чужбина, си остават с българско гражданство? То бива тъпотии, ама тези са бездънна…",
+      "summary": "Критикува изказване за българското гражданство на хората, живеещи в чужбина.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 995,
+          "approximate": false,
+          "raw": "995"
+        },
+        "comments": {
+          "value": 161,
+          "approximate": false,
+          "raw": "161"
+        },
+        "shares": {
+          "value": 80,
+          "approximate": false,
+          "raw": "80"
+        }
+      },
+      "sourceTextSha256": "1039bf33d2fa99ab047d09540387cc7ccd88c94ecb88a99b4ea4d4b177a5523f",
+      "images": [
+        {
+          "src": "/images/facebook/2026/5c25db3f1f8fae5133c58126fd17f2746a2dbd3d2053fd636116e4aac31195f6.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1157399536729329/",
+          "width": 1220,
+          "height": 720,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:30:02.354Z",
+          "sha256": "5c25db3f1f8fae5133c58126fd17f2746a2dbd3d2053fd636116e4aac31195f6"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02mFRotzxY3qBtCDZVXUsaE8RQ1igsq2fMqs31kRKqkfgMvWAxEBjVG9rffsRtCbpPl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02mFRotzxY3qBtCDZVXUsaE8RQ1igsq2fMqs31kRKqkfgMvWAxEBjVG9rffsRtCbpPl&id=61577398061794",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T08:16:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:30:24.112Z",
+      "excerpt": "",
+      "summary": "Споделя сатирично видео за щаба на Йотова преди президентския дебат.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 40,
+          "approximate": false,
+          "raw": "40"
+        },
+        "comments": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "shares": {
+          "value": 1,
+          "approximate": false,
+          "raw": "1"
+        }
+      },
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "images": [
+        {
+          "src": "/images/facebook/2026/2c2b785855e355a8d5df81a0d047e51ba89388febb55cd6b751bf92a2178414b.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02mFRotzxY3qBtCDZVXUsaE8RQ1igsq2fMqs31kRKqkfgMvWAxEBjVG9rffsRtCbpPl&id=61577398061794",
+          "width": 710,
+          "height": 500,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T20:13:12.270Z",
+          "sha256": "2c2b785855e355a8d5df81a0d047e51ba89388febb55cd6b751bf92a2178414b"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02izp6dNeysrRRYqX8DW9d5zZr1BN5BAaaNy5VEMEhAEGYjBf3cH4DSk6sMnhhSYmVl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02izp6dNeysrRRYqX8DW9d5zZr1BN5BAaaNy5VEMEhAEGYjBf3cH4DSk6sMnhhSYmVl&id=61577398061794",
+      "date": "2026-10-30",
+      "publishedAt": "2026-10-30T22:04:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:31:41.287Z",
+      "excerpt": "",
+      "summary": "Антикомунистически цитат върху изображение, приписан на Маргарет Тачър.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 707,
+          "approximate": false,
+          "raw": "707"
+        },
+        "comments": {
+          "value": 22,
+          "approximate": false,
+          "raw": "22"
+        },
+        "shares": {
+          "value": 87,
+          "approximate": false,
+          "raw": "87"
+        }
+      },
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "images": [
+        {
+          "src": "/images/facebook/2026/be33550da3a0b031b4aaa6b4767e4a313f756312f0475e4f0e758eefd704ba1f.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02izp6dNeysrRRYqX8DW9d5zZr1BN5BAaaNy5VEMEhAEGYjBf3cH4DSk6sMnhhSYmVl&id=61577398061794",
+          "width": 660,
+          "height": 734,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:31:41.287Z",
+          "sha256": "be33550da3a0b031b4aaa6b4767e4a313f756312f0475e4f0e758eefd704ba1f"
+        }
+      ]
+    },
+    {
+      "id": "video:1645050123780583",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1645050123780583/",
+      "date": "2026-10-30",
+      "publishedAt": "2026-10-30T10:18:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:34:10.985Z",
+      "excerpt": "Комунистически похвати в дигитален свят.",
+      "summary": "Критичен видеокоментар за Йотова и екипа ѝ, с обвинения в разпространение на лъжи и манипулации.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 460,
+          "approximate": false,
+          "raw": "460"
+        },
+        "comments": {
+          "value": 62,
+          "approximate": false,
+          "raw": "62"
+        },
+        "shares": {
+          "value": 33,
+          "approximate": false,
+          "raw": "33"
+        }
+      },
+      "sourceTextSha256": "fecbc149864f888f0e692e4154a064eb16e5a12f447ab36eaed69ef11bf9ed9e",
+      "images": [
+        {
+          "src": "/images/facebook/2026/07856043d33d8af49280e63b1b52331a8c4090da1a27092527c86ba4a7b1f77c.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1645050123780583/",
+          "width": 960,
+          "height": 1707,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:34:10.985Z",
+          "sha256": "07856043d33d8af49280e63b1b52331a8c4090da1a27092527c86ba4a7b1f77c"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid034mX45PNZm6a9rVhaNsHMAi2fGVL7yQV2gtHKKwRnSVYgSM4dmJrz4ghHg67qubbKl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid034mX45PNZm6a9rVhaNsHMAi2fGVL7yQV2gtHKKwRnSVYgSM4dmJrz4ghHg67qubbKl&id=61577398061794",
+      "date": "2026-10-30",
+      "publishedAt": "2026-10-30T09:10:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:35:12.418Z",
+      "excerpt": "Троловете на Прогресивна България явно пишат и на страницата на Министерския съвет. Нека! Всички помним наглостта на Пеевски, Данчо Цонев, Хамид и Байрям. Помним…",
+      "summary": "Твърди, че поддръжници на Прогресивна България коментират в страницата на Министерския съвет, и прави сравнение с ДПС.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "Прогресивна България",
+          "source": "text",
+          "evidence": "Прогресивна България"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 117,
+          "approximate": false,
+          "raw": "117"
+        },
+        "comments": {
+          "value": 1,
+          "approximate": false,
+          "raw": "1"
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "320e6e513d0bde8f5052fb6e2b41151b4155c41fcb4e73a8cd22b63ff3b161bf",
+      "images": [
+        {
+          "src": "/images/facebook/2026/d3e3a029a31659208993c5aaf670f1f791284f496cbc76f2b2cc2b382e00efe9.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid034mX45PNZm6a9rVhaNsHMAi2fGVL7yQV2gtHKKwRnSVYgSM4dmJrz4ghHg67qubbKl&id=61577398061794",
+          "width": 1080,
+          "height": 1007,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:35:12.418Z",
+          "sha256": "d3e3a029a31659208993c5aaf670f1f791284f496cbc76f2b2cc2b382e00efe9"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02j1U8MppjHeC9mkVFyTQERduidjJzVX33bwcsYAJN4JQQor6rkbEkyC2twj3Mgy2tl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02j1U8MppjHeC9mkVFyTQERduidjJzVX33bwcsYAJN4JQQor6rkbEkyC2twj3Mgy2tl&id=61577398061794",
+      "date": "2026-10-30",
+      "publishedAt": "2026-10-30T07:55:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:35:24.996Z",
+      "excerpt": "Забелязвате ли какво правят прогресивните напоследък? Четат какво пишем и го обръщат в обратната посока. Драги ми другари прогресивни, ИЗОСТАВАТЕ! 😎",
+      "summary": "Обвинява прогресивните политически опоненти, че обръщат публикациите на страницата в обратната посока.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 375,
+          "approximate": false,
+          "raw": "375"
+        },
+        "comments": {
+          "value": 19,
+          "approximate": false,
+          "raw": "19"
+        },
+        "shares": {
+          "value": 3,
+          "approximate": false,
+          "raw": "3"
+        }
+      },
+      "sourceTextSha256": "a3cc81715e0e119528056bc55279e51f837998b99f32baa3e2bc2f9ca2135a79",
+      "images": []
+    },
+    {
+      "id": "video:998758882516672",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/998758882516672/",
+      "date": "2026-10-30",
+      "publishedAt": "2026-10-30T07:30:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:37:31.375Z",
+      "excerpt": "Когато PR-ът ти подскаже да спреш да гледаш като зла вещица преди Хелоуин.",
+      "summary": "Сатиричен коментар за публичния образ на Йотова и работата на нейния PR.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 2500,
+          "approximate": true,
+          "raw": "2.5K"
+        },
+        "comments": {
+          "value": 154,
+          "approximate": false,
+          "raw": "154"
+        },
+        "shares": {
+          "value": 191,
+          "approximate": false,
+          "raw": "191"
+        }
+      },
+      "sourceTextSha256": "68d110ee4a9a86020e24f7ed2bab1ee389a7394e6a20fcc7a1fa3d5498447180",
+      "images": [
+        {
+          "src": "/images/facebook/2026/6fbe329a14aef56faf7866e73f4394b15cea54c605d47c21426e67a5f802cb81.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/998758882516672/",
+          "width": 720,
+          "height": 1280,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:37:31.375Z",
+          "sha256": "6fbe329a14aef56faf7866e73f4394b15cea54c605d47c21426e67a5f802cb81"
+        }
+      ]
+    },
+    {
+      "id": "video:1843600866897994",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1843600866897994/",
+      "date": "2026-10-30",
+      "publishedAt": "2026-10-30T00:06:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:37:44.391Z",
+      "excerpt": "Лъжа след лъжа. Не знам някой от нас да е говорил за съпруга ѝ….",
+      "summary": "Оспорва изказване на Йотова в президентския дебат относно коментари за съпруга ѝ.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 371,
+          "approximate": false,
+          "raw": "371"
+        },
+        "comments": {
+          "value": 70,
+          "approximate": false,
+          "raw": "70"
+        },
+        "shares": {
+          "value": 6,
+          "approximate": false,
+          "raw": "6"
+        }
+      },
+      "sourceTextSha256": "1e518fa8f84c4bf73ba8aa90d1a89c4776ee55ef25beae738a256ee8995890c2",
+      "images": [
+        {
+          "src": "/images/facebook/2026/a34140933c7bc1c5533b24711cc6f76c5a5da1087f30cb4a47be6fee5df51ee5.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1843600866897994/",
+          "width": 1206,
+          "height": 650,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:37:44.391Z",
+          "sha256": "a34140933c7bc1c5533b24711cc6f76c5a5da1087f30cb4a47be6fee5df51ee5"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02xt8PRr55g9WpRJEFNdRiy5zKgw9zKp7vNsSLS9TPcj9V2YQDzoCeoX4XuwJjpbbgl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02xt8PRr55g9WpRJEFNdRiy5zKgw9zKp7vNsSLS9TPcj9V2YQDzoCeoX4XuwJjpbbgl&id=61577398061794",
+      "date": "2026-10-29",
+      "publishedAt": "2026-10-29T22:18:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:37:54.375Z",
+      "excerpt": "Комунисти, сър. Нагли и лъжливи. Комунисти.",
+      "summary": "Кратък негативен политически коментар за комунисти, без конкретно назован адресат.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 1100,
+          "approximate": true,
+          "raw": "1.1K"
+        },
+        "comments": {
+          "value": 56,
+          "approximate": false,
+          "raw": "56"
+        },
+        "shares": {
+          "value": 36,
+          "approximate": false,
+          "raw": "36"
+        }
+      },
+      "sourceTextSha256": "42623f37d0a358718b6919f1c6bad4e5799bce7c6cc2d1ce45a32b923fd7ba4a",
+      "images": []
+    },
+    {
+      "id": "post:pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl&id=61577398061794",
+      "date": "2026-10-29",
+      "publishedAt": "2026-10-29T17:58:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:39:24.123Z",
+      "excerpt": "Те, дроновете, ще чакат Румен да вдигне самолета.",
+      "summary": "Саркастичен коментар за Радев, дроновете и бойната авиация.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 735,
+          "approximate": false,
+          "raw": "735"
+        },
+        "comments": {
+          "value": 75,
+          "approximate": false,
+          "raw": "75"
+        },
+        "shares": {
+          "value": 14,
+          "approximate": false,
+          "raw": "14"
+        }
+      },
+      "sourceTextSha256": "d9f1f3a823d59c72c3b40c39916029abb0072977e9dd2df38b10210a5f8a906e",
+      "images": [
+        {
+          "src": "/images/facebook/2026/2e10a6645856e54a9ab4c2649ce7c9c0e9bd4941c12ee6921c4014f0c2fc1201.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl&id=61577398061794",
+          "width": 1206,
+          "height": 1095,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:39:24.123Z",
+          "sha256": "2e10a6645856e54a9ab4c2649ce7c9c0e9bd4941c12ee6921c4014f0c2fc1201"
+        }
+      ]
+    },
+    {
+      "id": "video:1138813955363373",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1138813955363373/",
+      "date": "2026-10-29",
+      "publishedAt": "2026-10-29T21:12:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:40:08.846Z",
+      "excerpt": "Тролове и елфи, другарката започна речта си с вас! Вие сте сила! 🤣",
+      "summary": "Сатиричен коментар за началното изказване на Йотова в президентския дебат и споменаването на тролове и елфи.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 1400,
+          "approximate": true,
+          "raw": "1.4K"
+        },
+        "comments": {
+          "value": 124,
+          "approximate": false,
+          "raw": "124"
+        },
+        "shares": {
+          "value": 31,
+          "approximate": false,
+          "raw": "31"
+        }
+      },
+      "sourceTextSha256": "9f9ad5b9bc80ceb81e97f3cff827cbd8b8a86d23320e069f9e8898c632b2fe52",
+      "images": [
+        {
+          "src": "/images/facebook/2026/cfb675cc5f27f784e6ff40defbfb928b1738d6e88538313ee4d8eef04fc960bd.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1138813955363373/",
+          "width": 1206,
+          "height": 662,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:40:08.846Z",
+          "sha256": "cfb675cc5f27f784e6ff40defbfb928b1738d6e88538313ee4d8eef04fc960bd"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02dFcX8GbhGCDmdyrjFkrCR4MyiFixghEKEtr7cvvyYWgMYAbiFHUoHnYAgzA1B1dgl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02dFcX8GbhGCDmdyrjFkrCR4MyiFixghEKEtr7cvvyYWgMYAbiFHUoHnYAgzA1B1dgl&id=61577398061794",
+      "date": "2026-10-29",
+      "publishedAt": "2026-10-29T21:04:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:40:24.422Z",
+      "excerpt": "Тролове и елфи, другарката няма да говори само с вас! 🤣",
+      "summary": "Сатиричен коментар към обръщенията за тролове и елфи в началото на президентския дебат.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 344,
+          "approximate": false,
+          "raw": "344"
+        },
+        "comments": {
+          "value": 21,
+          "approximate": false,
+          "raw": "21"
+        },
+        "shares": {
+          "value": 2,
+          "approximate": false,
+          "raw": "2"
+        }
+      },
+      "sourceTextSha256": "393f4223d1c251e1eddfed59325a6a354facc2bc89ae8337080c86da88713410",
+      "images": []
+    },
+    {
+      "id": "post:pfbid0NnE2Mnc5FLn4mWkiG5QoT9DJwKnsFPL11GVhDW5aZpru6rRqASn4DwEbAwPgZ7xFl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0NnE2Mnc5FLn4mWkiG5QoT9DJwKnsFPL11GVhDW5aZpru6rRqASn4DwEbAwPgZ7xFl&id=61577398061794",
+      "date": "2026-10-29",
+      "publishedAt": "2026-10-29T17:29:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:41:00.961Z",
+      "excerpt": "Румене, и таз опорка отидЕ!",
+      "summary": "Саркастичен коментар към политическа теза на Радев, придружен от публикация за еврото.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 544,
+          "approximate": false,
+          "raw": "544"
+        },
+        "comments": {
+          "value": 8,
+          "approximate": false,
+          "raw": "8"
+        },
+        "shares": {
+          "value": 32,
+          "approximate": false,
+          "raw": "32"
+        }
+      },
+      "sourceTextSha256": "2d4b001096b287f1e945b876a9ee4417498e19e7503cafc3d7e54dcd8f6d9a79",
+      "images": [
+        {
+          "src": "/images/facebook/2026/04df7ebc19d1ef387f6b89ed6987e5ec3db619054858913f7da29da570510fe0.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0NnE2Mnc5FLn4mWkiG5QoT9DJwKnsFPL11GVhDW5aZpru6rRqASn4DwEbAwPgZ7xFl&id=61577398061794",
+          "width": 1080,
+          "height": 1080,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:41:00.961Z",
+          "sha256": "04df7ebc19d1ef387f6b89ed6987e5ec3db619054858913f7da29da570510fe0"
+        }
+      ]
+    },
+    {
+      "id": "video:1840261970724145",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1840261970724145/",
+      "date": "2026-10-29",
+      "publishedAt": "2026-10-29T11:08:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:41:21.430Z",
+      "excerpt": "Кворумът НЕ пропадна, ВИЕ “пропаднахте” кворума!",
+      "summary": "Критикува начина, по който политиците представят липсата на парламентарен кворум.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 284,
+          "approximate": false,
+          "raw": "284"
+        },
+        "comments": {
+          "value": 19,
+          "approximate": false,
+          "raw": "19"
+        },
+        "shares": {
+          "value": 21,
+          "approximate": false,
+          "raw": "21"
+        }
+      },
+      "sourceTextSha256": "652c3a044a7cb07035a15ba9fc206672331f9937b478eeed0740315c7deb12da",
+      "images": [
+        {
+          "src": "/images/facebook/2026/74647dc78f5b7ab6975a486523ae528d9055282d626636d6c60c941b8bbc4164.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1840261970724145/",
+          "width": 720,
+          "height": 1280,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:41:21.430Z",
+          "sha256": "74647dc78f5b7ab6975a486523ae528d9055282d626636d6c60c941b8bbc4164"
+        }
+      ]
+    },
+    {
+      "id": "video:951043291091990",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/951043291091990/",
+      "date": "2026-10-29",
+      "publishedAt": "2026-10-29T16:36:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:41:55.410Z",
+      "excerpt": "Хората, които се отопляват на газ… да се оправят, да минават на ток. Това на помня на: Ходи пеша, бе! 🤧",
+      "summary": "Критикува изказване за преминаване от газ към електричество за отопление.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 432,
+          "approximate": false,
+          "raw": "432"
+        },
+        "comments": {
+          "value": 47,
+          "approximate": false,
+          "raw": "47"
+        },
+        "shares": {
+          "value": 42,
+          "approximate": false,
+          "raw": "42"
+        }
+      },
+      "sourceTextSha256": "eee84b82ea8c885189916542e0d82e0dc7e5821631d66979d8ac95c4845c4b48",
+      "images": [
+        {
+          "src": "/images/facebook/2026/e2b43b825137178edc56d11ca42dc2abad6835192ba45b226eac6c793c43a6d9.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/951043291091990/",
+          "width": 960,
+          "height": 1707,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:41:55.410Z",
+          "sha256": "e2b43b825137178edc56d11ca42dc2abad6835192ba45b226eac6c793c43a6d9"
+        }
+      ]
+    },
+    {
+      "id": "video:1604352204018118",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1604352204018118/",
+      "date": "2026-10-29",
+      "publishedAt": "2026-10-29T08:09:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:42:41.386Z",
+      "excerpt": "Ивайло Мирчев, признай си! 😆",
+      "summary": "Сатирично обръщение към Ивайло Мирчев, придружено от видео с Кирил Петков.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 141,
+          "approximate": false,
+          "raw": "141"
+        },
+        "comments": {
+          "value": 2,
+          "approximate": false,
+          "raw": "2"
+        },
+        "shares": {
+          "value": 4,
+          "approximate": false,
+          "raw": "4"
+        }
+      },
+      "sourceTextSha256": "23205ab6c8074b43391cff0a077b0c34b1b5b9ae49a11d47a4f37bd8311fd48e",
+      "images": [
+        {
+          "src": "/images/facebook/2026/2fb8cbd0b67f8134288812a2a4f9822bb9e3acbc905fb2cdf0a64f022c317f2d.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1604352204018118/",
+          "width": 720,
+          "height": 1280,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:42:41.386Z",
+          "sha256": "2fb8cbd0b67f8134288812a2a4f9822bb9e3acbc905fb2cdf0a64f022c317f2d"
+        }
+      ]
+    },
+    {
+      "id": "video:1157252846871409",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1157252846871409/",
+      "date": "2026-10-28",
+      "publishedAt": "2026-10-28T23:10:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:42:51.696Z",
+      "excerpt": "Сега пък “силиконовите орки” на Ивайло Мирчев. 😆",
+      "summary": "Коментира употребата на израза „силиконовите орки“ във връзка с Ивайло Мирчев.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 648,
+          "approximate": false,
+          "raw": "648"
+        },
+        "comments": {
+          "value": 109,
+          "approximate": false,
+          "raw": "109"
+        },
+        "shares": {
+          "value": 5,
+          "approximate": false,
+          "raw": "5"
+        }
+      },
+      "sourceTextSha256": "a5b5136a4e3f3273a4cfefc44ecbd69f3e981449820fe72b6a0961f7ac688d41",
+      "images": [
+        {
+          "src": "/images/facebook/2026/b53d2e2c22cd088e95c1d3bda546892b2cebca9c240d117b5870759ed60f1a7d.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1157252846871409/",
+          "width": 1180,
+          "height": 654,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:42:51.696Z",
+          "sha256": "b53d2e2c22cd088e95c1d3bda546892b2cebca9c240d117b5870759ed60f1a7d"
+        }
+      ]
+    },
+    {
+      "id": "video:1445052394418970",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1445052394418970/",
+      "date": "2026-10-28",
+      "publishedAt": "2026-10-28T22:37:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:43:31.363Z",
+      "excerpt": "Ружа описа много ясно какво се крие зад прословутата реплика „Ще направим проверка“ - едно голямо нищо. А аз още чакам резултат от някоя…",
+      "summary": "Критикува обещаваните публични проверки и липсата на видим резултат от тях.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 348,
+          "approximate": false,
+          "raw": "348"
+        },
+        "comments": {
+          "value": 15,
+          "approximate": false,
+          "raw": "15"
+        },
+        "shares": {
+          "value": 13,
+          "approximate": false,
+          "raw": "13"
+        }
+      },
+      "sourceTextSha256": "df8eef3a10ae2be731c5440a5925708ecd55a41bd46858207bde3b359e53c576",
+      "images": [
+        {
+          "src": "/images/facebook/2026/20bacc226d64b491cc333f9872aa2a60ae62dbbe37e2edb8a660adbf59b067f7.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1445052394418970/",
+          "width": 1206,
+          "height": 666,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:43:31.363Z",
+          "sha256": "20bacc226d64b491cc333f9872aa2a60ae62dbbe37e2edb8a660adbf59b067f7"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02JEUuR82BoTDdFy3mZ1D4RGdsginy3jdNHzCkav7W2VQcq77Cg6m4CRpJJgr744Z4l",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02JEUuR82BoTDdFy3mZ1D4RGdsginy3jdNHzCkav7W2VQcq77Cg6m4CRpJJgr744Z4l&id=61577398061794",
+      "date": "2026-10-28",
+      "publishedAt": "2026-10-28T22:01:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:43:42.238Z",
+      "excerpt": "Йотова се изложи в кампанията. Хората очевидно не я харесват. Затова Радев вече говори, отговаря и прави внушения вместо нея. Отчаян ход!",
+      "summary": "Отправя критика към кампанията на Йотова и твърди, че Радев компенсира нейното публично представяне.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "радев",
+          "source": "text",
+          "evidence": "Радев"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 790,
+          "approximate": false,
+          "raw": "790"
+        },
+        "comments": {
+          "value": 26,
+          "approximate": false,
+          "raw": "26"
+        },
+        "shares": {
+          "value": 22,
+          "approximate": false,
+          "raw": "22"
+        }
+      },
+      "sourceTextSha256": "59e627bd65f36b37143e8844875f5ebd25d95a6bc01abe18acf897d23fb427fb",
+      "images": []
+    },
+    {
+      "id": "video:1428401352820819",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1428401352820819/",
+      "date": "2026-10-28",
+      "publishedAt": "2026-10-28T15:28:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:45:05.066Z",
+      "excerpt": "Прогресивен комунист да лъже?",
+      "summary": "Негативен коментар за „прогресивен комунист“, придружен от откъс от политическо интервю.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 674,
+          "approximate": false,
+          "raw": "674"
+        },
+        "comments": {
+          "value": 85,
+          "approximate": false,
+          "raw": "85"
+        },
+        "shares": {
+          "value": 13,
+          "approximate": false,
+          "raw": "13"
+        }
+      },
+      "sourceTextSha256": "bf13ab1ffaee443b528946c421dc5e4996b240bbce1b71793b53dddc23291532",
+      "images": [
+        {
+          "src": "/images/facebook/2026/ea43dfdc627ed07919b9eebd5a97b390567b83d1be46b0c83d1b13a899d84d6a.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1428401352820819/",
+          "width": 960,
+          "height": 1707,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:45:05.066Z",
+          "sha256": "ea43dfdc627ed07919b9eebd5a97b390567b83d1be46b0c83d1b13a899d84d6a"
+        }
+      ]
+    },
+    {
+      "id": "video:1657759299059928",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1657759299059928/",
+      "date": "2026-10-28",
+      "publishedAt": "2026-10-28T15:08:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:45:34.402Z",
+      "excerpt": "",
+      "summary": "Видео с кандидат-президента Андрей Гюров, без добавен текстов надпис.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 325,
+          "approximate": false,
+          "raw": "325"
+        },
+        "comments": {
+          "value": 34,
+          "approximate": false,
+          "raw": "34"
+        },
+        "shares": {
+          "value": 27,
+          "approximate": false,
+          "raw": "27"
+        }
+      },
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "images": [
+        {
+          "src": "/images/facebook/2026/f756bedf03637dc3c1bafb5be9ade9bab9007036df91d94c8847177d9d834b13.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1657759299059928/",
+          "width": 720,
+          "height": 1280,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:45:34.402Z",
+          "sha256": "f756bedf03637dc3c1bafb5be9ade9bab9007036df91d94c8847177d9d834b13"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0yPqM2CFwd9NuTL9D5d74z1oTJX4Zw8aEkbSQHjzgmH3GhRDBXfUowL9opBBpr9pSl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0yPqM2CFwd9NuTL9D5d74z1oTJX4Zw8aEkbSQHjzgmH3GhRDBXfUowL9opBBpr9pSl&id=61577398061794",
+      "date": "2026-10-28",
+      "publishedAt": "2026-10-28T13:23:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:46:08.293Z",
+      "excerpt": "В политиката няма място за аматьори и майстори на късия разказ! Имаме нужда от истински държавници!",
+      "summary": "Политически коментар срещу аматьорския подход и в подкрепа на държавническо поведение.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 354,
+          "approximate": false,
+          "raw": "354"
+        },
+        "comments": {
+          "value": 11,
+          "approximate": false,
+          "raw": "11"
+        },
+        "shares": {
+          "value": 7,
+          "approximate": false,
+          "raw": "7"
+        }
+      },
+      "sourceTextSha256": "fe3b0022442b50dd009f5230b612aff056b8177fbabc0e7efe7b39a4b5042ac4",
+      "images": []
+    },
+    {
+      "id": "post:pfbid0XjxPh3kRWttpVfgXyn4qv9MDgxK8aMB9rCKdG3W4Vfgy9Q4ySbLadZpG5LpbSWDwl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0XjxPh3kRWttpVfgXyn4qv9MDgxK8aMB9rCKdG3W4Vfgy9Q4ySbLadZpG5LpbSWDwl&id=61577398061794",
+      "date": "2026-10-28",
+      "publishedAt": "2026-10-28T13:07:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:46:32.088Z",
+      "excerpt": "Миролюбци, какво стана пак? 🤧",
+      "summary": "Коментира публикация с твърдение за удар по контейнеровоз близо до Шабла и отправя въпрос към „миролюбците“.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 284,
+          "approximate": false,
+          "raw": "284"
+        },
+        "comments": {
+          "value": 46,
+          "approximate": false,
+          "raw": "46"
+        },
+        "shares": {
+          "value": 6,
+          "approximate": false,
+          "raw": "6"
+        }
+      },
+      "sourceTextSha256": "1389407fe7e2cacd140b9ec225472ff12392032ee8f88540d44d35e4487cb0b3",
+      "images": [
+        {
+          "src": "/images/facebook/2026/5f02e1489faf8131fb6a4bfb7275de18ac136ffdac20b9fec6b34c729b6fa5ac.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0XjxPh3kRWttpVfgXyn4qv9MDgxK8aMB9rCKdG3W4Vfgy9Q4ySbLadZpG5LpbSWDwl&id=61577398061794",
+          "width": 1080,
+          "height": 1141,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:46:32.088Z",
+          "sha256": "5f02e1489faf8131fb6a4bfb7275de18ac136ffdac20b9fec6b34c729b6fa5ac"
+        }
+      ]
+    },
+    {
+      "id": "video:1613329786656320",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1613329786656320/",
+      "date": "2026-10-28",
+      "publishedAt": "2026-10-28T09:41:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:47:06.744Z",
+      "excerpt": "Весислава Танчева за „сглобката“ в парламента. 🎯",
+      "summary": "Представя коментар на Весислава Танчева за парламентарната „сглобка“.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "сглобка",
+          "source": "text",
+          "evidence": "сглобка"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 247,
+          "approximate": false,
+          "raw": "247"
+        },
+        "comments": {
+          "value": 6,
+          "approximate": false,
+          "raw": "6"
+        },
+        "shares": {
+          "value": 14,
+          "approximate": false,
+          "raw": "14"
+        }
+      },
+      "sourceTextSha256": "41a5fe9c09c3482a94a3dcaec4426c47ffec79ac1b1aff6651bdd05c6ec6012b",
+      "images": [
+        {
+          "src": "/images/facebook/2026/161d8313143c26b9a87b51b90dee29d50bf36cf0c3d9c7a820d8d294d6bd8114.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1613329786656320/",
+          "width": 1206,
+          "height": 652,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:47:06.744Z",
+          "sha256": "161d8313143c26b9a87b51b90dee29d50bf36cf0c3d9c7a820d8d294d6bd8114"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0cS7D5LBtrT6p1bihysbDJUmJzsmwZtVH2ZnKsrYC8whQbsgM3djcXfVKceaHeY4Rl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0cS7D5LBtrT6p1bihysbDJUmJzsmwZtVH2ZnKsrYC8whQbsgM3djcXfVKceaHeY4Rl&id=61577398061794",
+      "date": "2026-10-28",
+      "publishedAt": "2026-10-28T08:45:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:47:20.670Z",
+      "excerpt": "Сглобка, мир, сглобка, мир, национален интерес. Любимите думички на Радев напоследък.",
+      "summary": "Критикува повтаряните от Радев послания за „сглобка“, мир и национален интерес.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "сглобка",
+          "source": "text",
+          "evidence": "Сглобка"
+        },
+        {
+          "keyword": "радев",
+          "source": "text",
+          "evidence": "Радев"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 432,
+          "approximate": false,
+          "raw": "432"
+        },
+        "comments": {
+          "value": 29,
+          "approximate": false,
+          "raw": "29"
+        },
+        "shares": {
+          "value": 5,
+          "approximate": false,
+          "raw": "5"
+        }
+      },
+      "sourceTextSha256": "32f88cb1da7c531a87c8e441fe69cbd9d8e51c8478708f6dcab03c6744f3a4cf",
+      "images": []
+    },
+    {
+      "id": "video:1119095521093836",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1119095521093836/",
+      "date": "2026-10-27",
+      "publishedAt": "2026-10-27T22:37:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:49:34.966Z",
+      "excerpt": "Опаааа.. прогресивно ДПС ли имаме вече? Цитираме открито Пеевски! 🤧",
+      "summary": "Критикува прогресивните политически опоненти за цитиране на Пеевски и ги свързва с ДПС.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "пеевски",
+          "source": "text",
+          "evidence": "Пеевски"
+        },
+        {
+          "keyword": "ДПС",
+          "source": "text",
+          "evidence": "ДПС"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 586,
+          "approximate": false,
+          "raw": "586"
+        },
+        "comments": {
+          "value": 44,
+          "approximate": false,
+          "raw": "44"
+        },
+        "shares": {
+          "value": 18,
+          "approximate": false,
+          "raw": "18"
+        }
+      },
+      "sourceTextSha256": "46ce3db1d73af098a9161b50463c462f71cac159cb1fde09a703fd41f848ba31",
+      "images": [
+        {
+          "src": "/images/facebook/2026/c45cba6d62d1a3cf24edf2a816a4ae9e0313178f192cf8c06e788b9a10c333fe.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1119095521093836/",
+          "width": 1707,
+          "height": 960,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:49:34.966Z",
+          "sha256": "c45cba6d62d1a3cf24edf2a816a4ae9e0313178f192cf8c06e788b9a10c333fe"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0ao6U31ZyAtQrHVUr8E8hajwi59uzgcUukXnjr3DiEoNkTVW1xi7U1JZZcL5jvWVnl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0ao6U31ZyAtQrHVUr8E8hajwi59uzgcUukXnjr3DiEoNkTVW1xi7U1JZZcL5jvWVnl&id=61577398061794",
+      "date": "2026-10-27",
+      "publishedAt": "2026-10-27T21:29:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:50:36.059Z",
+      "excerpt": "За мен истинският родолюбец е човекът, който иска България да бъде силна, свободна и просперираща тук и сега. Човекът, който не просто говори за…",
+      "summary": "Изразява подкрепа за Андрей Гюров и призовава хората да споделят как разбират родолюбието и политическия си избор.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 271,
+          "approximate": false,
+          "raw": "271"
+        },
+        "comments": {
+          "value": 2,
+          "approximate": false,
+          "raw": "2"
+        },
+        "shares": {
+          "value": 4,
+          "approximate": false,
+          "raw": "4"
+        }
+      },
+      "sourceTextSha256": "37c01dad18957dda1a8040da9746b1d06146d4a5ae6edc8203a64cff919bb5c6",
+      "images": []
+    },
+    {
+      "id": "video:1657215862763287",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/1657215862763287/",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T19:15:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:34:38.346Z",
+      "excerpt": "Полша на ръба на нова институционална криза: Навроцки обвини правителството на Туск в силово овладяване на Конституционния трибунал Президентът прекъсна посещението си в Сенегал…",
+      "summary": "Страницата описва институционален конфликт в Полша между президента Навроцки, правителството на Туск и Конституционния трибунал.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "Президент"
+        },
+        {
+          "keyword": "МВР",
+          "source": "text",
+          "evidence": "мвр"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 730,
+          "approximate": false,
+          "raw": "730"
+        },
+        "comments": {
+          "value": 8,
+          "approximate": false,
+          "raw": "8"
+        },
+        "shares": {
+          "value": 45,
+          "approximate": false,
+          "raw": "45"
+        }
+      },
+      "sourceTextSha256": "60daf77d4795f843c5458e43255693bc05c5b00a2f6040e217364187c248c96a",
+      "images": [
+        {
+          "src": "/images/facebook/2026/b03614bf258dc76c31270d3f9529c00c831b2456586d229ea59c17e8f81be715.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1657215862763287/",
+          "width": 720,
+          "height": 1280,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:34:38.346Z",
+          "sha256": "b03614bf258dc76c31270d3f9529c00c831b2456586d229ea59c17e8f81be715"
+        }
+      ]
+    },
+    {
+      "id": "video:2188569562093001",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/2188569562093001/",
+      "date": "2026-10-30",
+      "publishedAt": "2026-10-30T14:15:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:37:19.683Z",
+      "excerpt": "Лавров в САЩ: Европейската дипломация остана в капана на собствената си политика Руският външен министър Сергей Лавров пристигна в Атланта, САЩ, за участие в…",
+      "summary": "Страницата твърди, че Лавров е пристигнал в САЩ за среща на Г-20, и критикува европейската политика спрямо Русия.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "гей",
+          "source": "text",
+          "evidence": "гей"
+        },
+        {
+          "keyword": "русия",
+          "source": "text",
+          "evidence": "Русия"
+        },
+        {
+          "keyword": "путин",
+          "source": "text",
+          "evidence": "Путин"
+        },
+        {
+          "keyword": "МВР",
+          "source": "text",
+          "evidence": "мвр"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 1100,
+          "approximate": true,
+          "raw": "1.1K"
+        },
+        "comments": {
+          "value": 14,
+          "approximate": false,
+          "raw": "14"
+        },
+        "shares": {
+          "value": 79,
+          "approximate": false,
+          "raw": "79"
+        }
+      },
+      "sourceTextSha256": "c18123a0a91336c3292fe3fc9adee50fdfb60f76fe451bfab1a2b5b16dc653ef",
+      "images": [
+        {
+          "src": "/images/facebook/2026/20a8a73766d108c67ab78081d710fe69cfd61de713664bf03bc5b2ce4074467a.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/2188569562093001/",
+          "width": 1024,
+          "height": 576,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:37:19.683Z",
+          "sha256": "20a8a73766d108c67ab78081d710fe69cfd61de713664bf03bc5b2ce4074467a"
+        }
+      ]
+    },
+    {
+      "id": "video:1505206344753130",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/1505206344753130/",
+      "date": "2026-10-30",
+      "publishedAt": "2026-10-30T14:04:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:38:18.161Z",
+      "excerpt": "Тук софтуерът леко заби и явно беше необходимо малко дебъгване.",
+      "summary": "Кратък ироничен надпис към откъс от телевизионния президентски дебат по БНТ1.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 860,
+          "approximate": false,
+          "raw": "860"
+        },
+        "comments": {
+          "value": 118,
+          "approximate": false,
+          "raw": "118"
+        },
+        "shares": {
+          "value": 79,
+          "approximate": false,
+          "raw": "79"
+        }
+      },
+      "sourceTextSha256": "adf15472edbc408ff3d20fb0c8b45a031890b34d28727a8da2eb9ee1e8031433",
+      "images": [
+        {
+          "src": "/images/facebook/2026/e425ad2ff56a28ed0d476f89c0da151cbebf4933eb6274dd3f16cd8b6a9d605d.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1505206344753130/",
+          "width": 1276,
+          "height": 720,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:38:18.161Z",
+          "sha256": "e425ad2ff56a28ed0d476f89c0da151cbebf4933eb6274dd3f16cd8b6a9d605d"
+        }
+      ]
+    },
+    {
+      "id": "video:3360112920862887",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/3360112920862887/",
+      "date": "2026-10-30",
+      "publishedAt": "2026-10-30T11:45:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:39:53.605Z",
+      "excerpt": "",
+      "summary": "Откъс от телевизионния президентски дебат по БНТ1, публикуван без собствен текстов надпис.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 1200,
+          "approximate": true,
+          "raw": "1.2K"
+        },
+        "comments": {
+          "value": 177,
+          "approximate": false,
+          "raw": "177"
+        },
+        "shares": {
+          "value": 390,
+          "approximate": false,
+          "raw": "390"
+        }
+      },
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "images": [
+        {
+          "src": "/images/facebook/2026/304c4e44806b769f7c4d0e618cced331c3e9e8bc3ebbaef8813cb4d14ca14783.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/3360112920862887/",
+          "width": 1280,
+          "height": 720,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:39:53.605Z",
+          "sha256": "304c4e44806b769f7c4d0e618cced331c3e9e8bc3ebbaef8813cb4d14ca14783"
+        }
+      ]
+    },
+    {
+      "id": "video:1672056241307870",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/1672056241307870/",
+      "date": "2026-10-29",
+      "publishedAt": "2026-10-29T12:01:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:42:22.488Z",
+      "excerpt": "„Само минавам, за да напомня. А между другото, има ли някой, на когото още не му е ясно? “",
+      "summary": "Ироничен видеоклип с визуален надпис, насочен срещу „Продължаваме промяната“.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 1500,
+          "approximate": true,
+          "raw": "1.5K"
+        },
+        "comments": {
+          "value": 37,
+          "approximate": false,
+          "raw": "37"
+        },
+        "shares": {
+          "value": 540,
+          "approximate": false,
+          "raw": "540"
+        }
+      },
+      "sourceTextSha256": "2cc090a5221b597d25a8de40c6e96b6b5f06962df24f0930dcb116c79aabdc23",
+      "images": [
+        {
+          "src": "/images/facebook/2026/6b188ea3276db49358a5c1749bd774df79242fcfd9f2a084b12c18ab8703181c.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1672056241307870/",
+          "width": 720,
+          "height": 1280,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:42:22.488Z",
+          "sha256": "6b188ea3276db49358a5c1749bd774df79242fcfd9f2a084b12c18ab8703181c"
+        }
+      ]
+    },
+    {
+      "id": "video:1438183745146031",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/1438183745146031/",
+      "date": "2026-10-29",
+      "publishedAt": "2026-10-29T11:40:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:43:02.267Z",
+      "excerpt": "Въпреки цялата пропагандна кампания, въпреки постоянните внушения и опитите да се подменят фактите, българите не са толкова глупави, колкото някои очевидно си мислят. Хората…",
+      "summary": "Страницата твърди, че политическата пропаганда прикрива обслужване на чужди интереси.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 519,
+          "approximate": false,
+          "raw": "519"
+        },
+        "comments": {
+          "value": 110,
+          "approximate": false,
+          "raw": "110"
+        },
+        "shares": {
+          "value": 174,
+          "approximate": false,
+          "raw": "174"
+        }
+      },
+      "sourceTextSha256": "54d6c5c2de465a4ba4a150b695e27e85b17dd1dcb143e93434299e1b88004d7b",
+      "images": [
+        {
+          "src": "/images/facebook/2026/7b0ec3ff6bcd5d4ad134c1bd4069744f22b4bd603d3f4204c9752d7488888b37.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1438183745146031/",
+          "width": 1280,
+          "height": 720,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:43:02.267Z",
+          "sha256": "7b0ec3ff6bcd5d4ad134c1bd4069744f22b4bd603d3f4204c9752d7488888b37"
+        }
+      ]
+    },
+    {
+      "id": "video:2057584485644941",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/2057584485644941/",
+      "date": "2026-10-28",
+      "publishedAt": "2026-10-28T14:10:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:45:22.905Z",
+      "excerpt": "",
+      "summary": "Видеоклип с визуален клоунски ефект върху изказване на Урсула фон дер Лайен, публикуван без собствен текстов надпис.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 2600,
+          "approximate": true,
+          "raw": "2.6K"
+        },
+        "comments": {
+          "value": 619,
+          "approximate": false,
+          "raw": "619"
+        },
+        "shares": {
+          "value": 303,
+          "approximate": false,
+          "raw": "303"
+        }
+      },
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "images": [
+        {
+          "src": "/images/facebook/2026/2ae9065110949d54a92f9c6e2cc4c7e6220a4cc41e10982a951aeba1c5ca5d49.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/2057584485644941/",
+          "width": 720,
+          "height": 1280,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:45:22.905Z",
+          "sha256": "2ae9065110949d54a92f9c6e2cc4c7e6220a4cc41e10982a951aeba1c5ca5d49"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02TyRefXGLG13M3pmcAkV6R67J7ngjJGQeapFBWguxS4r1jaPmZemKjBbgnKyKiunWl",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02TyRefXGLG13M3pmcAkV6R67J7ngjJGQeapFBWguxS4r1jaPmZemKjBbgnKyKiunWl&id=61557189262331",
+      "date": "2026-10-27",
+      "publishedAt": "2026-10-27T21:08:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:46:01.755Z",
+      "excerpt": "Ходът на Путин в Москва предизвика паника в Брюксел: какви условия е поставила Русия? В навечерието на откриването на мащабния Форум на страните износителки…",
+      "summary": "Страницата представя твърдения за газова криза в ЕС и условия на Русия за възобновяване на газови доставки.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "избори"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "президент"
+        },
+        {
+          "keyword": "русия",
+          "source": "text",
+          "evidence": "Русия"
+        },
+        {
+          "keyword": "путин",
+          "source": "text",
+          "evidence": "Путин"
+        },
+        {
+          "keyword": "нсо",
+          "source": "text",
+          "evidence": "нсо"
+        },
+        {
+          "keyword": "МВР",
+          "source": "text",
+          "evidence": "мвр"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 1400,
+          "approximate": true,
+          "raw": "1.4K"
+        },
+        "comments": {
+          "value": 130,
+          "approximate": false,
+          "raw": "130"
+        },
+        "shares": {
+          "value": 125,
+          "approximate": false,
+          "raw": "125"
+        }
+      },
+      "sourceTextSha256": "2879d8f5157c2f7e58f8c2bf4d9695513aa82351ac11c062a34766f5c7c99fc3",
+      "images": [
+        {
+          "src": "/images/facebook/2026/9ae1201e6ad9ef0f76e81fb8cf8c8e993a5f467a7353acf00fa4648ae5a545e0.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02TyRefXGLG13M3pmcAkV6R67J7ngjJGQeapFBWguxS4r1jaPmZemKjBbgnKyKiunWl&id=61557189262331",
+          "width": 1536,
+          "height": 1024,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:46:01.755Z",
+          "sha256": "9ae1201e6ad9ef0f76e81fb8cf8c8e993a5f467a7353acf00fa4648ae5a545e0"
+        }
+      ],
+      "platformLabels": [
+        "AI content"
+      ]
+    },
+    {
+      "id": "video:1144845284632823",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/1144845284632823/",
+      "date": "2026-10-27",
+      "publishedAt": "2026-10-27T18:42:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:47:25.422Z",
+      "excerpt": "В Европейския парламент има умни и мислещи хора, но за съжаление гласът им остава нечут заради корумпираните брюкселски марионетки.",
+      "summary": "Страницата твърди, че критични гласове в Европейския парламент остават нечути.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 746,
+          "approximate": false,
+          "raw": "746"
+        },
+        "comments": {
+          "value": 36,
+          "approximate": false,
+          "raw": "36"
+        },
+        "shares": {
+          "value": 121,
+          "approximate": false,
+          "raw": "121"
+        }
+      },
+      "sourceTextSha256": "2e74b09433fa67cd59ddafb26c5cdbe9c3b80d7ce88e90a890202639371e4129",
+      "images": [
+        {
+          "src": "/images/facebook/2026/d8f2c1f4d63aec0eab5dde123b1582df140e2b3db4993e3d479585911de87d52.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1144845284632823/",
+          "width": 720,
+          "height": 1280,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:47:25.422Z",
+          "sha256": "d8f2c1f4d63aec0eab5dde123b1582df140e2b3db4993e3d479585911de87d52"
+        }
+      ]
+    },
+    {
+      "id": "video:2502903913566502",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/2502903913566502/",
+      "date": "2026-10-27",
+      "publishedAt": "2026-10-27T18:27:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:49:02.710Z",
+      "excerpt": "Европа е под напрежение: Сблъсъци, протести и безредици продължават с пълна сила!",
+      "summary": "Страницата описва протести и безредици в Европа и прилага видеоклип.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 165,
+          "approximate": false,
+          "raw": "165"
+        },
+        "comments": {
+          "value": 12,
+          "approximate": false,
+          "raw": "12"
+        },
+        "shares": {
+          "value": 39,
+          "approximate": false,
+          "raw": "39"
+        }
+      },
+      "sourceTextSha256": "86af1f4efd6e4e68905fd24104442fdbe2cdff016c4ba1e36f71000b1208c10a",
+      "images": [
+        {
+          "src": "/images/facebook/2026/54dc3a3ef19e8518f5299087ec5b22af3faae729f3be8fe9f4ccbc4cd1a5c190.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/2502903913566502/",
+          "width": 360,
+          "height": 640,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:49:02.710Z",
+          "sha256": "54dc3a3ef19e8518f5299087ec5b22af3faae729f3be8fe9f4ccbc4cd1a5c190"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02tSwQMoJwCoCrCmufVbnhSct2RywH5uGBxKwZ2B1SbC1mQ1F9oEqM111qJ2LL1cUZl",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02tSwQMoJwCoCrCmufVbnhSct2RywH5uGBxKwZ2B1SbC1mQ1F9oEqM111qJ2LL1cUZl&id=61557189262331",
+      "date": "2026-10-27",
+      "publishedAt": "2026-10-27T18:19:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:50:10.307Z",
+      "excerpt": "ООН обвинява Израел в продължаващ геноцид в Газа: престъпленията срещу палестинците не спират въпреки примирието Убийства, изтезания, сексуално насилие и преследване на палестинци на…",
+      "summary": "Страницата представя текст за доклад на комисия с мандат от ООН и обвинения срещу Израел.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "война",
+          "source": "text",
+          "evidence": "война"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 466,
+          "approximate": false,
+          "raw": "466"
+        },
+        "comments": {
+          "value": 72,
+          "approximate": false,
+          "raw": "72"
+        },
+        "shares": {
+          "value": 97,
+          "approximate": false,
+          "raw": "97"
+        }
+      },
+      "sourceTextSha256": "b27df933c06c64f05e7a4645d426200d7cfea9882cb9449ee5cba0059ac09c1b",
+      "images": [
+        {
+          "src": "/images/facebook/2026/2b0d4cdebcc8e248b487d6924b8be04e8fbd2c5cf30979cb0ed0267576b3e5dd.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02tSwQMoJwCoCrCmufVbnhSct2RywH5uGBxKwZ2B1SbC1mQ1F9oEqM111qJ2LL1cUZl&id=61557189262331",
+          "width": 1312,
+          "height": 1199,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:50:10.307Z",
+          "sha256": "2b0d4cdebcc8e248b487d6924b8be04e8fbd2c5cf30979cb0ed0267576b3e5dd"
+        }
+      ],
+      "platformLabels": [
+        "AI content"
+      ]
+    },
+    {
+      "id": "post:pfbid0LXifubhPr1Mdcmj34cDD6Z2UtigwgYtEcuNzakL9hA79x4r1eyypSCmQETvfaNTLl",
+      "pageId": "100076891908016",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0LXifubhPr1Mdcmj34cDD6Z2UtigwgYtEcuNzakL9hA79x4r1eyypSCmQETvfaNTLl&id=100076891908016",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T12:12:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:59:47.340Z",
+      "excerpt": "🚨💥🤣 ХУНТА МАРА v33.3: СКРИЙ НА БАБА СИ ЛИЧНАТА КАРТА СПАСИ ЧОВЕШКИ ЖИВОТ ! 🤣— СВЕТОВНИЯТ БАЛОТАЖ НА НИБИРУ И ДИГИТАЛНИЯ АБОНАМЕНТ! 🪪👽📡 Внимание…",
+      "summary": "Самоопределен сюрреалистичен политически бюлетин за балотажа, бюджета и изборната кампания.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "балотаж",
+          "source": "text",
+          "evidence": "БАЛОТАЖ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "comments": {
+          "value": 0,
+          "approximate": false,
+          "raw": "No comments yet"
+        },
+        "shares": {
+          "value": 1,
+          "approximate": false,
+          "raw": "1"
+        }
+      },
+      "sourceTextSha256": "481991342b363f55c45b518a26e8aab101c024af74a0995df79d2c61daa9e47a",
+      "images": [
+        {
+          "src": "/images/facebook/2026/a2b06c7cfd73b718646712f4934133451aacadd39e32382e0c414488b2bf09eb.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0LXifubhPr1Mdcmj34cDD6Z2UtigwgYtEcuNzakL9hA79x4r1eyypSCmQETvfaNTLl&id=100076891908016",
+          "width": 1254,
+          "height": 1254,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:59:47.340Z",
+          "sha256": "a2b06c7cfd73b718646712f4934133451aacadd39e32382e0c414488b2bf09eb"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0T4ndd4P8DUg1FQtpjGDhUTGCd6XpUwNbkHxDRsvqhkyr4UhQoM49Gj788FPGJUwol",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "url": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid0T4ndd4P8DUg1FQtpjGDhUTGCd6XpUwNbkHxDRsvqhkyr4UhQoM49Gj788FPGJUwol",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T22:55:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:38:16.229Z",
+      "excerpt": "",
+      "summary": "Страницата споделя публикация на Богомил Атанасов за разпределението на европейско финансиране и икономически мрежи, с анонс за Румен Радев.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 1,
+          "approximate": false,
+          "raw": "1"
+        },
+        "comments": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "images": [
+        {
+          "src": "/images/facebook/2026/f01799fd42ace640b70002130d2d468c38daf236cb3539e7cd905d42475fa789.jpg",
+          "sourceUrl": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid0T4ndd4P8DUg1FQtpjGDhUTGCd6XpUwNbkHxDRsvqhkyr4UhQoM49Gj788FPGJUwol",
+          "width": 1080,
+          "height": 1080,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:38:16.229Z",
+          "sha256": "f01799fd42ace640b70002130d2d468c38daf236cb3539e7cd905d42475fa789"
+        }
+      ],
+      "linkHeadline": "АРХИТЕКТУРАТА НА МИЛИАРДИТЕ (ЧАСТ 2): Кои са структурите зад цифрите и как работи мрежата"
+    },
+    {
+      "id": "post:pfbid02fCui5WQgpSNWoW4SbgeoHTVpyoxLoR2ZXmBKTtkL2Ge593yFavPukrax7bZPGdHl",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "url": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02fCui5WQgpSNWoW4SbgeoHTVpyoxLoR2ZXmBKTtkL2Ge593yFavPukrax7bZPGdHl",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T21:06:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:41:59.065Z",
+      "excerpt": "Франесетата са непоколеби. От протести на ученици през развилнели се от мародери третия свят до национална стачка срещу скъпия живот. (Ние да не би…",
+      "summary": "Страницата коментира протести във Франция, призиви за оставка на Макрон и възможна кандидатура на Марин льо Пен, като прави паралел с България.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 1900,
+          "approximate": true,
+          "raw": "1.9K"
+        },
+        "comments": {
+          "value": 78,
+          "approximate": false,
+          "raw": "78"
+        },
+        "shares": {
+          "value": 150,
+          "approximate": false,
+          "raw": "150"
+        }
+      },
+      "sourceTextSha256": "dd84652ac62badfb45e516e640252cb4be7d4c4dd0e78cd6969e6649b68c70f8",
+      "images": [
+        {
+          "src": "/images/facebook/2026/81852fd5e03fcbd034b41a3979c714ec6afdcfbcb17740b87dc668dbafd8cc5c.jpg",
+          "sourceUrl": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02fCui5WQgpSNWoW4SbgeoHTVpyoxLoR2ZXmBKTtkL2Ge593yFavPukrax7bZPGdHl",
+          "width": 1080,
+          "height": 1080,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:41:59.065Z",
+          "sha256": "81852fd5e03fcbd034b41a3979c714ec6afdcfbcb17740b87dc668dbafd8cc5c"
+        }
+      ]
+    },
+    {
+      "id": "video:1444912007738019",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "url": "https://www.facebook.com/reel/1444912007738019/",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T17:46:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:45:48.157Z",
+      "excerpt": "Полша, Варшава. Кадри спонтанния пред сградата на Конституционния съд във Варшава в подкрепа на временно отстранения председател на Съда Богдан Швенчковски, срещу решението на…",
+      "summary": "Страницата представя видеото като протест във Варшава в подкрепа на временно отстранен председател на Конституционния съд и сблъсък с полицията.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 25,
+          "approximate": false,
+          "raw": "25"
+        },
+        "comments": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "shares": {
+          "value": 1,
+          "approximate": false,
+          "raw": "1"
+        }
+      },
+      "sourceTextSha256": "f9580fd2b74b1020c0fe6f7833622364d857c65215008fc630742f32a04345d2",
+      "images": [
+        {
+          "src": "/images/facebook/2026/a20a7fd52c01ac32979d357f1c0ef9327db66618b7be5a6eb8bd33b1cccffbcd.jpg",
+          "sourceUrl": "https://www.facebook.com/reel/1444912007738019/",
+          "width": 888,
+          "height": 1198,
+          "kind": "video-thumbnail",
+          "capturedAt": "2026-11-04T19:45:48.157Z",
+          "sha256": "a20a7fd52c01ac32979d357f1c0ef9327db66618b7be5a6eb8bd33b1cccffbcd"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid02yq4WR2LpV5FjNouCgSNS2jsrY7KzTHM6r4QfgDB5tv3YChk6ieDLmZoRRSdcVa78l",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "url": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02yq4WR2LpV5FjNouCgSNS2jsrY7KzTHM6r4QfgDB5tv3YChk6ieDLmZoRRSdcVa78l",
+      "date": "2026-10-31",
+      "publishedAt": "2026-10-31T16:00:00+02:00",
+      "interval": null,
+      "datePrecision": "minute",
+      "collectedAt": "2026-11-04T19:46:58.358Z",
+      "excerpt": "Жълтопаветният официоз сайт Mediapool казва завоалирано да не гласувате за “проруския кандидат”. Това е класическия пример за приложна политическа пропаганда, прикрита като \"новина\". Този…",
+      "summary": "Страницата критикува формулировката „проруския кандидат“ в публикация на Mediapool и я определя като прикрит призив към избирателите.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Жълтопаветни",
+          "source": "text",
+          "evidence": "Жълтопаветни"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 10,
+          "approximate": false,
+          "raw": "10"
+        },
+        "comments": {
+          "value": 10,
+          "approximate": false,
+          "raw": "10"
+        },
+        "shares": {
+          "value": 1,
+          "approximate": false,
+          "raw": "1"
+        }
+      },
+      "sourceTextSha256": "49d66cec3ec0d14d5e9c18ab1ade8f42371048bd8afaffc3511145fb207d3b0d",
+      "images": [
+        {
+          "src": "/images/facebook/2026/d446449bbaca043f5875138f5b10f2eff65b1bd5f259e4aaffacbf6320e48662.jpg",
+          "sourceUrl": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02yq4WR2LpV5FjNouCgSNS2jsrY7KzTHM6r4QfgDB5tv3YChk6ieDLmZoRRSdcVa78l",
+          "width": 1080,
+          "height": 1396,
+          "kind": "image",
+          "capturedAt": "2026-11-04T19:46:58.358Z",
+          "sha256": "d446449bbaca043f5875138f5b10f2eff65b1bd5f259e4aaffacbf6320e48662"
+        }
+      ]
     }
   ],
   "matches": [
@@ -7333,7 +10655,7 @@
   "coverage": [
     {
       "keyword": "Гюров",
-      "count": 60
+      "count": 68
     },
     {
       "keyword": "Кандев",
@@ -7341,23 +10663,23 @@
     },
     {
       "keyword": "Йотова",
-      "count": 43
+      "count": 44
     },
     {
       "keyword": "избори",
-      "count": 20
+      "count": 21
     },
     {
       "keyword": "украйна",
-      "count": 13
+      "count": 19
     },
     {
       "keyword": "война",
-      "count": 10
+      "count": 12
     },
     {
       "keyword": "президент",
-      "count": 22
+      "count": 26
     },
     {
       "keyword": "изпращане на войници",
@@ -7365,11 +10687,11 @@
     },
     {
       "keyword": "сглобка",
-      "count": 10
+      "count": 12
     },
     {
       "keyword": "пеевски",
-      "count": 23
+      "count": 26
     },
     {
       "keyword": "ППДБ",
@@ -7381,7 +10703,7 @@
     },
     {
       "keyword": "гей",
-      "count": 0
+      "count": 1
     },
     {
       "keyword": "споразумение",
@@ -7405,7 +10727,7 @@
     },
     {
       "keyword": "радев",
-      "count": 8
+      "count": 10
     },
     {
       "keyword": "лева",
@@ -7413,11 +10735,11 @@
     },
     {
       "keyword": "еврото",
-      "count": 0
+      "count": 1
     },
     {
       "keyword": "русия",
-      "count": 4
+      "count": 6
     },
     {
       "keyword": "про-руска",
@@ -7437,15 +10759,15 @@
     },
     {
       "keyword": "Колтуклиева",
-      "count": 1
+      "count": 2
     },
     {
       "keyword": "спонсор",
-      "count": 8
+      "count": 9
     },
     {
       "keyword": "путин",
-      "count": 2
+      "count": 4
     },
     {
       "keyword": "петрохан",
@@ -7457,11 +10779,11 @@
     },
     {
       "keyword": "нсо",
-      "count": 0
+      "count": 2
     },
     {
       "keyword": "Жълтопаветни",
-      "count": 2
+      "count": 4
     },
     {
       "keyword": "ППедофили",
@@ -7469,16 +10791,16 @@
     },
     {
       "keyword": "измете",
-      "count": 5
+      "count": 6
     },
     {
       "keyword": "балотаж",
-      "count": 12,
+      "count": 13,
       "fromCaptions": true
     },
     {
       "keyword": "дебат",
-      "count": 7,
+      "count": 8,
       "fromCaptions": true
     },
     {
@@ -7488,7 +10810,7 @@
     },
     {
       "keyword": "ДПС",
-      "count": 15,
+      "count": 16,
       "fromCaptions": true
     },
     {
@@ -7503,7 +10825,7 @@
     },
     {
       "keyword": "Калоян Данчев",
-      "count": 2,
+      "count": 3,
       "fromCaptions": true
     },
     {
@@ -7523,12 +10845,12 @@
     },
     {
       "keyword": "МВР",
-      "count": 2,
+      "count": 5,
       "fromCaptions": true
     },
     {
       "keyword": "БНТ",
-      "count": 11,
+      "count": 12,
       "fromCaptions": true
     },
     {
@@ -7538,7 +10860,7 @@
     },
     {
       "keyword": "Прогресивна България",
-      "count": 4,
+      "count": 5,
       "fromCaptions": true
     },
     {
@@ -7548,7 +10870,7 @@
     },
     {
       "keyword": "Карбовски",
-      "count": 1,
+      "count": 2,
       "fromCaptions": true
     },
     {
@@ -8107,7 +11429,7 @@
         "id": "facebook-3005cc8292d9",
         "name": "Anonymous BG",
         "aliases": [],
-        "status": "page-verified",
+        "status": "in-sample",
         "facebookUrl": "https://www.facebook.com/profile.php?id=61557189262331",
         "websiteUrl": null,
         "regional": null,
@@ -8117,12 +11439,20 @@
           {
             "note": "Потвърдена публична Facebook страница: име, категория и меню за страница.",
             "url": "https://www.facebook.com/profile.php?id=61557189262331"
+          },
+          {
+            "url": "https://www.facebook.com/profile.php?id=61557189262331",
+            "note": "Visible Education website category, 31K followers and Information about Page Insights Data link."
+          },
+          {
+            "url": "https://www.facebook.com/profile.php?id=61557189262331",
+            "note": "Native Additional profile actions menu explicitly says Report Page, verified2026-11-04."
           }
         ],
         "notes": [
-          "Октомврийски публикации от тази страница още не са добавени към изборната извадка."
+          "Потвърдени са датите на добавените октомврийски публикации. Месечният архив е прегледан частично."
         ],
-        "samplePageId": null
+        "samplePageId": "61557189262331"
       },
       {
         "id": "publisher-bird",
@@ -8229,7 +11559,7 @@
           "Antimedia",
           "Antimedia / Антимедия"
         ],
-        "status": "page-verified",
+        "status": "in-sample",
         "facebookUrl": "https://www.facebook.com/profile.php?id=100076891908016",
         "websiteUrl": null,
         "regional": null,
@@ -8243,13 +11573,17 @@
           {
             "note": "Точен резултат в търсенето за Facebook страници и съответстващо заглавие на страницата.",
             "url": "https://www.facebook.com/profile.php?id=100076891908016"
+          },
+          {
+            "url": "https://www.facebook.com/profile.php?id=100076891908016",
+            "note": "Native Profile settings menu explicitly says Report Page; visible News & media website category and 6K followers."
           }
         ],
         "notes": [
           "Името се среща в историческа публикация от 12.03.2024. Това не установява текуща страница или дейност през октомври 2026.",
-          "Октомврийски публикации от тази страница още не са добавени към изборната извадка."
+          "Потвърдени са датите на добавените октомврийски публикации. Месечният архив е прегледан частично."
         ],
-        "samplePageId": null
+        "samplePageId": "100076891908016"
       },
       {
         "id": "lead-4f8c097e35f2",
@@ -8313,7 +11647,7 @@
         "id": "publisher-zapiski",
         "name": "Записки по българската политика",
         "aliases": [],
-        "status": "page-verified",
+        "status": "in-sample",
         "facebookUrl": "https://www.facebook.com/zapiskipobgpolitikata",
         "websiteUrl": null,
         "regional": null,
@@ -8323,12 +11657,20 @@
           {
             "note": "Потвърдена публична Facebook страница: име, категория и меню за страница.",
             "url": "https://www.facebook.com/zapiskipobgpolitikata"
+          },
+          {
+            "url": "https://www.facebook.com/zapiskipobgpolitikata",
+            "note": "Previously verified catalog Page. Current header shows News & media website,9.9Kfollowers."
+          },
+          {
+            "url": "https://www.facebook.com/zapiskipobgpolitikata",
+            "note": "Native Additional profile actions menu explicitly says Report Page; current header News & media website,9.9Kfollowers."
           }
         ],
         "notes": [
-          "Октомврийски публикации от тази страница още не са добавени към изборната извадка."
+          "Потвърдени са датите на добавените октомврийски публикации. Месечният архив е прегледан частично."
         ],
-        "samplePageId": null
+        "samplePageId": "https://www.facebook.com/zapiskipobgpolitikata"
       },
       {
         "id": "publisher-karbovski",
@@ -8355,7 +11697,7 @@
         "id": "publisher-liberalna",
         "name": "Либерална Секта",
         "aliases": [],
-        "status": "page-verified",
+        "status": "in-sample",
         "facebookUrl": "https://www.facebook.com/profile.php?id=61585325593477",
         "websiteUrl": null,
         "regional": null,
@@ -8365,12 +11707,20 @@
           {
             "note": "Точен резултат в търсенето за Facebook страници и съответстващо заглавие на страницата.",
             "url": "https://www.facebook.com/profile.php?id=61585325593477"
+          },
+          {
+            "url": "https://www.facebook.com/profile.php?id=61585325593477",
+            "note": "Visible Media Critic category,5Kfollowers; previously verified catalog Page."
+          },
+          {
+            "url": "https://www.facebook.com/profile.php?id=61585325593477",
+            "note": "Native Profile settings menu explicitly shows Report Page, verified2026-11-04."
           }
         ],
         "notes": [
-          "Октомврийски публикации от тази страница още не са добавени към изборната извадка."
+          "Потвърдени са датите на добавените октомврийски публикации. Месечният архив е прегледан частично."
         ],
-        "samplePageId": null
+        "samplePageId": "61585325593477"
       },
       {
         "id": "facebook-100067931502956",
@@ -11687,9 +15037,14 @@
           {
             "url": "https://www.facebook.com/profile.php?id=61552407585163",
             "note": "Възможно съвпадение: Велико Търново Без Цензура. Самоличността и типът във Facebook не са потвърдени."
+          },
+          {
+            "url": "https://www.facebook.com/profile.php?id=61552407585163",
+            "note": "Провереният Facebook адрес води към личен профил с „Add Friend“ и „Friends“. Публикации от него не са включени в извадката от страници. Преглед на 04.11.2026."
           }
         ],
         "notes": [
+          "Провереният Facebook адрес води към личен профил с „Add Friend“ и „Friends“. Публикации от него не са включени в извадката от страници.",
           "Подадено име за търсене; текуща Facebook страница не е потвърдена.",
           "Намерено е съвпадение по име. Типът и текущата самоличност във Facebook не са потвърдени; октомврийски публикации не са събрани."
         ],
@@ -11713,9 +15068,14 @@
           {
             "url": "https://www.facebook.com/p/%D0%92%D0%B5%D1%81%D1%82%D0%BD%D0%B8%D0%BA-%D0%AF%D0%BC%D0%B1%D0%BE%D0%BB-61555619386722",
             "note": "Възможно съвпадение: Вестник Ямбол. Самоличността и типът във Facebook не са потвърдени."
+          },
+          {
+            "url": "https://www.facebook.com/p/%D0%92%D0%B5%D1%81%D1%82%D0%BD%D0%B8%D0%BA-%D0%AF%D0%BC%D0%B1%D0%BE%D0%BB-61555619386722",
+            "note": "Провереният Facebook адрес води към личен профил: виждат се „Add Friend“, „Friends“ и „Report profile“. Публикации от него не са включени в извадката от страници. Преглед на 04.11.2026."
           }
         ],
         "notes": [
+          "Провереният Facebook адрес води към личен профил: виждат се „Add Friend“, „Friends“ и „Report profile“. Публикации от него не са включени в извадката от страници.",
           "Намерено е съвпадение по име. Типът и текущата самоличност във Facebook не са потвърдени; октомврийски публикации не са събрани."
         ],
         "samplePageId": null
@@ -11738,9 +15098,14 @@
           {
             "url": "https://www.facebook.com/p/%D0%92%D0%B5%D1%81%D1%82%D0%BD%D0%B8%D0%BA-%D0%AF%D0%BC%D0%B1%D0%BE%D0%BB%D0%B5%D1%86-61595150032156",
             "note": "Възможно съвпадение: Вестник Ямболец. Самоличността и типът във Facebook не са потвърдени."
+          },
+          {
+            "url": "https://www.facebook.com/p/%D0%92%D0%B5%D1%81%D1%82%D0%BD%D0%B8%D0%BA-%D0%AF%D0%BC%D0%B1%D0%BE%D0%BB%D0%B5%D1%86-61595150032156",
+            "note": "Провереният Facebook адрес води към личен профил с „Add Friend“ и „Friends“. Публикации от него не са включени в извадката от страници. Преглед на 04.11.2026."
           }
         ],
         "notes": [
+          "Провереният Facebook адрес води към личен профил с „Add Friend“ и „Friends“. Публикации от него не са включени в извадката от страници.",
           "Намерено е съвпадение по име. Типът и текущата самоличност във Facebook не са потвърдени; октомврийски публикации не са събрани."
         ],
         "samplePageId": null
@@ -15637,9 +19002,14 @@
           {
             "url": "https://www.facebook.com/%D0%A2%D0%B5%D0%BB%D0%B5%D0%B2%D0%B8%D0%B7%D0%B8%D1%8F-%D0%9A%D0%A0%D0%90%D0%9A%D0%A0%D0%90-107231905975830",
             "note": "Възможно съвпадение: Телевизия КРАКРА - Facebook. Самоличността и типът във Facebook не са потвърдени."
+          },
+          {
+            "url": "https://www.facebook.com/%D0%A2%D0%B5%D0%BB%D0%B5%D0%B2%D0%B8%D0%B7%D0%B8%D1%8F-%D0%9A%D0%A0%D0%90%D0%9A%D0%A0%D0%90-107231905975830",
+            "note": "Facebook обозначава адреса като неофициална страница, несвързана с Телевизия КРАКРА, и показва „No posts yet“. Адресът не е потвърден като страница на издателя. Преглед на 04.11.2026."
           }
         ],
         "notes": [
+          "Facebook обозначава адреса като неофициална страница, несвързана с Телевизия КРАКРА, и показва „No posts yet“. Адресът не е потвърден като страница на издателя.",
           "Регионална телевизия в Перник. Телевизионната програма и операторът имат отделни сайтове krakra.tv и krakra.net.",
           "Намерено е съвпадение по име. Типът и текущата самоличност във Facebook не са потвърдени; октомврийски публикации не са събрани."
         ],

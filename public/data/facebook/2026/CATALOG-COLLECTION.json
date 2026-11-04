@@ -1,0 +1,2833 @@
+{
+  "period": "2026-10",
+  "method": "Ръчен преглед на публични Facebook страници през браузъра.",
+  "originalCollectionSha256": "9a00ddcf145c80e73d9936d7531f5f1033a745054d3dcf86523f8004e6ef21b1",
+  "batches": [
+    {
+      "sha256": "8b7dacc2c27d185c651bb22eab73cfed7e9ee8b24f07aab09ca518307285a939",
+      "captures": 20
+    },
+    {
+      "sha256": "9f813f4cf56270168016c4a7836e8bc683eebabe76ca7a2a002e5e62da69c7a5",
+      "captures": 34
+    },
+    {
+      "sha256": "870b3106b410b1ea478b7ebf929070844d88a40ad630486f9c9c29b2a6937bb9",
+      "captures": 12
+    },
+    {
+      "sha256": "b290f4b014e405eba46fac16e8f3964eaaca92bb9c6157cf6afad0e7d8871cd9",
+      "captures": 4
+    },
+    {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "captures": 0
+    }
+  ],
+  "pages": [
+    {
+      "id": "61577398061794",
+      "name": "Бункер нюз",
+      "url": "https://www.facebook.com/profile.php?id=61577398061794",
+      "category": "Satire/Parody",
+      "identityEvidence": [
+        {
+          "url": "https://www.facebook.com/profile.php?id=61577398061794",
+          "note": "Visible Satire/Parody category,35Kfollowers and Information about Page Insights Data link."
+        },
+        {
+          "url": "https://www.facebook.com/profile.php?id=61577398061794",
+          "note": "Native Additional profile actions menu explicitly says Report Page, verified by current collection pass2026-11-04."
+        }
+      ]
+    },
+    {
+      "id": "61557189262331",
+      "name": "Anonymous BG",
+      "url": "https://www.facebook.com/profile.php?id=61557189262331",
+      "category": "Education website",
+      "identityEvidence": [
+        {
+          "url": "https://www.facebook.com/profile.php?id=61557189262331",
+          "note": "Visible Education website category, 31K followers and Information about Page Insights Data link."
+        },
+        {
+          "url": "https://www.facebook.com/profile.php?id=61557189262331",
+          "note": "Native Additional profile actions menu explicitly says Report Page, verified2026-11-04."
+        }
+      ]
+    },
+    {
+      "id": "https://www.facebook.com/zapiskipobgpolitikata",
+      "name": "Записки по българската политика",
+      "url": "https://www.facebook.com/zapiskipobgpolitikata",
+      "category": "News & media website",
+      "identityEvidence": [
+        {
+          "url": "https://www.facebook.com/zapiskipobgpolitikata",
+          "note": "Previously verified catalog Page. Current header shows News & media website,9.9Kfollowers."
+        },
+        {
+          "url": "https://www.facebook.com/zapiskipobgpolitikata",
+          "note": "Native Additional profile actions menu explicitly says Report Page; current header News & media website,9.9Kfollowers."
+        }
+      ]
+    },
+    {
+      "id": "61585325593477",
+      "name": "Либерална Секта",
+      "url": "https://www.facebook.com/profile.php?id=61585325593477",
+      "category": "Media Critic",
+      "identityEvidence": [
+        {
+          "url": "https://www.facebook.com/profile.php?id=61585325593477",
+          "note": "Visible Media Critic category,5Kfollowers; previously verified catalog Page."
+        },
+        {
+          "url": "https://www.facebook.com/profile.php?id=61585325593477",
+          "note": "Native Profile settings menu explicitly shows Report Page, verified2026-11-04."
+        }
+      ]
+    },
+    {
+      "id": "100083137130737",
+      "name": "Обединени Пасивни Гербери III: Продължаваме Палачинката",
+      "url": "https://www.facebook.com/PassiveLarpers3",
+      "category": "Personal blog",
+      "identityEvidence": [
+        {
+          "url": "https://www.facebook.com/PassiveLarpers3",
+          "note": "Native profile actions menu explicitly says Report Page; current header Personal blog,4.1Kfollowers."
+        }
+      ]
+    },
+    {
+      "id": "100076891908016",
+      "name": "Антимедия",
+      "url": "https://www.facebook.com/profile.php?id=100076891908016",
+      "category": "News & media website",
+      "identityEvidence": [
+        {
+          "url": "https://www.facebook.com/profile.php?id=100076891908016",
+          "note": "Native Profile settings menu explicitly says Report Page; visible News & media website category and 6K followers."
+        }
+      ]
+    }
+  ],
+  "posts": [
+    {
+      "id": "post:pfbid0Szdue84b6ghkUEwm7Vc4bA1S8wXdtNji68WrCZhHshZTrmFkKwhqGYtsgt7FV8nml",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Szdue84b6ghkUEwm7Vc4bA1S8wXdtNji68WrCZhHshZTrmFkKwhqGYtsgt7FV8nml&id=61577398061794",
+      "date": "2026-10-31",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-31T19:57:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native post modal shows October31 at7:57PM after selected2026October Page filter.",
+      "capturedAt": "2026-11-04T19:14:04.805Z",
+      "sourceTextSha256": "6237b8e5bc730b3fe1fea66c6b2c9191e79921f77c6bcbe62749007fe026e904",
+      "captionComplete": true,
+      "politicalReason": "Политическа карикатура за повтарящи се избори, с надписи за предишни политически лидери и „милостивата“.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid0UBSSooYbyLQ1yfNtsMtSWXCH6rGffqExNfACADwoAr9sJyKEupppWT6RbM9xEjVMl",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0UBSSooYbyLQ1yfNtsMtSWXCH6rGffqExNfACADwoAr9sJyKEupppWT6RbM9xEjVMl&id=61557189262331",
+      "date": "2026-10-29",
+      "targetKey": "id:61557189262331",
+      "publishedAt": "2026-10-29T15:08:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native Facebook post modal shows October29 at3:08PM after selecting year2026/monthOctober.",
+      "capturedAt": "2026-11-04T19:17:51.453Z",
+      "sourceTextSha256": "f7626a773eb29d431ec852dda4bba600e06d72f5364ea27685823809911202b4",
+      "captionComplete": true,
+      "politicalReason": "Обсъжда политическите нагласи в България относно Украйна, Брюксел и медиите.",
+      "directoryEntryIds": [
+        "facebook-3005cc8292d9"
+      ]
+    },
+    {
+      "id": "post:pfbid02VWS1ehNessnuMz9N8jgpK1jV3vB3Z9sViSpR3YLYMojPm5JQ8vGmUwQsLLggj2PDl",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "url": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02VWS1ehNessnuMz9N8jgpK1jV3vB3Z9sViSpR3YLYMojPm5JQ8vGmUwQsLLggj2PDl",
+      "date": "2026-10-31",
+      "targetKey": "url:/zapiskipobgpolitikata",
+      "publishedAt": "2026-10-31T23:14:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native post modal shows October31 at11:14PM following native2026Octoberfilter.",
+      "capturedAt": "2026-11-04T19:22:22.405Z",
+      "sourceTextSha256": "005b5fea6527d942846db21b44a778be46b5d3ad96e5c312f6ce99a5b1bdf352",
+      "captionComplete": true,
+      "politicalReason": "Политически коментар на българска страница за финансирането от съюзниците на Украйна.",
+      "directoryEntryIds": [
+        "publisher-zapiski"
+      ]
+    },
+    {
+      "id": "post:pfbid02nWi2KkkD9QQJ5hhEvM7uxJhdtuZMsmXUVjPeLNoxUMzq6NgzeUxMZPKPYFLtiwzJl",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "url": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02nWi2KkkD9QQJ5hhEvM7uxJhdtuZMsmXUVjPeLNoxUMzq6NgzeUxMZPKPYFLtiwzJl",
+      "date": "2026-10-31",
+      "targetKey": "url:/zapiskipobgpolitikata",
+      "publishedAt": "2026-10-31T21:48:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native Facebook post modal shows October31 at9:48PM; own Page caption is above reshared Television Eurocom content.",
+      "capturedAt": "2026-11-04T19:23:42.681Z",
+      "sourceTextSha256": "6b067198dbdf11cb9cb546c9a75fcec63d89cd1202a27ede968a5ef89a89a868",
+      "captionComplete": true,
+      "politicalReason": "Обсъжда Хаджигенов, Колтуклиева, Пеевски и спор, свързан с НСО и председателя на парламента.",
+      "directoryEntryIds": [
+        "publisher-zapiski"
+      ]
+    },
+    {
+      "id": "video:1316088687265038",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/1316088687265038",
+      "date": "2026-10-31",
+      "targetKey": "id:61585325593477",
+      "publishedAt": "2026-10-31T20:49:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native Page feed timestamp visibly shows October31 at8:49PM after2026Octoberfilter; screenshot saved. Timestamp link opened this reel.",
+      "capturedAt": "2026-11-04T19:25:58.779Z",
+      "sourceTextSha256": "620ac3f9c0510f895016e1ec86410e5d997f0eebc5530e1f549ac1ea706b94ed",
+      "captionComplete": true,
+      "politicalReason": "Пряко обсъжда финансирането на кандидатпрезидентската кампания на Андрей Гюров.",
+      "directoryEntryIds": [
+        "publisher-liberalna"
+      ]
+    },
+    {
+      "id": "video:2932892587068862",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/2932892587068862",
+      "date": "2026-10-30",
+      "targetKey": "id:61585325593477",
+      "publishedAt": "2026-10-30T18:21:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focused timestamp tooltip: Friday, October30,2026 at6:21PM; resolved timestamp href points to reel2932892587068862.",
+      "capturedAt": "2026-11-04T19:27:16.712Z",
+      "sourceTextSha256": "5663cb364e7211eb9a73e0d8745830b8976ce345d120663984ceaf5bf047926d",
+      "captionComplete": true,
+      "politicalReason": "Обсъжда дарител за кандидатпрезидентската кампания на Андрей Гюров.",
+      "directoryEntryIds": [
+        "publisher-liberalna"
+      ]
+    },
+    {
+      "id": "post:pfbid0kyA5L2QH9woHSVbHUbRLNLsVXxo7fjptPJvf6dTqARphjhK32HkoJLL3BYKoATgGl",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0kyA5L2QH9woHSVbHUbRLNLsVXxo7fjptPJvf6dTqARphjhK32HkoJLL3BYKoATgGl&id=61585325593477",
+      "date": "2026-10-30",
+      "targetKey": "id:61585325593477",
+      "publishedAt": "2026-10-30T13:19:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focused timestamp tooltip: Friday,October30,2026 at1:19PM.",
+      "capturedAt": "2026-11-04T19:34:15.234Z",
+      "sourceTextSha256": "2f693d027aaf8173f4682fa403cc5f26cb4db924193b6f63ccbaf84a8fd8182d",
+      "captionComplete": true,
+      "politicalReason": "Коментар за кандидатпрезидентския дебат и Андрей Гюров.",
+      "directoryEntryIds": [
+        "publisher-liberalna"
+      ]
+    },
+    {
+      "id": "post:pfbid0bxazcFzguT9juQznYzRigUnSBxr3JX33dkKRZT7vX142uuXxsi1RWNf94LUf7Ddvl",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0bxazcFzguT9juQznYzRigUnSBxr3JX33dkKRZT7vX142uuXxsi1RWNf94LUf7Ddvl&id=61585325593477",
+      "date": "2026-10-30",
+      "targetKey": "id:61585325593477",
+      "publishedAt": "2026-10-30T00:04:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native Facebook keyboard-focused timestamp tooltip: Friday, October 30, 2026 at 12:04 AM",
+      "capturedAt": "2026-11-04T19:34:43.277Z",
+      "sourceTextSha256": "52b537a270be9d19cbb5b6f5729217bfcb2a93da141b34a2216979776e125912",
+      "captionComplete": true,
+      "politicalReason": "Политически колаж с кандидатпрезидента Андрей Гюров и темата за Украйна.",
+      "directoryEntryIds": [
+        "publisher-liberalna"
+      ]
+    },
+    {
+      "id": "video:1423330226095881",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/1423330226095881",
+      "date": "2026-10-29",
+      "targetKey": "id:61585325593477",
+      "publishedAt": "2026-10-29T14:37:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native Facebook keyboard-focused timestamp tooltip: Thursday, October 29, 2026 at 2:37 PM",
+      "capturedAt": "2026-11-04T19:34:54.835Z",
+      "sourceTextSha256": "43caf7e093a9108261050bb720b36419ab8abcea69bee036061bc5aa02f1a0ee",
+      "captionComplete": true,
+      "politicalReason": "Обсъжда предполагаеми връзки на дарител за кандидатпрезидентската кампания на Гюров.",
+      "directoryEntryIds": [
+        "publisher-liberalna"
+      ]
+    },
+    {
+      "id": "post:pfbid0WYiYRntQmkadGMKz3SJoREpkPfVFb2MttNVQwoX97TtSLxk1X4qeFBq31EVJKNTkl",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0WYiYRntQmkadGMKz3SJoREpkPfVFb2MttNVQwoX97TtSLxk1X4qeFBq31EVJKNTkl&id=61585325593477",
+      "date": "2026-10-29",
+      "targetKey": "id:61585325593477",
+      "publishedAt": "2026-10-29T13:09:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native Facebook keyboard-focused timestamp tooltip: Thursday, October 29, 2026 at 1:09 PM",
+      "capturedAt": "2026-11-04T19:37:51.469Z",
+      "sourceTextSha256": "adba65d6d64f92e7ef17a3cfa4b799c5ca39da9c0bfbac72c73c157835e28754",
+      "captionComplete": true,
+      "politicalReason": "Политическа позиция за подкрепата на Гюров и България за Украйна.",
+      "directoryEntryIds": [
+        "publisher-liberalna"
+      ]
+    },
+    {
+      "id": "video:1677929967087015",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/1677929967087015",
+      "date": "2026-10-28",
+      "targetKey": "id:61585325593477",
+      "publishedAt": "2026-10-28T18:43:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native Facebook keyboard-focused timestamp tooltip: Wednesday, October 28, 2026 at 6:43 PM",
+      "capturedAt": "2026-11-04T19:39:12.742Z",
+      "sourceTextSha256": "fad40d20f3ca3e34c0d61be7f1d57f071fb39f895d5709a7948b7330d63e8fac",
+      "captionComplete": true,
+      "politicalReason": "Позиция на кандидатпрезидента Андрей Гюров относно Украйна.",
+      "directoryEntryIds": [
+        "publisher-liberalna"
+      ]
+    },
+    {
+      "id": "video:1472440601695103",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/1472440601695103",
+      "date": "2026-10-27",
+      "targetKey": "id:61585325593477",
+      "publishedAt": "2026-10-27T20:42:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native Facebook keyboard-focused timestamp tooltip: Tuesday, October 27, 2026 at 8:42 PM",
+      "capturedAt": "2026-11-04T19:42:40.062Z",
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "captionComplete": true,
+      "politicalReason": "Политическо видео за Бойко Борисов.",
+      "directoryEntryIds": [
+        "publisher-liberalna"
+      ]
+    },
+    {
+      "id": "post:pfbid0m5ATPAutDMVviW3E271akkzPhqNQ7vmJ3QJas2DYDDDMoUf2gccbacexUn81zSf1l",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0m5ATPAutDMVviW3E271akkzPhqNQ7vmJ3QJas2DYDDDMoUf2gccbacexUn81zSf1l&id=61585325593477",
+      "date": "2026-10-28",
+      "targetKey": "id:61585325593477",
+      "publishedAt": "2026-10-28T14:21:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native Facebook keyboard-focused timestamp tooltip: Wednesday, October 28, 2026 at 2:21 PM",
+      "capturedAt": "2026-11-04T19:42:42.313Z",
+      "sourceTextSha256": "5b8e35ad82204e2a12990bf6ad747bb67be599815bafbaee877ddc911721c398",
+      "captionComplete": true,
+      "politicalReason": "Обсъжда кандидатпрезидента Андрей Гюров и отношението му към България и Украйна.",
+      "directoryEntryIds": [
+        "publisher-liberalna"
+      ]
+    },
+    {
+      "id": "video:1433388234897669",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/1433388234897669",
+      "date": "2026-10-27",
+      "targetKey": "id:61585325593477",
+      "publishedAt": "2026-10-27T14:29:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native Facebook keyboard-focused timestamp tooltip: Tuesday, October 27, 2026 at 2:29 PM",
+      "capturedAt": "2026-11-04T19:46:20.928Z",
+      "sourceTextSha256": "8b42e76b71c2f4af050f22247fd949e5598058607c4d67946521930dbea6c675",
+      "captionComplete": true,
+      "politicalReason": "Коментар за кандидатпрезидентската кампания на Андрей Гюров и Украйна.",
+      "directoryEntryIds": [
+        "publisher-liberalna"
+      ]
+    },
+    {
+      "id": "video:1608628141015918",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/1608628141015918",
+      "date": "2026-10-26",
+      "targetKey": "id:61585325593477",
+      "publishedAt": "2026-10-26T18:24:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native Facebook keyboard-focused timestamp tooltip: Monday, October 26, 2026 at 6:24 PM",
+      "capturedAt": "2026-11-04T19:46:40.515Z",
+      "sourceTextSha256": "184563faca9286913fd3ffd3d9c98e269e923aa4bd1b5cfa448d559fa1cb0414",
+      "captionComplete": true,
+      "politicalReason": "Пряко обсъжда плащане за изборен глас и представя образа на Андрей Гюров.",
+      "directoryEntryIds": [
+        "publisher-liberalna"
+      ]
+    },
+    {
+      "id": "post:pfbid0oZRtdfH4kWzcrRooEgKEhy5Krkhxq8midaY16wKyeNNHPnVRDqPuBjDFvpvTSpPsl",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0oZRtdfH4kWzcrRooEgKEhy5Krkhxq8midaY16wKyeNNHPnVRDqPuBjDFvpvTSpPsl&id=61585325593477",
+      "date": "2026-10-26",
+      "targetKey": "id:61585325593477",
+      "publishedAt": "2026-10-26T13:01:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native Facebook keyboard-focused timestamp tooltip: Monday, October 26, 2026 at 1:01 PM",
+      "capturedAt": "2026-11-04T19:47:22.887Z",
+      "sourceTextSha256": "29b0fffac16478adb489b93e795a710f0d6ef0840b436c7f59f0c9b77a340bab",
+      "captionComplete": true,
+      "politicalReason": "Пряка оценка на кандидатпрезидента Андрей Гюров и външнополитическите му позиции.",
+      "directoryEntryIds": [
+        "publisher-liberalna"
+      ]
+    },
+    {
+      "id": "post:pfbid0bpiw3fev4bkwEAwVgt9AZrcdzUwSAXYJtKZvspxKMVxV4zGJDFt4ZZ7C1wqYmacQl",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0bpiw3fev4bkwEAwVgt9AZrcdzUwSAXYJtKZvspxKMVxV4zGJDFt4ZZ7C1wqYmacQl&id=61585325593477",
+      "date": "2026-10-25",
+      "targetKey": "id:61585325593477",
+      "publishedAt": "2026-10-25T22:48:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native Facebook keyboard-focused timestamp tooltip: Sunday, October 25, 2026 at 10:48 PM",
+      "capturedAt": "2026-11-04T19:48:53.944Z",
+      "sourceTextSha256": "b7a15690526b7ba864bea3fe5f28774d35f75e1d2afa95d2a97b537aac69f381",
+      "captionComplete": true,
+      "politicalReason": "Коментар чрез колаж за кандидатпрезидента Андрей Гюров и Украйна.",
+      "directoryEntryIds": [
+        "publisher-liberalna"
+      ]
+    },
+    {
+      "id": "video:1094888736870133",
+      "pageId": "61585325593477",
+      "url": "https://www.facebook.com/reel/1094888736870133",
+      "date": "2026-10-25",
+      "targetKey": "id:61585325593477",
+      "publishedAt": "2026-10-25T16:39:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native Facebook keyboard-focused timestamp tooltip: Sunday, October 25, 2026 at 4:39 PM",
+      "capturedAt": "2026-11-04T19:49:14.847Z",
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "captionComplete": true,
+      "politicalReason": "Политическо видео с образа на кандидатпрезидента Андрей Гюров.",
+      "directoryEntryIds": [
+        "publisher-liberalna"
+      ]
+    },
+    {
+      "id": "post:pfbid0ii9gwtsS2eibLyBLVApRigjnj5RWYXjgumzrQULyeD16cLHNySWsPNDkBFiF7TCl",
+      "pageId": "100083137130737",
+      "url": "https://www.facebook.com/PassiveLarpers3/posts/pfbid0ii9gwtsS2eibLyBLVApRigjnj5RWYXjgumzrQULyeD16cLHNySWsPNDkBFiF7TCl",
+      "date": "2026-10-31",
+      "targetKey": "url:/passivelarpers3",
+      "publishedAt": "2026-10-31T15:42:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focused timestamp tooltip: Saturday,October31,2026 at3:42PM.",
+      "capturedAt": "2026-11-04T19:54:58.642Z",
+      "sourceTextSha256": "15fb64702830fd35a512ca30cc73c49595da97dca2050181a91a3473f1c7ecfc",
+      "captionComplete": true,
+      "politicalReason": "Споделено политическо видео от кандидатпрезидентската двойка Андрей Гюров и Георги Кандев.",
+      "directoryEntryIds": [
+        "sample-ceff3d06d4c4"
+      ]
+    },
+    {
+      "id": "post:pfbid02e9Nu96hmUGCtZQD3gAzFCAmXrUGpjYts7Qrk3bJhZYGonxLukB2C9xBqafFZycsXl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02e9Nu96hmUGCtZQD3gAzFCAmXrUGpjYts7Qrk3bJhZYGonxLukB2C9xBqafFZycsXl&id=61577398061794",
+      "date": "2026-10-31",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-31T22:15:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native post modal visible timestamp October31at10:15PM after selecting2026October Page filter; screenshot bunker-event-date.jpg.",
+      "capturedAt": "2026-11-04T19:17:44.572Z",
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "captionComplete": true,
+      "politicalReason": "Споделено предизборно събитие за балотажа; изображението изрично посочва Илияна Йотова и номер4.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid0WEb3SuxipYL7kfDXLptWUroskKqZ11LATBVDp6oHvNUAw6cwDDCWVTDVkQhsTBGzl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0WEb3SuxipYL7kfDXLptWUroskKqZ11LATBVDp6oHvNUAw6cwDDCWVTDVkQhsTBGzl&id=61577398061794",
+      "date": "2026-10-31",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-31T18:09:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native post modal visible timestamp October31at6:09PM after selected2026October Page filter; screenshot bunker-cnn-date.jpg.",
+      "capturedAt": "2026-11-04T19:21:04.171Z",
+      "sourceTextSha256": "8884648254a12b0c20a7ed8295e7f065edd913ae05ddf8a92df0c6282e415fd2",
+      "captionComplete": true,
+      "politicalReason": "Публична политическа критика към кандидат-президент и медийното ѝ участие; изображението показва Йотова в интервю.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:1289332556672095",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1289332556672095/",
+      "date": "2026-10-31",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-31T18:01:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus timestamp tooltip says Saturday,October31,2026 at6:01PM; screenshot bunker-students-date.jpg.",
+      "capturedAt": "2026-11-04T19:23:12.852Z",
+      "sourceTextSha256": "56f1fb742c1fdac7de4060caf7957ed6a220385bd205d2012d62e96397076327",
+      "captionComplete": true,
+      "politicalReason": "Публикация за упражняване на избирателното право, с видео на кандидат-президента Гюров.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid0XrqUF3wKr3CBc3CEU1vzDG2YFK8QtNHDtW3T8guVhywziTDUZRp8d2B9FwfWX7w8l",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0XrqUF3wKr3CBc3CEU1vzDG2YFK8QtNHDtW3T8guVhywziTDUZRp8d2B9FwfWX7w8l&id=61577398061794",
+      "date": "2026-10-31",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-31T18:20:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native post modal visible timestamp October31at6:20PM after selected2026October Page filter.",
+      "capturedAt": "2026-11-04T19:24:40.148Z",
+      "sourceTextSha256": "03ea24d997f17097634337c32649978857f521e7de8755ecf45389ecd9832c43",
+      "captionComplete": true,
+      "politicalReason": "Публичен политически коментар за държавния бюджет и премиера Радев.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid02EiFx8u2XuizA1gq35fPdyBExfHwkp7bxX1behZsgJUfoHtGjwq6c6odubsSAV1VEl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02EiFx8u2XuizA1gq35fPdyBExfHwkp7bxX1behZsgJUfoHtGjwq6c6odubsSAV1VEl&id=61577398061794",
+      "date": "2026-10-31",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-31T13:27:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus timestamp tooltip Saturday,October31,2026at1:27PM.",
+      "capturedAt": "2026-11-04T19:27:15.507Z",
+      "sourceTextSha256": "76c4bad3e266e606636d41c367a27ca704b170f818ab7ce72133accfc2ae99cd",
+      "captionComplete": true,
+      "politicalReason": "Критичен предизборен коментар за партийна подкрепа и позицията на кандидат-президента за еврото.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:1844092166778591",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1844092166778591/",
+      "date": "2026-10-31",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-31T14:11:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus timestamp tooltip Saturday,October31,2026at2:11PM.",
+      "capturedAt": "2026-11-04T19:28:08.014Z",
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "captionComplete": true,
+      "politicalReason": "Видеопубликация с кандидат-президент в предизборния период; видимият кадър показва Андрей Гюров.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid02LiCfkbcVhJXUPw4XeZKbGXkP3NnELWGwotMGH5kpv1FD46nx5yWUKaTDRvFCxZ9Rl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02LiCfkbcVhJXUPw4XeZKbGXkP3NnELWGwotMGH5kpv1FD46nx5yWUKaTDRvFCxZ9Rl&id=61577398061794",
+      "date": "2026-10-31",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-31T09:52:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus tooltip Saturday,October31,2026at9:52AM.",
+      "capturedAt": "2026-11-04T19:28:48.498Z",
+      "sourceTextSha256": "d897e00517c7d36d0a81be508a45e167594e6f40e7c9ebd69638a1fd990e452d",
+      "captionComplete": true,
+      "politicalReason": "Коментар за кандидат-президента Йотова и публичното ѝ представяне.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:1157399536729329",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1157399536729329/",
+      "date": "2026-10-30",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-30T22:16:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Friday, October 30, 2026 at 10:16 PM",
+      "capturedAt": "2026-11-04T19:30:02.354Z",
+      "sourceTextSha256": "1039bf33d2fa99ab047d09540387cc7ccd88c94ecb88a99b4ea4d4b177a5523f",
+      "captionComplete": true,
+      "politicalReason": "Видео от предизборен телевизионен разговор с надпис за президентската битка; обсъжда гражданството на българите в чужбина.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid02mFRotzxY3qBtCDZVXUsaE8RQ1igsq2fMqs31kRKqkfgMvWAxEBjVG9rffsRtCbpPl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02mFRotzxY3qBtCDZVXUsaE8RQ1igsq2fMqs31kRKqkfgMvWAxEBjVG9rffsRtCbpPl&id=61577398061794",
+      "date": "2026-10-31",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-31T08:16:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Saturday, October 31, 2026 at 8:16 AM",
+      "capturedAt": "2026-11-04T19:30:24.112Z",
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "captionComplete": true,
+      "politicalReason": "Видимият текст на споделеното видео изрично посочва щаба на Йотова и дебата; хаштаговете са за президентски избори и балотаж.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid02izp6dNeysrRRYqX8DW9d5zZr1BN5BAaaNy5VEMEhAEGYjBf3cH4DSk6sMnhhSYmVl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02izp6dNeysrRRYqX8DW9d5zZr1BN5BAaaNy5VEMEhAEGYjBf3cH4DSk6sMnhhSYmVl&id=61577398061794",
+      "date": "2026-10-30",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-30T22:04:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Friday, October 30, 2026 at 10:04 PM",
+      "capturedAt": "2026-11-04T19:31:41.287Z",
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "captionComplete": true,
+      "politicalReason": "Публикува политическо послание за комунисти и упражняване на власт; автентичността на приписания цитат не е проверена.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:1645050123780583",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1645050123780583/",
+      "date": "2026-10-30",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-30T10:18:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Friday, October 30, 2026 at 10:18 AM",
+      "capturedAt": "2026-11-04T19:34:10.985Z",
+      "sourceTextSha256": "fecbc149864f888f0e692e4154a064eb16e5a12f447ab36eaed69ef11bf9ed9e",
+      "captionComplete": true,
+      "politicalReason": "Видеото изрично назовава Йотова и нейния екип в предизборна политическа критика.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid034mX45PNZm6a9rVhaNsHMAi2fGVL7yQV2gtHKKwRnSVYgSM4dmJrz4ghHg67qubbKl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid034mX45PNZm6a9rVhaNsHMAi2fGVL7yQV2gtHKKwRnSVYgSM4dmJrz4ghHg67qubbKl&id=61577398061794",
+      "date": "2026-10-30",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-30T09:10:00+02:00",
+      "interval": null,
+      "dateEvidence": "Settled native keyboard-focus publication timestamp Friday,October30,2026at9:10AM, checked together with exact focused post.",
+      "capturedAt": "2026-11-04T19:35:12.418Z",
+      "sourceTextSha256": "320e6e513d0bde8f5052fb6e2b41151b4155c41fcb4e73a8cd22b63ff3b161bf",
+      "captionComplete": true,
+      "politicalReason": "Пряк коментар за партийни поддръжници, Министерския съвет и назовани политици.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid02j1U8MppjHeC9mkVFyTQERduidjJzVX33bwcsYAJN4JQQor6rkbEkyC2twj3Mgy2tl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02j1U8MppjHeC9mkVFyTQERduidjJzVX33bwcsYAJN4JQQor6rkbEkyC2twj3Mgy2tl&id=61577398061794",
+      "date": "2026-10-30",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-30T07:55:00+02:00",
+      "interval": null,
+      "dateEvidence": "Settled native keyboard-focus timestamp tooltip Friday,October30,2026at7:55AM, verified together with focused post and screenshot.",
+      "capturedAt": "2026-11-04T19:35:24.996Z",
+      "sourceTextSha256": "a3cc81715e0e119528056bc55279e51f837998b99f32baa3e2bc2f9ca2135a79",
+      "captionComplete": true,
+      "politicalReason": "Пряка партийна критика към прогресивните политически опоненти.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:998758882516672",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/998758882516672/",
+      "date": "2026-10-30",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-30T07:30:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Friday, October 30, 2026 at 7:30 AM",
+      "capturedAt": "2026-11-04T19:37:31.375Z",
+      "sourceTextSha256": "68d110ee4a9a86020e24f7ed2bab1ee389a7394e6a20fcc7a1fa3d5498447180",
+      "captionComplete": true,
+      "politicalReason": "Видеото показва кандидат-президента Йотова и оценява нейното поведение в предизборно телевизионно участие.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:1843600866897994",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1843600866897994/",
+      "date": "2026-10-30",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-30T00:06:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Friday, October 30, 2026 at 12:06 AM",
+      "capturedAt": "2026-11-04T19:37:44.391Z",
+      "sourceTextSha256": "1e518fa8f84c4bf73ba8aa90d1a89c4776ee55ef25beae738a256ee8995890c2",
+      "captionComplete": true,
+      "politicalReason": "Видеото показва президентския дебат между Йотова и Гюров; надписът оспорва изказване в него.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid02xt8PRr55g9WpRJEFNdRiy5zKgw9zKp7vNsSLS9TPcj9V2YQDzoCeoX4XuwJjpbbgl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02xt8PRr55g9WpRJEFNdRiy5zKgw9zKp7vNsSLS9TPcj9V2YQDzoCeoX4XuwJjpbbgl&id=61577398061794",
+      "date": "2026-10-29",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-29T22:18:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Thursday, October 29, 2026 at 10:18 PM",
+      "capturedAt": "2026-11-04T19:37:54.375Z",
+      "sourceTextSha256": "42623f37d0a358718b6919f1c6bad4e5799bce7c6cc2d1ce45a32b923fd7ba4a",
+      "captionComplete": true,
+      "politicalReason": "Явно политическо послание за комунисти; конкретна партия или кандидат не се посочва в надписа.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl&id=61577398061794",
+      "date": "2026-10-29",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-29T17:58:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Thursday, October 29, 2026 at 5:58 PM",
+      "capturedAt": "2026-11-04T19:39:24.123Z",
+      "sourceTextSha256": "d9f1f3a823d59c72c3b40c39916029abb0072977e9dd2df38b10210a5f8a906e",
+      "captionComplete": true,
+      "politicalReason": "Политически видеокоментар към публично изказване на Румен Радев за дронове и авиация.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:1138813955363373",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1138813955363373/",
+      "date": "2026-10-29",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-29T21:12:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Thursday, October 29, 2026 at 9:12 PM",
+      "capturedAt": "2026-11-04T19:40:08.846Z",
+      "sourceTextSha256": "9f9ad5b9bc80ceb81e97f3cff827cbd8b8a86d23320e069f9e8898c632b2fe52",
+      "captionComplete": true,
+      "politicalReason": "Показва предизборния дебат и изказване на Йотова.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid02dFcX8GbhGCDmdyrjFkrCR4MyiFixghEKEtr7cvvyYWgMYAbiFHUoHnYAgzA1B1dgl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02dFcX8GbhGCDmdyrjFkrCR4MyiFixghEKEtr7cvvyYWgMYAbiFHUoHnYAgzA1B1dgl&id=61577398061794",
+      "date": "2026-10-29",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-29T21:04:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Thursday, October 29, 2026 at 9:04 PM",
+      "capturedAt": "2026-11-04T19:40:24.422Z",
+      "sourceTextSha256": "393f4223d1c251e1eddfed59325a6a354facc2bc89ae8337080c86da88713410",
+      "captionComplete": true,
+      "politicalReason": "Публикуван по време на президентския дебат и коментира обръщението на участничката към тролове и елфи.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid0NnE2Mnc5FLn4mWkiG5QoT9DJwKnsFPL11GVhDW5aZpru6rRqASn4DwEbAwPgZ7xFl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0NnE2Mnc5FLn4mWkiG5QoT9DJwKnsFPL11GVhDW5aZpru6rRqASn4DwEbAwPgZ7xFl&id=61577398061794",
+      "date": "2026-10-29",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-29T17:29:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Thursday, October 29, 2026 at 5:29 PM",
+      "capturedAt": "2026-11-04T19:41:00.961Z",
+      "sourceTextSha256": "2d4b001096b287f1e945b876a9ee4417498e19e7503cafc3d7e54dcd8f6d9a79",
+      "captionComplete": true,
+      "politicalReason": "Надписът е обръщение към Радев; споделеното изображение е свързано с българския дебат за еврото.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:1840261970724145",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1840261970724145/",
+      "date": "2026-10-29",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-29T11:08:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Thursday, October 29, 2026 at 11:08 AM",
+      "capturedAt": "2026-11-04T19:41:21.430Z",
+      "sourceTextSha256": "652c3a044a7cb07035a15ba9fc206672331f9937b478eeed0740315c7deb12da",
+      "captionComplete": true,
+      "politicalReason": "Пряк коментар за парламентарна процедура и политическа отговорност за кворума.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:951043291091990",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/951043291091990/",
+      "date": "2026-10-29",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-29T16:36:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Thursday, October 29, 2026 at 4:36 PM",
+      "capturedAt": "2026-11-04T19:41:55.410Z",
+      "sourceTextSha256": "eee84b82ea8c885189916542e0d82e0dc7e5821631d66979d8ac95c4845c4b48",
+      "captionComplete": true,
+      "politicalReason": "Коментар за публична енергийна политика, придружен от телевизионно политическо интервю.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:1604352204018118",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1604352204018118/",
+      "date": "2026-10-29",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-29T08:09:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Thursday, October 29, 2026 at 8:09 AM",
+      "capturedAt": "2026-11-04T19:42:41.386Z",
+      "sourceTextSha256": "23205ab6c8074b43391cff0a077b0c34b1b5b9ae49a11d47a4f37bd8311fd48e",
+      "captionComplete": true,
+      "politicalReason": "Пряко назовава политик и показва политическо телевизионно участие.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:1157252846871409",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1157252846871409/",
+      "date": "2026-10-28",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-28T23:10:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Wednesday, October 28, 2026 at 11:10 PM",
+      "capturedAt": "2026-11-04T19:42:51.696Z",
+      "sourceTextSha256": "a5b5136a4e3f3273a4cfefc44ecbd69f3e981449820fe72b6a0961f7ac688d41",
+      "captionComplete": true,
+      "politicalReason": "Пряк коментар за назован политик и публичната партийна реторика.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:1445052394418970",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1445052394418970/",
+      "date": "2026-10-28",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-28T22:37:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Wednesday, October 28, 2026 at 10:37 PM",
+      "capturedAt": "2026-11-04T19:43:31.363Z",
+      "sourceTextSha256": "df8eef3a10ae2be731c5440a5925708ecd55a41bd46858207bde3b359e53c576",
+      "captionComplete": true,
+      "politicalReason": "Политически коментар за институционална отчетност, придружен от интервю с Ружа.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid02JEUuR82BoTDdFy3mZ1D4RGdsginy3jdNHzCkav7W2VQcq77Cg6m4CRpJJgr744Z4l",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02JEUuR82BoTDdFy3mZ1D4RGdsginy3jdNHzCkav7W2VQcq77Cg6m4CRpJJgr744Z4l&id=61577398061794",
+      "date": "2026-10-28",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-28T22:01:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Wednesday, October 28, 2026 at 10:01 PM",
+      "capturedAt": "2026-11-04T19:43:42.238Z",
+      "sourceTextSha256": "59e627bd65f36b37143e8844875f5ebd25d95a6bc01abe18acf897d23fb427fb",
+      "captionComplete": true,
+      "politicalReason": "Пряк критичен коментар за президентската кампания на Йотова и публичните изяви на Радев.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:1428401352820819",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1428401352820819/",
+      "date": "2026-10-28",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-28T15:28:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Wednesday, October 28, 2026 at 3:28 PM",
+      "capturedAt": "2026-11-04T19:45:05.066Z",
+      "sourceTextSha256": "bf13ab1ffaee443b528946c421dc5e4996b240bbce1b71793b53dddc23291532",
+      "captionComplete": true,
+      "politicalReason": "Политическа критика; видимият откъс споменава Пеевски.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:1657759299059928",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1657759299059928/",
+      "date": "2026-10-28",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-28T15:08:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Wednesday, October 28, 2026 at 3:08 PM",
+      "capturedAt": "2026-11-04T19:45:34.402Z",
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "captionComplete": true,
+      "politicalReason": "Видеопубликация с кандидат-президента Андрей Гюров в предизборния период.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid0yPqM2CFwd9NuTL9D5d74z1oTJX4Zw8aEkbSQHjzgmH3GhRDBXfUowL9opBBpr9pSl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0yPqM2CFwd9NuTL9D5d74z1oTJX4Zw8aEkbSQHjzgmH3GhRDBXfUowL9opBBpr9pSl&id=61577398061794",
+      "date": "2026-10-28",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-28T13:23:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Wednesday, October 28, 2026 at 1:23 PM",
+      "capturedAt": "2026-11-04T19:46:08.293Z",
+      "sourceTextSha256": "fe3b0022442b50dd009f5230b612aff056b8177fbabc0e7efe7b39a4b5042ac4",
+      "captionComplete": true,
+      "politicalReason": "Пряка оценка на политическото управление и качествата на държавниците.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid0XjxPh3kRWttpVfgXyn4qv9MDgxK8aMB9rCKdG3W4Vfgy9Q4ySbLadZpG5LpbSWDwl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0XjxPh3kRWttpVfgXyn4qv9MDgxK8aMB9rCKdG3W4Vfgy9Q4ySbLadZpG5LpbSWDwl&id=61577398061794",
+      "date": "2026-10-28",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-28T13:07:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Wednesday, October 28, 2026 at 1:07 PM",
+      "capturedAt": "2026-11-04T19:46:32.088Z",
+      "sourceTextSha256": "1389407fe7e2cacd140b9ec225472ff12392032ee8f88540d44d35e4487cb0b3",
+      "captionComplete": true,
+      "politicalReason": "Публикация за военна и национална сигурност в близост до България, коментирана в политически контекст.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:1613329786656320",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1613329786656320/",
+      "date": "2026-10-28",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-28T09:41:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Wednesday, October 28, 2026 at 9:41 AM",
+      "capturedAt": "2026-11-04T19:47:06.744Z",
+      "sourceTextSha256": "41a5fe9c09c3482a94a3dcaec4426c47ffec79ac1b1aff6651bdd05c6ec6012b",
+      "captionComplete": true,
+      "politicalReason": "Пряко коментира парламентарни коалиционни отношения.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid0cS7D5LBtrT6p1bihysbDJUmJzsmwZtVH2ZnKsrYC8whQbsgM3djcXfVKceaHeY4Rl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0cS7D5LBtrT6p1bihysbDJUmJzsmwZtVH2ZnKsrYC8whQbsgM3djcXfVKceaHeY4Rl&id=61577398061794",
+      "date": "2026-10-28",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-28T08:45:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Wednesday, October 28, 2026 at 8:45 AM",
+      "capturedAt": "2026-11-04T19:47:20.670Z",
+      "sourceTextSha256": "32f88cb1da7c531a87c8e441fe69cbd9d8e51c8478708f6dcab03c6744f3a4cf",
+      "captionComplete": true,
+      "politicalReason": "Пряка оценка на публичната политическа реторика на Румен Радев.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:1119095521093836",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/reel/1119095521093836/",
+      "date": "2026-10-27",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-27T22:37:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Tuesday, October 27, 2026 at 10:37 PM",
+      "capturedAt": "2026-11-04T19:49:34.966Z",
+      "sourceTextSha256": "46ce3db1d73af098a9161b50463c462f71cac159cb1fde09a703fd41f848ba31",
+      "captionComplete": true,
+      "politicalReason": "Пряка партийна критика, назоваваща ДПС и Пеевски.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "post:pfbid0ao6U31ZyAtQrHVUr8E8hajwi59uzgcUukXnjr3DiEoNkTVW1xi7U1JZZcL5jvWVnl",
+      "pageId": "61577398061794",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0ao6U31ZyAtQrHVUr8E8hajwi59uzgcUukXnjr3DiEoNkTVW1xi7U1JZZcL5jvWVnl&id=61577398061794",
+      "date": "2026-10-27",
+      "targetKey": "id:61577398061794",
+      "publishedAt": "2026-10-27T21:29:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native keyboard-focus publication timestamp tooltip: Tuesday, October 27, 2026 at 9:29 PM",
+      "capturedAt": "2026-11-04T19:50:36.059Z",
+      "sourceTextSha256": "37c01dad18957dda1a8040da9746b1d06146d4a5ae6edc8203a64cff919bb5c6",
+      "captionComplete": true,
+      "politicalReason": "Пряка предизборна подкрепа за кандидат-президента Андрей Гюров и призив за публична мобилизация на подкрепящите го.",
+      "directoryEntryIds": [
+        "sample-55945693aa5a"
+      ]
+    },
+    {
+      "id": "video:1657215862763287",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/1657215862763287/",
+      "date": "2026-10-31",
+      "targetKey": "id:61557189262331",
+      "publishedAt": "2026-10-31T19:15:00+02:00",
+      "interval": null,
+      "dateEvidence": "Focused native post timestamp tooltip: Saturday, October 31, 2026 at 7:15 PM. Page Posts ending-date filter set to 2026/October.",
+      "capturedAt": "2026-11-04T19:34:38.346Z",
+      "sourceTextSha256": "60daf77d4795f843c5458e43255693bc05c5b00a2f6040e217364187c248c96a",
+      "captionComplete": true,
+      "politicalReason": "Публикация на български за институционален конфликт и съдебна политика в държава от ЕС.",
+      "directoryEntryIds": [
+        "facebook-3005cc8292d9"
+      ]
+    },
+    {
+      "id": "video:2188569562093001",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/2188569562093001/",
+      "date": "2026-10-30",
+      "targetKey": "id:61557189262331",
+      "publishedAt": "2026-10-30T14:15:00+02:00",
+      "interval": null,
+      "dateEvidence": "Focused native post timestamp tooltip: Friday, October 30, 2026 at 2:15 PM. Page Posts ending-date filter set to 2026/October.",
+      "capturedAt": "2026-11-04T19:37:19.683Z",
+      "sourceTextSha256": "c18123a0a91336c3292fe3fc9adee50fdfb60f76fe451bfab1a2b5b16dc653ef",
+      "captionComplete": true,
+      "politicalReason": "Политически коментар на български за отношенията между ЕС, Русия и САЩ.",
+      "directoryEntryIds": [
+        "facebook-3005cc8292d9"
+      ]
+    },
+    {
+      "id": "video:1505206344753130",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/1505206344753130/",
+      "date": "2026-10-30",
+      "targetKey": "id:61557189262331",
+      "publishedAt": "2026-10-30T14:04:00+02:00",
+      "interval": null,
+      "dateEvidence": "Focused native post timestamp tooltip: Friday, October 30, 2026 at 2:04 PM. Page Posts ending-date filter set to 2026/October.",
+      "capturedAt": "2026-11-04T19:38:18.161Z",
+      "sourceTextSha256": "adf15472edbc408ff3d20fb0c8b45a031890b34d28727a8da2eb9ee1e8031433",
+      "captionComplete": true,
+      "politicalReason": "Приложеното видео показва участници в телевизионния предизборен дебат по БНТ1; надписът коментира представянето им.",
+      "directoryEntryIds": [
+        "facebook-3005cc8292d9"
+      ]
+    },
+    {
+      "id": "video:3360112920862887",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/3360112920862887/",
+      "date": "2026-10-30",
+      "targetKey": "id:61557189262331",
+      "publishedAt": "2026-10-30T11:45:00+02:00",
+      "interval": null,
+      "dateEvidence": "Focused native post timestamp tooltip: Friday, October 30, 2026 at 11:45 AM. Page Posts ending-date filter set to 2026/October.",
+      "capturedAt": "2026-11-04T19:39:53.605Z",
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "captionComplete": true,
+      "politicalReason": "Приложеното видео показва кандидат в телевизионния президентски дебат по БНТ1.",
+      "directoryEntryIds": [
+        "facebook-3005cc8292d9"
+      ]
+    },
+    {
+      "id": "video:1672056241307870",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/1672056241307870/",
+      "date": "2026-10-29",
+      "targetKey": "id:61557189262331",
+      "publishedAt": "2026-10-29T12:01:00+02:00",
+      "interval": null,
+      "dateEvidence": "Focused native post timestamp tooltip: Thursday, October 29, 2026 at 12:01 PM. Page Posts ending-date filter set to 2026/October.",
+      "capturedAt": "2026-11-04T19:42:22.488Z",
+      "sourceTextSha256": "2cc090a5221b597d25a8de40c6e96b6b5f06962df24f0930dcb116c79aabdc23",
+      "captionComplete": true,
+      "politicalReason": "Видеото показва логото на „Продължаваме промяната“ и надпис „Продължаване с подмяната“.",
+      "directoryEntryIds": [
+        "facebook-3005cc8292d9"
+      ]
+    },
+    {
+      "id": "video:1438183745146031",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/1438183745146031/",
+      "date": "2026-10-29",
+      "targetKey": "id:61557189262331",
+      "publishedAt": "2026-10-29T11:40:00+02:00",
+      "interval": null,
+      "dateEvidence": "Focused native post timestamp tooltip: Thursday, October 29, 2026 at 11:40 AM. Page Posts ending-date filter set to 2026/October.",
+      "capturedAt": "2026-11-04T19:43:02.267Z",
+      "sourceTextSha256": "54d6c5c2de465a4ba4a150b695e27e85b17dd1dcb143e93434299e1b88004d7b",
+      "captionComplete": true,
+      "politicalReason": "Политически коментар за българските избиратели, пропагандата и обслужване на чужди интереси.",
+      "directoryEntryIds": [
+        "facebook-3005cc8292d9"
+      ]
+    },
+    {
+      "id": "video:2057584485644941",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/2057584485644941/",
+      "date": "2026-10-28",
+      "targetKey": "id:61557189262331",
+      "publishedAt": "2026-10-28T14:10:00+02:00",
+      "interval": null,
+      "dateEvidence": "Focused native post timestamp tooltip: Wednesday, October 28, 2026 at 2:10 PM. Page Posts ending-date filter set to 2026/October.",
+      "capturedAt": "2026-11-04T19:45:22.905Z",
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "captionComplete": true,
+      "politicalReason": "Политическо видео за председателя на Европейската комисия.",
+      "directoryEntryIds": [
+        "facebook-3005cc8292d9"
+      ]
+    },
+    {
+      "id": "post:pfbid02TyRefXGLG13M3pmcAkV6R67J7ngjJGQeapFBWguxS4r1jaPmZemKjBbgnKyKiunWl",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02TyRefXGLG13M3pmcAkV6R67J7ngjJGQeapFBWguxS4r1jaPmZemKjBbgnKyKiunWl&id=61557189262331",
+      "date": "2026-10-27",
+      "targetKey": "id:61557189262331",
+      "publishedAt": "2026-10-27T21:08:00+02:00",
+      "interval": null,
+      "dateEvidence": "Focused native post timestamp tooltip: Tuesday, October 27, 2026 at 9:08 PM. Page Posts ending-date filter set to 2026/October.",
+      "capturedAt": "2026-11-04T19:46:01.755Z",
+      "sourceTextSha256": "2879d8f5157c2f7e58f8c2bf4d9695513aa82351ac11c062a34766f5c7c99fc3",
+      "captionComplete": true,
+      "politicalReason": "Политически коментар за Путин, Русия, европейските санкции и енергийната политика на ЕС.",
+      "directoryEntryIds": [
+        "facebook-3005cc8292d9"
+      ]
+    },
+    {
+      "id": "video:1144845284632823",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/1144845284632823/",
+      "date": "2026-10-27",
+      "targetKey": "id:61557189262331",
+      "publishedAt": "2026-10-27T18:42:00+02:00",
+      "interval": null,
+      "dateEvidence": "Focused native post timestamp tooltip: Tuesday, October 27, 2026 at 6:42 PM. Page Posts ending-date filter set to 2026/October.",
+      "capturedAt": "2026-11-04T19:47:25.422Z",
+      "sourceTextSha256": "2e74b09433fa67cd59ddafb26c5cdbe9c3b80d7ce88e90a890202639371e4129",
+      "captionComplete": true,
+      "politicalReason": "Политически коментар и изказване в Европейския парламент.",
+      "directoryEntryIds": [
+        "facebook-3005cc8292d9"
+      ]
+    },
+    {
+      "id": "video:2502903913566502",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/reel/2502903913566502/",
+      "date": "2026-10-27",
+      "targetKey": "id:61557189262331",
+      "publishedAt": "2026-10-27T18:27:00+02:00",
+      "interval": null,
+      "dateEvidence": "Focused native post timestamp tooltip: Tuesday, October 27, 2026 at 6:27 PM. Page Posts ending-date filter set to 2026/October.",
+      "capturedAt": "2026-11-04T19:49:02.710Z",
+      "sourceTextSha256": "86af1f4efd6e4e68905fd24104442fdbe2cdff016c4ba1e36f71000b1208c10a",
+      "captionComplete": true,
+      "politicalReason": "Политическо съдържание за обществени протести и напрежение в Европа.",
+      "directoryEntryIds": [
+        "facebook-3005cc8292d9"
+      ]
+    },
+    {
+      "id": "post:pfbid02tSwQMoJwCoCrCmufVbnhSct2RywH5uGBxKwZ2B1SbC1mQ1F9oEqM111qJ2LL1cUZl",
+      "pageId": "61557189262331",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02tSwQMoJwCoCrCmufVbnhSct2RywH5uGBxKwZ2B1SbC1mQ1F9oEqM111qJ2LL1cUZl&id=61557189262331",
+      "date": "2026-10-27",
+      "targetKey": "id:61557189262331",
+      "publishedAt": "2026-10-27T18:19:00+02:00",
+      "interval": null,
+      "dateEvidence": "Focused native post timestamp tooltip: Tuesday, October 27, 2026 at 6:19 PM. Page Posts ending-date filter set to 2026/October.",
+      "capturedAt": "2026-11-04T19:50:10.307Z",
+      "sourceTextSha256": "b27df933c06c64f05e7a4645d426200d7cfea9882cb9449ee5cba0059ac09c1b",
+      "captionComplete": true,
+      "politicalReason": "Публикация на български за международна политика, ООН и конфликта в Газа.",
+      "directoryEntryIds": [
+        "facebook-3005cc8292d9"
+      ]
+    },
+    {
+      "id": "post:pfbid0LXifubhPr1Mdcmj34cDD6Z2UtigwgYtEcuNzakL9hA79x4r1eyypSCmQETvfaNTLl",
+      "pageId": "100076891908016",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0LXifubhPr1Mdcmj34cDD6Z2UtigwgYtEcuNzakL9hA79x4r1eyypSCmQETvfaNTLl&id=100076891908016",
+      "date": "2026-10-31",
+      "targetKey": "id:100076891908016",
+      "publishedAt": "2026-10-31T12:12:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native timestamp tooltip in the observed photo’s own public post view: Saturday, October 31, 2026 at 12:12 PM. The photo links to this Page-authored post and matches the caption read after the 2026/October ending-date filter.",
+      "capturedAt": "2026-11-04T19:59:47.340Z",
+      "sourceTextSha256": "481991342b363f55c45b518a26e8aab101c024af74a0995df79d2c61daa9e47a",
+      "captionComplete": true,
+      "politicalReason": "Текстът изрично обсъжда балотажа, избирателите и предизборни обещания.",
+      "directoryEntryIds": [
+        "publisher-antimedia"
+      ]
+    },
+    {
+      "id": "post:pfbid0T4ndd4P8DUg1FQtpjGDhUTGCd6XpUwNbkHxDRsvqhkyr4UhQoM49Gj788FPGJUwol",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "url": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid0T4ndd4P8DUg1FQtpjGDhUTGCd6XpUwNbkHxDRsvqhkyr4UhQoM49Gj788FPGJUwol",
+      "date": "2026-10-31",
+      "targetKey": "url:/zapiskipobgpolitikata",
+      "publishedAt": "2026-10-31T22:55:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native focused Page post timestamp tooltip: Saturday,October31,2026 at10:55PM; focused link resolves to this Page permalink. Original shared post has its own separate date and author.",
+      "capturedAt": "2026-11-04T19:38:16.229Z",
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "captionComplete": true,
+      "politicalReason": "Публично споделя материал за разпределението на еврофондове и връзката с политическата власт; без собствен текстов надпис.",
+      "directoryEntryIds": [
+        "publisher-zapiski"
+      ]
+    },
+    {
+      "id": "post:pfbid02fCui5WQgpSNWoW4SbgeoHTVpyoxLoR2ZXmBKTtkL2Ge593yFavPukrax7bZPGdHl",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "url": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02fCui5WQgpSNWoW4SbgeoHTVpyoxLoR2ZXmBKTtkL2Ge593yFavPukrax7bZPGdHl",
+      "date": "2026-10-31",
+      "targetKey": "url:/zapiskipobgpolitikata",
+      "publishedAt": "2026-10-31T21:06:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native focused Page timestamp tooltip: Saturday,October31,2026 at9:06PM; same focused link resolves to this Page post.",
+      "capturedAt": "2026-11-04T19:41:59.065Z",
+      "sourceTextSha256": "dd84652ac62badfb45e516e640252cb4be7d4c4dd0e78cd6969e6649b68c70f8",
+      "captionComplete": true,
+      "politicalReason": "Европейска политика и социални протести с изричен паралел с България.",
+      "directoryEntryIds": [
+        "publisher-zapiski"
+      ]
+    },
+    {
+      "id": "video:1444912007738019",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "url": "https://www.facebook.com/reel/1444912007738019/",
+      "date": "2026-10-31",
+      "targetKey": "url:/zapiskipobgpolitikata",
+      "publishedAt": "2026-10-31T17:46:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native focused Page timestamp tooltip: Saturday,October31,2026 at5:46PM; same focused link resolves to this reel. The card has only the Page author heading.",
+      "capturedAt": "2026-11-04T19:45:48.157Z",
+      "sourceTextSha256": "f9580fd2b74b1020c0fe6f7833622364d857c65215008fc630742f32a04345d2",
+      "captionComplete": true,
+      "politicalReason": "Български политически коментар за конституционен конфликт в Полша и действията на правителството.",
+      "directoryEntryIds": [
+        "publisher-zapiski"
+      ]
+    },
+    {
+      "id": "post:pfbid02yq4WR2LpV5FjNouCgSNS2jsrY7KzTHM6r4QfgDB5tv3YChk6ieDLmZoRRSdcVa78l",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "url": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02yq4WR2LpV5FjNouCgSNS2jsrY7KzTHM6r4QfgDB5tv3YChk6ieDLmZoRRSdcVa78l",
+      "date": "2026-10-31",
+      "targetKey": "url:/zapiskipobgpolitikata",
+      "publishedAt": "2026-10-31T16:00:00+02:00",
+      "interval": null,
+      "dateEvidence": "Native focused Page timestamp tooltip: Saturday,October31,2026 at4:00PM; focused link resolves to this Page post.",
+      "capturedAt": "2026-11-04T19:46:58.358Z",
+      "sourceTextSha256": "49d66cec3ec0d14d5e9c18ab1ade8f42371048bd8afaffc3511145fb207d3b0d",
+      "captionComplete": true,
+      "politicalReason": "Пряко обсъжда президентските избори и медийното представяне на кандидатите.",
+      "directoryEntryIds": [
+        "publisher-zapiski"
+      ]
+    }
+  ],
+  "coverage": [
+    {
+      "targetKey": "url:/bnews.bg",
+      "url": "https://www.facebook.com/bnews.bg",
+      "checkedAt": "2026-11-04T19:51:45.891Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Revisited catalog URL in a separate tab; remained blank after separated DOM reads and screenshot. No restriction message. October posts not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/strumanewsbg",
+      "url": "https://www.facebook.com/strumanewsbg",
+      "checkedAt": "2026-11-04T19:51:45.937Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Revisited catalog URL in a separate tab; remained blank after separated DOM reads and screenshot. No restriction message. October posts not reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:61577398061794",
+      "url": "https://www.facebook.com/profile.php?id=61577398061794",
+      "checkedAt": "2026-11-04T19:54:33.611Z",
+      "status": "partial",
+      "monthComplete": false,
+      "postsCaptured": 36,
+      "postsAdded": 35,
+      "notes": [
+        "Verified public Page through native Report Page menu; Satire/Parody category.",
+        "Native Page Posts Go to filter selected2026October. Backward review paused atOct27at21:29, post beginning За мен истинският родолюбец е човекът. Earlier October posts remain unreviewed.",
+        "Existing Page captions/reel IDs were skipped;34new captures retained with native full publication timestamps and visible total counters. Unknown counters remain null.",
+        "Five captures have no authored caption and retain observed image/video context; shared-source captions were not presented as authored Page text.",
+        "Three styled-text captions corrected during direct-permalink QA; all34records have caption or retained content evidence.",
+        "Facebook feed lazy-loading/virtualization and skipped unclear audiovisual relevance prevent an exhaustive archive claim."
+      ]
+    },
+    {
+      "targetKey": "id:61557189262331",
+      "url": "https://www.facebook.com/profile.php?id=61557189262331",
+      "checkedAt": "2026-11-04T19:50:10.308Z",
+      "status": "partial",
+      "monthComplete": false,
+      "postsCaptured": 12,
+      "postsAdded": 12,
+      "notes": [
+        "Native Report Page menu verified. Applied Posts ending date 2026/October. Eleven additional political posts dated October 31–27 were captured; the October29 post already in captures-a was skipped by exact permalink. Cursor paused at October27,18:19 for catalog breadth review. Earlier October posts and a complete monthly archive have not been established."
+      ]
+    },
+    {
+      "targetKey": "url:/glasovecom",
+      "url": "https://www.facebook.com/glasovecom",
+      "checkedAt": "2026-11-04T19:19:19.766Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct Page stayed blank after post-control wait, DOM read and screenshot. No restriction message. October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:100063368432210",
+      "url": "https://www.facebook.com/profile.php?id=100063368432210",
+      "checkedAt": "2026-11-04T19:19:52.654Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct Page stayed blank after post-control wait and DOM read. No restriction message. October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/novinibezcenzura",
+      "url": "https://www.facebook.com/novinibezcenzura",
+      "checkedAt": "2026-11-04T19:21:03.375Z",
+      "status": "partial",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Verified Community Page,3.6Kfollowers. After 2026/October ending-datefilter,latestvisible post wasNovember3,2019(nativepostmodal),notOctober2026. Noeligiblepostadded."
+      ]
+    },
+    {
+      "targetKey": "url:/zapiskipobgpolitikata",
+      "url": "https://www.facebook.com/zapiskipobgpolitikata",
+      "checkedAt": "2026-11-04T19:50:45.400Z",
+      "status": "partial",
+      "monthComplete": false,
+      "postsCaptured": 6,
+      "postsAdded": 6,
+      "notes": [
+        "Native Report Page confirmed. October2026 ending-date filter applied. Six verified Page posts collected across A/root files, latest reviewed Page date October31 at16:00; remaining older October feed is unreviewed. Native own-share timestamp distinguished from original source timestamp; one captionless traffic video withheld for insufficient political context. Month is not complete."
+      ]
+    },
+    {
+      "targetKey": "id:61585325593477",
+      "url": "https://www.facebook.com/profile.php?id=61585325593477",
+      "checkedAt": "2026-11-04T19:50:00.164Z",
+      "status": "partial",
+      "monthComplete": false,
+      "postsCaptured": 14,
+      "postsAdded": 14,
+      "notes": [
+        "Verified native Report Page. Reviewed October31 through October25 afternoon;14 political posts captured. October25 earlier and October1–24 not reviewed. Cursor remains at Oct25 16:39 reel1094888736870133."
+      ]
+    },
+    {
+      "targetKey": "url:/luboslovie",
+      "url": "https://www.facebook.com/luboslovie",
+      "checkedAt": "2026-11-04T19:28:04.695Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct Page stayed blank after separated DOM read, post-control wait and screenshot. No restriction message; October posts unavailable."
+      ]
+    },
+    {
+      "targetKey": "id:100066589661795",
+      "url": "https://www.facebook.com/profile.php?id=100066589661795",
+      "checkedAt": "2026-11-04T19:28:51.738Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct Page stayed blank after two separated DOM reads and initial AX state. No restriction message; October posts unavailable."
+      ]
+    },
+    {
+      "targetKey": "id:61576124264108",
+      "url": "https://www.facebook.com/profile.php?id=61576124264108",
+      "checkedAt": "2026-11-04T19:29:34.876Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct Page stayed blank after separated DOM read, screenshot and console diagnostics. No visible restriction or console errors; October posts unavailable."
+      ]
+    },
+    {
+      "targetKey": "url:/elvesbg.eu",
+      "url": "https://www.facebook.com/ElvesBG.EU",
+      "checkedAt": "2026-11-04T19:30:07.571Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct Page stayed blank after separated DOM read and screenshot. No restriction message; October posts unavailable."
+      ]
+    },
+    {
+      "targetKey": "url:/blagoevgradchani",
+      "url": "https://www.facebook.com/blagoevgradchani",
+      "checkedAt": "2026-11-04T19:31:33.500Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct Page blank after separated DOM reads, one diagnostic reload and keyboard focus. Document completed loading with empty visible text, no restriction message."
+      ]
+    },
+    {
+      "targetKey": "url:/militsionerov",
+      "url": "https://www.facebook.com/militsionerov",
+      "checkedAt": "2026-11-04T19:52:20.248Z",
+      "status": "partial",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native menu explicitly Report Page; Digital creator,1.9Kfollowers. Applied2026/Octoberfilter; first visible posts concerned football and were excluded. Remaining October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/novininafocus",
+      "url": "https://www.facebook.com/novininafocus",
+      "checkedAt": "2026-11-04T19:53:16.043Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog URL loaded a blank Facebook view after separated DOM reads; no restriction message. October posts not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/noviniotposledniachas",
+      "url": "https://www.facebook.com/noviniotposledniachas",
+      "checkedAt": "2026-11-04T19:53:16.099Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog URL loaded a blank Facebook view after separated DOM reads; no restriction message. October posts not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/passivelarpers3",
+      "url": "https://www.facebook.com/PassiveLarpers3",
+      "checkedAt": "2026-11-04T19:54:59.183Z",
+      "status": "partial",
+      "monthComplete": false,
+      "postsCaptured": 1,
+      "postsAdded": 1,
+      "notes": [
+        "Native Report Page confirmed.2026Octoberview: capturedOct31Page share ofGyurov/Kandevvideo(ownEnglishcaption). Another visible NATO/hearsay caption matchedbaselineandwasnotrecaptured; itsdate/aliasnotindependentlyreverifiedthispass. Remainingarchiveunreviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/dnesdirbg",
+      "url": "https://www.facebook.com/dnesdirbg",
+      "checkedAt": "2026-11-04T19:55:12.402Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog Facebook URL remained blank after separated DOM reads and screenshot. No restriction message; October posts not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/dupnicanews.eu",
+      "url": "https://www.facebook.com/Dupnicanews.EU",
+      "checkedAt": "2026-11-04T19:55:12.507Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog Facebook URL remained blank after separated DOM reads and screenshot. No restriction message; October posts not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/novini.bg",
+      "url": "https://www.facebook.com/Novini.bg",
+      "checkedAt": "2026-11-04T19:56:17.224Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Catalog Facebook URL remained blank after separated DOM reads and screenshot. No restriction message; October posts not reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:61560232252077",
+      "url": "https://www.facebook.com/profile.php?id=61560232252077",
+      "checkedAt": "2026-11-04T19:56:17.304Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Catalog Facebook URL remained blank after separated DOM reads and screenshot. No restriction message; October posts not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/moreto.net.varna",
+      "url": "https://www.facebook.com/Moreto.net.varna",
+      "checkedAt": "2026-11-04T19:56:17.345Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Catalog Facebook URL remained blank after separated DOM reads and screenshot. No restriction message; October posts not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/plovdivtowncom",
+      "url": "https://www.facebook.com/PlovdivTowncom",
+      "checkedAt": "2026-11-04T19:57:29.329Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog URL remained blank after separated visible DOM reads and screenshot. No restriction message; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/portal12bg",
+      "url": "https://www.facebook.com/portal12bg",
+      "checkedAt": "2026-11-04T19:57:29.386Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog URL remained blank after separated visible DOM reads and screenshot. No restriction message; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/rmtvnews",
+      "url": "https://www.facebook.com/rmtvnews",
+      "checkedAt": "2026-11-04T19:57:29.439Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog URL remained blank after separated visible DOM reads and screenshot. No restriction message; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/sbsbulgarian",
+      "url": "https://www.facebook.com/SBSBulgarian",
+      "checkedAt": "2026-11-04T19:59:08.529Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook explicitly displays This content is not available right now. October posts unavailable; no cause inferred."
+      ]
+    },
+    {
+      "targetKey": "url:/slinfo",
+      "url": "https://www.facebook.com/slinfo",
+      "checkedAt": "2026-11-04T19:59:08.651Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog URL remained blank after separated DOM reads and screenshot; no restriction message. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/svilengrad24",
+      "url": "https://www.facebook.com/svilengrad24",
+      "checkedAt": "2026-11-04T19:59:08.950Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog URL remained blank after separated DOM reads and screenshot; no restriction message. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/varna24",
+      "url": "https://www.facebook.com/varna24",
+      "checkedAt": "2026-11-04T20:00:08.842Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog URL remained blank after separated DOM reads and screenshot; no restriction message. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/balkanecbg",
+      "url": "https://www.facebook.com/balkanecbg",
+      "checkedAt": "2026-11-04T20:00:08.892Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog URL remained blank after separated DOM reads and screenshot; no restriction message. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/vestniknie",
+      "url": "https://www.facebook.com/Vestniknie",
+      "checkedAt": "2026-11-04T20:00:08.928Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog URL remained blank after separated DOM reads and screenshot; no restriction message. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:465694516943806",
+      "url": "https://www.facebook.com/%D0%92%D0%B8%D0%B4%D0%B5%D0%BB%D0%B8%D0%BD%D0%B0-%D0%9F%D0%B0%D0%B7%D0%B0%D1%80%D0%B4%D0%B6%D0%B8%D0%BA-465694516943806",
+      "checkedAt": "2026-11-04T20:01:22.493Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook explicitly displays This content is not available right now. No cause inferred; October posts unavailable."
+      ]
+    },
+    {
+      "targetKey": "url:/gabrovodaily.info",
+      "url": "https://www.facebook.com/gabrovodaily.info",
+      "checkedAt": "2026-11-04T20:01:22.613Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog URL remained blank after separated DOM reads and screenshot; no restriction message. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/gramofonacom",
+      "url": "https://www.facebook.com/Gramofonacom",
+      "checkedAt": "2026-11-04T20:01:22.651Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog URL remained blank after separated DOM reads and screenshot; no restriction message. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/e79news",
+      "url": "https://www.facebook.com/E79news",
+      "checkedAt": "2026-11-04T20:03:26.970Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog URL remained blank after separated DOM reads and screenshot; no restriction message. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/ilindenpress",
+      "url": "https://www.facebook.com/IlindenPress",
+      "checkedAt": "2026-11-04T20:03:27.040Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog URL remained blank after separated DOM reads and screenshot; no restriction message. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/konkurent.news",
+      "url": "https://www.facebook.com/konkurent.news",
+      "checkedAt": "2026-11-04T20:03:27.097Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct catalog URL remained blank after separated DOM reads and screenshot; no restriction message. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/comunikatornews",
+      "url": "https://www.facebook.com/comunikatornews",
+      "checkedAt": "2026-11-04T19:11:58.276033+00:00",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook remained an empty dark page after fresh screenshot and visible DOM reads. No explicit account restriction or block message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "id:61557839147130",
+      "url": "https://www.facebook.com/profile.php?id=61557839147130",
+      "checkedAt": "2026-11-04T19:11:58.276033+00:00",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook remained an empty dark page after fresh screenshot and visible DOM reads. No explicit account restriction or block message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "id:61591476950404",
+      "url": "https://www.facebook.com/profile.php?id=61591476950404",
+      "checkedAt": "2026-11-04T19:09:20.561090+00:00",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook Page briefly rendered header/loading then blank page; native AX read showed only Facebook webarea; screenshot was empty dark screen.",
+        "No explicit account restriction or block message. No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/n.barekov",
+      "url": "https://www.facebook.com/n.barekov",
+      "checkedAt": "2026-11-04T19:11:58.276033+00:00",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook remained an empty dark page after fresh screenshot and visible DOM reads. No explicit account restriction or block message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/offnews.bg",
+      "url": "https://www.facebook.com/OFFNews.bg",
+      "checkedAt": "2026-11-04T19:11:58.276033+00:00",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook remained an empty dark page after fresh screenshot and visible DOM reads. No explicit account restriction or block message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/24rodopi",
+      "url": "https://www.facebook.com/24rodopi",
+      "checkedAt": "2026-11-04T19:31:06.356Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct Page was blank initially and again on a separate follow-up after other catalog work, including a read more than one minute after reopening. Screenshot and DOM both showed empty Facebook content. No explicit restriction message; October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/blgrad",
+      "url": "https://www.facebook.com/blgrad",
+      "checkedAt": "2026-11-04T19:28:48.395Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook content remained blank after direct navigation and later visible DOM inspection. No explicit restriction message was visible; October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:100064864205365",
+      "url": "https://www.facebook.com/people/I-Burgas/100064864205365",
+      "checkedAt": "2026-11-04T19:29:16.720Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Direct navigation showed the Facebook header shell but no Page posts before moving to the next catalog entry. October archive was not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/dunavmost",
+      "url": "https://www.facebook.com/dunavmost",
+      "checkedAt": "2026-11-04T19:29:16.757Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook content was blank after direct navigation and later visible DOM inspection. No explicit restriction message was visible; October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/marica.bg",
+      "url": "https://www.facebook.com/marica.bg",
+      "checkedAt": "2026-11-04T19:29:16.770Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook content was blank after direct navigation and later visible DOM inspection. No explicit restriction message was visible; October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/news.bg",
+      "url": "https://www.facebook.com/news.bg",
+      "checkedAt": "2026-11-04T19:29:16.780Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook content was blank after direct navigation and later visible DOM inspection. No explicit restriction message was visible; October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/perniknews",
+      "url": "https://www.facebook.com/PernikNews",
+      "checkedAt": "2026-11-04T19:29:52.093Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The Page remained blank on a later visible DOM inspection after other catalog work. No explicit restriction notice; October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:122005817864844",
+      "url": "https://www.facebook.com/122005817864844",
+      "checkedAt": "2026-11-04T19:29:52.114Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The Page remained blank on a later visible DOM inspection after other catalog work. No explicit restriction notice; October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/pzdnes",
+      "url": "https://www.facebook.com/pzdnes",
+      "checkedAt": "2026-11-04T19:29:52.128Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The Page remained blank on a later visible DOM inspection after other catalog work. No explicit restriction notice; October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/ruseinfo",
+      "url": "https://www.facebook.com/ruseinfo",
+      "checkedAt": "2026-11-04T19:30:11.260Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct link yielded blank Facebook content on initial and follow-up DOM checks. No explicit restriction message was visible; October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/sever.bg",
+      "url": "https://www.facebook.com/Sever.bg",
+      "checkedAt": "2026-11-04T19:30:11.277Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook displayed “This content isn’t available right now” for this catalog link. The Page identity and October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/slivenpress",
+      "url": "https://www.facebook.com/slivenpress",
+      "checkedAt": "2026-11-04T19:30:11.294Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct link yielded blank Facebook content on initial and follow-up DOM checks. No explicit restriction message was visible; October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/trafficnews.bg",
+      "url": "https://www.facebook.com/trafficnews.bg",
+      "checkedAt": "2026-11-04T19:30:55.034Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The catalog link was blank on initial and follow-up visible DOM reads. No explicit restriction message; the October archive could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/zovnews",
+      "url": "https://www.facebook.com/zovnews",
+      "checkedAt": "2026-11-04T19:30:55.050Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Visible header initially showed zovnews.com, Media/news company and 21K followers, but the subsequent DOM was blank before any post archive could be reviewed. No explicit restriction message."
+      ]
+    },
+    {
+      "targetKey": "url:/borbavt",
+      "url": "https://www.facebook.com/borbavt",
+      "checkedAt": "2026-11-04T19:30:55.062Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The catalog link was blank on initial and follow-up visible DOM reads. No explicit restriction message; the October archive could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:61588082199776",
+      "url": "https://www.facebook.com/profile.php?id=61588082199776",
+      "checkedAt": "2026-11-04T19:31:24.511Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Initial and later visible DOM checks did not expose Page posts; Facebook content remained blank after other catalog work. No explicit restriction notice. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/vidinvest",
+      "url": "https://www.facebook.com/vidinvest",
+      "checkedAt": "2026-11-04T19:31:24.511Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Initial and later visible DOM checks did not expose Page posts; Facebook content remained blank after other catalog work. No explicit restriction notice. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/govoriotkrito.bg",
+      "url": "https://www.facebook.com/govoriotkrito.bg",
+      "checkedAt": "2026-11-04T19:31:24.511Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Initial and later visible DOM checks did not expose Page posts; Facebook content remained blank after other catalog work. No explicit restriction notice. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/novini.dobrich",
+      "url": "https://www.facebook.com/novini.dobrich",
+      "checkedAt": "2026-11-04T19:31:41.006Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct catalog link remained blank on a subsequent DOM check. No Page posts or explicit restriction message were visible. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:61577647268063",
+      "url": "https://www.facebook.com/profile.php?id=61577647268063",
+      "checkedAt": "2026-11-04T19:31:41.170Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct catalog link remained blank on a subsequent DOM check. No Page posts or explicit restriction message were visible. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/kazanlakcom",
+      "url": "https://www.facebook.com/kazanlakcom",
+      "checkedAt": "2026-11-04T19:31:41.253Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct catalog link remained blank on a subsequent DOM check. No Page posts or explicit restriction message were visible. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/lovechtoday.eu",
+      "url": "https://www.facebook.com/lovechtoday.eu",
+      "checkedAt": "2026-11-04T19:32:01.670Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct catalog link remained blank on a subsequent DOM check. No Page posts or explicit restriction message were visible. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:139233932765712",
+      "url": "https://www.facebook.com/Mirogled-139233932765712",
+      "checkedAt": "2026-11-04T19:32:01.701Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct catalog link remained blank on a subsequent DOM check. No Page posts or explicit restriction message were visible. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/pirinnewscom",
+      "url": "https://www.facebook.com/PirinNewscom",
+      "checkedAt": "2026-11-04T19:32:01.757Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct catalog link remained blank on a subsequent DOM check. No Page posts or explicit restriction message were visible. October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/plevenzapleven",
+      "url": "https://www.facebook.com/PlevenZaPleven",
+      "checkedAt": "2026-11-04T19:32:22.106Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The catalog Page was still blank on a second visible DOM check. No explicit restriction message; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/provaton",
+      "url": "https://www.facebook.com/provaton",
+      "checkedAt": "2026-11-04T19:32:22.170Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The catalog Page was still blank on a second visible DOM check. No explicit restriction message; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:100063509681793",
+      "url": "https://www.facebook.com/people/sevlievo-onlinecom/100063509681793",
+      "checkedAt": "2026-11-04T19:32:22.218Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The catalog Page was still blank on a second visible DOM check. No explicit restriction message; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:329027640524949",
+      "url": "https://www.facebook.com/329027640524949",
+      "checkedAt": "2026-11-04T19:32:39.929Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct catalog link did not yield a readable Page feed on initial and later DOM checks. No explicit restriction message; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/telenews.bg",
+      "url": "https://www.facebook.com/telenews.bg",
+      "checkedAt": "2026-11-04T19:32:40.013Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct catalog link did not yield a readable Page feed on initial and later DOM checks. No explicit restriction message; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/utroruse",
+      "url": "https://www.facebook.com/utroruse",
+      "checkedAt": "2026-11-04T19:32:40.080Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct catalog link did not yield a readable Page feed on initial and later DOM checks. No explicit restriction message; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:105278929529191",
+      "url": "https://www.facebook.com/105278929529191",
+      "checkedAt": "2026-11-04T19:33:15.038Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook remained blank on a later DOM inspection after other Page-filter work. No explicit restriction message; October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/dnes.bg",
+      "url": "https://www.facebook.com/dnes.bg",
+      "checkedAt": "2026-11-04T19:33:15.110Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook remained blank on a later DOM inspection after other Page-filter work. No explicit restriction message; October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/flagmannews",
+      "url": "https://www.facebook.com/FlagmanNews",
+      "checkedAt": "2026-11-04T19:33:15.188Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook remained blank on a later DOM inspection after other Page-filter work. No explicit restriction message; October posts could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/perniktoday.net",
+      "url": "https://www.facebook.com/PernikToday.net",
+      "checkedAt": "2026-11-04T19:34:53.569Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct Page remained blank on a delayed DOM inspection while another Page’s October posts were reviewed. No explicit restriction notice; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:61561193171053",
+      "url": "https://www.facebook.com/profile.php?id=61561193171053",
+      "checkedAt": "2026-11-04T19:34:53.810Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct Page remained blank on a delayed DOM inspection while another Page’s October posts were reviewed. No explicit restriction notice; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:61552407585163",
+      "url": "https://www.facebook.com/profile.php?id=61552407585163",
+      "checkedAt": "2026-11-04T19:35:11.826Z",
+      "status": "excluded",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The visible header has Add Friend, a Friends tab and a friends list. This is a profile rather than a Facebook Page; excluded from Page-only post collection."
+      ]
+    },
+    {
+      "targetKey": "id:61595150032156",
+      "url": "https://www.facebook.com/p/%D0%92%D0%B5%D1%81%D1%82%D0%BD%D0%B8%D0%BA-%D0%AF%D0%BC%D0%B1%D0%BE%D0%BB%D0%B5%D1%86-61595150032156",
+      "checkedAt": "2026-11-04T19:35:11.826Z",
+      "status": "excluded",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The visible header has Add Friend, a Friends tab and personal-profile details. Excluded from Page-only collection; no posts or friends retained."
+      ]
+    },
+    {
+      "targetKey": "id:100063951609618",
+      "url": "https://www.facebook.com/people/%D0%98%D1%81%D1%82%D0%B8%D0%BD%D0%B0%D1%82%D0%B0-%D0%B4%D0%BD%D0%B5%D1%81/100063951609618",
+      "checkedAt": "2026-11-04T19:35:11.826Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook explicitly displayed “This content isn’t available right now”. The Page identity and October archive could not be reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/narodnamedia",
+      "url": "https://www.facebook.com/narodnamedia",
+      "checkedAt": "2026-11-04T19:36:56.479Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct catalog link remained blank on a later DOM read during another Page’s post review. No explicit restriction notice; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/yambolpress",
+      "url": "https://www.facebook.com/YambolPRESS",
+      "checkedAt": "2026-11-04T19:36:56.586Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct catalog link remained blank on a later DOM read during another Page’s post review. No explicit restriction notice; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:107231905975830",
+      "url": "https://www.facebook.com/%D0%A2%D0%B5%D0%BB%D0%B5%D0%B2%D0%B8%D0%B7%D0%B8%D1%8F-%D0%9A%D0%A0%D0%90%D0%9A%D0%A0%D0%90-107231905975830",
+      "checkedAt": "2026-11-04T19:37:19.684Z",
+      "status": "excluded",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook labels this as an Unofficial Page, not affiliated with or endorsed by Телевизия КРАКРА, and shows No posts yet. Excluded as a publisher match; no post archive collected."
+      ]
+    },
+    {
+      "targetKey": "id:61572252076131",
+      "url": "https://www.facebook.com/profile.php?id=61572252076131",
+      "checkedAt": "2026-11-04T19:52:00.254Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct Facebook Page remained blank on a delayed DOM inspection after capture-validation work. No explicit restriction notice; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/noviniisabitia",
+      "url": "https://www.facebook.com/noviniisabitia",
+      "checkedAt": "2026-11-04T19:52:00.254Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct Facebook Page remained blank on a delayed DOM inspection after capture-validation work. No explicit restriction notice; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/bulevardnewss",
+      "url": "https://www.facebook.com/bulevardnewss",
+      "checkedAt": "2026-11-04T19:52:00.254Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct Facebook Page remained blank on a delayed DOM inspection after capture-validation work. No explicit restriction notice; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/izvanredno.info",
+      "url": "https://www.facebook.com/izvanredno.info",
+      "checkedAt": "2026-11-04T19:52:46.702Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The known catalog link remained blank on initial and later visible DOM inspections after other work. No explicit restriction notice; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:100030791183325",
+      "url": "https://www.facebook.com/profile.php?id=100030791183325",
+      "checkedAt": "2026-11-04T19:52:46.702Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The known catalog link remained blank on initial and later visible DOM inspections after other work. No explicit restriction notice; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/7dnibulgaria.bg",
+      "url": "https://www.facebook.com/7DniBulgaria.bg",
+      "checkedAt": "2026-11-04T19:52:46.702Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The known catalog link remained blank on initial and later visible DOM inspections after other work. No explicit restriction notice; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/birdreporting",
+      "url": "https://www.facebook.com/birdreporting",
+      "checkedAt": "2026-11-04T19:54:28.030Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Initial header showed BIRD.BG with a verified badge,132K followers and Media/news company category, but the view became blank before the Page menu or October filters could be used. Delayed DOM read stayed blank; no explicit restriction message."
+      ]
+    },
+    {
+      "targetKey": "url:/narod.bulgaria",
+      "url": "https://www.facebook.com/Narod.Bulgaria",
+      "checkedAt": "2026-11-04T19:54:28.073Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct catalog link stayed blank on initial and delayed DOM reads during another Page’s date-filter review. No explicit restriction notice; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "url:/m.karbovski",
+      "url": "https://www.facebook.com/M.Karbovski",
+      "checkedAt": "2026-11-04T19:54:28.127Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "The direct catalog link stayed blank on initial and delayed DOM reads during another Page’s date-filter review. No explicit restriction notice; October archive not reviewed."
+      ]
+    },
+    {
+      "targetKey": "id:100076891908016",
+      "url": "https://www.facebook.com/profile.php?id=100076891908016",
+      "checkedAt": "2026-11-04T19:59:47.342Z",
+      "status": "partial",
+      "monthComplete": false,
+      "postsCaptured": 1,
+      "postsAdded": 1,
+      "notes": [
+        "Native Report Page verified, News & media website category and 6K followers. Applied 2026/October ending-date filter. When the feed became blank, a single observed photo-detail view loaded and provided an absolute October31 timestamp and the Page’s own canonical post permalink. One dated political satire post collected; earlier posts and a complete monthly archive are not established."
+      ]
+    },
+    {
+      "targetKey": "id:61583481685886",
+      "url": "https://www.facebook.com/profile.php?id=61583481685886",
+      "checkedAt": "2026-11-04T19:17:56.313Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook remained blank after navigation, screenshot and DOMContentLoaded inspection; no explicit restriction message or post archive available."
+      ]
+    },
+    {
+      "targetKey": "id:61594398383441",
+      "url": "https://www.facebook.com/profile.php?id=61594398383441",
+      "checkedAt": "2026-11-04T19:18:16.877Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook header/loading shell was followed by blank content; no visible post archive or explicit restriction message."
+      ]
+    },
+    {
+      "targetKey": "id:61595732886875",
+      "url": "https://www.facebook.com/profile.php?id=61595732886875",
+      "checkedAt": "2026-11-04T19:20:41.710Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Blank Facebook content persisted after navigation and later visible DOM inspection; no explicit restriction message."
+      ]
+    },
+    {
+      "targetKey": "id:61557935279182",
+      "url": "https://www.facebook.com/profile.php?id=61557935279182",
+      "checkedAt": "2026-11-04T19:22:03.494Z",
+      "status": "partial",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Posts Filters ending year2026/monthOctober applied. Latest three visible posts are dated June6,2024 and April27,2024; no October2026 post verified. Digitalcreator/PageInsights signals visible. This is a visible-feed review, not a claim of exhaustive archive."
+      ]
+    },
+    {
+      "targetKey": "id:100067931502956",
+      "url": "https://www.facebook.com/profile.php?id=100067931502956",
+      "checkedAt": "2026-11-04T19:23:19.818Z",
+      "status": "partial",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Verified Community Page opens, latest visible post and one scroll show October14,2022; no October2026 post verified. Not an exhaustive archive claim."
+      ]
+    },
+    {
+      "targetKey": "id:61566872792581",
+      "url": "https://www.facebook.com/profile.php?id=61566872792581",
+      "checkedAt": "2026-11-04T19:24:10.652Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Blank Facebook content persisted after direct navigation and later visible DOM inspection; no explicit restriction message."
+      ]
+    },
+    {
+      "targetKey": "id:100082964949545",
+      "url": "https://www.facebook.com/profile.php?id=100082964949545",
+      "checkedAt": "2026-11-04T19:26:17.062Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Blank Facebook content persisted after direct navigation and later visible DOM inspection; no explicit restriction message."
+      ]
+    },
+    {
+      "targetKey": "url:/shum.bg.shumen",
+      "url": "https://www.facebook.com/shum.bg.shumen",
+      "checkedAt": "2026-11-04T19:27:42.833Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Known catalog URL opened Facebook header/loading shell, then stayed blank on later DOM inspection; no post archive or explicit restriction message visible."
+      ]
+    },
+    {
+      "targetKey": "id:358594291609802",
+      "url": "https://www.facebook.com/МИГnewsinfo-358594291609802",
+      "checkedAt": "2026-11-04T19:56:23.510Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Observed redirect to mignews.info; repeated native AX/DOM and screenshot reads remained empty dark Facebook Page. No explicit block or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/nenovinite",
+      "url": "https://www.facebook.com/nenovinite",
+      "checkedAt": "2026-11-04T19:56:51.977Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/pirinpress.bg",
+      "url": "https://www.facebook.com/pirinpress.bg",
+      "checkedAt": "2026-11-04T19:57:22.112Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/podtepetomedia",
+      "url": "https://www.facebook.com/podtepetomedia",
+      "checkedAt": "2026-11-04T19:57:40.374Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/samokov365",
+      "url": "https://www.facebook.com/samokov365",
+      "checkedAt": "2026-11-04T19:57:59.022Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/stmost",
+      "url": "https://www.facebook.com/stmost",
+      "checkedAt": "2026-11-04T19:58:15.481Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/strumapress",
+      "url": "https://www.facebook.com/strumapress",
+      "checkedAt": "2026-11-04T19:58:37.369Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "id:1486844611622459",
+      "url": "https://www.facebook.com/%D0%A221-1486844611622459",
+      "checkedAt": "2026-11-04T19:59:05.172Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/chernomore10",
+      "url": "https://www.facebook.com/chernomore10",
+      "checkedAt": "2026-11-04T19:59:23.884Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/actualno.com",
+      "url": "https://www.facebook.com/actualno.com",
+      "checkedAt": "2026-11-04T19:59:48.009Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/eburgass",
+      "url": "https://www.facebook.com/eburgass",
+      "checkedAt": "2026-11-04T20:00:04.196Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/inews.bg",
+      "url": "https://www.facebook.com/inews.bg",
+      "checkedAt": "2026-11-04T20:00:20.041Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/petel.bg",
+      "url": "https://www.facebook.com/petel.bg",
+      "checkedAt": "2026-11-04T20:00:44.649Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/blitz.bg",
+      "url": "https://www.facebook.com/blitz.bg",
+      "checkedAt": "2026-11-04T20:01:09.972Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "id:61555619386722",
+      "url": "https://www.facebook.com/p/%D0%92%D0%B5%D1%81%D1%82%D0%BD%D0%B8%D0%BA-%D0%AF%D0%BC%D0%B1%D0%BE%D0%BB-61555619386722",
+      "checkedAt": "2026-11-04T20:01:52.952Z",
+      "status": "excluded",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native profile shows Add Friend and Friends tab; Additional profile actions menu explicitly says Report profile. Branded personal profile, excluded from Page-only collection.",
+        "No posts or friend-list details collected. Page Insights footer was present and does not establish Page type."
+      ]
+    },
+    {
+      "targetKey": "url:/zovzaistina",
+      "url": "https://www.facebook.com/ZOVZAISTINA",
+      "checkedAt": "2026-11-04T20:02:28.444Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/novinitem",
+      "url": "https://www.facebook.com/novinitem",
+      "checkedAt": "2026-11-04T20:04:55.376Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "id:61560116524008",
+      "url": "https://www.facebook.com/61560116524008",
+      "checkedAt": "2026-11-04T20:05:41.757Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Native Facebook navigation followed by separate AX/DOM/screenshot reads remained an empty dark Page, with no explicit restriction or unavailable message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "id:100066476265264",
+      "url": "https://www.facebook.com/p/%D0%9C%D0%BE%D0%BD%D1%82%D0%B0%D0%BD%D0%B0-%D0%B4%D0%BD%D0%B5%D1%81-100066476265264",
+      "checkedAt": "2026-11-04T20:04:25.174Z",
+      "status": "partial",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Verified Page via native Report Page menu; visible name Монтана днес,399followers,Just for fun category,bio vsichko za montana.",
+        "Native Page Posts Go to filter selected2026October; first visible filtered publication date verified by native keyboard-focus tooltip as Monday,October30,2017at20:50.",
+        "No October2026 political post verified in this review; not an exhaustive archive or absence claim. This may be an older namesake rather than a current regional publisher."
+      ]
+    },
+    {
+      "targetKey": "url:/fakti.bg",
+      "url": "https://www.facebook.com/fakti.bg",
+      "checkedAt": "2026-11-04T20:05:11.706Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook explicitly displayed This content is not available right now for this URL. Cause not established; not an account-wide block message.",
+        "No October archive or absence of political posts established."
+      ]
+    },
+    {
+      "targetKey": "url:/topnovini.bg",
+      "url": "https://www.facebook.com/topnovini.bg",
+      "checkedAt": "2026-11-04T20:06:02.994Z",
+      "status": "unavailable",
+      "monthComplete": false,
+      "postsCaptured": 0,
+      "postsAdded": 0,
+      "notes": [
+        "Facebook explicitly displayed This content is not available right now for this URL. Cause not established; not an account-wide block message.",
+        "No October archive or absence of political posts established."
+      ]
+    }
+  ],
+  "duplicateReviews": [
+    {
+      "observedUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0wa1YX3ZRshCkfpBu5vwQWTVCqUK5TGaQjY3w8wJ5Hcs9tkdhGZeD9urGf4ywWBTul&id=61577398061794",
+      "existingPostId": "post:pfbid031bcFzrkzYYGxLaGg93g6Mah7mcbdwioCZBpqPgEaYTkgEkzNPfyyCcGBiFnFDB2sl",
+      "existingUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid031bcFzrkzYYGxLaGg93g6Mah7mcbdwioCZBpqPgEaYTkgEkzNPfyyCcGBiFnFDB2sl&id=61577398061794",
+      "pageId": "61577398061794",
+      "date": "2026-10-31",
+      "capturedAt": "2026-11-04T19:11:39.989Z",
+      "resolution": "held-possible-alias",
+      "reason": "Изключена от новите записи след ръчен преглед: същата страница, дата, начало на надписа и броячи 975/69/8 като съществуващ запис, но различен pfbid. Възможен алтернативен адрес; не се брои повторно.",
+      "sourceTextSha256": "6b56c0377e0d632b97ef855fa86c5e50d83d79443a552186fee4b6b61e890c72"
+    }
+  ],
+  "catalogScope": {
+    "directoryEntries": 349,
+    "primaryFacebookLinks": 123,
+    "primaryLinksAttempted": 123,
+    "additionalSourceAddressesDeferred": 38,
+    "entriesWithoutPrimaryFacebookLink": 226,
+    "completeMonthlyArchives": false
+  },
+  "mediaCorrections": [
+    {
+      "postId": "post:pfbid02mFRotzxY3qBtCDZVXUsaE8RQ1igsq2fMqs31kRKqkfgMvWAxEBjVG9rffsRtCbpPl",
+      "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02mFRotzxY3qBtCDZVXUsaE8RQ1igsq2fMqs31kRKqkfgMvWAxEBjVG9rffsRtCbpPl&id=61577398061794",
+      "oldSha": "8554376f720d7aa395ce902124f8c6274a3156b94bfd2e527b3026140bc70b0e",
+      "newSha": "2c2b785855e355a8d5df81a0d047e51ba89388febb55cd6b751bf92a2178414b",
+      "capturedAt": "2026-11-04T20:13:12.270Z",
+      "reason": "Replaced a uniform gray thumbnail with a native browser screenshot of the visible public post-media region."
+    }
+  ]
+}

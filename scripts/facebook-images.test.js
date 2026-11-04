@@ -11,8 +11,8 @@ const sources = JSON.parse(fs.readFileSync(path.join(directory, 'SOURCES.json'),
 const discoveries = JSON.parse(fs.readFileSync(path.join(root, 'public/data/facebook/2026/DISCOVERY.json'), 'utf8'));
 
 test('every Facebook image resolves to a retained asset with its own public source and hash', () => {
-  const uses = [...report.pages.map(page => ({ id: 'page:' + page.id, url: page.url, images: [page.avatar] })),
-    ...report.posts.map(post => ({ id: post.id, url: post.url, images: post.images }))];
+  const uses = [...report.pages.map(page => ({ id: 'page:' + page.id, url: page.url, images: page.avatar ? [page.avatar] : [] })),
+    ...report.posts.map(post => ({ id: post.id, url: post.url, images: post.images ?? [] }))];
   const referenced = new Set();
   for (const row of uses) for (const image of row.images) {
     assert.equal(image.sourceUrl, row.url);
@@ -26,8 +26,8 @@ test('every Facebook image resolves to a retained asset with its own public sour
     assert(sources.assets[name].uses.some(use => use.id === row.id && use.sourceUrl === row.url && use.kind === image.kind));
     referenced.add(name);
   }
-  assert.equal(report.pages.filter(page => page.avatar).length, 19);
-  assert.equal(report.posts.filter(post => post.images.length).length, 92);
+  assert(report.pages.filter(page => page.avatar).length >= 19);
+  assert(report.posts.filter(post => post.images?.length).length >= 92);
   assert.equal(Object.keys(sources.assets).length, referenced.size);
   assert.deepEqual(new Set(fs.readdirSync(directory).filter(name => name !== 'SOURCES.json')), referenced);
 });

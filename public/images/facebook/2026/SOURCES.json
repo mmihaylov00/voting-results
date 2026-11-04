@@ -1421,6 +1421,774 @@
           "kind": "image"
         }
       ]
+    },
+    "44172ecad739b8707398d9b8f1fc7d3664e6a5f47dd0ca270a988b83e9bbe29f.jpg": {
+      "sha256": "44172ecad739b8707398d9b8f1fc7d3664e6a5f47dd0ca270a988b83e9bbe29f",
+      "width": 1462,
+      "height": 1076,
+      "uses": [
+        {
+          "id": "post:pfbid0Szdue84b6ghkUEwm7Vc4bA1S8wXdtNji68WrCZhHshZTrmFkKwhqGYtsgt7FV8nml",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Szdue84b6ghkUEwm7Vc4bA1S8wXdtNji68WrCZhHshZTrmFkKwhqGYtsgt7FV8nml&id=61577398061794",
+          "kind": "image"
+        }
+      ]
+    },
+    "493cdb391c9632cb781941af4ef4b56d47e847c69d9e3363df9a5975ec69c0eb.avif": {
+      "sha256": "493cdb391c9632cb781941af4ef4b56d47e847c69d9e3363df9a5975ec69c0eb",
+      "width": 80,
+      "height": 80,
+      "uses": [
+        {
+          "id": "page:61557189262331",
+          "sourceUrl": "https://www.facebook.com/profile.php?id=61557189262331",
+          "kind": "image"
+        }
+      ]
+    },
+    "120b17d1d49d5e8d4561a2bd172f4112c144d96e9392279d136d0ca978cb4cff.jpg": {
+      "sha256": "120b17d1d49d5e8d4561a2bd172f4112c144d96e9392279d136d0ca978cb4cff",
+      "width": 1312,
+      "height": 1199,
+      "uses": [
+        {
+          "id": "post:pfbid0UBSSooYbyLQ1yfNtsMtSWXCH6rGffqExNfACADwoAr9sJyKEupppWT6RbM9xEjVMl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0UBSSooYbyLQ1yfNtsMtSWXCH6rGffqExNfACADwoAr9sJyKEupppWT6RbM9xEjVMl&id=61557189262331",
+          "kind": "image"
+        }
+      ]
+    },
+    "78b0500ef6955bd726c5fb5c3c9dbd79328ebb40b1c8f40a8e1299c3061d0969.jpg": {
+      "sha256": "78b0500ef6955bd726c5fb5c3c9dbd79328ebb40b1c8f40a8e1299c3061d0969",
+      "width": 80,
+      "height": 80,
+      "uses": [
+        {
+          "id": "page:https://www.facebook.com/zapiskipobgpolitikata",
+          "sourceUrl": "https://www.facebook.com/zapiskipobgpolitikata",
+          "kind": "image"
+        }
+      ]
+    },
+    "9537d2f2b71554c35f0ea56c508869b01d4b2952e829055d2fce79dd6fc191a6.jpg": {
+      "sha256": "9537d2f2b71554c35f0ea56c508869b01d4b2952e829055d2fce79dd6fc191a6",
+      "width": 1185,
+      "height": 1083,
+      "uses": [
+        {
+          "id": "post:pfbid02VWS1ehNessnuMz9N8jgpK1jV3vB3Z9sViSpR3YLYMojPm5JQ8vGmUwQsLLggj2PDl",
+          "sourceUrl": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02VWS1ehNessnuMz9N8jgpK1jV3vB3Z9sViSpR3YLYMojPm5JQ8vGmUwQsLLggj2PDl",
+          "kind": "image"
+        }
+      ]
+    },
+    "e7167cce15b521b2aeed8c3cc7c9658b8949b1d63d4704fbe56dbbc7ad65315b.jpg": {
+      "sha256": "e7167cce15b521b2aeed8c3cc7c9658b8949b1d63d4704fbe56dbbc7ad65315b",
+      "width": 1000,
+      "height": 522,
+      "uses": [
+        {
+          "id": "post:pfbid02nWi2KkkD9QQJ5hhEvM7uxJhdtuZMsmXUVjPeLNoxUMzq6NgzeUxMZPKPYFLtiwzJl",
+          "sourceUrl": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02nWi2KkkD9QQJ5hhEvM7uxJhdtuZMsmXUVjPeLNoxUMzq6NgzeUxMZPKPYFLtiwzJl",
+          "kind": "image"
+        }
+      ]
+    },
+    "ee6a54f9482ad2f1e0a9e345e3b96e7154680cb716ccd9535f19eda55391fc15.jpg": {
+      "sha256": "ee6a54f9482ad2f1e0a9e345e3b96e7154680cb716ccd9535f19eda55391fc15",
+      "width": 480,
+      "height": 480,
+      "uses": [
+        {
+          "id": "page:61585325593477",
+          "sourceUrl": "https://www.facebook.com/profile.php?id=61585325593477",
+          "kind": "image"
+        }
+      ]
+    },
+    "41b846efe2ee3413ad34d29de22e8711bdd3e8236e0f607fc8bb02c0ed1961b1.jpg": {
+      "sha256": "41b846efe2ee3413ad34d29de22e8711bdd3e8236e0f607fc8bb02c0ed1961b1",
+      "width": 360,
+      "height": 640,
+      "uses": [
+        {
+          "id": "video:1316088687265038",
+          "sourceUrl": "https://www.facebook.com/reel/1316088687265038",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "48c69fad117d322c53892eaa5840223502941375c3a0fcbdc58e7c3fc3a8745e.jpg": {
+      "sha256": "48c69fad117d322c53892eaa5840223502941375c3a0fcbdc58e7c3fc3a8745e",
+      "width": 720,
+      "height": 1280,
+      "uses": [
+        {
+          "id": "video:2932892587068862",
+          "sourceUrl": "https://www.facebook.com/reel/2932892587068862",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "423131ffccd792635f8d5e4bf743c8ca4e34451ae7c64e09d39f471049a4e821.jpg": {
+      "sha256": "423131ffccd792635f8d5e4bf743c8ca4e34451ae7c64e09d39f471049a4e821",
+      "width": 562,
+      "height": 313,
+      "uses": [
+        {
+          "id": "post:pfbid0bxazcFzguT9juQznYzRigUnSBxr3JX33dkKRZT7vX142uuXxsi1RWNf94LUf7Ddvl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0bxazcFzguT9juQznYzRigUnSBxr3JX33dkKRZT7vX142uuXxsi1RWNf94LUf7Ddvl&id=61585325593477",
+          "kind": "image"
+        }
+      ]
+    },
+    "880b7a63f0b25a9dd9dc032fa5321b95579801597a78075331e3a3707ebd0bde.jpg": {
+      "sha256": "880b7a63f0b25a9dd9dc032fa5321b95579801597a78075331e3a3707ebd0bde",
+      "width": 960,
+      "height": 1707,
+      "uses": [
+        {
+          "id": "video:1423330226095881",
+          "sourceUrl": "https://www.facebook.com/reel/1423330226095881",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "82742491d5e54bf0a44042db27a8defd5764d9d116087e5d24690e85f4722d73.jpg": {
+      "sha256": "82742491d5e54bf0a44042db27a8defd5764d9d116087e5d24690e85f4722d73",
+      "width": 1080,
+      "height": 1350,
+      "uses": [
+        {
+          "id": "post:pfbid0WYiYRntQmkadGMKz3SJoREpkPfVFb2MttNVQwoX97TtSLxk1X4qeFBq31EVJKNTkl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0WYiYRntQmkadGMKz3SJoREpkPfVFb2MttNVQwoX97TtSLxk1X4qeFBq31EVJKNTkl&id=61585325593477",
+          "kind": "image"
+        }
+      ]
+    },
+    "6ff1f90c4c4c687c9d193622ef65dec5603ebf9dc9ccb34a73a88f6665eb4952.jpg": {
+      "sha256": "6ff1f90c4c4c687c9d193622ef65dec5603ebf9dc9ccb34a73a88f6665eb4952",
+      "width": 960,
+      "height": 1707,
+      "uses": [
+        {
+          "id": "video:1677929967087015",
+          "sourceUrl": "https://www.facebook.com/reel/1677929967087015",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "00ba0f2938dba4bd0b08052b86c0a49be3d3d20f488132783ad9abf2ef878653.jpg": {
+      "sha256": "00ba0f2938dba4bd0b08052b86c0a49be3d3d20f488132783ad9abf2ef878653",
+      "width": 960,
+      "height": 1707,
+      "uses": [
+        {
+          "id": "video:1472440601695103",
+          "sourceUrl": "https://www.facebook.com/reel/1472440601695103",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "6e915bb757a3172d0182e9b602f69c80c5c58c3059c184063f927ebc573debcf.jpg": {
+      "sha256": "6e915bb757a3172d0182e9b602f69c80c5c58c3059c184063f927ebc573debcf",
+      "width": 1080,
+      "height": 763,
+      "uses": [
+        {
+          "id": "post:pfbid0m5ATPAutDMVviW3E271akkzPhqNQ7vmJ3QJas2DYDDDMoUf2gccbacexUn81zSf1l",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0m5ATPAutDMVviW3E271akkzPhqNQ7vmJ3QJas2DYDDDMoUf2gccbacexUn81zSf1l&id=61585325593477",
+          "kind": "image"
+        }
+      ]
+    },
+    "806508be6d98d08d100553f4e8755a66f40a9cc013e4eccb5e0b7e81d19b3ce8.jpg": {
+      "sha256": "806508be6d98d08d100553f4e8755a66f40a9cc013e4eccb5e0b7e81d19b3ce8",
+      "width": 960,
+      "height": 1707,
+      "uses": [
+        {
+          "id": "video:1433388234897669",
+          "sourceUrl": "https://www.facebook.com/reel/1433388234897669",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "1d9cf1a657c130d09a8f1c25b1e95711d58e7657a0781b015b25d3953d1eb189.jpg": {
+      "sha256": "1d9cf1a657c130d09a8f1c25b1e95711d58e7657a0781b015b25d3953d1eb189",
+      "width": 960,
+      "height": 1707,
+      "uses": [
+        {
+          "id": "video:1608628141015918",
+          "sourceUrl": "https://www.facebook.com/reel/1608628141015918",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "1009f90f926ffae3039dfae826c8a06d7d0f7c2832e334e535a3c3eb6640c3ef.jpg": {
+      "sha256": "1009f90f926ffae3039dfae826c8a06d7d0f7c2832e334e535a3c3eb6640c3ef",
+      "width": 1600,
+      "height": 900,
+      "uses": [
+        {
+          "id": "post:pfbid0oZRtdfH4kWzcrRooEgKEhy5Krkhxq8midaY16wKyeNNHPnVRDqPuBjDFvpvTSpPsl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0oZRtdfH4kWzcrRooEgKEhy5Krkhxq8midaY16wKyeNNHPnVRDqPuBjDFvpvTSpPsl&id=61585325593477",
+          "kind": "image"
+        }
+      ]
+    },
+    "ade03bd9d2b0162f3b166b0bc1e3d1216da8e7209a4805cb59d71181a5f8ff3f.jpg": {
+      "sha256": "ade03bd9d2b0162f3b166b0bc1e3d1216da8e7209a4805cb59d71181a5f8ff3f",
+      "width": 1448,
+      "height": 1086,
+      "uses": [
+        {
+          "id": "post:pfbid0bpiw3fev4bkwEAwVgt9AZrcdzUwSAXYJtKZvspxKMVxV4zGJDFt4ZZ7C1wqYmacQl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0bpiw3fev4bkwEAwVgt9AZrcdzUwSAXYJtKZvspxKMVxV4zGJDFt4ZZ7C1wqYmacQl&id=61585325593477",
+          "kind": "image"
+        }
+      ]
+    },
+    "fd7e9cdd6be27a515914ad01b5df43659fc14fce972e443bde1ae4a1a0e4cb33.jpg": {
+      "sha256": "fd7e9cdd6be27a515914ad01b5df43659fc14fce972e443bde1ae4a1a0e4cb33",
+      "width": 960,
+      "height": 1707,
+      "uses": [
+        {
+          "id": "video:1094888736870133",
+          "sourceUrl": "https://www.facebook.com/reel/1094888736870133",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "77c2774e44c7505cf6b541eaaf008e315190b868260ef24562fa294e074bd94f.jpg": {
+      "sha256": "77c2774e44c7505cf6b541eaaf008e315190b868260ef24562fa294e074bd94f",
+      "width": 1707,
+      "height": 960,
+      "uses": [
+        {
+          "id": "post:pfbid0ii9gwtsS2eibLyBLVApRigjnj5RWYXjgumzrQULyeD16cLHNySWsPNDkBFiF7TCl",
+          "sourceUrl": "https://www.facebook.com/PassiveLarpers3/posts/pfbid0ii9gwtsS2eibLyBLVApRigjnj5RWYXjgumzrQULyeD16cLHNySWsPNDkBFiF7TCl",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "96f552bb7381b8837076898efd71f604d9887935e41698e998e868441c88217c.jpg": {
+      "sha256": "96f552bb7381b8837076898efd71f604d9887935e41698e998e868441c88217c",
+      "width": 1004,
+      "height": 565,
+      "uses": [
+        {
+          "id": "post:pfbid02e9Nu96hmUGCtZQD3gAzFCAmXrUGpjYts7Qrk3bJhZYGonxLukB2C9xBqafFZycsXl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02e9Nu96hmUGCtZQD3gAzFCAmXrUGpjYts7Qrk3bJhZYGonxLukB2C9xBqafFZycsXl&id=61577398061794",
+          "kind": "image"
+        }
+      ]
+    },
+    "dc07ec2814bb12fcc9529baa669328a1d6d393721529440de526251797fafbae.jpg": {
+      "sha256": "dc07ec2814bb12fcc9529baa669328a1d6d393721529440de526251797fafbae",
+      "width": 1206,
+      "height": 695,
+      "uses": [
+        {
+          "id": "post:pfbid0WEb3SuxipYL7kfDXLptWUroskKqZ11LATBVDp6oHvNUAw6cwDDCWVTDVkQhsTBGzl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0WEb3SuxipYL7kfDXLptWUroskKqZ11LATBVDp6oHvNUAw6cwDDCWVTDVkQhsTBGzl&id=61577398061794",
+          "kind": "image"
+        }
+      ]
+    },
+    "c1629bd14a9ba51a2d2a192765cc3745efc5cbd78d53145f2def578e9cdf0436.jpg": {
+      "sha256": "c1629bd14a9ba51a2d2a192765cc3745efc5cbd78d53145f2def578e9cdf0436",
+      "width": 720,
+      "height": 1280,
+      "uses": [
+        {
+          "id": "video:1289332556672095",
+          "sourceUrl": "https://www.facebook.com/reel/1289332556672095/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "3f2873a5234084716eb25e3c776a675b78b5b173941c55f463c1b707bcc4db4c.jpg": {
+      "sha256": "3f2873a5234084716eb25e3c776a675b78b5b173941c55f463c1b707bcc4db4c",
+      "width": 1206,
+      "height": 735,
+      "uses": [
+        {
+          "id": "post:pfbid02EiFx8u2XuizA1gq35fPdyBExfHwkp7bxX1behZsgJUfoHtGjwq6c6odubsSAV1VEl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02EiFx8u2XuizA1gq35fPdyBExfHwkp7bxX1behZsgJUfoHtGjwq6c6odubsSAV1VEl&id=61577398061794",
+          "kind": "image"
+        }
+      ]
+    },
+    "8e0f5b74a7ca5af1d681c370957c59e12c04140465cd7693e93aa1b45ad56890.jpg": {
+      "sha256": "8e0f5b74a7ca5af1d681c370957c59e12c04140465cd7693e93aa1b45ad56890",
+      "width": 1280,
+      "height": 720,
+      "uses": [
+        {
+          "id": "video:1844092166778591",
+          "sourceUrl": "https://www.facebook.com/reel/1844092166778591/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "2903be0f7787cbdc2609ae3352d954c0dc0cc8f4b2b4eeca30ce50a4d4e02e37.jpg": {
+      "sha256": "2903be0f7787cbdc2609ae3352d954c0dc0cc8f4b2b4eeca30ce50a4d4e02e37",
+      "width": 1206,
+      "height": 738,
+      "uses": [
+        {
+          "id": "post:pfbid02LiCfkbcVhJXUPw4XeZKbGXkP3NnELWGwotMGH5kpv1FD46nx5yWUKaTDRvFCxZ9Rl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02LiCfkbcVhJXUPw4XeZKbGXkP3NnELWGwotMGH5kpv1FD46nx5yWUKaTDRvFCxZ9Rl&id=61577398061794",
+          "kind": "image"
+        }
+      ]
+    },
+    "5c25db3f1f8fae5133c58126fd17f2746a2dbd3d2053fd636116e4aac31195f6.jpg": {
+      "sha256": "5c25db3f1f8fae5133c58126fd17f2746a2dbd3d2053fd636116e4aac31195f6",
+      "width": 1220,
+      "height": 720,
+      "uses": [
+        {
+          "id": "video:1157399536729329",
+          "sourceUrl": "https://www.facebook.com/reel/1157399536729329/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "be33550da3a0b031b4aaa6b4767e4a313f756312f0475e4f0e758eefd704ba1f.jpg": {
+      "sha256": "be33550da3a0b031b4aaa6b4767e4a313f756312f0475e4f0e758eefd704ba1f",
+      "width": 660,
+      "height": 734,
+      "uses": [
+        {
+          "id": "post:pfbid02izp6dNeysrRRYqX8DW9d5zZr1BN5BAaaNy5VEMEhAEGYjBf3cH4DSk6sMnhhSYmVl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02izp6dNeysrRRYqX8DW9d5zZr1BN5BAaaNy5VEMEhAEGYjBf3cH4DSk6sMnhhSYmVl&id=61577398061794",
+          "kind": "image"
+        }
+      ]
+    },
+    "07856043d33d8af49280e63b1b52331a8c4090da1a27092527c86ba4a7b1f77c.jpg": {
+      "sha256": "07856043d33d8af49280e63b1b52331a8c4090da1a27092527c86ba4a7b1f77c",
+      "width": 960,
+      "height": 1707,
+      "uses": [
+        {
+          "id": "video:1645050123780583",
+          "sourceUrl": "https://www.facebook.com/reel/1645050123780583/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "d3e3a029a31659208993c5aaf670f1f791284f496cbc76f2b2cc2b382e00efe9.jpg": {
+      "sha256": "d3e3a029a31659208993c5aaf670f1f791284f496cbc76f2b2cc2b382e00efe9",
+      "width": 1080,
+      "height": 1007,
+      "uses": [
+        {
+          "id": "post:pfbid034mX45PNZm6a9rVhaNsHMAi2fGVL7yQV2gtHKKwRnSVYgSM4dmJrz4ghHg67qubbKl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid034mX45PNZm6a9rVhaNsHMAi2fGVL7yQV2gtHKKwRnSVYgSM4dmJrz4ghHg67qubbKl&id=61577398061794",
+          "kind": "image"
+        }
+      ]
+    },
+    "6fbe329a14aef56faf7866e73f4394b15cea54c605d47c21426e67a5f802cb81.jpg": {
+      "sha256": "6fbe329a14aef56faf7866e73f4394b15cea54c605d47c21426e67a5f802cb81",
+      "width": 720,
+      "height": 1280,
+      "uses": [
+        {
+          "id": "video:998758882516672",
+          "sourceUrl": "https://www.facebook.com/reel/998758882516672/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "a34140933c7bc1c5533b24711cc6f76c5a5da1087f30cb4a47be6fee5df51ee5.jpg": {
+      "sha256": "a34140933c7bc1c5533b24711cc6f76c5a5da1087f30cb4a47be6fee5df51ee5",
+      "width": 1206,
+      "height": 650,
+      "uses": [
+        {
+          "id": "video:1843600866897994",
+          "sourceUrl": "https://www.facebook.com/reel/1843600866897994/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "2e10a6645856e54a9ab4c2649ce7c9c0e9bd4941c12ee6921c4014f0c2fc1201.jpg": {
+      "sha256": "2e10a6645856e54a9ab4c2649ce7c9c0e9bd4941c12ee6921c4014f0c2fc1201",
+      "width": 1206,
+      "height": 1095,
+      "uses": [
+        {
+          "id": "post:pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl&id=61577398061794",
+          "kind": "image"
+        }
+      ]
+    },
+    "cfb675cc5f27f784e6ff40defbfb928b1738d6e88538313ee4d8eef04fc960bd.jpg": {
+      "sha256": "cfb675cc5f27f784e6ff40defbfb928b1738d6e88538313ee4d8eef04fc960bd",
+      "width": 1206,
+      "height": 662,
+      "uses": [
+        {
+          "id": "video:1138813955363373",
+          "sourceUrl": "https://www.facebook.com/reel/1138813955363373/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "04df7ebc19d1ef387f6b89ed6987e5ec3db619054858913f7da29da570510fe0.jpg": {
+      "sha256": "04df7ebc19d1ef387f6b89ed6987e5ec3db619054858913f7da29da570510fe0",
+      "width": 1080,
+      "height": 1080,
+      "uses": [
+        {
+          "id": "post:pfbid0NnE2Mnc5FLn4mWkiG5QoT9DJwKnsFPL11GVhDW5aZpru6rRqASn4DwEbAwPgZ7xFl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0NnE2Mnc5FLn4mWkiG5QoT9DJwKnsFPL11GVhDW5aZpru6rRqASn4DwEbAwPgZ7xFl&id=61577398061794",
+          "kind": "image"
+        }
+      ]
+    },
+    "74647dc78f5b7ab6975a486523ae528d9055282d626636d6c60c941b8bbc4164.jpg": {
+      "sha256": "74647dc78f5b7ab6975a486523ae528d9055282d626636d6c60c941b8bbc4164",
+      "width": 720,
+      "height": 1280,
+      "uses": [
+        {
+          "id": "video:1840261970724145",
+          "sourceUrl": "https://www.facebook.com/reel/1840261970724145/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "e2b43b825137178edc56d11ca42dc2abad6835192ba45b226eac6c793c43a6d9.jpg": {
+      "sha256": "e2b43b825137178edc56d11ca42dc2abad6835192ba45b226eac6c793c43a6d9",
+      "width": 960,
+      "height": 1707,
+      "uses": [
+        {
+          "id": "video:951043291091990",
+          "sourceUrl": "https://www.facebook.com/reel/951043291091990/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "2fb8cbd0b67f8134288812a2a4f9822bb9e3acbc905fb2cdf0a64f022c317f2d.jpg": {
+      "sha256": "2fb8cbd0b67f8134288812a2a4f9822bb9e3acbc905fb2cdf0a64f022c317f2d",
+      "width": 720,
+      "height": 1280,
+      "uses": [
+        {
+          "id": "video:1604352204018118",
+          "sourceUrl": "https://www.facebook.com/reel/1604352204018118/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "b53d2e2c22cd088e95c1d3bda546892b2cebca9c240d117b5870759ed60f1a7d.jpg": {
+      "sha256": "b53d2e2c22cd088e95c1d3bda546892b2cebca9c240d117b5870759ed60f1a7d",
+      "width": 1180,
+      "height": 654,
+      "uses": [
+        {
+          "id": "video:1157252846871409",
+          "sourceUrl": "https://www.facebook.com/reel/1157252846871409/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "20bacc226d64b491cc333f9872aa2a60ae62dbbe37e2edb8a660adbf59b067f7.jpg": {
+      "sha256": "20bacc226d64b491cc333f9872aa2a60ae62dbbe37e2edb8a660adbf59b067f7",
+      "width": 1206,
+      "height": 666,
+      "uses": [
+        {
+          "id": "video:1445052394418970",
+          "sourceUrl": "https://www.facebook.com/reel/1445052394418970/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "ea43dfdc627ed07919b9eebd5a97b390567b83d1be46b0c83d1b13a899d84d6a.jpg": {
+      "sha256": "ea43dfdc627ed07919b9eebd5a97b390567b83d1be46b0c83d1b13a899d84d6a",
+      "width": 960,
+      "height": 1707,
+      "uses": [
+        {
+          "id": "video:1428401352820819",
+          "sourceUrl": "https://www.facebook.com/reel/1428401352820819/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "f756bedf03637dc3c1bafb5be9ade9bab9007036df91d94c8847177d9d834b13.jpg": {
+      "sha256": "f756bedf03637dc3c1bafb5be9ade9bab9007036df91d94c8847177d9d834b13",
+      "width": 720,
+      "height": 1280,
+      "uses": [
+        {
+          "id": "video:1657759299059928",
+          "sourceUrl": "https://www.facebook.com/reel/1657759299059928/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "5f02e1489faf8131fb6a4bfb7275de18ac136ffdac20b9fec6b34c729b6fa5ac.jpg": {
+      "sha256": "5f02e1489faf8131fb6a4bfb7275de18ac136ffdac20b9fec6b34c729b6fa5ac",
+      "width": 1080,
+      "height": 1141,
+      "uses": [
+        {
+          "id": "post:pfbid0XjxPh3kRWttpVfgXyn4qv9MDgxK8aMB9rCKdG3W4Vfgy9Q4ySbLadZpG5LpbSWDwl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0XjxPh3kRWttpVfgXyn4qv9MDgxK8aMB9rCKdG3W4Vfgy9Q4ySbLadZpG5LpbSWDwl&id=61577398061794",
+          "kind": "image"
+        }
+      ]
+    },
+    "161d8313143c26b9a87b51b90dee29d50bf36cf0c3d9c7a820d8d294d6bd8114.jpg": {
+      "sha256": "161d8313143c26b9a87b51b90dee29d50bf36cf0c3d9c7a820d8d294d6bd8114",
+      "width": 1206,
+      "height": 652,
+      "uses": [
+        {
+          "id": "video:1613329786656320",
+          "sourceUrl": "https://www.facebook.com/reel/1613329786656320/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "c45cba6d62d1a3cf24edf2a816a4ae9e0313178f192cf8c06e788b9a10c333fe.jpg": {
+      "sha256": "c45cba6d62d1a3cf24edf2a816a4ae9e0313178f192cf8c06e788b9a10c333fe",
+      "width": 1707,
+      "height": 960,
+      "uses": [
+        {
+          "id": "video:1119095521093836",
+          "sourceUrl": "https://www.facebook.com/reel/1119095521093836/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "b03614bf258dc76c31270d3f9529c00c831b2456586d229ea59c17e8f81be715.jpg": {
+      "sha256": "b03614bf258dc76c31270d3f9529c00c831b2456586d229ea59c17e8f81be715",
+      "width": 720,
+      "height": 1280,
+      "uses": [
+        {
+          "id": "video:1657215862763287",
+          "sourceUrl": "https://www.facebook.com/reel/1657215862763287/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "20a8a73766d108c67ab78081d710fe69cfd61de713664bf03bc5b2ce4074467a.jpg": {
+      "sha256": "20a8a73766d108c67ab78081d710fe69cfd61de713664bf03bc5b2ce4074467a",
+      "width": 1024,
+      "height": 576,
+      "uses": [
+        {
+          "id": "video:2188569562093001",
+          "sourceUrl": "https://www.facebook.com/reel/2188569562093001/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "e425ad2ff56a28ed0d476f89c0da151cbebf4933eb6274dd3f16cd8b6a9d605d.jpg": {
+      "sha256": "e425ad2ff56a28ed0d476f89c0da151cbebf4933eb6274dd3f16cd8b6a9d605d",
+      "width": 1276,
+      "height": 720,
+      "uses": [
+        {
+          "id": "video:1505206344753130",
+          "sourceUrl": "https://www.facebook.com/reel/1505206344753130/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "304c4e44806b769f7c4d0e618cced331c3e9e8bc3ebbaef8813cb4d14ca14783.jpg": {
+      "sha256": "304c4e44806b769f7c4d0e618cced331c3e9e8bc3ebbaef8813cb4d14ca14783",
+      "width": 1280,
+      "height": 720,
+      "uses": [
+        {
+          "id": "video:3360112920862887",
+          "sourceUrl": "https://www.facebook.com/reel/3360112920862887/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "6b188ea3276db49358a5c1749bd774df79242fcfd9f2a084b12c18ab8703181c.jpg": {
+      "sha256": "6b188ea3276db49358a5c1749bd774df79242fcfd9f2a084b12c18ab8703181c",
+      "width": 720,
+      "height": 1280,
+      "uses": [
+        {
+          "id": "video:1672056241307870",
+          "sourceUrl": "https://www.facebook.com/reel/1672056241307870/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "7b0ec3ff6bcd5d4ad134c1bd4069744f22b4bd603d3f4204c9752d7488888b37.jpg": {
+      "sha256": "7b0ec3ff6bcd5d4ad134c1bd4069744f22b4bd603d3f4204c9752d7488888b37",
+      "width": 1280,
+      "height": 720,
+      "uses": [
+        {
+          "id": "video:1438183745146031",
+          "sourceUrl": "https://www.facebook.com/reel/1438183745146031/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "2ae9065110949d54a92f9c6e2cc4c7e6220a4cc41e10982a951aeba1c5ca5d49.jpg": {
+      "sha256": "2ae9065110949d54a92f9c6e2cc4c7e6220a4cc41e10982a951aeba1c5ca5d49",
+      "width": 720,
+      "height": 1280,
+      "uses": [
+        {
+          "id": "video:2057584485644941",
+          "sourceUrl": "https://www.facebook.com/reel/2057584485644941/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "9ae1201e6ad9ef0f76e81fb8cf8c8e993a5f467a7353acf00fa4648ae5a545e0.jpg": {
+      "sha256": "9ae1201e6ad9ef0f76e81fb8cf8c8e993a5f467a7353acf00fa4648ae5a545e0",
+      "width": 1536,
+      "height": 1024,
+      "uses": [
+        {
+          "id": "post:pfbid02TyRefXGLG13M3pmcAkV6R67J7ngjJGQeapFBWguxS4r1jaPmZemKjBbgnKyKiunWl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02TyRefXGLG13M3pmcAkV6R67J7ngjJGQeapFBWguxS4r1jaPmZemKjBbgnKyKiunWl&id=61557189262331",
+          "kind": "image"
+        }
+      ]
+    },
+    "d8f2c1f4d63aec0eab5dde123b1582df140e2b3db4993e3d479585911de87d52.jpg": {
+      "sha256": "d8f2c1f4d63aec0eab5dde123b1582df140e2b3db4993e3d479585911de87d52",
+      "width": 720,
+      "height": 1280,
+      "uses": [
+        {
+          "id": "video:1144845284632823",
+          "sourceUrl": "https://www.facebook.com/reel/1144845284632823/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "54dc3a3ef19e8518f5299087ec5b22af3faae729f3be8fe9f4ccbc4cd1a5c190.jpg": {
+      "sha256": "54dc3a3ef19e8518f5299087ec5b22af3faae729f3be8fe9f4ccbc4cd1a5c190",
+      "width": 360,
+      "height": 640,
+      "uses": [
+        {
+          "id": "video:2502903913566502",
+          "sourceUrl": "https://www.facebook.com/reel/2502903913566502/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "2b0d4cdebcc8e248b487d6924b8be04e8fbd2c5cf30979cb0ed0267576b3e5dd.jpg": {
+      "sha256": "2b0d4cdebcc8e248b487d6924b8be04e8fbd2c5cf30979cb0ed0267576b3e5dd",
+      "width": 1312,
+      "height": 1199,
+      "uses": [
+        {
+          "id": "post:pfbid02tSwQMoJwCoCrCmufVbnhSct2RywH5uGBxKwZ2B1SbC1mQ1F9oEqM111qJ2LL1cUZl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02tSwQMoJwCoCrCmufVbnhSct2RywH5uGBxKwZ2B1SbC1mQ1F9oEqM111qJ2LL1cUZl&id=61557189262331",
+          "kind": "image"
+        }
+      ]
+    },
+    "85f41820880a70ec583322a8999f025dd0e4ad93a676cc0cdbc322ce77055b13.jpg": {
+      "sha256": "85f41820880a70ec583322a8999f025dd0e4ad93a676cc0cdbc322ce77055b13",
+      "width": 80,
+      "height": 80,
+      "uses": [
+        {
+          "id": "page:100076891908016",
+          "sourceUrl": "https://www.facebook.com/profile.php?id=100076891908016",
+          "kind": "image"
+        }
+      ]
+    },
+    "a2b06c7cfd73b718646712f4934133451aacadd39e32382e0c414488b2bf09eb.jpg": {
+      "sha256": "a2b06c7cfd73b718646712f4934133451aacadd39e32382e0c414488b2bf09eb",
+      "width": 1254,
+      "height": 1254,
+      "uses": [
+        {
+          "id": "post:pfbid0LXifubhPr1Mdcmj34cDD6Z2UtigwgYtEcuNzakL9hA79x4r1eyypSCmQETvfaNTLl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0LXifubhPr1Mdcmj34cDD6Z2UtigwgYtEcuNzakL9hA79x4r1eyypSCmQETvfaNTLl&id=100076891908016",
+          "kind": "image"
+        }
+      ]
+    },
+    "f01799fd42ace640b70002130d2d468c38daf236cb3539e7cd905d42475fa789.jpg": {
+      "sha256": "f01799fd42ace640b70002130d2d468c38daf236cb3539e7cd905d42475fa789",
+      "width": 1080,
+      "height": 1080,
+      "uses": [
+        {
+          "id": "post:pfbid0T4ndd4P8DUg1FQtpjGDhUTGCd6XpUwNbkHxDRsvqhkyr4UhQoM49Gj788FPGJUwol",
+          "sourceUrl": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid0T4ndd4P8DUg1FQtpjGDhUTGCd6XpUwNbkHxDRsvqhkyr4UhQoM49Gj788FPGJUwol",
+          "kind": "image"
+        }
+      ]
+    },
+    "81852fd5e03fcbd034b41a3979c714ec6afdcfbcb17740b87dc668dbafd8cc5c.jpg": {
+      "sha256": "81852fd5e03fcbd034b41a3979c714ec6afdcfbcb17740b87dc668dbafd8cc5c",
+      "width": 1080,
+      "height": 1080,
+      "uses": [
+        {
+          "id": "post:pfbid02fCui5WQgpSNWoW4SbgeoHTVpyoxLoR2ZXmBKTtkL2Ge593yFavPukrax7bZPGdHl",
+          "sourceUrl": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02fCui5WQgpSNWoW4SbgeoHTVpyoxLoR2ZXmBKTtkL2Ge593yFavPukrax7bZPGdHl",
+          "kind": "image"
+        }
+      ]
+    },
+    "a20a7fd52c01ac32979d357f1c0ef9327db66618b7be5a6eb8bd33b1cccffbcd.jpg": {
+      "sha256": "a20a7fd52c01ac32979d357f1c0ef9327db66618b7be5a6eb8bd33b1cccffbcd",
+      "width": 888,
+      "height": 1198,
+      "uses": [
+        {
+          "id": "video:1444912007738019",
+          "sourceUrl": "https://www.facebook.com/reel/1444912007738019/",
+          "kind": "video-thumbnail"
+        }
+      ]
+    },
+    "d446449bbaca043f5875138f5b10f2eff65b1bd5f259e4aaffacbf6320e48662.jpg": {
+      "sha256": "d446449bbaca043f5875138f5b10f2eff65b1bd5f259e4aaffacbf6320e48662",
+      "width": 1080,
+      "height": 1396,
+      "uses": [
+        {
+          "id": "post:pfbid02yq4WR2LpV5FjNouCgSNS2jsrY7KzTHM6r4QfgDB5tv3YChk6ieDLmZoRRSdcVa78l",
+          "sourceUrl": "https://www.facebook.com/zapiskipobgpolitikata/posts/pfbid02yq4WR2LpV5FjNouCgSNS2jsrY7KzTHM6r4QfgDB5tv3YChk6ieDLmZoRRSdcVa78l",
+          "kind": "image"
+        }
+      ]
+    },
+    "2c2b785855e355a8d5df81a0d047e51ba89388febb55cd6b751bf92a2178414b.jpg": {
+      "sha256": "2c2b785855e355a8d5df81a0d047e51ba89388febb55cd6b751bf92a2178414b",
+      "width": 710,
+      "height": 500,
+      "uses": [
+        {
+          "id": "post:pfbid02mFRotzxY3qBtCDZVXUsaE8RQ1igsq2fMqs31kRKqkfgMvWAxEBjVG9rffsRtCbpPl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02mFRotzxY3qBtCDZVXUsaE8RQ1igsq2fMqs31kRKqkfgMvWAxEBjVG9rffsRtCbpPl&id=61577398061794",
+          "kind": "video-thumbnail"
+        }
+      ]
     }
   }
 }

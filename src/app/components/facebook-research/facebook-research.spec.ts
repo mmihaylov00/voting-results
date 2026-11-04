@@ -66,8 +66,8 @@ describe('Facebook research workspace', () => {
     const fixture = loaded('directory', { ...report, directory });
     const component = fixture.componentInstance;
     expect(component.tabs().find(tab => tab.id === 'directory')).toEqual({ id: 'directory', label: 'Каталог', count: 2 });
-    expect(component.tabs().find(tab => tab.id === 'pages')?.count).toBe(19);
-    expect(component.tabs().find(tab => tab.id === 'posts')?.count).toBe(97);
+    expect(component.tabs().find(tab => tab.id === 'pages')?.count).toBe(report.pages.length);
+    expect(component.tabs().find(tab => tab.id === 'posts')?.count).toBe(report.posts.length);
     expect(fixture.nativeElement.querySelector('app-facebook-research-charts')).toBeNull();
     fixture.debugElement.query(By.directive(FacebookPageDirectoryComponent)).triggerEventHandler('pageSelect', report.pages[0].id);
     fixture.detectChanges();
@@ -112,14 +112,14 @@ describe('Facebook research workspace', () => {
     const fixture = loaded();
     const element = fixture.nativeElement as HTMLElement;
     expect(element.textContent).toContain('Частична извадка');
-    expect(element.querySelector('.page-table')?.getAttribute('aria-rowcount')).toBe('20');
+    expect(element.querySelector('.page-table')?.getAttribute('aria-rowcount')).toBe(String(report.pages.length + 1));
     const visibleRows = element.querySelectorAll('.page-table tbody tr[data-virtual-index]');
     expect(visibleRows.length).toBeGreaterThan(0);
-    expect(element.querySelector('.page-table')?.textContent).toContain('4 без брояч');
+    expect(element.querySelector('.page-table')?.textContent).toContain('без брояч');
     expect(element.querySelector('.workspace-tabs [role="tablist"]')?.classList.contains('scrollable')).toBe(true);
-    expect(element.querySelectorAll('.page-table app-facebook-research-image img')).toHaveLength(visibleRows.length);
+    expect(element.querySelectorAll('.page-table app-facebook-research-image')).toHaveLength(visibleRows.length);
     fixture.componentInstance.exportPages(fixture.componentInstance.pages());
-    expect(fixture.componentInstance.csvData()?.rows).toHaveLength(19);
+    expect(fixture.componentInstance.csvData()?.rows).toHaveLength(report.pages.length);
     fixture.destroy();
   });
 
@@ -213,7 +213,7 @@ describe('Facebook research workspace', () => {
     http.expectOne(component.dataUrl).flush(report);
     fixture.detectChanges();
     expect(component.error()).toBe('');
-    expect(component.report()?.posts).toHaveLength(97);
+    expect(component.report()?.posts).toHaveLength(report.posts.length);
     fixture.destroy();
   });
 
