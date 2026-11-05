@@ -59,6 +59,9 @@ export class FacebookCommentsResearchComponent implements OnInit {
   readonly visibleRows = computed(() => this.table()?.viewRows() ?? this.filteredRows());
   readonly totals = computed(() => facebookCommentTotals(this.visibleRows()));
   readonly pageCounts = computed(() => facebookCommentPageCounts(this.visibleRows(), this.candidate()));
+  readonly directionalTotals = computed(() => this.pageCounts().reduce((sum, page) => ({
+    supportive: sum.supportive + page.supportive, critical: sum.critical + page.critical,
+  }), { supportive: 0, critical: 0 }));
   readonly exportTitle = computed(() => `Коментари · ${this.candidateLabel()} · публикации от октомври 2026 · към ${this.collectedDate()}`);
   readonly columns: TableColumns<FacebookCommentRow> = {
     title: row => `${row.post.excerpt} ${row.post.summary}`, page: row => row.page.name,

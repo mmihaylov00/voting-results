@@ -137,6 +137,37 @@ describe('Facebook comments workspace', () => {
     fixture.destroy();
   });
 
+  it('updates directional comment totals for the selected candidate, Page and search cohort', () => {
+    const fixture = setup();
+    const component = fixture.componentInstance;
+    const data = commentFixture();
+    Object.assign(data.posts[1], { status: 'complete', ordering: 'all', reportedCount: 4,
+      capturedCount: 4, assessedCount: 4, topLevelCount: 4,
+      counts: { gyurov: counts({ supportive: 3, critical: 1 }), yotova: counts({ supportive: 1, critical: 3 }) },
+    });
+    TestBed.inject(HttpTestingController).expectOne(component.dataUrl).flush(data);
+    fixture.detectChanges();
+    expect(component.directionalTotals()).toEqual({ supportive: 4, critical: 2 });
+    component.setCandidate('yotova');
+    fixture.detectChanges();
+    expect(component.directionalTotals()).toEqual({ supportive: 1, critical: 4 });
+    const summary = fixture.nativeElement.querySelector('.note[aria-live="polite"]') as HTMLElement;
+    expect(summary.textContent).toContain('Към Йотова');
+    expect(summary.querySelector('.supportive')?.textContent).toBe('1 в подкрепа');
+    expect(summary.querySelector('.critical')?.textContent).toBe('4 критични');
+    component.pageFilter.set('b');
+    fixture.detectChanges();
+    expect(component.directionalTotals()).toEqual({ supportive: 1, critical: 3 });
+    component.resetFilters();
+    fixture.detectChanges();
+    component.table()!.query.set('Публикация a');
+    fixture.detectChanges();
+    expect(component.directionalTotals()).toEqual({ supportive: 0, critical: 1 });
+    expect(summary.querySelector('.supportive')?.textContent).toBe('0 в подкрепа');
+    expect(summary.querySelector('.critical')?.textContent).toBe('1 критични');
+    fixture.destroy();
+  });
+
   it('reports failed or invalid loads without inventing zero results and permits retry', () => {
     const fixture = setup();
     const component = fixture.componentInstance;
