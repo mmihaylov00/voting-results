@@ -210,6 +210,8 @@ This is a partial, nonrepresentative sample. None of the original 34 keywords re
 
 The Коментари tab (`?view=comments`) loads `public/data/facebook/2026/comments.json` separately. It shows independent candidate assessments by post and Page, including mixed, informative, unclear, unrelated and unreviewed comments. Counts include replies and describe comments rather than unique people. Comment dates can be later than the October posts; the collection timestamp identifies the snapshot.
 
+Assessments use the comment and its thread context, independently of the publisher's post label. Party, running-mate and donor sentiment is not automatically transferred to the primary candidate. Factual reports or corrections remain informative when no candidate judgment is expressed. Missing or insufficient text remains unreviewed, while an ambiguous candidate reference remains unclear.
+
 Raw browser captures and comment assessments stay outside the repository and published assets. Captures retain native comment IDs, parent IDs, source links, displayed dates, text completeness and text hashes, without author records. Assessments refer to the exact captured text hash. The builder rejects stale assessments and unknown post references, preserves identical text at distinct comment IDs, and publishes only aggregate counts and coverage. The existing post snapshot is unchanged.
 
 ```bash
