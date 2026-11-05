@@ -48,7 +48,8 @@ test('the directory preserves the original sample and links every collected Page
   const sampleEntries = entries.filter(entry => entry.status === 'in-sample');
   const hash = rows => createHash('sha256').update(JSON.stringify(rows)).digest('hex');
   assert.equal(hash(report.pages.slice(0, 19)), 'd60b42a6b83eea0b833cd864c2270cdf4e32448ba3d1539429ce73a085dc3708');
-  assert.equal(hash(report.posts.slice(0, 97)), 'bdc603e46def7278cf6e5c4d4b7d6d376ac9e6a852fd0aa2f418a93b178341f6');
+  const capturedPosts = report.posts.slice(0, 97).map(({ stance, ...post }) => post);
+  assert.equal(hash(capturedPosts), 'c5ee7b7e70c26c2b5f7b775499a9bd26eafa5fcdddca79291715e00fb3ef55e0');
   assert.equal(report.collectionPostCount, report.posts.filter(post => post.origin === 'collection').length);
   assert.equal(sampleEntries.length, report.pages.length);
   assert.deepEqual(new Set(report.pages.slice(0, 19).map(page => page.id)), new Set(originalPageIds));

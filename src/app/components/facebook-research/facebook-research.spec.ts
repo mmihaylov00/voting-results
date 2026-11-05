@@ -336,11 +336,11 @@ describe('Facebook research workspace', () => {
     const bunker = component.pages().find(page => page.name === 'Бункер нюз')!;
     const row = [...element.querySelectorAll('.page-table tbody tr')].find(row => row.textContent?.includes('BNews Bg'))!;
     expect(row.querySelector('[data-tone="critical"]')?.textContent).toContain('Критичен');
-    expect(row.textContent).toContain('Критични: 15');
+    expect(row.textContent).toContain('Критични: 19');
     component.exportPages([bnews, bunker]);
     let csv = component.csvData()!;
-    expect(csv.rows[0][csv.headers.indexOf('Гюров, Критични')]).toBe(15);
-    expect(csv.rows[1][csv.headers.indexOf('Гюров, В подкрепа')]).toBe(1);
+    expect(csv.rows[0][csv.headers.indexOf('Гюров, Критични')]).toBe(19);
+    expect(csv.rows[1][csv.headers.indexOf('Гюров, В подкрепа')]).toBe(5);
     expect(csv.rows.every(row => row.length === csv.headers.length)).toBe(true);
     component.csvData.set(null);
     const post = report.posts.find(post => post.pageId === bunker.id && post.stance?.gyurov === 'supportive')!;

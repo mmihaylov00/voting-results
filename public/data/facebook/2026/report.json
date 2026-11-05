@@ -495,9 +495,9 @@
         }
       ],
       "stance": {
-        "gyurov": "neutral",
-        "yotova": "neutral",
-        "reason": "Критиката е към посрещането, организирано от кмета; двамата кандидати са споменати без пряка оценка.",
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "5d8587e203ef4a8a8b13ce626c5ac9e8496030ab335d18ce70e455a885fa8987"
       }
     },
@@ -574,9 +574,9 @@
         }
       ],
       "stance": {
-        "gyurov": "neutral",
-        "yotova": "neutral",
-        "reason": "Оценъчният език е насочен към кмета; кандидатите са контекст към цитирания спор.",
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "42c2670d5e69a7dd9da6223b8cd301975a6858519e6ed76cfb15181d5ba78a16"
       }
     },
@@ -711,9 +711,9 @@
         }
       ],
       "stance": {
-        "gyurov": "unclear",
-        "yotova": "unclear",
-        "reason": "Частичният надпис пита за дебат на други участници; не е достатъчен за оценка към двамата кандидати.",
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "4424340170e9dcf49c6f8c3f9423ddcfff90e5adb040b85f8ee21f0276b613e7"
       }
     },
@@ -1001,8 +1001,8 @@
       ],
       "stance": {
         "gyurov": null,
-        "yotova": "unclear",
-        "reason": "Надписът осмива помилванията без да назовава Йотова; изображението не е включено в оценката на тона.",
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "28b20a5c4fad4895136b4cf813e8c3d3fb574338e8dde8ebf5a750cebe0edf1d"
       }
     },
@@ -1066,9 +1066,9 @@
         }
       ],
       "stance": {
-        "gyurov": "unclear",
+        "gyurov": "critical",
         "yotova": null,
-        "reason": "Подигравката в частичния надпис е към Кандев; не я пренасяме автоматично към Гюров.",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "86723b291a1d9f9c2c3b047c8c7d569bc8af70eefea8b79db09230707b5a8917"
       }
     },
@@ -1699,9 +1699,9 @@
         }
       ],
       "stance": {
-        "gyurov": "neutral",
+        "gyurov": "critical",
         "yotova": "neutral",
-        "reason": "Свързва новина за кораб с твърдение за спонсор на Гюров и изказване на Йотова, без пряка похвала или обида към тях.",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "2d85c80715dcafae270d5a7c2fe4202abac9e55acf8c8f4bffce4d53816ebaf5"
       }
     },
@@ -1795,9 +1795,9 @@
         }
       ],
       "stance": {
-        "gyurov": "critical",
+        "gyurov": "neutral",
         "yotova": null,
-        "reason": "Кампанията около Гюров е представена като капан за наивници и скрит партиен проект.",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "e4d26ad6e7a7c8e920bc38394f2b17d5e6c903811fa64dd07765c42b87f82197"
       }
     },
@@ -1902,9 +1902,9 @@
         }
       ],
       "stance": {
-        "gyurov": "neutral",
+        "gyurov": "critical",
         "yotova": null,
-        "reason": "Представя твърдение за среща, изричното му отричане и липсата на публични доказателства.",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "ee95015bf22964ffb883f99cd744992c73e093579e964de749d3ccad511e327f"
       }
     },
@@ -2059,9 +2059,9 @@
         }
       ],
       "stance": {
-        "gyurov": "unclear",
+        "gyurov": "critical",
         "yotova": null,
-        "reason": "Краткият надпис визира Кандев и изборно меню; няма достатъчна пряка оценка към Гюров.",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "5bd000f46953052009324809568f7cd2c8675f674277dae69592d88718fcce02"
       }
     },
@@ -2287,9 +2287,9 @@
         }
       ],
       "stance": {
-        "gyurov": null,
+        "gyurov": "critical",
         "yotova": null,
-        "reason": "Обвинението е към партии и купувачи на гласове; двамата кандидати не са назовани в събрания надпис.",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "addd2840ae82947887bd5ec8385787e97b6f0736c2365b9aacffe9fe21036fc7"
       }
     },
@@ -3590,9 +3590,9 @@
         }
       ],
       "stance": {
-        "gyurov": "unclear",
+        "gyurov": "critical",
         "yotova": null,
-        "reason": "Говори за мобилизация за номер 4 без да назовава Гюров; партийният контекст не е достатъчен за пряка оценка.",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "cf7a353ae01c409cc8796a405a8535788670632c9437eaada8f0d74cdba0f4c7"
       }
     },
@@ -3667,8 +3667,8 @@
       ],
       "stance": {
         "gyurov": null,
-        "yotova": "neutral",
-        "reason": "Предава заявена дипломатическа позиция на Йотова без пряко одобрение или неодобрение.",
+        "yotova": "supportive",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "cf7f7104bd3222a16b911b11d41a780272cc5860d7866ec6a12bf12eab826f06"
       }
     },
@@ -4045,7 +4045,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "21d5b87cb583d33b809c005e6731d80ba2d1ffc3ce551aa1d339367734c3ae59"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "249720b93d1c56e088373b343a3cdb24975f7462f59d4ab7622cea8cd96ca104"
+      }
     },
     {
       "id": "post:pfbid02tLVduNW2khzhW98qhibyp3ypkXkbKrEwvFFZSsjruPoGFgXFQ3k747dimeRm6V8zl",
@@ -4100,7 +4106,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "b9ef23db76b3c3b7c220f112b39c0a2194d021536c4e9f998d79afe0c4a63597"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "e0743d4d4a5ecbf40844840ee86d5e686e173227e8772e4fe214fd545f2ce599"
+      }
     },
     {
       "id": "post:pfbid0eboqFNFPZpCoHNvPWGXJeF3nuNhR1UbVNd1zK9GSFWYPCWKLqVWokZiYG8oq9XHbl",
@@ -4155,7 +4167,13 @@
           "capturedAt": "2026-11-04",
           "sha256": "ce1fe4f247c0846f4afbb7bb3d1841bfc4ded2c340b0b41cdb385c9fbb5332f5"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "e0743d4d4a5ecbf40844840ee86d5e686e173227e8772e4fe214fd545f2ce599"
+      }
     },
     {
       "id": "post:pfbid0pVveentc1PVrbz9igvuN85ybYYJmAEQvBgaiYQpnrtnW2ei5Mvm6nLFWENhX38Psl",
@@ -4232,9 +4250,9 @@
         }
       ],
       "stance": {
-        "gyurov": "neutral",
+        "gyurov": "critical",
         "yotova": null,
-        "reason": "Самостоятелно предава заглавен цитат за позиция на Гюров, без оценъчната добавка от публикацията на BNews.",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "e3d7548634c2c19f0c85e64f1dbb5a8d45997613d7fc0aeb8b924e59392ccd61"
       }
     },
@@ -4303,9 +4321,9 @@
         }
       ],
       "stance": {
-        "gyurov": "unclear",
+        "gyurov": "critical",
         "yotova": null,
-        "reason": "Надписът за мобилизация назовава партии и номер 4, но не оценява пряко Гюров.",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "c250e16cb821389f85175339a8b6473fa06952509a316606d6d88bbfad81494b"
       }
     },
@@ -4654,8 +4672,8 @@
       ],
       "stance": {
         "gyurov": null,
-        "yotova": "neutral",
-        "reason": "Предава дипломатическата позиция на Йотова, без да я хвали или критикува.",
+        "yotova": "supportive",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "872aed96b3e073fa6827550f8a76b0ea2be934420a1d9da169b954036d96caac"
       }
     },
@@ -4785,9 +4803,9 @@
         }
       ],
       "stance": {
-        "gyurov": "unclear",
+        "gyurov": "critical",
         "yotova": null,
-        "reason": "Отрицателният език е за изпиране на Борисов чрез подкрепа за Гюров; краткият надпис не изяснява отделна оценка към кандидата.",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "244c2b27386defebbb689ebce969592b9439e8bdd915411c4e3e6f39ddffb10c"
       }
     },
@@ -5469,9 +5487,9 @@
         }
       ],
       "stance": {
-        "gyurov": null,
+        "gyurov": "critical",
         "yotova": null,
-        "reason": "Напада партии и кампанията им; не пренасяме тази оценка автоматично към неназован кандидат.",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "3b87dff4203aecfac15b0cc354c98768a373e58fbfc1194f37bad887a43d8821"
       }
     },
@@ -5810,8 +5828,8 @@
       ],
       "stance": {
         "gyurov": null,
-        "yotova": "neutral",
-        "reason": "Съобщава за убиеца на бащата на Йотова без пряко одобрение или неодобрение към кандидатката.",
+        "yotova": "supportive",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "4bf6ff05268d5e9a05f78d41a84639d6e0aa06c16ac85f0bf1b2c174edafa4ad"
       }
     },
@@ -6842,9 +6860,9 @@
       },
       "sourceTextSha256": "ac583958fa6c32a18de451b8a8e5a01c76d1a2318af7c8b97649dd59fb40847d",
       "stance": {
-        "gyurov": "neutral",
+        "gyurov": "critical",
         "yotova": null,
-        "reason": "Съобщава твърдението на Витанов и изричното отрицание на Гюров, включително липсата на представени доказателства; не приема обвинението за установен факт.",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "ac583958fa6c32a18de451b8a8e5a01c76d1a2318af7c8b97649dd59fb40847d"
       },
       "images": [
@@ -7040,8 +7058,8 @@
       "sourceTextSha256": "1d841fc0af5e2971712cb3d32ce4e6f9fce97081998667c38c555792dd286deb",
       "stance": {
         "gyurov": null,
-        "yotova": "unclear",
-        "reason": "Краткият надпис отправя въпрос към Йотова без достатъчно изрична оценка. Съдържанието на приложената снимка не е включено в оценката на тона.",
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "1d841fc0af5e2971712cb3d32ce4e6f9fce97081998667c38c555792dd286deb"
       },
       "images": [
@@ -7157,8 +7175,8 @@
       "sourceTextSha256": "868ce24720c08a0141c2bcf08edd24e7dbd33429abd50947b7d7480d7f82cd70",
       "stance": {
         "gyurov": null,
-        "yotova": "unclear",
-        "reason": "Надписът представя старо изказване на Йотова като факт чек, но конкретната оценка зависи от видеото, което не е оценено.",
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
         "sourceTextSha256": "868ce24720c08a0141c2bcf08edd24e7dbd33429abd50947b7d7480d7f82cd70"
       },
       "images": [
@@ -7360,7 +7378,13 @@
       ],
       "platformLabels": [
         "AI content"
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "6237b8e5bc730b3fe1fea66c6b2c9191e79921f77c6bcbe62749007fe026e904"
+      }
     },
     {
       "id": "post:pfbid0UBSSooYbyLQ1yfNtsMtSWXCH6rGffqExNfACADwoAr9sJyKEupppWT6RbM9xEjVMl",
@@ -7418,7 +7442,13 @@
       ],
       "platformLabels": [
         "AI content"
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "f7626a773eb29d431ec852dda4bba600e06d72f5364ea27685823809911202b4"
+      }
     },
     {
       "id": "post:pfbid02VWS1ehNessnuMz9N8jgpK1jV3vB3Z9sViSpR3YLYMojPm5JQ8vGmUwQsLLggj2PDl",
@@ -7468,7 +7498,13 @@
           "capturedAt": "2026-11-04T19:22:22.405Z",
           "sha256": "9537d2f2b71554c35f0ea56c508869b01d4b2952e829055d2fce79dd6fc191a6"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "005b5fea6527d942846db21b44a778be46b5d3ad96e5c312f6ce99a5b1bdf352"
+      }
     },
     {
       "id": "post:pfbid02nWi2KkkD9QQJ5hhEvM7uxJhdtuZMsmXUVjPeLNoxUMzq6NgzeUxMZPKPYFLtiwzJl",
@@ -7524,7 +7560,13 @@
           "sha256": "e7167cce15b521b2aeed8c3cc7c9658b8949b1d63d4704fbe56dbbc7ad65315b"
         }
       ],
-      "linkHeadline": "Адв. Хаджигенов: Ще съдим НСО и председателя на парламента за инцидента с Колтуклиева"
+      "linkHeadline": "Адв. Хаджигенов: Ще съдим НСО и председателя на парламента за инцидента с Колтуклиева",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "6b067198dbdf11cb9cb546c9a75fcec63d89cd1202a27ede968a5ef89a89a868"
+      }
     },
     {
       "id": "video:1316088687265038",
@@ -7574,7 +7616,13 @@
           "capturedAt": "2026-11-04T19:25:58.779Z",
           "sha256": "41b846efe2ee3413ad34d29de22e8711bdd3e8236e0f607fc8bb02c0ed1961b1"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "620ac3f9c0510f895016e1ec86410e5d997f0eebc5530e1f549ac1ea706b94ed"
+      }
     },
     {
       "id": "video:2932892587068862",
@@ -7629,7 +7677,13 @@
           "capturedAt": "2026-11-04T19:27:16.712Z",
           "sha256": "48c69fad117d322c53892eaa5840223502941375c3a0fcbdc58e7c3fc3a8745e"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "5663cb364e7211eb9a73e0d8745830b8976ce345d120663984ceaf5bf047926d"
+      }
     },
     {
       "id": "post:pfbid0kyA5L2QH9woHSVbHUbRLNLsVXxo7fjptPJvf6dTqARphjhK32HkoJLL3BYKoATgGl",
@@ -7684,7 +7738,13 @@
         }
       },
       "sourceTextSha256": "2f693d027aaf8173f4682fa403cc5f26cb4db924193b6f63ccbaf84a8fd8182d",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "2f693d027aaf8173f4682fa403cc5f26cb4db924193b6f63ccbaf84a8fd8182d"
+      }
     },
     {
       "id": "post:pfbid0bxazcFzguT9juQznYzRigUnSBxr3JX33dkKRZT7vX142uuXxsi1RWNf94LUf7Ddvl",
@@ -7734,7 +7794,13 @@
           "capturedAt": "2026-11-04T19:34:43.277Z",
           "sha256": "423131ffccd792635f8d5e4bf743c8ca4e34451ae7c64e09d39f471049a4e821"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "52b537a270be9d19cbb5b6f5729217bfcb2a93da141b34a2216979776e125912"
+      }
     },
     {
       "id": "video:1423330226095881",
@@ -7794,7 +7860,13 @@
           "capturedAt": "2026-11-04T19:34:54.835Z",
           "sha256": "880b7a63f0b25a9dd9dc032fa5321b95579801597a78075331e3a3707ebd0bde"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "43caf7e093a9108261050bb720b36419ab8abcea69bee036061bc5aa02f1a0ee"
+      }
     },
     {
       "id": "post:pfbid0WYiYRntQmkadGMKz3SJoREpkPfVFb2MttNVQwoX97TtSLxk1X4qeFBq31EVJKNTkl",
@@ -7844,7 +7916,13 @@
           "capturedAt": "2026-11-04T19:37:51.469Z",
           "sha256": "82742491d5e54bf0a44042db27a8defd5764d9d116087e5d24690e85f4722d73"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "adba65d6d64f92e7ef17a3cfa4b799c5ca39da9c0bfbac72c73c157835e28754"
+      }
     },
     {
       "id": "video:1677929967087015",
@@ -7899,7 +7977,13 @@
           "capturedAt": "2026-11-04T19:39:12.742Z",
           "sha256": "6ff1f90c4c4c687c9d193622ef65dec5603ebf9dc9ccb34a73a88f6665eb4952"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "fad40d20f3ca3e34c0d61be7f1d57f071fb39f895d5709a7948b7330d63e8fac"
+      }
     },
     {
       "id": "video:1472440601695103",
@@ -7943,7 +8027,13 @@
           "capturedAt": "2026-11-04T19:42:40.062Z",
           "sha256": "00ba0f2938dba4bd0b08052b86c0a49be3d3d20f488132783ad9abf2ef878653"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0m5ATPAutDMVviW3E271akkzPhqNQ7vmJ3QJas2DYDDDMoUf2gccbacexUn81zSf1l",
@@ -7987,7 +8077,13 @@
           "capturedAt": "2026-11-04T19:42:42.313Z",
           "sha256": "6e915bb757a3172d0182e9b602f69c80c5c58c3059c184063f927ebc573debcf"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "5b8e35ad82204e2a12990bf6ad747bb67be599815bafbaee877ddc911721c398"
+      }
     },
     {
       "id": "video:1433388234897669",
@@ -8047,7 +8143,13 @@
           "capturedAt": "2026-11-04T19:46:20.928Z",
           "sha256": "806508be6d98d08d100553f4e8755a66f40a9cc013e4eccb5e0b7e81d19b3ce8"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "8b42e76b71c2f4af050f22247fd949e5598058607c4d67946521930dbea6c675"
+      }
     },
     {
       "id": "video:1608628141015918",
@@ -8094,7 +8196,13 @@
       ],
       "platformLabels": [
         "AI content"
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "184563faca9286913fd3ffd3d9c98e269e923aa4bd1b5cfa448d559fa1cb0414"
+      }
     },
     {
       "id": "post:pfbid0oZRtdfH4kWzcrRooEgKEhy5Krkhxq8midaY16wKyeNNHPnVRDqPuBjDFvpvTSpPsl",
@@ -8154,7 +8262,13 @@
           "capturedAt": "2026-11-04T19:47:22.887Z",
           "sha256": "1009f90f926ffae3039dfae826c8a06d7d0f7c2832e334e535a3c3eb6640c3ef"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "29b0fffac16478adb489b93e795a710f0d6ef0840b436c7f59f0c9b77a340bab"
+      }
     },
     {
       "id": "post:pfbid0bpiw3fev4bkwEAwVgt9AZrcdzUwSAXYJtKZvspxKMVxV4zGJDFt4ZZ7C1wqYmacQl",
@@ -8198,7 +8312,13 @@
           "capturedAt": "2026-11-04T19:48:53.944Z",
           "sha256": "ade03bd9d2b0162f3b166b0bc1e3d1216da8e7209a4805cb59d71181a5f8ff3f"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "b7a15690526b7ba864bea3fe5f28774d35f75e1d2afa95d2a97b537aac69f381"
+      }
     },
     {
       "id": "video:1094888736870133",
@@ -8242,7 +8362,13 @@
           "capturedAt": "2026-11-04T19:49:14.847Z",
           "sha256": "fd7e9cdd6be27a515914ad01b5df43659fc14fce972e443bde1ae4a1a0e4cb33"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0ii9gwtsS2eibLyBLVApRigjnj5RWYXjgumzrQULyeD16cLHNySWsPNDkBFiF7TCl",
@@ -8286,7 +8412,13 @@
           "capturedAt": "2026-11-04T19:54:58.642Z",
           "sha256": "77c2774e44c7505cf6b541eaaf008e315190b868260ef24562fa294e074bd94f"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "15fb64702830fd35a512ca30cc73c49595da97dca2050181a91a3473f1c7ecfc"
+      }
     },
     {
       "id": "post:pfbid02e9Nu96hmUGCtZQD3gAzFCAmXrUGpjYts7Qrk3bJhZYGonxLukB2C9xBqafFZycsXl",
@@ -8331,7 +8463,13 @@
           "sha256": "96f552bb7381b8837076898efd71f604d9887935e41698e998e868441c88217c"
         }
       ],
-      "linkHeadline": "Време ѝ е за пенсия!"
+      "linkHeadline": "Време ѝ е за пенсия!",
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0WEb3SuxipYL7kfDXLptWUroskKqZ11LATBVDp6oHvNUAw6cwDDCWVTDVkQhsTBGzl",
@@ -8381,7 +8519,13 @@
           "capturedAt": "2026-11-04T19:21:04.171Z",
           "sha256": "dc07ec2814bb12fcc9529baa669328a1d6d393721529440de526251797fafbae"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "8884648254a12b0c20a7ed8295e7f065edd913ae05ddf8a92df0c6282e415fd2"
+      }
     },
     {
       "id": "video:1289332556672095",
@@ -8425,7 +8569,13 @@
           "capturedAt": "2026-11-04T19:23:12.852Z",
           "sha256": "c1629bd14a9ba51a2d2a192765cc3745efc5cbd78d53145f2def578e9cdf0436"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "56f1fb742c1fdac7de4060caf7957ed6a220385bd205d2012d62e96397076327"
+      }
     },
     {
       "id": "post:pfbid0XrqUF3wKr3CBc3CEU1vzDG2YFK8QtNHDtW3T8guVhywziTDUZRp8d2B9FwfWX7w8l",
@@ -8459,7 +8609,13 @@
         }
       },
       "sourceTextSha256": "03ea24d997f17097634337c32649978857f521e7de8755ecf45389ecd9832c43",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "03ea24d997f17097634337c32649978857f521e7de8755ecf45389ecd9832c43"
+      }
     },
     {
       "id": "post:pfbid02EiFx8u2XuizA1gq35fPdyBExfHwkp7bxX1behZsgJUfoHtGjwq6c6odubsSAV1VEl",
@@ -8509,7 +8665,13 @@
           "capturedAt": "2026-11-04T19:27:15.507Z",
           "sha256": "3f2873a5234084716eb25e3c776a675b78b5b173941c55f463c1b707bcc4db4c"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "76c4bad3e266e606636d41c367a27ca704b170f818ab7ce72133accfc2ae99cd"
+      }
     },
     {
       "id": "video:1844092166778591",
@@ -8553,7 +8715,13 @@
           "capturedAt": "2026-11-04T19:28:08.014Z",
           "sha256": "8e0f5b74a7ca5af1d681c370957c59e12c04140465cd7693e93aa1b45ad56890"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid02LiCfkbcVhJXUPw4XeZKbGXkP3NnELWGwotMGH5kpv1FD46nx5yWUKaTDRvFCxZ9Rl",
@@ -8597,7 +8765,13 @@
           "capturedAt": "2026-11-04T19:28:48.498Z",
           "sha256": "2903be0f7787cbdc2609ae3352d954c0dc0cc8f4b2b4eeca30ce50a4d4e02e37"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "d897e00517c7d36d0a81be508a45e167594e6f40e7c9ebd69638a1fd990e452d"
+      }
     },
     {
       "id": "video:1157399536729329",
@@ -8641,7 +8815,13 @@
           "capturedAt": "2026-11-04T19:30:02.354Z",
           "sha256": "5c25db3f1f8fae5133c58126fd17f2746a2dbd3d2053fd636116e4aac31195f6"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "1039bf33d2fa99ab047d09540387cc7ccd88c94ecb88a99b4ea4d4b177a5523f"
+      }
     },
     {
       "id": "post:pfbid02mFRotzxY3qBtCDZVXUsaE8RQ1igsq2fMqs31kRKqkfgMvWAxEBjVG9rffsRtCbpPl",
@@ -8685,7 +8865,13 @@
           "capturedAt": "2026-11-04T20:13:12.270Z",
           "sha256": "2c2b785855e355a8d5df81a0d047e51ba89388febb55cd6b751bf92a2178414b"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid02izp6dNeysrRRYqX8DW9d5zZr1BN5BAaaNy5VEMEhAEGYjBf3cH4DSk6sMnhhSYmVl",
@@ -8729,7 +8915,13 @@
           "capturedAt": "2026-11-04T19:31:41.287Z",
           "sha256": "be33550da3a0b031b4aaa6b4767e4a313f756312f0475e4f0e758eefd704ba1f"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "video:1645050123780583",
@@ -8773,7 +8965,13 @@
           "capturedAt": "2026-11-04T19:34:10.985Z",
           "sha256": "07856043d33d8af49280e63b1b52331a8c4090da1a27092527c86ba4a7b1f77c"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "fecbc149864f888f0e692e4154a064eb16e5a12f447ab36eaed69ef11bf9ed9e"
+      }
     },
     {
       "id": "post:pfbid034mX45PNZm6a9rVhaNsHMAi2fGVL7yQV2gtHKKwRnSVYgSM4dmJrz4ghHg67qubbKl",
@@ -8828,7 +9026,13 @@
           "capturedAt": "2026-11-04T19:35:12.418Z",
           "sha256": "d3e3a029a31659208993c5aaf670f1f791284f496cbc76f2b2cc2b382e00efe9"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "320e6e513d0bde8f5052fb6e2b41151b4155c41fcb4e73a8cd22b63ff3b161bf"
+      }
     },
     {
       "id": "post:pfbid02j1U8MppjHeC9mkVFyTQERduidjJzVX33bwcsYAJN4JQQor6rkbEkyC2twj3Mgy2tl",
@@ -8862,7 +9066,13 @@
         }
       },
       "sourceTextSha256": "a3cc81715e0e119528056bc55279e51f837998b99f32baa3e2bc2f9ca2135a79",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "a3cc81715e0e119528056bc55279e51f837998b99f32baa3e2bc2f9ca2135a79"
+      }
     },
     {
       "id": "video:998758882516672",
@@ -8906,7 +9116,13 @@
           "capturedAt": "2026-11-04T19:37:31.375Z",
           "sha256": "6fbe329a14aef56faf7866e73f4394b15cea54c605d47c21426e67a5f802cb81"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "68d110ee4a9a86020e24f7ed2bab1ee389a7394e6a20fcc7a1fa3d5498447180"
+      }
     },
     {
       "id": "video:1843600866897994",
@@ -8950,7 +9166,13 @@
           "capturedAt": "2026-11-04T19:37:44.391Z",
           "sha256": "a34140933c7bc1c5533b24711cc6f76c5a5da1087f30cb4a47be6fee5df51ee5"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "1e518fa8f84c4bf73ba8aa90d1a89c4776ee55ef25beae738a256ee8995890c2"
+      }
     },
     {
       "id": "post:pfbid02xt8PRr55g9WpRJEFNdRiy5zKgw9zKp7vNsSLS9TPcj9V2YQDzoCeoX4XuwJjpbbgl",
@@ -8984,7 +9206,13 @@
         }
       },
       "sourceTextSha256": "42623f37d0a358718b6919f1c6bad4e5799bce7c6cc2d1ce45a32b923fd7ba4a",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "42623f37d0a358718b6919f1c6bad4e5799bce7c6cc2d1ce45a32b923fd7ba4a"
+      }
     },
     {
       "id": "post:pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl",
@@ -9028,7 +9256,13 @@
           "capturedAt": "2026-11-04T19:39:24.123Z",
           "sha256": "2e10a6645856e54a9ab4c2649ce7c9c0e9bd4941c12ee6921c4014f0c2fc1201"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "d9f1f3a823d59c72c3b40c39916029abb0072977e9dd2df38b10210a5f8a906e"
+      }
     },
     {
       "id": "video:1138813955363373",
@@ -9072,7 +9306,13 @@
           "capturedAt": "2026-11-04T19:40:08.846Z",
           "sha256": "cfb675cc5f27f784e6ff40defbfb928b1738d6e88538313ee4d8eef04fc960bd"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "9f9ad5b9bc80ceb81e97f3cff827cbd8b8a86d23320e069f9e8898c632b2fe52"
+      }
     },
     {
       "id": "post:pfbid02dFcX8GbhGCDmdyrjFkrCR4MyiFixghEKEtr7cvvyYWgMYAbiFHUoHnYAgzA1B1dgl",
@@ -9106,7 +9346,13 @@
         }
       },
       "sourceTextSha256": "393f4223d1c251e1eddfed59325a6a354facc2bc89ae8337080c86da88713410",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "393f4223d1c251e1eddfed59325a6a354facc2bc89ae8337080c86da88713410"
+      }
     },
     {
       "id": "post:pfbid0NnE2Mnc5FLn4mWkiG5QoT9DJwKnsFPL11GVhDW5aZpru6rRqASn4DwEbAwPgZ7xFl",
@@ -9150,7 +9396,13 @@
           "capturedAt": "2026-11-04T19:41:00.961Z",
           "sha256": "04df7ebc19d1ef387f6b89ed6987e5ec3db619054858913f7da29da570510fe0"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "2d4b001096b287f1e945b876a9ee4417498e19e7503cafc3d7e54dcd8f6d9a79"
+      }
     },
     {
       "id": "video:1840261970724145",
@@ -9194,7 +9446,13 @@
           "capturedAt": "2026-11-04T19:41:21.430Z",
           "sha256": "74647dc78f5b7ab6975a486523ae528d9055282d626636d6c60c941b8bbc4164"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "652c3a044a7cb07035a15ba9fc206672331f9937b478eeed0740315c7deb12da"
+      }
     },
     {
       "id": "video:951043291091990",
@@ -9238,7 +9496,13 @@
           "capturedAt": "2026-11-04T19:41:55.410Z",
           "sha256": "e2b43b825137178edc56d11ca42dc2abad6835192ba45b226eac6c793c43a6d9"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "eee84b82ea8c885189916542e0d82e0dc7e5821631d66979d8ac95c4845c4b48"
+      }
     },
     {
       "id": "video:1604352204018118",
@@ -9282,7 +9546,13 @@
           "capturedAt": "2026-11-04T19:42:41.386Z",
           "sha256": "2fb8cbd0b67f8134288812a2a4f9822bb9e3acbc905fb2cdf0a64f022c317f2d"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "23205ab6c8074b43391cff0a077b0c34b1b5b9ae49a11d47a4f37bd8311fd48e"
+      }
     },
     {
       "id": "video:1157252846871409",
@@ -9326,7 +9596,13 @@
           "capturedAt": "2026-11-04T19:42:51.696Z",
           "sha256": "b53d2e2c22cd088e95c1d3bda546892b2cebca9c240d117b5870759ed60f1a7d"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "a5b5136a4e3f3273a4cfefc44ecbd69f3e981449820fe72b6a0961f7ac688d41"
+      }
     },
     {
       "id": "video:1445052394418970",
@@ -9370,7 +9646,13 @@
           "capturedAt": "2026-11-04T19:43:31.363Z",
           "sha256": "20bacc226d64b491cc333f9872aa2a60ae62dbbe37e2edb8a660adbf59b067f7"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "df8eef3a10ae2be731c5440a5925708ecd55a41bd46858207bde3b359e53c576"
+      }
     },
     {
       "id": "post:pfbid02JEUuR82BoTDdFy3mZ1D4RGdsginy3jdNHzCkav7W2VQcq77Cg6m4CRpJJgr744Z4l",
@@ -9415,7 +9697,13 @@
         }
       },
       "sourceTextSha256": "59e627bd65f36b37143e8844875f5ebd25d95a6bc01abe18acf897d23fb427fb",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "59e627bd65f36b37143e8844875f5ebd25d95a6bc01abe18acf897d23fb427fb"
+      }
     },
     {
       "id": "video:1428401352820819",
@@ -9459,7 +9747,13 @@
           "capturedAt": "2026-11-04T19:45:05.066Z",
           "sha256": "ea43dfdc627ed07919b9eebd5a97b390567b83d1be46b0c83d1b13a899d84d6a"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "bf13ab1ffaee443b528946c421dc5e4996b240bbce1b71793b53dddc23291532"
+      }
     },
     {
       "id": "video:1657759299059928",
@@ -9503,7 +9797,13 @@
           "capturedAt": "2026-11-04T19:45:34.402Z",
           "sha256": "f756bedf03637dc3c1bafb5be9ade9bab9007036df91d94c8847177d9d834b13"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0yPqM2CFwd9NuTL9D5d74z1oTJX4Zw8aEkbSQHjzgmH3GhRDBXfUowL9opBBpr9pSl",
@@ -9537,7 +9837,13 @@
         }
       },
       "sourceTextSha256": "fe3b0022442b50dd009f5230b612aff056b8177fbabc0e7efe7b39a4b5042ac4",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "fe3b0022442b50dd009f5230b612aff056b8177fbabc0e7efe7b39a4b5042ac4"
+      }
     },
     {
       "id": "post:pfbid0XjxPh3kRWttpVfgXyn4qv9MDgxK8aMB9rCKdG3W4Vfgy9Q4ySbLadZpG5LpbSWDwl",
@@ -9581,7 +9887,13 @@
           "capturedAt": "2026-11-04T19:46:32.088Z",
           "sha256": "5f02e1489faf8131fb6a4bfb7275de18ac136ffdac20b9fec6b34c729b6fa5ac"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "1389407fe7e2cacd140b9ec225472ff12392032ee8f88540d44d35e4487cb0b3"
+      }
     },
     {
       "id": "video:1613329786656320",
@@ -9631,7 +9943,13 @@
           "capturedAt": "2026-11-04T19:47:06.744Z",
           "sha256": "161d8313143c26b9a87b51b90dee29d50bf36cf0c3d9c7a820d8d294d6bd8114"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "41a5fe9c09c3482a94a3dcaec4426c47ffec79ac1b1aff6651bdd05c6ec6012b"
+      }
     },
     {
       "id": "post:pfbid0cS7D5LBtrT6p1bihysbDJUmJzsmwZtVH2ZnKsrYC8whQbsgM3djcXfVKceaHeY4Rl",
@@ -9676,7 +9994,13 @@
         }
       },
       "sourceTextSha256": "32f88cb1da7c531a87c8e441fe69cbd9d8e51c8478708f6dcab03c6744f3a4cf",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "32f88cb1da7c531a87c8e441fe69cbd9d8e51c8478708f6dcab03c6744f3a4cf"
+      }
     },
     {
       "id": "video:1119095521093836",
@@ -9731,7 +10055,13 @@
           "capturedAt": "2026-11-04T19:49:34.966Z",
           "sha256": "c45cba6d62d1a3cf24edf2a816a4ae9e0313178f192cf8c06e788b9a10c333fe"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "46ce3db1d73af098a9161b50463c462f71cac159cb1fde09a703fd41f848ba31"
+      }
     },
     {
       "id": "post:pfbid0ao6U31ZyAtQrHVUr8E8hajwi59uzgcUukXnjr3DiEoNkTVW1xi7U1JZZcL5jvWVnl",
@@ -9771,7 +10101,13 @@
         }
       },
       "sourceTextSha256": "37c01dad18957dda1a8040da9746b1d06146d4a5ae6edc8203a64cff919bb5c6",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "37c01dad18957dda1a8040da9746b1d06146d4a5ae6edc8203a64cff919bb5c6"
+      }
     },
     {
       "id": "video:1657215862763287",
@@ -9826,7 +10162,13 @@
           "capturedAt": "2026-11-04T19:34:38.346Z",
           "sha256": "b03614bf258dc76c31270d3f9529c00c831b2456586d229ea59c17e8f81be715"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "60daf77d4795f843c5458e43255693bc05c5b00a2f6040e217364187c248c96a"
+      }
     },
     {
       "id": "video:2188569562093001",
@@ -9891,7 +10233,13 @@
           "capturedAt": "2026-11-04T19:37:19.683Z",
           "sha256": "20a8a73766d108c67ab78081d710fe69cfd61de713664bf03bc5b2ce4074467a"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "c18123a0a91336c3292fe3fc9adee50fdfb60f76fe451bfab1a2b5b16dc653ef"
+      }
     },
     {
       "id": "video:1505206344753130",
@@ -9935,7 +10283,13 @@
           "capturedAt": "2026-11-04T19:38:18.161Z",
           "sha256": "e425ad2ff56a28ed0d476f89c0da151cbebf4933eb6274dd3f16cd8b6a9d605d"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "adf15472edbc408ff3d20fb0c8b45a031890b34d28727a8da2eb9ee1e8031433"
+      }
     },
     {
       "id": "video:3360112920862887",
@@ -9979,7 +10333,13 @@
           "capturedAt": "2026-11-04T19:39:53.605Z",
           "sha256": "304c4e44806b769f7c4d0e618cced331c3e9e8bc3ebbaef8813cb4d14ca14783"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "video:1672056241307870",
@@ -10023,7 +10383,13 @@
           "capturedAt": "2026-11-04T19:42:22.488Z",
           "sha256": "6b188ea3276db49358a5c1749bd774df79242fcfd9f2a084b12c18ab8703181c"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "2cc090a5221b597d25a8de40c6e96b6b5f06962df24f0930dcb116c79aabdc23"
+      }
     },
     {
       "id": "video:1438183745146031",
@@ -10067,7 +10433,13 @@
           "capturedAt": "2026-11-04T19:43:02.267Z",
           "sha256": "7b0ec3ff6bcd5d4ad134c1bd4069744f22b4bd603d3f4204c9752d7488888b37"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "54d6c5c2de465a4ba4a150b695e27e85b17dd1dcb143e93434299e1b88004d7b"
+      }
     },
     {
       "id": "video:2057584485644941",
@@ -10111,7 +10483,13 @@
           "capturedAt": "2026-11-04T19:45:22.905Z",
           "sha256": "2ae9065110949d54a92f9c6e2cc4c7e6220a4cc41e10982a951aeba1c5ca5d49"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid02TyRefXGLG13M3pmcAkV6R67J7ngjJGQeapFBWguxS4r1jaPmZemKjBbgnKyKiunWl",
@@ -10189,7 +10567,13 @@
       ],
       "platformLabels": [
         "AI content"
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "2879d8f5157c2f7e58f8c2bf4d9695513aa82351ac11c062a34766f5c7c99fc3"
+      }
     },
     {
       "id": "video:1144845284632823",
@@ -10233,7 +10617,13 @@
           "capturedAt": "2026-11-04T19:47:25.422Z",
           "sha256": "d8f2c1f4d63aec0eab5dde123b1582df140e2b3db4993e3d479585911de87d52"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "2e74b09433fa67cd59ddafb26c5cdbe9c3b80d7ce88e90a890202639371e4129"
+      }
     },
     {
       "id": "video:2502903913566502",
@@ -10277,7 +10667,13 @@
           "capturedAt": "2026-11-04T19:49:02.710Z",
           "sha256": "54dc3a3ef19e8518f5299087ec5b22af3faae729f3be8fe9f4ccbc4cd1a5c190"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "86af1f4efd6e4e68905fd24104442fdbe2cdff016c4ba1e36f71000b1208c10a"
+      }
     },
     {
       "id": "post:pfbid02tSwQMoJwCoCrCmufVbnhSct2RywH5uGBxKwZ2B1SbC1mQ1F9oEqM111qJ2LL1cUZl",
@@ -10330,7 +10726,13 @@
       ],
       "platformLabels": [
         "AI content"
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "b27df933c06c64f05e7a4645d426200d7cfea9882cb9449ee5cba0059ac09c1b"
+      }
     },
     {
       "id": "post:pfbid0LXifubhPr1Mdcmj34cDD6Z2UtigwgYtEcuNzakL9hA79x4r1eyypSCmQETvfaNTLl",
@@ -10380,7 +10782,13 @@
           "capturedAt": "2026-11-04T19:59:47.340Z",
           "sha256": "a2b06c7cfd73b718646712f4934133451aacadd39e32382e0c414488b2bf09eb"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "481991342b363f55c45b518a26e8aab101c024af74a0995df79d2c61daa9e47a"
+      }
     },
     {
       "id": "post:pfbid0T4ndd4P8DUg1FQtpjGDhUTGCd6XpUwNbkHxDRsvqhkyr4UhQoM49Gj788FPGJUwol",
@@ -10425,7 +10833,13 @@
           "sha256": "f01799fd42ace640b70002130d2d468c38daf236cb3539e7cd905d42475fa789"
         }
       ],
-      "linkHeadline": "АРХИТЕКТУРАТА НА МИЛИАРДИТЕ (ЧАСТ 2): Кои са структурите зад цифрите и как работи мрежата"
+      "linkHeadline": "АРХИТЕКТУРАТА НА МИЛИАРДИТЕ (ЧАСТ 2): Кои са структурите зад цифрите и как работи мрежата",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid02fCui5WQgpSNWoW4SbgeoHTVpyoxLoR2ZXmBKTtkL2Ge593yFavPukrax7bZPGdHl",
@@ -10469,7 +10883,13 @@
           "capturedAt": "2026-11-04T19:41:59.065Z",
           "sha256": "81852fd5e03fcbd034b41a3979c714ec6afdcfbcb17740b87dc668dbafd8cc5c"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "dd84652ac62badfb45e516e640252cb4be7d4c4dd0e78cd6969e6649b68c70f8"
+      }
     },
     {
       "id": "video:1444912007738019",
@@ -10513,7 +10933,13 @@
           "capturedAt": "2026-11-04T19:45:48.157Z",
           "sha256": "a20a7fd52c01ac32979d357f1c0ef9327db66618b7be5a6eb8bd33b1cccffbcd"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "f9580fd2b74b1020c0fe6f7833622364d857c65215008fc630742f32a04345d2"
+      }
     },
     {
       "id": "post:pfbid02yq4WR2LpV5FjNouCgSNS2jsrY7KzTHM6r4QfgDB5tv3YChk6ieDLmZoRRSdcVa78l",
@@ -10563,7 +10989,13 @@
           "capturedAt": "2026-11-04T19:46:58.358Z",
           "sha256": "d446449bbaca043f5875138f5b10f2eff65b1bd5f259e4aaffacbf6320e48662"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "supportive",
+        "reason": "Ръчно зададен тон към кандидатите при преглед на публикацията.",
+        "sourceTextSha256": "49d66cec3ec0d14d5e9c18ab1ade8f42371048bd8afaffc3511145fb207d3b0d"
+      }
     }
   ],
   "matches": [

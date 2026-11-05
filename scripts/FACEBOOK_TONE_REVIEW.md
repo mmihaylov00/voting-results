@@ -33,3 +33,8 @@ Reject duplicate, stale or unverifiable records. Review the full post/thread con
 Apply approved changes through the existing assessment/build workflow. For comments, rebuild both the aggregate
 report and the public excerpt files with the reviewed assessment revision. Preserve the captured source and prior
 assessment history. Do not overwrite a public report or its totals directly from a form payload.
+
+For post-only approvals, preserve private copies of the submitted batch, the approved source-bound assessments
+and the preceding report. Publish approved assessments in `post.stance`, retaining the captured text hash and
+updating the reason. Page summaries, filters, charts and CSV exports recalculate from these annotations;
+comment and participation files do not need rebuilding. Captured-source hashes and election evidence stay intact.

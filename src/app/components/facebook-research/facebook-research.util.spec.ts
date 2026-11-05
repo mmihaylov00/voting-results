@@ -97,16 +97,18 @@ describe('Facebook research data', () => {
         expect(Object.values(page.stance[candidate].counts).reduce((sum, count) => sum + count, 0)).toBe(page.postCount);
       }
     }
-    expect(report.posts.filter(post => post.stance)).toHaveLength(94);
+    expect(report.posts.filter(post => post.stance)).toHaveLength(166);
     const bnews = pages.find(page => page.name === 'BNews Bg')!;
     expect(bnews.stance.gyurov.label).toBe('critical');
-    expect(bnews.stance.gyurov.counts.critical).toBe(15);
+    expect(bnews.stance.gyurov.counts.critical).toBe(19);
     const bunker = pages.find(page => page.name === 'Бункер нюз')!;
-    expect(bunker.stance.gyurov.counts.supportive).toBe(1);
-    expect(bunker.stance.yotova.counts.critical).toBe(8);
+    expect(bunker.stance.gyurov.counts.supportive).toBe(5);
+    expect(bunker.stance.yotova.counts.critical).toBe(25);
     const criticalOnly = report.posts.find(post => post.stance?.yotova === 'critical' && post.stance.gyurov === null)!;
     expect(facebookStanceSummary([criticalOnly]).gyurov.label).toBe('not-mentioned');
-    expect(facebookStanceSummary([report.posts[49]]).gyurov.label).toBe('unreviewed');
+    const unreviewed = structuredClone(report.posts[0]);
+    delete unreviewed.stance;
+    expect(facebookStanceSummary([unreviewed]).gyurov.label).toBe('unreviewed');
     expect(pages.find(page => page.name === 'Новини на фокус')!.stance.gyurov.label).toBe('mixed');
   });
 
