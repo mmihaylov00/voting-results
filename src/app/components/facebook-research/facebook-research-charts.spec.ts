@@ -50,7 +50,9 @@ function toneFixture(): FacebookReport {
     post('balanced-support', 'balanced', 'supportive', null, 100, true),
     post('balanced-critical', 'balanced', 'critical', 'supportive', 100),
     post('smaller-support', 'smaller', 'supportive', 'critical', 20),
+    post('smaller-support-missing', 'smaller', 'supportive', null, null),
     post('smaller-critical', 'smaller', 'critical', null, null),
+    post('smaller-critical-rounded', 'smaller', 'critical', null, 3, true),
     post('missing-critical', 'missing', 'critical', null, null),
     post('zero-critical', 'zero', 'critical', 'neutral', 0),
     post('other-neutral', 'other', 'neutral', 'supportive', 10_000),
@@ -93,38 +95,31 @@ describe('Facebook research charts', () => {
     fixture.destroy();
   });
 
-  it('groups engagement by individual candidate assessments and sorts by activity rather than net balance', () => {
+  it('counts explicitly assessed posts independently of engagement counters and sorts by post count', () => {
     const { fixture, component } = chartFixture(toneFixture());
+    component.metric.set('tone');
     const rows = component.toneRows();
-    expect(rows.map(row => row.id)).toEqual(['balanced', 'smaller', 'missing', 'zero']);
-    expect(rows[0].supportive).toEqual({ value: 100, approximate: true, missing: 0 });
-    expect(rows[0].critical).toEqual({ value: 100, approximate: false, missing: 0 });
-    expect(rows[0].supportivePosts).toBe(1);
-    expect(rows[0].criticalPosts).toBe(1);
-    expect(rows[1].critical).toEqual({ value: null, approximate: false, missing: 1 });
-    expect(rows[2].supportive).toEqual({ value: 0, approximate: false, missing: 0 });
-    expect(rows[2].critical.value).toBeNull();
-    expect(rows[3].critical.value).toBe(0);
-    expect(component.tonePostCount()).toBe(6);
-    expect(component.toneMissingCount()).toBe(2);
+    expect(rows.map(row => row.id)).toEqual(['smaller', 'balanced', 'missing', 'zero']);
+    expect(rows[0]).toEqual({ id: 'smaller', name: 'smaller', supportive: 2, critical: 2 });
+    expect(rows[1]).toEqual({ id: 'balanced', name: 'balanced', supportive: 1, critical: 1 });
+    expect(rows[2]).toEqual({ id: 'missing', name: 'missing', supportive: 0, critical: 1 });
+    expect(rows[3]).toEqual({ id: 'zero', name: 'zero', supportive: 0, critical: 1 });
+    expect(component.tonePostCount()).toBe(8);
     expect(component.excludedTonePosts()).toBe(5);
-    component.metric.set('reactions');
-    expect(component.toneRows()[0].supportive.value).toBe(200);
-    component.metric.set('shares');
     component.setCandidate('yotova');
-    expect(component.toneRows().map(row => row.id)).toEqual(['other', 'balanced', 'smaller']);
-    expect(component.toneRows()[1].supportive.value).toBe(100);
-    expect(component.toneRows()[1].critical.value).toBe(0);
+    expect(component.toneRows().map(row => row.id)).toEqual(['balanced', 'smaller', 'other']);
+    expect(component.toneRows()[0]).toEqual({ id: 'balanced', name: 'balanced', supportive: 1, critical: 0 });
+    expect(component.toneRows()[1]).toEqual({ id: 'smaller', name: 'smaller', supportive: 0, critical: 1 });
     expect(component.tonePostCount()).toBe(3);
-    expect(component.excludedTonePosts()).toBe(8);
+    expect(component.excludedTonePosts()).toBe(10);
     component.setCandidate('unknown');
     expect(component.candidate()).toBe('yotova');
     fixture.destroy();
   });
 
-  it('plots criticism to the left without turning missing counters into zero or displaying negative engagement amounts', () => {
+  it('plots critical post counts to the left while displaying unsigned whole-post counts', () => {
     const { fixture, component } = chartFixture(toneFixture());
-    component.view.set('tone');
+    component.metric.set('tone');
     fixture.detectChanges();
     const options = component.toneChart();
     const series = options.series as Highcharts.SeriesBarOptions[];
@@ -132,20 +127,20 @@ describe('Facebook research charts', () => {
     const critical = series.find(row => row.name === 'Критични публикации')!;
     const supportPoints = supportive.data as Highcharts.PointOptionsObject[];
     const criticalPoints = critical.data as Highcharts.PointOptionsObject[];
-    expect(supportPoints.map(point => point.y)).toEqual([100, 20, 0, 0]);
-    expect(criticalPoints.map(point => point.y)).toEqual([-100, null, null, 0]);
-    expect(supportPoints[0].custom?.['display']).toMatch(/^≈/);
-    expect(criticalPoints[0].custom?.['display']).not.toContain('-');
-    expect(criticalPoints[0].custom?.['posts']).toBe(1);
-    expect(criticalPoints[1].custom?.['coverage']).toContain('1');
-    expect((options.yAxis as Highcharts.YAxisOptions).tickPositions).toEqual([-100, 0, 100]);
+    expect(supportPoints.map(point => point.y)).toEqual([2, 1, 0, 0]);
+    expect(criticalPoints.map(point => point.y)).toEqual([-2, -1, -1, -1]);
+    expect(supportPoints[0].custom?.['display']).toBe('2');
+    expect(criticalPoints[0].custom?.['display']).toBe('2');
+    expect((options.yAxis as Highcharts.YAxisOptions).tickPositions).toEqual([-2, 0, 2]);
     expect((options.yAxis as Highcharts.YAxisOptions).plotLines?.some(line => line.value === 0)).toBe(true);
     expect(options.legend?.enabled).toBe(true);
     expect(component.exportTitle()).toContain('Гюров');
-    expect(component.exportTitle()).toContain('Споделяния');
+    expect(component.exportTitle()).toContain('Публикации');
+    expect(component.exportTitle()).toContain('Подкрепа / критика');
     component.setCandidate('yotova');
-    component.metric.set('comments');
     expect(component.exportTitle()).toContain('Йотова');
+    expect(component.metricLabel()).toBe('Публикации');
+    component.metric.set('comments');
     expect(component.exportTitle()).toContain('Коментари');
     fixture.destroy();
   });
@@ -176,9 +171,11 @@ describe('Facebook research charts', () => {
     const initialTotalChart = fixture.debugElement.query(By.directive(ChartStub)).componentInstance as ChartStub;
     expect(initialTotalChart.options).toBe(component.pageChart());
     expect(element.querySelector('.sr-only table')).toBeNull();
-    element.querySelector<HTMLButtonElement>('#facebook-engagement-view-tab-tone')!.click();
+    expect(element.querySelector('[role="tablist"]')!.querySelectorAll('[role="tab"]')).toHaveLength(4);
+    expect(element.querySelector('#facebook-tone-candidate-tab-gyurov')).toBeNull();
+    element.querySelector<HTMLButtonElement>('#facebook-metric-tab-tone')!.click();
     fixture.detectChanges();
-    expect(component.view()).toBe('tone');
+    expect(component.metric()).toBe('tone');
     const toneChart = fixture.debugElement.query(By.directive(ChartStub)).componentInstance as ChartStub;
     expect(toneChart).not.toBe(initialTotalChart);
     expect(toneChart.options).toBe(component.toneChart());
@@ -189,26 +186,26 @@ describe('Facebook research charts', () => {
       if (tab.getAttribute('aria-selected') === 'true') expect(panel?.getAttribute('aria-labelledby')).toBe(tab.id);
     }
     const table = element.querySelector<HTMLTableElement>('.sr-only table')!;
-    expect(table.caption?.textContent).toContain('Споделяния');
+    expect(table.caption?.textContent).toContain('Публикации');
     expect(table.caption?.textContent).toContain('Гюров');
     expect(table.tBodies[0].rows).toHaveLength(4);
-    expect(table.tBodies[0].rows[0].textContent).toMatch(/≈\s*100/);
-    expect(table.tBodies[0].rows[2].textContent).toContain('1 без брояч');
+    expect(Array.from(table.tBodies[0].rows[0].cells).map(cell => cell.textContent)).toEqual(['smaller', '2', '2']);
+    expect(Array.from(table.tBodies[0].rows[2].cells).map(cell => cell.textContent)).toEqual(['missing', '0', '1']);
     element.querySelector<HTMLButtonElement>('#facebook-tone-candidate-tab-yotova')!.click();
-    element.querySelector<HTMLButtonElement>('#facebook-metric-tab-comments')!.click();
     fixture.detectChanges();
     expect(component.candidate()).toBe('yotova');
-    expect(component.metric()).toBe('comments');
-    expect(table.caption?.textContent).toContain('Коментари');
+    expect(component.metric()).toBe('tone');
+    expect(table.caption?.textContent).toContain('Публикации');
     expect(table.caption?.textContent).toContain('Йотова');
     expect(table.tBodies[0].rows).toHaveLength(3);
-    element.querySelector<HTMLButtonElement>('#facebook-engagement-view-tab-total')!.click();
+    element.querySelector<HTMLButtonElement>('#facebook-metric-tab-shares')!.click();
     fixture.detectChanges();
     const totalChart = fixture.debugElement.query(By.directive(ChartStub)).componentInstance as ChartStub;
     expect(totalChart).not.toBe(toneChart);
     expect(totalChart).not.toBe(initialTotalChart);
     expect(totalChart.options).toBe(component.pageChart());
     expect((totalChart.options as Highcharts.Options).series).toHaveLength(1);
+    expect(element.querySelector('#facebook-tone-candidate-tab-gyurov')).toBeNull();
     fixture.destroy();
   });
 
@@ -216,10 +213,10 @@ describe('Facebook research charts', () => {
     const report = toneFixture();
     const { fixture, component } = chartFixture(report);
     fixture.componentRef.setInput('pages', facebookPageSummaries(report).filter(page => page.id === 'smaller'));
-    component.view.set('tone');
+    component.metric.set('tone');
     fixture.detectChanges();
     expect(component.toneRows().map(row => row.id)).toEqual(['smaller']);
-    expect(component.tonePostCount()).toBe(2);
+    expect(component.tonePostCount()).toBe(4);
     expect(component.excludedTonePosts()).toBe(0);
     fixture.componentRef.setInput('pages', facebookPageSummaries(report).filter(page => page.id === 'other'));
     fixture.detectChanges();
