@@ -208,7 +208,7 @@ This is a partial, nonrepresentative sample. None of the original 34 keywords re
 
 ### Comment collection
 
-The Коментари tab (`?view=comments`) loads `public/data/facebook/2026/comments.json` separately. It shows independent candidate assessments by post and Page, including mixed, informative, unclear, unrelated and unreviewed comments. Counts include replies and describe comments rather than unique people. Comment dates can be later than the October posts; the collection timestamp identifies the snapshot.
+The Коментари tab (`?view=comments`) loads `public/data/facebook/2026/comments.json` separately for the current cohort of 166 October posts across 23 Pages. It shows independent candidate assessments by post and Page, including mixed, informative, unclear, unrelated and unreviewed comments. Counts include replies and describe comments rather than unique people. Comment dates can be later than the October posts; the collection timestamp identifies the snapshot.
 
 Assessments use the comment and its thread context, independently of the publisher's post label. Party, running-mate and donor sentiment is not automatically transferred to the primary candidate. Factual reports or corrections remain informative when no candidate judgment is expressed. Missing or insufficient text remains unreviewed, while an ambiguous candidate reference remains unclear.
 

@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "capturedAt": "2026-11-05T11:44:22.518Z",
-  "collectionSha256": "bec09598d26f3c719be08b812b7ea7ef824a4af9b8879213685a1b469507a24e",
+  "capturedAt": "2026-11-05T12:04:15.868Z",
+  "collectionSha256": "9918577bd8e271145cd43ce2787430bc032dda8ea690dff508db36c38cb25812",
   "posts": [
     {
       "postId": "post:pfbid02mU6YsGsHu3nW7F6Q6onUsvLYnyT2C1Vr8H688j4o6HCQozQNQAraqxpv5SJa7dWQl",
@@ -169,10 +169,10 @@
     },
     {
       "postId": "post:pfbid0QDSecz5EpgCPLRwyp5JtEVPJ3uXdP9pkvUhAkVb3MW71szWmGE18eg6cNuY5h3fCl",
-      "checkedAt": null,
-      "status": "not-checked",
+      "checkedAt": "2026-11-05T11:57:37.663Z",
+      "status": "complete",
       "ordering": null,
-      "reportedCount": null,
+      "reportedCount": 0,
       "capturedCount": 0,
       "assessedCount": 0,
       "topLevelCount": 0,
@@ -363,23 +363,23 @@
     },
     {
       "postId": "post:pfbid02mC3RbUvRRrwn4FWqivPzEWAmRwnA5N2DWjq8Uoq7RsNYGRy5ULep8wyc1NouSHY2l",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:56:37.342Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 209,
+      "capturedCount": 55,
+      "assessedCount": 51,
+      "topLevelCount": 29,
+      "replyCount": 26,
       "counts": {
         "gyurov": {
           "supportive": 0,
           "critical": 0,
           "mixed": 0,
-          "neutral": 0,
+          "neutral": 3,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 48,
+          "unreviewed": 4
         },
         "yotova": {
           "supportive": 0,
@@ -387,8 +387,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 51,
+          "unreviewed": 4
         }
       },
       "notes": []
@@ -500,27 +500,27 @@
       "ordering": "all",
       "reportedCount": 73,
       "capturedCount": 30,
-      "assessedCount": 0,
+      "assessedCount": 29,
       "topLevelCount": 20,
       "replyCount": 10,
       "counts": {
         "gyurov": {
           "supportive": 0,
-          "critical": 0,
+          "critical": 6,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 30
+          "neutral": 5,
+          "unclear": 1,
+          "not-mentioned": 17,
+          "unreviewed": 1
         },
         "yotova": {
-          "supportive": 0,
+          "supportive": 1,
           "critical": 0,
-          "mixed": 0,
-          "neutral": 0,
+          "mixed": 1,
+          "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 30
+          "not-mentioned": 26,
+          "unreviewed": 1
         }
       },
       "notes": []
@@ -1209,32 +1209,32 @@
     },
     {
       "postId": "post:pfbid02PjhhvHUKazdRWLaoBwbzKiEQb7hM945KZtAMcp4hFGrR8mDfyKzygx4oTCznvw74l",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:49:46.714Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 110,
+      "capturedCount": 75,
+      "assessedCount": 73,
+      "topLevelCount": 20,
+      "replyCount": 55,
       "counts": {
         "gyurov": {
-          "supportive": 0,
-          "critical": 0,
+          "supportive": 1,
+          "critical": 4,
           "mixed": 0,
-          "neutral": 0,
+          "neutral": 2,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 66,
+          "unreviewed": 2
         },
         "yotova": {
-          "supportive": 0,
-          "critical": 0,
+          "supportive": 2,
+          "critical": 1,
           "mixed": 0,
-          "neutral": 0,
+          "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 69,
+          "unreviewed": 2
         }
       },
       "notes": []
@@ -1309,10 +1309,10 @@
     },
     {
       "postId": "post:pfbid02tsQEfxjMKW48USs5CoMaPQ3pqzx6VGsw3CZxFCUe3b7YssvS3kC9dmBMjYrfdsRUl",
-      "checkedAt": null,
-      "status": "not-checked",
+      "checkedAt": "2026-11-05T11:57:48.974Z",
+      "status": "complete",
       "ordering": null,
-      "reportedCount": null,
+      "reportedCount": 0,
       "capturedCount": 0,
       "assessedCount": 0,
       "topLevelCount": 0,
@@ -1441,32 +1441,32 @@
     },
     {
       "postId": "post:pfbid0QeTBHPudRNmcQ2nKeMdTsAwfoi7JLAAytBrVaCAeGFEi29sqJ3cig9BLbdu3QqFNl",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:48:28.158Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 103,
+      "capturedCount": 58,
+      "assessedCount": 51,
+      "topLevelCount": 35,
+      "replyCount": 23,
       "counts": {
         "gyurov": {
-          "supportive": 0,
-          "critical": 0,
-          "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "supportive": 8,
+          "critical": 17,
+          "mixed": 1,
+          "neutral": 8,
+          "unclear": 1,
+          "not-mentioned": 16,
+          "unreviewed": 7
         },
         "yotova": {
           "supportive": 0,
-          "critical": 0,
+          "critical": 9,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "neutral": 2,
+          "unclear": 2,
+          "not-mentioned": 38,
+          "unreviewed": 7
         }
       },
       "notes": []
@@ -1505,31 +1505,31 @@
     },
     {
       "postId": "post:pfbid0r5fND2sHqXbM1JCJbmJo5rLUWxMFnaZFSd5dC4qUh2PqVagZSQANr79TZeYQWPQyl",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:54:27.348Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 165,
+      "capturedCount": 43,
+      "assessedCount": 43,
+      "topLevelCount": 19,
+      "replyCount": 24,
       "counts": {
         "gyurov": {
-          "supportive": 0,
-          "critical": 0,
+          "supportive": 2,
+          "critical": 5,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
+          "neutral": 4,
+          "unclear": 1,
+          "not-mentioned": 31,
           "unreviewed": 0
         },
         "yotova": {
-          "supportive": 0,
-          "critical": 0,
+          "supportive": 8,
+          "critical": 4,
           "mixed": 0,
-          "neutral": 0,
+          "neutral": 6,
           "unclear": 0,
-          "not-mentioned": 0,
+          "not-mentioned": 25,
           "unreviewed": 0
         }
       },
@@ -1697,7 +1697,7 @@
     },
     {
       "postId": "post:pfbid0pVveentc1PVrbz9igvuN85ybYYJmAEQvBgaiYQpnrtnW2ei5Mvm6nLFWENhX38Psl",
-      "checkedAt": "2026-11-05T11:09:54.336Z",
+      "checkedAt": "2026-11-05T12:00:27.220Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 22,
@@ -1827,32 +1827,32 @@
     },
     {
       "postId": "post:pfbid02BwihQyZqD3td346wvdEipSrUavMA5D9U3zho7XrgtXnRNBuY4NDqw9LoUUZ38ykgl",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:45:01.356Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 74,
+      "capturedCount": 35,
+      "assessedCount": 32,
+      "topLevelCount": 20,
+      "replyCount": 15,
       "counts": {
         "gyurov": {
           "supportive": 0,
-          "critical": 0,
+          "critical": 4,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "neutral": 1,
+          "unclear": 1,
+          "not-mentioned": 26,
+          "unreviewed": 3
         },
         "yotova": {
-          "supportive": 0,
-          "critical": 0,
+          "supportive": 1,
+          "critical": 4,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "neutral": 1,
+          "unclear": 1,
+          "not-mentioned": 25,
+          "unreviewed": 3
         }
       },
       "notes": []
@@ -2379,10 +2379,10 @@
     },
     {
       "postId": "photo:1578411577634217",
-      "checkedAt": null,
-      "status": "not-checked",
+      "checkedAt": "2026-11-05T11:58:36.671Z",
+      "status": "complete",
       "ordering": null,
-      "reportedCount": null,
+      "reportedCount": 0,
       "capturedCount": 0,
       "assessedCount": 0,
       "topLevelCount": 0,
@@ -2411,10 +2411,10 @@
     },
     {
       "postId": "photo:1582677773874264",
-      "checkedAt": null,
-      "status": "not-checked",
+      "checkedAt": "2026-11-05T11:58:23.789Z",
+      "status": "complete",
       "ordering": null,
-      "reportedCount": null,
+      "reportedCount": 0,
       "capturedCount": 0,
       "assessedCount": 0,
       "topLevelCount": 0,
@@ -2475,10 +2475,10 @@
     },
     {
       "postId": "photo:1151255573914194",
-      "checkedAt": null,
-      "status": "not-checked",
+      "checkedAt": "2026-11-05T11:58:50.283Z",
+      "status": "complete",
       "ordering": null,
-      "reportedCount": null,
+      "reportedCount": 0,
       "capturedCount": 0,
       "assessedCount": 0,
       "topLevelCount": 0,
@@ -2507,10 +2507,10 @@
     },
     {
       "postId": "photo:1156012400105178",
-      "checkedAt": null,
-      "status": "not-checked",
+      "checkedAt": "2026-11-05T11:58:54.178Z",
+      "status": "complete",
       "ordering": null,
-      "reportedCount": null,
+      "reportedCount": 0,
       "capturedCount": 0,
       "assessedCount": 0,
       "topLevelCount": 0,
@@ -2539,10 +2539,10 @@
     },
     {
       "postId": "photo:1154893593550392",
-      "checkedAt": null,
-      "status": "not-checked",
+      "checkedAt": "2026-11-05T11:58:58.228Z",
+      "status": "complete",
       "ordering": null,
-      "reportedCount": null,
+      "reportedCount": 0,
       "capturedCount": 0,
       "assessedCount": 0,
       "topLevelCount": 0,
@@ -2795,32 +2795,32 @@
     },
     {
       "postId": "post:pfbid0HhU2jYwFjp9j378vEe2oekycGBn7ZXUmJF9s4ieRECvGqJmfsHnX446P5WHNTnRbl",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:57:21.771Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 277,
+      "capturedCount": 65,
+      "assessedCount": 62,
+      "topLevelCount": 20,
+      "replyCount": 45,
       "counts": {
         "gyurov": {
-          "supportive": 0,
-          "critical": 0,
+          "supportive": 1,
+          "critical": 17,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "neutral": 9,
+          "unclear": 2,
+          "not-mentioned": 33,
+          "unreviewed": 3
         },
         "yotova": {
-          "supportive": 0,
-          "critical": 0,
+          "supportive": 6,
+          "critical": 12,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "neutral": 5,
+          "unclear": 3,
+          "not-mentioned": 36,
+          "unreviewed": 3
         }
       },
       "notes": []
@@ -2987,32 +2987,32 @@
     },
     {
       "postId": "post:pfbid0Y3RrwUWN4B2fMGj1BkPdgPJH7L8x15uLKteo7KecmYkkcXCs3n9y6XR4ZsyQY11Tl",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:51:28.889Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 119,
+      "capturedCount": 105,
+      "assessedCount": 93,
+      "topLevelCount": 96,
+      "replyCount": 9,
       "counts": {
         "gyurov": {
           "supportive": 0,
           "critical": 0,
           "mixed": 0,
-          "neutral": 0,
+          "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 92,
+          "unreviewed": 12
         },
         "yotova": {
           "supportive": 0,
-          "critical": 0,
+          "critical": 38,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "neutral": 17,
+          "unclear": 26,
+          "not-mentioned": 12,
+          "unreviewed": 12
         }
       },
       "notes": []
@@ -3051,14 +3051,14 @@
     },
     {
       "postId": "post:1685718766236751",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:55:25.902Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 182,
+      "capturedCount": 36,
+      "assessedCount": 36,
+      "topLevelCount": 6,
+      "replyCount": 30,
       "counts": {
         "gyurov": {
           "supportive": 0,
@@ -3066,16 +3066,16 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
+          "not-mentioned": 36,
           "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
-          "critical": 0,
+          "critical": 7,
           "mixed": 0,
-          "neutral": 0,
+          "neutral": 2,
           "unclear": 0,
-          "not-mentioned": 0,
+          "not-mentioned": 27,
           "unreviewed": 0
         }
       },
@@ -3179,23 +3179,23 @@
     },
     {
       "postId": "post:pfbid0UBSSooYbyLQ1yfNtsMtSWXCH6rGffqExNfACADwoAr9sJyKEupppWT6RbM9xEjVMl",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:47:17.832Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 80,
+      "capturedCount": 44,
+      "assessedCount": 42,
+      "topLevelCount": 10,
+      "replyCount": 34,
       "counts": {
         "gyurov": {
           "supportive": 0,
-          "critical": 0,
+          "critical": 2,
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 40,
+          "unreviewed": 2
         },
         "yotova": {
           "supportive": 0,
@@ -3203,8 +3203,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 42,
+          "unreviewed": 2
         }
       },
       "notes": []
@@ -3601,14 +3601,14 @@
     },
     {
       "postId": "video:1608628141015918",
-      "checkedAt": "2026-11-05T11:24:46.143Z",
+      "checkedAt": "2026-11-05T12:04:15.868Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": "newest",
       "reportedCount": 49,
-      "capturedCount": 40,
-      "assessedCount": 28,
-      "topLevelCount": 36,
-      "replyCount": 4,
+      "capturedCount": 45,
+      "assessedCount": 31,
+      "topLevelCount": 40,
+      "replyCount": 5,
       "counts": {
         "gyurov": {
           "supportive": 0,
@@ -3616,8 +3616,8 @@
           "mixed": 0,
           "neutral": 2,
           "unclear": 0,
-          "not-mentioned": 26,
-          "unreviewed": 12
+          "not-mentioned": 29,
+          "unreviewed": 14
         },
         "yotova": {
           "supportive": 0,
@@ -3625,8 +3625,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 1,
-          "not-mentioned": 26,
-          "unreviewed": 12
+          "not-mentioned": 29,
+          "unreviewed": 14
         }
       },
       "notes": []
@@ -3699,32 +3699,32 @@
     },
     {
       "postId": "video:1094888736870133",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:55:53.576Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 196,
+      "capturedCount": 25,
+      "assessedCount": 24,
+      "topLevelCount": 16,
+      "replyCount": 9,
       "counts": {
         "gyurov": {
           "supportive": 0,
-          "critical": 0,
+          "critical": 19,
           "mixed": 0,
-          "neutral": 0,
+          "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 4,
+          "unreviewed": 1
         },
         "yotova": {
-          "supportive": 0,
-          "critical": 0,
+          "supportive": 1,
+          "critical": 1,
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 22,
+          "unreviewed": 1
         }
       },
       "notes": []
@@ -3763,10 +3763,10 @@
     },
     {
       "postId": "post:pfbid02e9Nu96hmUGCtZQD3gAzFCAmXrUGpjYts7Qrk3bJhZYGonxLukB2C9xBqafFZycsXl",
-      "checkedAt": null,
-      "status": "not-checked",
+      "checkedAt": "2026-11-05T11:59:02.597Z",
+      "status": "complete",
       "ordering": null,
-      "reportedCount": null,
+      "reportedCount": 0,
       "capturedCount": 0,
       "assessedCount": 0,
       "topLevelCount": 0,
@@ -3989,42 +3989,42 @@
     },
     {
       "postId": "video:1157399536729329",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:53:48.649Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 161,
+      "capturedCount": 18,
+      "assessedCount": 17,
+      "topLevelCount": 6,
+      "replyCount": 12,
       "counts": {
         "gyurov": {
-          "supportive": 0,
+          "supportive": 1,
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "unclear": 1,
+          "not-mentioned": 15,
+          "unreviewed": 1
         },
         "yotova": {
           "supportive": 0,
           "critical": 0,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "neutral": 2,
+          "unclear": 1,
+          "not-mentioned": 14,
+          "unreviewed": 1
         }
       },
       "notes": []
     },
     {
       "postId": "post:pfbid02mFRotzxY3qBtCDZVXUsaE8RQ1igsq2fMqs31kRKqkfgMvWAxEBjVG9rffsRtCbpPl",
-      "checkedAt": null,
-      "status": "not-checked",
+      "checkedAt": "2026-11-05T11:59:13.279Z",
+      "status": "complete",
       "ordering": null,
-      "reportedCount": null,
+      "reportedCount": 0,
       "capturedCount": 0,
       "assessedCount": 0,
       "topLevelCount": 0,
@@ -4185,32 +4185,32 @@
     },
     {
       "postId": "video:998758882516672",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:53:15.010Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 154,
+      "capturedCount": 25,
+      "assessedCount": 24,
+      "topLevelCount": 16,
+      "replyCount": 9,
       "counts": {
         "gyurov": {
-          "supportive": 0,
-          "critical": 0,
+          "supportive": 2,
+          "critical": 1,
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 21,
+          "unreviewed": 1
         },
         "yotova": {
-          "supportive": 0,
-          "critical": 0,
+          "supportive": 1,
+          "critical": 20,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "unclear": 1,
+          "not-mentioned": 2,
+          "unreviewed": 1
         }
       },
       "notes": []
@@ -4281,14 +4281,14 @@
     },
     {
       "postId": "post:pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:45:49.906Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 75,
+      "capturedCount": 66,
+      "assessedCount": 59,
+      "topLevelCount": 64,
+      "replyCount": 2,
       "counts": {
         "gyurov": {
           "supportive": 0,
@@ -4296,8 +4296,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 59,
+          "unreviewed": 7
         },
         "yotova": {
           "supportive": 0,
@@ -4305,39 +4305,39 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 59,
+          "unreviewed": 7
         }
       },
       "notes": []
     },
     {
       "postId": "video:1138813955363373",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:52:02.476Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 124,
+      "capturedCount": 27,
+      "assessedCount": 27,
+      "topLevelCount": 16,
+      "replyCount": 11,
       "counts": {
         "gyurov": {
-          "supportive": 0,
+          "supportive": 2,
           "critical": 0,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
+          "neutral": 1,
+          "unclear": 1,
+          "not-mentioned": 23,
           "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
-          "critical": 0,
+          "critical": 17,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
+          "unclear": 3,
+          "not-mentioned": 7,
           "unreviewed": 0
         }
       },
@@ -4505,22 +4505,22 @@
     },
     {
       "postId": "video:1157252846871409",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:48:58.000Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 109,
+      "capturedCount": 23,
+      "assessedCount": 23,
+      "topLevelCount": 6,
+      "replyCount": 17,
       "counts": {
         "gyurov": {
-          "supportive": 0,
+          "supportive": 1,
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
+          "not-mentioned": 22,
           "unreviewed": 0
         },
         "yotova": {
@@ -4529,7 +4529,7 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
+          "not-mentioned": 23,
           "unreviewed": 0
         }
       },
@@ -4603,14 +4603,14 @@
     },
     {
       "postId": "video:1428401352820819",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:47:45.595Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 86,
+      "capturedCount": 27,
+      "assessedCount": 25,
+      "topLevelCount": 16,
+      "replyCount": 11,
       "counts": {
         "gyurov": {
           "supportive": 0,
@@ -4618,17 +4618,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 25,
+          "unreviewed": 2
         },
         "yotova": {
           "supportive": 0,
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "unclear": 1,
+          "not-mentioned": 24,
+          "unreviewed": 2
         }
       },
       "notes": []
@@ -4935,64 +4935,64 @@
     },
     {
       "postId": "video:1505206344753130",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:50:45.530Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 118,
+      "capturedCount": 34,
+      "assessedCount": 27,
+      "topLevelCount": 6,
+      "replyCount": 28,
       "counts": {
         "gyurov": {
-          "supportive": 0,
-          "critical": 0,
+          "supportive": 1,
+          "critical": 7,
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 19,
+          "unreviewed": 7
         },
         "yotova": {
-          "supportive": 0,
-          "critical": 0,
+          "supportive": 2,
+          "critical": 2,
           "mixed": 0,
-          "neutral": 0,
+          "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 22,
+          "unreviewed": 7
         }
       },
       "notes": []
     },
     {
       "postId": "video:3360112920862887",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:54:54.812Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 177,
+      "capturedCount": 22,
+      "assessedCount": 20,
+      "topLevelCount": 6,
+      "replyCount": 16,
       "counts": {
         "gyurov": {
           "supportive": 0,
-          "critical": 0,
+          "critical": 9,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "neutral": 3,
+          "unclear": 3,
+          "not-mentioned": 5,
+          "unreviewed": 2
         },
         "yotova": {
           "supportive": 0,
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "unclear": 3,
+          "not-mentioned": 17,
+          "unreviewed": 2
         }
       },
       "notes": []
@@ -5031,31 +5031,31 @@
     },
     {
       "postId": "video:1438183745146031",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:50:16.049Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 110,
+      "capturedCount": 17,
+      "assessedCount": 17,
+      "topLevelCount": 6,
+      "replyCount": 11,
       "counts": {
         "gyurov": {
           "supportive": 0,
-          "critical": 0,
+          "critical": 1,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
+          "neutral": 9,
+          "unclear": 4,
+          "not-mentioned": 3,
           "unreviewed": 0
         },
         "yotova": {
-          "supportive": 0,
+          "supportive": 1,
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
+          "not-mentioned": 16,
           "unreviewed": 0
         }
       },
@@ -5095,23 +5095,23 @@
     },
     {
       "postId": "post:pfbid02TyRefXGLG13M3pmcAkV6R67J7ngjJGQeapFBWguxS4r1jaPmZemKjBbgnKyKiunWl",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:52:44.464Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 130,
+      "capturedCount": 62,
+      "assessedCount": 58,
+      "topLevelCount": 35,
+      "replyCount": 27,
       "counts": {
         "gyurov": {
           "supportive": 0,
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "unclear": 1,
+          "not-mentioned": 57,
+          "unreviewed": 4
         },
         "yotova": {
           "supportive": 0,
@@ -5119,8 +5119,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 58,
+          "unreviewed": 4
         }
       },
       "notes": []
@@ -5196,7 +5196,7 @@
       "ordering": null,
       "reportedCount": 72,
       "capturedCount": 33,
-      "assessedCount": 0,
+      "assessedCount": 28,
       "topLevelCount": 28,
       "replyCount": 5,
       "counts": {
@@ -5206,8 +5206,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 33
+          "not-mentioned": 28,
+          "unreviewed": 5
         },
         "yotova": {
           "supportive": 0,
@@ -5215,8 +5215,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 33
+          "not-mentioned": 28,
+          "unreviewed": 5
         }
       },
       "notes": []
@@ -5255,10 +5255,10 @@
     },
     {
       "postId": "post:pfbid0T4ndd4P8DUg1FQtpjGDhUTGCd6XpUwNbkHxDRsvqhkyr4UhQoM49Gj788FPGJUwol",
-      "checkedAt": null,
-      "status": "not-checked",
+      "checkedAt": "2026-11-05T11:59:17.389Z",
+      "status": "complete",
       "ordering": null,
-      "reportedCount": null,
+      "reportedCount": 0,
       "capturedCount": 0,
       "assessedCount": 0,
       "topLevelCount": 0,
@@ -5287,14 +5287,14 @@
     },
     {
       "postId": "post:pfbid02fCui5WQgpSNWoW4SbgeoHTVpyoxLoR2ZXmBKTtkL2Ge593yFavPukrax7bZPGdHl",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-05T11:46:38.133Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 78,
+      "capturedCount": 71,
+      "assessedCount": 63,
+      "topLevelCount": 54,
+      "replyCount": 17,
       "counts": {
         "gyurov": {
           "supportive": 0,
@@ -5302,8 +5302,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 63,
+          "unreviewed": 8
         },
         "yotova": {
           "supportive": 0,
@@ -5311,18 +5311,18 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 0
+          "not-mentioned": 63,
+          "unreviewed": 8
         }
       },
       "notes": []
     },
     {
       "postId": "video:1444912007738019",
-      "checkedAt": null,
-      "status": "not-checked",
+      "checkedAt": "2026-11-05T11:59:24.973Z",
+      "status": "complete",
       "ordering": null,
-      "reportedCount": null,
+      "reportedCount": 0,
       "capturedCount": 0,
       "assessedCount": 0,
       "topLevelCount": 0,
