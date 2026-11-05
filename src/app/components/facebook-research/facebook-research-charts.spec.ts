@@ -1,5 +1,6 @@
 import { Component, Input, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import { describe, expect, it, vi } from 'vitest';
@@ -172,10 +173,16 @@ describe('Facebook research charts', () => {
   it('switches chart views through linked tabs and provides the same tone values in an accessible table', () => {
     const { fixture, component } = chartFixture(toneFixture());
     const element = fixture.nativeElement as HTMLElement;
+    const initialTotalChart = fixture.debugElement.query(By.directive(ChartStub)).componentInstance as ChartStub;
+    expect(initialTotalChart.options).toBe(component.pageChart());
     expect(element.querySelector('table.sr-only')).toBeNull();
     element.querySelector<HTMLButtonElement>('#facebook-engagement-view-tab-tone')!.click();
     fixture.detectChanges();
     expect(component.view()).toBe('tone');
+    const toneChart = fixture.debugElement.query(By.directive(ChartStub)).componentInstance as ChartStub;
+    expect(toneChart).not.toBe(initialTotalChart);
+    expect(toneChart.options).toBe(component.toneChart());
+    expect((toneChart.options as Highcharts.Options).series).toHaveLength(2);
     for (const tab of element.querySelectorAll('[role="tab"]')) {
       const panel = element.querySelector(`#${tab.getAttribute('aria-controls')}`);
       expect(panel?.getAttribute('role')).toBe('tabpanel');
@@ -195,6 +202,13 @@ describe('Facebook research charts', () => {
     expect(table.caption?.textContent).toContain('Коментари');
     expect(table.caption?.textContent).toContain('Йотова');
     expect(table.tBodies[0].rows).toHaveLength(3);
+    element.querySelector<HTMLButtonElement>('#facebook-engagement-view-tab-total')!.click();
+    fixture.detectChanges();
+    const totalChart = fixture.debugElement.query(By.directive(ChartStub)).componentInstance as ChartStub;
+    expect(totalChart).not.toBe(toneChart);
+    expect(totalChart).not.toBe(initialTotalChart);
+    expect(totalChart.options).toBe(component.pageChart());
+    expect((totalChart.options as Highcharts.Options).series).toHaveLength(1);
     fixture.destroy();
   });
 

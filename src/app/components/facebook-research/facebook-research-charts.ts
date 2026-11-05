@@ -33,7 +33,12 @@ export interface FacebookToneSelection {
                 <p class="chart-note empty-tone" role="status">Няма оценени публикации в подкрепа или критика към {{ candidateLabel() }} по тези филтри.</p>
               } @else {
                 <app-chart-image-export [title]="exportTitle()" [filename]="view() === 'tone' ? 'facebook-pages-' + candidate() + '-tone-2026.png' : 'facebook-pages-2026.png'">
-                  <highcharts-chart aria-hidden="true" [options]="view() === 'tone' ? toneChart() : pageChart()" style="display:block;width:100%" />
+                  <!-- Recreate the chart when switching modes to clear retained Highcharts series and axis options. -->
+                  @if (view() === 'tone') {
+                    <highcharts-chart aria-hidden="true" [options]="toneChart()" style="display:block;width:100%" />
+                  } @else {
+                    <highcharts-chart aria-hidden="true" [options]="pageChart()" style="display:block;width:100%" />
+                  }
                 </app-chart-image-export>
               }
               @if (view() === 'tone') {
