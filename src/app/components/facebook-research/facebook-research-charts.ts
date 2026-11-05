@@ -174,6 +174,9 @@ export class FacebookResearchChartsComponent {
     }));
     return {
       ...this.baseOptions(), chart: { ...this.baseOptions().chart, type: 'bar', height: Math.max(320, rows.length * 37 + 110) },
+      responsive: { rules: [{ condition: { maxWidth: 480 }, chartOptions: {
+        chart: { marginLeft: 112 }, xAxis: { labels: { style: { width: 100, textOverflow: 'ellipsis' } } },
+      } }] },
       subtitle: { text: `${this.tonePostCount()} публикации · ${this.excludedTonePosts()} извън подкрепа / критика · ${this.toneMissingCount()} без брояч`, style: { color: this.ink(), fontSize: '10px' } },
       xAxis: { categories: rows.map(row => facebookShortName(row.name)), labels: { style: { color: this.ink(), fontSize: '11px' } }, lineWidth: 0, tickWidth: 0 },
       yAxis: { min: -extent, max: extent, tickPositions: [-extent, 0, extent], startOnTick: false, endOnTick: false, allowDecimals: false, title: { text: '' }, gridLineColor: 'var(--facebook-rule)',
