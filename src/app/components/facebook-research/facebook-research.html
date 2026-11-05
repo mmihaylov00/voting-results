@@ -26,6 +26,9 @@
       @if (view() === 'comments') {
         <app-facebook-comments-research [posts]="data.posts" [pages]="data.pages" />
       }
+      @if (view() === 'participation') {
+        <app-facebook-participation [posts]="data.posts" [pages]="data.pages" />
+      }
       @if (view() === 'pages') {
         <div class="candidate-filters" role="group" aria-label="Филтри по тон на страниците">
           @for (candidate of candidates; track candidate) {

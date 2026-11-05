@@ -1,0 +1,61 @@
+<div class="participation-heading"><div><h2>Повтарящо се участие</h2>@if (report()) {<p class="note">Събиране: <time [attr.datetime]="report()!.capturedAt">{{ collectedDate() }}</time></p>}</div><a hlmBtn variant="outline" class="gap-2" [href]="dataUrl" download="facebook-participation-2026.json"><app-map-icon name="download" />Данни JSON</a></div>
+<app-loading-bar [loading]="loading()" label="Зареждане на обобщеното участие" />
+@if (error()) {<div class="error-state" role="alert"><p>{{ error() }}</p><button hlmBtn variant="outline" type="button" class="gap-2" (click)="load()"><app-map-icon name="reset" />Опитай отново</button></div>}
+@if (report(); as data) {
+  <p class="eyebrow">Цялата извадка</p>
+  <dl class="participation-totals">
+    <div><dt>Разпознати акаунти</dt><dd>{{ accountCount(data.totals.accounts) }}</dd></div>
+    <div><dt>В повече публикации</dt><dd>{{ accountCount(data.totals.accountsOnMultiplePosts) }}</dd></div>
+    <div><dt>В повече страници</dt><dd>{{ accountCount(data.totals.accountsOnMultiplePages) }}</dd></div>
+  </dl>
+  <p class="coverage"><strong>{{ count(data.coverage.matchedIdentityComments) }}</strong> от {{ count(data.coverage.capturedComments) }} коментара с разпознат идентификатор · {{ count(data.coverage.unknownIdentityComments) }} без идентификатор</p>
+  <app-view-tabs [tabs]="tabs" [value]="view()" (valueChange)="setView($event)" [scrollable]="true" label="Обобщения на участието" idPrefix="facebook-participation-view" panelId="facebook-participation-panel" />
+  <div id="facebook-participation-panel" role="tabpanel" [attr.aria-labelledby]="'facebook-participation-view-tab-' + view()">
+    <div class="filters">
+      <div><label for="facebook-participation-page--trigger">Facebook страница</label><app-select controlId="facebook-participation-page" label="Facebook страница за участието" [options]="pageOptions()" [value]="pageFilter()" (valueChange)="pageFilter.set($event)" /></div>
+      @if (view() === 'overlaps') {<div><label for="facebook-participation-overlap--trigger">Сравнение</label><app-select controlId="facebook-participation-overlap" label="Обхват на съвпаденията" [options]="overlapOptions" [value]="overlapScope()" (valueChange)="setOverlapScope($event)" /></div>}
+      <button hlmBtn variant="outline" size="icon" type="button" aria-label="Изчисти филтрите на участието" title="Изчисти филтрите" (click)="resetFilters()"><app-map-icon name="reset" /></button>
+    </div>
+    <app-table-controls #participationTable [rows]="filteredRows()" [columns]="columns" label="Търсене в обобщенията на участието" searchInputClass="min-h-11! text-base!" />
+    @if (view() === 'pages' && chartRows().length) {
+      <h3 id="facebook-participation-chart-title">Разпознати акаунти по страници</h3>
+      <app-chart-image-export [title]="exportTitle()" filename="facebook-participation-pages-2026.png"><div class="chart-scroll" tabindex="0" role="region" aria-labelledby="facebook-participation-chart-title"><highcharts-chart aria-hidden="true" [options]="chartOptions()" style="display:block;width:100%" /></div></app-chart-image-export>
+    }
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Обобщени данни за участието" [virtualRows]="participationTable.viewRows()" [virtualRowsLayout]="view() + overlapScope()" [virtualRowHeight]="80" #participationRows="virtualRows">
+      <table [class.post-table]="view() === 'posts' || view() === 'overlaps' && overlapScope() === 'posts'" [attr.aria-rowcount]="participationTable.viewRows().length + 1" aria-label="Агрегирано участие по текущите филтри">
+        <thead><tr>
+          <th scope="col" app-sortable-table-header columnKey="left" [label]="view() === 'posts' ? 'Публикация' : view() === 'overlaps' ? (overlapScope() === 'posts' ? 'Публикация I' : 'Страница I') : 'Страница'" [table]="participationTable" align="left"></th>
+          @if (view() === 'overlaps') {
+            <th scope="col" app-sortable-table-header columnKey="right" [label]="overlapScope() === 'posts' ? 'Публикация II' : 'Страница II'" [table]="participationTable" align="left"></th>
+            <th scope="col" app-sortable-table-header columnKey="shared" label="Общи акаунти" [table]="participationTable" align="right"></th>
+          } @else {
+            <th scope="col" app-sortable-table-header columnKey="accounts" label="Акаунти" [table]="participationTable" align="right"></th>
+            @if (view() === 'posts') {
+              <th scope="col" app-sortable-table-header columnKey="starters" label="С основен коментар" [table]="participationTable" align="right"></th>
+              <th scope="col" app-sortable-table-header columnKey="repeated" label="С повече коментари" [table]="participationTable" align="right"></th>
+            }
+            <th scope="col" app-sortable-table-header columnKey="matched" label="Разпознати / събрани" [table]="participationTable" align="right"></th>
+            <th scope="col" app-sortable-table-header columnKey="status" [label]="view() === 'pages' ? 'Пълни нишки' : 'Нишка'" [table]="participationTable" align="left"></th>
+          }
+        </tr></thead>
+        <tbody>
+          @if (participationRows.window().top) {<tr aria-hidden="true"><td [attr.colspan]="view() === 'overlaps' ? 3 : view() === 'pages' ? 4 : 6" [style.height.px]="participationRows.window().top" class="virtual-spacer"></td></tr>}
+          @for (row of participationRows.rows(); track row.id) {
+            <tr [attr.data-virtual-index]="participationRows.window().start + $index" [attr.aria-rowindex]="participationRows.window().start + $index + 2">
+              <th scope="row"><a class="source-link" [href]="row.leftUrl" target="_blank" rel="noopener noreferrer"><span>{{ row.left }}</span><app-map-icon name="share" /></a></th>
+              @if (view() === 'overlaps') {
+                <td class="right-source"><a class="source-link" [href]="row.rightUrl" target="_blank" rel="noopener noreferrer"><span>{{ row.right }}</span><app-map-icon name="share" /></a></td><td class="shared-count">{{ count(row.shared) }}</td>
+              } @else {
+                <td class="account-count">{{ accountCount(row.accounts) }}</td>
+                @if (view() === 'posts') {<td>{{ accountCount(row.starters) }}</td><td>{{ accountCount(row.repeated) }}</td>}
+                <td>{{ count(row.matched) }} / {{ count(row.captured) }}</td><td class="status-cell">{{ row.status }}</td>
+              }
+            </tr>
+          } @empty {<tr><td [attr.colspan]="view() === 'overlaps' ? 3 : view() === 'pages' ? 4 : 6" class="empty-state">{{ view() === 'overlaps' ? 'Няма съвпадения с поне 5 акаунта по тези филтри.' : 'Няма данни по тези филтри.' }}</td></tr>}
+          @if (participationRows.window().bottom) {<tr aria-hidden="true"><td [attr.colspan]="view() === 'overlaps' ? 3 : view() === 'pages' ? 4 : 6" [style.height.px]="participationRows.window().bottom" class="virtual-spacer"></td></tr>}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="note">Стойностите под 5 акаунта са скрити. Съвпаденията са по публични идентификатори; непълните нишки и различните връзки към един акаунт ограничават извадката. Съвпадението не установява координация.</p>
+}

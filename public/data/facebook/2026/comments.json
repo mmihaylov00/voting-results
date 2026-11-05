@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "capturedAt": "2026-11-05T16:47:03.013Z",
-  "collectionSha256": "d7a93b810c37eed5a09d9d289b64e2a90e23252bb9ed7d21a2ba2467443d79a2",
+  "capturedAt": "2026-11-05T20:42:18.674Z",
+  "collectionSha256": "d46d0c538375d98f3652626c8bb4389128a07c50a674d11fff526e8c4cb749c4",
   "posts": [
     {
       "postId": "post:pfbid02mU6YsGsHu3nW7F6Q6onUsvLYnyT2C1Vr8H688j4o6HCQozQNQAraqxpv5SJa7dWQl",
-      "checkedAt": "2026-11-05T13:24:13.417Z",
+      "checkedAt": "2026-11-05T20:15:32.991Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 20,
@@ -39,7 +39,7 @@
     },
     {
       "postId": "post:pfbid02xBHQG3oNTv5Fn74pzZ2znxx7XGj8CEvZ6j6TEEih8kCyYKKQkftHhWepqmw62Ttvl",
-      "checkedAt": "2026-11-05T14:08:09.295Z",
+      "checkedAt": "2026-11-05T20:13:55.611Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 23,
@@ -71,7 +71,7 @@
     },
     {
       "postId": "post:pfbid02m5AM3UjX6s5P61kxMT15xB7VjMHvG1xaivvUUN8ewZhVBEV66zUDcjM33pR64ojml",
-      "checkedAt": "2026-11-05T12:55:45.561Z",
+      "checkedAt": "2026-11-05T20:11:37.570Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 7,
@@ -105,7 +105,7 @@
     },
     {
       "postId": "post:pfbid0mDnqBwtyiQuvDPsUuSLyFfrNZ8hCzmYwfYpUCeWUxHa8KrHDuSdaDAfzHxkphbvNl",
-      "checkedAt": "2026-11-05T13:07:05.118Z",
+      "checkedAt": "2026-11-05T20:38:33.220Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 11,
@@ -137,7 +137,7 @@
     },
     {
       "postId": "post:pfbid02u9M2ZYvSrtZ2KZkeDNeVdbxwfGDKn4RixnrqaRRR8g4aUGkxx7u9rvRLk2aVcaoHl",
-      "checkedAt": "2026-11-05T16:07:59.298Z",
+      "checkedAt": "2026-11-05T20:34:40.576Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 39,
@@ -171,7 +171,7 @@
     },
     {
       "postId": "post:pfbid0QDSecz5EpgCPLRwyp5JtEVPJ3uXdP9pkvUhAkVb3MW71szWmGE18eg6cNuY5h3fCl",
-      "checkedAt": "2026-11-05T12:09:11.489Z",
+      "checkedAt": "2026-11-05T20:24:08.509Z",
       "status": "complete",
       "ordering": null,
       "reportedCount": null,
@@ -203,9 +203,9 @@
     },
     {
       "postId": "post:pfbid02m8f3HxtJot1ghwe3G1VnzseGj9vwEYeTSSUSLgW1YFudMHBiXJUU9jKaGh2H6cjNl",
-      "checkedAt": "2026-11-05T13:40:37.240Z",
+      "checkedAt": "2026-11-05T20:15:00.908Z",
       "status": "complete",
-      "ordering": "all",
+      "ordering": "newest",
       "reportedCount": 19,
       "capturedCount": 19,
       "assessedCount": 18,
@@ -231,11 +231,13 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“."
+      ]
     },
     {
       "postId": "post:pfbid031KzVh7UKdSRowGx3pHBj5Qb8hu6DQNaKz1thvjzv3ZasBSHsaPKDRPzwcRU3PJqQl",
-      "checkedAt": "2026-11-05T12:45:43.835Z",
+      "checkedAt": "2026-11-05T20:13:38.121Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 3,
@@ -267,7 +269,7 @@
     },
     {
       "postId": "post:pfbid02S9i8g73PkvdreHCK14M8RjcDRaKuKV8mbemEz9uumawLedfsSSvBnxnrTxrr7dHfl",
-      "checkedAt": "2026-11-05T12:52:23.862Z",
+      "checkedAt": "2026-11-05T20:10:55.713Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 7,
@@ -299,7 +301,7 @@
     },
     {
       "postId": "post:pfbid0dqaVDHafaSqYgUEasHmN3Ani9oHcw4YwbwBJxneq4Jj6qTkAxyTJGyvhoSYwdoQtl",
-      "checkedAt": "2026-11-05T12:45:50.581Z",
+      "checkedAt": "2026-11-05T20:13:46.522Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 3,
@@ -331,7 +333,7 @@
     },
     {
       "postId": "post:pfbid028x5LkjYB6qV5HeJCjWWtGgkZLQL3eEEyFHRf5sw8WCy1cA16RRuz3doXBuV92zewl",
-      "checkedAt": "2026-11-05T12:40:25.339Z",
+      "checkedAt": "2026-11-05T20:29:48.479Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 1,
@@ -363,7 +365,7 @@
     },
     {
       "postId": "post:pfbid02mC3RbUvRRrwn4FWqivPzEWAmRwnA5N2DWjq8Uoq7RsNYGRy5ULep8wyc1NouSHY2l",
-      "checkedAt": "2026-11-05T16:27:29.506Z",
+      "checkedAt": "2026-11-05T19:45:52.569Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 209,
@@ -397,7 +399,7 @@
     },
     {
       "postId": "post:pfbid02orFJ7ecCHXmDARycYMhD5N21fPcvRydaUUaJQL3jc6fHXY3n1onf2kudGCfHpunNl",
-      "checkedAt": "2026-11-05T12:54:27.476Z",
+      "checkedAt": "2026-11-05T20:19:56.943Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 8,
@@ -429,9 +431,9 @@
     },
     {
       "postId": "post:pfbid02upmeKUjzAUKYiFtZ87Tos1bACTjUg6bq9FiWZQuVLrwdXhGVnTZ4TE4X6SfG5N7Hl",
-      "checkedAt": "2026-11-05T16:26:29.499Z",
+      "checkedAt": "2026-11-05T20:01:41.440Z",
       "status": "complete",
-      "ordering": "all",
+      "ordering": "newest",
       "reportedCount": 42,
       "capturedCount": 42,
       "assessedCount": 40,
@@ -457,11 +459,13 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“."
+      ]
     },
     {
       "postId": "post:pfbid03rZ6MY8CN5E94AuM95mPh9MrXcuksP24zHiZn46EcQ3RhpWrxMiooYHwUAnocvbyl",
-      "checkedAt": "2026-11-05T16:05:38.521Z",
+      "checkedAt": "2026-11-05T20:12:30.302Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 31,
@@ -495,7 +499,7 @@
     },
     {
       "postId": "post:pfbid0BHVnuGJsi6ub8GXhMMHfnBdKKnQE7cadFT1LBkfrfGTWubjtRahR29KDYiyCPg6bl",
-      "checkedAt": "2026-11-05T16:09:05.618Z",
+      "checkedAt": "2026-11-05T19:54:59.849Z",
       "status": "complete",
       "ordering": "newest",
       "reportedCount": 73,
@@ -529,7 +533,7 @@
     },
     {
       "postId": "post:pfbid0KisFpBdsttQ3mTPPqpPgaxPDyddQ5s6EuS3aFRAVTwBDYGCNnGDY8LDpYNn5ZkBZl",
-      "checkedAt": "2026-11-05T12:50:38.373Z",
+      "checkedAt": "2026-11-05T20:27:13.650Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 6,
@@ -561,7 +565,7 @@
     },
     {
       "postId": "post:pfbid0Moetda1iWfTHG8QCvYmjFbLuDCH2RSNszUecXCcoKurF41vuCJizBws5DAQwsDjLl",
-      "checkedAt": "2026-11-05T12:43:35.683Z",
+      "checkedAt": "2026-11-05T20:29:27.119Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 2,
@@ -593,9 +597,9 @@
     },
     {
       "postId": "post:pfbid0mnE5t943SWc4MH9KheNhCi5UYKCLnWUP3kxWAv3wd2WESpMJHHTLYfLp6rtWTHNal",
-      "checkedAt": "2026-11-05T16:23:48.150Z",
+      "checkedAt": "2026-11-05T19:56:43.493Z",
       "status": "complete",
-      "ordering": "all",
+      "ordering": "newest",
       "reportedCount": 65,
       "capturedCount": 65,
       "assessedCount": 64,
@@ -621,11 +625,13 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“."
+      ]
     },
     {
       "postId": "post:pfbid0oApgxUQcjgrRURbhK9a5YVoZY2bHiH29tiaq8AnPkZVwNeGCqHVmZoYDuDjWcgXMl",
-      "checkedAt": "2026-11-05T12:52:37.748Z",
+      "checkedAt": "2026-11-05T20:26:45.459Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 7,
@@ -657,10 +663,10 @@
     },
     {
       "postId": "post:pfbid0252oshkJ5KmtXCKjdgoUHZjwS3xabtSgHBJHMag8dzEtKQ42gZRcUVsRJMwcyG6EXl",
-      "checkedAt": "2026-11-05T12:49:42.064Z",
+      "checkedAt": "2026-11-05T20:12:27.505Z",
       "status": "complete",
       "ordering": "all",
-      "reportedCount": 4,
+      "reportedCount": 5,
       "capturedCount": 5,
       "assessedCount": 4,
       "topLevelCount": 5,
@@ -689,7 +695,7 @@
     },
     {
       "postId": "post:pfbid02EJT5FUrZgtrk7tTa1XHeNT7wT3XcPNuGQZes7tnF3PRfkc79CJDyuhzJiouTS6Uyl",
-      "checkedAt": "2026-11-05T16:22:57.524Z",
+      "checkedAt": "2026-11-05T20:33:49.220Z",
       "status": "complete",
       "ordering": "newest",
       "reportedCount": 49,
@@ -723,7 +729,7 @@
     },
     {
       "postId": "post:pfbid03V9bKpCNQKJu4Ba9HckG1GKZfbUfiW7sHoXSmrEjTToa9hCfLCpeSshKajdgAmE9l",
-      "checkedAt": "2026-11-05T16:13:35.385Z",
+      "checkedAt": "2026-11-05T20:42:17.962Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 648,
@@ -757,7 +763,7 @@
     },
     {
       "postId": "post:pfbid0RU4rkXLGMKMbo43LNk2dHiAbnzXzZnvisSWW69RqrDm96ZnFzxbKc3GXvx2PfgWbl",
-      "checkedAt": "2026-11-05T16:27:38.263Z",
+      "checkedAt": "2026-11-05T20:35:01.976Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 29,
@@ -789,7 +795,7 @@
     },
     {
       "postId": "video:2050433183027183",
-      "checkedAt": "2026-11-05T12:50:47.583Z",
+      "checkedAt": "2026-11-05T20:21:11.171Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 6,
@@ -821,7 +827,7 @@
     },
     {
       "postId": "post:pfbid02PK2BQUuFmxmeJrgDxK5YH3SjzYKhdospmacVbHE4EvxXqFzhcnAeTA2VRh2uBxBml",
-      "checkedAt": "2026-11-05T16:44:24.790Z",
+      "checkedAt": "2026-11-05T20:07:59.250Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 19,
@@ -855,7 +861,7 @@
     },
     {
       "postId": "post:pfbid02etWsuvBeLS3Ku119BoMWHjdWvXzMaARnc96tfyJJtMEDJBrhPwwiUpdcMfrsWSb8l",
-      "checkedAt": "2026-11-05T16:28:33.490Z",
+      "checkedAt": "2026-11-05T20:06:09.453Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 61,
@@ -889,7 +895,7 @@
     },
     {
       "postId": "post:pfbid02sTbvxAS9yNW2ninfFGXuGB6HskJV5F9TUEkvh6xeVWfAmP6EXftsSyaHVjrsvH8xl",
-      "checkedAt": "2026-11-05T13:24:42.866Z",
+      "checkedAt": "2026-11-05T20:36:02.363Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 18,
@@ -921,9 +927,9 @@
     },
     {
       "postId": "post:pfbid02yYngwbFJKYGVPJiqoahxFCb3cXeW7T9QjGz93rwXjiustzsoUTefJXQzMxkgkuUel",
-      "checkedAt": "2026-11-05T13:41:01.543Z",
+      "checkedAt": "2026-11-05T20:14:27.205Z",
       "status": "complete",
-      "ordering": "all",
+      "ordering": "newest",
       "reportedCount": 20,
       "capturedCount": 20,
       "assessedCount": 16,
@@ -949,11 +955,13 @@
           "unreviewed": 4
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“."
+      ]
     },
     {
       "postId": "post:pfbid032257kFpWVw9H3xfrZnwCgVFGDo8J72jGTsLpViBujApt8kz4aZsEbnbv9AtUWksgl",
-      "checkedAt": "2026-11-05T12:51:07.365Z",
+      "checkedAt": "2026-11-05T20:11:46.863Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 6,
@@ -985,7 +993,7 @@
     },
     {
       "postId": "post:pfbid08UZBktF8as1FA3sS9DHowHJKXLd5RcRd4zUX5bCmuHuaTYbqxVF1CXq4jwzGPcDxl",
-      "checkedAt": "2026-11-05T13:07:20.300Z",
+      "checkedAt": "2026-11-05T20:36:31.820Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 11,
@@ -1017,7 +1025,7 @@
     },
     {
       "postId": "post:pfbid0P8eVWT6q1cjqVuUx6W7jFS8kQkPJEAge5cbuYiQxP2U5dSU6EqczFMqnrL3fX5qFl",
-      "checkedAt": "2026-11-05T13:00:35.571Z",
+      "checkedAt": "2026-11-05T20:20:12.363Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 8,
@@ -1049,7 +1057,7 @@
     },
     {
       "postId": "post:pfbid0vpmBVZ3aQ5eoa91QNqEBGQG5UxQsACejjUe4ouYUHNijU5fDxX63Chjff4SJgMD8l",
-      "checkedAt": "2026-11-05T13:07:30.325Z",
+      "checkedAt": "2026-11-05T20:19:08.595Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 11,
@@ -1081,7 +1089,7 @@
     },
     {
       "postId": "video:1446707520759625",
-      "checkedAt": "2026-11-05T12:55:04.629Z",
+      "checkedAt": "2026-11-05T20:27:58.692Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 8,
@@ -1115,7 +1123,7 @@
     },
     {
       "postId": "post:pfbid01Qgxf35raAqu1iVK5AsUoCz4nGd8f3nZ3ufBYResZrTtimqQzNaAo19uTfN7HrgMl",
-      "checkedAt": "2026-11-05T12:46:59.068Z",
+      "checkedAt": "2026-11-05T20:28:43.562Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 3,
@@ -1147,7 +1155,7 @@
     },
     {
       "postId": "post:pfbid026QRXCj8swnem74Z265Ft27ukZ6cThufy3xmoJKztLyGjL3LdXatA8k3DespK89uzl",
-      "checkedAt": "2026-11-05T14:16:27.483Z",
+      "checkedAt": "2026-11-05T20:05:06.106Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 35,
@@ -1181,7 +1189,7 @@
     },
     {
       "postId": "post:pfbid026qyin9k9BgRa4wQ6EiLTy3fdgNpTc7ubXhbMjUP8em1wCjk6qf7yVvRdzCaFtXGdl",
-      "checkedAt": "2026-11-05T12:51:15.627Z",
+      "checkedAt": "2026-11-05T20:27:25.297Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 6,
@@ -1213,7 +1221,7 @@
     },
     {
       "postId": "post:pfbid02PjhhvHUKazdRWLaoBwbzKiEQb7hM945KZtAMcp4hFGrR8mDfyKzygx4oTCznvw74l",
-      "checkedAt": "2026-11-05T16:19:13.827Z",
+      "checkedAt": "2026-11-05T19:59:52.865Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 110,
@@ -1245,7 +1253,7 @@
     },
     {
       "postId": "post:pfbid02TnWBWnWfk1vHjhGTVHLtjQ2uwXroeCAftqzQGra8B65TXMugVuMXq3a7isUaP6Cql",
-      "checkedAt": "2026-11-05T13:11:16.311Z",
+      "checkedAt": "2026-11-05T20:08:34.493Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 17,
@@ -1279,7 +1287,7 @@
     },
     {
       "postId": "post:pfbid02Y2zTwSb6uoJjdYAV4TqNi7aCS4WgDuhzArpgDiC2H8XhJXkRAsM4kHsVnBjmTqpql",
-      "checkedAt": "2026-11-05T16:30:17.319Z",
+      "checkedAt": "2026-11-05T20:33:07.063Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 66,
@@ -1313,7 +1321,7 @@
     },
     {
       "postId": "post:pfbid02tsQEfxjMKW48USs5CoMaPQ3pqzx6VGsw3CZxFCUe3b7YssvS3kC9dmBMjYrfdsRUl",
-      "checkedAt": "2026-11-05T12:09:15.698Z",
+      "checkedAt": "2026-11-05T20:15:38.864Z",
       "status": "complete",
       "ordering": null,
       "reportedCount": null,
@@ -1345,7 +1353,7 @@
     },
     {
       "postId": "post:pfbid031bcFzrkzYYGxLaGg93g6Mah7mcbdwioCZBpqPgEaYTkgEkzNPfyyCcGBiFnFDB2sl",
-      "checkedAt": "2026-11-05T16:23:04.726Z",
+      "checkedAt": "2026-11-05T20:01:03.011Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 69,
@@ -1379,7 +1387,7 @@
     },
     {
       "postId": "post:pfbid05pTdBgg2pBhFRS5yMBEnCNE4vA8zi6vGDD6muBMNRcs2YKTBWZT57evyo32iC9eSl",
-      "checkedAt": "2026-11-05T12:55:24.197Z",
+      "checkedAt": "2026-11-05T20:21:52.270Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 6,
@@ -1413,7 +1421,7 @@
     },
     {
       "postId": "post:pfbid0Q4vZKwZiaCnHsiE2qKiWSzDD7TTqbbxDCVf8YkB5yS3TSMu2XHi4zPUkjKtjq4SFl",
-      "checkedAt": "2026-11-05T13:11:28.109Z",
+      "checkedAt": "2026-11-05T20:18:07.201Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 13,
@@ -1445,7 +1453,7 @@
     },
     {
       "postId": "post:pfbid0QeTBHPudRNmcQ2nKeMdTsAwfoi7JLAAytBrVaCAeGFEi29sqJ3cig9BLbdu3QqFNl",
-      "checkedAt": "2026-11-05T16:31:30.492Z",
+      "checkedAt": "2026-11-05T19:52:28.561Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 103,
@@ -1479,7 +1487,7 @@
     },
     {
       "postId": "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl",
-      "checkedAt": "2026-11-05T16:17:15.105Z",
+      "checkedAt": "2026-11-05T19:43:42.338Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 243,
@@ -1513,7 +1521,7 @@
     },
     {
       "postId": "post:pfbid0r5fND2sHqXbM1JCJbmJo5rLUWxMFnaZFSd5dC4qUh2PqVagZSQANr79TZeYQWPQyl",
-      "checkedAt": "2026-11-05T16:21:15.581Z",
+      "checkedAt": "2026-11-05T19:56:51.117Z",
       "status": "complete",
       "ordering": "newest",
       "reportedCount": 165,
@@ -1547,7 +1555,7 @@
     },
     {
       "postId": "video:1113050341136376",
-      "checkedAt": "2026-11-05T13:00:57.434Z",
+      "checkedAt": "2026-11-05T20:08:16.093Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 17,
@@ -1579,7 +1587,7 @@
     },
     {
       "postId": "video:1670123841398564",
-      "checkedAt": "2026-11-05T13:09:52.006Z",
+      "checkedAt": "2026-11-05T19:58:25.728Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 61,
@@ -1613,7 +1621,7 @@
     },
     {
       "postId": "post:pfbid06fPN7iSAZg1NDCkj4vUhLbHSK9D9FNTo21sBWewezxQiGAWuh89CdrfMVvSY4wR7l",
-      "checkedAt": "2026-11-05T16:43:53.294Z",
+      "checkedAt": "2026-11-05T20:18:24.774Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 13,
@@ -1645,7 +1653,7 @@
     },
     {
       "postId": "post:pfbid02tLVduNW2khzhW98qhibyp3ypkXkbKrEwvFFZSsjruPoGFgXFQ3k747dimeRm6V8zl",
-      "checkedAt": "2026-11-05T12:41:11.237Z",
+      "checkedAt": "2026-11-05T20:23:45.317Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 1,
@@ -1677,7 +1685,7 @@
     },
     {
       "postId": "post:pfbid0eboqFNFPZpCoHNvPWGXJeF3nuNhR1UbVNd1zK9GSFWYPCWKLqVWokZiYG8oq9XHbl",
-      "checkedAt": "2026-11-05T12:49:01.689Z",
+      "checkedAt": "2026-11-05T20:12:38.095Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 5,
@@ -1709,7 +1717,7 @@
     },
     {
       "postId": "post:pfbid0pVveentc1PVrbz9igvuN85ybYYJmAEQvBgaiYQpnrtnW2ei5Mvm6nLFWENhX38Psl",
-      "checkedAt": "2026-11-05T13:45:25.117Z",
+      "checkedAt": "2026-11-05T20:06:42.456Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 22,
@@ -1741,7 +1749,7 @@
     },
     {
       "postId": "post:pfbid0TmJbD1kQoSpxLcJADuGeJ1SGjW3Lz9Z7zX7LNNzzU5GgymXPXKkibkGJF6TbXC6Pl",
-      "checkedAt": "2026-11-05T12:52:45.255Z",
+      "checkedAt": "2026-11-05T20:11:06.087Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 7,
@@ -1773,7 +1781,7 @@
     },
     {
       "postId": "post:pfbid0317sNmP4Ejrj3qwFsSCrGXNaLCMypad1TQ2u27dzNgTzBzpa7w7qRu7CyF2kBQvKtl",
-      "checkedAt": "2026-11-05T12:52:58.338Z",
+      "checkedAt": "2026-11-05T20:27:01.012Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 7,
@@ -1805,7 +1813,7 @@
     },
     {
       "postId": "post:pfbid0W91zvaUDUbjGfAT4RRDMfMrmwpLeYGcXbPq2tTiWfJihYoGSugJDqd2Meg3SNU9Gl",
-      "checkedAt": "2026-11-05T16:27:01.356Z",
+      "checkedAt": "2026-11-05T20:11:15.924Z",
       "status": "complete",
       "ordering": "newest",
       "reportedCount": 37,
@@ -1839,7 +1847,7 @@
     },
     {
       "postId": "post:pfbid02BwihQyZqD3td346wvdEipSrUavMA5D9U3zho7XrgtXnRNBuY4NDqw9LoUUZ38ykgl",
-      "checkedAt": "2026-11-05T16:21:44.176Z",
+      "checkedAt": "2026-11-05T20:32:29.232Z",
       "status": "complete",
       "ordering": "newest",
       "reportedCount": 74,
@@ -1873,7 +1881,7 @@
     },
     {
       "postId": "post:pfbid0K5jf6Wfc67p2HwjBYkg4BSZegkKPfbDV8vaGLyiVwVaWuPnJQ1NhiJ1VpsVjauDzl",
-      "checkedAt": "2026-11-05T13:01:11.759Z",
+      "checkedAt": "2026-11-05T20:10:33.249Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 8,
@@ -1905,9 +1913,9 @@
     },
     {
       "postId": "post:pfbid0txCzz6qbbi7BezLje1uFVANeUa5eskGN76mkPQ9tWYNx97JCMjEFDndbPFtwYAzYl",
-      "checkedAt": "2026-11-05T16:06:07.887Z",
+      "checkedAt": "2026-11-05T20:38:02.416Z",
       "status": "complete",
-      "ordering": "all",
+      "ordering": "newest",
       "reportedCount": 29,
       "capturedCount": 29,
       "assessedCount": 23,
@@ -1933,13 +1941,15 @@
           "unreviewed": 6
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“."
+      ]
     },
     {
       "postId": "post:pfbid02DjFWK74BJbFdAYJQGreHngD2m3evycaLdCeHeK7PykkWGR9zzHpNMQNt6XciHXB5l",
-      "checkedAt": "2026-11-05T16:05:11.601Z",
+      "checkedAt": "2026-11-05T20:36:26.399Z",
       "status": "complete",
-      "ordering": "all",
+      "ordering": "newest",
       "reportedCount": 47,
       "capturedCount": 47,
       "assessedCount": 44,
@@ -1965,11 +1975,13 @@
           "unreviewed": 3
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“."
+      ]
     },
     {
       "postId": "post:pfbid02jZo2EaavFLqQPxHZdxjr3vGNSMWBLz4z2gcn92scncuZ3fWGrh3Kes6Tw9gcbWeUl",
-      "checkedAt": "2026-11-05T13:11:53.648Z",
+      "checkedAt": "2026-11-05T20:08:59.993Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 13,
@@ -2001,7 +2013,7 @@
     },
     {
       "postId": "post:pfbid0DKLNwwfhRLsUCAvwvSTVqxjXo14Ybg7hQBM4QkapDncqik1b8BY8ryNsYbzq47XRl",
-      "checkedAt": "2026-11-05T13:07:48.154Z",
+      "checkedAt": "2026-11-05T20:36:22.596Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 13,
@@ -2033,9 +2045,9 @@
     },
     {
       "postId": "post:pfbid02BXNCV1uC2F5nUAmYRGGg96tyrbqpW8yvnUEmRHnYD4D27yaZBWEHLuvp67B29zkdl",
-      "checkedAt": "2026-11-05T12:38:53.619Z",
+      "checkedAt": "2026-11-05T20:09:38.398Z",
       "status": "complete",
-      "ordering": "all",
+      "ordering": "newest",
       "reportedCount": 11,
       "capturedCount": 11,
       "assessedCount": 9,
@@ -2061,11 +2073,13 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“."
+      ]
     },
     {
       "postId": "post:pfbid0tVtTjFwus7LNtbv6zFgLKxtYFg5bhXGi1TKv8jN6XNoHAZP5G6ssz9EqAFo9XnGYl",
-      "checkedAt": "2026-11-05T16:27:53.704Z",
+      "checkedAt": "2026-11-05T20:12:48.868Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 29,
@@ -2097,7 +2111,7 @@
     },
     {
       "postId": "post:pfbid09m9SDJjCfAtU4pqLC9SBbnyHxx32WDQnEjS4xVs9oJ8Pd6BYFWfWZshFR3N9qoA6l",
-      "checkedAt": "2026-11-05T14:17:07.683Z",
+      "checkedAt": "2026-11-05T20:13:07.468Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 25,
@@ -2129,9 +2143,9 @@
     },
     {
       "postId": "post:pfbid02aZDv5aYEA7tJk17xqQ4aagnket1qJ2SbkPTPeh7VVdvQpCwkkqNdN4dyREEfXfKjl",
-      "checkedAt": "2026-11-05T16:11:58.156Z",
+      "checkedAt": "2026-11-05T20:10:09.068Z",
       "status": "complete",
-      "ordering": "all",
+      "ordering": "newest",
       "reportedCount": 44,
       "capturedCount": 44,
       "assessedCount": 37,
@@ -2157,11 +2171,13 @@
           "unreviewed": 7
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“."
+      ]
     },
     {
       "postId": "post:pfbid02ZgmYfBVT6EehBcBnfE7EdG1bcKBkPYYTvFQqxM6UJ4a5jYGswBqW6bLsSwmCwzE4l",
-      "checkedAt": "2026-11-05T13:14:22.752Z",
+      "checkedAt": "2026-11-05T20:36:11.097Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 16,
@@ -2193,7 +2209,7 @@
     },
     {
       "postId": "post:pfbid0VYwjVLzXpkkkERa8B8nj2WYinTRjHSpMdpuWSyDxxZJhLRDPWNATZtj8DDT8ctk2l",
-      "checkedAt": "2026-11-05T13:41:50.418Z",
+      "checkedAt": "2026-11-05T20:35:51.054Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 21,
@@ -2227,7 +2243,7 @@
     },
     {
       "postId": "post:pfbid09Sad8rRWqTxk99V9nGjpQUbjHdGrtZGSXroqjhzQo5q2ctWbmhTkNe4EzjY3npHTl",
-      "checkedAt": "2026-11-05T13:02:53.905Z",
+      "checkedAt": "2026-11-05T20:25:46.848Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 10,
@@ -2259,7 +2275,7 @@
     },
     {
       "postId": "post:pfbid02vGKsL8zMEvmywHc7uP3xwpLXUHrhUT7ejLDpiAhhysMjEyCKoCdSuB9DwHv2bNCyl",
-      "checkedAt": "2026-11-05T13:02:27.647Z",
+      "checkedAt": "2026-11-05T20:10:01.373Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 9,
@@ -2291,7 +2307,7 @@
     },
     {
       "postId": "post:pfbid0yvjwnnVGCEKzWJ87u6jAREm31LCAspnuyNayxzuuqSqG757ccMxprVzLxhzUJonRl",
-      "checkedAt": "2026-11-05T12:49:49.949Z",
+      "checkedAt": "2026-11-05T20:28:12.434Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 5,
@@ -2323,7 +2339,7 @@
     },
     {
       "postId": "post:pfbid02tThk3DbMhisnWdDR8unNbSYnscWG59LYwRh9dbEYBBianprQ2XkFxv8j4x9Kskpnl",
-      "checkedAt": "2026-11-05T12:47:13.170Z",
+      "checkedAt": "2026-11-05T20:22:46.275Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 3,
@@ -2355,9 +2371,9 @@
     },
     {
       "postId": "post:pfbid0f6K4AGEZsdACjuQQAeYcsdGykKTfbAVaLq8QXZeKqai38PPEP4s1ZLrPs2jEB1JFl",
-      "checkedAt": "2026-11-05T12:47:47.422Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T20:14:13.885Z",
+      "status": "partial",
+      "ordering": "newest",
       "reportedCount": 2,
       "capturedCount": 3,
       "assessedCount": 2,
@@ -2383,11 +2399,13 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“; показаният брояч е 2, а достъпните коментари са 3."
+      ]
     },
     {
       "postId": "photo:1578411577634217",
-      "checkedAt": "2026-11-05T12:09:19.994Z",
+      "checkedAt": "2026-11-05T20:24:17.640Z",
       "status": "complete",
       "ordering": null,
       "reportedCount": null,
@@ -2419,7 +2437,7 @@
     },
     {
       "postId": "photo:1582677773874264",
-      "checkedAt": "2026-11-05T12:09:24.176Z",
+      "checkedAt": "2026-11-05T20:15:48.496Z",
       "status": "complete",
       "ordering": null,
       "reportedCount": null,
@@ -2451,7 +2469,7 @@
     },
     {
       "postId": "post:pfbid02qSkMMJsJcds8vDmtJj3UZiRV5uSQQ8gPTX8RHfJhRb7MPoEDun8qaGKbC3TKzpgbl",
-      "checkedAt": "2026-11-05T12:47:55.102Z",
+      "checkedAt": "2026-11-05T20:28:57.042Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 3,
@@ -2483,7 +2501,7 @@
     },
     {
       "postId": "photo:1151255573914194",
-      "checkedAt": "2026-11-05T12:09:35.078Z",
+      "checkedAt": "2026-11-05T20:30:27.278Z",
       "status": "complete",
       "ordering": null,
       "reportedCount": null,
@@ -2515,7 +2533,7 @@
     },
     {
       "postId": "photo:1156012400105178",
-      "checkedAt": "2026-11-05T12:09:39.255Z",
+      "checkedAt": "2026-11-05T20:24:27.144Z",
       "status": "complete",
       "ordering": null,
       "reportedCount": null,
@@ -2547,7 +2565,7 @@
     },
     {
       "postId": "photo:1154893593550392",
-      "checkedAt": "2026-11-05T12:09:43.008Z",
+      "checkedAt": "2026-11-05T20:15:56.764Z",
       "status": "complete",
       "ordering": null,
       "reportedCount": null,
@@ -2579,7 +2597,7 @@
     },
     {
       "postId": "post:pfbid0KHXkSQBGMSU7Psop2D3hKFqbRTnR1HRY1JckvXZX3QkJkf1K31jUjfpZbGT9ubRal",
-      "checkedAt": "2026-11-05T12:44:23.696Z",
+      "checkedAt": "2026-11-05T20:23:25.122Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 2,
@@ -2611,7 +2629,7 @@
     },
     {
       "postId": "post:pfbid02onrwFNDBWRfaeL5NoXdnX25M3M9FERJuAVu3RiA2zy6MiUSAM7LtXtNhmRTFRGRYl",
-      "checkedAt": "2026-11-05T12:48:01.988Z",
+      "checkedAt": "2026-11-05T20:22:55.865Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 3,
@@ -2643,7 +2661,7 @@
     },
     {
       "postId": "post:pfbid0T5YyJUfYiM2zYDx1SxGs6Fi7ShK6WfkngqK9B4M493WbGg1oJTpRvUQPRfu9aDpxl",
-      "checkedAt": "2026-11-05T12:41:29.256Z",
+      "checkedAt": "2026-11-05T20:15:10.088Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 1,
@@ -2675,7 +2693,7 @@
     },
     {
       "postId": "post:pfbid0r7r3s5xnQNZ4uT3hzAGhJzZJ2xdE26WgoF853EUaq4D8Ub3ciyFMVg3Gc6NJJXhol",
-      "checkedAt": "2026-11-05T12:44:35.113Z",
+      "checkedAt": "2026-11-05T20:29:38.701Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 2,
@@ -2707,7 +2725,7 @@
     },
     {
       "postId": "post:pfbid02GgPBAgj24C7gwiozhdTf9UxyvQwse9Ji3ZwDb7WppQXbyRAtL23FJB4Q5QE4UBb5l",
-      "checkedAt": "2026-11-05T12:41:35.405Z",
+      "checkedAt": "2026-11-05T20:29:59.260Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 1,
@@ -2739,7 +2757,7 @@
     },
     {
       "postId": "post:pfbid02SrLT5VoZ7KvxvA5zrvTisM26PJ1gCNqJacQMZU2bd2hZuP5NupX4pk8uR4bpefWCl",
-      "checkedAt": "2026-11-05T12:41:42.188Z",
+      "checkedAt": "2026-11-05T20:23:54.416Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 1,
@@ -2771,7 +2789,7 @@
     },
     {
       "postId": "post:pfbid0abr2AuC5iF7qrfVaV4tpCTmdtBWNUtXcGj5WEr3kf6w5ebjJNugMTe2dC7T2zSkql",
-      "checkedAt": "2026-11-05T12:42:30.584Z",
+      "checkedAt": "2026-11-05T20:15:30.972Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 1,
@@ -2803,7 +2821,7 @@
     },
     {
       "postId": "post:pfbid0HhU2jYwFjp9j378vEe2oekycGBn7ZXUmJF9s4ieRECvGqJmfsHnX446P5WHNTnRbl",
-      "checkedAt": "2026-11-05T16:38:59.343Z",
+      "checkedAt": "2026-11-05T19:39:19.515Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 277,
@@ -2837,7 +2855,7 @@
     },
     {
       "postId": "post:pfbid031Set3UWaG5qXsXkbh5hvgPfzqfgmaLuFKfHEbYDUeVTwkK95BZ3SpBR6J1zXw2EMl",
-      "checkedAt": "2026-11-05T13:13:18.946Z",
+      "checkedAt": "2026-11-05T20:08:48.266Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 14,
@@ -2869,7 +2887,7 @@
     },
     {
       "postId": "post:pfbid0JjkW3RYrCMWhcqKpw2Wq2CxxqYQY8sWwJLEwZy9GF8BeczyNGJtBM8iC92L8oWEZl",
-      "checkedAt": "2026-11-05T13:03:24.296Z",
+      "checkedAt": "2026-11-05T20:19:23.968Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 10,
@@ -2901,7 +2919,7 @@
     },
     {
       "postId": "post:pfbid0xQAtuBkwSnVUNTxsmH2yguz97eczAXWPuKK1uzJjdrV8v7qh659GU8uTzmgcyRR3l",
-      "checkedAt": "2026-11-05T12:49:16.743Z",
+      "checkedAt": "2026-11-05T20:28:23.743Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 4,
@@ -2933,7 +2951,7 @@
     },
     {
       "postId": "post:pfbid01K7wZwET4jScNQVGcGEEB4CzSCWzgGXwwwACQpZAeqK5BTVQKs7nwkXvt6k1eEgGl",
-      "checkedAt": "2026-11-05T16:25:02.265Z",
+      "checkedAt": "2026-11-05T20:08:24.389Z",
       "status": "complete",
       "ordering": "newest",
       "reportedCount": 56,
@@ -2967,9 +2985,9 @@
     },
     {
       "postId": "post:pfbid02tNu1m4kB1xwUseTxTFtegGqjYgQS1My2E4jvKVm94H3xg4ntHxZgej4HLeKUQZRjl",
-      "checkedAt": "2026-11-05T16:27:23.158Z",
+      "checkedAt": "2026-11-05T20:05:28.877Z",
       "status": "complete",
-      "ordering": "all",
+      "ordering": "newest",
       "reportedCount": 32,
       "capturedCount": 32,
       "assessedCount": 26,
@@ -2995,11 +3013,13 @@
           "unreviewed": 6
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“."
+      ]
     },
     {
       "postId": "post:pfbid0Y3RrwUWN4B2fMGj1BkPdgPJH7L8x15uLKteo7KecmYkkcXCs3n9y6XR4ZsyQY11Tl",
-      "checkedAt": "2026-11-05T16:18:39.649Z",
+      "checkedAt": "2026-11-05T19:51:22.083Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 119,
@@ -3033,7 +3053,7 @@
     },
     {
       "postId": "post:pfbid02hpZFowawVBGouTCZPeRnbRnD5XdLyXjbpLKKGbLsfirqpk7JgVqf7SGnGJx19uxDl",
-      "checkedAt": "2026-11-05T13:15:29.796Z",
+      "checkedAt": "2026-11-05T20:07:32.197Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 19,
@@ -3065,7 +3085,7 @@
     },
     {
       "postId": "post:1685718766236751",
-      "checkedAt": "2026-11-05T16:16:21.214Z",
+      "checkedAt": "2026-11-05T20:21:12.316Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 182,
@@ -3099,7 +3119,7 @@
     },
     {
       "postId": "post:1582826077192767",
-      "checkedAt": "2026-11-05T13:02:44.452Z",
+      "checkedAt": "2026-11-05T20:10:22.768Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 9,
@@ -3131,7 +3151,7 @@
     },
     {
       "postId": "post:1156013503438401",
-      "checkedAt": "2026-11-05T12:44:41.925Z",
+      "checkedAt": "2026-11-05T20:23:35.653Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 2,
@@ -3163,7 +3183,7 @@
     },
     {
       "postId": "post:pfbid0Szdue84b6ghkUEwm7Vc4bA1S8wXdtNji68WrCZhHshZTrmFkKwhqGYtsgt7FV8nml",
-      "checkedAt": "2026-11-05T12:49:23.450Z",
+      "checkedAt": "2026-11-05T20:22:25.200Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 4,
@@ -3195,7 +3215,7 @@
     },
     {
       "postId": "post:pfbid0UBSSooYbyLQ1yfNtsMtSWXCH6rGffqExNfACADwoAr9sJyKEupppWT6RbM9xEjVMl",
-      "checkedAt": "2026-11-05T16:45:29.826Z",
+      "checkedAt": "2026-11-05T20:30:17.883Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 80,
@@ -3229,9 +3249,9 @@
     },
     {
       "postId": "post:pfbid02VWS1ehNessnuMz9N8jgpK1jV3vB3Z9sViSpR3YLYMojPm5JQ8vGmUwQsLLggj2PDl",
-      "checkedAt": "2026-11-05T12:48:17.802Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T20:14:39.426Z",
+      "status": "partial",
+      "ordering": "newest",
       "reportedCount": 2,
       "capturedCount": 3,
       "assessedCount": 3,
@@ -3257,13 +3277,15 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“; показаният брояч е 2, а достъпните коментари са 3."
+      ]
     },
     {
       "postId": "post:pfbid02nWi2KkkD9QQJ5hhEvM7uxJhdtuZMsmXUVjPeLNoxUMzq6NgzeUxMZPKPYFLtiwzJl",
-      "checkedAt": "2026-11-05T15:59:02.289Z",
+      "checkedAt": "2026-11-05T20:05:55.949Z",
       "status": "complete",
-      "ordering": "all",
+      "ordering": "newest",
       "reportedCount": 28,
       "capturedCount": 28,
       "assessedCount": 24,
@@ -3289,11 +3311,13 @@
           "unreviewed": 4
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“."
+      ]
     },
     {
       "postId": "video:1316088687265038",
-      "checkedAt": "2026-11-05T12:09:48.656Z",
+      "checkedAt": "2026-11-05T20:33:56.231Z",
       "status": "partial",
       "ordering": null,
       "reportedCount": 1,
@@ -3327,7 +3351,7 @@
     },
     {
       "postId": "video:2932892587068862",
-      "checkedAt": "2026-11-05T12:48:23.746Z",
+      "checkedAt": "2026-11-05T20:29:18.129Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 3,
@@ -3359,7 +3383,7 @@
     },
     {
       "postId": "post:pfbid0kyA5L2QH9woHSVbHUbRLNLsVXxo7fjptPJvf6dTqARphjhK32HkoJLL3BYKoATgGl",
-      "checkedAt": "2026-11-05T13:00:27.885Z",
+      "checkedAt": "2026-11-05T20:24:55.450Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 7,
@@ -3393,9 +3417,9 @@
     },
     {
       "postId": "post:pfbid0bxazcFzguT9juQznYzRigUnSBxr3JX33dkKRZT7vX142uuXxsi1RWNf94LUf7Ddvl",
-      "checkedAt": "2026-11-05T12:42:42.711Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T20:23:15.243Z",
+      "status": "partial",
+      "ordering": "newest",
       "reportedCount": 1,
       "capturedCount": 3,
       "assessedCount": 1,
@@ -3421,11 +3445,13 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“; показаният брояч е 1, а достъпните коментари са 3."
+      ]
     },
     {
       "postId": "video:1423330226095881",
-      "checkedAt": "2026-11-05T12:44:46.350Z",
+      "checkedAt": "2026-11-05T20:14:54.890Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 2,
@@ -3457,7 +3483,7 @@
     },
     {
       "postId": "post:pfbid0WYiYRntQmkadGMKz3SJoREpkPfVFb2MttNVQwoX97TtSLxk1X4qeFBq31EVJKNTkl",
-      "checkedAt": "2026-11-05T12:51:30.029Z",
+      "checkedAt": "2026-11-05T20:21:24.627Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 6,
@@ -3489,7 +3515,7 @@
     },
     {
       "postId": "video:1677929967087015",
-      "checkedAt": "2026-11-05T12:55:55.455Z",
+      "checkedAt": "2026-11-05T20:12:13.226Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 8,
@@ -3523,7 +3549,7 @@
     },
     {
       "postId": "video:1472440601695103",
-      "checkedAt": "2026-11-05T12:49:29.186Z",
+      "checkedAt": "2026-11-05T20:28:33.061Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 4,
@@ -3555,7 +3581,7 @@
     },
     {
       "postId": "post:pfbid0m5ATPAutDMVviW3E271akkzPhqNQ7vmJ3QJas2DYDDDMoUf2gccbacexUn81zSf1l",
-      "checkedAt": "2026-11-05T14:10:38.393Z",
+      "checkedAt": "2026-11-05T20:10:40.992Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 40,
@@ -3589,7 +3615,7 @@
     },
     {
       "postId": "video:1433388234897669",
-      "checkedAt": "2026-11-05T13:01:21.660Z",
+      "checkedAt": "2026-11-05T20:26:33.892Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 8,
@@ -3621,7 +3647,7 @@
     },
     {
       "postId": "video:1608628141015918",
-      "checkedAt": "2026-11-05T16:25:43.677Z",
+      "checkedAt": "2026-11-05T20:09:19.757Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 49,
@@ -3655,7 +3681,7 @@
     },
     {
       "postId": "post:pfbid0oZRtdfH4kWzcrRooEgKEhy5Krkhxq8midaY16wKyeNNHPnVRDqPuBjDFvpvTSpPsl",
-      "checkedAt": "2026-11-05T13:13:04.901Z",
+      "checkedAt": "2026-11-05T20:38:24.393Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 17,
@@ -3689,7 +3715,7 @@
     },
     {
       "postId": "post:pfbid0bpiw3fev4bkwEAwVgt9AZrcdzUwSAXYJtKZvspxKMVxV4zGJDFt4ZZ7C1wqYmacQl",
-      "checkedAt": "2026-11-05T13:03:36.274Z",
+      "checkedAt": "2026-11-05T20:09:50.321Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 10,
@@ -3721,7 +3747,7 @@
     },
     {
       "postId": "video:1094888736870133",
-      "checkedAt": "2026-11-05T14:26:43.542Z",
+      "checkedAt": "2026-11-05T19:53:27.633Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 196,
@@ -3755,9 +3781,9 @@
     },
     {
       "postId": "post:pfbid0ii9gwtsS2eibLyBLVApRigjnj5RWYXjgumzrQULyeD16cLHNySWsPNDkBFiF7TCl",
-      "checkedAt": "2026-11-05T12:50:06.783Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T20:22:14.679Z",
+      "status": "partial",
+      "ordering": "newest",
       "reportedCount": 4,
       "capturedCount": 5,
       "assessedCount": 5,
@@ -3783,11 +3809,13 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“; показаният брояч е 4, а достъпните коментари са 5."
+      ]
     },
     {
       "postId": "post:pfbid02e9Nu96hmUGCtZQD3gAzFCAmXrUGpjYts7Qrk3bJhZYGonxLukB2C9xBqafFZycsXl",
-      "checkedAt": "2026-11-05T12:10:18.254Z",
+      "checkedAt": "2026-11-05T20:16:04.557Z",
       "status": "complete",
       "ordering": null,
       "reportedCount": null,
@@ -3819,7 +3847,7 @@
     },
     {
       "postId": "post:pfbid0WEb3SuxipYL7kfDXLptWUroskKqZ11LATBVDp6oHvNUAw6cwDDCWVTDVkQhsTBGzl",
-      "checkedAt": "2026-11-05T16:23:46.260Z",
+      "checkedAt": "2026-11-05T20:07:21.570Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 58,
@@ -3853,7 +3881,7 @@
     },
     {
       "postId": "video:1289332556672095",
-      "checkedAt": "2026-11-05T12:53:40.468Z",
+      "checkedAt": "2026-11-05T20:26:23.099Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 9,
@@ -3885,13 +3913,13 @@
     },
     {
       "postId": "post:pfbid0XrqUF3wKr3CBc3CEU1vzDG2YFK8QtNHDtW3T8guVhywziTDUZRp8d2B9FwfWX7w8l",
-      "checkedAt": "2026-11-05T16:24:26.066Z",
+      "checkedAt": "2026-11-05T20:35:46.953Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 58,
-      "capturedCount": 57,
-      "assessedCount": 51,
-      "topLevelCount": 45,
+      "capturedCount": 56,
+      "assessedCount": 50,
+      "topLevelCount": 44,
       "replyCount": 12,
       "counts": {
         "gyurov": {
@@ -3900,7 +3928,7 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 50,
+          "not-mentioned": 49,
           "unreviewed": 6
         },
         "yotova": {
@@ -3909,17 +3937,17 @@
           "mixed": 0,
           "neutral": 2,
           "unclear": 1,
-          "not-mentioned": 47,
+          "not-mentioned": 46,
           "unreviewed": 6
         }
       },
       "notes": [
-        "Проверени са „Всички коментари“ и „Най-нови“; показаният брояч е 58, а достъпните коментари са 57."
+        "Проверени са „Всички коментари“ и „Най-нови“; показаният брояч е 58, а достъпните коментари са 56."
       ]
     },
     {
       "postId": "post:pfbid02EiFx8u2XuizA1gq35fPdyBExfHwkp7bxX1behZsgJUfoHtGjwq6c6odubsSAV1VEl",
-      "checkedAt": "2026-11-05T12:51:37.560Z",
+      "checkedAt": "2026-11-05T20:27:37.314Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 6,
@@ -3951,7 +3979,7 @@
     },
     {
       "postId": "video:1844092166778591",
-      "checkedAt": "2026-11-05T12:48:29.342Z",
+      "checkedAt": "2026-11-05T20:14:46.539Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 3,
@@ -3983,7 +4011,7 @@
     },
     {
       "postId": "post:pfbid02LiCfkbcVhJXUPw4XeZKbGXkP3NnELWGwotMGH5kpv1FD46nx5yWUKaTDRvFCxZ9Rl",
-      "checkedAt": "2026-11-05T13:14:49.583Z",
+      "checkedAt": "2026-11-05T20:38:30.046Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 16,
@@ -4015,7 +4043,7 @@
     },
     {
       "postId": "video:1157399536729329",
-      "checkedAt": "2026-11-05T13:40:12.513Z",
+      "checkedAt": "2026-11-05T20:23:27.538Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 161,
@@ -4049,7 +4077,7 @@
     },
     {
       "postId": "post:pfbid02mFRotzxY3qBtCDZVXUsaE8RQ1igsq2fMqs31kRKqkfgMvWAxEBjVG9rffsRtCbpPl",
-      "checkedAt": "2026-11-05T12:10:22.223Z",
+      "checkedAt": "2026-11-05T20:34:08.444Z",
       "status": "complete",
       "ordering": null,
       "reportedCount": null,
@@ -4081,7 +4109,7 @@
     },
     {
       "postId": "post:pfbid02izp6dNeysrRRYqX8DW9d5zZr1BN5BAaaNy5VEMEhAEGYjBf3cH4DSk6sMnhhSYmVl",
-      "checkedAt": "2026-11-05T13:44:49.624Z",
+      "checkedAt": "2026-11-05T20:38:03.961Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 22,
@@ -4115,7 +4143,7 @@
     },
     {
       "postId": "video:1645050123780583",
-      "checkedAt": "2026-11-05T12:59:55.746Z",
+      "checkedAt": "2026-11-05T19:57:30.698Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 62,
@@ -4149,9 +4177,9 @@
     },
     {
       "postId": "post:pfbid034mX45PNZm6a9rVhaNsHMAi2fGVL7yQV2gtHKKwRnSVYgSM4dmJrz4ghHg67qubbKl",
-      "checkedAt": "2026-11-05T12:48:49.440Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T20:13:23.408Z",
+      "status": "partial",
+      "ordering": "newest",
       "reportedCount": 1,
       "capturedCount": 5,
       "assessedCount": 2,
@@ -4177,11 +4205,13 @@
           "unreviewed": 3
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“; показаният брояч е 1, а достъпните коментари са 5."
+      ]
     },
     {
       "postId": "post:pfbid02j1U8MppjHeC9mkVFyTQERduidjJzVX33bwcsYAJN4JQQor6rkbEkyC2twj3Mgy2tl",
-      "checkedAt": "2026-11-05T13:16:10.918Z",
+      "checkedAt": "2026-11-05T20:16:01.487Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 19,
@@ -4215,7 +4245,7 @@
     },
     {
       "postId": "video:998758882516672",
-      "checkedAt": "2026-11-05T14:34:06.393Z",
+      "checkedAt": "2026-11-05T19:50:20.889Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 154,
@@ -4249,7 +4279,7 @@
     },
     {
       "postId": "video:1843600866897994",
-      "checkedAt": "2026-11-05T16:43:15.854Z",
+      "checkedAt": "2026-11-05T20:34:53.049Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 70,
@@ -4281,7 +4311,7 @@
     },
     {
       "postId": "post:pfbid02xt8PRr55g9WpRJEFNdRiy5zKgw9zKp7vNsSLS9TPcj9V2YQDzoCeoX4XuwJjpbbgl",
-      "checkedAt": "2026-11-05T13:47:33.039Z",
+      "checkedAt": "2026-11-05T19:59:04.995Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 56,
@@ -4315,7 +4345,7 @@
     },
     {
       "postId": "post:pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl",
-      "checkedAt": "2026-11-05T16:42:33.596Z",
+      "checkedAt": "2026-11-05T20:04:24.546Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 75,
@@ -4349,7 +4379,7 @@
     },
     {
       "postId": "video:1138813955363373",
-      "checkedAt": "2026-11-05T16:02:57.923Z",
+      "checkedAt": "2026-11-05T19:58:58.090Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 124,
@@ -4383,9 +4413,9 @@
     },
     {
       "postId": "post:pfbid02dFcX8GbhGCDmdyrjFkrCR4MyiFixghEKEtr7cvvyYWgMYAbiFHUoHnYAgzA1B1dgl",
-      "checkedAt": "2026-11-05T13:45:04.904Z",
+      "checkedAt": "2026-11-05T20:07:04.876Z",
       "status": "complete",
-      "ordering": "all",
+      "ordering": "newest",
       "reportedCount": 21,
       "capturedCount": 21,
       "assessedCount": 20,
@@ -4411,11 +4441,13 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“."
+      ]
     },
     {
       "postId": "post:pfbid0NnE2Mnc5FLn4mWkiG5QoT9DJwKnsFPL11GVhDW5aZpru6rRqASn4DwEbAwPgZ7xFl",
-      "checkedAt": "2026-11-05T13:01:38.528Z",
+      "checkedAt": "2026-11-05T20:20:25.960Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 8,
@@ -4447,7 +4479,7 @@
     },
     {
       "postId": "video:1840261970724145",
-      "checkedAt": "2026-11-05T12:52:00.680Z",
+      "checkedAt": "2026-11-05T20:38:17.243Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 19,
@@ -4479,7 +4511,7 @@
     },
     {
       "postId": "video:951043291091990",
-      "checkedAt": "2026-11-05T13:16:39.463Z",
+      "checkedAt": "2026-11-05T19:59:20.772Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 47,
@@ -4511,7 +4543,7 @@
     },
     {
       "postId": "video:1604352204018118",
-      "checkedAt": "2026-11-05T12:48:54.538Z",
+      "checkedAt": "2026-11-05T20:22:35.475Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 4,
@@ -4543,7 +4575,7 @@
     },
     {
       "postId": "video:1157252846871409",
-      "checkedAt": "2026-11-05T14:14:31.889Z",
+      "checkedAt": "2026-11-05T20:01:50.849Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 109,
@@ -4577,7 +4609,7 @@
     },
     {
       "postId": "video:1445052394418970",
-      "checkedAt": "2026-11-05T13:13:41.152Z",
+      "checkedAt": "2026-11-05T20:16:20.950Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 15,
@@ -4609,7 +4641,7 @@
     },
     {
       "postId": "post:pfbid02JEUuR82BoTDdFy3mZ1D4RGdsginy3jdNHzCkav7W2VQcq77Cg6m4CRpJJgr744Z4l",
-      "checkedAt": "2026-11-05T14:15:28.461Z",
+      "checkedAt": "2026-11-05T20:06:26.831Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 26,
@@ -4643,7 +4675,7 @@
     },
     {
       "postId": "video:1428401352820819",
-      "checkedAt": "2026-11-05T16:20:18.834Z",
+      "checkedAt": "2026-11-05T19:53:49.243Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 86,
@@ -4677,7 +4709,7 @@
     },
     {
       "postId": "video:1657759299059928",
-      "checkedAt": "2026-11-05T16:09:45.451Z",
+      "checkedAt": "2026-11-05T20:37:41.287Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 34,
@@ -4709,7 +4741,7 @@
     },
     {
       "postId": "post:pfbid0yPqM2CFwd9NuTL9D5d74z1oTJX4Zw8aEkbSQHjzgmH3GhRDBXfUowL9opBBpr9pSl",
-      "checkedAt": "2026-11-05T13:04:10.177Z",
+      "checkedAt": "2026-11-05T20:26:06.408Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 11,
@@ -4743,7 +4775,7 @@
     },
     {
       "postId": "post:pfbid0XjxPh3kRWttpVfgXyn4qv9MDgxK8aMB9rCKdG3W4Vfgy9Q4ySbLadZpG5LpbSWDwl",
-      "checkedAt": "2026-11-05T16:26:17.954Z",
+      "checkedAt": "2026-11-05T20:34:14.677Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 46,
@@ -4777,7 +4809,7 @@
     },
     {
       "postId": "video:1613329786656320",
-      "checkedAt": "2026-11-05T12:52:15.583Z",
+      "checkedAt": "2026-11-05T20:21:34.784Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 6,
@@ -4809,7 +4841,7 @@
     },
     {
       "postId": "post:pfbid0cS7D5LBtrT6p1bihysbDJUmJzsmwZtVH2ZnKsrYC8whQbsgM3djcXfVKceaHeY4Rl",
-      "checkedAt": "2026-11-05T14:35:04.643Z",
+      "checkedAt": "2026-11-05T20:35:27.252Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 29,
@@ -4843,7 +4875,7 @@
     },
     {
       "postId": "video:1119095521093836",
-      "checkedAt": "2026-11-05T13:42:49.228Z",
+      "checkedAt": "2026-11-05T20:37:10.563Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 44,
@@ -4877,7 +4909,7 @@
     },
     {
       "postId": "post:pfbid0ao6U31ZyAtQrHVUr8E8hajwi59uzgcUukXnjr3DiEoNkTVW1xi7U1JZZcL5jvWVnl",
-      "checkedAt": "2026-11-05T12:54:46.086Z",
+      "checkedAt": "2026-11-05T20:30:17.424Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 2,
@@ -4911,7 +4943,7 @@
     },
     {
       "postId": "video:1657215862763287",
-      "checkedAt": "2026-11-05T12:54:15.147Z",
+      "checkedAt": "2026-11-05T20:20:52.827Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 8,
@@ -4945,7 +4977,7 @@
     },
     {
       "postId": "video:2188569562093001",
-      "checkedAt": "2026-11-05T13:10:36.022Z",
+      "checkedAt": "2026-11-05T20:18:57.468Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 14,
@@ -4979,7 +5011,7 @@
     },
     {
       "postId": "video:1505206344753130",
-      "checkedAt": "2026-11-05T16:11:34.222Z",
+      "checkedAt": "2026-11-05T20:26:21.327Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 118,
@@ -5013,7 +5045,7 @@
     },
     {
       "postId": "video:3360112920862887",
-      "checkedAt": "2026-11-05T14:07:27.902Z",
+      "checkedAt": "2026-11-05T19:48:43.013Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 177,
@@ -5047,7 +5079,7 @@
     },
     {
       "postId": "video:1672056241307870",
-      "checkedAt": "2026-11-05T13:06:15.514Z",
+      "checkedAt": "2026-11-05T20:04:19.482Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 37,
@@ -5081,7 +5113,7 @@
     },
     {
       "postId": "video:1438183745146031",
-      "checkedAt": "2026-11-05T13:22:51.644Z",
+      "checkedAt": "2026-11-05T20:27:26.373Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 110,
@@ -5115,7 +5147,7 @@
     },
     {
       "postId": "video:2057584485644941",
-      "checkedAt": "2026-11-05T15:55:03.713Z",
+      "checkedAt": "2026-11-05T19:50:45.621Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 618,
@@ -5149,7 +5181,7 @@
     },
     {
       "postId": "post:pfbid02TyRefXGLG13M3pmcAkV6R67J7ngjJGQeapFBWguxS4r1jaPmZemKjBbgnKyKiunWl",
-      "checkedAt": "2026-11-05T16:17:43.584Z",
+      "checkedAt": "2026-11-05T20:29:17.058Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 130,
@@ -5183,7 +5215,7 @@
     },
     {
       "postId": "video:1144845284632823",
-      "checkedAt": "2026-11-05T13:44:13.390Z",
+      "checkedAt": "2026-11-05T20:11:52.625Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 36,
@@ -5217,7 +5249,7 @@
     },
     {
       "postId": "video:2502903913566502",
-      "checkedAt": "2026-11-05T13:10:46.128Z",
+      "checkedAt": "2026-11-05T20:09:09.613Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 12,
@@ -5249,7 +5281,7 @@
     },
     {
       "postId": "post:pfbid02tSwQMoJwCoCrCmufVbnhSct2RywH5uGBxKwZ2B1SbC1mQ1F9oEqM111qJ2LL1cUZl",
-      "checkedAt": "2026-11-05T16:22:24.934Z",
+      "checkedAt": "2026-11-05T20:05:09.874Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 72,
@@ -5283,7 +5315,7 @@
     },
     {
       "postId": "post:pfbid0LXifubhPr1Mdcmj34cDD6Z2UtigwgYtEcuNzakL9hA79x4r1eyypSCmQETvfaNTLl",
-      "checkedAt": "2026-11-05T12:10:26.127Z",
+      "checkedAt": "2026-11-05T20:25:04.479Z",
       "status": "complete",
       "ordering": null,
       "reportedCount": null,
@@ -5315,7 +5347,7 @@
     },
     {
       "postId": "post:pfbid0T4ndd4P8DUg1FQtpjGDhUTGCd6XpUwNbkHxDRsvqhkyr4UhQoM49Gj788FPGJUwol",
-      "checkedAt": "2026-11-05T12:10:29.874Z",
+      "checkedAt": "2026-11-05T20:16:15.314Z",
       "status": "complete",
       "ordering": null,
       "reportedCount": null,
@@ -5347,9 +5379,9 @@
     },
     {
       "postId": "post:pfbid02fCui5WQgpSNWoW4SbgeoHTVpyoxLoR2ZXmBKTtkL2Ge593yFavPukrax7bZPGdHl",
-      "checkedAt": "2026-11-05T16:20:50.428Z",
+      "checkedAt": "2026-11-05T20:03:20.409Z",
       "status": "complete",
-      "ordering": "all",
+      "ordering": "newest",
       "reportedCount": 78,
       "capturedCount": 78,
       "assessedCount": 69,
@@ -5375,11 +5407,13 @@
           "unreviewed": 9
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“."
+      ]
     },
     {
       "postId": "video:1444912007738019",
-      "checkedAt": "2026-11-05T12:10:41.439Z",
+      "checkedAt": "2026-11-05T20:34:17.944Z",
       "status": "complete",
       "ordering": null,
       "reportedCount": null,
@@ -5411,7 +5445,7 @@
     },
     {
       "postId": "post:pfbid02yq4WR2LpV5FjNouCgSNS2jsrY7KzTHM6r4QfgDB5tv3YChk6ieDLmZoRRSdcVa78l",
-      "checkedAt": "2026-11-05T13:06:36.708Z",
+      "checkedAt": "2026-11-05T20:19:40.824Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 10,

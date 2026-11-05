@@ -1,0 +1,2403 @@
+{
+  "version": 1,
+  "runId": "e5252990-38a7-4fb2-a70e-1e55019a76a6",
+  "capturedAt": "2026-11-05T20:42:18.674Z",
+  "minimumCellCount": 5,
+  "unit": "observed-accounts",
+  "coverage": {
+    "capturedComments": 6692,
+    "matchedIdentityComments": 6692,
+    "unknownIdentityComments": 0
+  },
+  "totals": {
+    "accounts": 4303,
+    "accountsOnMultiplePosts": 563,
+    "accountsOnMultiplePages": 223
+  },
+  "posts": [
+    {
+      "postId": "post:pfbid03V9bKpCNQKJu4Ba9HckG1GKZfbUfiW7sHoXSmrEjTToa9hCfLCpeSshKajdgAmE9l",
+      "pageId": "100069720181353",
+      "capturedComments": 647,
+      "topLevelComments": 401,
+      "replyComments": 246,
+      "matchedIdentityComments": 647,
+      "accounts": 473,
+      "accountsStartingThreads": 369,
+      "accountsWithMultipleComments": 85
+    },
+    {
+      "postId": "video:2057584485644941",
+      "pageId": "61557189262331",
+      "capturedComments": 608,
+      "topLevelComments": 586,
+      "replyComments": 22,
+      "matchedIdentityComments": 608,
+      "accounts": 489,
+      "accountsStartingThreads": 477,
+      "accountsWithMultipleComments": 46
+    },
+    {
+      "postId": "video:1094888736870133",
+      "pageId": "61585325593477",
+      "capturedComments": 194,
+      "topLevelComments": 177,
+      "replyComments": 17,
+      "matchedIdentityComments": 194,
+      "accounts": 170,
+      "accountsStartingThreads": 160,
+      "accountsWithMultipleComments": 19
+    },
+    {
+      "postId": "post:pfbid0r5fND2sHqXbM1JCJbmJo5rLUWxMFnaZFSd5dC4qUh2PqVagZSQANr79TZeYQWPQyl",
+      "pageId": "104575425050525",
+      "capturedComments": 165,
+      "topLevelComments": 100,
+      "replyComments": 65,
+      "matchedIdentityComments": 165,
+      "accounts": 120,
+      "accountsStartingThreads": 93,
+      "accountsWithMultipleComments": 30
+    },
+    {
+      "postId": "video:1138813955363373",
+      "pageId": "61577398061794",
+      "capturedComments": 122,
+      "topLevelComments": 99,
+      "replyComments": 23,
+      "matchedIdentityComments": 122,
+      "accounts": 99,
+      "accountsStartingThreads": 91,
+      "accountsWithMultipleComments": 15
+    },
+    {
+      "postId": "post:pfbid02PjhhvHUKazdRWLaoBwbzKiEQb7hM945KZtAMcp4hFGrR8mDfyKzygx4oTCznvw74l",
+      "pageId": "104575425050525",
+      "capturedComments": 110,
+      "topLevelComments": 38,
+      "replyComments": 72,
+      "matchedIdentityComments": 110,
+      "accounts": 60,
+      "accountsStartingThreads": 36,
+      "accountsWithMultipleComments": 19
+    },
+    {
+      "postId": "video:1157252846871409",
+      "pageId": "61577398061794",
+      "capturedComments": 107,
+      "topLevelComments": 84,
+      "replyComments": 23,
+      "matchedIdentityComments": 107,
+      "accounts": 98,
+      "accountsStartingThreads": 82,
+      "accountsWithMultipleComments": 7
+    },
+    {
+      "postId": "post:pfbid02fCui5WQgpSNWoW4SbgeoHTVpyoxLoR2ZXmBKTtkL2Ge593yFavPukrax7bZPGdHl",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "capturedComments": 78,
+      "topLevelComments": 57,
+      "replyComments": 21,
+      "matchedIdentityComments": 78,
+      "accounts": 52,
+      "accountsStartingThreads": 44,
+      "accountsWithMultipleComments": 11
+    },
+    {
+      "postId": "post:pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl",
+      "pageId": "61577398061794",
+      "capturedComments": 74,
+      "topLevelComments": 68,
+      "replyComments": 6,
+      "matchedIdentityComments": 74,
+      "accounts": 68,
+      "accountsStartingThreads": 66,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02tSwQMoJwCoCrCmufVbnhSct2RywH5uGBxKwZ2B1SbC1mQ1F9oEqM111qJ2LL1cUZl",
+      "pageId": "61557189262331",
+      "capturedComments": 68,
+      "topLevelComments": 58,
+      "replyComments": 10,
+      "matchedIdentityComments": 68,
+      "accounts": 46,
+      "accountsStartingThreads": 43,
+      "accountsWithMultipleComments": 10
+    },
+    {
+      "postId": "post:pfbid02etWsuvBeLS3Ku119BoMWHjdWvXzMaARnc96tfyJJtMEDJBrhPwwiUpdcMfrsWSb8l",
+      "pageId": "61577398061794",
+      "capturedComments": 59,
+      "topLevelComments": 40,
+      "replyComments": 19,
+      "matchedIdentityComments": 59,
+      "accounts": 51,
+      "accountsStartingThreads": 40,
+      "accountsWithMultipleComments": 6
+    },
+    {
+      "postId": "post:pfbid0WEb3SuxipYL7kfDXLptWUroskKqZ11LATBVDp6oHvNUAw6cwDDCWVTDVkQhsTBGzl",
+      "pageId": "61577398061794",
+      "capturedComments": 57,
+      "topLevelComments": 44,
+      "replyComments": 13,
+      "matchedIdentityComments": 57,
+      "accounts": 51,
+      "accountsStartingThreads": 44,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid01K7wZwET4jScNQVGcGEEB4CzSCWzgGXwwwACQpZAeqK5BTVQKs7nwkXvt6k1eEgGl",
+      "pageId": "61594398383441",
+      "capturedComments": 56,
+      "topLevelComments": 32,
+      "replyComments": 24,
+      "matchedIdentityComments": 56,
+      "accounts": 35,
+      "accountsStartingThreads": 28,
+      "accountsWithMultipleComments": 10
+    },
+    {
+      "postId": "video:1608628141015918",
+      "pageId": "61585325593477",
+      "capturedComments": 45,
+      "topLevelComments": 40,
+      "replyComments": 5,
+      "matchedIdentityComments": 45,
+      "accounts": 42,
+      "accountsStartingThreads": 40,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02aZDv5aYEA7tJk17xqQ4aagnket1qJ2SbkPTPeh7VVdvQpCwkkqNdN4dyREEfXfKjl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 44,
+      "topLevelComments": 33,
+      "replyComments": 11,
+      "matchedIdentityComments": 44,
+      "accounts": 35,
+      "accountsStartingThreads": 31,
+      "accountsWithMultipleComments": 7
+    },
+    {
+      "postId": "post:pfbid0m5ATPAutDMVviW3E271akkzPhqNQ7vmJ3QJas2DYDDDMoUf2gccbacexUn81zSf1l",
+      "pageId": "61585325593477",
+      "capturedComments": 39,
+      "topLevelComments": 39,
+      "replyComments": 0,
+      "matchedIdentityComments": 39,
+      "accounts": 5,
+      "accountsStartingThreads": 5,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0W91zvaUDUbjGfAT4RRDMfMrmwpLeYGcXbPq2tTiWfJihYoGSugJDqd2Meg3SNU9Gl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 37,
+      "topLevelComments": 35,
+      "replyComments": 2,
+      "matchedIdentityComments": 37,
+      "accounts": 35,
+      "accountsStartingThreads": 33,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1144845284632823",
+      "pageId": "61557189262331",
+      "capturedComments": 33,
+      "topLevelComments": 13,
+      "replyComments": 20,
+      "matchedIdentityComments": 33,
+      "accounts": 19,
+      "accountsStartingThreads": 13,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid03rZ6MY8CN5E94AuM95mPh9MrXcuksP24zHiZn46EcQ3RhpWrxMiooYHwUAnocvbyl",
+      "pageId": "61583481685886",
+      "capturedComments": 30,
+      "topLevelComments": 27,
+      "replyComments": 3,
+      "matchedIdentityComments": 30,
+      "accounts": 28,
+      "accountsStartingThreads": 25,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0tVtTjFwus7LNtbv6zFgLKxtYFg5bhXGi1TKv8jN6XNoHAZP5G6ssz9EqAFo9XnGYl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 29,
+      "topLevelComments": 18,
+      "replyComments": 11,
+      "matchedIdentityComments": 29,
+      "accounts": 16,
+      "accountsStartingThreads": 13,
+      "accountsWithMultipleComments": 5
+    },
+    {
+      "postId": "post:pfbid09m9SDJjCfAtU4pqLC9SBbnyHxx32WDQnEjS4xVs9oJ8Pd6BYFWfWZshFR3N9qoA6l",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 25,
+      "topLevelComments": 17,
+      "replyComments": 8,
+      "matchedIdentityComments": 25,
+      "accounts": 20,
+      "accountsStartingThreads": 16,
+      "accountsWithMultipleComments": 5
+    },
+    {
+      "postId": "post:pfbid02xBHQG3oNTv5Fn74pzZ2znxx7XGj8CEvZ6j6TEEih8kCyYKKQkftHhWepqmw62Ttvl",
+      "pageId": "100069720181353",
+      "capturedComments": 23,
+      "topLevelComments": 14,
+      "replyComments": 9,
+      "matchedIdentityComments": 23,
+      "accounts": 16,
+      "accountsStartingThreads": 14,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02yYngwbFJKYGVPJiqoahxFCb3cXeW7T9QjGz93rwXjiustzsoUTefJXQzMxkgkuUel",
+      "pageId": "61577398061794",
+      "capturedComments": 20,
+      "topLevelComments": 15,
+      "replyComments": 5,
+      "matchedIdentityComments": 20,
+      "accounts": 15,
+      "accountsStartingThreads": 14,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02m8f3HxtJot1ghwe3G1VnzseGj9vwEYeTSSUSLgW1YFudMHBiXJUU9jKaGh2H6cjNl",
+      "pageId": "138363261435366",
+      "capturedComments": 19,
+      "topLevelComments": 15,
+      "replyComments": 4,
+      "matchedIdentityComments": 19,
+      "accounts": 13,
+      "accountsStartingThreads": 9,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02mU6YsGsHu3nW7F6Q6onUsvLYnyT2C1Vr8H688j4o6HCQozQNQAraqxpv5SJa7dWQl",
+      "pageId": "100069720181353",
+      "capturedComments": 18,
+      "topLevelComments": 6,
+      "replyComments": 12,
+      "matchedIdentityComments": 18,
+      "accounts": 12,
+      "accountsStartingThreads": 6,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02j1U8MppjHeC9mkVFyTQERduidjJzVX33bwcsYAJN4JQQor6rkbEkyC2twj3Mgy2tl",
+      "pageId": "61577398061794",
+      "capturedComments": 18,
+      "topLevelComments": 12,
+      "replyComments": 6,
+      "matchedIdentityComments": 18,
+      "accounts": 15,
+      "accountsStartingThreads": 12,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1445052394418970",
+      "pageId": "61577398061794",
+      "capturedComments": 15,
+      "topLevelComments": 12,
+      "replyComments": 3,
+      "matchedIdentityComments": 15,
+      "accounts": 13,
+      "accountsStartingThreads": 12,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0Q4vZKwZiaCnHsiE2qKiWSzDD7TTqbbxDCVf8YkB5yS3TSMu2XHi4zPUkjKtjq4SFl",
+      "pageId": "104575425050525",
+      "capturedComments": 13,
+      "topLevelComments": 10,
+      "replyComments": 3,
+      "matchedIdentityComments": 13,
+      "accounts": 12,
+      "accountsStartingThreads": 10,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid06fPN7iSAZg1NDCkj4vUhLbHSK9D9FNTo21sBWewezxQiGAWuh89CdrfMVvSY4wR7l",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 13,
+      "topLevelComments": 10,
+      "replyComments": 3,
+      "matchedIdentityComments": 13,
+      "accounts": 12,
+      "accountsStartingThreads": 9,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:2188569562093001",
+      "pageId": "61557189262331",
+      "capturedComments": 12,
+      "topLevelComments": 10,
+      "replyComments": 2,
+      "matchedIdentityComments": 12,
+      "accounts": 12,
+      "accountsStartingThreads": 10,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0vpmBVZ3aQ5eoa91QNqEBGQG5UxQsACejjUe4ouYUHNijU5fDxX63Chjff4SJgMD8l",
+      "pageId": "104575425050525",
+      "capturedComments": 11,
+      "topLevelComments": 10,
+      "replyComments": 1,
+      "matchedIdentityComments": 11,
+      "accounts": 11,
+      "accountsStartingThreads": 10,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0JjkW3RYrCMWhcqKpw2Wq2CxxqYQY8sWwJLEwZy9GF8BeczyNGJtBM8iC92L8oWEZl",
+      "pageId": "100030791183325",
+      "capturedComments": 10,
+      "topLevelComments": 5,
+      "replyComments": 5,
+      "matchedIdentityComments": 10,
+      "accounts": 7,
+      "accountsStartingThreads": 5,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02yq4WR2LpV5FjNouCgSNS2jsrY7KzTHM6r4QfgDB5tv3YChk6ieDLmZoRRSdcVa78l",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "capturedComments": 10,
+      "topLevelComments": 6,
+      "replyComments": 4,
+      "matchedIdentityComments": 10,
+      "accounts": 8,
+      "accountsStartingThreads": 6,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02orFJ7ecCHXmDARycYMhD5N21fPcvRydaUUaJQL3jc6fHXY3n1onf2kudGCfHpunNl",
+      "pageId": "104575425050525",
+      "capturedComments": 8,
+      "topLevelComments": 6,
+      "replyComments": 2,
+      "matchedIdentityComments": 8,
+      "accounts": 7,
+      "accountsStartingThreads": 6,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0P8eVWT6q1cjqVuUx6W7jFS8kQkPJEAge5cbuYiQxP2U5dSU6EqczFMqnrL3fX5qFl",
+      "pageId": "104575425050525",
+      "capturedComments": 8,
+      "topLevelComments": 7,
+      "replyComments": 1,
+      "matchedIdentityComments": 8,
+      "accounts": 6,
+      "accountsStartingThreads": 6,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0NnE2Mnc5FLn4mWkiG5QoT9DJwKnsFPL11GVhDW5aZpru6rRqASn4DwEbAwPgZ7xFl",
+      "pageId": "61577398061794",
+      "capturedComments": 8,
+      "topLevelComments": 8,
+      "replyComments": 0,
+      "matchedIdentityComments": 8,
+      "accounts": 8,
+      "accountsStartingThreads": 8,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1657215862763287",
+      "pageId": "61557189262331",
+      "capturedComments": 7,
+      "topLevelComments": 4,
+      "replyComments": 3,
+      "matchedIdentityComments": 7,
+      "accounts": 7,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:2050433183027183",
+      "pageId": "104575425050525",
+      "capturedComments": 6,
+      "topLevelComments": 6,
+      "replyComments": 0,
+      "matchedIdentityComments": 6,
+      "accounts": 6,
+      "accountsStartingThreads": 6,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0WYiYRntQmkadGMKz3SJoREpkPfVFb2MttNVQwoX97TtSLxk1X4qeFBq31EVJKNTkl",
+      "pageId": "61585325593477",
+      "capturedComments": 6,
+      "topLevelComments": 4,
+      "replyComments": 2,
+      "matchedIdentityComments": 6,
+      "accounts": 6,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1613329786656320",
+      "pageId": "61577398061794",
+      "capturedComments": 6,
+      "topLevelComments": 6,
+      "replyComments": 0,
+      "matchedIdentityComments": 6,
+      "accounts": 6,
+      "accountsStartingThreads": 6,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid05pTdBgg2pBhFRS5yMBEnCNE4vA8zi6vGDD6muBMNRcs2YKTBWZT57evyo32iC9eSl",
+      "pageId": "104575425050525",
+      "capturedComments": 5,
+      "topLevelComments": 4,
+      "replyComments": 1,
+      "matchedIdentityComments": 5,
+      "accounts": 5,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0ii9gwtsS2eibLyBLVApRigjnj5RWYXjgumzrQULyeD16cLHNySWsPNDkBFiF7TCl",
+      "pageId": "100083137130737",
+      "capturedComments": 5,
+      "topLevelComments": 4,
+      "replyComments": 1,
+      "matchedIdentityComments": 5,
+      "accounts": 5,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0Szdue84b6ghkUEwm7Vc4bA1S8wXdtNji68WrCZhHshZTrmFkKwhqGYtsgt7FV8nml",
+      "pageId": "61577398061794",
+      "capturedComments": 4,
+      "topLevelComments": 4,
+      "replyComments": 0,
+      "matchedIdentityComments": 4,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1604352204018118",
+      "pageId": "61577398061794",
+      "capturedComments": 4,
+      "topLevelComments": 3,
+      "replyComments": 1,
+      "matchedIdentityComments": 4,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02tThk3DbMhisnWdDR8unNbSYnscWG59LYwRh9dbEYBBianprQ2XkFxv8j4x9Kskpnl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 3,
+      "topLevelComments": 3,
+      "replyComments": 0,
+      "matchedIdentityComments": 3,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02onrwFNDBWRfaeL5NoXdnX25M3M9FERJuAVu3RiA2zy6MiUSAM7LtXtNhmRTFRGRYl",
+      "pageId": "100063562561986",
+      "capturedComments": 3,
+      "topLevelComments": 3,
+      "replyComments": 0,
+      "matchedIdentityComments": 3,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0bxazcFzguT9juQznYzRigUnSBxr3JX33dkKRZT7vX142uuXxsi1RWNf94LUf7Ddvl",
+      "pageId": "61585325593477",
+      "capturedComments": 3,
+      "topLevelComments": 3,
+      "replyComments": 0,
+      "matchedIdentityComments": 3,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0KHXkSQBGMSU7Psop2D3hKFqbRTnR1HRY1JckvXZX3QkJkf1K31jUjfpZbGT9ubRal",
+      "pageId": "100063562561986",
+      "capturedComments": 2,
+      "topLevelComments": 2,
+      "replyComments": 0,
+      "matchedIdentityComments": 2,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:1156013503438401",
+      "pageId": "https://www.facebook.com/novininafocus",
+      "capturedComments": 2,
+      "topLevelComments": 2,
+      "replyComments": 0,
+      "matchedIdentityComments": 2,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02tLVduNW2khzhW98qhibyp3ypkXkbKrEwvFFZSsjruPoGFgXFQ3k747dimeRm6V8zl",
+      "pageId": "https://www.facebook.com/noviniotposledniachas",
+      "capturedComments": 1,
+      "topLevelComments": 1,
+      "replyComments": 0,
+      "matchedIdentityComments": 1,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02SrLT5VoZ7KvxvA5zrvTisM26PJ1gCNqJacQMZU2bd2hZuP5NupX4pk8uR4bpefWCl",
+      "pageId": "61591476950404",
+      "capturedComments": 1,
+      "topLevelComments": 1,
+      "replyComments": 0,
+      "matchedIdentityComments": 1,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0kyA5L2QH9woHSVbHUbRLNLsVXxo7fjptPJvf6dTqARphjhK32HkoJLL3BYKoATgGl",
+      "pageId": "61585325593477",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid09Sad8rRWqTxk99V9nGjpQUbjHdGrtZGSXroqjhzQo5q2ctWbmhTkNe4EzjY3npHTl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 10,
+      "topLevelComments": 10,
+      "replyComments": 0,
+      "matchedIdentityComments": 10,
+      "accounts": 10,
+      "accountsStartingThreads": 10,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0yPqM2CFwd9NuTL9D5d74z1oTJX4Zw8aEkbSQHjzgmH3GhRDBXfUowL9opBBpr9pSl",
+      "pageId": "61577398061794",
+      "capturedComments": 10,
+      "topLevelComments": 9,
+      "replyComments": 1,
+      "matchedIdentityComments": 10,
+      "accounts": 10,
+      "accountsStartingThreads": 9,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1289332556672095",
+      "pageId": "61577398061794",
+      "capturedComments": 9,
+      "topLevelComments": 7,
+      "replyComments": 2,
+      "matchedIdentityComments": 9,
+      "accounts": 9,
+      "accountsStartingThreads": 7,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1433388234897669",
+      "pageId": "61585325593477",
+      "capturedComments": 8,
+      "topLevelComments": 8,
+      "replyComments": 0,
+      "matchedIdentityComments": 8,
+      "accounts": 7,
+      "accountsStartingThreads": 7,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0oApgxUQcjgrRURbhK9a5YVoZY2bHiH29tiaq8AnPkZVwNeGCqHVmZoYDuDjWcgXMl",
+      "pageId": "104575425050525",
+      "capturedComments": 7,
+      "topLevelComments": 3,
+      "replyComments": 4,
+      "matchedIdentityComments": 7,
+      "accounts": 5,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0317sNmP4Ejrj3qwFsSCrGXNaLCMypad1TQ2u27dzNgTzBzpa7w7qRu7CyF2kBQvKtl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 7,
+      "topLevelComments": 7,
+      "replyComments": 0,
+      "matchedIdentityComments": 7,
+      "accounts": 6,
+      "accountsStartingThreads": 6,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0KisFpBdsttQ3mTPPqpPgaxPDyddQ5s6EuS3aFRAVTwBDYGCNnGDY8LDpYNn5ZkBZl",
+      "pageId": "104575425050525",
+      "capturedComments": 6,
+      "topLevelComments": 2,
+      "replyComments": 4,
+      "matchedIdentityComments": 6,
+      "accounts": 5,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid026qyin9k9BgRa4wQ6EiLTy3fdgNpTc7ubXhbMjUP8em1wCjk6qf7yVvRdzCaFtXGdl",
+      "pageId": "104575425050525",
+      "capturedComments": 6,
+      "topLevelComments": 5,
+      "replyComments": 1,
+      "matchedIdentityComments": 6,
+      "accounts": 6,
+      "accountsStartingThreads": 5,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02EiFx8u2XuizA1gq35fPdyBExfHwkp7bxX1behZsgJUfoHtGjwq6c6odubsSAV1VEl",
+      "pageId": "61577398061794",
+      "capturedComments": 6,
+      "topLevelComments": 6,
+      "replyComments": 0,
+      "matchedIdentityComments": 6,
+      "accounts": 5,
+      "accountsStartingThreads": 5,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1446707520759625",
+      "pageId": "61577398061794",
+      "capturedComments": 5,
+      "topLevelComments": 5,
+      "replyComments": 0,
+      "matchedIdentityComments": 5,
+      "accounts": 5,
+      "accountsStartingThreads": 5,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0yvjwnnVGCEKzWJ87u6jAREm31LCAspnuyNayxzuuqSqG757ccMxprVzLxhzUJonRl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 5,
+      "topLevelComments": 5,
+      "replyComments": 0,
+      "matchedIdentityComments": 5,
+      "accounts": 5,
+      "accountsStartingThreads": 5,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0xQAtuBkwSnVUNTxsmH2yguz97eczAXWPuKK1uzJjdrV8v7qh659GU8uTzmgcyRR3l",
+      "pageId": "61557839147130",
+      "capturedComments": 4,
+      "topLevelComments": 4,
+      "replyComments": 0,
+      "matchedIdentityComments": 4,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1472440601695103",
+      "pageId": "61585325593477",
+      "capturedComments": 4,
+      "topLevelComments": 4,
+      "replyComments": 0,
+      "matchedIdentityComments": 4,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid01Qgxf35raAqu1iVK5AsUoCz4nGd8f3nZ3ufBYResZrTtimqQzNaAo19uTfN7HrgMl",
+      "pageId": "104575425050525",
+      "capturedComments": 3,
+      "topLevelComments": 3,
+      "replyComments": 0,
+      "matchedIdentityComments": 3,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02qSkMMJsJcds8vDmtJj3UZiRV5uSQQ8gPTX8RHfJhRb7MPoEDun8qaGKbC3TKzpgbl",
+      "pageId": "https://www.facebook.com/novininafocus",
+      "capturedComments": 3,
+      "topLevelComments": 3,
+      "replyComments": 0,
+      "matchedIdentityComments": 3,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:2932892587068862",
+      "pageId": "61585325593477",
+      "capturedComments": 3,
+      "topLevelComments": 3,
+      "replyComments": 0,
+      "matchedIdentityComments": 3,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0Moetda1iWfTHG8QCvYmjFbLuDCH2RSNszUecXCcoKurF41vuCJizBws5DAQwsDjLl",
+      "pageId": "104575425050525",
+      "capturedComments": 2,
+      "topLevelComments": 2,
+      "replyComments": 0,
+      "matchedIdentityComments": 2,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0r7r3s5xnQNZ4uT3hzAGhJzZJ2xdE26WgoF853EUaq4D8Ub3ciyFMVg3Gc6NJJXhol",
+      "pageId": "61591476950404",
+      "capturedComments": 2,
+      "topLevelComments": 2,
+      "replyComments": 0,
+      "matchedIdentityComments": 2,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid028x5LkjYB6qV5HeJCjWWtGgkZLQL3eEEyFHRf5sw8WCy1cA16RRuz3doXBuV92zewl",
+      "pageId": "104575425050525",
+      "capturedComments": 1,
+      "topLevelComments": 1,
+      "replyComments": 0,
+      "matchedIdentityComments": 1,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02GgPBAgj24C7gwiozhdTf9UxyvQwse9Ji3ZwDb7WppQXbyRAtL23FJB4Q5QE4UBb5l",
+      "pageId": "61591476950404",
+      "capturedComments": 1,
+      "topLevelComments": 1,
+      "replyComments": 0,
+      "matchedIdentityComments": 1,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0ao6U31ZyAtQrHVUr8E8hajwi59uzgcUukXnjr3DiEoNkTVW1xi7U1JZZcL5jvWVnl",
+      "pageId": "61577398061794",
+      "capturedComments": 1,
+      "topLevelComments": 1,
+      "replyComments": 0,
+      "matchedIdentityComments": 1,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1843600866897994",
+      "pageId": "61577398061794",
+      "capturedComments": 70,
+      "topLevelComments": 51,
+      "replyComments": 19,
+      "matchedIdentityComments": 70,
+      "accounts": 63,
+      "accountsStartingThreads": 51,
+      "accountsWithMultipleComments": 6
+    },
+    {
+      "postId": "post:pfbid0XrqUF3wKr3CBc3CEU1vzDG2YFK8QtNHDtW3T8guVhywziTDUZRp8d2B9FwfWX7w8l",
+      "pageId": "61577398061794",
+      "capturedComments": 56,
+      "topLevelComments": 44,
+      "replyComments": 12,
+      "matchedIdentityComments": 56,
+      "accounts": 47,
+      "accountsStartingThreads": 42,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02DjFWK74BJbFdAYJQGreHngD2m3evycaLdCeHeK7PykkWGR9zzHpNMQNt6XciHXB5l",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 47,
+      "topLevelComments": 34,
+      "replyComments": 13,
+      "matchedIdentityComments": 47,
+      "accounts": 36,
+      "accountsStartingThreads": 31,
+      "accountsWithMultipleComments": 7
+    },
+    {
+      "postId": "video:1119095521093836",
+      "pageId": "61577398061794",
+      "capturedComments": 43,
+      "topLevelComments": 39,
+      "replyComments": 4,
+      "matchedIdentityComments": 43,
+      "accounts": 40,
+      "accountsStartingThreads": 38,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0txCzz6qbbi7BezLje1uFVANeUa5eskGN76mkPQ9tWYNx97JCMjEFDndbPFtwYAzYl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 29,
+      "topLevelComments": 23,
+      "replyComments": 6,
+      "matchedIdentityComments": 29,
+      "accounts": 24,
+      "accountsStartingThreads": 21,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1840261970724145",
+      "pageId": "61577398061794",
+      "capturedComments": 19,
+      "topLevelComments": 16,
+      "replyComments": 3,
+      "matchedIdentityComments": 19,
+      "accounts": 18,
+      "accountsStartingThreads": 16,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02LiCfkbcVhJXUPw4XeZKbGXkP3NnELWGwotMGH5kpv1FD46nx5yWUKaTDRvFCxZ9Rl",
+      "pageId": "61577398061794",
+      "capturedComments": 16,
+      "topLevelComments": 14,
+      "replyComments": 2,
+      "matchedIdentityComments": 16,
+      "accounts": 15,
+      "accountsStartingThreads": 13,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0QDSecz5EpgCPLRwyp5JtEVPJ3uXdP9pkvUhAkVb3MW71szWmGE18eg6cNuY5h3fCl",
+      "pageId": "61583481685886",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "photo:1578411577634217",
+      "pageId": "https://www.facebook.com/noviniotposledniachas",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "photo:1156012400105178",
+      "pageId": "https://www.facebook.com/novininafocus",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0LXifubhPr1Mdcmj34cDD6Z2UtigwgYtEcuNzakL9hA79x4r1eyypSCmQETvfaNTLl",
+      "pageId": "100076891908016",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "photo:1151255573914194",
+      "pageId": "https://www.facebook.com/novininafocus",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1316088687265038",
+      "pageId": "61585325593477",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02mFRotzxY3qBtCDZVXUsaE8RQ1igsq2fMqs31kRKqkfgMvWAxEBjVG9rffsRtCbpPl",
+      "pageId": "61577398061794",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1444912007738019",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0HhU2jYwFjp9j378vEe2oekycGBn7ZXUmJF9s4ieRECvGqJmfsHnX446P5WHNTnRbl",
+      "pageId": "61594146398840",
+      "capturedComments": 275,
+      "topLevelComments": 153,
+      "replyComments": 122,
+      "matchedIdentityComments": 275,
+      "accounts": 195,
+      "accountsStartingThreads": 141,
+      "accountsWithMultipleComments": 40
+    },
+    {
+      "postId": "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl",
+      "pageId": "104575425050525",
+      "capturedComments": 242,
+      "topLevelComments": 157,
+      "replyComments": 85,
+      "matchedIdentityComments": 242,
+      "accounts": 169,
+      "accountsStartingThreads": 140,
+      "accountsWithMultipleComments": 31
+    },
+    {
+      "postId": "post:pfbid02mC3RbUvRRrwn4FWqivPzEWAmRwnA5N2DWjq8Uoq7RsNYGRy5ULep8wyc1NouSHY2l",
+      "pageId": "138363261435366",
+      "capturedComments": 207,
+      "topLevelComments": 175,
+      "replyComments": 32,
+      "matchedIdentityComments": 207,
+      "accounts": 187,
+      "accountsStartingThreads": 173,
+      "accountsWithMultipleComments": 14
+    },
+    {
+      "postId": "video:3360112920862887",
+      "pageId": "61557189262331",
+      "capturedComments": 173,
+      "topLevelComments": 133,
+      "replyComments": 40,
+      "matchedIdentityComments": 173,
+      "accounts": 142,
+      "accountsStartingThreads": 122,
+      "accountsWithMultipleComments": 15
+    },
+    {
+      "postId": "video:998758882516672",
+      "pageId": "61577398061794",
+      "capturedComments": 151,
+      "topLevelComments": 127,
+      "replyComments": 24,
+      "matchedIdentityComments": 151,
+      "accounts": 128,
+      "accountsStartingThreads": 118,
+      "accountsWithMultipleComments": 13
+    },
+    {
+      "postId": "post:pfbid0Y3RrwUWN4B2fMGj1BkPdgPJH7L8x15uLKteo7KecmYkkcXCs3n9y6XR4ZsyQY11Tl",
+      "pageId": "61595732886875",
+      "capturedComments": 112,
+      "topLevelComments": 101,
+      "replyComments": 11,
+      "matchedIdentityComments": 112,
+      "accounts": 103,
+      "accountsStartingThreads": 94,
+      "accountsWithMultipleComments": 6
+    },
+    {
+      "postId": "post:pfbid0QeTBHPudRNmcQ2nKeMdTsAwfoi7JLAAytBrVaCAeGFEi29sqJ3cig9BLbdu3QqFNl",
+      "pageId": "61577398061794",
+      "capturedComments": 100,
+      "topLevelComments": 45,
+      "replyComments": 55,
+      "matchedIdentityComments": 100,
+      "accounts": 58,
+      "accountsStartingThreads": 44,
+      "accountsWithMultipleComments": 9
+    },
+    {
+      "postId": "video:1428401352820819",
+      "pageId": "61577398061794",
+      "capturedComments": 85,
+      "topLevelComments": 68,
+      "replyComments": 17,
+      "matchedIdentityComments": 85,
+      "accounts": 76,
+      "accountsStartingThreads": 66,
+      "accountsWithMultipleComments": 7
+    },
+    {
+      "postId": "post:pfbid0BHVnuGJsi6ub8GXhMMHfnBdKKnQE7cadFT1LBkfrfGTWubjtRahR29KDYiyCPg6bl",
+      "pageId": "104575425050525",
+      "capturedComments": 73,
+      "topLevelComments": 52,
+      "replyComments": 21,
+      "matchedIdentityComments": 73,
+      "accounts": 63,
+      "accountsStartingThreads": 50,
+      "accountsWithMultipleComments": 7
+    },
+    {
+      "postId": "post:pfbid0mnE5t943SWc4MH9KheNhCi5UYKCLnWUP3kxWAv3wd2WESpMJHHTLYfLp6rtWTHNal",
+      "pageId": "100069720181353",
+      "capturedComments": 65,
+      "topLevelComments": 32,
+      "replyComments": 33,
+      "matchedIdentityComments": 65,
+      "accounts": 33,
+      "accountsStartingThreads": 29,
+      "accountsWithMultipleComments": 9
+    },
+    {
+      "postId": "video:1645050123780583",
+      "pageId": "61577398061794",
+      "capturedComments": 60,
+      "topLevelComments": 54,
+      "replyComments": 6,
+      "matchedIdentityComments": 60,
+      "accounts": 59,
+      "accountsStartingThreads": 53,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1670123841398564",
+      "pageId": "61577398061794",
+      "capturedComments": 59,
+      "topLevelComments": 51,
+      "replyComments": 8,
+      "matchedIdentityComments": 59,
+      "accounts": 53,
+      "accountsStartingThreads": 50,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02xt8PRr55g9WpRJEFNdRiy5zKgw9zKp7vNsSLS9TPcj9V2YQDzoCeoX4XuwJjpbbgl",
+      "pageId": "61577398061794",
+      "capturedComments": 52,
+      "topLevelComments": 32,
+      "replyComments": 20,
+      "matchedIdentityComments": 52,
+      "accounts": 38,
+      "accountsStartingThreads": 30,
+      "accountsWithMultipleComments": 5
+    },
+    {
+      "postId": "video:951043291091990",
+      "pageId": "61577398061794",
+      "capturedComments": 47,
+      "topLevelComments": 46,
+      "replyComments": 1,
+      "matchedIdentityComments": 47,
+      "accounts": 47,
+      "accountsStartingThreads": 46,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid031bcFzrkzYYGxLaGg93g6Mah7mcbdwioCZBpqPgEaYTkgEkzNPfyyCcGBiFnFDB2sl",
+      "pageId": "61577398061794",
+      "capturedComments": 44,
+      "topLevelComments": 28,
+      "replyComments": 16,
+      "matchedIdentityComments": 44,
+      "accounts": 31,
+      "accountsStartingThreads": 27,
+      "accountsWithMultipleComments": 7
+    },
+    {
+      "postId": "post:pfbid02upmeKUjzAUKYiFtZ87Tos1bACTjUg6bq9FiWZQuVLrwdXhGVnTZ4TE4X6SfG5N7Hl",
+      "pageId": "104575425050525",
+      "capturedComments": 42,
+      "topLevelComments": 24,
+      "replyComments": 18,
+      "matchedIdentityComments": 42,
+      "accounts": 37,
+      "accountsStartingThreads": 24,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1672056241307870",
+      "pageId": "61557189262331",
+      "capturedComments": 36,
+      "topLevelComments": 31,
+      "replyComments": 5,
+      "matchedIdentityComments": 36,
+      "accounts": 34,
+      "accountsStartingThreads": 30,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid026QRXCj8swnem74Z265Ft27ukZ6cThufy3xmoJKztLyGjL3LdXatA8k3DespK89uzl",
+      "pageId": "61577398061794",
+      "capturedComments": 32,
+      "topLevelComments": 27,
+      "replyComments": 5,
+      "matchedIdentityComments": 32,
+      "accounts": 29,
+      "accountsStartingThreads": 26,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02tNu1m4kB1xwUseTxTFtegGqjYgQS1My2E4jvKVm94H3xg4ntHxZgej4HLeKUQZRjl",
+      "pageId": "100050258929386",
+      "capturedComments": 32,
+      "topLevelComments": 31,
+      "replyComments": 1,
+      "matchedIdentityComments": 32,
+      "accounts": 29,
+      "accountsStartingThreads": 29,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02nWi2KkkD9QQJ5hhEvM7uxJhdtuZMsmXUVjPeLNoxUMzq6NgzeUxMZPKPYFLtiwzJl",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "capturedComments": 28,
+      "topLevelComments": 26,
+      "replyComments": 2,
+      "matchedIdentityComments": 28,
+      "accounts": 25,
+      "accountsStartingThreads": 24,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02JEUuR82BoTDdFy3mZ1D4RGdsginy3jdNHzCkav7W2VQcq77Cg6m4CRpJJgr744Z4l",
+      "pageId": "61577398061794",
+      "capturedComments": 25,
+      "topLevelComments": 21,
+      "replyComments": 4,
+      "matchedIdentityComments": 25,
+      "accounts": 23,
+      "accountsStartingThreads": 20,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0pVveentc1PVrbz9igvuN85ybYYJmAEQvBgaiYQpnrtnW2ei5Mvm6nLFWENhX38Psl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 22,
+      "topLevelComments": 20,
+      "replyComments": 2,
+      "matchedIdentityComments": 22,
+      "accounts": 21,
+      "accountsStartingThreads": 20,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02dFcX8GbhGCDmdyrjFkrCR4MyiFixghEKEtr7cvvyYWgMYAbiFHUoHnYAgzA1B1dgl",
+      "pageId": "61577398061794",
+      "capturedComments": 21,
+      "topLevelComments": 18,
+      "replyComments": 3,
+      "matchedIdentityComments": 21,
+      "accounts": 19,
+      "accountsStartingThreads": 18,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02hpZFowawVBGouTCZPeRnbRnD5XdLyXjbpLKKGbLsfirqpk7JgVqf7SGnGJx19uxDl",
+      "pageId": "100083137130737",
+      "capturedComments": 19,
+      "topLevelComments": 9,
+      "replyComments": 10,
+      "matchedIdentityComments": 19,
+      "accounts": 10,
+      "accountsStartingThreads": 9,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02PK2BQUuFmxmeJrgDxK5YH3SjzYKhdospmacVbHE4EvxXqFzhcnAeTA2VRh2uBxBml",
+      "pageId": "104575425050525",
+      "capturedComments": 18,
+      "topLevelComments": 2,
+      "replyComments": 16,
+      "matchedIdentityComments": 18,
+      "accounts": 5,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1113050341136376",
+      "pageId": "61577398061794",
+      "capturedComments": 17,
+      "topLevelComments": 12,
+      "replyComments": 5,
+      "matchedIdentityComments": 17,
+      "accounts": 13,
+      "accountsStartingThreads": 12,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02TnWBWnWfk1vHjhGTVHLtjQ2uwXroeCAftqzQGra8B65TXMugVuMXq3a7isUaP6Cql",
+      "pageId": "104575425050525",
+      "capturedComments": 15,
+      "topLevelComments": 15,
+      "replyComments": 0,
+      "matchedIdentityComments": 15,
+      "accounts": 15,
+      "accountsStartingThreads": 15,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid031Set3UWaG5qXsXkbh5hvgPfzqfgmaLuFKfHEbYDUeVTwkK95BZ3SpBR6J1zXw2EMl",
+      "pageId": "61578385640569",
+      "capturedComments": 14,
+      "topLevelComments": 10,
+      "replyComments": 4,
+      "matchedIdentityComments": 14,
+      "accounts": 12,
+      "accountsStartingThreads": 10,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02jZo2EaavFLqQPxHZdxjr3vGNSMWBLz4z2gcn92scncuZ3fWGrh3Kes6Tw9gcbWeUl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 13,
+      "topLevelComments": 13,
+      "replyComments": 0,
+      "matchedIdentityComments": 13,
+      "accounts": 11,
+      "accountsStartingThreads": 11,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:2502903913566502",
+      "pageId": "61557189262331",
+      "capturedComments": 12,
+      "topLevelComments": 10,
+      "replyComments": 2,
+      "matchedIdentityComments": 12,
+      "accounts": 10,
+      "accountsStartingThreads": 9,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02BXNCV1uC2F5nUAmYRGGg96tyrbqpW8yvnUEmRHnYD4D27yaZBWEHLuvp67B29zkdl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 11,
+      "topLevelComments": 11,
+      "replyComments": 0,
+      "matchedIdentityComments": 11,
+      "accounts": 10,
+      "accountsStartingThreads": 10,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0bpiw3fev4bkwEAwVgt9AZrcdzUwSAXYJtKZvspxKMVxV4zGJDFt4ZZ7C1wqYmacQl",
+      "pageId": "61585325593477",
+      "capturedComments": 10,
+      "topLevelComments": 5,
+      "replyComments": 5,
+      "matchedIdentityComments": 10,
+      "accounts": 9,
+      "accountsStartingThreads": 5,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02vGKsL8zMEvmywHc7uP3xwpLXUHrhUT7ejLDpiAhhysMjEyCKoCdSuB9DwHv2bNCyl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 9,
+      "topLevelComments": 9,
+      "replyComments": 0,
+      "matchedIdentityComments": 9,
+      "accounts": 9,
+      "accountsStartingThreads": 9,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:1582826077192767",
+      "pageId": "https://www.facebook.com/noviniotposledniachas",
+      "capturedComments": 9,
+      "topLevelComments": 8,
+      "replyComments": 1,
+      "matchedIdentityComments": 9,
+      "accounts": 9,
+      "accountsStartingThreads": 8,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0K5jf6Wfc67p2HwjBYkg4BSZegkKPfbDV8vaGLyiVwVaWuPnJQ1NhiJ1VpsVjauDzl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 8,
+      "topLevelComments": 6,
+      "replyComments": 2,
+      "matchedIdentityComments": 8,
+      "accounts": 7,
+      "accountsStartingThreads": 6,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02S9i8g73PkvdreHCK14M8RjcDRaKuKV8mbemEz9uumawLedfsSSvBnxnrTxrr7dHfl",
+      "pageId": "104575425050525",
+      "capturedComments": 7,
+      "topLevelComments": 5,
+      "replyComments": 2,
+      "matchedIdentityComments": 7,
+      "accounts": 6,
+      "accountsStartingThreads": 5,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0TmJbD1kQoSpxLcJADuGeJ1SGjW3Lz9Z7zX7LNNzzU5GgymXPXKkibkGJF6TbXC6Pl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 7,
+      "topLevelComments": 6,
+      "replyComments": 1,
+      "matchedIdentityComments": 7,
+      "accounts": 6,
+      "accountsStartingThreads": 5,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02m5AM3UjX6s5P61kxMT15xB7VjMHvG1xaivvUUN8ewZhVBEV66zUDcjM33pR64ojml",
+      "pageId": "138363261435366",
+      "capturedComments": 6,
+      "topLevelComments": 6,
+      "replyComments": 0,
+      "matchedIdentityComments": 6,
+      "accounts": 6,
+      "accountsStartingThreads": 6,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid032257kFpWVw9H3xfrZnwCgVFGDo8J72jGTsLpViBujApt8kz4aZsEbnbv9AtUWksgl",
+      "pageId": "104575425050525",
+      "capturedComments": 6,
+      "topLevelComments": 6,
+      "replyComments": 0,
+      "matchedIdentityComments": 6,
+      "accounts": 6,
+      "accountsStartingThreads": 6,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1677929967087015",
+      "pageId": "61585325593477",
+      "capturedComments": 6,
+      "topLevelComments": 6,
+      "replyComments": 0,
+      "matchedIdentityComments": 6,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0252oshkJ5KmtXCKjdgoUHZjwS3xabtSgHBJHMag8dzEtKQ42gZRcUVsRJMwcyG6EXl",
+      "pageId": "104575425050525",
+      "capturedComments": 5,
+      "topLevelComments": 5,
+      "replyComments": 0,
+      "matchedIdentityComments": 5,
+      "accounts": 5,
+      "accountsStartingThreads": 5,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0eboqFNFPZpCoHNvPWGXJeF3nuNhR1UbVNd1zK9GSFWYPCWKLqVWokZiYG8oq9XHbl",
+      "pageId": "https://www.facebook.com/novininafocus",
+      "capturedComments": 5,
+      "topLevelComments": 5,
+      "replyComments": 0,
+      "matchedIdentityComments": 5,
+      "accounts": 5,
+      "accountsStartingThreads": 5,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid034mX45PNZm6a9rVhaNsHMAi2fGVL7yQV2gtHKKwRnSVYgSM4dmJrz4ghHg67qubbKl",
+      "pageId": "61577398061794",
+      "capturedComments": 5,
+      "topLevelComments": 3,
+      "replyComments": 2,
+      "matchedIdentityComments": 5,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid031KzVh7UKdSRowGx3pHBj5Qb8hu6DQNaKz1thvjzv3ZasBSHsaPKDRPzwcRU3PJqQl",
+      "pageId": "61577398061794",
+      "capturedComments": 3,
+      "topLevelComments": 3,
+      "replyComments": 0,
+      "matchedIdentityComments": 3,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0dqaVDHafaSqYgUEasHmN3Ani9oHcw4YwbwBJxneq4Jj6qTkAxyTJGyvhoSYwdoQtl",
+      "pageId": "104575425050525",
+      "capturedComments": 3,
+      "topLevelComments": 3,
+      "replyComments": 0,
+      "matchedIdentityComments": 3,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0f6K4AGEZsdACjuQQAeYcsdGykKTfbAVaLq8QXZeKqai38PPEP4s1ZLrPs2jEB1JFl",
+      "pageId": "https://www.facebook.com/noviniotposledniachas",
+      "capturedComments": 3,
+      "topLevelComments": 3,
+      "replyComments": 0,
+      "matchedIdentityComments": 3,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02VWS1ehNessnuMz9N8jgpK1jV3vB3Z9sViSpR3YLYMojPm5JQ8vGmUwQsLLggj2PDl",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "capturedComments": 3,
+      "topLevelComments": 2,
+      "replyComments": 1,
+      "matchedIdentityComments": 3,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1844092166778591",
+      "pageId": "61577398061794",
+      "capturedComments": 3,
+      "topLevelComments": 3,
+      "replyComments": 0,
+      "matchedIdentityComments": 3,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1423330226095881",
+      "pageId": "61585325593477",
+      "capturedComments": 2,
+      "topLevelComments": 2,
+      "replyComments": 0,
+      "matchedIdentityComments": 2,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0T5YyJUfYiM2zYDx1SxGs6Fi7ShK6WfkngqK9B4M493WbGg1oJTpRvUQPRfu9aDpxl",
+      "pageId": "100063562561986",
+      "capturedComments": 1,
+      "topLevelComments": 1,
+      "replyComments": 0,
+      "matchedIdentityComments": 1,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0abr2AuC5iF7qrfVaV4tpCTmdtBWNUtXcGj5WEr3kf6w5ebjJNugMTe2dC7T2zSkql",
+      "pageId": "https://www.facebook.com/noviniotposledniachas",
+      "capturedComments": 1,
+      "topLevelComments": 1,
+      "replyComments": 0,
+      "matchedIdentityComments": 1,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02tsQEfxjMKW48USs5CoMaPQ3pqzx6VGsw3CZxFCUe3b7YssvS3kC9dmBMjYrfdsRUl",
+      "pageId": "61577398061794",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "photo:1582677773874264",
+      "pageId": "https://www.facebook.com/noviniotposledniachas",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "photo:1154893593550392",
+      "pageId": "https://www.facebook.com/novininafocus",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02e9Nu96hmUGCtZQD3gAzFCAmXrUGpjYts7Qrk3bJhZYGonxLukB2C9xBqafFZycsXl",
+      "pageId": "61577398061794",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0T4ndd4P8DUg1FQtpjGDhUTGCd6XpUwNbkHxDRsvqhkyr4UhQoM49Gj788FPGJUwol",
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:1685718766236751",
+      "pageId": "61572252076131",
+      "capturedComments": 180,
+      "topLevelComments": 129,
+      "replyComments": 51,
+      "matchedIdentityComments": 180,
+      "accounts": 138,
+      "accountsStartingThreads": 119,
+      "accountsWithMultipleComments": 19
+    },
+    {
+      "postId": "video:1157399536729329",
+      "pageId": "61577398061794",
+      "capturedComments": 155,
+      "topLevelComments": 121,
+      "replyComments": 34,
+      "matchedIdentityComments": 155,
+      "accounts": 128,
+      "accountsStartingThreads": 119,
+      "accountsWithMultipleComments": 9
+    },
+    {
+      "postId": "video:1505206344753130",
+      "pageId": "61557189262331",
+      "capturedComments": 116,
+      "topLevelComments": 73,
+      "replyComments": 43,
+      "matchedIdentityComments": 116,
+      "accounts": 83,
+      "accountsStartingThreads": 71,
+      "accountsWithMultipleComments": 13
+    },
+    {
+      "postId": "video:1438183745146031",
+      "pageId": "61557189262331",
+      "capturedComments": 108,
+      "topLevelComments": 92,
+      "replyComments": 16,
+      "matchedIdentityComments": 108,
+      "accounts": 86,
+      "accountsStartingThreads": 83,
+      "accountsWithMultipleComments": 7
+    },
+    {
+      "postId": "post:pfbid02TyRefXGLG13M3pmcAkV6R67J7ngjJGQeapFBWguxS4r1jaPmZemKjBbgnKyKiunWl",
+      "pageId": "61557189262331",
+      "capturedComments": 95,
+      "topLevelComments": 53,
+      "replyComments": 42,
+      "matchedIdentityComments": 95,
+      "accounts": 65,
+      "accountsStartingThreads": 51,
+      "accountsWithMultipleComments": 16
+    },
+    {
+      "postId": "post:pfbid0UBSSooYbyLQ1yfNtsMtSWXCH6rGffqExNfACADwoAr9sJyKEupppWT6RbM9xEjVMl",
+      "pageId": "61557189262331",
+      "capturedComments": 78,
+      "topLevelComments": 33,
+      "replyComments": 45,
+      "matchedIdentityComments": 78,
+      "accounts": 55,
+      "accountsStartingThreads": 33,
+      "accountsWithMultipleComments": 12
+    },
+    {
+      "postId": "post:pfbid02BwihQyZqD3td346wvdEipSrUavMA5D9U3zho7XrgtXnRNBuY4NDqw9LoUUZ38ykgl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 74,
+      "topLevelComments": 44,
+      "replyComments": 30,
+      "matchedIdentityComments": 74,
+      "accounts": 55,
+      "accountsStartingThreads": 40,
+      "accountsWithMultipleComments": 12
+    },
+    {
+      "postId": "post:pfbid02Y2zTwSb6uoJjdYAV4TqNi7aCS4WgDuhzArpgDiC2H8XhJXkRAsM4kHsVnBjmTqpql",
+      "pageId": "61577398061794",
+      "capturedComments": 63,
+      "topLevelComments": 44,
+      "replyComments": 19,
+      "matchedIdentityComments": 63,
+      "accounts": 52,
+      "accountsStartingThreads": 41,
+      "accountsWithMultipleComments": 11
+    },
+    {
+      "postId": "post:pfbid02EJT5FUrZgtrk7tTa1XHeNT7wT3XcPNuGQZes7tnF3PRfkc79CJDyuhzJiouTS6Uyl",
+      "pageId": "104575425050525",
+      "capturedComments": 49,
+      "topLevelComments": 31,
+      "replyComments": 18,
+      "matchedIdentityComments": 49,
+      "accounts": 35,
+      "accountsStartingThreads": 30,
+      "accountsWithMultipleComments": 7
+    },
+    {
+      "postId": "post:pfbid0XjxPh3kRWttpVfgXyn4qv9MDgxK8aMB9rCKdG3W4Vfgy9Q4ySbLadZpG5LpbSWDwl",
+      "pageId": "61577398061794",
+      "capturedComments": 45,
+      "topLevelComments": 37,
+      "replyComments": 8,
+      "matchedIdentityComments": 45,
+      "accounts": 42,
+      "accountsStartingThreads": 36,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02u9M2ZYvSrtZ2KZkeDNeVdbxwfGDKn4RixnrqaRRR8g4aUGkxx7u9rvRLk2aVcaoHl",
+      "pageId": "61583481685886",
+      "capturedComments": 36,
+      "topLevelComments": 35,
+      "replyComments": 1,
+      "matchedIdentityComments": 36,
+      "accounts": 35,
+      "accountsStartingThreads": 35,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0RU4rkXLGMKMbo43LNk2dHiAbnzXzZnvisSWW69RqrDm96ZnFzxbKc3GXvx2PfgWbl",
+      "pageId": "104575425050525",
+      "capturedComments": 29,
+      "topLevelComments": 18,
+      "replyComments": 11,
+      "matchedIdentityComments": 29,
+      "accounts": 25,
+      "accountsStartingThreads": 18,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0cS7D5LBtrT6p1bihysbDJUmJzsmwZtVH2ZnKsrYC8whQbsgM3djcXfVKceaHeY4Rl",
+      "pageId": "61577398061794",
+      "capturedComments": 28,
+      "topLevelComments": 25,
+      "replyComments": 3,
+      "matchedIdentityComments": 28,
+      "accounts": 26,
+      "accountsStartingThreads": 25,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0VYwjVLzXpkkkERa8B8nj2WYinTRjHSpMdpuWSyDxxZJhLRDPWNATZtj8DDT8ctk2l",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 20,
+      "topLevelComments": 14,
+      "replyComments": 6,
+      "matchedIdentityComments": 20,
+      "accounts": 14,
+      "accountsStartingThreads": 13,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02sTbvxAS9yNW2ninfFGXuGB6HskJV5F9TUEkvh6xeVWfAmP6EXftsSyaHVjrsvH8xl",
+      "pageId": "104575425050525",
+      "capturedComments": 18,
+      "topLevelComments": 10,
+      "replyComments": 8,
+      "matchedIdentityComments": 18,
+      "accounts": 16,
+      "accountsStartingThreads": 10,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02ZgmYfBVT6EehBcBnfE7EdG1bcKBkPYYTvFQqxM6UJ4a5jYGswBqW6bLsSwmCwzE4l",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 16,
+      "topLevelComments": 11,
+      "replyComments": 5,
+      "matchedIdentityComments": 16,
+      "accounts": 12,
+      "accountsStartingThreads": 11,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0DKLNwwfhRLsUCAvwvSTVqxjXo14Ybg7hQBM4QkapDncqik1b8BY8ryNsYbzq47XRl",
+      "pageId": "https://www.facebook.com/n.barekov",
+      "capturedComments": 13,
+      "topLevelComments": 13,
+      "replyComments": 0,
+      "matchedIdentityComments": 13,
+      "accounts": 12,
+      "accountsStartingThreads": 12,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid08UZBktF8as1FA3sS9DHowHJKXLd5RcRd4zUX5bCmuHuaTYbqxVF1CXq4jwzGPcDxl",
+      "pageId": "100069720181353",
+      "capturedComments": 11,
+      "topLevelComments": 10,
+      "replyComments": 1,
+      "matchedIdentityComments": 11,
+      "accounts": 10,
+      "accountsStartingThreads": 9,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "video:1657759299059928",
+      "pageId": "61577398061794",
+      "capturedComments": 34,
+      "topLevelComments": 23,
+      "replyComments": 11,
+      "matchedIdentityComments": 34,
+      "accounts": 25,
+      "accountsStartingThreads": 21,
+      "accountsWithMultipleComments": 5
+    },
+    {
+      "postId": "post:pfbid02izp6dNeysrRRYqX8DW9d5zZr1BN5BAaaNy5VEMEhAEGYjBf3cH4DSk6sMnhhSYmVl",
+      "pageId": "61577398061794",
+      "capturedComments": 21,
+      "topLevelComments": 13,
+      "replyComments": 8,
+      "matchedIdentityComments": 21,
+      "accounts": 15,
+      "accountsStartingThreads": 12,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0oZRtdfH4kWzcrRooEgKEhy5Krkhxq8midaY16wKyeNNHPnVRDqPuBjDFvpvTSpPsl",
+      "pageId": "61585325593477",
+      "capturedComments": 14,
+      "topLevelComments": 12,
+      "replyComments": 2,
+      "matchedIdentityComments": 14,
+      "accounts": 14,
+      "accountsStartingThreads": 12,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0mDnqBwtyiQuvDPsUuSLyFfrNZ8hCzmYwfYpUCeWUxHa8KrHDuSdaDAfzHxkphbvNl",
+      "pageId": "100069720181353",
+      "capturedComments": 11,
+      "topLevelComments": 11,
+      "replyComments": 0,
+      "matchedIdentityComments": 11,
+      "accounts": 11,
+      "accountsStartingThreads": 11,
+      "accountsWithMultipleComments": null
+    }
+  ],
+  "pages": [
+    {
+      "pageId": "100069720181353",
+      "postCount": 6,
+      "capturedComments": 775,
+      "matchedIdentityComments": 775,
+      "accounts": 543
+    },
+    {
+      "pageId": "61557189262331",
+      "postCount": 12,
+      "capturedComments": 1346,
+      "matchedIdentityComments": 1346,
+      "accounts": 992
+    },
+    {
+      "pageId": "61585325593477",
+      "postCount": 14,
+      "capturedComments": 334,
+      "matchedIdentityComments": 334,
+      "accounts": 247
+    },
+    {
+      "pageId": "104575425050525",
+      "postCount": 26,
+      "capturedComments": 858,
+      "matchedIdentityComments": 858,
+      "accounts": 532
+    },
+    {
+      "pageId": "61577398061794",
+      "postCount": 46,
+      "capturedComments": 1779,
+      "matchedIdentityComments": 1779,
+      "accounts": 1096
+    },
+    {
+      "pageId": "https://www.facebook.com/zapiskipobgpolitikata",
+      "postCount": 6,
+      "capturedComments": 119,
+      "matchedIdentityComments": 119,
+      "accounts": 85
+    },
+    {
+      "pageId": "61594398383441",
+      "postCount": 1,
+      "capturedComments": 56,
+      "matchedIdentityComments": 56,
+      "accounts": 35
+    },
+    {
+      "pageId": "https://www.facebook.com/n.barekov",
+      "postCount": 21,
+      "capturedComments": 442,
+      "matchedIdentityComments": 442,
+      "accounts": 229
+    },
+    {
+      "pageId": "61583481685886",
+      "postCount": 3,
+      "capturedComments": 66,
+      "matchedIdentityComments": 66,
+      "accounts": 63
+    },
+    {
+      "pageId": "138363261435366",
+      "postCount": 3,
+      "capturedComments": 232,
+      "matchedIdentityComments": 232,
+      "accounts": 206
+    },
+    {
+      "pageId": "100030791183325",
+      "postCount": 1,
+      "capturedComments": 10,
+      "matchedIdentityComments": 10,
+      "accounts": 7
+    },
+    {
+      "pageId": "100083137130737",
+      "postCount": 2,
+      "capturedComments": 24,
+      "matchedIdentityComments": 24,
+      "accounts": 13
+    },
+    {
+      "pageId": "100063562561986",
+      "postCount": 3,
+      "capturedComments": 6,
+      "matchedIdentityComments": 6,
+      "accounts": null
+    },
+    {
+      "pageId": "https://www.facebook.com/novininafocus",
+      "postCount": 6,
+      "capturedComments": 10,
+      "matchedIdentityComments": 10,
+      "accounts": 10
+    },
+    {
+      "pageId": "https://www.facebook.com/noviniotposledniachas",
+      "postCount": 6,
+      "capturedComments": 14,
+      "matchedIdentityComments": 14,
+      "accounts": 14
+    },
+    {
+      "pageId": "61591476950404",
+      "postCount": 3,
+      "capturedComments": 4,
+      "matchedIdentityComments": 4,
+      "accounts": null
+    },
+    {
+      "pageId": "61557839147130",
+      "postCount": 1,
+      "capturedComments": 4,
+      "matchedIdentityComments": 4,
+      "accounts": null
+    },
+    {
+      "pageId": "100076891908016",
+      "postCount": 1,
+      "capturedComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null
+    },
+    {
+      "pageId": "61594146398840",
+      "postCount": 1,
+      "capturedComments": 275,
+      "matchedIdentityComments": 275,
+      "accounts": 195
+    },
+    {
+      "pageId": "61595732886875",
+      "postCount": 1,
+      "capturedComments": 112,
+      "matchedIdentityComments": 112,
+      "accounts": 103
+    },
+    {
+      "pageId": "100050258929386",
+      "postCount": 1,
+      "capturedComments": 32,
+      "matchedIdentityComments": 32,
+      "accounts": 29
+    },
+    {
+      "pageId": "61578385640569",
+      "postCount": 1,
+      "capturedComments": 14,
+      "matchedIdentityComments": 14,
+      "accounts": 12
+    },
+    {
+      "pageId": "61572252076131",
+      "postCount": 1,
+      "capturedComments": 180,
+      "matchedIdentityComments": 180,
+      "accounts": 138
+    }
+  ],
+  "postOverlaps": [
+    {
+      "leftPostId": "post:pfbid03V9bKpCNQKJu4Ba9HckG1GKZfbUfiW7sHoXSmrEjTToa9hCfLCpeSshKajdgAmE9l",
+      "rightPostId": "post:pfbid0mnE5t943SWc4MH9KheNhCi5UYKCLnWUP3kxWAv3wd2WESpMJHHTLYfLp6rtWTHNal",
+      "sharedAccounts": 7
+    },
+    {
+      "leftPostId": "post:pfbid02PjhhvHUKazdRWLaoBwbzKiEQb7hM945KZtAMcp4hFGrR8mDfyKzygx4oTCznvw74l",
+      "rightPostId": "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid03V9bKpCNQKJu4Ba9HckG1GKZfbUfiW7sHoXSmrEjTToa9hCfLCpeSshKajdgAmE9l",
+      "rightPostId": "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl",
+      "rightPostId": "post:pfbid0r5fND2sHqXbM1JCJbmJo5rLUWxMFnaZFSd5dC4qUh2PqVagZSQANr79TZeYQWPQyl",
+      "sharedAccounts": 7
+    },
+    {
+      "leftPostId": "post:pfbid02BwihQyZqD3td346wvdEipSrUavMA5D9U3zho7XrgtXnRNBuY4NDqw9LoUUZ38ykgl",
+      "rightPostId": "post:pfbid0W91zvaUDUbjGfAT4RRDMfMrmwpLeYGcXbPq2tTiWfJihYoGSugJDqd2Meg3SNU9Gl",
+      "sharedAccounts": 13
+    },
+    {
+      "leftPostId": "post:pfbid02BwihQyZqD3td346wvdEipSrUavMA5D9U3zho7XrgtXnRNBuY4NDqw9LoUUZ38ykgl",
+      "rightPostId": "post:pfbid0txCzz6qbbi7BezLje1uFVANeUa5eskGN76mkPQ9tWYNx97JCMjEFDndbPFtwYAzYl",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid02DjFWK74BJbFdAYJQGreHngD2m3evycaLdCeHeK7PykkWGR9zzHpNMQNt6XciHXB5l",
+      "rightPostId": "post:pfbid0W91zvaUDUbjGfAT4RRDMfMrmwpLeYGcXbPq2tTiWfJihYoGSugJDqd2Meg3SNU9Gl",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid02DjFWK74BJbFdAYJQGreHngD2m3evycaLdCeHeK7PykkWGR9zzHpNMQNt6XciHXB5l",
+      "rightPostId": "post:pfbid0txCzz6qbbi7BezLje1uFVANeUa5eskGN76mkPQ9tWYNx97JCMjEFDndbPFtwYAzYl",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPostId": "post:pfbid02PjhhvHUKazdRWLaoBwbzKiEQb7hM945KZtAMcp4hFGrR8mDfyKzygx4oTCznvw74l",
+      "rightPostId": "post:pfbid0W91zvaUDUbjGfAT4RRDMfMrmwpLeYGcXbPq2tTiWfJihYoGSugJDqd2Meg3SNU9Gl",
+      "sharedAccounts": 8
+    },
+    {
+      "leftPostId": "post:pfbid0W91zvaUDUbjGfAT4RRDMfMrmwpLeYGcXbPq2tTiWfJihYoGSugJDqd2Meg3SNU9Gl",
+      "rightPostId": "post:pfbid0txCzz6qbbi7BezLje1uFVANeUa5eskGN76mkPQ9tWYNx97JCMjEFDndbPFtwYAzYl",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "video:1438183745146031",
+      "rightPostId": "video:2057584485644941",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPostId": "post:pfbid0UBSSooYbyLQ1yfNtsMtSWXCH6rGffqExNfACADwoAr9sJyKEupppWT6RbM9xEjVMl",
+      "rightPostId": "video:1505206344753130",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "video:1438183745146031",
+      "rightPostId": "video:1505206344753130",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "video:1438183745146031",
+      "rightPostId": "video:3360112920862887",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPostId": "video:1505206344753130",
+      "rightPostId": "video:3360112920862887",
+      "sharedAccounts": 9
+    },
+    {
+      "leftPostId": "post:pfbid02upmeKUjzAUKYiFtZ87Tos1bACTjUg6bq9FiWZQuVLrwdXhGVnTZ4TE4X6SfG5N7Hl",
+      "rightPostId": "post:pfbid0r5fND2sHqXbM1JCJbmJo5rLUWxMFnaZFSd5dC4qUh2PqVagZSQANr79TZeYQWPQyl",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid0BHVnuGJsi6ub8GXhMMHfnBdKKnQE7cadFT1LBkfrfGTWubjtRahR29KDYiyCPg6bl",
+      "rightPostId": "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl",
+      "sharedAccounts": 7
+    },
+    {
+      "leftPostId": "post:pfbid02BXNCV1uC2F5nUAmYRGGg96tyrbqpW8yvnUEmRHnYD4D27yaZBWEHLuvp67B29zkdl",
+      "rightPostId": "post:pfbid02DjFWK74BJbFdAYJQGreHngD2m3evycaLdCeHeK7PykkWGR9zzHpNMQNt6XciHXB5l",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid02BXNCV1uC2F5nUAmYRGGg96tyrbqpW8yvnUEmRHnYD4D27yaZBWEHLuvp67B29zkdl",
+      "rightPostId": "post:pfbid02aZDv5aYEA7tJk17xqQ4aagnket1qJ2SbkPTPeh7VVdvQpCwkkqNdN4dyREEfXfKjl",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid02DjFWK74BJbFdAYJQGreHngD2m3evycaLdCeHeK7PykkWGR9zzHpNMQNt6XciHXB5l",
+      "rightPostId": "post:pfbid02aZDv5aYEA7tJk17xqQ4aagnket1qJ2SbkPTPeh7VVdvQpCwkkqNdN4dyREEfXfKjl",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPostId": "post:pfbid02DjFWK74BJbFdAYJQGreHngD2m3evycaLdCeHeK7PykkWGR9zzHpNMQNt6XciHXB5l",
+      "rightPostId": "post:pfbid0tVtTjFwus7LNtbv6zFgLKxtYFg5bhXGi1TKv8jN6XNoHAZP5G6ssz9EqAFo9XnGYl",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid02aZDv5aYEA7tJk17xqQ4aagnket1qJ2SbkPTPeh7VVdvQpCwkkqNdN4dyREEfXfKjl",
+      "rightPostId": "post:pfbid09Sad8rRWqTxk99V9nGjpQUbjHdGrtZGSXroqjhzQo5q2ctWbmhTkNe4EzjY3npHTl",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid02aZDv5aYEA7tJk17xqQ4aagnket1qJ2SbkPTPeh7VVdvQpCwkkqNdN4dyREEfXfKjl",
+      "rightPostId": "post:pfbid0W91zvaUDUbjGfAT4RRDMfMrmwpLeYGcXbPq2tTiWfJihYoGSugJDqd2Meg3SNU9Gl",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid09Sad8rRWqTxk99V9nGjpQUbjHdGrtZGSXroqjhzQo5q2ctWbmhTkNe4EzjY3npHTl",
+      "rightPostId": "post:pfbid0VYwjVLzXpkkkERa8B8nj2WYinTRjHSpMdpuWSyDxxZJhLRDPWNATZtj8DDT8ctk2l",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid09Sad8rRWqTxk99V9nGjpQUbjHdGrtZGSXroqjhzQo5q2ctWbmhTkNe4EzjY3npHTl",
+      "rightPostId": "post:pfbid0W91zvaUDUbjGfAT4RRDMfMrmwpLeYGcXbPq2tTiWfJihYoGSugJDqd2Meg3SNU9Gl",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPostId": "post:pfbid0Y3RrwUWN4B2fMGj1BkPdgPJH7L8x15uLKteo7KecmYkkcXCs3n9y6XR4ZsyQY11Tl",
+      "rightPostId": "video:1138813955363373",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPostId": "post:pfbid02dFcX8GbhGCDmdyrjFkrCR4MyiFixghEKEtr7cvvyYWgMYAbiFHUoHnYAgzA1B1dgl",
+      "rightPostId": "video:1138813955363373",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPostId": "video:1138813955363373",
+      "rightPostId": "video:1157252846871409",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPostId": "video:1138813955363373",
+      "rightPostId": "video:1670123841398564",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "video:1138813955363373",
+      "rightPostId": "video:1843600866897994",
+      "sharedAccounts": 11
+    },
+    {
+      "leftPostId": "video:1157252846871409",
+      "rightPostId": "video:1843600866897994",
+      "sharedAccounts": 10
+    },
+    {
+      "leftPostId": "video:1138813955363373",
+      "rightPostId": "video:1157399536729329",
+      "sharedAccounts": 8
+    },
+    {
+      "leftPostId": "video:1138813955363373",
+      "rightPostId": "video:1428401352820819",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "video:1157399536729329",
+      "rightPostId": "video:1428401352820819",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPostId": "post:pfbid02Y2zTwSb6uoJjdYAV4TqNi7aCS4WgDuhzArpgDiC2H8XhJXkRAsM4kHsVnBjmTqpql",
+      "rightPostId": "video:1138813955363373",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "video:1138813955363373",
+      "rightPostId": "video:1645050123780583",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl",
+      "rightPostId": "post:pfbid0Y3RrwUWN4B2fMGj1BkPdgPJH7L8x15uLKteo7KecmYkkcXCs3n9y6XR4ZsyQY11Tl",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPostId": "post:pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl",
+      "rightPostId": "video:1138813955363373",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl",
+      "rightPostId": "video:1157399536729329",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPostId": "video:1157252846871409",
+      "rightPostId": "video:1157399536729329",
+      "sharedAccounts": 9
+    },
+    {
+      "leftPostId": "post:pfbid02Y2zTwSb6uoJjdYAV4TqNi7aCS4WgDuhzArpgDiC2H8XhJXkRAsM4kHsVnBjmTqpql",
+      "rightPostId": "video:998758882516672",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "video:1138813955363373",
+      "rightPostId": "video:998758882516672",
+      "sharedAccounts": 9
+    },
+    {
+      "leftPostId": "video:1157399536729329",
+      "rightPostId": "video:1843600866897994",
+      "sharedAccounts": 9
+    },
+    {
+      "leftPostId": "video:1428401352820819",
+      "rightPostId": "video:1670123841398564",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPostId": "video:1670123841398564",
+      "rightPostId": "video:1843600866897994",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "video:1670123841398564",
+      "rightPostId": "video:998758882516672",
+      "sharedAccounts": 7
+    },
+    {
+      "leftPostId": "video:1843600866897994",
+      "rightPostId": "video:998758882516672",
+      "sharedAccounts": 7
+    },
+    {
+      "leftPostId": "post:1685718766236751",
+      "rightPostId": "video:1670123841398564",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:1685718766236751",
+      "rightPostId": "video:998758882516672",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "video:1157399536729329",
+      "rightPostId": "video:1645050123780583",
+      "sharedAccounts": 7
+    },
+    {
+      "leftPostId": "post:pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl",
+      "rightPostId": "post:pfbid0cS7D5LBtrT6p1bihysbDJUmJzsmwZtVH2ZnKsrYC8whQbsgM3djcXfVKceaHeY4Rl",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid02etWsuvBeLS3Ku119BoMWHjdWvXzMaARnc96tfyJJtMEDJBrhPwwiUpdcMfrsWSb8l",
+      "rightPostId": "video:1428401352820819",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "video:1119095521093836",
+      "rightPostId": "video:1157252846871409",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "video:1157399536729329",
+      "rightPostId": "video:998758882516672",
+      "sharedAccounts": 11
+    },
+    {
+      "leftPostId": "post:pfbid0Y3RrwUWN4B2fMGj1BkPdgPJH7L8x15uLKteo7KecmYkkcXCs3n9y6XR4ZsyQY11Tl",
+      "rightPostId": "video:1428401352820819",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "video:1157399536729329",
+      "rightPostId": "video:1670123841398564",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPostId": "post:pfbid02BwihQyZqD3td346wvdEipSrUavMA5D9U3zho7XrgtXnRNBuY4NDqw9LoUUZ38ykgl",
+      "rightPostId": "post:pfbid0pVveentc1PVrbz9igvuN85ybYYJmAEQvBgaiYQpnrtnW2ei5Mvm6nLFWENhX38Psl",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid02BwihQyZqD3td346wvdEipSrUavMA5D9U3zho7XrgtXnRNBuY4NDqw9LoUUZ38ykgl",
+      "rightPostId": "post:pfbid02aZDv5aYEA7tJk17xqQ4aagnket1qJ2SbkPTPeh7VVdvQpCwkkqNdN4dyREEfXfKjl",
+      "sharedAccounts": 7
+    }
+  ],
+  "pageOverlaps": [
+    {
+      "leftPageId": "100069720181353",
+      "rightPageId": "https://www.facebook.com/n.barekov",
+      "sharedAccounts": 9
+    },
+    {
+      "leftPageId": "100069720181353",
+      "rightPageId": "104575425050525",
+      "sharedAccounts": 13
+    },
+    {
+      "leftPageId": "100069720181353",
+      "rightPageId": "61577398061794",
+      "sharedAccounts": 11
+    },
+    {
+      "leftPageId": "104575425050525",
+      "rightPageId": "61577398061794",
+      "sharedAccounts": 15
+    },
+    {
+      "leftPageId": "104575425050525",
+      "rightPageId": "https://www.facebook.com/n.barekov",
+      "sharedAccounts": 31
+    },
+    {
+      "leftPageId": "61577398061794",
+      "rightPageId": "https://www.facebook.com/n.barekov",
+      "sharedAccounts": 7
+    },
+    {
+      "leftPageId": "100069720181353",
+      "rightPageId": "61557189262331",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPageId": "100069720181353",
+      "rightPageId": "61585325593477",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPageId": "104575425050525",
+      "rightPageId": "61557189262331",
+      "sharedAccounts": 10
+    },
+    {
+      "leftPageId": "61572252076131",
+      "rightPageId": "61577398061794",
+      "sharedAccounts": 22
+    },
+    {
+      "leftPageId": "61557189262331",
+      "rightPageId": "61585325593477",
+      "sharedAccounts": 13
+    },
+    {
+      "leftPageId": "61557189262331",
+      "rightPageId": "https://www.facebook.com/n.barekov",
+      "sharedAccounts": 9
+    },
+    {
+      "leftPageId": "104575425050525",
+      "rightPageId": "61585325593477",
+      "sharedAccounts": 7
+    },
+    {
+      "leftPageId": "104575425050525",
+      "rightPageId": "61594146398840",
+      "sharedAccounts": 9
+    },
+    {
+      "leftPageId": "61594146398840",
+      "rightPageId": "https://www.facebook.com/n.barekov",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPageId": "61577398061794",
+      "rightPageId": "61585325593477",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPageId": "104575425050525",
+      "rightPageId": "138363261435366",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPageId": "138363261435366",
+      "rightPageId": "https://www.facebook.com/n.barekov",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPageId": "61577398061794",
+      "rightPageId": "61595732886875",
+      "sharedAccounts": 25
+    },
+    {
+      "leftPageId": "61557189262331",
+      "rightPageId": "61577398061794",
+      "sharedAccounts": 8
+    }
+  ],
+  "collectionSha256": "d46d0c538375d98f3652626c8bb4389128a07c50a674d11fff526e8c4cb749c4"
+}
