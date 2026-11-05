@@ -212,7 +212,7 @@ The Коментари tab (`?view=comments`) loads `public/data/facebook/2026/c
 
 Assessments use the comment and its thread context, independently of the publisher's post label. Party, running-mate and donor sentiment is not automatically transferred to the primary candidate. Factual reports or corrections remain informative when no candidate judgment is expressed. Missing or insufficient text remains unreviewed, while an ambiguous candidate reference remains unclear.
 
-Raw browser captures and comment assessments stay outside the repository and published assets. Captures retain native comment IDs, parent IDs, source links, displayed dates, text completeness and text hashes, without author records. Assessments refer to the exact captured text hash. The builder rejects stale assessments and unknown post references, preserves identical text at distinct comment IDs, and publishes only aggregate counts and coverage. The existing post snapshot is unchanged.
+Raw browser captures and comment assessments stay outside the repository and published assets. Captures retain native comment IDs, thread-root IDs from reply permalinks, source links, displayed dates, text completeness and text hashes, without author records. Assessments refer to the exact captured text hash. The builder rejects stale assessments and unknown post references, preserves identical text at distinct comment IDs, and publishes only aggregate counts and coverage. The existing post snapshot is unchanged.
 
 ```bash
 node scripts/build-facebook-comments.js /path/to/private/captures.json /path/to/private/assessments.json
