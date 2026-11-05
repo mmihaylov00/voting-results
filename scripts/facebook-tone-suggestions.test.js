@@ -94,8 +94,7 @@ test('catalog accepts every deployed source record and its largest allowed batch
   const manifest = JSON.parse(readFileSync(join(directory, 'comments/manifest.json'), 'utf8'));
   assert.equal(catalog.size, report.posts.length + manifest.posts.reduce((sum, post) => sum + post.count, 0));
   const records = [...catalog.values()];
-  assert.equal(catalog.size, 6858);
-  assert.equal(records.filter(record => record.kind === 'post').length, 166);
+  assert.equal(records.filter(record => record.kind === 'post').length, report.posts.length);
   assert.equal(records.filter(record => record.kind === 'comment').length, 6692);
   assert.equal(records.filter(record => record.kind === 'comment' && record.editable).length, 5012);
   assert.equal(records.filter(record => !record.editable).length, 1680);

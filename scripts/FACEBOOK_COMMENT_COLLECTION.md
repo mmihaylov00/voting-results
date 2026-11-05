@@ -48,6 +48,15 @@ five are suppressed. It never exports account tokens or per-account histories. C
 public identifiers, not verified unique people: mixed numeric IDs/handles, changed handles and unavailable
 bylines can affect matching. No display-name matching or profile lookup resolves these differences.
 
+When catalog posts are added before collecting their comments, use `alignParticipationCohort` with the
+private state and `report.posts.map(({ id, pageId }) => ({ id, pageId }))`, then export the aligned copy.
+It adds zero collected records without changing accounts, overlaps or the collection timestamp, and rejects
+removed posts or changed Page ownership. Keep the preceding private state intact. Rebuilding comment aggregates
+and the reader from the existing raw capture marks the new posts `not-checked`, with null Facebook counters;
+an empty reader file does not establish that the Facebook thread itself is empty.
+The participation view shows `-` for wholly unchecked sources and retains `<5` for checked small cells.
+Its coverage line reports checked posts against the full current cohort.
+
 ## Publishing
 
 Finish and validate the fresh collection before replacing published data. Reuse an earlier assessment

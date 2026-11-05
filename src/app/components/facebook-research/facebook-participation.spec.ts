@@ -56,6 +56,22 @@ function suppressedFixture(): FacebookParticipationReport {
   return data;
 }
 
+function emptyCoverageFixture(): { participation: FacebookParticipationReport; comments: FacebookCommentsReport } {
+  const participation = suppressedFixture();
+  participation.coverage = { capturedComments: 0, matchedIdentityComments: 0, unknownIdentityComments: 0 };
+  participation.posts.forEach(post => {
+    post.capturedComments = 0; post.topLevelComments = 0; post.replyComments = 0; post.matchedIdentityComments = 0;
+  });
+  participation.pages.forEach(page => { page.capturedComments = 0; page.matchedIdentityComments = 0; });
+  const comments = commentsFixture();
+  comments.posts.forEach((post, index) => {
+    Object.assign(post, { status: index === 0 ? 'complete' : 'not-checked', checkedAt: index === 0 ? capturedAt : null,
+      ordering: null, reportedCount: index === 0 ? 0 : null, capturedCount: 0, topLevelCount: 0, replyCount: 0 });
+    for (const counts of Object.values(post.counts)) counts.unreviewed = 0;
+  });
+  return { participation, comments };
+}
+
 function setup() {
   TestBed.configureTestingModule({ imports: [FacebookParticipationComponent], providers: [provideHttpClient(),
     provideHttpClientTesting(), provideRouter([]), { provide: ThemeService, useValue: { darkMode: signal(false) } }] });
@@ -144,6 +160,7 @@ describe('Facebook aggregate participation workspace', () => {
     expect(component.report()?.totals.accounts).toBe(12);
     expect(element.querySelector('.participation-totals')?.textContent).toContain('12');
     expect(element.querySelector('.coverage')?.textContent).toContain('36');
+    expect(element.querySelector('.coverage')?.textContent).toContain('2 / 2 проверени публикации');
     expect(element.querySelectorAll('[role="tab"]')).toHaveLength(3);
     expect(element.querySelector('.table-scroll')?.getAttribute('tabindex')).toBe('0');
     expect(element.querySelector('.chart-scroll')).not.toBeNull();
@@ -188,6 +205,42 @@ describe('Facebook aggregate participation workspace', () => {
     expect(fixture.nativeElement.querySelector('.account-count')?.textContent).toBe('<5');
     expect(fixture.nativeElement.querySelector('.chart-scroll')).toBeNull();
     expect(fixture.componentInstance.chartRows()).toHaveLength(0);
+    fixture.destroy();
+  });
+
+  it('distinguishes checked empty threads from unchecked Pages and posts without changing suppression', () => {
+    const fixture = setup();
+    const data = emptyCoverageFixture();
+    flush(data.participation, data.comments);
+    fixture.detectChanges();
+    const component = fixture.componentInstance;
+    const element = fixture.nativeElement as HTMLElement;
+    expect(component.error()).toBe('');
+    expect(component.checkedPostCount()).toBe(1);
+    expect(element.querySelector('.coverage')?.textContent).toContain('1 / 2 проверени публикации');
+    expect([...element.querySelectorAll('.account-count')].map(cell => cell.textContent)).toEqual(['<5', '-']);
+    expect(component.chartRows()).toHaveLength(0);
+    component.setView('posts');
+    fixture.detectChanges();
+    const rows = [...element.querySelectorAll('tbody tr')];
+    expect(rows[0].textContent).toContain('Обходена');
+    expect(rows[1].textContent).toContain('Необходена');
+    expect([...rows[0].querySelectorAll('td')].slice(0, 3).map(cell => cell.textContent)).toEqual(['<5', '<5', '<5']);
+    expect([...rows[1].querySelectorAll('td')].slice(0, 3).map(cell => cell.textContent)).toEqual(['-', '-', '-']);
+    expect(component.report()?.totals.accounts).toBeNull();
+    fixture.destroy();
+  });
+
+  it('does not show suppressed totals as observed data when no post has been checked', () => {
+    const fixture = setup();
+    const data = emptyCoverageFixture();
+    Object.assign(data.comments.posts[0], { status: 'not-checked', checkedAt: null, reportedCount: null });
+    flush(data.participation, data.comments);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(fixture.componentInstance.checkedPostCount()).toBe(0);
+    expect([...element.querySelectorAll('.participation-totals dd')].map(cell => cell.textContent)).toEqual(['-', '-', '-']);
+    expect(element.querySelector('.coverage')?.textContent).toContain('0 / 2 проверени публикации');
     fixture.destroy();
   });
 

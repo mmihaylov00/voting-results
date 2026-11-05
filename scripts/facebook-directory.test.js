@@ -159,8 +159,22 @@ test('catalog additions retain public provenance and explicitly partial collecti
   }
   for (const review of manifest.duplicateReviews) {
     assert(posts.has(review.existingPostId));
-    assert.equal(review.resolution, 'held-possible-alias');
-    assert(!report.posts.some(post => post.url === review.observedUrl));
+    const observed = report.posts.find(post => post.url === review.observedUrl);
+    if (review.resolution === 'distinct-posts') {
+      const existing = posts.get(review.existingPostId);
+      assert(observed);
+      assert.notEqual(observed.id, existing.id);
+      assert.notEqual(observed.url, existing.url);
+      assert.equal(existing.url, review.existingUrl);
+      assert.equal(existing.pageId, review.pageId);
+      assert.equal(observed.pageId, existing.pageId);
+      assert.notEqual(observed.sourceTextSha256, existing.sourceTextSha256);
+      assert.equal(observed.sourceTextSha256, review.sourceTextSha256);
+      assert(review.reason.trim());
+    } else {
+      assert.equal(review.resolution, 'held-possible-alias');
+      assert(!observed);
+    }
   }
   assert.doesNotMatch(JSON.stringify(manifest), /\/Users\/|\/var\/folders\/|fbcdn\.net|__cft__/);
 });

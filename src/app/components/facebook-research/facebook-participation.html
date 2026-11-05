@@ -4,11 +4,11 @@
 @if (report(); as data) {
   <p class="eyebrow">Цялата извадка</p>
   <dl class="participation-totals">
-    <div><dt>Разпознати акаунти</dt><dd>{{ accountCount(data.totals.accounts) }}</dd></div>
-    <div><dt>В повече публикации</dt><dd>{{ accountCount(data.totals.accountsOnMultiplePosts) }}</dd></div>
-    <div><dt>В повече страници</dt><dd>{{ accountCount(data.totals.accountsOnMultiplePages) }}</dd></div>
+    <div><dt>Разпознати акаунти</dt><dd>{{ accountCount(data.totals.accounts, checkedPostCount() > 0) }}</dd></div>
+    <div><dt>В повече публикации</dt><dd>{{ accountCount(data.totals.accountsOnMultiplePosts, checkedPostCount() > 0) }}</dd></div>
+    <div><dt>В повече страници</dt><dd>{{ accountCount(data.totals.accountsOnMultiplePages, checkedPostCount() > 0) }}</dd></div>
   </dl>
-  <p class="coverage"><strong>{{ count(data.coverage.matchedIdentityComments) }}</strong> от {{ count(data.coverage.capturedComments) }} коментара с разпознат идентификатор · {{ count(data.coverage.unknownIdentityComments) }} без идентификатор</p>
+  <p class="coverage"><strong>{{ count(data.coverage.matchedIdentityComments) }}</strong> от {{ count(data.coverage.capturedComments) }} коментара с разпознат идентификатор · {{ count(data.coverage.unknownIdentityComments) }} без идентификатор · {{ count(checkedPostCount()) }} / {{ count(data.posts.length) }} проверени публикации</p>
   <app-view-tabs [tabs]="tabs" [value]="view()" (valueChange)="setView($event)" [scrollable]="true" label="Обобщения на участието" idPrefix="facebook-participation-view" panelId="facebook-participation-panel" />
   <div id="facebook-participation-panel" role="tabpanel" [attr.aria-labelledby]="'facebook-participation-view-tab-' + view()">
     <div class="filters">
@@ -46,8 +46,8 @@
               @if (view() === 'overlaps') {
                 <td class="right-source"><a class="source-link" [href]="row.rightUrl" target="_blank" rel="noopener noreferrer"><span>{{ row.right }}</span><app-map-icon name="share" /></a></td><td class="shared-count">{{ count(row.shared) }}</td>
               } @else {
-                <td class="account-count">{{ accountCount(row.accounts) }}</td>
-                @if (view() === 'posts') {<td>{{ accountCount(row.starters) }}</td><td>{{ accountCount(row.repeated) }}</td>}
+                <td class="account-count">{{ accountCount(row.accounts, row.checked) }}</td>
+                @if (view() === 'posts') {<td>{{ accountCount(row.starters, row.checked) }}</td><td>{{ accountCount(row.repeated, row.checked) }}</td>}
                 <td>{{ count(row.matched) }} / {{ count(row.captured) }}</td><td class="status-cell">{{ row.status }}</td>
               }
             </tr>

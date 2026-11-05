@@ -34,6 +34,7 @@ interface ParticipationRow {
   repeated: FacebookAccountCell;
   shared: number;
   status: string;
+  checked: boolean;
 }
 
 @Component({
@@ -63,7 +64,8 @@ export class FacebookParticipationComponent implements OnInit {
     { id: 'posts', label: 'По публикации' }];
   readonly overlapOptions = [{ value: 'pages', label: 'Между страници' }, { value: 'posts', label: 'Между публикации' }];
   readonly count = facebookCount;
-  readonly accountCount = (value: FacebookAccountCell) => value === null ? '<5' : facebookCount(value);
+  readonly accountCount = (value: FacebookAccountCell, checked = true) => !checked ? '-' : value === null ? '<5' : facebookCount(value);
+  readonly checkedPostCount = computed(() => this.comments()?.posts.filter(post => post.status !== 'not-checked').length ?? 0);
   readonly pageMap = computed(() => new Map(this.pages().map(page => [page.id, page])));
   readonly postMap = computed(() => new Map(this.posts().map(post => [post.id, post])));
   readonly pageOptions = computed(() => [{ value: '', label: 'Всички страници' },
@@ -75,21 +77,30 @@ export class FacebookParticipationComponent implements OnInit {
     const report = this.report();
     if (!report) return [];
     const base = { right: '', rightPageId: '', rightUrl: '', captured: 0, matched: 0,
-      accounts: null, starters: null, repeated: null, shared: 0, status: '' };
+      accounts: null, starters: null, repeated: null, shared: 0, status: '', checked: false };
     const coverage = new Map(this.comments()?.posts.map(post => [post.postId, post]) ?? []);
+    const pageCoverage = new Map<string, { checked: number; complete: number }>();
+    for (const post of report.posts) {
+      const sum = pageCoverage.get(post.pageId) ?? { checked: 0, complete: 0 };
+      const status = coverage.get(post.postId)!.status;
+      sum.checked += Number(status !== 'not-checked');
+      sum.complete += Number(status === 'complete');
+      pageCoverage.set(post.pageId, sum);
+    }
     if (this.view() === 'pages') return report.pages.map(page => {
       const source = this.pageMap().get(page.pageId)!;
-      const complete = report.posts.filter(post => post.pageId === page.pageId && coverage.get(post.postId)?.status === 'complete').length;
+      const checked = pageCoverage.get(page.pageId)!;
       return { ...base, id: page.pageId, left: facebookShortName(source.name), leftPageId: source.id,
         leftUrl: source.url, captured: page.capturedComments, matched: page.matchedIdentityComments,
-        accounts: page.accounts, status: `${complete} / ${page.postCount}` };
+        accounts: page.accounts, status: `${checked.complete} / ${page.postCount}`, checked: checked.checked > 0 };
     }).sort((a, b) => (b.accounts ?? -1) - (a.accounts ?? -1));
     if (this.view() === 'posts') return report.posts.map(post => {
       const source = this.postMap().get(post.postId)!;
       return { ...base, id: post.postId, left: `${facebookShortName(this.pageMap().get(post.pageId)!.name)} · ${source.excerpt || source.summary}`,
         leftPageId: post.pageId, leftUrl: source.url, captured: post.capturedComments,
         matched: post.matchedIdentityComments, accounts: post.accounts, starters: post.accountsStartingThreads,
-        repeated: post.accountsWithMultipleComments, status: FACEBOOK_COMMENT_COVERAGE_LABELS[coverage.get(post.postId)!.status] };
+        repeated: post.accountsWithMultipleComments, status: FACEBOOK_COMMENT_COVERAGE_LABELS[coverage.get(post.postId)!.status],
+        checked: coverage.get(post.postId)!.status !== 'not-checked' };
     }).sort((a, b) => (b.accounts ?? -1) - (a.accounts ?? -1));
     if (this.overlapScope() === 'pages') return report.pageOverlaps.map(pair => {
       const left = this.pageMap().get(pair.leftPageId)!;

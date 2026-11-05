@@ -68,6 +68,26 @@ export function loadParticipationState(value) {
   return structuredClone(value);
 }
 
+/** New catalog posts have no collected participation; existing observations and collection time stay intact. */
+export function alignParticipationCohort(state, sources) {
+  const next = loadParticipationState(state);
+  requireValue(Array.isArray(sources), 'Invalid participation source cohort.');
+  const posts = new Map();
+  for (const source of sources) {
+    requireValue(fields(source, ['id', 'pageId']) && identifier(source.id) && identifier(source.pageId)
+      && !posts.has(source.id), 'Invalid or duplicate participation source.');
+    posts.set(source.id, source);
+  }
+  for (const [postId, post] of Object.entries(next.posts)) {
+    requireValue(posts.get(postId)?.pageId === post.pageId, 'Participation source was removed or changed Page.');
+  }
+  for (const source of posts.values()) {
+    next.posts[source.id] ??= { pageId: source.pageId, capturedComments: 0,
+      topLevelComments: 0, replyComments: 0, matchedIdentityComments: 0 };
+  }
+  return next;
+}
+
 /** Unknown authors can become matched later; known comments are counted only once. */
 export function mergeParticipation(state, checkpoint, secret, now = new Date().toISOString()) {
   requireValue(validateParticipationState(state), 'Invalid participation state.');

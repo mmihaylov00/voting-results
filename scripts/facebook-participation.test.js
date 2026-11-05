@@ -1,6 +1,8 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const vm = require('node:vm');
+const { buildFacebookComments } = require('./build-facebook-comments');
+const { buildFacebookCommentReader } = require('./build-facebook-comment-reader');
 
 const time = '2026-11-05T12:00:00.000Z';
 const secret = new Uint8Array(32).fill(7);
@@ -25,6 +27,65 @@ test('creates and reloads valid private state without mutating the saved input',
   loaded.posts.changed = {};
   assert.deepEqual(state.posts, {});
   assert.throws(() => core.loadParticipationState({ ...state, author: 'unexpected' }), /Invalid saved/);
+});
+
+test('extends the post cohort without inventing participation or changing collected accounts', () => {
+  const rows = Array.from({ length: 5 }, (_, index) => [String(index + 1), `uid:${index + 100}`]);
+  const other = { id: 'post:two', pageId: 'page:two' };
+  const before = merge(merge(initial(), rows), rows, other);
+  const previous = core.participationExport(before);
+  const samePage = { id: 'post:three', pageId: source.pageId };
+  const newPage = { id: 'post:four', pageId: 'page:new' };
+  const aligned = core.alignParticipationCohort(before, [source, other, samePage, newPage]);
+  const output = core.participationExport(aligned);
+  assert(core.validateParticipationState(aligned));
+  assert.equal(Object.keys(before.posts).length, 2);
+  for (const field of ['capturedAt', 'keyCheck', 'accounts', 'observedComments', 'identifiedComments']) {
+    assert.deepEqual(aligned[field], before[field]);
+  }
+  for (const field of ['totals', 'coverage', 'postOverlaps', 'pageOverlaps']) {
+    assert.deepEqual(output[field], previous[field]);
+  }
+  assert.deepEqual(output.posts.slice(0, 2), previous.posts);
+  assert.equal(output.pages.find(page => page.pageId === source.pageId).postCount, 2);
+  assert.deepEqual(output.pages.find(page => page.pageId === newPage.pageId), {
+    pageId: newPage.pageId, postCount: 1, capturedComments: 0, matchedIdentityComments: 0, accounts: null,
+  });
+  assert(output.posts.slice(2).every(post => post.capturedComments === 0 && post.accounts === null
+    && post.accountsStartingThreads === null && post.accountsWithMultipleComments === null));
+  assert.deepEqual(core.alignParticipationCohort(aligned, [source, other, samePage, newPage]), aligned);
+});
+
+test('cohort alignment rejects missing sources, changed ownership and malformed source records', () => {
+  const state = merge(initial(), [['1', 'uid:123']]);
+  for (const sources of [null, [], [source, source], [{ ...source, pageId: 'changed' }],
+    [source, { id: '__proto__', pageId: 'new' }], [{ ...source, author: 'unexpected' }]]) {
+    assert.throws(() => core.alignParticipationCohort(state, sources), /participation source|Participation source/);
+  }
+  assert.throws(() => core.alignParticipationCohort({ ...state, secret: 'unexpected' }, [source]), /Invalid saved/);
+});
+
+test('new post coverage stays not-checked while existing comments and reader hashes remain identical', () => {
+  const first = { ...source, url: 'https://www.facebook.com/example/posts/one' };
+  const second = { id: 'post:two', pageId: 'page:two', url: 'https://www.facebook.com/another/posts/two' };
+  const raw = { version: 1, capturedAt: time, posts: [{ postId: first.id, postUrl: first.url,
+    checkedAt: time, status: 'complete', ordering: null, reportedCount: 0, notes: [], comments: [] }] };
+  const oldReport = { posts: [first] };
+  const newReport = { posts: [first, second] };
+  const previous = buildFacebookComments(raw, {}, oldReport);
+  const current = buildFacebookComments(raw, {}, newReport);
+  assert.equal(current.collectionSha256, previous.collectionSha256);
+  assert.deepEqual(current.posts[0], previous.posts[0]);
+  assert.equal(current.posts[1].status, 'not-checked');
+  assert.equal(current.posts[1].checkedAt, null);
+  assert.equal(current.posts[1].reportedCount, null);
+  assert.equal(current.posts[1].capturedCount, 0);
+  const oldReader = buildFacebookCommentReader(raw, {}, {}, oldReport, previous);
+  const newReader = buildFacebookCommentReader(raw, {}, {}, newReport, current);
+  assert.deepEqual(newReader.manifest.posts[0], oldReader.manifest.posts[0]);
+  assert.deepEqual(newReader.files.get(newReader.manifest.posts[0].file),
+    oldReader.files.get(oldReader.manifest.posts[0].file));
+  assert.equal(newReader.manifest.posts[1].count, 0);
 });
 
 test('deduplicates snapshots and retains neutral top-level and reply counts', () => {
