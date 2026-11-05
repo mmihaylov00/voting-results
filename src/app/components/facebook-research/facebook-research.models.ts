@@ -4,6 +4,31 @@ export type FacebookCandidate = 'gyurov' | 'yotova';
 export type FacebookTone = 'supportive' | 'critical' | 'mixed' | 'neutral' | 'unclear';
 export type FacebookStanceLabel = FacebookTone | 'not-mentioned' | 'unreviewed';
 
+export type FacebookCommentCoverageStatus = 'not-checked' | 'partial' | 'complete' | 'unavailable';
+export type FacebookCommentOrdering = 'all' | 'newest' | 'most-relevant' | null;
+export type FacebookCommentCounts = Record<FacebookStanceLabel, number>;
+
+export interface FacebookCommentCoverage {
+  postId: string;
+  checkedAt: string | null;
+  status: FacebookCommentCoverageStatus;
+  ordering: FacebookCommentOrdering;
+  reportedCount: number | null;
+  capturedCount: number;
+  assessedCount: number;
+  topLevelCount: number;
+  replyCount: number;
+  counts: Record<FacebookCandidate, FacebookCommentCounts>;
+  notes: string[];
+}
+
+export interface FacebookCommentsReport {
+  version: 1;
+  capturedAt: string;
+  collectionSha256: string;
+  posts: FacebookCommentCoverage[];
+}
+
 export type FacebookDirectoryStatus = 'in-sample' | 'page-verified' | 'publisher-linked' | 'unresolved' | 'ambiguous';
 
 export interface FacebookDirectoryEntry {

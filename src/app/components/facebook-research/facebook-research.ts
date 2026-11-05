@@ -17,6 +17,7 @@ import { HlmTooltipDirective } from '../ui/tooltip-helm/src/lib/hlm-tooltip.dire
 import { ViewTabsComponent } from '../ui/view-tabs/view-tabs';
 import { VirtualTableDirective } from '../ui/virtual-table/virtual-table';
 import { FacebookResearchChartsComponent } from './facebook-research-charts';
+import { FacebookCommentsResearchComponent } from './facebook-comments-research';
 import { FacebookResearchImageComponent } from './facebook-research-image';
 import { FacebookResearchStanceComponent } from './facebook-research-stance';
 import { FacebookPageDirectoryComponent } from './facebook-page-directory';
@@ -24,13 +25,13 @@ import { FacebookCandidate, FacebookDirectoryEntry, FacebookPageSummary, Faceboo
 import { FACEBOOK_CANDIDATES, FACEBOOK_CANDIDATE_LABELS, FACEBOOK_METRIC_LABELS, FACEBOOK_METRICS, FACEBOOK_STANCE_BUCKETS, FACEBOOK_TONE_COUNTS, FACEBOOK_TONE_LABELS, facebookCount, facebookDate, facebookPageSummaries, facebookShortName, facebookStanceSummary, facebookTime, validFacebookReport } from './facebook-research.util';
 
 type KeywordCoverage = FacebookReport['coverage'][number];
-const VIEWS = ['pages', 'directory', 'posts', 'duplicates', 'review', 'coverage'];
+const VIEWS = ['pages', 'directory', 'posts', 'comments', 'duplicates', 'review', 'coverage'];
 
 @Component({
   selector: 'app-facebook-research',
   imports: [CommonModule, HlmButtonDirective, MapIconComponent, ViewTabsComponent, SelectComponent,
     TableControlsComponent, SortableTableHeaderComponent, VirtualTableDirective, BaseModalComponent,
-    CsvExportModalComponent, LoadingBarComponent, HlmTooltipDirective, FacebookResearchChartsComponent, FacebookResearchImageComponent, FacebookResearchStanceComponent, FacebookPageDirectoryComponent],
+    CsvExportModalComponent, LoadingBarComponent, HlmTooltipDirective, FacebookResearchChartsComponent, FacebookCommentsResearchComponent, FacebookResearchImageComponent, FacebookResearchStanceComponent, FacebookPageDirectoryComponent],
   templateUrl: './facebook-research.html',
   styleUrl: './facebook-research.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -99,6 +100,7 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
     { id: 'pages', label: 'Страници', count: this.pages().length },
     ...(this.report()?.directory ? [{ id: 'directory', label: 'Каталог', count: this.report()!.directory!.entries.length }] : []),
     { id: 'posts', label: 'Публикации', count: this.report()?.posts.length ?? 0 },
+    { id: 'comments', label: 'Коментари' },
     { id: 'duplicates', label: 'Повторения', count: this.report()?.matches.length ?? 0 },
     { id: 'review', label: 'За проверка', count: this.report()?.reviews.length ?? 0 },
     { id: 'coverage', label: 'Покритие', count: this.report()?.coverage.length ?? 0 },

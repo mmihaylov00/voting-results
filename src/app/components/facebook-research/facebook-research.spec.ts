@@ -164,6 +164,28 @@ describe('Facebook research workspace', () => {
     fixture.destroy();
   });
 
+  it('loads comment aggregates only when their tab opens and preserves the original post sample', () => {
+    const fixture = loaded();
+    const component = fixture.componentInstance;
+    const http = TestBed.inject(HttpTestingController);
+    const url = '/data/facebook/2026/comments.json';
+    http.expectNone(url);
+    expect(component.tabs().find(tab => tab.id === 'comments')).toEqual({ id: 'comments', label: 'Коментари' });
+    component.setView('comments');
+    fixture.detectChanges();
+    const counts = { supportive: 0, critical: 0, mixed: 0, neutral: 0, unclear: 0, 'not-mentioned': 0, unreviewed: 0 };
+    http.expectOne(url).flush({ version: 1, capturedAt: '2026-11-05T10:00:00Z', collectionSha256: 'a'.repeat(64),
+      posts: report.posts.map(post => ({ postId: post.id, checkedAt: null, status: 'not-checked', ordering: null,
+        reportedCount: null, capturedCount: 0, assessedCount: 0, topLevelCount: 0, replyCount: 0,
+        counts: { gyurov: counts, yotova: counts }, notes: [] })) });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('app-facebook-comments-research')).not.toBeNull();
+    expect(component.report()?.posts).toEqual(report.posts);
+    expect(component.tabs().find(tab => tab.id === 'posts')?.count).toBe(report.posts.length);
+    expect(TestBed.inject(Router).navigate).toHaveBeenCalledWith([], expect.objectContaining({ queryParams: { view: 'comments' } }));
+    fixture.destroy();
+  });
+
   it('combines Page, keyword and text filters and exports the full filtered result', () => {
     const fixture = loaded();
     const component = fixture.componentInstance;

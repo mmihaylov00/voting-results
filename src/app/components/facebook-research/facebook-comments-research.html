@@ -1,0 +1,46 @@
+<div class="comments-heading"><div><h2>Коментари към публикациите</h2>@if (report()) {<p class="note">Събиране: <time [attr.datetime]="report()!.capturedAt">{{ collectedDate() }}</time></p>}</div><a hlmBtn variant="outline" class="gap-2" [href]="dataUrl" download="facebook-comments-2026.json"><app-map-icon name="download" />Данни JSON</a></div>
+<app-loading-bar [loading]="loading()" label="Зареждане на анализа на коментарите" />
+@if (error()) {<div class="error-state" role="alert"><p>{{ error() }}</p><button hlmBtn variant="outline" type="button" class="gap-2" (click)="load()"><app-map-icon name="reset" />Опитай отново</button></div>}
+@if (report()) {
+  <app-view-tabs [tabs]="candidateTabs" [value]="candidate()" (valueChange)="setCandidate($event)" [scrollable]="true" label="Кандидат в коментарите" idPrefix="facebook-comments-candidate" panelId="facebook-comments-panel" />
+  <div id="facebook-comments-panel" role="tabpanel" [attr.aria-labelledby]="'facebook-comments-candidate-tab-' + candidate()">
+    <div class="filters"><div><label for="facebook-comments-page--trigger">Facebook страница</label><app-select controlId="facebook-comments-page" label="Facebook страница за коментарите" [options]="pageOptions()" [value]="pageFilter()" (valueChange)="pageFilter.set($event)" /></div><button hlmBtn variant="outline" size="icon" type="button" aria-label="Изчисти филтрите на коментарите" title="Изчисти филтрите" (click)="resetFilters()"><app-map-icon name="reset" /></button></div>
+    <app-table-controls #commentTable [rows]="filteredRows()" [columns]="columns" label="Търсене в публикациите с коментари" searchInputClass="min-h-11! text-base!" />
+    <p class="summary" aria-live="polite"><strong>{{ count(totals().captured) }}</strong> събрани · <strong>{{ count(totals().assessed) }}</strong> оценени · <strong>{{ totals().checked }} / {{ visibleRows().length }}</strong> публикации проверени <span>· Facebook: {{ count(totals().reportedPosts ? totals().reported : null) }} за {{ totals().reportedPosts }} публикации</span></p>
+    <section aria-labelledby="facebook-comments-chart-title">
+      <h3 id="facebook-comments-chart-title">Тон на коментарите по страници</h3>
+      @if (pageCounts().length) {
+        <app-chart-image-export [title]="exportTitle()" [filename]="'facebook-comments-' + candidate() + '-2026.png'">
+          <div class="chart-scroll" tabindex="0" role="region" aria-labelledby="facebook-comments-chart-title"><highcharts-chart aria-hidden="true" [options]="chartOptions()" style="display:block;width:100%" /></div>
+        </app-chart-image-export>
+        <div class="sr-only"><table><caption>Коментари по тон към {{ candidateLabel() }} и страница</caption><thead><tr><th scope="col">Страница</th><th scope="col">В подкрепа</th><th scope="col">Критични</th></tr></thead><tbody>@for (page of pageCounts(); track page.id) {<tr><th scope="row">{{ page.name }}</th><td>{{ page.supportive }}</td><td>{{ page.critical }}</td></tr>}</tbody></table></div>
+      } @else {<p class="empty-chart" role="status">Няма оценени коментари в подкрепа или критика към {{ candidateLabel() }} по тези филтри.</p>}
+    </section>
+    <h3 class="table-heading">Коментари по публикации</h3>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Оценки и покритие на коментарите по публикации" [virtualRows]="commentTable.viewRows()" [virtualRowHeight]="100" #commentRows="virtualRows">
+      <table class="comments-table" aria-label="Коментари по публикации и оценки към избрания кандидат" [attr.aria-rowcount]="commentTable.viewRows().length + 1">
+        <thead><tr>
+          <th scope="col" app-sortable-table-header columnKey="title" label="Публикация" [table]="commentTable" align="left"></th>
+          <th scope="col" app-sortable-table-header columnKey="status" label="Нишка" [table]="commentTable" align="left"></th>
+          <th scope="col" app-sortable-table-header columnKey="captured" label="Събрани / Facebook" [table]="commentTable" align="right"></th>
+          <th scope="col" app-sortable-table-header columnKey="assessed" label="Оценени" [table]="commentTable" align="right"></th>
+          @for (bucket of buckets; track bucket) {<th scope="col" app-sortable-table-header [columnKey]="bucket" [label]="bucketLabels[bucket]" [table]="commentTable" align="right"></th>}
+        </tr></thead>
+        <tbody>
+          @if (commentRows.window().top) {<tr aria-hidden="true"><td colspan="11" [style.height.px]="commentRows.window().top" class="virtual-spacer"></td></tr>}
+          @for (row of commentRows.rows(); track row.postId) {
+            <tr [attr.data-virtual-index]="commentRows.window().start + $index" [attr.data-coverage]="row.status" [attr.aria-rowindex]="commentRows.window().start + $index + 2">
+              <th scope="row"><a [href]="row.post.url" target="_blank" rel="noopener noreferrer" class="post-link"><span><strong>{{ shortName(row.page.name) }}</strong><span class="excerpt">{{ row.post.excerpt || row.post.summary }}</span></span><app-map-icon name="share" /></a></th>
+              <td class="coverage-cell"><span class="coverage-badge" [attr.data-status]="row.status">{{ coverageLabels[row.status] }}</span>@if (row.ordering) {<small>{{ row.ordering === 'all' ? 'Всички коментари' : row.ordering === 'newest' ? 'Най-нови' : 'Най-подходящи' }}</small>}@for (note of row.notes; track $index) {<small>{{ note }}</small>}</td>
+              <td>{{ count(available(row) ? row.capturedCount : null) }} / {{ count(row.reportedCount) }}@if (available(row)) {<small>{{ row.topLevelCount }} основни · {{ row.replyCount }} отговора</small>}</td>
+              <td>{{ count(available(row) ? row.assessedCount : null) }}</td>
+              @for (bucket of buckets; track bucket) {<td [class.supportive]="bucket === 'supportive'" [class.critical]="bucket === 'critical'">{{ count(available(row) ? row.counts[candidate()][bucket] : null) }}</td>}
+            </tr>
+          } @empty {<tr><td colspan="11" class="empty-state">Няма публикации по тези филтри.</td></tr>}
+          @if (commentRows.window().bottom) {<tr aria-hidden="true"><td colspan="11" [style.height.px]="commentRows.window().bottom" class="virtual-spacer"></td></tr>}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Броим коментари, включително отговори, а не хора. Частичните нишки и филтрирането от Facebook ограничават обхвата.</p>
+  </div>
+}

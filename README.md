@@ -192,7 +192,7 @@ python3 -m unittest discover -s scripts -p 'electoral_forensics*_test.py'
 
 ## Hidden Facebook research
 
-`/research/facebook-elections-2026` displays the October 2026 public-Page research. Visible tabs cover Pages, sortable posts, repeated content, six fact-check leads and keyword coverage. Tables scroll internally; source details open in the shared modal. Charts support PNG export, tables export the current filtered rows to CSV, and the sanitized snapshot is available as JSON.
+`/research/facebook-elections-2026` displays the October 2026 public-Page research. Visible tabs cover Pages, sortable posts, comments, repeated content, six fact-check leads and keyword coverage. Tables scroll internally; source details open in the shared modal. Charts support PNG export, tables export the current filtered rows to CSV, and the sanitized snapshot is available as JSON.
 
 The Каталог tab (`?view=directory`) adds a separately sourced directory of 349 entries, including 63 with documented regional coverage. Search, verification status and region filters lead to source details and filtered CSV export. Entries distinguish sampled Pages, directly verified Pages, publisher-linked Facebook URLs, and unresolved or ambiguous names. Publisher links do not confirm Page identity or October activity; regional labels describe sourced editorial coverage. Directory leads do not change the 19-Page/97-post sample or its engagement and keyword totals.
 
@@ -205,6 +205,19 @@ Public Facebook media captured on 4 November 2026 supplies 19 Page avatars and i
 The Page table includes candidate-specific tone in the collected sample. Manual `stance` annotations cover 94 captured captions, including quoted speech and satire; the three earlier duplicate discoveries remain unreviewed. Each annotation records separate Gyurov/Yotova tones, a Bulgarian reason and the captured text hash. Images, video contents and linked articles are not assessed. Criticism of one candidate does not imply support for the other; party or running-mate criticism is not automatically transferred. Page summaries count each post once per candidate, without weighting engagement. A label is mixed when both supportive and critical captions occur, or an individual caption is mixed; otherwise it reports the observed directional tone, followed by informative, unclear, not-mentioned or unreviewed when no directional tone is present. All category counts remain visible, so a single supportive caption is distinguishable from a large supportive sample. The labels describe published content, not ownership, political affiliation, factual accuracy or electoral influence. Annotations and category counts are included in JSON and CSV exports, and reasons are visible in the source modal.
 
 This is a partial, nonrepresentative sample. None of the original 34 keywords reached the requested 100 posts. Twenty additional terms were derived from captured captions and are marked `fromCaptions`; the original captions were recovered by their stored text hashes before adding keyword evidence. The user-supplied keyword `измете` matches five posts. Coverage counts include every matching post in the full 97-post snapshot once, including the title-search discoveries and explicitly identified link-title evidence. Missing counters remain unavailable, rounded counters are marked approximate, and reach is unavailable. All claims await verification; engagement and repeated wording do not establish electoral influence, truth, ownership or coordination. The page is unlisted and uses the same noindex headers and metadata as the electoral research.
+
+### Comment collection
+
+The Коментари tab (`?view=comments`) loads `public/data/facebook/2026/comments.json` separately. It shows independent candidate assessments by post and Page, including mixed, informative, unclear, unrelated and unreviewed comments. Counts include replies and describe comments rather than unique people. Comment dates can be later than the October posts; the collection timestamp identifies the snapshot.
+
+Raw browser captures and comment assessments stay outside the repository and published assets. Captures retain native comment IDs, parent IDs, source links, displayed dates, text completeness and text hashes, without author records. Assessments refer to the exact captured text hash. The builder rejects stale assessments and unknown post references, preserves identical text at distinct comment IDs, and publishes only aggregate counts and coverage. The existing post snapshot is unchanged.
+
+```bash
+node scripts/build-facebook-comments.js /path/to/private/captures.json /path/to/private/assessments.json
+node --test scripts/facebook-comments.test.js
+```
+
+Every cataloged post has a coverage row. Unchecked or unavailable threads remain missing, while an observed empty thread is zero. Facebook's displayed counter is retained separately from collected and assessed counts. Selecting All comments and expanding replies improves coverage without proving that deleted or filtered comments are available. Coverage notes must contain no commenter identities or quoted comments because they are published verbatim.
 
 ## Development server
 
