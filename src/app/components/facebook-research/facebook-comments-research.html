@@ -44,5 +44,5 @@
     </div>
     <p class="note">Броим коментари, включително отговори, а не хора. Включени са и коментари след октомври. Частичните нишки и филтрирането от Facebook ограничават обхвата.</p>
   </div>
-  @if (selectedReaderRow(); as selected) {<app-facebook-comment-reader [row]="selected" [collectionSha256]="report()!.collectionSha256" [initialCandidate]="candidate()" (close)="selectedReaderRow.set(null)" />}
+  @if (selectedReaderRow(); as selected) {<app-facebook-comment-reader [row]="selected" [collectionSha256]="report()!.collectionSha256" (close)="selectedReaderRow.set(null)" />}
 }

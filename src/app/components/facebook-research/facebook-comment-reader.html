@@ -5,23 +5,44 @@
   <app-loading-bar [loading]="loading()" label="Зареждане на откъсите от коментари" />
   @if (error()) {<div class="reader-state" role="alert"><p>{{ error() }}</p><button hlmBtn variant="outline" type="button" class="gap-2" (click)="load()"><app-map-icon name="reset" />Опитай отново</button></div>}
   @if (report()) {
-    <app-view-tabs [tabs]="candidateTabs" [value]="candidate()" (valueChange)="setCandidate($event)" label="Кандидат в откъсите" idPrefix="facebook-comment-reader-candidate" panelId="facebook-comment-reader-panel" />
-    <div id="facebook-comment-reader-panel" role="tabpanel" [attr.aria-labelledby]="'facebook-comment-reader-candidate-tab-' + candidate()">
-      <div class="reader-filters"><div><label for="facebook-comment-reader-tone--trigger">Тон към {{ candidateLabel() }}</label><app-select controlId="facebook-comment-reader-tone" label="Тон на коментара" [options]="toneOptions" [value]="toneFilter()" (valueChange)="toneFilter.set($event)" /></div><button hlmBtn variant="outline" size="icon" type="button" aria-label="Изчисти филтрите на откъсите" title="Изчисти филтрите" (click)="resetFilters()"><app-map-icon name="reset" /></button></div>
+      <div class="reader-filters">
+        <div><label for="facebook-comment-reader-gyurov-tone--trigger">Тон към Гюров</label><app-select controlId="facebook-comment-reader-gyurov-tone" label="Тон към Гюров" [options]="toneOptions" [value]="gyurovToneFilter()" (valueChange)="gyurovToneFilter.set($event)" /></div>
+        <div><label for="facebook-comment-reader-yotova-tone--trigger">Тон към Йотова</label><app-select controlId="facebook-comment-reader-yotova-tone" label="Тон към Йотова" [options]="toneOptions" [value]="yotovaToneFilter()" (valueChange)="yotovaToneFilter.set($event)" /></div>
+        <button hlmBtn variant="outline" size="icon" type="button" aria-label="Изчисти филтрите на откъсите" title="Изчисти филтрите" (click)="resetFilters()"><app-map-icon name="reset" /></button>
+      </div>
       <app-table-controls #commentSearch [rows]="filteredComments()" [columns]="columns" label="Търсене в откъсите от коментари" searchInputClass="min-h-11! text-base!" />
-      @if (threadFilter() !== null) {<div class="thread-filter"><span>Нишка #{{ threadFilter() }}</span><button hlmBtn variant="ghost" type="button" size="sm" (click)="threadFilter.set(null)"><app-map-icon name="reset" />Всички нишки</button></div>}
-      <div class="reader-list" tabindex="0" role="region" aria-label="Откъси от коментари" [virtualRows]="commentSearch.viewRows()" [virtualRowsLayout]="candidate()" [virtualRowHeight]="130" #commentRows="virtualRows">
-        <div role="list" aria-label="Коментари в публикацията">
+      <div class="reader-list" tabindex="0" role="region" aria-label="Откъси от коментари" [virtualRows]="visibleThreads()" [virtualRowsKeepScrollAnchor]="true" [virtualRowHeight]="180" #commentRows="virtualRows">
+        <div role="list" aria-label="Нишки в публикацията">
           @if (commentRows.window().top) {<div aria-hidden="true" [style.height.px]="commentRows.window().top"></div>}
-          @for (comment of commentRows.rows(); track comment.id) {
-            <article role="listitem" [attr.aria-posinset]="commentRows.window().start + $index + 1" [attr.aria-setsize]="commentSearch.viewRows().length" [attr.data-virtual-index]="commentRows.window().start + $index" [class.reply]="comment.parentId !== null">
-              <div class="comment-meta"><span>#{{ comment.id }}</span><span class="tone" [attr.data-tone]="comment[candidate()]">{{ toneLabels[comment[candidate()]] }}</span>@if (comment.parentId !== null) {<button type="button" class="thread-link" (click)="showThread(comment.parentId)">Отговор в нишка #{{ comment.parentId }}</button>}</div>
-              @if (comment.text !== null) {<p class="comment-text">{{ comment.text }}{{ comment.truncated ? '…' : '' }}</p>} @else {<p class="unpublished">Няма публикуван откъс.</p>}
+          @for (thread of commentRows.rows(); track thread.root.id) {
+            <article class="thread" role="listitem" [attr.aria-posinset]="commentRows.window().start + $index + 1" [attr.aria-setsize]="visibleThreads().length" [attr.data-virtual-index]="commentRows.window().start + $index">
+              <div class="root-comment">
+                @if (!thread.rootMatches) {<p class="context-note">Контекст на съвпадащите отговори</p>}
+                <ng-container [ngTemplateOutlet]="commentBody" [ngTemplateOutletContext]="{ $implicit: thread.root }" />
+              </div>
+              @if (thread.replies.length) {
+                <button hlmBtn variant="ghost" size="sm" type="button" class="reply-toggle" [attr.aria-expanded]="expandedThreads().has(thread.root.id)" [attr.aria-controls]="'facebook-comment-replies-' + thread.root.id" (click)="toggleReplies(thread.root.id)">
+                  <app-map-icon name="chevron-right" />{{ expandedThreads().has(thread.root.id) ? 'Скрий отговорите' : 'Покажи отговорите' }} ({{ thread.replies.length }})
+                </button>
+                <div class="replies" role="list" [id]="'facebook-comment-replies-' + thread.root.id" [attr.aria-label]="'Отговори на коментар #' + thread.root.id" [hidden]="!expandedThreads().has(thread.root.id)">
+                  @if (expandedThreads().has(thread.root.id)) {
+                    @for (reply of thread.replies; track reply.id) {
+                      <article class="reply" role="listitem"><ng-container [ngTemplateOutlet]="commentBody" [ngTemplateOutletContext]="{ $implicit: reply }" /></article>
+                    }
+                  }
+                </div>
+              }
             </article>
           } @empty {<p class="reader-state" role="status">{{ report()!.comments.length ? 'Няма коментари по тези филтри.' : 'Няма събрани коментари към публикацията.' }}</p>}
           @if (commentRows.window().bottom) {<div aria-hidden="true" [style.height.px]="commentRows.window().bottom"></div>}
         </div>
       </div>
-    </div>
   }
+  <ng-template #commentBody let-comment>
+    <div class="comment-meta">
+      <span class="comment-number">#{{ comment.id }}</span>
+      @for (candidate of candidates; track candidate) {<span class="tone comment-tone" [attr.data-tone]="comment[candidate]"><strong>{{ candidateLabels[candidate] }}:</strong> {{ toneLabel(comment[candidate]) }}</span>}
+    </div>
+    @if (comment.text !== null) {<p class="comment-text">{{ comment.text }}{{ comment.truncated ? '…' : '' }}</p>} @else {<p class="unpublished">Няма публикуван откъс.</p>}
+  </ng-template>
 </app-base-modal>

@@ -38,6 +38,7 @@ function rowAt(offsets: Float64Array, offset: number): number {
 export class VirtualTableDirective<T> {
   readonly virtualRows = input<readonly T[]>([]);
   readonly virtualRowsLayout = input<unknown>();
+  readonly virtualRowsKeepScrollAnchor = input(false);
   readonly estimatedHeight = input(64, { alias: 'virtualRowHeight' });
   readonly window = signal<RowWindow>({ start: 0, end: 0, top: 0, bottom: 0 });
   readonly rows = computed(() => this.virtualRows().slice(this.window().start, this.window().end));
@@ -173,7 +174,8 @@ export class VirtualTableDirective<T> {
 
     const anchor = rowAt(this.offsets, this.element.scrollTop);
     const anchorOffset = this.element.scrollTop - this.offsets[anchor];
-    const atBottom = this.element.scrollTop >= this.offsets[this.heights.length] - this.viewportHeight() - 1;
+    const atBottom = !this.virtualRowsKeepScrollAnchor()
+      && this.element.scrollTop >= this.offsets[this.heights.length] - this.viewportHeight() - 1;
     let changed = table ? this.stabilizeColumns(table) : false;
     if (changed) this.heights.fill(this.estimatedHeight());
     for (const row of this.element.querySelectorAll<HTMLElement>('[data-virtual-index]')) {

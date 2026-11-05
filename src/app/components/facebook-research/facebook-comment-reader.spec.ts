@@ -34,7 +34,6 @@ function setup() {
   const fixture = TestBed.createComponent(FacebookCommentReaderComponent);
   fixture.componentRef.setInput('row', row);
   fixture.componentRef.setInput('collectionSha256', hash);
-  fixture.componentRef.setInput('initialCandidate', 'yotova');
   fixture.detectChanges();
   return fixture;
 }
@@ -104,11 +103,20 @@ describe('Facebook comment reader', () => {
     fixture.detectChanges();
     const component = fixture.componentInstance;
     const element = fixture.nativeElement as HTMLElement;
-    expect(component.candidate()).toBe('yotova');
     expect(element.querySelector('dialog')).not.toBeNull();
     expect(element.querySelector('.comment-text')?.textContent).toContain('<img src=x onerror=alert(1)>');
     expect(element.querySelector('.reader-list img')).toBeNull();
-    expect(element.querySelector('.unpublished')?.textContent).toContain('Няма публикуван откъс');
+    expect(element.querySelector('.unpublished')).toBeNull();
+    expect(element.querySelector('[role=tablist]')).toBeNull();
+    const labels = Array.from(element.querySelectorAll('.root-comment .comment-tone'), badge => badge.textContent);
+    expect(labels).toHaveLength(4);
+    expect(labels.some(label => label?.includes('Гюров'))).toBe(true);
+    expect(labels.some(label => label?.includes('Йотова'))).toBe(true);
+    const firstCommentTones = element.querySelectorAll('.root-comment')[0].querySelectorAll('.comment-tone');
+    expect(firstCommentTones[0].textContent).toContain('Гюров');
+    expect(firstCommentTones[0].getAttribute('data-tone')).toBe('not-mentioned');
+    expect(firstCommentTones[1].textContent).toContain('Йотова');
+    expect(firstCommentTones[1].getAttribute('data-tone')).toBe('supportive');
     const source = element.querySelector('dialog a')!;
     expect(source.getAttribute('href')).toBe(post.url);
     expect(source.getAttribute('rel')).toBe('noopener noreferrer');
@@ -120,25 +128,112 @@ describe('Facebook comment reader', () => {
     fixture.destroy();
   });
 
-  it('combines candidate tone and excerpt search, opens a complete thread and resets filters', () => {
+  it('groups forward-reference replies under roots and keeps replies collapsed by default', () => {
     const fixture = setup();
     flushReader();
     fixture.detectChanges();
     const component = fixture.componentInstance;
-    component.setCandidate('gyurov');
-    component.toneFilter.set('critical');
+    const element = fixture.nativeElement as HTMLElement;
+    expect(component.visibleThreads().map(thread => thread.root.id)).toEqual([2, 3]);
+    expect(component.visibleThreads()[1].replies.map(reply => reply.id)).toEqual([1, 4]);
+    expect(component.expandedThreads().size).toBe(0);
+    expect(element.querySelectorAll('.thread')).toHaveLength(2);
+    expect(element.querySelector<HTMLElement>('.replies')?.hidden).toBe(true);
+    expect(element.querySelectorAll('.replies .reply')).toHaveLength(0);
+    expect(element.querySelectorAll('.reply-toggle')).toHaveLength(1);
+    expect(element.querySelector('.reply-toggle')?.getAttribute('aria-expanded')).toBe('false');
+    expect(element.querySelector('.reply-toggle')?.textContent).toContain('2');
+    fixture.destroy();
+  });
+
+  it('expands and collapses replies without replacing the focused toggle or root list', () => {
+    const fixture = setup();
+    flushReader();
+    fixture.detectChanges();
+    const component = fixture.componentInstance;
+    const element = fixture.nativeElement as HTMLElement;
+    const threads = component.visibleThreads();
+    const toggle = element.querySelector<HTMLButtonElement>('.reply-toggle')!;
+    const controlledId = toggle.getAttribute('aria-controls');
+    expect(controlledId).toBeTruthy();
+    toggle.focus();
+    toggle.click();
+    fixture.detectChanges();
+    expect(component.visibleThreads()).toBe(threads);
+    expect(component.expandedThreads().has(3)).toBe(true);
+    expect(element.querySelector('.reply-toggle')).toBe(toggle);
+    expect(toggle.ownerDocument.activeElement).toBe(toggle);
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    expect(element.querySelector('.replies')?.id).toBe(controlledId);
+    expect(element.querySelectorAll('.replies .comment-tone')).toHaveLength(4);
+    expect(element.querySelector('.replies .comment-text')?.textContent).toContain('Критичен откъс.');
+    expect(element.querySelector('.unpublished')?.textContent).toContain('Няма публикуван откъс');
+    toggle.click();
+    fixture.detectChanges();
+    expect(component.visibleThreads()).toBe(threads);
+    expect(element.querySelector<HTMLElement>('.replies')?.hidden).toBe(true);
+    expect(element.querySelectorAll('.replies .reply')).toHaveLength(0);
+    expect(element.querySelector('.reply-toggle')).toBe(toggle);
+    expect(toggle.ownerDocument.activeElement).toBe(toggle);
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    toggle.click();
+    fixture.detectChanges();
+    expect(element.querySelector('.replies .comment-text')?.textContent).toContain('Критичен откъс.');
+    fixture.destroy();
+  });
+
+  it('retains the root as context when only a reply matches search and both tone filters', () => {
+    const fixture = setup();
+    flushReader();
+    fixture.detectChanges();
+    const component = fixture.componentInstance;
+    component.gyurovToneFilter.set('critical');
+    component.yotovaToneFilter.set('not-mentioned');
     component.table()!.query.set('критичен');
     fixture.detectChanges();
     expect(component.table()!.viewRows().map(comment => comment.id)).toEqual([1]);
-    component.showThread(3);
+    expect(component.visibleThreads().map(thread => thread.root.id)).toEqual([3]);
+    expect(component.visibleThreads()[0].rootMatches).toBe(false);
+    expect(component.visibleThreads()[0].replies.map(reply => reply.id)).toEqual([1]);
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelector('.root-comment .comment-text')?.textContent).toContain('Контекст за пълния коментар.');
+    expect(element.querySelector('.reply-toggle')?.textContent).toContain('1');
+    component.toggleReplies(3);
     fixture.detectChanges();
-    expect(component.table()!.viewRows().map(comment => comment.id)).toEqual([3, 1, 4]);
-    expect(component.toneFilter()).toBe('');
-    expect(component.table()!.query()).toBe('');
+    expect(element.querySelector('.replies .comment-text')?.textContent).toContain('Критичен откъс.');
+    expect(element.querySelector('.unpublished')).toBeNull();
+    fixture.destroy();
+  });
+
+  it('requires both tone filters to match the same comment and resets filters and expansions', () => {
+    const fixture = setup();
+    const data = excerpts();
+    data.comments[1].yotova = 'neutral';
+    data.comments[2].yotova = 'supportive';
+    flushReader(data);
+    fixture.detectChanges();
+    const component = fixture.componentInstance;
+    component.gyurovToneFilter.set('critical');
+    component.yotovaToneFilter.set('supportive');
+    fixture.detectChanges();
+    expect(component.table()!.viewRows()).toHaveLength(0);
+    expect(component.visibleThreads()).toHaveLength(0);
+    expect(fixture.nativeElement.textContent).toContain('Няма коментари по тези филтри.');
+    component.yotovaToneFilter.set('not-mentioned');
+    component.table()!.query.set('критичен');
+    component.toggleReplies(3);
+    fixture.detectChanges();
+    expect(component.expandedThreads().has(3)).toBe(true);
     component.resetFilters();
     fixture.detectChanges();
+    expect(component.gyurovToneFilter()).toBe('');
+    expect(component.yotovaToneFilter()).toBe('');
+    expect(component.table()!.query()).toBe('');
     expect(component.table()!.viewRows()).toHaveLength(4);
-    expect(component.threadFilter()).toBeNull();
+    expect(component.visibleThreads()).toHaveLength(2);
+    expect(component.expandedThreads().size).toBe(0);
+    expect(fixture.nativeElement.querySelector('.replies')?.hidden).toBe(true);
+    expect(fixture.nativeElement.querySelectorAll('.replies .reply')).toHaveLength(0);
     fixture.destroy();
   });
 
@@ -161,6 +256,13 @@ describe('Facebook comment reader', () => {
     fixture.detectChanges();
     expect(component.report()?.comments).toHaveLength(4);
     expect(component.error()).toBe('');
+    component.toggleReplies(3);
+    expect(component.expandedThreads().has(3)).toBe(true);
+    component.load();
+    expect(component.expandedThreads().size).toBe(0);
+    flushReader();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelectorAll('.replies .reply')).toHaveLength(0);
     fixture.destroy();
   });
 

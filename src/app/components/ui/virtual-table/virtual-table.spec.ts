@@ -7,7 +7,7 @@ import { VirtualTableDirective } from './virtual-table';
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [VirtualTableDirective],
   template: `
-    <div [virtualRows]="items" [virtualRowsLayout]="layout" #viewport="virtualRows" tabindex="0">
+    <div [virtualRows]="items" [virtualRowsLayout]="layout" [virtualRowsKeepScrollAnchor]="keepScrollAnchor" #viewport="virtualRows" tabindex="0">
       <table [attr.aria-rowcount]="items.length + 1">
         <thead><tr><th [attr.data-width]="columnWidth" [attr.rowspan]="grouped ? 2 : 1">Number</th>
           @if (grouped) { <th colspan="2">Results</th> }
@@ -32,6 +32,7 @@ import { VirtualTableDirective } from './virtual-table';
 class VirtualTableTestComponent {
   items = Array.from({ length: 13000 }, (_, index) => index);
   layout = 'default';
+  keepScrollAnchor = false;
   columnWidth = 500;
   grouped = false;
   height = (_item: number) => 64;
@@ -47,10 +48,12 @@ describe('VirtualTableDirective', () => {
 
   afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
-  async function setup(columnWidth = 500, grouped = false) {
+  async function setup(columnWidth = 500, grouped = false, items?: number[], keepScrollAnchor = false) {
     const fixture = TestBed.createComponent(VirtualTableTestComponent);
     fixture.componentInstance.columnWidth = columnWidth;
     fixture.componentInstance.grouped = grouped;
+    fixture.componentInstance.keepScrollAnchor = keepScrollAnchor;
+    if (items) fixture.componentInstance.items = items;
     const viewport = fixture.nativeElement.querySelector('div') as HTMLDivElement;
     let height = 320;
     let width = 500;
@@ -131,6 +134,25 @@ describe('VirtualTableDirective', () => {
     await scroll(640);
     expect(rows().length).toBeGreaterThan(count);
     expect(rows().length).toBeLessThan(50);
+  });
+
+  it.each([false, true])('preserves the scroll anchor on expanding rows only when enabled: %s', async keepScrollAnchor => {
+    let notifyResize = () => {};
+    vi.stubGlobal('ResizeObserver', class {
+      constructor(callback: ResizeObserverCallback) { notifyResize = () => callback([], this); }
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    });
+    const { fixture, viewport, directive } = await setup(500, false, [0, 1], keepScrollAnchor);
+    expect(viewport.scrollTop).toBe(0);
+    fixture.componentInstance.height = item => item === 1 ? 600 : 64;
+    fixture.changeDetectorRef.markForCheck();
+    await fixture.whenStable();
+    notifyResize();
+    await fixture.whenStable();
+    expect(viewport.scrollTop).toBe(keepScrollAnchor ? 0 : 392);
+    expect(directive.window().bottom).toBe(0);
   });
 
   it('keeps keyboard focus on the viewport when a focused row scrolls out of the buffer', async () => {

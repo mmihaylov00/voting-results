@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject, input, output, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -8,17 +9,16 @@ import { LoadingBarComponent } from '../ui/loading-bar/loading-bar';
 import { MapIconComponent } from '../ui/map-icon/map-icon';
 import { SelectComponent } from '../ui/select/select';
 import { TableColumns, TableControlsComponent } from '../ui/table-controls/table-controls';
-import { ViewTabsComponent } from '../ui/view-tabs/view-tabs';
 import { VirtualTableDirective } from '../ui/virtual-table/virtual-table';
 import { FacebookCommentRow } from './facebook-comments.util';
 import { FacebookCommentExcerpt, FacebookCommentReaderReport, validFacebookCommentReaderManifest, validFacebookCommentReaderReport } from './facebook-comment-reader.util';
-import { FacebookCandidate } from './facebook-research.models';
+import { FacebookStanceLabel } from './facebook-research.models';
 import { FACEBOOK_CANDIDATES, FACEBOOK_CANDIDATE_LABELS, FACEBOOK_STANCE_BUCKETS, FACEBOOK_TONE_COUNTS, FACEBOOK_TONE_LABELS, facebookShortName } from './facebook-research.util';
 
 @Component({
   selector: 'app-facebook-comment-reader',
   imports: [BaseModalComponent, HlmButtonDirective, LoadingBarComponent, MapIconComponent, SelectComponent,
-    TableControlsComponent, ViewTabsComponent, VirtualTableDirective],
+    TableControlsComponent, NgTemplateOutlet, VirtualTableDirective],
   templateUrl: './facebook-comment-reader.html',
   styleUrl: './facebook-comment-reader.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,39 +28,48 @@ export class FacebookCommentReaderComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   readonly row = input.required<FacebookCommentRow>();
   readonly collectionSha256 = input.required<string>();
-  readonly initialCandidate = input<FacebookCandidate>('gyurov');
   readonly close = output<void>();
   readonly baseUrl = '/data/facebook/2026/comments/';
   readonly report = signal<FacebookCommentReaderReport | null>(null);
   readonly loading = signal(true);
   readonly error = signal('');
-  readonly candidate = signal<FacebookCandidate>('gyurov');
-  readonly toneFilter = signal('');
-  readonly threadFilter = signal<number | null>(null);
+  readonly gyurovToneFilter = signal('');
+  readonly yotovaToneFilter = signal('');
+  readonly expandedThreads = signal<ReadonlySet<number>>(new Set());
   readonly table = viewChild<TableControlsComponent<FacebookCommentExcerpt>>('commentSearch');
-  readonly candidateTabs = FACEBOOK_CANDIDATES.map(id => ({ id, label: FACEBOOK_CANDIDATE_LABELS[id] }));
-  readonly candidateLabel = computed(() => FACEBOOK_CANDIDATE_LABELS[this.candidate()]);
-  readonly toneLabels = FACEBOOK_TONE_LABELS;
+  readonly candidates = FACEBOOK_CANDIDATES;
+  readonly candidateLabels = FACEBOOK_CANDIDATE_LABELS;
+  readonly toneLabel = (tone: FacebookStanceLabel) => FACEBOOK_TONE_LABELS[tone];
   readonly shortName = facebookShortName;
   readonly toneOptions = [{ value: '', label: 'Всички тонове' },
     ...FACEBOOK_STANCE_BUCKETS.map(value => ({ value, label: FACEBOOK_TONE_COUNTS[value] }))];
   readonly filteredComments = computed(() => {
-    const candidate = this.candidate();
-    const tone = this.toneFilter();
-    const thread = this.threadFilter();
-    return this.report()?.comments.filter(comment => (!tone || comment[candidate] === tone)
-      && (thread === null || (comment.parentId ?? comment.id) === thread))
-      .sort((left, right) => (left.parentId ?? left.id) - (right.parentId ?? right.id)
-        || Number(left.parentId !== null) - Number(right.parentId !== null) || left.id - right.id) ?? [];
+    const gyurov = this.gyurovToneFilter();
+    const yotova = this.yotovaToneFilter();
+    return this.report()?.comments.filter(comment => (!gyurov || comment.gyurov === gyurov)
+      && (!yotova || comment.yotova === yotova)) ?? [];
+  });
+  readonly visibleThreads = computed(() => {
+    const matches = new Set(this.table()?.viewRows().map(comment => comment.id));
+    const threads = new Map<number, { root: FacebookCommentExcerpt; replies: FacebookCommentExcerpt[]; rootMatches: boolean }>();
+    for (const comment of this.report()?.comments ?? []) {
+      if (comment.parentId === null) threads.set(comment.id, {
+        root: comment, replies: [], rootMatches: matches.has(comment.id),
+      });
+    }
+    for (const comment of this.table()?.viewRows() ?? []) {
+      if (comment.parentId !== null) threads.get(comment.parentId)?.replies.push(comment);
+    }
+    return Array.from(threads.values()).filter(thread => thread.rootMatches || thread.replies.length);
   });
   readonly columns: TableColumns<FacebookCommentExcerpt> = {
     text: comment => comment.text,
-    tone: comment => FACEBOOK_TONE_COUNTS[comment[this.candidate()]],
+    gyurov: comment => FACEBOOK_TONE_COUNTS[comment.gyurov],
+    yotova: comment => FACEBOOK_TONE_COUNTS[comment.yotova],
     number: comment => comment.id,
   };
 
   ngOnInit(): void {
-    this.candidate.set(this.initialCandidate());
     this.load();
   }
 
@@ -68,6 +77,7 @@ export class FacebookCommentReaderComponent implements OnInit {
     this.loading.set(true);
     this.error.set('');
     this.report.set(null);
+    this.expandedThreads.set(new Set());
     const expectedCount = this.row().capturedCount;
     this.http.get<unknown>(`${this.baseUrl}manifest.json`).pipe(
       switchMap(value => {
@@ -91,19 +101,19 @@ export class FacebookCommentReaderComponent implements OnInit {
     });
   }
 
-  setCandidate(value: string): void {
-    if (value === 'gyurov' || value === 'yotova') this.candidate.set(value);
-  }
-
-  showThread(id: number): void {
-    this.toneFilter.set('');
-    this.table()?.query.set('');
-    this.threadFilter.set(id);
+  toggleReplies(id: number): void {
+    this.expandedThreads.update(current => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   }
 
   resetFilters(): void {
-    this.toneFilter.set('');
-    this.threadFilter.set(null);
+    this.gyurovToneFilter.set('');
+    this.yotovaToneFilter.set('');
+    this.expandedThreads.set(new Set());
     this.table()?.query.set('');
   }
 }
