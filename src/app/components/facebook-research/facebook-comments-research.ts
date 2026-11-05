@@ -16,11 +16,13 @@ import { VirtualTableDirective } from '../ui/virtual-table/virtual-table';
 import { FACEBOOK_COMMENT_COVERAGE_LABELS, FacebookCommentRow, facebookCommentPageCounts, facebookCommentTotals, validFacebookCommentsReport } from './facebook-comments.util';
 import { FacebookCandidate, FacebookCommentsReport, FacebookPage, FacebookPost } from './facebook-research.models';
 import { FACEBOOK_CANDIDATES, FACEBOOK_CANDIDATE_LABELS, FACEBOOK_STANCE_BUCKETS, FACEBOOK_TONE_COUNTS, facebookCount, facebookShortName } from './facebook-research.util';
+import { FacebookCommentReaderComponent } from './facebook-comment-reader';
 
 @Component({
   selector: 'app-facebook-comments-research',
   imports: [HlmButtonDirective, HighchartsChartComponent, ChartImageExportComponent, LoadingBarComponent,
-    MapIconComponent, SelectComponent, SortableTableHeaderComponent, TableControlsComponent, ViewTabsComponent, VirtualTableDirective],
+    MapIconComponent, SelectComponent, SortableTableHeaderComponent, TableControlsComponent, ViewTabsComponent, VirtualTableDirective,
+    FacebookCommentReaderComponent],
   templateUrl: './facebook-comments-research.html',
   styleUrl: './facebook-comments-research.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,6 +39,7 @@ export class FacebookCommentsResearchComponent implements OnInit {
   readonly error = signal('');
   readonly candidate = signal<FacebookCandidate>('gyurov');
   readonly pageFilter = signal('');
+  readonly selectedReaderRow = signal<FacebookCommentRow | null>(null);
   readonly table = viewChild<TableControlsComponent<FacebookCommentRow>>('commentTable');
   readonly candidateTabs = FACEBOOK_CANDIDATES.map(id => ({ id, label: FACEBOOK_CANDIDATE_LABELS[id] }));
   readonly candidateLabel = computed(() => FACEBOOK_CANDIDATE_LABELS[this.candidate()]);

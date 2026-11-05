@@ -18,7 +18,7 @@
       } @else {<p class="empty-chart" role="status">Няма оценени коментари в подкрепа или критика към {{ candidateLabel() }} по тези филтри.</p>}
     </section>
     <h3 class="table-heading">Коментари по публикации</h3>
-    <div class="table-scroll" tabindex="0" role="region" aria-label="Оценки и покритие на коментарите по публикации" [virtualRows]="commentTable.viewRows()" [virtualRowHeight]="100" #commentRows="virtualRows">
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Оценки и покритие на коментарите по публикации" [virtualRows]="commentTable.viewRows()" [virtualRowHeight]="140" #commentRows="virtualRows">
       <table class="comments-table" aria-label="Коментари по публикации и оценки към избрания кандидат" [attr.aria-rowcount]="commentTable.viewRows().length + 1">
         <thead><tr>
           <th scope="col" app-sortable-table-header columnKey="title" label="Публикация" [table]="commentTable" align="left"></th>
@@ -31,7 +31,7 @@
           @if (commentRows.window().top) {<tr aria-hidden="true"><td colspan="11" [style.height.px]="commentRows.window().top" class="virtual-spacer"></td></tr>}
           @for (row of commentRows.rows(); track row.postId) {
             <tr [attr.data-virtual-index]="commentRows.window().start + $index" [attr.data-coverage]="row.status" [attr.aria-rowindex]="commentRows.window().start + $index + 2">
-              <th scope="row"><a [href]="row.post.url" target="_blank" rel="noopener noreferrer" class="post-link"><span><strong>{{ shortName(row.page.name) }}</strong><span class="excerpt">{{ row.post.excerpt || row.post.summary }}</span></span><app-map-icon name="share" /></a></th>
+              <th scope="row"><a [href]="row.post.url" target="_blank" rel="noopener noreferrer" class="post-link"><span><strong>{{ shortName(row.page.name) }}</strong><span class="excerpt">{{ row.post.excerpt || row.post.summary }}</span></span><app-map-icon name="share" /></a>@if (row.capturedCount > 0) {<button hlmBtn variant="outline" size="sm" type="button" class="reader-button min-h-11! gap-2" [attr.aria-label]="'Прочети ' + row.capturedCount + ' коментара към ' + shortName(row.page.name)" (click)="selectedReaderRow.set(row)">Прочети коментарите<app-map-icon name="chevron-right" /></button>}</th>
               <td class="coverage-cell"><span class="coverage-badge" [attr.data-status]="row.status">{{ coverageLabels[row.status] }}</span>@if (row.ordering) {<small>{{ row.ordering === 'all' ? 'Всички коментари' : row.ordering === 'newest' ? 'Най-нови' : 'Най-подходящи' }}</small>}@for (note of row.notes; track $index) {<small>{{ note }}</small>}</td>
               <td>{{ count(available(row) ? row.capturedCount : null) }} / {{ count(row.reportedCount) }}@if (available(row)) {<small>{{ row.topLevelCount }} основни · {{ row.replyCount }} отговора</small>}</td>
               <td>{{ count(available(row) ? row.assessedCount : null) }}</td>
@@ -44,4 +44,5 @@
     </div>
     <p class="note">Броим коментари, включително отговори, а не хора. Включени са и коментари след октомври. Частичните нишки и филтрирането от Facebook ограничават обхвата.</p>
   </div>
+  @if (selectedReaderRow(); as selected) {<app-facebook-comment-reader [row]="selected" [collectionSha256]="report()!.collectionSha256" [initialCandidate]="candidate()" (close)="selectedReaderRow.set(null)" />}
 }

@@ -2,6 +2,7 @@ import { Component, Input, signal } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -40,7 +41,7 @@ function commentFixture(): FacebookCommentsReport {
 
 function setup() {
   TestBed.configureTestingModule({ imports: [FacebookCommentsResearchComponent], providers: [
-    provideHttpClient(), provideHttpClientTesting(), { provide: ThemeService, useValue: { darkMode: signal(false) } },
+    provideHttpClient(), provideHttpClientTesting(), provideRouter([]), { provide: ThemeService, useValue: { darkMode: signal(false) } },
   ] });
   TestBed.overrideComponent(FacebookCommentsResearchComponent, { remove: { imports: [HighchartsChartComponent] }, add: { imports: [ChartStub] } });
   const fixture = TestBed.createComponent(FacebookCommentsResearchComponent);
@@ -110,6 +111,36 @@ describe('Facebook comments workspace', () => {
     const zero = element.querySelector('.comments-table tr[data-coverage="complete"]')!;
     expect(zero.querySelectorAll('td')[1].textContent).toContain('0 / 0');
     expect(zero.querySelectorAll('td')[3].textContent?.trim()).toBe('0');
+    fixture.destroy();
+  });
+
+  it('opens the selected comment reader lazily and returns to the aggregate table on close', () => {
+    const fixture = setup();
+    const component = fixture.componentInstance;
+    const http = TestBed.inject(HttpTestingController);
+    http.expectOne(component.dataUrl).flush(commentFixture());
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelector('app-facebook-comment-reader')).toBeNull();
+    expect(element.querySelectorAll('.reader-button')).toHaveLength(1);
+    element.querySelector<HTMLButtonElement>('.reader-button')!.click();
+    fixture.detectChanges();
+    const file = `${'c'.repeat(64)}.json`;
+    const collectionSha256 = 'a'.repeat(64);
+    http.expectOne('/data/facebook/2026/comments/manifest.json').flush({ version: 1, collectionSha256,
+      posts: [{ postId: 'a', file, count: 4 }] });
+    http.expectOne(`/data/facebook/2026/comments/${file}`).flush({ version: 1, collectionSha256, postId: 'a', comments: [
+      { id: 1, parentId: null, text: 'Одобрение.', truncated: false, gyurov: 'supportive', yotova: 'neutral' },
+      { id: 2, parentId: null, text: 'Критика.', truncated: false, gyurov: 'critical', yotova: 'critical' },
+      { id: 3, parentId: null, text: 'Информация.', truncated: false, gyurov: 'neutral', yotova: 'neutral' },
+      { id: 4, parentId: 1, text: null, truncated: false, gyurov: 'unreviewed', yotova: 'unreviewed' },
+    ] });
+    fixture.detectChanges();
+    expect(element.querySelector('dialog')?.textContent).toContain('Одобрение.');
+    element.querySelector<HTMLButtonElement>('dialog button[aria-label="Затвори"]')!.click();
+    fixture.detectChanges();
+    expect(component.selectedReaderRow()).toBeNull();
+    expect(element.querySelector('dialog')).toBeNull();
     fixture.destroy();
   });
 
