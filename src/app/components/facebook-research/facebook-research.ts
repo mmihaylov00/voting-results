@@ -20,7 +20,7 @@ import { FacebookResearchChartsComponent } from './facebook-research-charts';
 import { FacebookResearchImageComponent } from './facebook-research-image';
 import { FacebookResearchStanceComponent } from './facebook-research-stance';
 import { FacebookPageDirectoryComponent } from './facebook-page-directory';
-import { FacebookDirectoryEntry, FacebookPageSummary, FacebookPost, FacebookReport, FacebookReview, FacebookTotal } from './facebook-research.models';
+import { FacebookCandidate, FacebookDirectoryEntry, FacebookPageSummary, FacebookPost, FacebookReport, FacebookReview, FacebookTotal } from './facebook-research.models';
 import { FACEBOOK_CANDIDATES, FACEBOOK_CANDIDATE_LABELS, FACEBOOK_METRIC_LABELS, FACEBOOK_METRICS, FACEBOOK_STANCE_BUCKETS, FACEBOOK_TONE_COUNTS, FACEBOOK_TONE_LABELS, facebookCount, facebookDate, facebookPageSummaries, facebookShortName, facebookStanceSummary, facebookTime, validFacebookReport } from './facebook-research.util';
 
 type KeywordCoverage = FacebookReport['coverage'][number];
@@ -51,6 +51,8 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
   readonly view = signal<string>(VIEWS.includes(this.route.snapshot.queryParams['view']) ? this.route.snapshot.queryParams['view'] : 'pages');
   readonly pageFilter = signal('');
   readonly keywordFilter = signal('');
+  readonly pageToneFilters = signal({ gyurov: '', yotova: '' });
+  readonly postToneFilters = signal({ gyurov: '', yotova: '' });
   readonly selectedPostId = signal('');
   readonly selectedReview = signal<FacebookReview | null>(null);
   readonly csvData = signal<CsvExportData | null>(null);
@@ -60,10 +62,17 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
   readonly shortName = facebookShortName;
   readonly metrics = FACEBOOK_METRICS;
   readonly metricLabels = FACEBOOK_METRIC_LABELS;
+  readonly candidates = FACEBOOK_CANDIDATES;
+  readonly candidateLabels = FACEBOOK_CANDIDATE_LABELS;
+  readonly toneOptions = [{ value: '', label: 'Всички оценки' },
+    ...FACEBOOK_STANCE_BUCKETS.map(value => ({ value, label: FACEBOOK_TONE_LABELS[value] }))];
   readonly pageTable = viewChild<TableControlsComponent<FacebookPageSummary>>('pageTable');
   readonly postTable = viewChild<TableControlsComponent<FacebookPost>>('postTable');
   readonly pages = computed(() => this.report() ? facebookPageSummaries(this.report()!) : []);
+  readonly filteredPages = computed(() => this.pages().filter(page => FACEBOOK_CANDIDATES.every(candidate =>
+    !this.pageToneFilters()[candidate] || page.stance[candidate].label === this.pageToneFilters()[candidate])));
   readonly postMap = computed(() => new Map(this.report()?.posts.map(post => [post.id, post]) ?? []));
+  readonly postStances = computed(() => new Map(this.report()?.posts.map(post => [post.id, facebookStanceSummary([post])]) ?? []));
   readonly pageMap = computed(() => new Map(this.pages().map(page => [page.id, page])));
   readonly pageDirectory = computed(() => {
     const entries = new Map<string, FacebookDirectoryEntry>();
@@ -73,13 +82,15 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
     return entries;
   });
   readonly selectedPost = computed(() => this.postMap().get(this.selectedPostId()) ?? null);
-  readonly selectedPostStance = computed(() => facebookStanceSummary(this.selectedPost() ? [this.selectedPost()!] : []));
+  readonly selectedPostStance = computed(() => this.postStances().get(this.selectedPostId()) ?? facebookStanceSummary([]));
   readonly selectedPostMatches = computed(() => this.report()?.matches.filter(match =>
     match.sourceId === this.selectedPostId() || match.targetId === this.selectedPostId()) ?? []);
   readonly selectedPostReviews = computed(() => this.report()?.reviews.filter(review => review.postIds.includes(this.selectedPostId())) ?? []);
   readonly filteredPosts = computed(() => this.report()?.posts.filter(post =>
     (!this.pageFilter() || post.pageId === this.pageFilter())
-    && (!this.keywordFilter() || post.keywords.some(match => match.keyword === this.keywordFilter()))) ?? []);
+    && (!this.keywordFilter() || post.keywords.some(match => match.keyword === this.keywordFilter()))
+    && FACEBOOK_CANDIDATES.every(candidate => !this.postToneFilters()[candidate]
+      || this.postStances().get(post.id)![candidate].label === this.postToneFilters()[candidate])) ?? []);
   readonly pageOptions = computed(() => [{ value: '', label: 'Всички страници' },
     ...this.pages().map(page => ({ value: page.id, label: facebookShortName(page.name) }))]);
   readonly keywordOptions = computed(() => [{ value: '', label: 'Всички ключови думи' },
@@ -113,6 +124,7 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
   };
   readonly postColumns: TableColumns<FacebookPost> = {
     title: row => row.excerpt, page: row => this.pageName(row), date: row => row.date ?? row.interval?.start,
+    stance: row => FACEBOOK_CANDIDATES.map(candidate => FACEBOOK_TONE_LABELS[this.postStances().get(row.id)![candidate].label]).join('; '),
     reactions: row => row.metrics.reactions.value, comments: row => row.metrics.comments.value,
     shares: row => row.metrics.shares.value, search: row => `${row.summary} ${row.keywords.map(match => match.keyword).join(' ')}`,
   };
@@ -172,7 +184,25 @@ export class FacebookResearchComponent implements OnInit, OnDestroy {
     if (!this.pageMap().has(pageId)) return;
     this.pageFilter.set(pageId);
     this.keywordFilter.set('');
+    this.postToneFilters.set({ gyurov: '', yotova: '' });
     this.setView('posts');
+  }
+
+  setToneFilter(scope: 'pages' | 'posts', candidate: FacebookCandidate, value: string): void {
+    const filters = scope === 'pages' ? this.pageToneFilters : this.postToneFilters;
+    filters.update(current => ({ ...current, [candidate]: value }));
+  }
+
+  resetPageFilters(): void {
+    this.pageToneFilters.set({ gyurov: '', yotova: '' });
+    this.pageTable()?.query.set('');
+  }
+
+  resetPostFilters(): void {
+    this.pageFilter.set('');
+    this.keywordFilter.set('');
+    this.postToneFilters.set({ gyurov: '', yotova: '' });
+    this.postTable()?.query.set('');
   }
 
   openPost(id: string): void {

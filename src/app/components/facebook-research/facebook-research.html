@@ -21,9 +21,15 @@
         <app-facebook-page-directory [directory]="data.directory" (pageSelect)="showPagePosts($event)" />
       }
       @if (view() === 'pages') {
+        <div class="candidate-filters" role="group" aria-label="Филтри по тон на страниците">
+          @for (candidate of candidates; track candidate) {
+            <div><label [for]="'facebook-page-tone-' + candidate + '--trigger'">Тон към {{ candidateLabels[candidate] }}</label><app-select [controlId]="'facebook-page-tone-' + candidate" [label]="'Тон към ' + candidateLabels[candidate]" [options]="toneOptions" [value]="pageToneFilters()[candidate]" (valueChange)="setToneFilter('pages', candidate, $event)" /></div>
+          }
+        </div>
         <div class="toolbar">
-          <app-table-controls #pageTable [rows]="pages()" [columns]="pageColumns" label="Търсене на Facebook страница" searchInputClass="min-h-11! text-base!" />
-          <button hlmBtn variant="outline" class="gap-2" type="button" [disabled]="!pageTable.viewRows().length" (click)="exportPages(pageTable.viewRows())"><app-map-icon name="download-table" />Експорт CSV</button>
+          <app-table-controls #pageTable [rows]="filteredPages()" [columns]="pageColumns" label="Търсене на Facebook страница" searchInputClass="min-h-11! text-base!" />
+          <div class="button-row"><button hlmBtn variant="outline" size="icon" type="button" aria-label="Изчисти филтрите на страниците" title="Изчисти филтрите на страниците" (click)="resetPageFilters()"><app-map-icon name="reset" /></button>
+            <button hlmBtn variant="outline" class="gap-2" type="button" [disabled]="!pageTable.viewRows().length" (click)="exportPages(pageTable.viewRows())"><app-map-icon name="download-table" />Експорт CSV</button></div>
         </div>
         <app-facebook-research-charts [pages]="pageTable.viewRows()" [posts]="data.posts" (pageSelect)="showPagePosts($event)" />
         <div class="section-heading table-heading"><h2>Страници в събраните данни</h2><span class="note">≈ закръглен брояч · — липсващ брояч</span></div>
@@ -52,7 +58,7 @@
                   <td>{{ count(page.followers, page.followersApproximate) }}</td><td>{{ count(page.postCount) }}</td>
                   @for (metric of metrics; track metric) {<td><span [hlmTooltip]="totalNote(page.totals[metric])" [attr.tabindex]="page.totals[metric].approximate || page.totals[metric].missing ? 0 : null">{{ totalLabel(page.totals[metric]) }}</span>@if (page.totals[metric].missing) {<small>{{ page.totals[metric].missing }} без брояч</small>}</td>}
                 </tr>
-              } @empty {<tr><td colspan="7" class="empty-state">Няма страници по това търсене.</td></tr>}
+              } @empty {<tr><td colspan="7" class="empty-state">Няма страници по тези филтри.</td></tr>}
               @if (pageRows.window().bottom) {<tr aria-hidden="true"><td colspan="7" [style.height.px]="pageRows.window().bottom" class="virtual-spacer"></td></tr>}
             </tbody>
           </table>
@@ -64,15 +70,21 @@
           <div><label for="facebook-page--trigger">Страница</label><app-select controlId="facebook-page" label="Facebook страница" [options]="pageOptions()" [value]="pageFilter()" (valueChange)="pageFilter.set($event)" icon="globe" /></div>
           <div><label for="facebook-keyword--trigger">Ключова дума</label><app-select controlId="facebook-keyword" label="Ключова дума" [options]="keywordOptions()" [value]="keywordFilter()" (valueChange)="keywordFilter.set($event)" icon="filter" /></div>
         </div>
+        <div class="candidate-filters" role="group" aria-label="Филтри по тон на публикациите">
+          @for (candidate of candidates; track candidate) {
+            <div><label [for]="'facebook-post-tone-' + candidate + '--trigger'">Тон към {{ candidateLabels[candidate] }}</label><app-select [controlId]="'facebook-post-tone-' + candidate" [label]="'Тон към ' + candidateLabels[candidate]" [options]="toneOptions" [value]="postToneFilters()[candidate]" (valueChange)="setToneFilter('posts', candidate, $event)" /></div>
+          }
+        </div>
         <div class="toolbar">
           <app-table-controls #postTable [rows]="filteredPosts()" [columns]="postColumns" label="Търсене в публикациите" searchInputClass="min-h-11! text-base!" />
-          <div class="button-row"><button hlmBtn variant="outline" size="icon" type="button" aria-label="Изчисти филтрите" title="Изчисти филтрите" (click)="pageFilter.set(''); keywordFilter.set(''); postTable.query.set('')"><app-map-icon name="reset" /></button>
+          <div class="button-row"><button hlmBtn variant="outline" size="icon" type="button" aria-label="Изчисти филтрите" title="Изчисти филтрите" (click)="resetPostFilters()"><app-map-icon name="reset" /></button>
             <button hlmBtn variant="outline" class="gap-2" type="button" [disabled]="!postTable.viewRows().length" (click)="exportPosts(postTable.viewRows())"><app-map-icon name="download-table" />Експорт CSV</button></div>
         </div>
         <div class="table-scroll post-table-scroll" tabindex="0" role="region" aria-label="Публикации по текущите филтри" [virtualRows]="postTable.viewRows()" [virtualRowHeight]="94" #postRows="virtualRows">
           <table class="post-table" aria-label="Публикации и видими броячи" [attr.aria-rowcount]="postTable.viewRows().length + 1">
             <thead><tr>
               <th scope="col" app-sortable-table-header columnKey="title" label="Публикация" [table]="postTable" align="left"></th>
+              <th scope="col" app-sortable-table-header columnKey="stance" label="Тон към кандидатите" [table]="postTable" align="left"></th>
               <th scope="col" app-sortable-table-header columnKey="page" label="Страница" [table]="postTable" align="left"></th>
               <th scope="col" app-sortable-table-header columnKey="date" label="Дата" [table]="postTable" align="left"></th>
               <th scope="col" app-sortable-table-header columnKey="reactions" label="Реакции" [table]="postTable" align="right"></th>
@@ -80,15 +92,16 @@
               <th scope="col" app-sortable-table-header columnKey="shares" label="Споделяния" [table]="postTable" align="right"></th>
             </tr></thead>
             <tbody>
-              @if (postRows.window().top) {<tr aria-hidden="true"><td colspan="6" [style.height.px]="postRows.window().top" class="virtual-spacer"></td></tr>}
+              @if (postRows.window().top) {<tr aria-hidden="true"><td colspan="7" [style.height.px]="postRows.window().top" class="virtual-spacer"></td></tr>}
               @for (post of postRows.rows(); track post.id) {
                 <tr [attr.data-virtual-index]="postRows.window().start + $index" [attr.aria-rowindex]="postRows.window().start + $index + 2">
                   <th scope="row"><button type="button" class="text-button flex! items-start gap-3 w-full" (click)="openPost(post.id)"><app-facebook-research-image [image]="post.images?.[0]" [label]="shortName(pageName(post))" /><span class="post-excerpt min-w-0 flex-1">{{ post.excerpt || post.summary }}</span></button>@if (post.platformLabels?.length) {@for (label of post.platformLabels; track label) {<small>Facebook: {{ label }}</small>}} @else if (post.origin === 'discovery') {<small>Намерена при сравнение</small>}</th>
+                  <td class="min-w-48 sm:min-w-60 max-w-72 whitespace-normal! text-left!"><button type="button" class="w-full cursor-pointer rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current" [attr.aria-label]="'Тон и основания за публикацията от ' + shortName(pageName(post)) + ' на ' + postDate(post)" (click)="openPost(post.id)"><app-facebook-research-stance [summary]="postStances().get(post.id)!" [showCounts]="false" /></button></td>
                   <td class="wrap-cell"><span class="inline-flex items-center gap-2"><app-facebook-research-image [image]="pageMap().get(post.pageId)?.avatar" [label]="shortName(pageName(post))" variant="avatar" /><span>{{ shortName(pageName(post)) }}</span></span></td><td class="date-cell">{{ postDate(post) }}<small>{{ postTime(post) }}</small></td>
                   @for (metric of metrics; track metric) {<td>{{ count(post.metrics[metric].value, post.metrics[metric].approximate === true) }}</td>}
                 </tr>
-              } @empty {<tr><td colspan="6" class="empty-state">Няма публикации по тези филтри.</td></tr>}
-              @if (postRows.window().bottom) {<tr aria-hidden="true"><td colspan="6" [style.height.px]="postRows.window().bottom" class="virtual-spacer"></td></tr>}
+              } @empty {<tr><td colspan="7" class="empty-state">Няма публикации по тези филтри.</td></tr>}
+              @if (postRows.window().bottom) {<tr aria-hidden="true"><td colspan="7" [style.height.px]="postRows.window().bottom" class="virtual-spacer"></td></tr>}
             </tbody>
           </table>
         </div>
