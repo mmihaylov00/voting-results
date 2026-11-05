@@ -116,7 +116,7 @@ export class FacebookCommentsResearchComponent implements OnInit {
       chart: { type: 'bar', height: Math.max(320, rows.length * 37 + 110), animation: false, backgroundColor: 'transparent', style: { fontFamily: 'inherit' } },
       title: { text: undefined }, credits: { enabled: false }, accessibility: { enabled: false },
       responsive: { rules: [{ condition: { maxWidth: 480 }, chartOptions: {
-        chart: { marginLeft: 112 }, xAxis: { labels: { style: { width: 100, textOverflow: 'ellipsis', whiteSpace: 'nowrap' } } },
+        chart: { marginLeft: 112 }, xAxis: { labels: { distance: 8, style: { width: 100, textOverflow: 'ellipsis', whiteSpace: 'nowrap' } } },
       } }] },
       subtitle: { text: `${this.totals().captured} събрани · ${this.totals().assessed} оценени · ${this.totals().checked}/${this.visibleRows().length} проверени публикации`, style: { color: ink, fontSize: '10px' } },
       xAxis: { categories: rows.map(row => facebookShortName(row.name)), lineWidth: 0, tickWidth: 0, labels: { style: { color: ink, fontSize: '11px' } } },

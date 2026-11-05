@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "capturedAt": "2026-11-05T12:12:10.036Z",
-  "collectionSha256": "a0769f82fd1bddaa12debe9d8189bb4e96e11a54b60a090fa5cb89ee20e146a0",
+  "capturedAt": "2026-11-05T12:45:56.363Z",
+  "collectionSha256": "a529d8e82409d5edf3af50816444847711f46e7783a92622626edf37eb02f0f3",
   "posts": [
     {
       "postId": "post:pfbid02mU6YsGsHu3nW7F6Q6onUsvLYnyT2C1Vr8H688j4o6HCQozQNQAraqxpv5SJa7dWQl",
       "checkedAt": "2026-11-05T11:08:04.948Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 20,
       "capturedCount": 18,
       "assessedCount": 15,
@@ -33,13 +33,15 @@
           "unreviewed": 3
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02xBHQG3oNTv5Fn74pzZ2znxx7XGj8CEvZ6j6TEEih8kCyYKKQkftHhWepqmw62Ttvl",
       "checkedAt": "2026-11-05T11:10:43.617Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 23,
       "capturedCount": 23,
       "assessedCount": 21,
@@ -65,13 +67,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02m5AM3UjX6s5P61kxMT15xB7VjMHvG1xaivvUUN8ewZhVBEV66zUDcjM33pR64ojml",
-      "checkedAt": "2026-11-05T10:29:33.350Z",
+      "checkedAt": "2026-11-05T12:27:20.430Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 7,
       "capturedCount": 6,
       "assessedCount": 5,
@@ -98,14 +102,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid0mDnqBwtyiQuvDPsUuSLyFfrNZ8hCzmYwfYpUCeWUxHa8KrHDuSdaDAfzHxkphbvNl",
       "checkedAt": "2026-11-05T10:55:56.324Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 11,
       "capturedCount": 11,
       "assessedCount": 8,
@@ -131,7 +135,9 @@
           "unreviewed": 3
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02u9M2ZYvSrtZ2KZkeDNeVdbxwfGDKn4RixnrqaRRR8g4aUGkxx7u9rvRLk2aVcaoHl",
@@ -164,7 +170,7 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
@@ -202,8 +208,8 @@
     {
       "postId": "post:pfbid02m8f3HxtJot1ghwe3G1VnzseGj9vwEYeTSSUSLgW1YFudMHBiXJUU9jKaGh2H6cjNl",
       "checkedAt": "2026-11-05T11:05:44.792Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 19,
       "capturedCount": 19,
       "assessedCount": 18,
@@ -229,11 +235,13 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid031KzVh7UKdSRowGx3pHBj5Qb8hu6DQNaKz1thvjzv3ZasBSHsaPKDRPzwcRU3PJqQl",
-      "checkedAt": "2026-11-05T10:21:48.664Z",
+      "checkedAt": "2026-11-05T12:45:43.835Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 3,
@@ -265,9 +273,9 @@
     },
     {
       "postId": "post:pfbid02S9i8g73PkvdreHCK14M8RjcDRaKuKV8mbemEz9uumawLedfsSSvBnxnrTxrr7dHfl",
-      "checkedAt": "2026-11-05T10:31:41.806Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:18:44.196Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 7,
       "capturedCount": 7,
       "assessedCount": 7,
@@ -293,11 +301,13 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0dqaVDHafaSqYgUEasHmN3Ani9oHcw4YwbwBJxneq4Jj6qTkAxyTJGyvhoSYwdoQtl",
-      "checkedAt": "2026-11-05T10:07:46.092Z",
+      "checkedAt": "2026-11-05T12:45:50.581Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 3,
@@ -329,7 +339,7 @@
     },
     {
       "postId": "post:pfbid028x5LkjYB6qV5HeJCjWWtGgkZLQL3eEEyFHRf5sw8WCy1cA16RRuz3doXBuV92zewl",
-      "checkedAt": "2026-11-05T12:10:47.743Z",
+      "checkedAt": "2026-11-05T12:40:25.339Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 1,
@@ -343,8 +353,8 @@
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 1,
-          "not-mentioned": 0,
+          "unclear": 0,
+          "not-mentioned": 1,
           "unreviewed": 0
         },
         "yotova": {
@@ -352,8 +362,8 @@
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 1,
-          "not-mentioned": 0,
+          "unclear": 0,
+          "not-mentioned": 1,
           "unreviewed": 0
         }
       },
@@ -363,7 +373,7 @@
       "postId": "post:pfbid02mC3RbUvRRrwn4FWqivPzEWAmRwnA5N2DWjq8Uoq7RsNYGRy5ULep8wyc1NouSHY2l",
       "checkedAt": "2026-11-05T11:56:37.342Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 209,
       "capturedCount": 55,
       "assessedCount": 51,
@@ -389,12 +399,14 @@
           "unreviewed": 4
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02orFJ7ecCHXmDARycYMhD5N21fPcvRydaUUaJQL3jc6fHXY3n1onf2kudGCfHpunNl",
-      "checkedAt": "2026-11-05T10:41:45.104Z",
-      "status": "complete",
+      "checkedAt": "2026-11-05T12:24:49.372Z",
+      "status": "partial",
       "ordering": null,
       "reportedCount": 8,
       "capturedCount": 8,
@@ -421,13 +433,15 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02upmeKUjzAUKYiFtZ87Tos1bACTjUg6bq9FiWZQuVLrwdXhGVnTZ4TE4X6SfG5N7Hl",
       "checkedAt": "2026-11-05T11:20:23.232Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 42,
       "capturedCount": 39,
       "assessedCount": 37,
@@ -454,14 +468,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid03rZ6MY8CN5E94AuM95mPh9MrXcuksP24zHiZn46EcQ3RhpWrxMiooYHwUAnocvbyl",
       "checkedAt": "2026-11-05T11:14:19.253Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 31,
       "capturedCount": 29,
       "assessedCount": 27,
@@ -488,14 +502,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid0BHVnuGJsi6ub8GXhMMHfnBdKKnQE7cadFT1LBkfrfGTWubjtRahR29KDYiyCPg6bl",
       "checkedAt": "2026-11-05T11:44:22.518Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 73,
       "capturedCount": 30,
       "assessedCount": 29,
@@ -521,13 +535,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0KisFpBdsttQ3mTPPqpPgaxPDyddQ5s6EuS3aFRAVTwBDYGCNnGDY8LDpYNn5ZkBZl",
-      "checkedAt": "2026-11-05T10:25:43.462Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:16:59.620Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 6,
       "capturedCount": 6,
       "assessedCount": 6,
@@ -553,14 +569,16 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0Moetda1iWfTHG8QCvYmjFbLuDCH2RSNszUecXCcoKurF41vuCJizBws5DAQwsDjLl",
-      "checkedAt": "2026-11-05T12:12:10.036Z",
+      "checkedAt": "2026-11-05T12:43:35.683Z",
       "status": "complete",
       "ordering": "all",
-      "reportedCount": 1,
+      "reportedCount": 2,
       "capturedCount": 2,
       "assessedCount": 2,
       "topLevelCount": 2,
@@ -591,7 +609,7 @@
       "postId": "post:pfbid0mnE5t943SWc4MH9KheNhCi5UYKCLnWUP3kxWAv3wd2WESpMJHHTLYfLp6rtWTHNal",
       "checkedAt": "2026-11-05T11:29:49.134Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 65,
       "capturedCount": 44,
       "assessedCount": 43,
@@ -617,13 +635,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0oApgxUQcjgrRURbhK9a5YVoZY2bHiH29tiaq8AnPkZVwNeGCqHVmZoYDuDjWcgXMl",
-      "checkedAt": "2026-11-05T10:31:48.440Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:19:03.432Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 7,
       "capturedCount": 7,
       "assessedCount": 7,
@@ -649,13 +669,15 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0252oshkJ5KmtXCKjdgoUHZjwS3xabtSgHBJHMag8dzEtKQ42gZRcUVsRJMwcyG6EXl",
-      "checkedAt": "2026-11-05T10:22:46.147Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:15:37.249Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 4,
       "capturedCount": 5,
       "assessedCount": 4,
@@ -681,13 +703,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02EJT5FUrZgtrk7tTa1XHeNT7wT3XcPNuGQZes7tnF3PRfkc79CJDyuhzJiouTS6Uyl",
       "checkedAt": "2026-11-05T11:24:13.159Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 49,
       "capturedCount": 46,
       "assessedCount": 44,
@@ -713,13 +737,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid03V9bKpCNQKJu4Ba9HckG1GKZfbUfiW7sHoXSmrEjTToa9hCfLCpeSshKajdgAmE9l",
       "checkedAt": "2026-11-05T09:42:59.202Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 648,
       "capturedCount": 63,
       "assessedCount": 63,
@@ -745,13 +771,15 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0RU4rkXLGMKMbo43LNk2dHiAbnzXzZnvisSWW69RqrDm96ZnFzxbKc3GXvx2PfgWbl",
       "checkedAt": "2026-11-05T11:12:35.873Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 29,
       "capturedCount": 29,
       "assessedCount": 28,
@@ -777,16 +805,18 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:2050433183027183",
-      "checkedAt": "2026-11-05T10:25:55.411Z",
+      "checkedAt": "2026-11-05T12:17:13.336Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 6,
       "capturedCount": 6,
-      "assessedCount": 3,
+      "assessedCount": 5,
       "topLevelCount": 6,
       "replyCount": 0,
       "counts": {
@@ -796,8 +826,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 3,
-          "unreviewed": 3
+          "not-mentioned": 5,
+          "unreviewed": 1
         },
         "yotova": {
           "supportive": 0,
@@ -805,17 +835,19 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 3,
-          "unreviewed": 3
+          "not-mentioned": 5,
+          "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02PK2BQUuFmxmeJrgDxK5YH3SjzYKhdospmacVbHE4EvxXqFzhcnAeTA2VRh2uBxBml",
       "checkedAt": "2026-11-05T11:06:11.175Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 19,
       "capturedCount": 18,
       "assessedCount": 18,
@@ -842,14 +874,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid02etWsuvBeLS3Ku119BoMWHjdWvXzMaARnc96tfyJJtMEDJBrhPwwiUpdcMfrsWSb8l",
       "checkedAt": "2026-11-05T11:28:35.085Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 61,
       "capturedCount": 55,
       "assessedCount": 52,
@@ -875,13 +907,15 @@
           "unreviewed": 3
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02sTbvxAS9yNW2ninfFGXuGB6HskJV5F9TUEkvh6xeVWfAmP6EXftsSyaHVjrsvH8xl",
       "checkedAt": "2026-11-05T11:05:23.751Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 18,
       "capturedCount": 18,
       "assessedCount": 18,
@@ -907,13 +941,15 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02yYngwbFJKYGVPJiqoahxFCb3cXeW7T9QjGz93rwXjiustzsoUTefJXQzMxkgkuUel",
       "checkedAt": "2026-11-05T11:08:30.979Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 20,
       "capturedCount": 19,
       "assessedCount": 15,
@@ -940,14 +976,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid032257kFpWVw9H3xfrZnwCgVFGDo8J72jGTsLpViBujApt8kz4aZsEbnbv9AtUWksgl",
-      "checkedAt": "2026-11-05T10:27:48.919Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:17:20.225Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 6,
       "capturedCount": 6,
       "assessedCount": 5,
@@ -973,13 +1009,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid08UZBktF8as1FA3sS9DHowHJKXLd5RcRd4zUX5bCmuHuaTYbqxVF1CXq4jwzGPcDxl",
       "checkedAt": "2026-11-05T10:56:06.076Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 11,
       "capturedCount": 11,
       "assessedCount": 5,
@@ -1005,13 +1043,15 @@
           "unreviewed": 6
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0P8eVWT6q1cjqVuUx6W7jFS8kQkPJEAge5cbuYiQxP2U5dSU6EqczFMqnrL3fX5qFl",
-      "checkedAt": "2026-11-05T10:42:46.220Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:29:27.407Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 8,
       "capturedCount": 8,
       "assessedCount": 5,
@@ -1037,13 +1077,15 @@
           "unreviewed": 3
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0vpmBVZ3aQ5eoa91QNqEBGQG5UxQsACejjUe4ouYUHNijU5fDxX63Chjff4SJgMD8l",
       "checkedAt": "2026-11-05T10:56:38.564Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 11,
       "capturedCount": 11,
       "assessedCount": 10,
@@ -1069,13 +1111,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1446707520759625",
-      "checkedAt": "2026-11-05T10:48:53.287Z",
+      "checkedAt": "2026-11-05T12:26:53.920Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 8,
       "capturedCount": 5,
       "assessedCount": 2,
@@ -1102,14 +1146,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid01Qgxf35raAqu1iVK5AsUoCz4nGd8f3nZ3ufBYResZrTtimqQzNaAo19uTfN7HrgMl",
-      "checkedAt": "2026-11-05T10:21:55.016Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:13:23.687Z",
+      "status": "partial",
+      "ordering": "most-relevant",
       "reportedCount": 3,
       "capturedCount": 3,
       "assessedCount": 2,
@@ -1135,7 +1179,9 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Редът на коментарите не беше потвърден; проверката продължава."
+      ]
     },
     {
       "postId": "post:pfbid026QRXCj8swnem74Z265Ft27ukZ6cThufy3xmoJKztLyGjL3LdXatA8k3DespK89uzl",
@@ -1168,14 +1214,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid026qyin9k9BgRa4wQ6EiLTy3fdgNpTc7ubXhbMjUP8em1wCjk6qf7yVvRdzCaFtXGdl",
-      "checkedAt": "2026-11-05T10:27:57.662Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:17:32.793Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 6,
       "capturedCount": 6,
       "assessedCount": 5,
@@ -1201,13 +1247,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02PjhhvHUKazdRWLaoBwbzKiEQb7hM945KZtAMcp4hFGrR8mDfyKzygx4oTCznvw74l",
       "checkedAt": "2026-11-05T11:49:46.714Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 110,
       "capturedCount": 75,
       "assessedCount": 73,
@@ -1233,13 +1281,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02TnWBWnWfk1vHjhGTVHLtjQ2uwXroeCAftqzQGra8B65TXMugVuMXq3a7isUaP6Cql",
       "checkedAt": "2026-11-05T11:04:11.377Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 17,
       "capturedCount": 13,
       "assessedCount": 11,
@@ -1266,14 +1316,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid02Y2zTwSb6uoJjdYAV4TqNi7aCS4WgDuhzArpgDiC2H8XhJXkRAsM4kHsVnBjmTqpql",
       "checkedAt": "2026-11-05T11:31:33.618Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 66,
       "capturedCount": 57,
       "assessedCount": 46,
@@ -1300,7 +1350,7 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
@@ -1339,7 +1389,7 @@
       "postId": "post:pfbid031bcFzrkzYYGxLaGg93g6Mah7mcbdwioCZBpqPgEaYTkgEkzNPfyyCcGBiFnFDB2sl",
       "checkedAt": "2026-11-05T11:32:35.924Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 69,
       "capturedCount": 41,
       "assessedCount": 39,
@@ -1366,14 +1416,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid05pTdBgg2pBhFRS5yMBEnCNE4vA8zi6vGDD6muBMNRcs2YKTBWZT57evyo32iC9eSl",
-      "checkedAt": "2026-11-05T10:28:41.149Z",
+      "checkedAt": "2026-11-05T12:27:11.295Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 6,
       "capturedCount": 5,
       "assessedCount": 5,
@@ -1400,14 +1450,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid0Q4vZKwZiaCnHsiE2qKiWSzDD7TTqbbxDCVf8YkB5yS3TSMu2XHi4zPUkjKtjq4SFl",
       "checkedAt": "2026-11-05T10:58:31.116Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 13,
       "capturedCount": 13,
       "assessedCount": 11,
@@ -1433,13 +1483,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0QeTBHPudRNmcQ2nKeMdTsAwfoi7JLAAytBrVaCAeGFEi29sqJ3cig9BLbdu3QqFNl",
       "checkedAt": "2026-11-05T11:48:28.158Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 103,
       "capturedCount": 58,
       "assessedCount": 51,
@@ -1465,13 +1517,15 @@
           "unreviewed": 7
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl",
       "checkedAt": "2026-11-05T09:48:11.590Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 243,
       "capturedCount": 42,
       "assessedCount": 41,
@@ -1497,13 +1551,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0r5fND2sHqXbM1JCJbmJo5rLUWxMFnaZFSd5dC4qUh2PqVagZSQANr79TZeYQWPQyl",
       "checkedAt": "2026-11-05T11:54:27.348Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 165,
       "capturedCount": 43,
       "assessedCount": 43,
@@ -1529,18 +1585,20 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1113050341136376",
-      "checkedAt": "2026-11-05T11:04:42.447Z",
+      "checkedAt": "2026-11-05T12:29:41.871Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 17,
-      "capturedCount": 8,
+      "capturedCount": 17,
       "assessedCount": 7,
-      "topLevelCount": 6,
-      "replyCount": 2,
+      "topLevelCount": 12,
+      "replyCount": 5,
       "counts": {
         "gyurov": {
           "supportive": 0,
@@ -1549,7 +1607,7 @@
           "neutral": 0,
           "unclear": 0,
           "not-mentioned": 7,
-          "unreviewed": 1
+          "unreviewed": 10
         },
         "yotova": {
           "supportive": 0,
@@ -1558,16 +1616,18 @@
           "neutral": 0,
           "unclear": 0,
           "not-mentioned": 2,
-          "unreviewed": 1
+          "unreviewed": 10
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1670123841398564",
       "checkedAt": "2026-11-05T11:27:52.002Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 61,
       "capturedCount": 12,
       "assessedCount": 11,
@@ -1593,13 +1653,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid06fPN7iSAZg1NDCkj4vUhLbHSK9D9FNTo21sBWewezxQiGAWuh89CdrfMVvSY4wR7l",
       "checkedAt": "2026-11-05T10:58:47.688Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 13,
       "capturedCount": 13,
       "assessedCount": 12,
@@ -1625,11 +1687,13 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02tLVduNW2khzhW98qhibyp3ypkXkbKrEwvFFZSsjruPoGFgXFQ3k747dimeRm6V8zl",
-      "checkedAt": "2026-11-05T12:10:54.856Z",
+      "checkedAt": "2026-11-05T12:41:11.237Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 1,
@@ -1661,13 +1725,13 @@
     },
     {
       "postId": "post:pfbid0eboqFNFPZpCoHNvPWGXJeF3nuNhR1UbVNd1zK9GSFWYPCWKLqVWokZiYG8oq9XHbl",
-      "checkedAt": "2026-11-05T10:23:44.797Z",
-      "status": "complete",
-      "ordering": "all",
-      "reportedCount": 4,
-      "capturedCount": 4,
-      "assessedCount": 2,
-      "topLevelCount": 4,
+      "checkedAt": "2026-11-05T12:14:59.742Z",
+      "status": "partial",
+      "ordering": null,
+      "reportedCount": 5,
+      "capturedCount": 5,
+      "assessedCount": 3,
+      "topLevelCount": 5,
       "replyCount": 0,
       "counts": {
         "gyurov": {
@@ -1676,7 +1740,7 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
+          "not-mentioned": 3,
           "unreviewed": 2
         },
         "yotova": {
@@ -1685,17 +1749,19 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
+          "not-mentioned": 3,
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0pVveentc1PVrbz9igvuN85ybYYJmAEQvBgaiYQpnrtnW2ei5Mvm6nLFWENhX38Psl",
       "checkedAt": "2026-11-05T12:00:27.220Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 22,
       "capturedCount": 22,
       "assessedCount": 20,
@@ -1721,13 +1787,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0TmJbD1kQoSpxLcJADuGeJ1SGjW3Lz9Z7zX7LNNzzU5GgymXPXKkibkGJF6TbXC6Pl",
-      "checkedAt": "2026-11-05T10:32:01.321Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:19:11.784Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 7,
       "capturedCount": 7,
       "assessedCount": 4,
@@ -1753,13 +1821,15 @@
           "unreviewed": 3
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0317sNmP4Ejrj3qwFsSCrGXNaLCMypad1TQ2u27dzNgTzBzpa7w7qRu7CyF2kBQvKtl",
-      "checkedAt": "2026-11-05T10:32:07.412Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:19:25.084Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 7,
       "capturedCount": 7,
       "assessedCount": 2,
@@ -1785,7 +1855,9 @@
           "unreviewed": 5
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0W91zvaUDUbjGfAT4RRDMfMrmwpLeYGcXbPq2tTiWfJihYoGSugJDqd2Meg3SNU9Gl",
@@ -1818,14 +1890,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid02BwihQyZqD3td346wvdEipSrUavMA5D9U3zho7XrgtXnRNBuY4NDqw9LoUUZ38ykgl",
       "checkedAt": "2026-11-05T11:45:01.356Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 74,
       "capturedCount": 35,
       "assessedCount": 32,
@@ -1851,13 +1923,15 @@
           "unreviewed": 3
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0K5jf6Wfc67p2HwjBYkg4BSZegkKPfbDV8vaGLyiVwVaWuPnJQ1NhiJ1VpsVjauDzl",
-      "checkedAt": "2026-11-05T10:49:43.431Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:29:54.943Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 8,
       "capturedCount": 8,
       "assessedCount": 6,
@@ -1883,13 +1957,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0txCzz6qbbi7BezLje1uFVANeUa5eskGN76mkPQ9tWYNx97JCMjEFDndbPFtwYAzYl",
       "checkedAt": "2026-11-05T11:13:08.619Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 29,
       "capturedCount": 29,
       "assessedCount": 23,
@@ -1915,13 +1991,15 @@
           "unreviewed": 6
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02DjFWK74BJbFdAYJQGreHngD2m3evycaLdCeHeK7PykkWGR9zzHpNMQNt6XciHXB5l",
       "checkedAt": "2026-11-05T11:22:41.625Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 47,
       "capturedCount": 28,
       "assessedCount": 25,
@@ -1947,13 +2025,15 @@
           "unreviewed": 3
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02jZo2EaavFLqQPxHZdxjr3vGNSMWBLz4z2gcn92scncuZ3fWGrh3Kes6Tw9gcbWeUl",
       "checkedAt": "2026-11-05T10:59:53.081Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 13,
       "capturedCount": 13,
       "assessedCount": 8,
@@ -1979,7 +2059,9 @@
           "unreviewed": 5
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0DKLNwwfhRLsUCAvwvSTVqxjXo14Ybg7hQBM4QkapDncqik1b8BY8ryNsYbzq47XRl",
@@ -2012,18 +2094,18 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid02BXNCV1uC2F5nUAmYRGGg96tyrbqpW8yvnUEmRHnYD4D27yaZBWEHLuvp67B29zkdl",
-      "checkedAt": "2026-11-05T10:56:48.495Z",
-      "status": "partial",
-      "ordering": null,
+      "checkedAt": "2026-11-05T12:38:53.619Z",
+      "status": "complete",
+      "ordering": "all",
       "reportedCount": 11,
-      "capturedCount": 10,
+      "capturedCount": 11,
       "assessedCount": 8,
-      "topLevelCount": 10,
+      "topLevelCount": 11,
       "replyCount": 0,
       "counts": {
         "gyurov": {
@@ -2033,7 +2115,7 @@
           "neutral": 1,
           "unclear": 0,
           "not-mentioned": 6,
-          "unreviewed": 2
+          "unreviewed": 3
         },
         "yotova": {
           "supportive": 0,
@@ -2042,18 +2124,16 @@
           "neutral": 0,
           "unclear": 0,
           "not-mentioned": 7,
-          "unreviewed": 2
+          "unreviewed": 3
         }
       },
-      "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
-      ]
+      "notes": []
     },
     {
       "postId": "post:pfbid0tVtTjFwus7LNtbv6zFgLKxtYFg5bhXGi1TKv8jN6XNoHAZP5G6ssz9EqAFo9XnGYl",
       "checkedAt": "2026-11-05T11:13:33.058Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 29,
       "capturedCount": 29,
       "assessedCount": 25,
@@ -2079,13 +2159,15 @@
           "unreviewed": 4
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid09m9SDJjCfAtU4pqLC9SBbnyHxx32WDQnEjS4xVs9oJ8Pd6BYFWfWZshFR3N9qoA6l",
       "checkedAt": "2026-11-05T11:11:15.966Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 25,
       "capturedCount": 25,
       "assessedCount": 18,
@@ -2111,7 +2193,9 @@
           "unreviewed": 7
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02aZDv5aYEA7tJk17xqQ4aagnket1qJ2SbkPTPeh7VVdvQpCwkkqNdN4dyREEfXfKjl",
@@ -2144,14 +2228,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid02ZgmYfBVT6EehBcBnfE7EdG1bcKBkPYYTvFQqxM6UJ4a5jYGswBqW6bLsSwmCwzE4l",
       "checkedAt": "2026-11-05T11:03:45.251Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 16,
       "capturedCount": 16,
       "assessedCount": 15,
@@ -2177,13 +2261,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0VYwjVLzXpkkkERa8B8nj2WYinTRjHSpMdpuWSyDxxZJhLRDPWNATZtj8DDT8ctk2l",
       "checkedAt": "2026-11-05T11:08:52.325Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 21,
       "capturedCount": 19,
       "assessedCount": 15,
@@ -2210,14 +2296,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid09Sad8rRWqTxk99V9nGjpQUbjHdGrtZGSXroqjhzQo5q2ctWbmhTkNe4EzjY3npHTl",
       "checkedAt": "2026-11-05T10:53:57.168Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 10,
       "capturedCount": 10,
       "assessedCount": 7,
@@ -2243,13 +2329,15 @@
           "unreviewed": 3
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02vGKsL8zMEvmywHc7uP3xwpLXUHrhUT7ejLDpiAhhysMjEyCKoCdSuB9DwHv2bNCyl",
-      "checkedAt": "2026-11-05T10:51:42.927Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:30:28.370Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 9,
       "capturedCount": 9,
       "assessedCount": 8,
@@ -2275,13 +2363,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0yvjwnnVGCEKzWJ87u6jAREm31LCAspnuyNayxzuuqSqG757ccMxprVzLxhzUJonRl",
-      "checkedAt": "2026-11-05T10:25:28.188Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:16:19.870Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 5,
       "capturedCount": 5,
       "assessedCount": 3,
@@ -2307,13 +2397,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02tThk3DbMhisnWdDR8unNbSYnscWG59LYwRh9dbEYBBianprQ2XkFxv8j4x9Kskpnl",
-      "checkedAt": "2026-11-05T10:22:10.667Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:13:30.557Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 3,
       "capturedCount": 3,
       "assessedCount": 2,
@@ -2339,13 +2431,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0f6K4AGEZsdACjuQQAeYcsdGykKTfbAVaLq8QXZeKqai38PPEP4s1ZLrPs2jEB1JFl",
-      "checkedAt": "2026-11-05T10:11:29.532Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:13:42.475Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 2,
       "capturedCount": 3,
       "assessedCount": 2,
@@ -2371,7 +2465,9 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "photo:1578411577634217",
@@ -2439,9 +2535,9 @@
     },
     {
       "postId": "post:pfbid02qSkMMJsJcds8vDmtJj3UZiRV5uSQQ8gPTX8RHfJhRb7MPoEDun8qaGKbC3TKzpgbl",
-      "checkedAt": "2026-11-05T10:22:17.881Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:13:49.289Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 3,
       "capturedCount": 3,
       "assessedCount": 2,
@@ -2467,7 +2563,9 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "photo:1151255573914194",
@@ -2567,7 +2665,7 @@
     },
     {
       "postId": "post:pfbid0KHXkSQBGMSU7Psop2D3hKFqbRTnR1HRY1JckvXZX3QkJkf1K31jUjfpZbGT9ubRal",
-      "checkedAt": "2026-11-05T10:13:08.922Z",
+      "checkedAt": "2026-11-05T12:44:23.696Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 2,
@@ -2599,9 +2697,9 @@
     },
     {
       "postId": "post:pfbid02onrwFNDBWRfaeL5NoXdnX25M3M9FERJuAVu3RiA2zy6MiUSAM7LtXtNhmRTFRGRYl",
-      "checkedAt": "2026-11-05T10:22:33.984Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:14:01.277Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 3,
       "capturedCount": 3,
       "assessedCount": 2,
@@ -2627,11 +2725,13 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0T5YyJUfYiM2zYDx1SxGs6Fi7ShK6WfkngqK9B4M493WbGg1oJTpRvUQPRfu9aDpxl",
-      "checkedAt": "2026-11-05T12:11:15.216Z",
+      "checkedAt": "2026-11-05T12:41:29.256Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 1,
@@ -2663,7 +2763,7 @@
     },
     {
       "postId": "post:pfbid0r7r3s5xnQNZ4uT3hzAGhJzZJ2xdE26WgoF853EUaq4D8Ub3ciyFMVg3Gc6NJJXhol",
-      "checkedAt": "2026-11-05T10:13:27.667Z",
+      "checkedAt": "2026-11-05T12:44:35.113Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 2,
@@ -2695,7 +2795,7 @@
     },
     {
       "postId": "post:pfbid02GgPBAgj24C7gwiozhdTf9UxyvQwse9Ji3ZwDb7WppQXbyRAtL23FJB4Q5QE4UBb5l",
-      "checkedAt": "2026-11-05T12:11:20.905Z",
+      "checkedAt": "2026-11-05T12:41:35.405Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 1,
@@ -2727,7 +2827,7 @@
     },
     {
       "postId": "post:pfbid02SrLT5VoZ7KvxvA5zrvTisM26PJ1gCNqJacQMZU2bd2hZuP5NupX4pk8uR4bpefWCl",
-      "checkedAt": "2026-11-05T12:11:28.160Z",
+      "checkedAt": "2026-11-05T12:41:42.188Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 1,
@@ -2759,7 +2859,7 @@
     },
     {
       "postId": "post:pfbid0abr2AuC5iF7qrfVaV4tpCTmdtBWNUtXcGj5WEr3kf6w5ebjJNugMTe2dC7T2zSkql",
-      "checkedAt": "2026-11-05T12:11:39.060Z",
+      "checkedAt": "2026-11-05T12:42:30.584Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 1,
@@ -2793,7 +2893,7 @@
       "postId": "post:pfbid0HhU2jYwFjp9j378vEe2oekycGBn7ZXUmJF9s4ieRECvGqJmfsHnX446P5WHNTnRbl",
       "checkedAt": "2026-11-05T11:57:21.771Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 277,
       "capturedCount": 65,
       "assessedCount": 62,
@@ -2819,13 +2919,15 @@
           "unreviewed": 3
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid031Set3UWaG5qXsXkbh5hvgPfzqfgmaLuFKfHEbYDUeVTwkK95BZ3SpBR6J1zXw2EMl",
       "checkedAt": "2026-11-05T11:02:43.318Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 14,
       "capturedCount": 14,
       "assessedCount": 10,
@@ -2851,13 +2953,15 @@
           "unreviewed": 4
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0JjkW3RYrCMWhcqKpw2Wq2CxxqYQY8sWwJLEwZy9GF8BeczyNGJtBM8iC92L8oWEZl",
       "checkedAt": "2026-11-05T10:54:09.638Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 10,
       "capturedCount": 10,
       "assessedCount": 8,
@@ -2883,13 +2987,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0xQAtuBkwSnVUNTxsmH2yguz97eczAXWPuKK1uzJjdrV8v7qh659GU8uTzmgcyRR3l",
-      "checkedAt": "2026-11-05T10:23:51.217Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:15:12.248Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 4,
       "capturedCount": 4,
       "assessedCount": 4,
@@ -2915,13 +3021,15 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid01K7wZwET4jScNQVGcGEEB4CzSCWzgGXwwwACQpZAeqK5BTVQKs7nwkXvt6k1eEgGl",
       "checkedAt": "2026-11-05T11:25:33.014Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 56,
       "capturedCount": 49,
       "assessedCount": 44,
@@ -2947,13 +3055,15 @@
           "unreviewed": 5
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02tNu1m4kB1xwUseTxTFtegGqjYgQS1My2E4jvKVm94H3xg4ntHxZgej4HLeKUQZRjl",
       "checkedAt": "2026-11-05T11:14:56.026Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 32,
       "capturedCount": 31,
       "assessedCount": 26,
@@ -2979,13 +3089,15 @@
           "unreviewed": 5
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0Y3RrwUWN4B2fMGj1BkPdgPJH7L8x15uLKteo7KecmYkkcXCs3n9y6XR4ZsyQY11Tl",
       "checkedAt": "2026-11-05T11:51:28.889Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 119,
       "capturedCount": 105,
       "assessedCount": 93,
@@ -3011,13 +3123,15 @@
           "unreviewed": 12
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02hpZFowawVBGouTCZPeRnbRnD5XdLyXjbpLKKGbLsfirqpk7JgVqf7SGnGJx19uxDl",
       "checkedAt": "2026-11-05T11:06:45.460Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 19,
       "capturedCount": 17,
       "assessedCount": 17,
@@ -3043,13 +3157,15 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:1685718766236751",
       "checkedAt": "2026-11-05T11:55:25.902Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 182,
       "capturedCount": 36,
       "assessedCount": 36,
@@ -3075,13 +3191,15 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:1582826077192767",
-      "checkedAt": "2026-11-05T10:52:48.863Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:37:16.174Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 9,
       "capturedCount": 9,
       "assessedCount": 6,
@@ -3107,11 +3225,13 @@
           "unreviewed": 3
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:1156013503438401",
-      "checkedAt": "2026-11-05T10:13:36.280Z",
+      "checkedAt": "2026-11-05T12:44:41.925Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 2,
@@ -3125,8 +3245,8 @@
           "critical": 1,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 1,
-          "not-mentioned": 0,
+          "unclear": 0,
+          "not-mentioned": 1,
           "unreviewed": 0
         },
         "yotova": {
@@ -3143,9 +3263,9 @@
     },
     {
       "postId": "post:pfbid0Szdue84b6ghkUEwm7Vc4bA1S8wXdtNji68WrCZhHshZTrmFkKwhqGYtsgt7FV8nml",
-      "checkedAt": "2026-11-05T10:24:06.011Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:15:18.663Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 4,
       "capturedCount": 4,
       "assessedCount": 4,
@@ -3171,13 +3291,15 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0UBSSooYbyLQ1yfNtsMtSWXCH6rGffqExNfACADwoAr9sJyKEupppWT6RbM9xEjVMl",
       "checkedAt": "2026-11-05T11:47:17.832Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 80,
       "capturedCount": 44,
       "assessedCount": 42,
@@ -3203,13 +3325,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02VWS1ehNessnuMz9N8jgpK1jV3vB3Z9sViSpR3YLYMojPm5JQ8vGmUwQsLLggj2PDl",
-      "checkedAt": "2026-11-05T10:14:04.390Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:14:09.031Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 2,
       "capturedCount": 3,
       "assessedCount": 3,
@@ -3235,13 +3359,15 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02nWi2KkkD9QQJ5hhEvM7uxJhdtuZMsmXUVjPeLNoxUMzq6NgzeUxMZPKPYFLtiwzJl",
       "checkedAt": "2026-11-05T11:12:04.684Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 28,
       "capturedCount": 26,
       "assessedCount": 22,
@@ -3268,7 +3394,7 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
@@ -3307,9 +3433,9 @@
     },
     {
       "postId": "video:2932892587068862",
-      "checkedAt": "2026-11-05T10:14:28.427Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:14:22.140Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 3,
       "capturedCount": 3,
       "assessedCount": 2,
@@ -3335,11 +3461,13 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0kyA5L2QH9woHSVbHUbRLNLsVXxo7fjptPJvf6dTqARphjhK32HkoJLL3BYKoATgGl",
-      "checkedAt": "2026-11-05T12:10:09.307Z",
+      "checkedAt": "2026-11-05T12:26:29.667Z",
       "status": "partial",
       "ordering": "newest",
       "reportedCount": 7,
@@ -3373,7 +3501,7 @@
     },
     {
       "postId": "post:pfbid0bxazcFzguT9juQznYzRigUnSBxr3JX33dkKRZT7vX142uuXxsi1RWNf94LUf7Ddvl",
-      "checkedAt": "2026-11-05T12:11:45.713Z",
+      "checkedAt": "2026-11-05T12:42:42.711Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 1,
@@ -3405,7 +3533,7 @@
     },
     {
       "postId": "video:1423330226095881",
-      "checkedAt": "2026-11-05T10:07:20.329Z",
+      "checkedAt": "2026-11-05T12:44:46.350Z",
       "status": "complete",
       "ordering": "all",
       "reportedCount": 2,
@@ -3437,9 +3565,9 @@
     },
     {
       "postId": "post:pfbid0WYiYRntQmkadGMKz3SJoREpkPfVFb2MttNVQwoX97TtSLxk1X4qeFBq31EVJKNTkl",
-      "checkedAt": "2026-11-05T10:28:47.497Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:17:40.078Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 6,
       "capturedCount": 6,
       "assessedCount": 4,
@@ -3465,13 +3593,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1677929967087015",
-      "checkedAt": "2026-11-05T10:49:49.656Z",
+      "checkedAt": "2026-11-05T12:27:49.680Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 8,
       "capturedCount": 6,
       "assessedCount": 1,
@@ -3498,17 +3628,17 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "video:1472440601695103",
-      "checkedAt": "2026-11-05T10:24:18.061Z",
+      "checkedAt": "2026-11-05T12:15:30.729Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 4,
       "capturedCount": 4,
-      "assessedCount": 2,
+      "assessedCount": 3,
       "topLevelCount": 4,
       "replyCount": 0,
       "counts": {
@@ -3518,8 +3648,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
-          "unreviewed": 2
+          "not-mentioned": 3,
+          "unreviewed": 1
         },
         "yotova": {
           "supportive": 0,
@@ -3527,11 +3657,13 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
-          "unreviewed": 2
+          "not-mentioned": 3,
+          "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0m5ATPAutDMVviW3E271akkzPhqNQ7vmJ3QJas2DYDDDMoUf2gccbacexUn81zSf1l",
@@ -3563,13 +3695,15 @@
           "unreviewed": 21
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1433388234897669",
-      "checkedAt": "2026-11-05T10:50:39.166Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:30:05.711Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 8,
       "capturedCount": 8,
       "assessedCount": 6,
@@ -3595,7 +3729,9 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1608628141015918",
@@ -3635,7 +3771,7 @@
       "postId": "post:pfbid0oZRtdfH4kWzcrRooEgKEhy5Krkhxq8midaY16wKyeNNHPnVRDqPuBjDFvpvTSpPsl",
       "checkedAt": "2026-11-05T11:05:06.048Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 17,
       "capturedCount": 13,
       "assessedCount": 10,
@@ -3662,14 +3798,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid0bpiw3fev4bkwEAwVgt9AZrcdzUwSAXYJtKZvspxKMVxV4zGJDFt4ZZ7C1wqYmacQl",
       "checkedAt": "2026-11-05T10:54:42.788Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 10,
       "capturedCount": 10,
       "assessedCount": 7,
@@ -3695,13 +3831,15 @@
           "unreviewed": 3
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1094888736870133",
       "checkedAt": "2026-11-05T11:55:53.576Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 196,
       "capturedCount": 25,
       "assessedCount": 24,
@@ -3727,13 +3865,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0ii9gwtsS2eibLyBLVApRigjnj5RWYXjgumzrQULyeD16cLHNySWsPNDkBFiF7TCl",
-      "checkedAt": "2026-11-05T10:25:20.259Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:16:26.939Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 4,
       "capturedCount": 5,
       "assessedCount": 5,
@@ -3745,8 +3885,8 @@
           "critical": 1,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 3,
-          "not-mentioned": 1,
+          "unclear": 2,
+          "not-mentioned": 2,
           "unreviewed": 0
         },
         "yotova": {
@@ -3759,7 +3899,9 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02e9Nu96hmUGCtZQD3gAzFCAmXrUGpjYts7Qrk3bJhZYGonxLukB2C9xBqafFZycsXl",
@@ -3797,7 +3939,7 @@
       "postId": "post:pfbid0WEb3SuxipYL7kfDXLptWUroskKqZ11LATBVDp6oHvNUAw6cwDDCWVTDVkQhsTBGzl",
       "checkedAt": "2026-11-05T11:26:46.840Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 58,
       "capturedCount": 53,
       "assessedCount": 49,
@@ -3823,18 +3965,20 @@
           "unreviewed": 4
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1289332556672095",
-      "checkedAt": "2026-11-05T10:53:06.481Z",
+      "checkedAt": "2026-11-05T12:20:05.104Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 9,
-      "capturedCount": 7,
-      "assessedCount": 6,
-      "topLevelCount": 6,
-      "replyCount": 1,
+      "capturedCount": 9,
+      "assessedCount": 9,
+      "topLevelCount": 7,
+      "replyCount": 2,
       "counts": {
         "gyurov": {
           "supportive": 0,
@@ -3842,26 +3986,28 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 1,
-          "unreviewed": 1
+          "not-mentioned": 4,
+          "unreviewed": 0
         },
         "yotova": {
-          "supportive": 0,
+          "supportive": 1,
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
           "unclear": 1,
-          "not-mentioned": 5,
-          "unreviewed": 1
+          "not-mentioned": 7,
+          "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0XrqUF3wKr3CBc3CEU1vzDG2YFK8QtNHDtW3T8guVhywziTDUZRp8d2B9FwfWX7w8l",
       "checkedAt": "2026-11-05T11:27:20.912Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 59,
       "capturedCount": 52,
       "assessedCount": 46,
@@ -3888,14 +4034,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid02EiFx8u2XuizA1gq35fPdyBExfHwkp7bxX1behZsgJUfoHtGjwq6c6odubsSAV1VEl",
-      "checkedAt": "2026-11-05T10:29:20.485Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:18:02.447Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 6,
       "capturedCount": 6,
       "assessedCount": 4,
@@ -3921,13 +4067,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1844092166778591",
-      "checkedAt": "2026-11-05T10:22:39.093Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:14:26.475Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 3,
       "capturedCount": 3,
       "assessedCount": 2,
@@ -3953,13 +4101,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02LiCfkbcVhJXUPw4XeZKbGXkP3NnELWGwotMGH5kpv1FD46nx5yWUKaTDRvFCxZ9Rl",
       "checkedAt": "2026-11-05T11:04:00.909Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 16,
       "capturedCount": 16,
       "assessedCount": 16,
@@ -3985,13 +4135,15 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1157399536729329",
       "checkedAt": "2026-11-05T11:53:48.649Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 161,
       "capturedCount": 18,
       "assessedCount": 17,
@@ -4017,7 +4169,9 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02mFRotzxY3qBtCDZVXUsaE8RQ1igsq2fMqs31kRKqkfgMvWAxEBjVG9rffsRtCbpPl",
@@ -4055,7 +4209,7 @@
       "postId": "post:pfbid02izp6dNeysrRRYqX8DW9d5zZr1BN5BAaaNy5VEMEhAEGYjBf3cH4DSk6sMnhhSYmVl",
       "checkedAt": "2026-11-05T11:10:20.733Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 22,
       "capturedCount": 21,
       "assessedCount": 19,
@@ -4082,50 +4236,52 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "video:1645050123780583",
-      "checkedAt": "2026-11-05T11:29:05.813Z",
+      "checkedAt": "2026-11-05T12:29:09.743Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": "newest",
       "reportedCount": 62,
-      "capturedCount": 7,
-      "assessedCount": 5,
-      "topLevelCount": 6,
-      "replyCount": 1,
+      "capturedCount": 60,
+      "assessedCount": 54,
+      "topLevelCount": 54,
+      "replyCount": 6,
       "counts": {
         "gyurov": {
-          "supportive": 0,
-          "critical": 0,
+          "supportive": 3,
+          "critical": 1,
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 5,
-          "unreviewed": 2
+          "not-mentioned": 50,
+          "unreviewed": 6
         },
         "yotova": {
-          "supportive": 0,
-          "critical": 5,
+          "supportive": 1,
+          "critical": 41,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 2
+          "neutral": 2,
+          "unclear": 3,
+          "not-mentioned": 7,
+          "unreviewed": 6
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“; показаният брояч е 62, а достъпните коментари са 60."
+      ]
     },
     {
       "postId": "post:pfbid034mX45PNZm6a9rVhaNsHMAi2fGVL7yQV2gtHKKwRnSVYgSM4dmJrz4ghHg67qubbKl",
-      "checkedAt": "2026-11-05T10:07:32.721Z",
-      "status": "complete",
+      "checkedAt": "2026-11-05T12:14:34.686Z",
+      "status": "partial",
       "ordering": null,
       "reportedCount": 1,
-      "capturedCount": 3,
+      "capturedCount": 5,
       "assessedCount": 2,
-      "topLevelCount": 1,
+      "topLevelCount": 3,
       "replyCount": 2,
       "counts": {
         "gyurov": {
@@ -4135,7 +4291,7 @@
           "neutral": 0,
           "unclear": 0,
           "not-mentioned": 2,
-          "unreviewed": 1
+          "unreviewed": 3
         },
         "yotova": {
           "supportive": 0,
@@ -4144,16 +4300,18 @@
           "neutral": 0,
           "unclear": 0,
           "not-mentioned": 2,
-          "unreviewed": 1
+          "unreviewed": 3
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02j1U8MppjHeC9mkVFyTQERduidjJzVX33bwcsYAJN4JQQor6rkbEkyC2twj3Mgy2tl",
       "checkedAt": "2026-11-05T11:07:05.632Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 19,
       "capturedCount": 17,
       "assessedCount": 16,
@@ -4180,14 +4338,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "video:998758882516672",
       "checkedAt": "2026-11-05T11:53:15.010Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 154,
       "capturedCount": 25,
       "assessedCount": 24,
@@ -4213,13 +4371,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1843600866897994",
       "checkedAt": "2026-11-05T11:42:59.263Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 70,
       "capturedCount": 70,
       "assessedCount": 69,
@@ -4245,7 +4405,9 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02xt8PRr55g9WpRJEFNdRiy5zKgw9zKp7vNsSLS9TPcj9V2YQDzoCeoX4XuwJjpbbgl",
@@ -4277,13 +4439,15 @@
           "unreviewed": 4
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02YEnaiZjs1moWfKzzNhGeRnJYkN3C6Y4FgiUStiaEH1NEP5Yq8mv5iPFnvXUQW7HVl",
       "checkedAt": "2026-11-05T11:45:49.906Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 75,
       "capturedCount": 66,
       "assessedCount": 59,
@@ -4309,13 +4473,15 @@
           "unreviewed": 7
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1138813955363373",
       "checkedAt": "2026-11-05T11:52:02.476Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 124,
       "capturedCount": 27,
       "assessedCount": 27,
@@ -4341,13 +4507,15 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02dFcX8GbhGCDmdyrjFkrCR4MyiFixghEKEtr7cvvyYWgMYAbiFHUoHnYAgzA1B1dgl",
       "checkedAt": "2026-11-05T11:09:34.609Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 21,
       "capturedCount": 21,
       "assessedCount": 20,
@@ -4373,13 +4541,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0NnE2Mnc5FLn4mWkiG5QoT9DJwKnsFPL11GVhDW5aZpru6rRqASn4DwEbAwPgZ7xFl",
-      "checkedAt": "2026-11-05T10:50:45.915Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:30:20.900Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 8,
       "capturedCount": 8,
       "assessedCount": 8,
@@ -4405,18 +4575,20 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1840261970724145",
-      "checkedAt": "2026-11-05T11:07:33.492Z",
+      "checkedAt": "2026-11-05T12:18:24.143Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 19,
-      "capturedCount": 6,
-      "assessedCount": 5,
-      "topLevelCount": 6,
-      "replyCount": 0,
+      "capturedCount": 19,
+      "assessedCount": 18,
+      "topLevelCount": 16,
+      "replyCount": 3,
       "counts": {
         "gyurov": {
           "supportive": 0,
@@ -4424,7 +4596,7 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 5,
+          "not-mentioned": 18,
           "unreviewed": 1
         },
         "yotova": {
@@ -4433,17 +4605,19 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 5,
+          "not-mentioned": 18,
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:951043291091990",
       "checkedAt": "2026-11-05T11:23:33.023Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 47,
       "capturedCount": 17,
       "assessedCount": 16,
@@ -4469,18 +4643,20 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1604352204018118",
-      "checkedAt": "2026-11-05T10:18:58.282Z",
+      "checkedAt": "2026-11-05T12:14:53.566Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 4,
-      "capturedCount": 3,
-      "assessedCount": 2,
+      "capturedCount": 4,
+      "assessedCount": 3,
       "topLevelCount": 3,
-      "replyCount": 0,
+      "replyCount": 1,
       "counts": {
         "gyurov": {
           "supportive": 0,
@@ -4488,7 +4664,7 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
+          "not-mentioned": 3,
           "unreviewed": 1
         },
         "yotova": {
@@ -4497,17 +4673,19 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
+          "not-mentioned": 3,
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1157252846871409",
       "checkedAt": "2026-11-05T11:48:58.000Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 109,
       "capturedCount": 23,
       "assessedCount": 23,
@@ -4533,13 +4711,15 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1445052394418970",
       "checkedAt": "2026-11-05T11:03:11.086Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 15,
       "capturedCount": 15,
       "assessedCount": 15,
@@ -4565,13 +4745,15 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02JEUuR82BoTDdFy3mZ1D4RGdsginy3jdNHzCkav7W2VQcq77Cg6m4CRpJJgr744Z4l",
       "checkedAt": "2026-11-05T11:11:39.402Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 26,
       "capturedCount": 24,
       "assessedCount": 19,
@@ -4598,14 +4780,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "video:1428401352820819",
       "checkedAt": "2026-11-05T11:47:45.595Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 86,
       "capturedCount": 27,
       "assessedCount": 25,
@@ -4631,13 +4813,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1657759299059928",
       "checkedAt": "2026-11-05T11:16:19.587Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 34,
       "capturedCount": 34,
       "assessedCount": 32,
@@ -4663,13 +4847,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0yPqM2CFwd9NuTL9D5d74z1oTJX4Zw8aEkbSQHjzgmH3GhRDBXfUowL9opBBpr9pSl",
       "checkedAt": "2026-11-05T10:58:04.137Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 11,
       "capturedCount": 10,
       "assessedCount": 8,
@@ -4696,14 +4882,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "post:pfbid0XjxPh3kRWttpVfgXyn4qv9MDgxK8aMB9rCKdG3W4Vfgy9Q4ySbLadZpG5LpbSWDwl",
       "checkedAt": "2026-11-05T11:22:05.052Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 46,
       "capturedCount": 43,
       "assessedCount": 38,
@@ -4730,14 +4916,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "video:1613329786656320",
-      "checkedAt": "2026-11-05T10:29:25.163Z",
-      "status": "complete",
-      "ordering": "all",
+      "checkedAt": "2026-11-05T12:18:37.662Z",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 6,
       "capturedCount": 6,
       "assessedCount": 5,
@@ -4763,13 +4949,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0cS7D5LBtrT6p1bihysbDJUmJzsmwZtVH2ZnKsrYC8whQbsgM3djcXfVKceaHeY4Rl",
       "checkedAt": "2026-11-05T11:13:56.323Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 29,
       "capturedCount": 25,
       "assessedCount": 24,
@@ -4796,14 +4984,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "video:1119095521093836",
       "checkedAt": "2026-11-05T11:21:31.610Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 44,
       "capturedCount": 20,
       "assessedCount": 19,
@@ -4829,13 +5017,15 @@
           "unreviewed": 1
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0ao6U31ZyAtQrHVUr8E8hajwi59uzgcUukXnjr3DiEoNkTVW1xi7U1JZZcL5jvWVnl",
-      "checkedAt": "2026-11-05T12:12:03.535Z",
+      "checkedAt": "2026-11-05T12:26:47.318Z",
       "status": "partial",
-      "ordering": "newest",
+      "ordering": null,
       "reportedCount": 2,
       "capturedCount": 1,
       "assessedCount": 0,
@@ -4862,14 +5052,14 @@
         }
       },
       "notes": [
-        "Проверени са „Всички коментари“ и „Най-нови“; показаният брояч е 2, а достъпните коментари са 1."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "video:1657215862763287",
-      "checkedAt": "2026-11-05T10:51:35.194Z",
+      "checkedAt": "2026-11-05T12:24:13.645Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": "newest",
       "reportedCount": 8,
       "capturedCount": 7,
       "assessedCount": 7,
@@ -4896,14 +5086,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Проверени са „Всички коментари“ и „Най-нови“; показаният брояч е 8, а достъпните коментари са 7."
       ]
     },
     {
       "postId": "video:2188569562093001",
       "checkedAt": "2026-11-05T11:02:58.612Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 14,
       "capturedCount": 12,
       "assessedCount": 10,
@@ -4930,14 +5120,14 @@
         }
       },
       "notes": [
-        "Обходените видими коментари не покриват целия показан брояч."
+        "Пълният обход и редът на коментарите се проверяват повторно."
       ]
     },
     {
       "postId": "video:1505206344753130",
       "checkedAt": "2026-11-05T11:50:45.530Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 118,
       "capturedCount": 34,
       "assessedCount": 27,
@@ -4963,13 +5153,15 @@
           "unreviewed": 7
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:3360112920862887",
       "checkedAt": "2026-11-05T11:54:54.812Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 177,
       "capturedCount": 22,
       "assessedCount": 20,
@@ -4995,13 +5187,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1672056241307870",
       "checkedAt": "2026-11-05T11:18:44.107Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 37,
       "capturedCount": 10,
       "assessedCount": 8,
@@ -5027,13 +5221,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1438183745146031",
       "checkedAt": "2026-11-05T11:50:16.049Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 110,
       "capturedCount": 17,
       "assessedCount": 17,
@@ -5059,13 +5255,15 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:2057584485644941",
       "checkedAt": "2026-11-05T09:54:58.722Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 619,
       "capturedCount": 25,
       "assessedCount": 23,
@@ -5091,13 +5289,15 @@
           "unreviewed": 2
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02TyRefXGLG13M3pmcAkV6R67J7ngjJGQeapFBWguxS4r1jaPmZemKjBbgnKyKiunWl",
       "checkedAt": "2026-11-05T11:52:44.464Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 130,
       "capturedCount": 62,
       "assessedCount": 58,
@@ -5123,13 +5323,15 @@
           "unreviewed": 4
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1144845284632823",
       "checkedAt": "2026-11-05T11:18:16.371Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 36,
       "capturedCount": 20,
       "assessedCount": 16,
@@ -5155,13 +5357,15 @@
           "unreviewed": 4
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:2502903913566502",
       "checkedAt": "2026-11-05T10:58:12.700Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 12,
       "capturedCount": 12,
       "assessedCount": 9,
@@ -5187,7 +5391,9 @@
           "unreviewed": 3
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid02tSwQMoJwCoCrCmufVbnhSct2RywH5uGBxKwZ2B1SbC1mQ1F9oEqM111qJ2LL1cUZl",
@@ -5219,7 +5425,9 @@
           "unreviewed": 5
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "post:pfbid0LXifubhPr1Mdcmj34cDD6Z2UtigwgYtEcuNzakL9hA79x4r1eyypSCmQETvfaNTLl",
@@ -5289,7 +5497,7 @@
       "postId": "post:pfbid02fCui5WQgpSNWoW4SbgeoHTVpyoxLoR2ZXmBKTtkL2Ge593yFavPukrax7bZPGdHl",
       "checkedAt": "2026-11-05T11:46:38.133Z",
       "status": "partial",
-      "ordering": "all",
+      "ordering": null,
       "reportedCount": 78,
       "capturedCount": 71,
       "assessedCount": 63,
@@ -5315,7 +5523,9 @@
           "unreviewed": 8
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     },
     {
       "postId": "video:1444912007738019",
@@ -5352,8 +5562,8 @@
     {
       "postId": "post:pfbid02yq4WR2LpV5FjNouCgSNS2jsrY7KzTHM6r4QfgDB5tv3YChk6ieDLmZoRRSdcVa78l",
       "checkedAt": "2026-11-05T10:54:54.481Z",
-      "status": "complete",
-      "ordering": "all",
+      "status": "partial",
+      "ordering": null,
       "reportedCount": 10,
       "capturedCount": 10,
       "assessedCount": 10,
@@ -5379,7 +5589,9 @@
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Пълният обход и редът на коментарите се проверяват повторно."
+      ]
     }
   ]
 }
