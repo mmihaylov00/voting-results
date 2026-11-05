@@ -32,8 +32,8 @@
       <div class="review-list" role="region" aria-label="Съдържание и оценки към двамата кандидати" tabindex="0" [virtualRows]="reviewSearch.viewRows()" [virtualRowsKeepScrollAnchor]="true" [virtualRowHeight]="240" #reviewRows="virtualRows">
         <div role="list" aria-label="Съдържание за оценяване">
           @if (reviewRows.window().top) {<div aria-hidden="true" [style.height.px]="reviewRows.window().top"></div>}
-          @for (item of reviewRows.rows(); track item.key) {
-            <article class="review-row" role="listitem" [class.edited]="review.changed(item)" [attr.aria-posinset]="reviewRows.window().start + $index + 1" [attr.aria-setsize]="reviewSearch.viewRows().length" [attr.data-virtual-index]="reviewRows.window().start + $index">
+          @for (item of reviewRows.rows(); track item.key; let rowIndex = $index) {
+            <article class="review-row" role="listitem" [class.edited]="review.changed(item)" [attr.aria-posinset]="reviewRows.window().start + rowIndex + 1" [attr.aria-setsize]="reviewSearch.viewRows().length" [attr.data-virtual-index]="reviewRows.window().start + rowIndex">
               <div class="item-content">
                 <div class="item-meta"><strong>{{ shortName(item.pageName) }}</strong><span>{{ item.kind === 'post' ? 'Публикация' : 'Коментар #' + item.commentId }}</span>@if (item.parentId !== null) {<span>Отговор на #{{ item.parentId }}</span>}@if (review.changed(item)) {<span class="edited-label">Моя промяна</span>}</div>
                 @if (item.text !== null) {<p class="review-text">{{ item.text }}{{ item.truncated ? '…' : '' }}</p>} @else {<p class="unpublished">Няма публикуван откъс за оценяване.</p>}
@@ -48,8 +48,8 @@
               <div class="tone-controls">
                 @for (candidate of candidates; track candidate) {
                   <div class="tone-control" [attr.data-tone]="review.tone(item, candidate)">
-                    <label [for]="'tone-review-' + candidate + '-' + (reviewRows.window().start + $index) + '--trigger'">{{ candidateLabels[candidate] }}</label>
-                    <app-select [controlId]="'tone-review-' + candidate + '-' + (reviewRows.window().start + $index)" [label]="selectLabel(item, candidate, reviewRows.window().start + $index)" [options]="toneOptions" [value]="review.tone(item, candidate)" [disabled]="item.text === null || review.submitting()" (valueChange)="review.setTone(item, candidate, $event)" />
+                    <label [for]="'tone-review-' + candidate + '-' + (reviewRows.window().start + rowIndex) + '--trigger'">{{ candidateLabels[candidate] }}</label>
+                    <app-select [controlId]="'tone-review-' + candidate + '-' + (reviewRows.window().start + rowIndex)" [label]="selectLabel(item, candidate, reviewRows.window().start + rowIndex)" [options]="toneOptions" [value]="review.tone(item, candidate)" [disabled]="item.text === null || review.submitting()" (valueChange)="review.setTone(item, candidate, $event)" />
                     @if (review.tone(item, candidate) !== item[candidate]) {<small>Преди: {{ toneLabels[item[candidate]] }}</small>}
                   </div>
                 }
@@ -63,7 +63,7 @@
 
     <footer class="submit-bar">
       <div><strong>{{ review.pendingCount() }} {{ review.pendingCount() === 1 ? 'предложение' : 'предложения' }} за изпращане</strong><p>Оценявайте тона към всеки кандидат поотделно.</p></div>
-      <button hlmBtn type="button" class="submit-button gap-2" [disabled]="!review.commentsLoaded() || !review.pendingCount() || review.submitting()" (click)="review.submit()"><app-map-icon [name]="review.submitting() ? 'loading' : 'check'" />{{ review.submitting() ? 'Изпращане…' : 'Изпрати ' + batchSize() + ' предложения' }}</button>
+      <button hlmBtn type="button" class="submit-button gap-2" [disabled]="!review.commentsLoaded() || !review.pendingCount() || review.submitting()" (click)="review.submit()"><app-map-icon [name]="review.submitting() ? 'loading' : 'check'" />{{ review.submitting() ? 'Изпращане…' : 'Изпрати ' + batchSize() + (batchSize() === 1 ? ' предложение' : ' предложения') }}</button>
     </footer>
     @if (review.submitError()) {<p class="message error" role="alert">{{ review.submitError() }}</p>}
     @if (review.submitted()) {<p class="message success" role="status">Изпратени за преглед: {{ review.submitted() }}. @if (review.pendingCount()) {Остават {{ review.pendingCount() }} предложения за изпращане.}</p>}

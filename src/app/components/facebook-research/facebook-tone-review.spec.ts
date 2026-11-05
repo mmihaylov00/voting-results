@@ -85,6 +85,27 @@ describe('Facebook tone review page', () => {
     fixture.destroy();
   });
 
+  it('gives each visible tone control a unique ID and uses the same row number for both candidates', () => {
+    const { fixture, component, element } = setup();
+    component.setKind('comment');
+    fixture.detectChanges();
+    const rows = Array.from(element.querySelectorAll('.review-row'));
+    expect(rows).toHaveLength(2);
+    const triggers = Array.from(element.querySelectorAll<HTMLButtonElement>('.tone-control button[role="combobox"]'));
+    expect(triggers).toHaveLength(4);
+    expect(new Set(triggers.map(trigger => trigger.id)).size).toBe(4);
+    for (const [index, row] of rows.entries()) {
+      const controls = Array.from(row.querySelectorAll<HTMLButtonElement>('.tone-control button[role="combobox"]'));
+      const labels = Array.from(row.querySelectorAll<HTMLLabelElement>('.tone-control label'));
+      expect(controls.map(control => control.id)).toEqual([
+        `tone-review-gyurov-${index}--trigger`, `tone-review-yotova-${index}--trigger`,
+      ]);
+      expect(labels.map(label => label.htmlFor)).toEqual(controls.map(control => control.id));
+      expect(controls.every(control => control.getAttribute('aria-label')?.endsWith(`, ред ${index + 1}`))).toBe(true);
+    }
+    fixture.destroy();
+  });
+
   it('filters by content and page, resets filters, and can show only changed rows', () => {
     const { fixture, component, service, element } = setup();
     component.table()!.query.set('несъществуващ текст');
