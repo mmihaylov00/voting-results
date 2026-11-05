@@ -15,7 +15,7 @@
     <div class="error-state" role="alert"><p>{{ error() }}</p><button hlmBtn variant="outline" type="button" (click)="load()"><app-map-icon name="reset" />Опитай отново</button></div>
   }
   @if (report(); as data) {
-    <div class="dataset-status"><span class="status-dot" aria-hidden="true"></span><strong>Частична извадка</strong><span>Броячи на публикациите към 04.11.2026 · Твърденията не са проверени.</span></div>
+    <div class="dataset-status"><span class="status-dot" aria-hidden="true"></span><strong>Частична извадка</strong><span>Броячи към събирането на всяка публикация · Твърденията не са проверени.</span></div>
     <nav class="workspace-tabs" aria-label="Изгледи на Facebook изследването">
       <app-view-tabs [tabs]="tabs()" [value]="view()" (valueChange)="setView($event)" [scrollable]="true" label="Facebook изследване" idPrefix="facebook-view" panelId="facebook-panel" />
     </nav>
