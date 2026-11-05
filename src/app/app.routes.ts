@@ -22,6 +22,10 @@ export const routes: Routes = [
     loadComponent: () => import('./components/election-type-select/election-type-select').then(m => m.ElectionTypeSelectComponent)
   },
   {
+    path: 'research/facebook-elections-2026/tones',
+    loadComponent: () => import('./components/facebook-research/facebook-tone-review').then(m => m.FacebookToneReviewComponent),
+  },
+  {
     path: 'research/facebook-elections-2026',
     loadComponent: () => import('./components/facebook-research/facebook-research').then(m => m.FacebookResearchComponent),
   },

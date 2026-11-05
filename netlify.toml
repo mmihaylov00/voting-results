@@ -2,6 +2,13 @@
 command = "npm run build"
 publish = "dist/votes-frontend/browser"
 
+[functions]
+directory = "netlify/functions"
+node_bundler = "esbuild"
+
+[functions."facebook-tone-suggestions"]
+included_files = ["public/data/facebook/2026/report.json", "public/data/facebook/2026/comments/*.json"]
+
 [[headers]]
   for = "/research/*"
   [headers.values]

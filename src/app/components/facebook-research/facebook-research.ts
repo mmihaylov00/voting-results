@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, DestroyRef, computed, effect, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Meta, Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CsvExportData } from '../../utils/csv-export.util';
 import { BaseModalComponent } from '../ui/base-modal/base-modal';
 import { HlmButtonDirective } from '../ui/button-helm/src/lib/hlm-button.directive';
@@ -29,7 +29,7 @@ const VIEWS = ['pages', 'directory', 'posts', 'comments', 'duplicates', 'review'
 
 @Component({
   selector: 'app-facebook-research',
-  imports: [CommonModule, HlmButtonDirective, MapIconComponent, ViewTabsComponent, SelectComponent,
+  imports: [CommonModule, RouterLink, HlmButtonDirective, MapIconComponent, ViewTabsComponent, SelectComponent,
     TableControlsComponent, SortableTableHeaderComponent, VirtualTableDirective, BaseModalComponent,
     CsvExportModalComponent, LoadingBarComponent, HlmTooltipDirective, FacebookResearchChartsComponent, FacebookCommentsResearchComponent, FacebookResearchImageComponent, FacebookResearchStanceComponent, FacebookPageDirectoryComponent],
   templateUrl: './facebook-research.html',

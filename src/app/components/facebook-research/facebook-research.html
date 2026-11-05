@@ -5,7 +5,10 @@
       <h1>Facebook и изборите</h1>
       <p class="intro">Публични публикации, взаимодействия и повтарящо се съдържание.</p>
     </div>
-    <a hlmBtn variant="outline" class="gap-2" [href]="dataUrl" download="facebook-research-2026.json"><app-map-icon name="download" />Данни JSON</a>
+    <div class="flex flex-wrap gap-2">
+      <a hlmBtn variant="outline" class="gap-2" routerLink="/research/facebook-elections-2026/tones"><app-map-icon name="check" />Предложи оценка</a>
+      <a hlmBtn variant="outline" class="gap-2" [href]="dataUrl" download="facebook-research-2026.json"><app-map-icon name="download" />Данни JSON</a>
+    </div>
   </header>
   <app-loading-bar [loading]="loading()" label="Зареждане на Facebook изследването" />
   @if (error()) {

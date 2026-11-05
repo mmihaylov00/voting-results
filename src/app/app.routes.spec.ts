@@ -18,6 +18,12 @@ class WorkspaceDestinationComponent {
 class ResearchDestinationComponent {}
 
 describe('Election routes', () => {
+  it('lazy-loads the tone review page before the research and fallback routes', () => {
+    const route = routes.find(candidate => candidate.path === 'research/facebook-elections-2026/tones');
+    expect(route?.loadComponent).toBeTypeOf('function');
+    expect(routes.indexOf(route!)).toBeLessThan(routes.findIndex(candidate => candidate.path === 'research/facebook-elections-2026'));
+  });
+
   it('lazy-loads the Facebook research page before the fallback route', () => {
     const route = routes.find(candidate => candidate.path === 'research/facebook-elections-2026');
     expect(route?.loadComponent).toBeTypeOf('function');

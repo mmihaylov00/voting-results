@@ -1,0 +1,71 @@
+<div class="tone-review-page">
+  <a class="back-link" routerLink="/research/facebook-elections-2026"><app-map-icon name="chevron-left" />Facebook и изборите</a>
+  <header class="page-heading">
+    <div><h1>Преглед на тоновете</h1><p>Предложенията се проверяват преди публикуване.</p></div>
+    <span class="draft-note"><app-map-icon name="check" />Черновите се запазват на това устройство</span>
+  </header>
+
+  <app-loading-bar [loading]="review.loading()" label="Зареждане на публикациите" />
+  @if (review.error()) {
+    <div class="message error" role="alert"><p>{{ review.error() }}</p><button hlmBtn variant="outline" type="button" class="gap-2" (click)="review.load()"><app-map-icon name="reset" />Опитай отново</button></div>
+  }
+  @if (review.draftError()) {<p class="message error" role="alert">{{ review.draftError() }}</p>}
+
+  @if (review.report()) {
+    <app-view-tabs [tabs]="tabs()" [value]="kind()" (valueChange)="setKind($event)" label="Съдържание за оценяване" idPrefix="tone-review-kind" panelId="tone-review-panel" />
+    <section id="tone-review-panel" role="tabpanel" [attr.aria-labelledby]="'tone-review-kind-tab-' + kind()">
+      <div class="filters">
+        <div class="page-filter"><label for="tone-review-page--trigger">Facebook страница</label><app-select controlId="tone-review-page" label="Facebook страница за оценяване" [options]="pageOptions()" [value]="pageFilter()" (valueChange)="pageFilter.set($event)" icon="globe" /></div>
+        <label class="changed-filter"><input #changedCheckbox type="checkbox" [checked]="onlyChanged()" (change)="onlyChanged.set(changedCheckbox.checked)" />Само моите промени</label>
+        <button hlmBtn variant="outline" size="icon" type="button" aria-label="Изчисти филтрите за оценяване" title="Изчисти филтрите" (click)="resetFilters()"><app-map-icon name="reset" /></button>
+      </div>
+      <app-table-controls #reviewSearch [rows]="filteredItems()" [columns]="columns" label="Търсене в съдържанието за оценяване" searchInputClass="min-h-11! text-base!" />
+
+      @if (review.commentsLoading()) {
+        <p class="load-progress" role="status">Зареждане на коментарите: {{ review.progress() }} / {{ review.totalCommentPosts() }} публикации</p>
+        <app-loading-bar [loading]="true" label="Зареждане на коментарите за оценяване" />
+      }
+      @if (review.commentsError()) {
+        <div class="message error" role="alert"><p>{{ review.commentsError() }}</p><button hlmBtn variant="outline" type="button" class="gap-2" (click)="review.loadComments()"><app-map-icon name="reset" />Зареди коментарите отново</button></div>
+      }
+
+      <div class="review-list" role="region" aria-label="Съдържание и оценки към двамата кандидати" tabindex="0" [virtualRows]="reviewSearch.viewRows()" [virtualRowsKeepScrollAnchor]="true" [virtualRowHeight]="240" #reviewRows="virtualRows">
+        <div role="list" aria-label="Съдържание за оценяване">
+          @if (reviewRows.window().top) {<div aria-hidden="true" [style.height.px]="reviewRows.window().top"></div>}
+          @for (item of reviewRows.rows(); track item.key) {
+            <article class="review-row" role="listitem" [class.edited]="review.changed(item)" [attr.aria-posinset]="reviewRows.window().start + $index + 1" [attr.aria-setsize]="reviewSearch.viewRows().length" [attr.data-virtual-index]="reviewRows.window().start + $index">
+              <div class="item-content">
+                <div class="item-meta"><strong>{{ shortName(item.pageName) }}</strong><span>{{ item.kind === 'post' ? 'Публикация' : 'Коментар #' + item.commentId }}</span>@if (item.parentId !== null) {<span>Отговор на #{{ item.parentId }}</span>}@if (review.changed(item)) {<span class="edited-label">Моя промяна</span>}</div>
+                @if (item.text !== null) {<p class="review-text">{{ item.text }}{{ item.truncated ? '…' : '' }}</p>} @else {<p class="unpublished">Няма публикуван откъс за оценяване.</p>}
+                @if (item.kind === 'comment') {
+                  <details class="context"><summary>Контекст на коментара</summary>
+                    @if (item.parentId !== null) {<div><h3>Коментар #{{ item.parentId }}</h3><p>{{ item.parentText ?? 'Няма публикуван откъс.' }}</p></div>}
+                    <div><h3>Публикация</h3><p>{{ item.postText }}</p></div>
+                  </details>
+                }
+                <div class="item-actions"><a [href]="item.postUrl" target="_blank" rel="noopener noreferrer"><app-map-icon name="share" />Публикацията във Facebook</a>@if (review.changed(item)) {<button type="button" [disabled]="review.submitting()" (click)="review.undo(item)"><app-map-icon name="reset" />Отмени промяната</button>}</div>
+              </div>
+              <div class="tone-controls">
+                @for (candidate of candidates; track candidate) {
+                  <div class="tone-control" [attr.data-tone]="review.tone(item, candidate)">
+                    <label [for]="'tone-review-' + candidate + '-' + (reviewRows.window().start + $index) + '--trigger'">{{ candidateLabels[candidate] }}</label>
+                    <app-select [controlId]="'tone-review-' + candidate + '-' + (reviewRows.window().start + $index)" [label]="selectLabel(item, candidate, reviewRows.window().start + $index)" [options]="toneOptions" [value]="review.tone(item, candidate)" [disabled]="item.text === null || review.submitting()" (valueChange)="review.setTone(item, candidate, $event)" />
+                    @if (review.tone(item, candidate) !== item[candidate]) {<small>Преди: {{ toneLabels[item[candidate]] }}</small>}
+                  </div>
+                }
+              </div>
+            </article>
+          } @empty {<p class="empty-state" role="status">{{ kind() === 'comment' && !review.commentsLoaded() ? 'Коментарите ще се покажат след зареждане.' : 'Няма резултати по тези филтри.' }}</p>}
+          @if (reviewRows.window().bottom) {<div aria-hidden="true" [style.height.px]="reviewRows.window().bottom"></div>}
+        </div>
+      </div>
+    </section>
+
+    <footer class="submit-bar">
+      <div><strong>{{ review.pendingCount() }} {{ review.pendingCount() === 1 ? 'предложение' : 'предложения' }} за изпращане</strong><p>Оценявайте тона към всеки кандидат поотделно.</p></div>
+      <button hlmBtn type="button" class="submit-button gap-2" [disabled]="!review.commentsLoaded() || !review.pendingCount() || review.submitting()" (click)="review.submit()"><app-map-icon [name]="review.submitting() ? 'loading' : 'check'" />{{ review.submitting() ? 'Изпращане…' : 'Изпрати ' + batchSize() + ' предложения' }}</button>
+    </footer>
+    @if (review.submitError()) {<p class="message error" role="alert">{{ review.submitError() }}</p>}
+    @if (review.submitted()) {<p class="message success" role="status">Изпратени за преглед: {{ review.submitted() }}. @if (review.pendingCount()) {Остават {{ review.pendingCount() }} предложения за изпращане.}</p>}
+  }
+</div>
