@@ -7,7 +7,7 @@ import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import snapshot from '../../../../public/data/facebook/2026/report.json';
 import { FacebookResearchComponent } from './facebook-research';
-import { FacebookResearchChartsComponent } from './facebook-research-charts';
+import { FacebookResearchChartsComponent, FacebookToneSelection } from './facebook-research-charts';
 import { FacebookPageDirectoryComponent } from './facebook-page-directory';
 import { FacebookCandidate, FacebookDirectory, FacebookPageSummary, FacebookPost, FacebookReport, FacebookStanceLabel } from './facebook-research.models';
 import { FACEBOOK_CANDIDATES, FACEBOOK_TONE_LABELS } from './facebook-research.util';
@@ -17,6 +17,7 @@ class ChartsStub {
   @Input() pages: readonly FacebookPageSummary[] = [];
   @Input() posts: readonly FacebookPost[] = [];
   @Output() pageSelect = new EventEmitter<string>();
+  @Output() toneSelect = new EventEmitter<FacebookToneSelection>();
 }
 
 const report = snapshot as FacebookReport;
@@ -247,6 +248,22 @@ describe('Facebook research workspace', () => {
     expect(component.pageToneFilters()).toEqual({ gyurov: '', yotova: '' });
     expect(component.pageTable()!.query()).toBe('');
     expect(component.pageTable()!.viewRows()).toHaveLength(8);
+    fixture.destroy();
+  });
+
+  it('opens the clicked chart segment with its Page and candidate tone, clearing previous post tones', () => {
+    const fixture = loaded('pages', toneFixture());
+    const component = fixture.componentInstance;
+    component.setToneFilter('posts', 'gyurov', 'mixed');
+    component.setToneFilter('posts', 'yotova', 'supportive');
+    fixture.debugElement.query(By.directive(ChartsStub)).triggerEventHandler('toneSelect', {
+      pageId: 'tone-opposing', candidate: 'gyurov', tone: 'critical',
+    });
+    fixture.detectChanges();
+    expect(component.view()).toBe('posts');
+    expect(component.pageFilter()).toBe('tone-opposing');
+    expect(component.postToneFilters()).toEqual({ gyurov: 'critical', yotova: '' });
+    expect(component.filteredPosts().map(post => post.id)).toEqual(['post-opposing-critical']);
     fixture.destroy();
   });
 

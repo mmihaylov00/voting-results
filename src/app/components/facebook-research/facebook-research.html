@@ -31,7 +31,7 @@
           <div class="button-row"><button hlmBtn variant="outline" size="icon" type="button" aria-label="Изчисти филтрите на страниците" title="Изчисти филтрите на страниците" (click)="resetPageFilters()"><app-map-icon name="reset" /></button>
             <button hlmBtn variant="outline" class="gap-2" type="button" [disabled]="!pageTable.viewRows().length" (click)="exportPages(pageTable.viewRows())"><app-map-icon name="download-table" />Експорт CSV</button></div>
         </div>
-        <app-facebook-research-charts [pages]="pageTable.viewRows()" [posts]="data.posts" (pageSelect)="showPagePosts($event)" />
+        <app-facebook-research-charts [pages]="pageTable.viewRows()" [posts]="data.posts" (pageSelect)="showPagePosts($event)" (toneSelect)="showPagePosts($event.pageId); setToneFilter('posts', $event.candidate, $event.tone)" />
         <div class="section-heading table-heading"><h2>Страници в събраните данни</h2><span class="note">≈ закръглен брояч · — липсващ брояч</span></div>
         <p class="note">Наклонът е ръчна оценка на събраните надписи, включително цитати и сатира. Критика към единия кандидат не означава подкрепа за другия.</p>
         <div class="table-scroll" tabindex="0" role="region" aria-label="Сравнение на Facebook страниците" [virtualRows]="pageTable.viewRows()" [virtualRowHeight]="120" #pageRows="virtualRows">
