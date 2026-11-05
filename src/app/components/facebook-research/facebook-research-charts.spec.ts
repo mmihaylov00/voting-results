@@ -138,7 +138,7 @@ describe('Facebook research charts', () => {
     expect(criticalPoints[0].custom?.['display']).not.toContain('-');
     expect(criticalPoints[0].custom?.['posts']).toBe(1);
     expect(criticalPoints[1].custom?.['coverage']).toContain('1');
-    expect((options.yAxis as Highcharts.YAxisOptions).min).not.toBe(0);
+    expect((options.yAxis as Highcharts.YAxisOptions).tickPositions).toEqual([-100, 0, 100]);
     expect((options.yAxis as Highcharts.YAxisOptions).plotLines?.some(line => line.value === 0)).toBe(true);
     expect(options.legend?.enabled).toBe(true);
     expect(component.exportTitle()).toContain('Гюров');
@@ -175,7 +175,7 @@ describe('Facebook research charts', () => {
     const element = fixture.nativeElement as HTMLElement;
     const initialTotalChart = fixture.debugElement.query(By.directive(ChartStub)).componentInstance as ChartStub;
     expect(initialTotalChart.options).toBe(component.pageChart());
-    expect(element.querySelector('table.sr-only')).toBeNull();
+    expect(element.querySelector('.sr-only table')).toBeNull();
     element.querySelector<HTMLButtonElement>('#facebook-engagement-view-tab-tone')!.click();
     fixture.detectChanges();
     expect(component.view()).toBe('tone');
@@ -188,7 +188,7 @@ describe('Facebook research charts', () => {
       expect(panel?.getAttribute('role')).toBe('tabpanel');
       if (tab.getAttribute('aria-selected') === 'true') expect(panel?.getAttribute('aria-labelledby')).toBe(tab.id);
     }
-    const table = element.querySelector<HTMLTableElement>('table.sr-only')!;
+    const table = element.querySelector<HTMLTableElement>('.sr-only table')!;
     expect(table.caption?.textContent).toContain('Споделяния');
     expect(table.caption?.textContent).toContain('Гюров');
     expect(table.tBodies[0].rows).toHaveLength(4);

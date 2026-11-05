@@ -42,11 +42,11 @@ export interface FacebookToneSelection {
                 </app-chart-image-export>
               }
               @if (view() === 'tone') {
-                <table class="sr-only">
+                <div class="sr-only"><table>
                   <caption>{{ metricLabel() }} по тон към {{ candidateLabel() }}</caption>
                   <thead><tr><th scope="col">Страница</th><th scope="col">В подкрепа</th><th scope="col">Критични</th></tr></thead>
                   <tbody>@for (row of toneRows(); track row.id) {<tr><th scope="row">{{ row.name }}</th><td>{{ count(row.supportive.value, row.supportive.approximate) }} · {{ row.supportivePosts }} публикации · {{ row.supportive.missing }} без брояч</td><td>{{ count(row.critical.value, row.critical.approximate) }} · {{ row.criticalPosts }} публикации · {{ row.critical.missing }} без брояч</td></tr>}</tbody>
-                </table>
+                </table></div>
                 <p class="chart-note">{{ tonePostCount() }} публикации в подкрепа / критика · {{ toneMissingCount() }} без избрания брояч · {{ excludedTonePosts() }} с други или липсващи оценки.</p>
                 <p class="chart-note">Посоката показва тона на публикациите, не вида на реакциите.</p>
               }
@@ -176,7 +176,7 @@ export class FacebookResearchChartsComponent {
       ...this.baseOptions(), chart: { ...this.baseOptions().chart, type: 'bar', height: Math.max(320, rows.length * 37 + 110) },
       subtitle: { text: `${this.tonePostCount()} публикации · ${this.excludedTonePosts()} извън подкрепа / критика · ${this.toneMissingCount()} без брояч`, style: { color: this.ink(), fontSize: '10px' } },
       xAxis: { categories: rows.map(row => facebookShortName(row.name)), labels: { style: { color: this.ink(), fontSize: '11px' } }, lineWidth: 0, tickWidth: 0 },
-      yAxis: { min: -extent, max: extent, allowDecimals: false, title: { text: '' }, gridLineColor: 'var(--facebook-rule)',
+      yAxis: { min: -extent, max: extent, tickPositions: [-extent, 0, extent], startOnTick: false, endOnTick: false, allowDecimals: false, title: { text: '' }, gridLineColor: 'var(--facebook-rule)',
         labels: { style: { color: this.ink() }, formatter() { return facebookCount(Math.abs(Number(this.value))); } },
         plotLines: [{ value: 0, width: 1, color: this.ink(), zIndex: 3 }] },
       legend: { enabled: true, itemStyle: { color: this.ink(), fontSize: '11px' } },
