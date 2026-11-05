@@ -152,7 +152,7 @@ export class FacebookResearchChartsComponent {
     const counts = new Map(this.dailyCounts().map(row => [row.date, row.count]));
     const dates = Array.from({ length: 31 }, (_, i) => `2026-10-${String(i + 1).padStart(2, '0')}`);
     return {
-      ...this.baseOptions(), chart: { ...this.baseOptions().chart, type: 'column', height: Math.max(260, this.pages().length * 37 + 60) },
+      ...this.baseOptions(), chart: { ...this.baseOptions().chart, type: 'column', height: 420 },
       xAxis: { categories: dates.map(date => `${Number(date.slice(-2))} окт`), tickInterval: 5, labels: { style: { color: this.ink(), fontSize: '11px' } }, lineWidth: 0 },
       yAxis: { min: 0, allowDecimals: false, title: { text: '' }, gridLineColor: 'var(--facebook-rule)', labels: { style: { color: this.ink() } } },
       tooltip: { outside: true, headerFormat: '<b>{point.key} 2026</b><br/>', pointFormat: 'Публикации: <b>{point.y}</b>', useHTML: false },
