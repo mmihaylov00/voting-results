@@ -130,6 +130,60 @@ describe('Facebook tone review page', () => {
     fixture.destroy();
   });
 
+  it.each(['post', 'comment'] as const)('shows only %s records with an unreviewed candidate tone', kind => {
+    const { fixture, component, service, element } = setup();
+    const base = kind === 'post' ? postItem : commentItem;
+    const gyurovUnreviewed: FacebookToneReviewItem = { ...base, key: `${base.key}:gyurov`, gyurov: 'unreviewed' };
+    const yotovaUnreviewed: FacebookToneReviewItem = { ...base, key: `${base.key}:yotova`, yotova: 'unreviewed' };
+    const notMentioned: FacebookToneReviewItem = { ...base, key: `${base.key}:not-mentioned`, gyurov: 'not-mentioned', yotova: 'not-mentioned' };
+    const unclear: FacebookToneReviewItem = { ...base, key: `${base.key}:unclear`, gyurov: 'unclear', yotova: 'neutral' };
+    service.items.set([gyurovUnreviewed, yotovaUnreviewed, notMentioned, unclear]);
+    component.setKind(kind);
+    fixture.detectChanges();
+    expect(component.table()!.viewRows()).toHaveLength(4);
+    const checkbox = Array.from(element.querySelectorAll<HTMLInputElement>('input[type="checkbox"]'))
+      .find(input => input.parentElement?.textContent?.includes('Само неоценени'))!;
+    expect(checkbox).toBeDefined();
+    checkbox.checked = true;
+    checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+    fixture.detectChanges();
+    expect(component.onlyUnreviewed()).toBe(true);
+    expect(component.table()!.viewRows()).toEqual([gyurovUnreviewed, yotovaUnreviewed]);
+    component.setKind(kind === 'post' ? 'comment' : 'post');
+    expect(component.onlyUnreviewed()).toBe(true);
+    fixture.destroy();
+  });
+
+  it('keeps unrated rows visible while drafting and resets filters without discarding suggestions', () => {
+    const { fixture, component, service } = setup();
+    const unrated: FacebookToneReviewItem = { ...postItem, key: 'post:unreviewed', postId: 'unreviewed',
+      gyurov: 'unreviewed', yotova: 'unreviewed' };
+    service.items.set([unrated, postItem]);
+    component.onlyUnreviewed.set(true);
+    fixture.detectChanges();
+    const rows = component.table()!.viewRows();
+    expect(rows).toEqual([unrated]);
+    service.setTone(unrated, 'gyurov', 'supportive');
+    service.setTone(unrated, 'yotova', 'critical');
+    fixture.detectChanges();
+    expect(component.table()!.viewRows()).toBe(rows);
+    component.onlyChanged.set(true);
+    component.pageFilter.set('another-page');
+    component.table()!.query.set('несъществуващ текст');
+    fixture.detectChanges();
+    expect(component.table()!.viewRows()).toHaveLength(0);
+    component.resetFilters();
+    fixture.detectChanges();
+    expect(component.onlyUnreviewed()).toBe(false);
+    expect(component.onlyChanged()).toBe(false);
+    expect(component.pageFilter()).toBe('');
+    expect(component.table()!.query()).toBe('');
+    expect(component.table()!.viewRows()).toEqual([unrated, postItem]);
+    expect(service.changed(unrated)).toBe(true);
+    expect(service.pendingCount()).toBe(1);
+    fixture.destroy();
+  });
+
   it('renders comments safely with source context and disables withheld excerpts', () => {
     const { fixture, component, element } = setup();
     component.setKind('comment');

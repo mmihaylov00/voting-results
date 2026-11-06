@@ -32,6 +32,7 @@ export class FacebookToneReviewComponent implements OnInit, OnDestroy {
   private readonly originalRobots = this.meta.getTag('name="robots"')?.getAttribute('content') ?? null;
   readonly kind = signal(this.route.snapshot.queryParams['kind'] === 'comment' ? 'comment' : 'post');
   readonly pageFilter = signal('');
+  readonly onlyUnreviewed = signal(false);
   readonly onlyChanged = signal(false);
   readonly table = viewChild<TableControlsComponent<FacebookToneReviewItem>>('reviewSearch');
   readonly candidates = FACEBOOK_CANDIDATES;
@@ -49,8 +50,10 @@ export class FacebookToneReviewComponent implements OnInit, OnDestroy {
   readonly filteredItems = computed(() => {
     const kind = this.kind();
     const page = this.pageFilter();
+    const onlyUnreviewed = this.onlyUnreviewed();
     const onlyChanged = this.onlyChanged();
     return this.review.items().filter(item => item.kind === kind && (!page || item.pageId === page)
+      && (!onlyUnreviewed || item.gyurov === 'unreviewed' || item.yotova === 'unreviewed')
       && (!onlyChanged || this.review.changed(item)));
   });
   readonly batchSize = computed(() => Math.min(100, this.review.pendingCount()));
@@ -86,6 +89,7 @@ export class FacebookToneReviewComponent implements OnInit, OnDestroy {
 
   resetFilters(): void {
     this.pageFilter.set('');
+    this.onlyUnreviewed.set(false);
     this.onlyChanged.set(false);
     this.table()?.query.set('');
   }

@@ -16,6 +16,7 @@
     <section id="tone-review-panel" role="tabpanel" [attr.aria-labelledby]="'tone-review-kind-tab-' + kind()">
       <div class="filters">
         <div class="page-filter"><label for="tone-review-page--trigger">Facebook страница</label><app-select controlId="tone-review-page" label="Facebook страница за оценяване" [options]="pageOptions()" [value]="pageFilter()" (valueChange)="pageFilter.set($event)" icon="globe" /></div>
+        <label class="changed-filter"><input #unreviewedCheckbox type="checkbox" [checked]="onlyUnreviewed()" (change)="onlyUnreviewed.set(unreviewedCheckbox.checked)" />Само неоценени</label>
         <label class="changed-filter"><input #changedCheckbox type="checkbox" [checked]="onlyChanged()" (change)="onlyChanged.set(changedCheckbox.checked)" />Само моите промени</label>
         <button hlmBtn variant="outline" size="icon" type="button" aria-label="Изчисти филтрите за оценяване" title="Изчисти филтрите" (click)="resetFilters()"><app-map-icon name="reset" /></button>
       </div>
