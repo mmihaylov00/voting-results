@@ -174,7 +174,7 @@ describe('Facebook aggregate participation workspace', () => {
     expect(component.report()?.totals.accounts).toBe(12);
     expect(element.querySelector('.participation-totals')?.textContent).toContain('12');
     expect(element.querySelector('.coverage')?.textContent).toContain('36');
-    expect(element.querySelector('.coverage')?.textContent).toContain('2 / 2 проверени публикации');
+    expect(element.querySelector('.coverage')?.textContent).toContain('2 / 2 публикации със събрани данни');
     expect(element.querySelectorAll('[role="tab"]')).toHaveLength(4);
     expect(element.querySelector('.table-scroll')?.getAttribute('tabindex')).toBe('0');
     expect(element.querySelector('.chart-scroll')).not.toBeNull();
@@ -251,7 +251,7 @@ describe('Facebook aggregate participation workspace', () => {
     const element = fixture.nativeElement as HTMLElement;
     expect(component.error()).toBe('');
     expect(component.checkedPostCount()).toBe(1);
-    expect(element.querySelector('.coverage')?.textContent).toContain('1 / 2 проверени публикации');
+    expect(element.querySelector('.coverage')?.textContent).toContain('1 / 2 публикации със събрани данни');
     expect([...element.querySelectorAll('.account-count')].map(cell => cell.textContent)).toEqual(['<5', '-']);
     expect(component.chartRows()).toHaveLength(0);
     component.setView('posts');
@@ -274,7 +274,7 @@ describe('Facebook aggregate participation workspace', () => {
     const element = fixture.nativeElement as HTMLElement;
     expect(fixture.componentInstance.checkedPostCount()).toBe(0);
     expect([...element.querySelectorAll('.participation-totals dd')].map(cell => cell.textContent)).toEqual(['-', '-', '-']);
-    expect(element.querySelector('.coverage')?.textContent).toContain('0 / 2 проверени публикации');
+    expect(element.querySelector('.coverage')?.textContent).toContain('0 / 2 публикации със събрани данни');
     fixture.destroy();
   });
 

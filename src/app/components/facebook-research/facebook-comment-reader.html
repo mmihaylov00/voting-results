@@ -1,7 +1,8 @@
 <app-base-modal title="Откъси от коментари" [subtitle]="shortName(row().page.name)" maxWidth="max-w-4xl [&_h2]:text-xl [&_h2]:leading-tight" (close)="close.emit()">
   <ng-template #headerActions><a hlmBtn variant="outline" class="gap-2" [href]="row().post.url" target="_blank" rel="noopener noreferrer"><app-map-icon name="share" />Публикацията във Facebook</a></ng-template>
   <p class="post-context">{{ row().post.excerpt || row().post.summary }}</p>
-  <p class="note">Личните данни са премахнати. Оценките са за пълния коментар и нишката.</p>
+  <p class="note coverage-note" [attr.data-coverage]="row().status"><strong>{{ coverageLabels[row().status] }} нишка</strong>@for (note of row().notes; track $index) {<span class="block">{{ note }}</span>}</p>
+  <p class="note">Личните данни са премахнати. Оценките са за пълния извлечен текст и наличния контекст.</p>
   <app-loading-bar [loading]="loading()" label="Зареждане на откъсите от коментари" />
   @if (error()) {<div class="reader-state" role="alert"><p>{{ error() }}</p><button hlmBtn variant="outline" type="button" class="gap-2" (click)="load()"><app-map-icon name="reset" />Опитай отново</button></div>}
   @if (report()) {

@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "capturedAt": "2026-11-06T12:36:23.262Z",
-  "collectionSha256": "6f731621aa7c0dfe30f562d52469d0ac47832acffde217c6ec47f56d896a5310",
+  "capturedAt": "2026-11-06T16:21:20.286Z",
+  "collectionSha256": "2fe8d162ce20d45ab651a161eddfebc32fbcb930f651ae8e74ce2598f5bac370",
   "posts": [
     {
       "postId": "post:pfbid02mU6YsGsHu3nW7F6Q6onUsvLYnyT2C1Vr8H688j4o6HCQozQNQAraqxpv5SJa7dWQl",
@@ -13803,67 +13803,71 @@
     },
     {
       "postId": "post:pfbid0wdBHVPj6Ucwz3vFrvy8Mq6w5rgZ1fzZgMCXaiGTarkNfgQCCkAscvc5ZdG4t1fWJl",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-06T16:05:10.140Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 2111,
+      "capturedCount": 1221,
+      "assessedCount": 1221,
+      "topLevelCount": 80,
+      "replyCount": 1141,
       "counts": {
         "gyurov": {
-          "supportive": 0,
-          "critical": 0,
-          "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
+          "supportive": 61,
+          "critical": 160,
+          "mixed": 1,
+          "neutral": 32,
+          "unclear": 73,
+          "not-mentioned": 894,
           "unreviewed": 0
         },
         "yotova": {
-          "supportive": 0,
-          "critical": 0,
-          "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
+          "supportive": 66,
+          "critical": 124,
+          "mixed": 19,
+          "neutral": 30,
+          "unclear": 46,
+          "not-mentioned": 936,
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Извличането е прекъснато. Показани са събраните коментари; част от отговорите остават незаредени."
+      ]
     },
     {
       "postId": "post:pfbid0LeP5hCNkKHeqGoxtEJW6Zsh9VC3v7g3bo8St9Wud2SwZpr1yvTYBMeG3ACkBj4fnl",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-06T16:20:16.269Z",
+      "status": "partial",
+      "ordering": "newest",
+      "reportedCount": 1211,
+      "capturedCount": 1160,
+      "assessedCount": 1160,
+      "topLevelCount": 591,
+      "replyCount": 569,
       "counts": {
         "gyurov": {
-          "supportive": 0,
-          "critical": 0,
-          "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
+          "supportive": 68,
+          "critical": 228,
+          "mixed": 1,
+          "neutral": 64,
+          "unclear": 84,
+          "not-mentioned": 715,
           "unreviewed": 0
         },
         "yotova": {
-          "supportive": 0,
-          "critical": 0,
-          "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
+          "supportive": 15,
+          "critical": 78,
+          "mixed": 1,
+          "neutral": 65,
+          "unclear": 43,
+          "not-mentioned": 958,
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Извличането е прекъснато. Показани са събраните коментари; част от отговорите остават незаредени."
+      ]
     },
     {
       "postId": "post:pfbid0L79WDEXCoSt8bFxrAAGNPEk2AW6e3in9upwe5h6BvhMT5o4beTAJFxBbYsF5dxMMl",
@@ -13901,35 +13905,37 @@
     },
     {
       "postId": "post:pfbid0C8yFcn85nB7a1KWbEsBJ1zwtvF4YRRd3CUa9WkfzKv4nXQRSsHYVY7Zft1bjLT42l",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-06T15:05:12.782Z",
+      "status": "partial",
+      "ordering": "all",
+      "reportedCount": 1175,
+      "capturedCount": 966,
+      "assessedCount": 966,
+      "topLevelCount": 450,
+      "replyCount": 516,
       "counts": {
         "gyurov": {
-          "supportive": 0,
-          "critical": 0,
-          "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
+          "supportive": 21,
+          "critical": 128,
+          "mixed": 2,
+          "neutral": 31,
+          "unclear": 38,
+          "not-mentioned": 746,
           "unreviewed": 0
         },
         "yotova": {
-          "supportive": 0,
-          "critical": 0,
-          "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
+          "supportive": 57,
+          "critical": 80,
+          "mixed": 5,
+          "neutral": 25,
+          "unclear": 28,
+          "not-mentioned": 771,
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Извличането е прекъснато. Показани са събраните коментари; част от отговорите остават незаредени."
+      ]
     },
     {
       "postId": "post:pfbid02ySEgquF2J8B6Gxvj3W8WkxreuGGdiyU45N3diEQKGMUtdbAxaVQ3jj3BAN1xFWhCl",

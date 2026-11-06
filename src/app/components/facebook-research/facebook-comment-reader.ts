@@ -10,7 +10,7 @@ import { MapIconComponent } from '../ui/map-icon/map-icon';
 import { SelectComponent } from '../ui/select/select';
 import { TableColumns, TableControlsComponent } from '../ui/table-controls/table-controls';
 import { VirtualTableDirective } from '../ui/virtual-table/virtual-table';
-import { FacebookCommentRow } from './facebook-comments.util';
+import { FACEBOOK_COMMENT_COVERAGE_LABELS, FacebookCommentRow } from './facebook-comments.util';
 import { FacebookCommentExcerpt, FacebookCommentReaderReport, validFacebookCommentReaderManifest, validFacebookCommentReaderReport } from './facebook-comment-reader.util';
 import { FacebookStanceLabel } from './facebook-research.models';
 import { FACEBOOK_CANDIDATES, FACEBOOK_CANDIDATE_LABELS, FACEBOOK_STANCE_BUCKETS, FACEBOOK_TONE_COUNTS, FACEBOOK_TONE_LABELS, facebookShortName } from './facebook-research.util';
@@ -39,6 +39,7 @@ export class FacebookCommentReaderComponent implements OnInit {
   readonly table = viewChild<TableControlsComponent<FacebookCommentExcerpt>>('commentSearch');
   readonly candidates = FACEBOOK_CANDIDATES;
   readonly candidateLabels = FACEBOOK_CANDIDATE_LABELS;
+  readonly coverageLabels = FACEBOOK_COMMENT_COVERAGE_LABELS;
   readonly toneLabel = (tone: FacebookStanceLabel) => FACEBOOK_TONE_LABELS[tone];
   readonly shortName = facebookShortName;
   readonly toneOptions = [{ value: '', label: 'Всички тонове' },

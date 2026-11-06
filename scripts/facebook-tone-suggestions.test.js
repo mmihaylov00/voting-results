@@ -96,13 +96,13 @@ test('catalog accepts every deployed source record and its largest allowed batch
   assert.equal(catalog.size, report.posts.length + manifest.posts.reduce((sum, post) => sum + post.count, 0));
   const records = [...catalog.values()];
   assert.equal(records.filter(record => record.kind === 'post').length, report.posts.length);
-  assert.equal(records.filter(record => record.kind === 'comment').length, 7997);
-  assert.equal(records.filter(record => record.kind === 'comment' && record.editable).length, 6224);
-  assert.equal(records.filter(record => !record.editable).length, 1773);
+  assert.equal(records.filter(record => record.kind === 'comment').length, 11344);
+  assert.equal(records.filter(record => record.kind === 'comment' && record.editable).length, 9419);
+  assert.equal(records.filter(record => !record.editable).length, 1925);
   assert(records.filter(record => record.kind === 'comment')
     .every(record => record.originalGyurov !== 'unreviewed' && record.originalYotova !== 'unreviewed'));
-  assert.equal(comments.posts.reduce((sum, post) => sum + post.capturedCount, 0), 7997);
-  assert.equal(comments.posts.reduce((sum, post) => sum + post.assessedCount, 0), 7997);
+  assert.equal(comments.posts.reduce((sum, post) => sum + post.capturedCount, 0), 11344);
+  assert.equal(comments.posts.reduce((sum, post) => sum + post.assessedCount, 0), 11344);
   for (const post of comments.posts) {
     assert.equal(post.assessedCount, post.capturedCount);
     for (const candidate of ['gyurov', 'yotova']) assert.equal(post.counts[candidate].unreviewed, 0);

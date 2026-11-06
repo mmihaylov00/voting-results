@@ -124,7 +124,7 @@ export class FacebookCommentsResearchComponent implements OnInit {
       responsive: { rules: [{ condition: { maxWidth: 480 }, chartOptions: {
         chart: { marginLeft: 112 }, xAxis: { labels: { distance: 8, style: { width: 100, textOverflow: 'ellipsis', whiteSpace: 'nowrap' } } },
       } }] },
-      subtitle: { text: `${this.totals().captured} събрани · ${this.totals().assessed} оценени · ${this.totals().checked}/${this.visibleRows().length} проверени публикации`, style: { color: ink, fontSize: '10px' } },
+      subtitle: { text: `${this.totals().captured} събрани · ${this.totals().assessed} оценени · ${this.totals().checked}/${this.visibleRows().length} публикации със събрани данни`, style: { color: ink, fontSize: '10px' } },
       xAxis: { categories: rows.map(row => facebookShortName(row.name)), lineWidth: 0, tickWidth: 0, labels: { style: { color: ink, fontSize: '11px' } } },
       yAxis: { min: -extent, max: extent, tickPositions: [-extent, 0, extent], startOnTick: false, endOnTick: false, allowDecimals: false,
         title: { text: '' }, gridLineColor: 'var(--facebook-rule)', labels: { style: { color: ink }, formatter() { return facebookCount(Math.abs(Number(this.value))); } },

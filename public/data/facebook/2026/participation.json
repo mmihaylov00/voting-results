@@ -1,18 +1,18 @@
 {
   "version": 1,
   "runId": "e5252990-38a7-4fb2-a70e-1e55019a76a6",
-  "capturedAt": "2026-11-06T12:36:23.262Z",
+  "capturedAt": "2026-11-06T16:21:20.286Z",
   "minimumCellCount": 5,
   "unit": "observed-accounts",
   "coverage": {
-    "capturedComments": 7997,
-    "matchedIdentityComments": 7997,
+    "capturedComments": 11344,
+    "matchedIdentityComments": 11344,
     "unknownIdentityComments": 0
   },
   "totals": {
-    "accounts": 5083,
-    "accountsOnMultiplePosts": 631,
-    "accountsOnMultiplePages": 279
+    "accounts": 6841,
+    "accountsOnMultiplePosts": 917,
+    "accountsOnMultiplePages": 355
   },
   "posts": [
     {
@@ -4836,35 +4836,35 @@
     {
       "postId": "post:pfbid0wdBHVPj6Ucwz3vFrvy8Mq6w5rgZ1fzZgMCXaiGTarkNfgQCCkAscvc5ZdG4t1fWJl",
       "pageId": "https://www.facebook.com/petel.bg",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
+      "capturedComments": 1221,
+      "topLevelComments": 80,
+      "replyComments": 1141,
+      "matchedIdentityComments": 1221,
+      "accounts": 681,
+      "accountsStartingThreads": 80,
+      "accountsWithMultipleComments": 215
     },
     {
       "postId": "post:pfbid0LeP5hCNkKHeqGoxtEJW6Zsh9VC3v7g3bo8St9Wud2SwZpr1yvTYBMeG3ACkBj4fnl",
       "pageId": "https://www.facebook.com/petel.bg",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
+      "capturedComments": 1160,
+      "topLevelComments": 591,
+      "replyComments": 569,
+      "matchedIdentityComments": 1160,
+      "accounts": 779,
+      "accountsStartingThreads": 548,
+      "accountsWithMultipleComments": 161
     },
     {
       "postId": "post:pfbid0C8yFcn85nB7a1KWbEsBJ1zwtvF4YRRd3CUa9WkfzKv4nXQRSsHYVY7Zft1bjLT42l",
       "pageId": "https://www.facebook.com/petel.bg",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
+      "capturedComments": 966,
+      "topLevelComments": 450,
+      "replyComments": 516,
+      "matchedIdentityComments": 966,
+      "accounts": 661,
+      "accountsStartingThreads": 450,
+      "accountsWithMultipleComments": 126
     }
   ],
   "pages": [
@@ -5074,9 +5074,9 @@
     {
       "pageId": "https://www.facebook.com/petel.bg",
       "postCount": 5,
-      "capturedComments": 1100,
-      "matchedIdentityComments": 1100,
-      "accounts": 676
+      "capturedComments": 4447,
+      "matchedIdentityComments": 4447,
+      "accounts": 2516
     },
     {
       "pageId": "100064668132568",
@@ -5516,6 +5516,11 @@
   "postOverlaps": [
     {
       "leftPostId": "post:pfbid03V9bKpCNQKJu4Ba9HckG1GKZfbUfiW7sHoXSmrEjTToa9hCfLCpeSshKajdgAmE9l",
+      "rightPostId": "post:pfbid0LeP5hCNkKHeqGoxtEJW6Zsh9VC3v7g3bo8St9Wud2SwZpr1yvTYBMeG3ACkBj4fnl",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPostId": "post:pfbid03V9bKpCNQKJu4Ba9HckG1GKZfbUfiW7sHoXSmrEjTToa9hCfLCpeSshKajdgAmE9l",
       "rightPostId": "post:pfbid0mnE5t943SWc4MH9KheNhCi5UYKCLnWUP3kxWAv3wd2WESpMJHHTLYfLp6rtWTHNal",
       "sharedAccounts": 7
     },
@@ -5590,9 +5595,34 @@
       "sharedAccounts": 9
     },
     {
+      "leftPostId": "post:pfbid0L79WDEXCoSt8bFxrAAGNPEk2AW6e3in9upwe5h6BvhMT5o4beTAJFxBbYsF5dxMMl",
+      "rightPostId": "post:pfbid0LeP5hCNkKHeqGoxtEJW6Zsh9VC3v7g3bo8St9Wud2SwZpr1yvTYBMeG3ACkBj4fnl",
+      "sharedAccounts": 35
+    },
+    {
+      "leftPostId": "post:pfbid0LeP5hCNkKHeqGoxtEJW6Zsh9VC3v7g3bo8St9Wud2SwZpr1yvTYBMeG3ACkBj4fnl",
+      "rightPostId": "video:1094888736870133",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid0C8yFcn85nB7a1KWbEsBJ1zwtvF4YRRd3CUa9WkfzKv4nXQRSsHYVY7Zft1bjLT42l",
+      "rightPostId": "post:pfbid0LeP5hCNkKHeqGoxtEJW6Zsh9VC3v7g3bo8St9Wud2SwZpr1yvTYBMeG3ACkBj4fnl",
+      "sharedAccounts": 39
+    },
+    {
+      "leftPostId": "post:pfbid0LeP5hCNkKHeqGoxtEJW6Zsh9VC3v7g3bo8St9Wud2SwZpr1yvTYBMeG3ACkBj4fnl",
+      "rightPostId": "post:pfbid0wdBHVPj6Ucwz3vFrvy8Mq6w5rgZ1fzZgMCXaiGTarkNfgQCCkAscvc5ZdG4t1fWJl",
+      "sharedAccounts": 40
+    },
+    {
       "leftPostId": "post:pfbid02upmeKUjzAUKYiFtZ87Tos1bACTjUg6bq9FiWZQuVLrwdXhGVnTZ4TE4X6SfG5N7Hl",
       "rightPostId": "post:pfbid0r5fND2sHqXbM1JCJbmJo5rLUWxMFnaZFSd5dC4qUh2PqVagZSQANr79TZeYQWPQyl",
       "sharedAccounts": 5
+    },
+    {
+      "leftPostId": "post:pfbid02ySEgquF2J8B6Gxvj3W8WkxreuGGdiyU45N3diEQKGMUtdbAxaVQ3jj3BAN1xFWhCl",
+      "rightPostId": "post:pfbid0C8yFcn85nB7a1KWbEsBJ1zwtvF4YRRd3CUa9WkfzKv4nXQRSsHYVY7Zft1bjLT42l",
+      "sharedAccounts": 55
     },
     {
       "leftPostId": "post:pfbid0BHVnuGJsi6ub8GXhMMHfnBdKKnQE7cadFT1LBkfrfGTWubjtRahR29KDYiyCPg6bl",
@@ -5638,6 +5668,11 @@
       "leftPostId": "post:pfbid09Sad8rRWqTxk99V9nGjpQUbjHdGrtZGSXroqjhzQo5q2ctWbmhTkNe4EzjY3npHTl",
       "rightPostId": "post:pfbid0W91zvaUDUbjGfAT4RRDMfMrmwpLeYGcXbPq2tTiWfJihYoGSugJDqd2Meg3SNU9Gl",
       "sharedAccounts": 6
+    },
+    {
+      "leftPostId": "post:pfbid0C8yFcn85nB7a1KWbEsBJ1zwtvF4YRRd3CUa9WkfzKv4nXQRSsHYVY7Zft1bjLT42l",
+      "rightPostId": "post:pfbid0wdBHVPj6Ucwz3vFrvy8Mq6w5rgZ1fzZgMCXaiGTarkNfgQCCkAscvc5ZdG4t1fWJl",
+      "sharedAccounts": 56
     },
     {
       "leftPostId": "post:pfbid0Y3RrwUWN4B2fMGj1BkPdgPJH7L8x15uLKteo7KecmYkkcXCs3n9y6XR4ZsyQY11Tl",
@@ -5800,9 +5835,29 @@
       "sharedAccounts": 5
     },
     {
+      "leftPostId": "post:pfbid0L79WDEXCoSt8bFxrAAGNPEk2AW6e3in9upwe5h6BvhMT5o4beTAJFxBbYsF5dxMMl",
+      "rightPostId": "post:pfbid0wdBHVPj6Ucwz3vFrvy8Mq6w5rgZ1fzZgMCXaiGTarkNfgQCCkAscvc5ZdG4t1fWJl",
+      "sharedAccounts": 24
+    },
+    {
       "leftPostId": "post:pfbid02BwihQyZqD3td346wvdEipSrUavMA5D9U3zho7XrgtXnRNBuY4NDqw9LoUUZ38ykgl",
       "rightPostId": "post:pfbid02aZDv5aYEA7tJk17xqQ4aagnket1qJ2SbkPTPeh7VVdvQpCwkkqNdN4dyREEfXfKjl",
       "sharedAccounts": 7
+    },
+    {
+      "leftPostId": "post:pfbid02ySEgquF2J8B6Gxvj3W8WkxreuGGdiyU45N3diEQKGMUtdbAxaVQ3jj3BAN1xFWhCl",
+      "rightPostId": "post:pfbid0LeP5hCNkKHeqGoxtEJW6Zsh9VC3v7g3bo8St9Wud2SwZpr1yvTYBMeG3ACkBj4fnl",
+      "sharedAccounts": 32
+    },
+    {
+      "leftPostId": "post:pfbid0C8yFcn85nB7a1KWbEsBJ1zwtvF4YRRd3CUa9WkfzKv4nXQRSsHYVY7Zft1bjLT42l",
+      "rightPostId": "post:pfbid0L79WDEXCoSt8bFxrAAGNPEk2AW6e3in9upwe5h6BvhMT5o4beTAJFxBbYsF5dxMMl",
+      "sharedAccounts": 13
+    },
+    {
+      "leftPostId": "post:pfbid02ySEgquF2J8B6Gxvj3W8WkxreuGGdiyU45N3diEQKGMUtdbAxaVQ3jj3BAN1xFWhCl",
+      "rightPostId": "post:pfbid0wdBHVPj6Ucwz3vFrvy8Mq6w5rgZ1fzZgMCXaiGTarkNfgQCCkAscvc5ZdG4t1fWJl",
+      "sharedAccounts": 34
     },
     {
       "leftPostId": "post:pfbid02ySEgquF2J8B6Gxvj3W8WkxreuGGdiyU45N3diEQKGMUtdbAxaVQ3jj3BAN1xFWhCl",
@@ -5811,6 +5866,11 @@
     }
   ],
   "pageOverlaps": [
+    {
+      "leftPageId": "100069720181353",
+      "rightPageId": "https://www.facebook.com/petel.bg",
+      "sharedAccounts": 17
+    },
     {
       "leftPageId": "100069720181353",
       "rightPageId": "https://www.facebook.com/n.barekov",
@@ -5837,14 +5897,24 @@
       "sharedAccounts": 31
     },
     {
+      "leftPageId": "104575425050525",
+      "rightPageId": "https://www.facebook.com/petel.bg",
+      "sharedAccounts": 27
+    },
+    {
       "leftPageId": "61577398061794",
       "rightPageId": "https://www.facebook.com/n.barekov",
       "sharedAccounts": 7
     },
     {
-      "leftPageId": "100069720181353",
+      "leftPageId": "61577398061794",
       "rightPageId": "https://www.facebook.com/petel.bg",
-      "sharedAccounts": 6
+      "sharedAccounts": 23
+    },
+    {
+      "leftPageId": "https://www.facebook.com/n.barekov",
+      "rightPageId": "https://www.facebook.com/petel.bg",
+      "sharedAccounts": 13
     },
     {
       "leftPageId": "100069720181353",
@@ -5862,14 +5932,19 @@
       "sharedAccounts": 10
     },
     {
+      "leftPageId": "61557189262331",
+      "rightPageId": "https://www.facebook.com/petel.bg",
+      "sharedAccounts": 13
+    },
+    {
       "leftPageId": "61572252076131",
       "rightPageId": "61577398061794",
       "sharedAccounts": 22
     },
     {
-      "leftPageId": "https://www.facebook.com/n.barekov",
+      "leftPageId": "61585325593477",
       "rightPageId": "https://www.facebook.com/petel.bg",
-      "sharedAccounts": 6
+      "sharedAccounts": 15
     },
     {
       "leftPageId": "61557189262331",
@@ -5893,6 +5968,11 @@
     },
     {
       "leftPageId": "61594146398840",
+      "rightPageId": "https://www.facebook.com/petel.bg",
+      "sharedAccounts": 12
+    },
+    {
+      "leftPageId": "61594146398840",
       "rightPageId": "https://www.facebook.com/n.barekov",
       "sharedAccounts": 6
     },
@@ -5904,11 +5984,6 @@
     {
       "leftPageId": "104575425050525",
       "rightPageId": "138363261435366",
-      "sharedAccounts": 6
-    },
-    {
-      "leftPageId": "104575425050525",
-      "rightPageId": "https://www.facebook.com/petel.bg",
       "sharedAccounts": 6
     },
     {
@@ -5927,24 +6002,14 @@
       "sharedAccounts": 5
     },
     {
-      "leftPageId": "61577398061794",
-      "rightPageId": "https://www.facebook.com/petel.bg",
-      "sharedAccounts": 6
-    },
-    {
       "leftPageId": "61557189262331",
       "rightPageId": "61577398061794",
       "sharedAccounts": 8
     },
     {
-      "leftPageId": "61557189262331",
+      "leftPageId": "138363261435366",
       "rightPageId": "https://www.facebook.com/petel.bg",
-      "sharedAccounts": 5
-    },
-    {
-      "leftPageId": "61594146398840",
-      "rightPageId": "https://www.facebook.com/petel.bg",
-      "sharedAccounts": 5
+      "sharedAccounts": 6
     }
   ],
   "activity": {
@@ -5952,7 +6017,7 @@
       {
         "commentBand": "1",
         "pageBand": "1",
-        "accounts": 3822
+        "accounts": 4995
       },
       {
         "commentBand": "1",
@@ -5972,12 +6037,12 @@
       {
         "commentBand": "2",
         "pageBand": "1",
-        "accounts": 572
+        "accounts": 851
       },
       {
         "commentBand": "2",
         "pageBand": "2",
-        "accounts": 133
+        "accounts": 167
       },
       {
         "commentBand": "2",
@@ -5992,17 +6057,17 @@
       {
         "commentBand": "3-5",
         "pageBand": "1",
-        "accounts": 320
+        "accounts": 478
       },
       {
         "commentBand": "3-5",
         "pageBand": "2",
-        "accounts": 91
+        "accounts": 118
       },
       {
         "commentBand": "3-5",
         "pageBand": "3",
-        "accounts": 13
+        "accounts": 14
       },
       {
         "commentBand": "3-5",
@@ -6012,12 +6077,12 @@
       {
         "commentBand": "6-10",
         "pageBand": "1",
-        "accounts": 70
+        "accounts": 124
       },
       {
         "commentBand": "6-10",
         "pageBand": "2",
-        "accounts": 16
+        "accounts": 21
       },
       {
         "commentBand": "6-10",
@@ -6032,12 +6097,12 @@
       {
         "commentBand": "11-20",
         "pageBand": "1",
-        "accounts": 16
+        "accounts": 30
       },
       {
         "commentBand": "11-20",
         "pageBand": "2",
-        "accounts": 7
+        "accounts": 13
       },
       {
         "commentBand": "11-20",
@@ -6052,7 +6117,7 @@
       {
         "commentBand": "21+",
         "pageBand": "1",
-        "accounts": null
+        "accounts": 8
       },
       {
         "commentBand": "21+",
@@ -6077,7 +6142,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 402
+            "accounts": 395
           },
           {
             "commentBand": "1",
@@ -6097,12 +6162,12 @@
           {
             "commentBand": "2",
             "pageBand": "1",
-            "accounts": 50
+            "accounts": 49
           },
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 26
+            "accounts": 31
           },
           {
             "commentBand": "2",
@@ -6117,12 +6182,12 @@
           {
             "commentBand": "3-5",
             "pageBand": "1",
-            "accounts": 34
+            "accounts": 33
           },
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 11
+            "accounts": 13
           },
           {
             "commentBand": "3-5",
@@ -6202,7 +6267,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 796
+            "accounts": 792
           },
           {
             "commentBand": "1",
@@ -6222,12 +6287,12 @@
           {
             "commentBand": "2",
             "pageBand": "1",
-            "accounts": 85
+            "accounts": 84
           },
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 25
+            "accounts": 26
           },
           {
             "commentBand": "2",
@@ -6247,7 +6312,7 @@
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 21
+            "accounts": 24
           },
           {
             "commentBand": "3-5",
@@ -6327,7 +6392,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 189
+            "accounts": 180
           },
           {
             "commentBand": "1",
@@ -6352,7 +6417,7 @@
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 14
+            "accounts": 17
           },
           {
             "commentBand": "2",
@@ -6372,12 +6437,12 @@
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 11
+            "accounts": 14
           },
           {
             "commentBand": "3-5",
             "pageBand": "3",
-            "accounts": null
+            "accounts": 5
           },
           {
             "commentBand": "3-5",
@@ -6452,7 +6517,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 332
+            "accounts": 321
           },
           {
             "commentBand": "1",
@@ -6472,12 +6537,12 @@
           {
             "commentBand": "2",
             "pageBand": "1",
-            "accounts": 70
+            "accounts": 66
           },
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 34
+            "accounts": 40
           },
           {
             "commentBand": "2",
@@ -6492,12 +6557,12 @@
           {
             "commentBand": "3-5",
             "pageBand": "1",
-            "accounts": 29
+            "accounts": 28
           },
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 32
+            "accounts": 40
           },
           {
             "commentBand": "3-5",
@@ -6577,7 +6642,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 713
+            "accounts": 704
           },
           {
             "commentBand": "1",
@@ -6597,12 +6662,12 @@
           {
             "commentBand": "2",
             "pageBand": "1",
-            "accounts": 166
+            "accounts": 162
           },
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 48
+            "accounts": 51
           },
           {
             "commentBand": "2",
@@ -6617,12 +6682,12 @@
           {
             "commentBand": "3-5",
             "pageBand": "1",
-            "accounts": 95
+            "accounts": 93
           },
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 30
+            "accounts": 36
           },
           {
             "commentBand": "3-5",
@@ -6642,7 +6707,7 @@
           {
             "commentBand": "6-10",
             "pageBand": "2",
-            "accounts": 9
+            "accounts": 11
           },
           {
             "commentBand": "6-10",
@@ -6662,7 +6727,7 @@
           {
             "commentBand": "11-20",
             "pageBand": "2",
-            "accounts": 5
+            "accounts": 9
           },
           {
             "commentBand": "11-20",
@@ -6702,7 +6767,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 63
+            "accounts": 62
           },
           {
             "commentBand": "1",
@@ -6727,7 +6792,7 @@
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 6
+            "accounts": 7
           },
           {
             "commentBand": "2",
@@ -6952,7 +7017,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 122
+            "accounts": 118
           },
           {
             "commentBand": "1",
@@ -6977,7 +7042,7 @@
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 23
+            "accounts": 25
           },
           {
             "commentBand": "2",
@@ -6997,12 +7062,12 @@
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 21
+            "accounts": 22
           },
           {
             "commentBand": "3-5",
             "pageBand": "3",
-            "accounts": null
+            "accounts": 5
           },
           {
             "commentBand": "3-5",
@@ -7077,7 +7142,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 57
+            "accounts": 55
           },
           {
             "commentBand": "1",
@@ -7202,7 +7267,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 171
+            "accounts": 166
           },
           {
             "commentBand": "1",
@@ -7227,7 +7292,7 @@
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 13
+            "accounts": 18
           },
           {
             "commentBand": "2",
@@ -8327,7 +8392,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 135
+            "accounts": 130
           },
           {
             "commentBand": "1",
@@ -8352,7 +8417,7 @@
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 12
+            "accounts": 16
           },
           {
             "commentBand": "2",
@@ -8367,12 +8432,12 @@
           {
             "commentBand": "3-5",
             "pageBand": "1",
-            "accounts": 10
+            "accounts": 9
           },
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 7
+            "accounts": 9
           },
           {
             "commentBand": "3-5",
@@ -8577,7 +8642,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 24
+            "accounts": 23
           },
           {
             "commentBand": "1",
@@ -8952,7 +9017,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 74
+            "accounts": 73
           },
           {
             "commentBand": "1",
@@ -8977,7 +9042,7 @@
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 5
+            "accounts": 6
           },
           {
             "commentBand": "2",
@@ -9577,7 +9642,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 46
+            "accounts": 45
           },
           {
             "commentBand": "1",
@@ -9702,7 +9767,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 463
+            "accounts": 1696
           },
           {
             "commentBand": "1",
@@ -9722,12 +9787,12 @@
           {
             "commentBand": "2",
             "pageBand": "1",
-            "accounts": 93
+            "accounts": 382
           },
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 16
+            "accounts": 51
           },
           {
             "commentBand": "2",
@@ -9742,12 +9807,12 @@
           {
             "commentBand": "3-5",
             "pageBand": "1",
-            "accounts": 63
+            "accounts": 226
           },
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 14
+            "accounts": 42
           },
           {
             "commentBand": "3-5",
@@ -9762,32 +9827,32 @@
           {
             "commentBand": "6-10",
             "pageBand": "1",
-            "accounts": 15
+            "accounts": 69
           },
           {
             "commentBand": "6-10",
+            "pageBand": "2",
+            "accounts": 11
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "1",
+            "accounts": 19
+          },
+          {
+            "commentBand": "11-20",
             "pageBand": "2",
             "accounts": 6
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "2",
-            "accounts": null
           },
           {
             "commentBand": "11-20",
@@ -17573,5 +17638,5 @@
       }
     ]
   },
-  "collectionSha256": "6f731621aa7c0dfe30f562d52469d0ac47832acffde217c6ec47f56d896a5310"
+  "collectionSha256": "2fe8d162ce20d45ab651a161eddfebc32fbcb930f651ae8e74ce2598f5bac370"
 }

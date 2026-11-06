@@ -8,7 +8,7 @@
     <div><dt>В повече публикации</dt><dd>{{ accountCount(data.totals.accountsOnMultiplePosts, checkedPostCount() > 0) }}</dd></div>
     <div><dt>В повече страници</dt><dd>{{ accountCount(data.totals.accountsOnMultiplePages, checkedPostCount() > 0) }}</dd></div>
   </dl>
-  <p class="coverage"><strong>{{ count(data.coverage.matchedIdentityComments) }}</strong> от {{ count(data.coverage.capturedComments) }} коментара с разпознат идентификатор · {{ count(data.coverage.unknownIdentityComments) }} без идентификатор · {{ count(checkedPostCount()) }} / {{ count(data.posts.length) }} проверени публикации</p>
+  <p class="coverage"><strong>{{ count(data.coverage.matchedIdentityComments) }}</strong> от {{ count(data.coverage.capturedComments) }} коментара с разпознат идентификатор · {{ count(data.coverage.unknownIdentityComments) }} без идентификатор · {{ count(checkedPostCount()) }} / {{ count(data.posts.length) }} публикации със събрани данни</p>
   <app-view-tabs [tabs]="tabs" [value]="view()" (valueChange)="setView($event)" [scrollable]="true" label="Обобщения на участието" idPrefix="facebook-participation-view" panelId="facebook-participation-panel" />
   <div id="facebook-participation-panel" role="tabpanel" [attr.aria-labelledby]="'facebook-participation-view-tab-' + view()">
     <div class="filters">

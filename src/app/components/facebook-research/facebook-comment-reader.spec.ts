@@ -146,6 +146,22 @@ describe('Facebook comment reader', () => {
     fixture.destroy();
   });
 
+  it('shows partial coverage notes without implying that the whole thread was captured', () => {
+    const fixture = setup();
+    const note = 'Обходът е прекъснат; остават незаредени отговори.';
+    fixture.componentRef.setInput('row', { ...row, status: 'partial', reportedCount: 12, notes: [note] });
+    flushReader();
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const coverage = element.querySelector('.coverage-note');
+    expect(coverage?.getAttribute('data-coverage')).toBe('partial');
+    expect(coverage?.textContent).toContain('Частична нишка');
+    expect(coverage?.textContent).toContain(note);
+    expect(element.textContent).toContain('пълния извлечен текст и наличния контекст');
+    expect(element.textContent).not.toContain('пълния коментар и нишката');
+    fixture.destroy();
+  });
+
   it('expands and collapses replies without replacing the focused toggle or root list', () => {
     const fixture = setup();
     flushReader();
