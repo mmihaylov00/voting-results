@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "capturedAt": "2026-11-06T10:06:34.910Z",
-  "collectionSha256": "ab3e4396191538847e3d1c3e11fa882385b2aa6c71e9f5649777ef44ff53fb9c",
+  "capturedAt": "2026-11-06T12:36:23.262Z",
+  "collectionSha256": "6f731621aa7c0dfe30f562d52469d0ac47832acffde217c6ec47f56d896a5310",
   "posts": [
     {
       "postId": "post:pfbid02mU6YsGsHu3nW7F6Q6onUsvLYnyT2C1Vr8H688j4o6HCQozQNQAraqxpv5SJa7dWQl",
@@ -13867,35 +13867,37 @@
     },
     {
       "postId": "post:pfbid0L79WDEXCoSt8bFxrAAGNPEk2AW6e3in9upwe5h6BvhMT5o4beTAJFxBbYsF5dxMMl",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-06T12:36:22.808Z",
+      "status": "partial",
+      "ordering": "newest",
+      "reportedCount": 339,
+      "capturedCount": 335,
+      "assessedCount": 335,
+      "topLevelCount": 147,
+      "replyCount": 188,
       "counts": {
         "gyurov": {
-          "supportive": 0,
-          "critical": 0,
+          "supportive": 19,
+          "critical": 77,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
+          "neutral": 6,
+          "unclear": 1,
+          "not-mentioned": 232,
           "unreviewed": 0
         },
         "yotova": {
-          "supportive": 0,
-          "critical": 0,
+          "supportive": 13,
+          "critical": 61,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
+          "neutral": 10,
+          "unclear": 1,
+          "not-mentioned": 250,
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“; показаният брояч е 339, а достъпните коментари са 335."
+      ]
     },
     {
       "postId": "post:pfbid0C8yFcn85nB7a1KWbEsBJ1zwtvF4YRRd3CUa9WkfzKv4nXQRSsHYVY7Zft1bjLT42l",
@@ -13931,35 +13933,37 @@
     },
     {
       "postId": "post:pfbid02ySEgquF2J8B6Gxvj3W8WkxreuGGdiyU45N3diEQKGMUtdbAxaVQ3jj3BAN1xFWhCl",
-      "checkedAt": null,
-      "status": "not-checked",
-      "ordering": null,
-      "reportedCount": null,
-      "capturedCount": 0,
-      "assessedCount": 0,
-      "topLevelCount": 0,
-      "replyCount": 0,
+      "checkedAt": "2026-11-06T12:28:31.916Z",
+      "status": "partial",
+      "ordering": "newest",
+      "reportedCount": 778,
+      "capturedCount": 765,
+      "assessedCount": 765,
+      "topLevelCount": 273,
+      "replyCount": 492,
       "counts": {
         "gyurov": {
-          "supportive": 0,
-          "critical": 0,
-          "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 0,
+          "supportive": 35,
+          "critical": 96,
+          "mixed": 1,
+          "neutral": 25,
+          "unclear": 2,
+          "not-mentioned": 606,
           "unreviewed": 0
         },
         "yotova": {
-          "supportive": 0,
-          "critical": 0,
-          "mixed": 0,
-          "neutral": 0,
+          "supportive": 4,
+          "critical": 30,
+          "mixed": 1,
+          "neutral": 9,
           "unclear": 0,
-          "not-mentioned": 0,
+          "not-mentioned": 721,
           "unreviewed": 0
         }
       },
-      "notes": []
+      "notes": [
+        "Проверени са „Всички коментари“ и „Най-нови“; показаният брояч е 778, а достъпните коментари са 765."
+      ]
     },
     {
       "postId": "post:pfbid0UDjWiXg59Kz5eCPNpN6HYx3ERZmiAVGxfrMFnZbyJC6WgxhhyqevtuB65CkTiZUrl",

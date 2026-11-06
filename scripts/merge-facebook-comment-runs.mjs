@@ -35,6 +35,46 @@ function completeCapture(capture) {
     'A complete thread contains truncated text or an uncaptured parent.');
 }
 
+function requireTraversalProof(capture, proof) {
+  requireValue(object(proof) && proof.reviewComplete === true && proof.needsOrderRecheck !== true
+    && proof.captured === capture.comments.length && proof.reported === capture.reportedCount
+    && proof.checkedAt === capture.checkedAt && proof.actualEndingOrdering === capture.ordering,
+  'Traversal proof is missing, unfinished or stale.');
+  if (proof.emptyViewConflictVerified === true) return;
+  if (capture.status === 'unavailable') {
+    requireValue(proof.unavailableVerified === true && proof.emptyThreadVerified !== true,
+      'An unavailable thread requires explicit unavailability proof.');
+    return;
+  }
+  if (capture.status === 'complete' && capture.comments.length === 0 && capture.ordering === null) {
+    requireValue(proof.emptyThreadVerified === true && proof.unavailableVerified !== true
+      && capture.ordering === null, 'A literal-empty thread requires explicit empty-thread proof.');
+    return;
+  }
+  if (capture.status === 'complete' && capture.comments.length === 0)
+    requireValue(capture.reportedCount === 0, 'An ordered-empty complete thread requires a zero native counter.');
+  requireValue(proof.emptyThreadVerified !== true && proof.unavailableVerified !== true
+    && ['all', 'newest'].includes(capture.ordering), 'A populated or partial thread requires native ordering proof.');
+  const validOrder = order => {
+    const evidence = proof.orderProof?.[order];
+    const label = order === 'all' ? 'All comments' : 'Newest';
+    return proof[`${order}Terminal`] === true && object(evidence)
+      && typeof evidence.label === 'string' && evidence.label.startsWith(label) && timestamp(evidence.checkedAt)
+      && Number.isSafeInteger(evidence.captured) && evidence.captured >= 0 && evidence.captured <= capture.comments.length
+      && (evidence.reportedCount === null || Number.isSafeInteger(evidence.reportedCount) && evidence.reportedCount >= 0);
+  };
+  requireValue(validOrder('all'), 'A reviewed thread requires All-comments terminal and ordering proof.');
+  if (capture.status === 'partial' || capture.ordering === 'newest') {
+    requireValue(capture.ordering === 'newest' && validOrder('newest')
+      && Date.parse(proof.orderProof.all.checkedAt) <= Date.parse(proof.orderProof.newest.checkedAt),
+    'A partial or Newest-ending thread requires All-comments and Newest terminal and ordering proof.');
+  }
+  const ending = proof.orderProof[capture.ordering];
+  requireValue(ending.captured === capture.comments.length
+    && (ending.reportedCount === null || ending.reportedCount === capture.reportedCount)
+    && Date.parse(ending.checkedAt) >= Date.parse(capture.checkedAt), 'Ending traversal proof is stale.');
+}
+
 /** Merge disjoint, finished private queues without publishing or modifying their inputs. */
 export function mergeFacebookCommentRuns({ sourceText, metadata, secret, shards }) {
   requireValue(typeof sourceText === 'string' && object(metadata) && identifier(metadata.runId)
@@ -91,6 +131,7 @@ export function mergeFacebookCommentRuns({ sourceText, metadata, secret, shards 
         requireValue(qaById.get(capture.postId)?.emptyViewConflictVerified === true,
           'A positive-counter empty capture without ordering requires verified empty-view conflict proof.');
       }
+      requireTraversalProof(capture, qaById.get(capture.postId));
       queueIds.add(capture.postId);
       capturesById.set(capture.postId, structuredClone(capture));
     }

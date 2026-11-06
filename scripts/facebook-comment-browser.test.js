@@ -23,6 +23,129 @@ function card(id, name, href, body = 'Body', options = {}) {
     <a href="${permalink}">1h</a>${options.extra ?? ''}</div>`;
 }
 
+function locatorTab(dom) {
+  const queries = [], events = [];
+  const visible = element => !element.closest('[hidden]') && dom.window.getComputedStyle(element).visibility !== 'hidden';
+  const locator = resolve => ({
+    resolve,
+    filter(options) {
+      assert(!(options.hasText instanceof RegExp), 'Selector filters must not serialize RegExp values');
+      return locator(() => resolve().filter(element => (!options.visible || visible(element))
+        && (!options.hasText || element.textContent.includes(options.hasText))
+        && (!options.has || options.has.resolve().some(child => element.contains(child)))));
+    },
+    and(other) { return locator(() => resolve().filter(element => other.resolve().includes(element))); },
+    locator(selector) {
+      queries.push(selector);
+      return locator(() => selector === 'xpath=..' ? [...new Set(resolve().map(element => element.parentElement))]
+        : [...new Set(resolve().flatMap(element => [...element.querySelectorAll(selector)]))]);
+    },
+    nth: index => locator(() => resolve().slice(index, index + 1)),
+    count: async () => resolve().length,
+    allTextContents: async () => resolve().map(element => element.textContent),
+    evaluateAll: async (callback, argument, options) => {
+      assert.equal(options.timeoutMs, 15000);
+      return dom.window.eval(`(${callback.toString()})`)(resolve(), argument);
+    },
+    isEnabled: async () => !resolve()[0].hasAttribute('disabled') && resolve()[0].getAttribute('aria-disabled') !== 'true',
+    press: async key => {
+      assert.equal(resolve().length, 1);
+      events.push([resolve()[0].id, key]);
+    },
+  });
+  return { queries, events, url: async () => dom.window.location.href, playwright: { getByRole(role, options) {
+    assert.equal(role, 'heading'); assert.equal(options.name, 'Comments'); assert.equal(options.exact, true);
+    return locator(() => [...dom.window.document.querySelectorAll('h1,h2,h3,[role="heading"]')]
+      .filter(element => element.textContent.trim().replace(/\s+/g, ' ') === options.name));
+  }, locator(selector) {
+    queries.push(selector);
+    return locator(() => [...dom.window.document.querySelectorAll(selector)]);
+  } } };
+}
+
+test('comment controls stay live across remounts and ancestor path changes', async () => {
+  const dom = documentFor('<button>Before remount</button>');
+  const tab = locatorTab(dom), collector = browser.createCollector({});
+  const controls = await collector.controls(tab);
+  assert.deepEqual(await controls.locator('button').allTextContents(), ['Before remount']);
+  dom.window.document.body.innerHTML = '<main id="mount_changed"><div></div><section><div role="dialog">'
+    + '<h2>Another Page’s Post  </h2><button>After remount</button></div></section></main>';
+  assert.deepEqual(await controls.locator('button').allTextContents(), ['After remount']);
+  assert.equal(await (await collector.controls(tab)).count(), 1);
+  assert(tab.queries.every(query => !/mount_|nth-of-type/.test(query)));
+  dom.window.close();
+});
+
+test('wrapped cloned and unwrapped native dialogs resolve to the same thread without ancestor indices', async () => {
+  const dom = documentFor('');
+  dom.window.document.body.innerHTML = '<div role="dialog"><button>Outer controls</button><div role="dialog">'
+    + '<h2>Page\'s Post</h2><button>Thread controls</button></div></div>';
+  const collector = browser.createCollector({}), tab = locatorTab(dom);
+  const controls = await collector.controls(tab);
+  assert.deepEqual(await controls.locator('button').filter({ hasText: 'Thread controls' }).allTextContents(), ['Thread controls']);
+  dom.window.document.querySelector('[role="dialog"] [role="dialog"]').insertAdjacentHTML('beforeend',
+    '<div role="dialog" hidden><h2>Hidden private dialog</h2></div>');
+  assert.deepEqual(await controls.locator('button').filter({ hasText: 'Thread controls' }).allTextContents(), ['Thread controls']);
+  dom.window.document.body.innerHTML = '<div role="dialog"><h2>Page\'s Post</h2><button>Thread controls</button></div>';
+  assert.deepEqual(await controls.locator('button').filter({ hasText: 'Thread controls' }).allTextContents(), ['Thread controls']);
+  assert.equal(await (await collector.controls(tab)).count(), 1);
+  assert(tab.queries.every(query => !/nth-of-type|nth-child/.test(query)));
+  dom.window.document.body.insertAdjacentHTML('beforeend', '<div role="dialog"><h2>Other\'s Post</h2></div>');
+  await assert.rejects(() => browser.createCollector({}).controls(locatorTab(dom)), /scope is missing or ambiguous/);
+  dom.window.close();
+});
+
+test('comment controls reject hidden or ambiguous post roots instead of choosing the first', async () => {
+  const collector = browser.createCollector({});
+  for (const markup of ['<div role="dialog" hidden><h2>Hidden\'s Post</h2></div>',
+    '<div role="dialog"><h2 hidden>Hidden\'s Post</h2></div>',
+    '<div role="dialog"><h2>One\'s Post</h2></div><div role="dialog"><h2>Two’s Post</h2></div>',
+    '<div role="dialog"><h2>One\'s Post</h2><h2>Two’s Post</h2></div>',
+    '<div role="dialog"><h3>Not a thread\'s Post</h3></div>']) {
+    const dom = documentFor(''); dom.window.document.body.innerHTML = markup;
+    await assert.rejects(() => collector.controls(locatorTab(dom)), /(?:scope is missing or ambiguous|heading is ambiguous)/);
+    dom.window.close();
+  }
+  const dom = documentFor('<button>Active</button>');
+  dom.window.document.body.insertAdjacentHTML('beforeend', '<div role="dialog" hidden><h2>Hidden\'s Post</h2></div>');
+  dom.window.document.body.insertAdjacentHTML('afterbegin', '<div role="dialog"><h2>Unrelated dialog</h2></div>');
+  await assert.rejects(() => collector.controls(locatorTab(dom)), /scope is missing or ambiguous/);
+  dom.window.document.querySelector('[role="dialog"]').remove();
+  assert.deepEqual(await (await collector.controls(locatorTab(dom))).locator('button').allTextContents(), ['Active']);
+  dom.window.close();
+});
+
+test('photo and reel controls use exactly one visible Comments heading direct parent', async () => {
+  const collector = browser.createCollector({});
+  for (const pathname of ['/photo?fbid=100', '/photo/?fbid=100', '/reel/100']) {
+    const dom = documentFor('', 'https://www.facebook.com' + pathname);
+    dom.window.document.body.innerHTML = '<div role="dialog"><h2>Page\'s Post</h2><button>Background</button>'
+      + '<section><h2> Comments  </h2><button>Thread</button></section></div>'
+      + '<aside hidden><h2>Comments</h2></aside><h3>Comments</h3>';
+    const tab = locatorTab(dom);
+    assert.deepEqual(await (await collector.controls(tab)).locator('button').allTextContents(), ['Thread']);
+    assert(tab.queries.includes('xpath=..'));
+    dom.window.document.querySelector('section').insertAdjacentHTML('beforeend', '<h2>Comments</h2>');
+    await assert.rejects(() => collector.controls(tab), /heading is ambiguous/);
+    dom.window.document.querySelector('[role="dialog"]').setAttribute('hidden', '');
+    await assert.rejects(() => collector.controls(tab), /scope is missing or ambiguous/);
+    dom.window.close();
+  }
+});
+
+test('media controls use a unique visible post dialog when no Comments heading is present', async () => {
+  const collector = browser.createCollector({});
+  for (const pathname of ['/photo/?fbid=100', '/reel/100']) {
+    const dom = documentFor('<button>Modal thread</button>', 'https://www.facebook.com' + pathname);
+    dom.window.document.body.insertAdjacentHTML('beforeend', '<section hidden><h2>Comments</h2></section>');
+    const tab = locatorTab(dom);
+    assert.deepEqual(await (await collector.controls(tab)).locator('button').allTextContents(), ['Modal thread']);
+    dom.window.document.body.insertAdjacentHTML('beforeend', '<div role="dialog"><h2>Other\'s Post</h2></div>');
+    await assert.rejects(() => collector.controls(tab), /scope is missing or ambiguous/);
+    dom.window.close();
+  }
+});
+
 test('reads the byline profile link and ignores a tagged person inside the body', () => {
   const dom = documentFor(card('1', 'Example Author', '/profile.php?id=123456789',
     '<a href="/profile.php?id=987654321">Tagged Person</a> replied here'));
@@ -212,7 +335,8 @@ test('expands the observed duplicate by its checked name, count and index', asyn
   collector.merge = async () => ({});
   collector.observe = async () => '';
   let found = 40;
-  const target = { filter() { return this; }, count: async () => found,
+  const target = { filter(options) { assert.equal(options.hasText, 'View 2 replies'); return this; },
+    allTextContents: async () => Array.from({ length: found }, () => 'View 2 replies'),
     nth: index => ({ isEnabled: async () => true, press: async key => events.push([index, key]) }) };
   collector.controls = async () => ({ locator: selector => {
     assert.equal(selector, '[role="button"],button');
@@ -233,7 +357,8 @@ test('activates a unique named expansion with the keyboard and rejects changed o
   collector.merge = async () => ({});
   collector.observe = async () => '';
   let count = 1, enabled = true;
-  const target = { filter() { return this; }, count: async () => count, isEnabled: async () => enabled,
+  const target = { filter(options) { assert.equal(options.hasText, 'View 65 replies'); return this; },
+    allTextContents: async () => Array.from({ length: count }, () => 'View 65 replies'), isEnabled: async () => enabled,
     nth() { return this; }, press: async key => events.push(key) };
   collector.controls = async () => ({ locator: selector => {
     assert.equal(selector, '[role="button"],button');
@@ -247,6 +372,65 @@ test('activates a unique named expansion with the keyboard and rejects changed o
   count = 1; enabled = false;
   assert.match((await collector.step({}, {}, 'down', snapshot)).error, /refresh before expanding/);
   assert.deepEqual(events, ['Enter']);
+});
+
+test('literal expansion labels reject near matches and preserve multiline duplicate indices and disabled guards', async () => {
+  const text = 'View (2)\nreplies';
+  const dom = documentFor(`<button>View (2)\nreplies extra</button><button id="first"> ${text} </button>`
+    + `<button>${text} Loading</button><button id="second">${text}</button>`);
+  const tab = locatorTab(dom), collector = browser.createCollector({});
+  collector.merge = async () => ({}); collector.observe = async () => '';
+  const snapshot = { comments: [], ui: { button: { text, sameNameCount: 2, sameNameIndex: 1 } } };
+  await collector.step(tab, {}, 'down', snapshot);
+  assert.deepEqual(tab.events, [['second', 'Enter']]);
+  dom.window.document.querySelector('#second').setAttribute('aria-disabled', 'true');
+  assert.match((await collector.step(tab, {}, 'down', snapshot)).error, /refresh before expanding/);
+  dom.window.document.querySelector('#first').textContent = 'A different expansion';
+  assert.match((await collector.step(tab, {}, 'down', snapshot)).error, /refresh before expanding/);
+  assert.deepEqual(tab.events, [['second', 'Enter']]);
+  dom.window.close();
+});
+
+test('empty-thread End uses the exact observed literal ordering and refuses changed or disabled controls', async () => {
+  const dom = documentFor('<button role="button" aria-haspopup="menu">All comments Loading</button>'
+    + '<button role="button" aria-haspopup="menu" id="sort"> All comments </button>');
+  const tab = locatorTab(dom), collector = browser.createCollector({});
+  collector.merge = async () => ({}); collector.observe = async () => '';
+  const snapshot = { comments: [], ordering: { text: 'All comments' }, ui: { button: null } };
+  await collector.step(tab, {}, 'down', snapshot);
+  assert.deepEqual(tab.events, [['sort', 'End']]);
+  dom.window.document.querySelector('#sort').setAttribute('disabled', '');
+  assert.match((await collector.step(tab, {}, 'down', snapshot)).error, /refresh before scrolling/);
+  dom.window.document.querySelector('#sort').removeAttribute('disabled');
+  dom.window.document.querySelector('#sort').insertAdjacentHTML('afterend',
+    '<button role="button" aria-haspopup="menu">All comments</button>');
+  assert.match((await collector.step(tab, {}, 'down', snapshot)).error, /refresh before scrolling/);
+  snapshot.ordering.text = 'Unobserved arbitrary ordering';
+  assert.match((await collector.step(tab, {}, 'down', snapshot)).error, /not grounded/);
+  assert.deepEqual(tab.events, [['sort', 'End']]);
+  dom.window.close();
+});
+
+test('loading waits use the observed literal disabled label and preserve timeout coverage', async () => {
+  const label = 'View 2 replies Loading...';
+  for (const timeout of [false, true]) {
+    const collector = browser.createCollector({});
+    collector.merge = async () => ({});
+    let observations = 0;
+    collector.observe = async () => observations++ ? '' : `button "${label}" [disabled]`;
+    collector.controls = async () => ({
+      locator: () => ({ last: () => ({ press: async () => {} }) }),
+      getByRole(role, options) {
+        assert.equal(role, 'button'); assert.equal(options.name, label); assert.equal(options.exact, true);
+        return { first() { return this; }, async waitFor(options) {
+          assert.deepEqual(options, { state: 'hidden', timeoutMs: 7000 });
+          if (timeout) throw new Error('Still loading');
+        } };
+      },
+    });
+    const result = await collector.step({}, {}, 'down', { comments: [{ id: '1' }], ui: { button: null } });
+    assert.equal(result.loadingTimedOut, timeout);
+  }
 });
 
 test('filters byline reads to unresolved comment IDs and can recover an unknown author later', async () => {

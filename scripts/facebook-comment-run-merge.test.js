@@ -13,6 +13,23 @@ const secret = Buffer.alloc(32, 7);
 const source = { posts: [1, 2, 3].map(index => ({ id: `p${index}`, pageId: `page-${index}`,
   url: `https://www.facebook.com/page-${index}/posts/${index}/` })) };
 
+function traversalProof(capture) {
+  const proof = { postId: capture.postId, captured: capture.comments.length, reported: capture.reportedCount,
+    checkedAt: capture.checkedAt, actualEndingOrdering: capture.ordering, needsOrderRecheck: false, reviewComplete: true };
+  if (capture.status === 'unavailable') return { ...proof, unavailableVerified: true };
+  if (capture.status === 'complete' && !capture.comments.length && capture.ordering === null)
+    return { ...proof, emptyThreadVerified: true };
+  const evidence = { label: 'All comments', checkedAt: capture.checkedAt,
+    reportedCount: capture.reportedCount, captured: capture.comments.length };
+  proof.allTerminal = true;
+  proof.orderProof = { all: evidence };
+  if (capture.ordering === 'newest') {
+    proof.newestTerminal = true;
+    proof.orderProof.newest = { ...evidence, label: 'Newest' };
+  }
+  return proof;
+}
+
 async function fixture() {
   const [, { createParticipationState, mergeParticipation }] = await modules;
   const sourceText = JSON.stringify(source, null, 2) + '\n';
@@ -33,7 +50,8 @@ async function fixture() {
       authors: comments.map((comment, actor) => ({ commentId: comment.id, identity: `uid:${20000 + actor}` })),
     }, secret, time);
     return { name: ['root', 'worker-a', 'worker-b'][index], queue: { runId, postIds: [post.id] }, captures,
-      participation, progress: { donePostIds: [post.id], totalPosts: 1 } };
+      participation, progress: { donePostIds: [post.id], totalPosts: 1 },
+      qa: { posts: [traversalProof(captures.posts[0])] } };
   });
   return { sourceText, metadata, secret, shards };
 }
@@ -84,14 +102,75 @@ test('initializes a reviewed literal-empty post and preserves reviewed partial c
   const input = await fixture();
   const empty = input.shards[2].captures.posts[0];
   empty.status = 'complete';
+  input.shards[2].qa.posts = [traversalProof(empty)];
   const partial = input.shards[0].captures.posts[0];
-  partial.status = 'partial'; partial.reportedCount = 6;
+  partial.status = 'partial'; partial.reportedCount = 6; partial.ordering = 'newest';
+  input.shards[0].qa.posts = [traversalProof(partial)];
+  input.shards[0].qa.posts[0].orderProof.all.captured = 4;
+  input.shards[0].qa.posts[0].orderProof.newest.reportedCount = null;
   const result = mergeFacebookCommentRuns(input);
   assert.equal(result.summary.completePosts, 2);
   assert.equal(result.summary.partialPosts, 1);
   assert.equal(result.captures.posts.find(post => post.postId === partial.postId).status, 'partial');
   assert.equal(result.participation.posts.length, 3);
   assert.equal(result.participation.pages.length, 3);
+});
+
+test('rejects missing, unfinished or stale traversal proof despite completed progress', async () => {
+  const [{ mergeFacebookCommentRuns }] = await modules;
+  const missing = await fixture(); delete missing.shards[0].qa;
+  assert.throws(() => mergeFacebookCommentRuns(missing), /Traversal proof/);
+  for (const patch of [{ reviewComplete: false }, { needsOrderRecheck: true }, { captured: 4 },
+    { reported: 6 }, { checkedAt: '2026-11-05T11:59:59.000Z' }, { actualEndingOrdering: 'newest' }]) {
+    const input = await fixture(); Object.assign(input.shards[0].qa.posts[0], patch);
+    assert.throws(() => mergeFacebookCommentRuns(input), /Traversal proof/);
+  }
+  const unproven = await fixture(); delete unproven.shards[0].qa.posts[0].orderProof;
+  assert.throws(() => mergeFacebookCommentRuns(unproven), /All-comments terminal/);
+});
+
+test('partial gaps need both current All-comments and Newest terminal ordering evidence', async () => {
+  const [{ mergeFacebookCommentRuns }] = await modules;
+  const input = await fixture();
+  const shard = input.shards[0], capture = shard.captures.posts[0];
+  capture.status = 'partial'; capture.reportedCount = 6; capture.ordering = 'newest';
+  shard.qa.posts = [traversalProof(capture)];
+  const mutations = [proof => { delete proof.allTerminal; }, proof => { delete proof.newestTerminal; },
+    proof => { delete proof.orderProof.newest; }, proof => { proof.orderProof.all.label = 'Most relevant'; },
+    proof => { proof.orderProof.newest.label = 'All comments'; }, proof => { proof.orderProof.newest.captured = 4; },
+    proof => { proof.orderProof.newest.reportedCount = 7; },
+    proof => { proof.orderProof.newest.checkedAt = '2026-11-05T11:59:59.000Z'; }];
+  for (const mutate of mutations) {
+    const invalid = structuredClone(input); mutate(invalid.shards[0].qa.posts[0]);
+    assert.throws(() => mergeFacebookCommentRuns(invalid), /proof/);
+  }
+  assert.equal(mergeFacebookCommentRuns(input).summary.partialPosts, 1);
+  capture.status = 'complete'; capture.reportedCount = capture.comments.length;
+  shard.qa.posts = [traversalProof(capture)]; shard.qa.posts[0].orderProof.all.captured = 4;
+  assert.equal(mergeFacebookCommentRuns(input).summary.completePosts, 2);
+});
+
+test('literal-empty and unavailable threads require their matching explicit proof', async () => {
+  const [{ mergeFacebookCommentRuns }] = await modules;
+  const input = await fixture(), shard = input.shards[2], capture = shard.captures.posts[0];
+  delete shard.qa.posts[0].unavailableVerified;
+  assert.throws(() => mergeFacebookCommentRuns(input), /explicit unavailability proof/);
+  capture.status = 'complete'; shard.qa.posts = [traversalProof(capture)];
+  delete shard.qa.posts[0].emptyThreadVerified;
+  assert.throws(() => mergeFacebookCommentRuns(input), /explicit empty-thread proof/);
+});
+
+test('an ordered zero capture requires a zero native counter and normal All-comments proof', async () => {
+  const [{ mergeFacebookCommentRuns }] = await modules;
+  const input = await fixture(), shard = input.shards[2], capture = shard.captures.posts[0];
+  capture.status = 'complete'; capture.ordering = 'all'; capture.reportedCount = 0;
+  shard.qa.posts = [traversalProof(capture)];
+  assert.equal(mergeFacebookCommentRuns(input).summary.completePosts, 3);
+  assert.equal(shard.qa.posts[0].emptyThreadVerified, undefined);
+  const unproven = structuredClone(input); delete unproven.shards[2].qa.posts[0].allTerminal;
+  assert.throws(() => mergeFacebookCommentRuns(unproven), /All-comments terminal/);
+  capture.reportedCount = null; shard.qa.posts = [traversalProof(capture)];
+  assert.throws(() => mergeFacebookCommentRuns(input), /zero native counter/);
 });
 
 test('verified positive-counter empty views remain partial and require distinct private proof', async () => {
@@ -102,7 +181,8 @@ test('verified positive-counter empty views remain partial and require distinct 
   capture.status = 'partial';
   capture.reportedCount = 1;
   const proof = { postId: capture.postId, emptyViewConflictVerified: true, emptyThreadVerified: false,
-    unavailableVerified: false, reviewComplete: true, captured: 0, reported: 1 };
+    unavailableVerified: false, reviewComplete: true, captured: 0, reported: 1,
+    checkedAt: capture.checkedAt, actualEndingOrdering: null };
   shard.qa = { posts: [proof] };
   const result = mergeFacebookCommentRuns(input);
   assert.equal(result.summary.emptyViewConflictPosts, 1);
@@ -220,6 +300,7 @@ test('private CLI discovers a fourth worker while preserving exact source covera
     fourth.progress.donePostIds = ['p4'];
     fourth.captures.posts[0].postId = 'p4';
     fourth.captures.posts[0].postUrl = fourthSource.url;
+    fourth.qa.posts[0].postId = 'p4';
     input.shards.push(fourth);
     await writeRun(directory, input);
     const result = await mergePrivateCommentRun(directory);

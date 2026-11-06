@@ -27,22 +27,45 @@ function terminalNote(post, snapshot) {
     return 'Обходените видими коментари не съвпадат с целия показан брояч.';
 }
 
-export function createDriver(env) { const driver = { ...env, async nativeOrdering(desired) { let s = await this.tools.snapshot(this.tab); if (s.error)
-        return { error: s.error }; if (s.ordering?.text.startsWith(desired))
-        return { s }; const controls = await this.tools.controls(this.tab); const menu = this.tab.playwright.locator('[role="menu"][aria-label="Comment Ordering"]').filter({ visible: true }); if (!(await menu.count())) {
-        await controls.getByRole('button', { name: /^(Most relevant|All comments|Newest)/ }).filter({ visible: true }).first().press('Enter');
-        await this.tools.observe(this.tab);
-    } if (!(await menu.count())) {
-        try {
-            await menu.waitFor({ state: 'visible', timeoutMs: 7000 });
-        }
-        catch (error) {
+export function createDriver(env) { const driver = { ...env, async nativeOrdering(desired) {
+        let s = await this.tools.snapshot(this.tab);
+        if (s.error) return { error: s.error };
+        if (s.ordering?.text.startsWith(desired)) return { s };
+        const current = s.ordering?.text?.trim();
+        if (!commentOrdering(current) || !['All comments', 'Newest', 'Most relevant'].includes(desired))
+            return { error: 'Comment ordering was not observed' };
+        const controls = await this.tools.controls(this.tab);
+        const menu = this.tab.playwright.locator('[role="menu"]').filter({ visible: true });
+        if (!(await menu.count())) {
+            const sort = controls.getByRole('button', { name: current, exact: true }).filter({ visible: true });
+            if (await sort.count() !== 1) return { error: 'Comment ordering control changed' };
+            if (s.ui?.top > 0) {
+                await sort.press('Home');
+                await this.tools.observe(this.tab);
+            }
+            if (!await sort.isEnabled()) return { error: 'Comment ordering control is disabled' };
+            await sort.press('Enter');
             await this.tools.observe(this.tab);
-            if (!(await menu.count()))
-                return { error: 'Comment ordering menu did not open' };
         }
-    } await menu.getByRole('menuitem', { name: new RegExp('^' + desired) }).press('Enter'); await this.tools.observe(this.tab); s = await this.tools.snapshot(this.tab); if (!s.ordering?.text.startsWith(desired))
-        return { error: 'Selected comment ordering is not confirmed' }; return { s }; }, async save() { this.captures.capturedAt = new Date().toISOString(); await this.fs.writeFile(this.dir + '/captures.agent-next.json', JSON.stringify(this.captures, null, 2)); await this.fs.rename(this.dir + '/captures.agent-next.json', this.dir + '/captures.json'); }, async begin(source) { const targetOrdering = this.targetOrdering || 'all', desiredOrdering = { all: 'All comments', newest: 'Newest', 'most-relevant': 'Most relevant' }[targetOrdering]; let post = this.captures.posts.find(p => p.postId === source.id); if (!post) {
+        if (!(await menu.count())) {
+            try { await menu.waitFor({ state: 'visible', timeoutMs: 7000 }); }
+            catch (error) {
+                await this.tools.observe(this.tab);
+                if (!(await menu.count())) return { error: 'Comment ordering menu did not open' };
+            }
+        }
+        if (await menu.count() !== 1) return { error: 'Comment ordering menu is ambiguous' };
+        const choice = menu.getByRole('menuitem').filter({
+            has: this.tab.playwright.getByText(desired, { exact: true }), visible: true,
+        });
+        if (await choice.count() !== 1) return { error: 'Comment ordering option changed' };
+        if (!await choice.isEnabled()) return { error: 'Comment ordering option is disabled' };
+        await choice.press('Enter');
+        await this.tools.observe(this.tab);
+        s = await this.tools.snapshot(this.tab);
+        if (!s.ordering?.text.startsWith(desired)) return { error: 'Selected comment ordering is not confirmed' };
+        return { s };
+    }, async save() { this.captures.capturedAt = new Date().toISOString(); await this.fs.writeFile(this.dir + '/captures.agent-next.json', JSON.stringify(this.captures, null, 2)); await this.fs.rename(this.dir + '/captures.agent-next.json', this.dir + '/captures.json'); }, async begin(source) { const targetOrdering = this.targetOrdering || 'all', desiredOrdering = { all: 'All comments', newest: 'Newest', 'most-relevant': 'Most relevant' }[targetOrdering]; let post = this.captures.posts.find(p => p.postId === source.id); if (!post) {
         post = { postId: source.id, postUrl: source.url, checkedAt: new Date().toISOString(), status: 'partial', ordering: null, reportedCount: null, notes: [], comments: [] };
         this.captures.posts.push(post);
     } if ((await this.tab.url()).replace(/\/$/, '') !== source.url.replace(/\/$/, '')) {
@@ -50,11 +73,16 @@ export function createDriver(env) { const driver = { ...env, async nativeOrderin
         await this.tools.observe(this.tab);
     } let ax; if (source.url.includes('/reel/') && (await this.tools.snapshot(this.tab)).error) {
         try {
-            await this.tab.playwright.getByRole('button', { name: /^Comment(?:,|$)/ }).filter({ visible: true }).first().waitFor({ state: 'visible', timeoutMs: 7000 });
+            await this.tab.playwright.locator('[role="button"][aria-label="Comment"],button[aria-label="Comment"],'
+                + '[role="button"][aria-label^="Comment,"],button[aria-label^="Comment,"]')
+                .filter({ visible: true }).first().waitFor({ state: 'visible', timeoutMs: 7000 });
             const b = await this.tab.playwright.evaluate(() => [...document.querySelectorAll('[role="button"],button')].map(e => ({ label: e.getAttribute('aria-label') || '', r: e.getBoundingClientRect() })).find(b => /^Comment(?:,|$)/.test(b.label) && b.r.width > 0 && b.r.y >= 0 && b.r.bottom <= innerHeight));
             if (b) {
-                await this.tab.playwright.getByRole('button', { name: b.label, exact: true }).filter({ visible: true }).first().click();
-                await this.tools.observe(this.tab);
+                const button = this.tab.playwright.getByRole('button', { name: b.label, exact: true }).filter({ visible: true });
+                if (await button.count() === 1 && await button.isEnabled()) {
+                    await button.click();
+                    await this.tools.observe(this.tab);
+                }
             }
         }
         catch (error) {
@@ -67,7 +95,7 @@ export function createDriver(env) { const driver = { ...env, async nativeOrderin
             if (nativeCount(existing.reportedCount)) post.reportedCount = existing.reportedCount;
             post.status = 'partial';
             post.notes = [];
-            await this.tools.merge(this.tab, post);
+            await this.tools.merge(this.tab, post, existing);
             return { post };
         }
         if (!existing.error && existing.comments.length > 0 && existing.ordering) {
@@ -83,42 +111,11 @@ export function createDriver(env) { const driver = { ...env, async nativeOrderin
             if (nativeCount(selected.s.reportedCount)) post.reportedCount = selected.s.reportedCount;
             post.status = 'partial';
             post.notes = [];
-            await this.tools.merge(this.tab, post);
+            await this.tools.merge(this.tab, post, selected.s);
             return { post };
         }
-        const thread = (source.url.includes('/reel/') || source.url.includes('/photo')) ? this.tab.playwright.locator('div:has(> h2)').filter({ has: this.tab.playwright.getByRole('heading', { name: 'Comments', exact: true }) }).first() : this.tab.playwright.locator('[role="dialog"]').filter({ visible: true }).filter({ has: this.tab.playwright.getByRole('heading', { name: /['’]s Post$/ }) }).first();
-        const sort = thread.getByRole('button', { name: /^(Most relevant|All comments|Newest)/ }).filter({ visible: true }).first();
-        await sort.waitFor({ state: 'visible', timeoutMs: 7000 });
-        if (!(await sort.textContent() || '').trim().startsWith(desiredOrdering)) {
-            const beforeSort = await this.tools.snapshot(this.tab);
-            if (beforeSort.ui?.top > 0) {
-                await sort.press('Home');
-                await this.tools.observe(this.tab);
-            }
-            if (!(await this.tab.playwright.getByRole('menu', { name: 'Comment Ordering' }).filter({ visible: true }).count())) {
-                await sort.press('Enter');
-                const sortState = await this.tools.observe(this.tab);
-                if (!(await this.tab.playwright.getByRole('menu', { name: 'Comment Ordering' }).filter({ visible: true }).count()) && /The focused UI element is \d+ pop up button \(collapsed\) (Most relevant|All comments|Newest)/.test(sortState)) {
-                    await sort.press('Enter');
-                    await this.tools.observe(this.tab);
-                }
-            }
-            const orderingMenu = this.tab.playwright.getByRole('menu', { name: 'Comment Ordering' });
-            try {
-                await orderingMenu.waitFor({ state: 'visible', timeoutMs: 7000 });
-            }
-            catch (error) {
-                await this.tools.observe(this.tab);
-                if (!(await orderingMenu.filter({ visible: true }).count()))
-                    throw error;
-            }
-            await orderingMenu.getByText(desiredOrdering, { exact: true }).click();
-            await this.tools.observe(this.tab);
-        }
-        await thread.getByRole('button', { name: new RegExp('^' + desiredOrdering) }).filter({ visible: true }).first().waitFor({ state: 'visible', timeoutMs: 7000 });
-        const confirmedOrdering = (await this.tools.snapshot(this.tab)).ordering;
-        if (!confirmedOrdering?.text.startsWith(desiredOrdering))
-            return { post, error: 'Comment ordering was not confirmed' };
+        const selected = await this.nativeOrdering(desiredOrdering);
+        if (selected.error) throw new Error(selected.error);
         post.ordering = targetOrdering;
         if ((await this.tools.snapshot(this.tab)).comments.length === 0) {
             try {
@@ -189,7 +186,7 @@ export function createDriver(env) { const driver = { ...env, async nativeOrderin
         await this.save();
         return { post, error: 'Could not confirm comment ordering', detail: String(error?.message || error) };
     } const snap = await this.tools.snapshot(this.tab); if (snap.error)
-        return { post, error: snap.error }; if (nativeCount(snap.reportedCount)) post.reportedCount = snap.reportedCount; post.status = 'partial'; post.notes = []; await this.tools.merge(this.tab, post); return { post }; }, async collect(source, maxSteps = 24) { const began = Date.now(); const init = await this.begin(source); if (restrictedCommentView(await this.tools.observe(this.tab))) init.blocked = true; if (init.zero || init.unavailable || init.emptyViewConflictVerified || init.blocked || init.error) {
+        return { post, error: snap.error }; if (nativeCount(snap.reportedCount)) post.reportedCount = snap.reportedCount; post.status = 'partial'; post.notes = []; await this.tools.merge(this.tab, post, snap); return { post }; }, async collect(source, maxSteps = 24) { const began = Date.now(); const init = await this.begin(source); if (restrictedCommentView(await this.tools.observe(this.tab))) init.blocked = true; if (init.zero || init.unavailable || init.emptyViewConflictVerified || init.blocked || init.error) {
         if (init.blocked || init.error) {
             init.post.status = 'partial';
             if (init.blocked) init.post.notes = ['Проверката е спряна поради ограничение или проверка от Facebook.'];

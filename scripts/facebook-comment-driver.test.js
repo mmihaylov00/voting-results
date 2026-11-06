@@ -30,6 +30,132 @@ async function driverFixture(post = postFixture()) {
   return { driver, tools, post, snapshot, fs };
 }
 
+async function orderingFixture() {
+  const [{ createDriver }] = await modules;
+  const state = { label: 'Most relevant', top: 0, menu: false, opens: true,
+    sortCount: 1, choiceCount: 1, sortEnabled: true, choiceEnabled: true, confirms: true };
+  const events = [];
+  let desired, matchingItems;
+  const sort = { filter() { return this; }, count: async () => state.sortCount,
+    isEnabled: async () => state.sortEnabled, async press(key) {
+      events.push(['sort', key]); if (key === 'Enter' && state.opens) state.menu = true;
+    } };
+  const choice = { filter(options) {
+    assert.equal(options.has.literal, desired); assert.equal(options.has.relative, true);
+    matchingItems = state.items?.filter(item => item.some(child => child === desired));
+    return this;
+  }, count: async () => matchingItems ? matchingItems.length : state.choiceCount,
+  isEnabled: async () => state.choiceEnabled, async press(key) {
+      events.push(['choice', key]); state.selectedLabel = matchingItems?.[0]?.[0] ?? desired;
+      if (state.confirms) state.label = desired; state.menu = false;
+    } };
+  const menu = { filter() { return this; }, count: async () => Number(state.menu),
+    waitFor: async () => { if (!state.menu) throw new Error('Menu loading timeout'); },
+    getByRole(role, options) { assert.equal(role, 'menuitem'); assert.equal(options, undefined); return choice; },
+    getByText() { assert.fail('The has text locator must not inherit the menu ancestor'); } };
+  const controls = { getByRole(role, options) {
+    assert.equal(role, 'button'); assert.equal(options.name, state.label); assert.equal(options.exact, true); return sort;
+  } };
+  const tools = { snapshot: async () => ({ comments: [], reportedCount: 0,
+    ordering: { text: state.label }, ui: { top: state.top, max: state.top, pending: 0 } }),
+  controls: async () => controls, observe: async () => 'Comments', merge: async () => {} };
+  const tab = { url: async () => source.url, playwright: { getByText(text, options) {
+    assert.equal(typeof text, 'string'); assert.equal(options.exact, true);
+    desired = text; return { literal: text, relative: true };
+  }, locator(selector) {
+    if (selector === '[role="menu"]') return menu;
+    assert.equal(selector, '[role="article"][aria-label^="Comment by"],[role="article"][aria-label^="Reply by"]');
+    return { first() { return this; }, waitFor: async () => { throw new Error('No comment rows'); } };
+  } } };
+  const driver = createDriver({ tools, tab, captures: { posts: [] }, fs: memoryFs(), dir: '/private/test' });
+  return { driver, tools, state, events };
+}
+
+test('native ordering uses observed literal controls and exact menu text, then confirms the selected snapshot', async () => {
+  const { driver, state, events } = await orderingFixture();
+  state.top = 100;
+  assert.equal((await driver.nativeOrdering('Newest')).s.ordering.text, 'Newest');
+  assert.deepEqual(events, [['sort', 'Home'], ['sort', 'Enter'], ['choice', 'Enter']]);
+  await driver.nativeOrdering('Newest');
+  assert.equal(events.length, 3);
+  state.confirms = false;
+  assert.match((await driver.nativeOrdering('All comments')).error, /not confirmed/);
+});
+
+test('native ordering preserves disabled, ambiguous and menu-loading guards', async () => {
+  for (const [patch, error, actions] of [[{ sortEnabled: false }, /control is disabled/, 0],
+    [{ sortCount: 2 }, /control changed/, 0], [{ choiceEnabled: false }, /option is disabled/, 1],
+    [{ choiceCount: 2 }, /option changed/, 1], [{ opens: false }, /menu did not open/, 1]]) {
+    const { driver, state, events } = await orderingFixture(); Object.assign(state, patch);
+    assert.match((await driver.nativeOrdering('Newest')).error, error);
+    assert.equal(events.length, actions);
+  }
+});
+
+test('ordering has uses relative exact child text rather than menu ancestry or description mentions', async () => {
+  const { driver, state } = await orderingFixture();
+  state.items = [
+    ['Most relevant', 'Newest comments may appear here according to relevance.'],
+    ['Newest', 'Show the newest comments first.'],
+    ['All comments', 'Include more comments than the Newest view.'],
+  ];
+  assert.equal((await driver.nativeOrdering('Newest')).s.ordering.text, 'Newest');
+  assert.equal(state.selectedLabel, 'Newest');
+});
+
+test('begin reuses shared native ordering for an empty rendered thread', async () => {
+  const { driver, state, events } = await orderingFixture();
+  const result = await driver.begin(source);
+  assert.equal(result.error, undefined);
+  assert.equal(result.post.ordering, 'all');
+  assert.equal(state.label, 'All comments');
+  assert.deepEqual(events, [['sort', 'Enter'], ['choice', 'Enter']]);
+});
+
+test('begin passes its validated snapshot to merge without rereading an unchanged UI', async () => {
+  for (const mode of ['existing', 'selected', 'empty']) {
+    const { driver, tools, state } = await orderingFixture();
+    if (mode !== 'selected') state.label = 'All comments';
+    const snapshot = tools.snapshot;
+    let reads = 0, merges = 0, latest;
+    tools.snapshot = async () => {
+      reads++;
+      latest = { ...await snapshot(), comments: mode === 'empty' ? [] : [comment('1')] };
+      return latest;
+    };
+    tools.merge = async (tab, post, observation) => {
+      const before = reads;
+      const captured = observation ?? await tools.snapshot(tab);
+      assert.equal(reads, before, 'merge should reuse the just-validated observation');
+      assert.equal(captured, latest);
+      merges++;
+    };
+    assert.equal((await driver.begin(source)).error, undefined);
+    assert.equal(merges, 1);
+    assert.equal(reads, { existing: 1, selected: 3, empty: 4 }[mode]);
+  }
+});
+
+test('reel opening grounds an enabled Comment button by its observed literal aria label', async () => {
+  const [{ createDriver }] = await modules;
+  const reel = { ...source, url: 'https://www.facebook.com/reel/123/' };
+  let open = false, clicks = 0;
+  const button = { filter() { return this; }, count: async () => 1, isEnabled: async () => true,
+    async click() { open = true; clicks++; } };
+  const wait = { filter() { return this; }, first() { return this; }, waitFor: async () => {} };
+  const driver = createDriver({ targetOrdering: 'all', captures: { posts: [] }, fs: memoryFs(), dir: '/private/test',
+    tools: { snapshot: async () => open ? { comments: [comment('1')], reportedCount: 1, ordering: { text: 'All comments' } }
+      : { error: 'No open comment thread', comments: [] }, observe: async () => 'Comments', merge: async () => {} },
+    tab: { url: async () => reel.url, playwright: { locator(selector) {
+      assert.equal(typeof selector, 'string'); assert(selector.includes('[aria-label="Comment"]')); return wait;
+    }, evaluate: async () => ({ label: 'Comment, 1 comment' }), getByRole(role, options) {
+      assert.equal(role, 'button'); assert.equal(options.name, 'Comment, 1 comment'); assert.equal(options.exact, true); return button;
+    } } },
+  });
+  assert.equal((await driver.begin(reel)).error, undefined);
+  assert.equal(clicks, 1);
+});
+
 test('completion requires a current matching counter, ordering, connected parents and full texts', async () => {
   const [{ completeCommentObservation }] = await modules;
   const post = postFixture();

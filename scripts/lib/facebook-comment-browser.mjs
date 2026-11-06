@@ -1,3 +1,5 @@
+const exactTextIndices = (labels, text) => labels.flatMap((label, index) => label.trim() === text ? [index] : []);
+
 export function createCollector(env) {
     const { commentCaptureFs, commentCaptureCrypto, commentCaptureDir, commentCaptures, onObserve, authorIdsNeeded } = env;
     return {
@@ -147,31 +149,33 @@ export function createCollector(env) {
             });
         },
         async controls(tab) {
-            const selector = await tab.playwright.evaluate(() => {
-                const visible = e => e.getClientRects().length && e.getBoundingClientRect().width > 0 && getComputedStyle(e).visibility !== "hidden";
-                const modal = [...document.querySelectorAll("[role=\"dialog\"]")].find(e => visible(e) && [...e.querySelectorAll("h2")].some(h => /['’]s Post$/.test(h.textContent?.trim() || "")));
-                const h = (location.pathname.startsWith("/reel/") || location.pathname.startsWith("/photo")) ? [...document.querySelectorAll("h2")].find(e => visible(e) && e.textContent?.trim() === "Comments") : null;
-                let e = h?.parentElement || modal;
-                if (!e)
-                    return null;
-                const parts = [];
-                while (e && e !== document.documentElement) {
-                    if (e.id) {
-                        parts.unshift("#" + CSS.escape(e.id));
-                        break;
-                    }
-                    const p = e.parentElement;
-                    if (!p)
-                        break;
-                    const siblings = [...p.children].filter(n => n.tagName === e.tagName);
-                    parts.unshift(e.tagName.toLowerCase() + ":nth-of-type(" + (siblings.indexOf(e) + 1) + ")");
-                    e = p;
+            const media = /^\/(?:reel\/|photo)/.test(new URL(await tab.url()).pathname);
+            let scope;
+            if (media) {
+                const headings = tab.playwright.getByRole('heading', { name: 'Comments', exact: true })
+                    .and(tab.playwright.locator('h2')).filter({ visible: true });
+                const count = await headings.evaluateAll(elements => elements.length, undefined, { timeoutMs: 15000 });
+                if (count > 1)
+                    throw new Error("Active comment heading is ambiguous");
+                if (count === 1) {
+                    scope = headings.locator('xpath=..').filter({ visible: true });
+                    if (await scope.evaluateAll(elements => elements.length, undefined, { timeoutMs: 15000 }) !== 1)
+                        throw new Error("Active comment UI scope is missing or ambiguous");
                 }
-                return parts.join(" > ");
-            });
-            if (!selector)
-                throw new Error("Active comment UI scope is not visible");
-            return tab.playwright.locator(selector);
+            }
+            if (!scope) {
+                scope = tab.playwright.locator('[role="dialog"]').filter({ visible: true });
+                const valid = await scope.evaluateAll(elements => {
+                    const visible = element => element.getClientRects().length && element.getBoundingClientRect().width > 0
+                        && getComputedStyle(element).visibility !== 'hidden';
+                    const headings = new Set(elements.flatMap(element => [...element.querySelectorAll('h2')]
+                        .filter(heading => visible(heading) && /['’]s Post\s*$/.test(heading.textContent || ''))));
+                    return headings.size === 1 && elements.every(element => element.contains([...headings][0]));
+                }, undefined, { timeoutMs: 15000 });
+                if (!valid)
+                    throw new Error("Active comment UI scope is missing or ambiguous");
+            }
+            return scope;
         },
         async merge(tab, post, observation = null) {
             const found = (observation ?? await this.snapshot(tab)).comments;
@@ -235,14 +239,14 @@ export function createCollector(env) {
             let action;
             if (ui.button) {
                 action = ui.button.text;
-                const text = ui.button.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                 const targets = controls.locator('[role="button"],button')
-                    .filter({ hasText: new RegExp('^\\s*' + text + '\\s*$'), visible: true });
-                const count = await targets.count();
+                    .filter({ hasText: ui.button.text, visible: true });
+                const indices = exactTextIndices(await targets.allTextContents({ timeoutMs: 10000 }), ui.button.text);
+                const count = indices.length;
                 const expected = ui.button.sameNameCount;
-                if (count !== expected)
+                if (count !== expected || indices[ui.button.sameNameIndex] === undefined)
                     return { error: "DOM expansion list changed; refresh before expanding", expected, observed: count };
-                const target = targets.nth(ui.button.sameNameIndex);
+                const target = targets.nth(indices[ui.button.sameNameIndex]);
                 if (!await target.isEnabled())
                     return { error: "DOM expansion list changed; refresh before expanding", expected, observed: count };
                 await target.press('Enter', { timeoutMs: 10000 });
@@ -255,9 +259,17 @@ export function createCollector(env) {
             }
             else {
                 action = "End on comment ordering";
-                const sort = controls.locator("[role=\"button\"][aria-haspopup=\"menu\"]").filter({
-                    hasText: /^(Most relevant|All comments|Newest)\s*$/
-                }).first();
+                const ordering = s.ordering?.text;
+                if (!/^(Most relevant|All comments|Newest)\s*$/.test(ordering || ''))
+                    return { error: 'Comment ordering is not grounded in the current snapshot' };
+                const sorts = controls.locator("[role=\"button\"][aria-haspopup=\"menu\"]")
+                    .filter({ hasText: ordering, visible: true });
+                const indices = exactTextIndices(await sorts.allTextContents({ timeoutMs: 10000 }), ordering);
+                if (indices.length !== 1)
+                    return { error: 'Comment ordering changed; refresh before scrolling' };
+                const sort = sorts.nth(indices[0]);
+                if (!await sort.isEnabled())
+                    return { error: 'Comment ordering changed; refresh before scrolling' };
                 await sort.press("End", { timeoutMs: 10000 });
             }
             let state = await this.observe(tab);
@@ -266,10 +278,11 @@ export function createCollector(env) {
                     blocked: true
                 };
             let loadingTimedOut = false;
-            if (/button "View[^\n]*Loading[^\n]*\[disabled\]/.test(state)) {
+            const loading = state.match(/button "(View[^\n]*Loading[^\n]*)" \[disabled\]/);
+            if (loading) {
                 try {
-                    await tab.playwright.getByRole("button", {
-                        name: /^View .*Loading/
+                    await controls.getByRole("button", {
+                        name: loading[1], exact: true
                     }).first().waitFor({
                         state: "hidden",
                         timeoutMs: 7000

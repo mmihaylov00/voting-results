@@ -1,18 +1,18 @@
 {
   "version": 1,
   "runId": "e5252990-38a7-4fb2-a70e-1e55019a76a6",
-  "capturedAt": "2026-11-06T10:06:34.910Z",
+  "capturedAt": "2026-11-06T12:36:23.262Z",
   "minimumCellCount": 5,
   "unit": "observed-accounts",
   "coverage": {
-    "capturedComments": 6897,
-    "matchedIdentityComments": 6897,
+    "capturedComments": 7997,
+    "matchedIdentityComments": 7997,
     "unknownIdentityComments": 0
   },
   "totals": {
-    "accounts": 4445,
-    "accountsOnMultiplePosts": 579,
-    "accountsOnMultiplePages": 243
+    "accounts": 5083,
+    "accountsOnMultiplePosts": 631,
+    "accountsOnMultiplePages": 279
   },
   "posts": [
     {
@@ -2038,6 +2038,28 @@
       "accounts": null,
       "accountsStartingThreads": null,
       "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02ySEgquF2J8B6Gxvj3W8WkxreuGGdiyU45N3diEQKGMUtdbAxaVQ3jj3BAN1xFWhCl",
+      "pageId": "https://www.facebook.com/petel.bg",
+      "capturedComments": 765,
+      "topLevelComments": 273,
+      "replyComments": 492,
+      "matchedIdentityComments": 765,
+      "accounts": 481,
+      "accountsStartingThreads": 260,
+      "accountsWithMultipleComments": 118
+    },
+    {
+      "postId": "post:pfbid0L79WDEXCoSt8bFxrAAGNPEk2AW6e3in9upwe5h6BvhMT5o4beTAJFxBbYsF5dxMMl",
+      "pageId": "https://www.facebook.com/petel.bg",
+      "capturedComments": 335,
+      "topLevelComments": 147,
+      "replyComments": 188,
+      "matchedIdentityComments": 335,
+      "accounts": 216,
+      "accountsStartingThreads": 136,
+      "accountsWithMultipleComments": 59
     },
     {
       "postId": "post:pfbid0vJHzZUkf4iDCya6VQcdNs2fRKXVSySL6ovtKzc1rxvjLqJmQEiz3vHeMMRyJnd3gl",
@@ -4834,29 +4856,7 @@
       "accountsWithMultipleComments": null
     },
     {
-      "postId": "post:pfbid0L79WDEXCoSt8bFxrAAGNPEk2AW6e3in9upwe5h6BvhMT5o4beTAJFxBbYsF5dxMMl",
-      "pageId": "https://www.facebook.com/petel.bg",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
-    },
-    {
       "postId": "post:pfbid0C8yFcn85nB7a1KWbEsBJ1zwtvF4YRRd3CUa9WkfzKv4nXQRSsHYVY7Zft1bjLT42l",
-      "pageId": "https://www.facebook.com/petel.bg",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
-    },
-    {
-      "postId": "post:pfbid02ySEgquF2J8B6Gxvj3W8WkxreuGGdiyU45N3diEQKGMUtdbAxaVQ3jj3BAN1xFWhCl",
       "pageId": "https://www.facebook.com/petel.bg",
       "capturedComments": 0,
       "topLevelComments": 0,
@@ -5070,6 +5070,13 @@
       "capturedComments": 93,
       "matchedIdentityComments": 93,
       "accounts": 69
+    },
+    {
+      "pageId": "https://www.facebook.com/petel.bg",
+      "postCount": 5,
+      "capturedComments": 1100,
+      "matchedIdentityComments": 1100,
+      "accounts": 676
     },
     {
       "pageId": "100064668132568",
@@ -5504,13 +5511,6 @@
       "capturedComments": 0,
       "matchedIdentityComments": 0,
       "accounts": null
-    },
-    {
-      "pageId": "https://www.facebook.com/petel.bg",
-      "postCount": 5,
-      "capturedComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null
     }
   ],
   "postOverlaps": [
@@ -5803,6 +5803,11 @@
       "leftPostId": "post:pfbid02BwihQyZqD3td346wvdEipSrUavMA5D9U3zho7XrgtXnRNBuY4NDqw9LoUUZ38ykgl",
       "rightPostId": "post:pfbid02aZDv5aYEA7tJk17xqQ4aagnket1qJ2SbkPTPeh7VVdvQpCwkkqNdN4dyREEfXfKjl",
       "sharedAccounts": 7
+    },
+    {
+      "leftPostId": "post:pfbid02ySEgquF2J8B6Gxvj3W8WkxreuGGdiyU45N3diEQKGMUtdbAxaVQ3jj3BAN1xFWhCl",
+      "rightPostId": "post:pfbid0L79WDEXCoSt8bFxrAAGNPEk2AW6e3in9upwe5h6BvhMT5o4beTAJFxBbYsF5dxMMl",
+      "sharedAccounts": 21
     }
   ],
   "pageOverlaps": [
@@ -5838,6 +5843,11 @@
     },
     {
       "leftPageId": "100069720181353",
+      "rightPageId": "https://www.facebook.com/petel.bg",
+      "sharedAccounts": 6
+    },
+    {
+      "leftPageId": "100069720181353",
       "rightPageId": "61557189262331",
       "sharedAccounts": 6
     },
@@ -5855,6 +5865,11 @@
       "leftPageId": "61572252076131",
       "rightPageId": "61577398061794",
       "sharedAccounts": 22
+    },
+    {
+      "leftPageId": "https://www.facebook.com/n.barekov",
+      "rightPageId": "https://www.facebook.com/petel.bg",
+      "sharedAccounts": 6
     },
     {
       "leftPageId": "61557189262331",
@@ -5892,6 +5907,11 @@
       "sharedAccounts": 6
     },
     {
+      "leftPageId": "104575425050525",
+      "rightPageId": "https://www.facebook.com/petel.bg",
+      "sharedAccounts": 6
+    },
+    {
       "leftPageId": "138363261435366",
       "rightPageId": "https://www.facebook.com/n.barekov",
       "sharedAccounts": 6
@@ -5907,9 +5927,24 @@
       "sharedAccounts": 5
     },
     {
+      "leftPageId": "61577398061794",
+      "rightPageId": "https://www.facebook.com/petel.bg",
+      "sharedAccounts": 6
+    },
+    {
       "leftPageId": "61557189262331",
       "rightPageId": "61577398061794",
       "sharedAccounts": 8
+    },
+    {
+      "leftPageId": "61557189262331",
+      "rightPageId": "https://www.facebook.com/petel.bg",
+      "sharedAccounts": 5
+    },
+    {
+      "leftPageId": "61594146398840",
+      "rightPageId": "https://www.facebook.com/petel.bg",
+      "sharedAccounts": 5
     }
   ],
   "activity": {
@@ -5917,7 +5952,7 @@
       {
         "commentBand": "1",
         "pageBand": "1",
-        "accounts": 3382
+        "accounts": 3822
       },
       {
         "commentBand": "1",
@@ -5937,12 +5972,12 @@
       {
         "commentBand": "2",
         "pageBand": "1",
-        "accounts": 488
+        "accounts": 572
       },
       {
         "commentBand": "2",
         "pageBand": "2",
-        "accounts": 117
+        "accounts": 133
       },
       {
         "commentBand": "2",
@@ -5957,12 +5992,12 @@
       {
         "commentBand": "3-5",
         "pageBand": "1",
-        "accounts": 261
+        "accounts": 320
       },
       {
         "commentBand": "3-5",
         "pageBand": "2",
-        "accounts": 78
+        "accounts": 91
       },
       {
         "commentBand": "3-5",
@@ -5977,12 +6012,12 @@
       {
         "commentBand": "6-10",
         "pageBand": "1",
-        "accounts": 55
+        "accounts": 70
       },
       {
         "commentBand": "6-10",
         "pageBand": "2",
-        "accounts": 10
+        "accounts": 16
       },
       {
         "commentBand": "6-10",
@@ -5997,7 +6032,7 @@
       {
         "commentBand": "11-20",
         "pageBand": "1",
-        "accounts": 12
+        "accounts": 16
       },
       {
         "commentBand": "11-20",
@@ -6042,7 +6077,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 405
+            "accounts": 402
           },
           {
             "commentBand": "1",
@@ -6067,7 +6102,7 @@
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 24
+            "accounts": 26
           },
           {
             "commentBand": "2",
@@ -6082,7 +6117,7 @@
           {
             "commentBand": "3-5",
             "pageBand": "1",
-            "accounts": 35
+            "accounts": 34
           },
           {
             "commentBand": "3-5",
@@ -6167,7 +6202,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 800
+            "accounts": 796
           },
           {
             "commentBand": "1",
@@ -6187,12 +6222,12 @@
           {
             "commentBand": "2",
             "pageBand": "1",
-            "accounts": 86
+            "accounts": 85
           },
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 22
+            "accounts": 25
           },
           {
             "commentBand": "2",
@@ -6212,7 +6247,7 @@
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 19
+            "accounts": 21
           },
           {
             "commentBand": "3-5",
@@ -6292,7 +6327,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 192
+            "accounts": 189
           },
           {
             "commentBand": "1",
@@ -6317,7 +6352,7 @@
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 12
+            "accounts": 14
           },
           {
             "commentBand": "2",
@@ -6337,7 +6372,7 @@
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 10
+            "accounts": 11
           },
           {
             "commentBand": "3-5",
@@ -6417,7 +6452,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 335
+            "accounts": 332
           },
           {
             "commentBand": "1",
@@ -6437,12 +6472,12 @@
           {
             "commentBand": "2",
             "pageBand": "1",
-            "accounts": 71
+            "accounts": 70
           },
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 33
+            "accounts": 34
           },
           {
             "commentBand": "2",
@@ -6457,12 +6492,12 @@
           {
             "commentBand": "3-5",
             "pageBand": "1",
-            "accounts": 31
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "2",
             "accounts": 29
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "2",
+            "accounts": 32
           },
           {
             "commentBand": "3-5",
@@ -6482,7 +6517,7 @@
           {
             "commentBand": "6-10",
             "pageBand": "2",
-            "accounts": null
+            "accounts": 5
           },
           {
             "commentBand": "6-10",
@@ -6542,7 +6577,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 717
+            "accounts": 713
           },
           {
             "commentBand": "1",
@@ -6562,12 +6597,12 @@
           {
             "commentBand": "2",
             "pageBand": "1",
-            "accounts": 168
+            "accounts": 166
           },
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 46
+            "accounts": 48
           },
           {
             "commentBand": "2",
@@ -6587,7 +6622,7 @@
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 28
+            "accounts": 30
           },
           {
             "commentBand": "3-5",
@@ -6607,7 +6642,7 @@
           {
             "commentBand": "6-10",
             "pageBand": "2",
-            "accounts": 7
+            "accounts": 9
           },
           {
             "commentBand": "6-10",
@@ -6917,7 +6952,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 123
+            "accounts": 122
           },
           {
             "commentBand": "1",
@@ -6937,15 +6972,15 @@
           {
             "commentBand": "2",
             "pageBand": "1",
+            "accounts": 20
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "2",
             "accounts": 23
           },
           {
             "commentBand": "2",
-            "pageBand": "2",
-            "accounts": 22
-          },
-          {
-            "commentBand": "2",
             "pageBand": "3",
             "accounts": null
           },
@@ -6962,7 +6997,7 @@
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 19
+            "accounts": 21
           },
           {
             "commentBand": "3-5",
@@ -7167,7 +7202,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 172
+            "accounts": 171
           },
           {
             "commentBand": "1",
@@ -7192,7 +7227,7 @@
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 12
+            "accounts": 13
           },
           {
             "commentBand": "2",
@@ -8292,7 +8327,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 139
+            "accounts": 135
           },
           {
             "commentBand": "1",
@@ -8312,12 +8347,12 @@
           {
             "commentBand": "2",
             "pageBand": "1",
-            "accounts": 20
+            "accounts": 19
           },
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 8
+            "accounts": 12
           },
           {
             "commentBand": "2",
@@ -8337,7 +8372,7 @@
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 6
+            "accounts": 7
           },
           {
             "commentBand": "3-5",
@@ -9608,6 +9643,131 @@
             "commentBand": "6-10",
             "pageBand": "2",
             "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "4+",
+            "accounts": null
+          }
+        ]
+      },
+      {
+        "pageId": "https://www.facebook.com/petel.bg",
+        "cells": [
+          {
+            "commentBand": "1",
+            "pageBand": "1",
+            "accounts": 463
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "1",
+            "accounts": 93
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "2",
+            "accounts": 16
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "1",
+            "accounts": 63
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "2",
+            "accounts": 14
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "1",
+            "accounts": 15
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "2",
+            "accounts": 6
           },
           {
             "commentBand": "6-10",
@@ -17410,133 +17570,8 @@
             "accounts": null
           }
         ]
-      },
-      {
-        "pageId": "https://www.facebook.com/petel.bg",
-        "cells": [
-          {
-            "commentBand": "1",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "4+",
-            "accounts": null
-          }
-        ]
       }
     ]
   },
-  "collectionSha256": "ab3e4396191538847e3d1c3e11fa882385b2aa6c71e9f5649777ef44ff53fb9c"
+  "collectionSha256": "6f731621aa7c0dfe30f562d52469d0ac47832acffde217c6ec47f56d896a5310"
 }
