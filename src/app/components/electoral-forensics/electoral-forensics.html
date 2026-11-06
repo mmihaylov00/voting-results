@@ -143,7 +143,11 @@
       </div>
       <app-view-tabs [tabs]="placeTabs" [(value)]="placeLevel" label="Обобщение по места" idPrefix="places" panelId="places-panel" />
       <div class="view-panel" role="tabpanel" id="places-panel" [attr.aria-labelledby]="'places-tab-' + placeLevel()">
-      <app-forensics-group-table [rows]="placeLevel() === 'municipalities' ? currentGroups() : currentSettlements()" [label]="placeLevel() === 'municipalities' ? 'Обобщение по общини' : 'Обобщение по населени места'" />
+      @if (placeLevel() === 'mayors') {
+        <app-forensics-mayors [analysis]="query()?.mayorAnalysis" [csvPrefix]="queryCsvPrefix()" />
+      } @else {
+        <app-forensics-group-table [rows]="placeLevel() === 'municipalities' ? currentGroups() : currentSettlements()" [label]="placeLevel() === 'municipalities' ? 'Обобщение по общини' : 'Обобщение по населени места'" />
+      }
       </div>
     </section>
 

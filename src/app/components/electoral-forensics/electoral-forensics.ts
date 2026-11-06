@@ -26,6 +26,7 @@ import { SignedChangeDirective } from '../ui/signed-change/signed-change';
 import { ForensicsGainsChartComponent } from './forensics-gains-chart';
 import { ChartImageExportComponent } from '../ui/chart-image-export/chart-image-export';
 import { BaseModalComponent } from '../ui/base-modal/base-modal';
+import { ForensicsMayorsComponent } from './forensics-mayors';
 
 const DATA_ROOT = '/data/forensics/2026';
 const initialFilters: Omit<SectionFilters, 'focus'> = {
@@ -35,7 +36,7 @@ const initialFilters: Omit<SectionFilters, 'focus'> = {
 
 @Component({
   selector: 'app-electoral-forensics',
-  imports: [CommonModule, FormsModule, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective, ForensicsGainsChartComponent, ChartImageExportComponent, BaseModalComponent],
+  imports: [CommonModule, FormsModule, HighchartsChartComponent, ForensicsGroupTableComponent, ForensicsMapComponent, ForensicsHypothesesComponent, HlmButtonDirective, MapIconComponent, ForensicsHistoryComponent, ForensicsVoteSummaryComponent, ViewTabsComponent, SignedChangeDirective, ForensicsGainsChartComponent, ChartImageExportComponent, BaseModalComponent, ForensicsMayorsComponent],
   templateUrl: './electoral-forensics.html',
   styleUrls: ['./electoral-forensics.scss', './forensics-workspace.scss', './forensics-tables.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -87,7 +88,7 @@ export class ElectoralForensicsComponent implements OnInit, OnDestroy {
   readonly explorerTabs: ViewTab[] = [
     { id: 'map', label: 'Карта' }, { id: 'table', label: 'Секционна таблица' }, { id: 'gains', label: 'Прираст по секции' },
   ];
-  readonly placeTabs: ViewTab[] = [{ id: 'municipalities', label: 'Общини' }, { id: 'settlements', label: 'Населени места' }];
+  readonly placeTabs: ViewTab[] = [{ id: 'municipalities', label: 'Общини' }, { id: 'settlements', label: 'Населени места' }, { id: 'mayors', label: 'Кметове' }];
   readonly statsTabs = computed<ViewTab[]>(() => [
     { id: 'candidates', label: 'Кандидатски ръст' },
     { id: 'general', label: this.focus() ? 'H1-H5 · До 400 избиратели' : 'Активност · H1-H5' },

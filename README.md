@@ -168,6 +168,15 @@ Historical runoff benchmarks cover 2016, 2021 and 2026. Each election has its ow
 
 Municipal grouping follows CIK's district-and-municipality codes. Its 267 groups include Sofia city separately in districts 23, 24 and 25; they are not the 265 administrative municipalities.
 
+The “Кметове” tab under “По места” compares the runoff with the exact party, coalition or initiative committee that nominated each municipal mayor elected in 2023. The retained CIK baseline covers 265 administrative municipalities, with Sofia's three electoral groups combined. It shows spike rates using the existing stable-list candidate screen (at least 10 percentage points of turnout growth, 30 additional signed voters and list change within 5%), turnout changes, candidate vote gains, a searchable mayor directory and separate CSV exports for both research scopes. Party totals use only eligible sections; municipal medians give each municipality equal weight. Exact local coalitions stay separate and 2023 DPS nominations are not assigned to later factions.
+
+This is a descriptive historical-nomination comparison, without an adjusted association test or a claim about current party membership or incumbency. Six municipalities with sourced subsequent elections or mandate changes are retained as historical-only rows and excluded from party totals. `mayor-context.json` records this incomplete review, including unresolved appeal uncertainty for Кубрат. Remaining records are not independently verified as current in November 2026. Archive and table hashes, judicial corrections, candidate-row references and direct CIK result links are retained in `mayors-2023.json`; the report pins both input hashes. Reproduce the baseline with the original official archives, then rebuild the research:
+
+```bash
+python3 scripts/import_municipal_mayors.py --round1 /path/to/first-round-export.zip --round2 /path/to/runoff-export.zip
+python3 -m unittest discover -s scripts -p '*mayors*test.py'
+```
+
 The reports have no main-navigation links, set `noindex, nofollow, noarchive`, and restore the document metadata when closed. Netlify also sends these directives for the report and analysis-data paths. These are unlisted public pages, not access-controlled pages.
 
 Generate the reports without starting a service or changing election source tables:

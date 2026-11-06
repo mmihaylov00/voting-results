@@ -25,6 +25,7 @@ from electoral_forensics_stats import (bh_adjust, collapse_sites, fixed_effect_m
                                        matched_controls, mean_interval, spatial_test)
 from electoral_forensics_candidates import THRESHOLD_TOLERANCE, candidate_analysis
 from electoral_forensics_history import build_historical_benchmarks, build_runoff_benchmark
+from electoral_forensics_mayors import administrative_municipalities, mayor_analysis
 
 
 APRIL = '2026.04.19'
@@ -583,12 +584,14 @@ def clean_json(value):
     return value
 
 
-def build_report(dataset, permutations=999, seed=20261101, historical_benchmarks=None):
+def build_report(dataset, permutations=999, seed=20261101, historical_benchmarks=None,
+                 mayor_snapshot=None, settlements=None, mayor_context=None):
     provisional = dataset['elections'][SECOND_ROUND]['metadata']['provisional']
     verified_dates = {date for date, election in dataset['elections'].items()
                       if election['metadata'].get('canonicalArchiveVerification') == 'verified'}
     rows = enrich_rows(dataset['rows'], verified_dates)
     domestic = [row for row in rows if row['domestic']]
+    administrative_codes = administrative_municipalities(domestic, settlements) if mayor_snapshot else {}
     eligible = [row for row in domestic if row['eligible']]
     peer_screen(eligible)
     hypotheses = analyze_hypotheses(eligible)
@@ -610,6 +613,8 @@ def build_report(dataset, permutations=999, seed=20261101, historical_benchmarks
     query2 = query_block('query2', 'Секции до 400 избиратели в цялата страна', focus, eligible, findings, clusters, provisional)
     historical_benchmarks = historical_benchmarks or {'query1': [], 'query2': [], 'metadata': {}}
     for query, selected in [(query1, domestic), (query2, focus)]:
+        if mayor_snapshot:
+            query['mayorAnalysis'] = mayor_analysis(selected, mayor_snapshot, administrative_codes, mayor_context)
         current_benchmark = build_runoff_benchmark(
             dataset['elections'][FIRST_ROUND], dataset['elections'][SECOND_ROUND],
             cycle=2026, round1_date=FIRST_ROUND, round2_date=SECOND_ROUND,
@@ -684,7 +689,8 @@ def build_report(dataset, permutations=999, seed=20261101, historical_benchmarks
                                        for path in [Path(__file__), Path(__file__).with_name('electoral_forensics_stats.py'),
                                                     Path(__file__).with_name('electoral_forensics_data.py'),
                                                     Path(__file__).with_name('electoral_forensics_candidates.py'),
-                                                    Path(__file__).with_name('electoral_forensics_history.py')]},
+                                                    Path(__file__).with_name('electoral_forensics_history.py'),
+                                                    Path(__file__).with_name('electoral_forensics_mayors.py')]},
                 'inputHashes': {date: {name: table['sha256'] for name, table in value['tables'].items()}
                                 for date, value in dataset['provenance'].items()}}
     quality = dict(dataset['quality'])
@@ -833,7 +839,15 @@ def main():
         archives[date] = Path(path)
     dataset = load_dataset(args.root, archives=archives)
     historical_benchmarks = build_historical_benchmarks(args.root)
-    report, rows = build_report(dataset, args.permutations, args.seed, historical_benchmarks)
+    mayor_inputs = {name: args.root / 'public/data/forensics/2026' / name
+                    for name in ['mayors-2023.json', 'mayor-context.json']}
+    mayor_snapshot = json.loads(mayor_inputs['mayors-2023.json'].read_text(encoding='utf-8'))
+    mayor_context = json.loads(mayor_inputs['mayor-context.json'].read_text(encoding='utf-8'))
+    settlements = json.loads((args.root / 'public/settlements.json').read_text(encoding='utf-8'))
+    report, rows = build_report(dataset, args.permutations, args.seed, historical_benchmarks,
+                               mayor_snapshot, settlements, mayor_context)
+    report['metadata']['mayorInputHashes'] = {name: hashlib.sha256(path.read_bytes()).hexdigest()
+                                              for name, path in mayor_inputs.items()}
     output = args.output or args.root / 'public/data/forensics/2026'
     output.mkdir(parents=True, exist_ok=True)
     detail_directory = output / 'section-records'
@@ -864,6 +878,8 @@ def main():
     write_csv(output / 'added-elector-findings.csv', report['addedElectorFindings'])
     write_csv(output / 'candidate-findings.csv', report['candidateFindings'])
     for query in ['query1', 'query2']:
+        for name, key in [('mayor-parties', 'groups'), ('mayor-municipalities', 'municipalities')]:
+            write_csv(output / f'{query}-{name}.csv', report[query]['mayorAnalysis'][key])
         for name in ['regions', 'municipalities', 'settlements']:
             write_csv(output / f'{query}-{name}.csv', report[query][name])
         write_csv(output / f'{query}-candidate-checks.csv', report[query]['candidateAnalysis']['hypotheses'])

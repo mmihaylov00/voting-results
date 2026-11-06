@@ -179,10 +179,56 @@ export interface ForensicsQuery {
   addedElectorReview?: AddedElectorReview[];
   candidateReview?: CandidateReview[];
   historicalRunoffs?: HistoricalRunoffBenchmark[];
+  mayorAnalysis?: MayorAnalysis;
   regions: ForensicsGroup[];
   municipalities: ForensicsGroup[];
   settlements: ForensicsGroup[];
   report: { facts: string[]; observations: string[]; hypotheses: string[] };
+}
+
+export interface MayorComparisonSummary {
+  sections: number;
+  spikeN: number;
+  spikeRate: number | null;
+  meanDeltaPp: number | null;
+  deltaTurnoutPp: number | null;
+  candidate4Delta: number;
+  candidate25Delta: number;
+}
+
+export interface MayorPartyGroup extends MayorComparisonSummary {
+  party: string;
+  municipalities: number;
+  medianMunicipalityDeltaPp: number | null;
+}
+
+export interface MayorMunicipality extends MayorComparisonSummary {
+  code: string;
+  name: string;
+  mayor: string;
+  party: string;
+  sourceUrl: string;
+  affiliationUsable?: boolean;
+  contextNote?: string;
+  contextSourceUrl?: string;
+}
+
+export interface MayorAnalysis {
+  basis: string;
+  sourceUrl: string;
+  electionDate: string;
+  coverage: {
+    matchedMunicipalities: number;
+    totalMunicipalities: number;
+    matchedSections: number;
+    eligibleSections: number;
+    historicalOnlyMunicipalities?: number;
+    noEligibleMunicipalities?: number;
+    unmatchedSections?: number;
+  };
+  groups: MayorPartyGroup[];
+  municipalities: MayorMunicipality[];
+  limitations: string[];
 }
 
 export interface ForensicsComparison {

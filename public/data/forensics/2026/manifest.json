@@ -23,6 +23,14 @@
     "bytes": 250187,
     "sha256": "d859346aeb9f6daad903282dcd62e6a01d41032867d4696e29349db38b7368ea"
   },
+  "mayor-context.json": {
+    "bytes": 3835,
+    "sha256": "8dc7eae77e82a470d2aa91510f22950be12eae2faf5e80dc2f08f3883f056bbd"
+  },
+  "mayors-2023.json": {
+    "bytes": 134137,
+    "sha256": "4c20489107252adf449084796713c17d801b98db083cebfd24d11bc0518c24c7"
+  },
   "municipalities.csv": {
     "bytes": 143204,
     "sha256": "f4eeb71c15eb7cc7fa0327f8fb1482c1eef4b5c48664778bada45ca478086161"
@@ -46,6 +54,22 @@
   "query1-historical-runoffs.csv.gz": {
     "bytes": 4108,
     "sha256": "a7e700b342bda204f72625ce4a869cbcff314331230e74042519d124e9acff41"
+  },
+  "query1-mayor-municipalities.csv": {
+    "bytes": 63786,
+    "sha256": "eb89df82fbb83df111f065e0fbc122aac51b009f5b5b7b734763c10e4a40265f"
+  },
+  "query1-mayor-municipalities.csv.gz": {
+    "bytes": 17989,
+    "sha256": "9a95a5ee8e9bf8533fbf7e57bafe2b453048af61d99b6462fa27144d9d943969"
+  },
+  "query1-mayor-parties.csv": {
+    "bytes": 14751,
+    "sha256": "bb4c2db70192fb399786cac844dfe86911271ec738296adf715c5e9d3754dca4"
+  },
+  "query1-mayor-parties.csv.gz": {
+    "bytes": 5281,
+    "sha256": "0d15e78c9f73c558ac330bbdfaa8b9729196dc5e8197dc885132b07183157471"
   },
   "query1-municipalities.csv": {
     "bytes": 143204,
@@ -87,6 +111,22 @@
     "bytes": 4014,
     "sha256": "a3f284099f76c7ebf1eb139b2c78755bee22b61424bd795b4efb1b6fda8815bc"
   },
+  "query2-mayor-municipalities.csv": {
+    "bytes": 61089,
+    "sha256": "6dfa9e65143b12a2b241073bb10a8650329ba491e412a82f8cac02cebf932c46"
+  },
+  "query2-mayor-municipalities.csv.gz": {
+    "bytes": 16700,
+    "sha256": "af82d8c4fb89c35369f0ef66dfd027b1ad7361bfdad205cd33fcb0c74beb1eb3"
+  },
+  "query2-mayor-parties.csv": {
+    "bytes": 13586,
+    "sha256": "3acbe4f6443e86aa9805243dcd060cad539bd50a07d3690b61a46c6091f2577f"
+  },
+  "query2-mayor-parties.csv.gz": {
+    "bytes": 4751,
+    "sha256": "4cb1243be29c6e823c74275bbfe8139b38fd62e207f50fa6d9b4a88790715208"
+  },
   "query2-municipalities.csv": {
     "bytes": 134871,
     "sha256": "7b608563946dcd391d66ae62f2705ef24a06354c49ac02791ffabdff48a53d12"
@@ -120,12 +160,12 @@
     "sha256": "f9204e6fb46d9adbf222bc0d617de6f7467f6be4030d3a039e061c863cc77464"
   },
   "report.json": {
-    "bytes": 19810326,
-    "sha256": "5eb7ecd6362ed53eb9a02a78e4abf1eab65f40d69bd3802bdc274eaa3eab1ba3"
+    "bytes": 20107924,
+    "sha256": "4b99c625e9e4e82bef8883138fcbde5108b0df4e82fccc9284456582f1824de1"
   },
   "report.json.gz": {
-    "bytes": 2435276,
-    "sha256": "0deeed61861e259129e0009776ffb587b67634171637b6259322a58511ed6f7f"
+    "bytes": 2486299,
+    "sha256": "4c05fd30d318f45924eb414c07b8de1312ad15ea9d738c349b6419400f8a3389"
   },
   "sections.csv": {
     "bytes": 25852634,
