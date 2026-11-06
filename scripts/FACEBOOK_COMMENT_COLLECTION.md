@@ -48,6 +48,11 @@ five are suppressed. It never exports account tokens or per-account histories. C
 public identifiers, not verified unique people: mixed numeric IDs/handles, changed handles and unavailable
 bylines can affect matching. No display-name matching or profile lookup resolves these differences.
 
+The activity grid groups whole-account comment totals (`1`, `2`, `3-5`, `6-10`, `11-20`, `21+`) by distinct
+Page totals (`1`, `2`, `3`, `4+`). It includes replies. Each Page cohort selects accounts observed on that
+Page, while both band totals still cover the whole collected sample. Every grid has the same 24 cells;
+counts below five, including zero, remain null. No account identifier or individual activity row is exported.
+
 When catalog posts are added before collecting their comments, use `alignParticipationCohort` with the
 private state and `report.posts.map(({ id, pageId }) => ({ id, pageId }))`, then export the aligned copy.
 It adds zero collected records without changing accounts, overlaps or the collection timestamp, and rejects

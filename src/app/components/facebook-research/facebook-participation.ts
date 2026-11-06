@@ -15,6 +15,7 @@ import { TableColumns, TableControlsComponent } from '../ui/table-controls/table
 import { ViewTabsComponent } from '../ui/view-tabs/view-tabs';
 import { VirtualTableDirective } from '../ui/virtual-table/virtual-table';
 import { FACEBOOK_COMMENT_COVERAGE_LABELS, validFacebookCommentsReport } from './facebook-comments.util';
+import { FacebookAccountActivityComponent } from './facebook-account-activity';
 import { FacebookCommentsReport, FacebookPage, FacebookPost } from './facebook-research.models';
 import { facebookCount, facebookShortName } from './facebook-research.util';
 import { FacebookAccountCell, FacebookParticipationReport, validFacebookParticipationReport } from './facebook-participation.util';
@@ -40,7 +41,7 @@ interface ParticipationRow {
 @Component({
   selector: 'app-facebook-participation',
   imports: [HlmButtonDirective, ChartImageExportComponent, HighchartsChartComponent, LoadingBarComponent,
-    MapIconComponent, SelectComponent, SortableTableHeaderComponent, TableControlsComponent, ViewTabsComponent, VirtualTableDirective],
+    FacebookAccountActivityComponent, MapIconComponent, SelectComponent, SortableTableHeaderComponent, TableControlsComponent, ViewTabsComponent, VirtualTableDirective],
   templateUrl: './facebook-participation.html',
   styleUrl: './facebook-participation.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -56,11 +57,11 @@ export class FacebookParticipationComponent implements OnInit {
   readonly comments = signal<FacebookCommentsReport | null>(null);
   readonly loading = signal(true);
   readonly error = signal('');
-  readonly view = signal('pages');
+  readonly view = signal('activity');
   readonly overlapScope = signal('pages');
   readonly pageFilter = signal('');
   readonly table = viewChild<TableControlsComponent<ParticipationRow>>('participationTable');
-  readonly tabs = [{ id: 'pages', label: 'По страници' }, { id: 'overlaps', label: 'Съвпадения' },
+  readonly tabs = [{ id: 'activity', label: 'Коментари и страници' }, { id: 'pages', label: 'По страници' }, { id: 'overlaps', label: 'Съвпадения' },
     { id: 'posts', label: 'По публикации' }];
   readonly overlapOptions = [{ value: 'pages', label: 'Между страници' }, { value: 'posts', label: 'Между публикации' }];
   readonly count = facebookCount;
@@ -70,12 +71,21 @@ export class FacebookParticipationComponent implements OnInit {
   readonly postMap = computed(() => new Map(this.posts().map(post => [post.id, post])));
   readonly pageOptions = computed(() => [{ value: '', label: 'Всички страници' },
     ...this.pages().map(page => ({ value: page.id, label: facebookShortName(page.name) }))]);
+  readonly activityCells = computed(() => {
+    const activity = this.report()?.activity;
+    return (this.pageFilter() ? activity?.pages.find(page => page.pageId === this.pageFilter())?.cells : activity?.cells) ?? null;
+  });
+  readonly activityPageName = computed(() => this.pageMap().get(this.pageFilter())?.name ?? '');
+  readonly activityMatchedComments = computed(() => this.pageFilter()
+    ? this.report()?.pages.find(page => page.pageId === this.pageFilter())?.matchedIdentityComments ?? 0
+    : this.report()?.coverage.matchedIdentityComments ?? 0);
+  readonly activityScaleMax = computed(() => Math.max(1, ...(this.report()?.activity?.cells.map(cell => cell.accounts ?? 0) ?? [])));
   readonly collectedDate = computed(() => this.report() ? new Intl.DateTimeFormat('bg-BG', {
     timeZone: 'Europe/Sofia', day: '2-digit', month: '2-digit', year: 'numeric',
   }).format(new Date(this.report()!.capturedAt)) : '');
   readonly rows = computed((): ParticipationRow[] => {
     const report = this.report();
-    if (!report) return [];
+    if (!report || this.view() === 'activity') return [];
     const base = { right: '', rightPageId: '', rightUrl: '', captured: 0, matched: 0,
       accounts: null, starters: null, repeated: null, shared: 0, status: '', checked: false };
     const coverage = new Map(this.comments()?.posts.map(post => [post.postId, post]) ?? []);

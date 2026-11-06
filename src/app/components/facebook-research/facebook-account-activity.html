@@ -1,0 +1,23 @@
+<h3 id="facebook-account-activity-title">Коментари и страници на акаунт</h3>
+@if (cells() === null) {
+  <p class="empty-state">Обобщението за активността не е налично.</p>
+} @else if (matchedComments() === 0) {
+  <p class="empty-state">{{ pageName() ? 'Няма събрани коментари с разпознат идентификатор за тази страница.' : 'Няма събрани коментари с разпознат идентификатор.' }}</p>
+} @else {
+  <p class="activity-note">Кръгът показва броя акаунти в групата. Броим коментарите и различните страници в цялата събрана извадка.</p>
+  @if (pageName()) {<p class="cohort">Акаунти, коментирали в <strong>{{ pageName() }}</strong></p>}
+  @if (visibleCells().length) {
+    <app-chart-image-export [title]="exportTitle()" filename="facebook-account-activity-2026.png">
+      <div class="activity-chart" role="region" aria-labelledby="facebook-account-activity-title">
+        <highcharts-chart aria-hidden="true" [options]="chartOptions()" style="display:block;width:100%" />
+      </div>
+    </app-chart-image-export>
+  } @else {<p class="empty-state">Няма групи с поне 5 акаунта.</p>}
+  <div class="activity-table-scroll" tabindex="0" role="region" aria-label="Брой акаунти според коментарите и страниците">
+    <table>
+      <caption>Брой акаунти</caption>
+      <thead><tr><th scope="col">Коментари на акаунт</th>@for (band of pageBands; track band) {<th scope="col">{{ band }}<small>{{ band === '1' ? 'страница' : 'страници' }}</small></th>}</tr></thead>
+      <tbody>@for (commentBand of commentBands; track commentBand) {<tr><th scope="row">{{ commentBand }}</th>@for (pageBand of pageBands; track pageBand) {<td [class.suppressed]="cellCount(commentBand, pageBand) === '<5' || cellCount(commentBand, pageBand) === '-'" [attr.title]="cellCount(commentBand, pageBand) === '-' ? 'Невъзможна комбинация' : null">{{ cellCount(commentBand, pageBand) }}</td>}</tr>}</tbody>
+    </table>
+  </div>
+}

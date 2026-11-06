@@ -224,6 +224,42 @@ test('counts cross-Page and cross-post accounts once with complete coverage at t
   assert.equal(output.pages.find(page => page.pageId === 'page:one').postCount, 2);
 });
 
+test('bins whole-account comment activity by distinct Pages and exports suppressed Page cohorts', () => {
+  let state = initial();
+  for (const [comments, pages] of [[1, 1], [2, 2], [5, 3], [10, 4], [20, 1], [21, 2], [6, 3]]) {
+    const accounts = comments === 6 ? 4 : 5;
+    for (let page = 0; page < pages; page++) {
+      const rows = [];
+      for (let participant = 0; participant < accounts; participant++) {
+        for (let comment = page; comment < comments; comment += pages) {
+          rows.push([String(participant * comments + comment + 1), `uid:${comments * 100 + participant}`]);
+        }
+      }
+      state = merge(state, rows, { id: `post:${comments}:${page}`, pageId: `page:${comments}:${page}` });
+    }
+  }
+  const output = core.participationExport(state);
+  const find = (cells, commentBand, pageBand) => cells.find(row => row.commentBand === commentBand && row.pageBand === pageBand);
+  assert.equal(output.activity.cells.length, 24);
+  for (const [commentBand, pageBand] of [['1', '1'], ['2', '2'], ['3-5', '3'], ['6-10', '4+'], ['11-20', '1'], ['21+', '2']]) {
+    assert.equal(find(output.activity.cells, commentBand, pageBand).accounts, 5);
+  }
+  assert.equal(find(output.activity.cells, '6-10', '3').accounts, null);
+  assert.equal(find(output.activity.cells, '1', '2').accounts, null);
+  const cohort = output.activity.pages.find(page => page.pageId === 'page:21:0');
+  assert.equal(cohort.cells.length, 24);
+  assert.equal(find(cohort.cells, '21+', '2').accounts, 5);
+  assert.equal(find(cohort.cells, '11-20', '1').accounts, null);
+  const aligned = core.alignParticipationCohort(state, [...Object.entries(state.posts).map(([id, post]) => ({ id, pageId: post.pageId })),
+    { id: 'unchecked', pageId: 'page:unchecked' }]);
+  const expanded = core.participationExport(aligned);
+  assert.deepEqual(expanded.activity.cells, output.activity.cells);
+  assert(expanded.activity.pages.find(page => page.pageId === 'page:unchecked').cells.every(row => row.accounts === null));
+  const serialized = JSON.stringify(output.activity);
+  for (const token of Object.keys(state.accounts)) assert(!serialized.includes(token));
+  assert(core.participationExport(state, 6).activity.cells.every(row => row.accounts === null));
+});
+
 test('detects corrupted persisted counters and keeps empty observations distinct from matched accounts', () => {
   const empty = merge(initial(), []);
   assert.equal(Object.keys(empty.posts).length, 1);

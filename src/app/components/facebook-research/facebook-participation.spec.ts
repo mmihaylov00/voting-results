@@ -7,8 +7,9 @@ import { HighchartsChartComponent } from 'highcharts-angular';
 import { afterEach, describe, expect, it } from 'vitest';
 import snapshot from '../../../../public/data/facebook/2026/report.json';
 import { ThemeService } from '../../services/theme.service';
+import { FacebookAccountActivityComponent } from './facebook-account-activity';
 import { FacebookParticipationComponent } from './facebook-participation';
-import { FacebookParticipationReport, validFacebookParticipationReport } from './facebook-participation.util';
+import { FACEBOOK_COMMENT_BANDS, FACEBOOK_PAGE_BANDS, FacebookActivityCell, FacebookParticipationReport, validFacebookParticipationReport } from './facebook-participation.util';
 import { FacebookCommentCounts, FacebookCommentsReport, FacebookPage, FacebookPost, FacebookReport } from './facebook-research.models';
 
 @Component({ selector: 'highcharts-chart', template: '' })
@@ -72,14 +73,27 @@ function emptyCoverageFixture(): { participation: FacebookParticipationReport; c
   return { participation, comments };
 }
 
-function setup() {
+function activityFixture(): FacebookParticipationReport {
+  const data = participationFixture();
+  const cells = (): FacebookActivityCell[] => FACEBOOK_COMMENT_BANDS.flatMap(commentBand => FACEBOOK_PAGE_BANDS.map(pageBand => ({
+    commentBand, pageBand, accounts: commentBand === '1' && pageBand === '1' || commentBand === '2' && pageBand === '2' ? 6 : null,
+  })));
+  data.activity = { cells: cells(), pages: pages.map(page => ({ pageId: page.id,
+    cells: cells().map(cell => ({ ...cell, accounts: cell.pageBand === '1' ? null : cell.accounts })) })) };
+  return data;
+}
+
+function setup(view: 'pages' | 'activity' = 'pages') {
   TestBed.configureTestingModule({ imports: [FacebookParticipationComponent], providers: [provideHttpClient(),
     provideHttpClientTesting(), provideRouter([]), { provide: ThemeService, useValue: { darkMode: signal(false) } }] });
   TestBed.overrideComponent(FacebookParticipationComponent, { remove: { imports: [HighchartsChartComponent] },
     add: { imports: [ChartStub] } });
+  TestBed.overrideComponent(FacebookAccountActivityComponent, { remove: { imports: [HighchartsChartComponent] },
+    add: { imports: [ChartStub] } });
   const fixture = TestBed.createComponent(FacebookParticipationComponent);
   fixture.componentRef.setInput('posts', posts);
   fixture.componentRef.setInput('pages', pages);
+  if (view === 'pages') fixture.componentInstance.setView('pages');
   fixture.detectChanges();
   return fixture;
 }
@@ -161,12 +175,32 @@ describe('Facebook aggregate participation workspace', () => {
     expect(element.querySelector('.participation-totals')?.textContent).toContain('12');
     expect(element.querySelector('.coverage')?.textContent).toContain('36');
     expect(element.querySelector('.coverage')?.textContent).toContain('2 / 2 проверени публикации');
-    expect(element.querySelectorAll('[role="tab"]')).toHaveLength(3);
+    expect(element.querySelectorAll('[role="tab"]')).toHaveLength(4);
     expect(element.querySelector('.table-scroll')?.getAttribute('tabindex')).toBe('0');
     expect(element.querySelector('.chart-scroll')).not.toBeNull();
     expect(element.querySelector('.table-scroll a')?.getAttribute('href')).toBe(pages[0].url);
     expect(element.querySelector('.table-scroll a')?.getAttribute('rel')).toBe('noopener noreferrer');
     expect(element.querySelector('[aria-label*="акаунт #"]')).toBeNull();
+    fixture.destroy();
+  });
+
+  it('opens the account activity graph first and filters its cohort without changing the global scale', () => {
+    const fixture = setup('activity');
+    flush(activityFixture());
+    fixture.detectChanges();
+    const component = fixture.componentInstance;
+    const element = fixture.nativeElement as HTMLElement;
+    expect(component.view()).toBe('activity');
+    expect(element.querySelector('app-facebook-account-activity')).not.toBeNull();
+    expect(element.querySelector('.table-scroll')).toBeNull();
+    expect(element.querySelectorAll('.activity-table-scroll td')).toHaveLength(24);
+    expect(component.activityCells()!.filter(cell => cell.accounts !== null)).toHaveLength(2);
+    component.pageFilter.set('b'); fixture.detectChanges();
+    expect(component.activityCells()!.filter(cell => cell.accounts !== null)).toHaveLength(1);
+    expect(component.activityScaleMax()).toBe(6);
+    expect(element.querySelector('.cohort')?.textContent).toContain('Страница b');
+    component.setView('pages'); fixture.detectChanges();
+    expect(element.querySelector('.table-scroll a')?.getAttribute('href')).toBe(pages[1].url);
     fixture.destroy();
   });
 

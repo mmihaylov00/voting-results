@@ -12,10 +12,13 @@
   <app-view-tabs [tabs]="tabs" [value]="view()" (valueChange)="setView($event)" [scrollable]="true" label="Обобщения на участието" idPrefix="facebook-participation-view" panelId="facebook-participation-panel" />
   <div id="facebook-participation-panel" role="tabpanel" [attr.aria-labelledby]="'facebook-participation-view-tab-' + view()">
     <div class="filters">
-      <div><label for="facebook-participation-page--trigger">Facebook страница</label><app-select controlId="facebook-participation-page" label="Facebook страница за участието" [options]="pageOptions()" [value]="pageFilter()" (valueChange)="pageFilter.set($event)" /></div>
+      <div><label for="facebook-participation-page--trigger">{{ view() === 'activity' ? 'Акаунти, коментирали в' : 'Facebook страница' }}</label><app-select controlId="facebook-participation-page" label="Facebook страница за участието" [options]="pageOptions()" [value]="pageFilter()" (valueChange)="pageFilter.set($event)" /></div>
       @if (view() === 'overlaps') {<div><label for="facebook-participation-overlap--trigger">Сравнение</label><app-select controlId="facebook-participation-overlap" label="Обхват на съвпаденията" [options]="overlapOptions" [value]="overlapScope()" (valueChange)="setOverlapScope($event)" /></div>}
       <button hlmBtn variant="outline" size="icon" type="button" aria-label="Изчисти филтрите на участието" title="Изчисти филтрите" (click)="resetFilters()"><app-map-icon name="reset" /></button>
     </div>
+    @if (view() === 'activity') {
+      <app-facebook-account-activity [cells]="activityCells()" [matchedComments]="activityMatchedComments()" [scaleMax]="activityScaleMax()" [pageName]="activityPageName()" [collectedDate]="collectedDate()" />
+    } @else {
     <app-table-controls #participationTable [rows]="filteredRows()" [columns]="columns" label="Търсене в обобщенията на участието" searchInputClass="min-h-11! text-base!" />
     @if (view() === 'pages' && chartRows().length) {
       <h3 id="facebook-participation-chart-title">Разпознати акаунти по страници</h3>
@@ -56,6 +59,7 @@
         </tbody>
       </table>
     </div>
+    }
   </div>
   <p class="note">Стойностите под 5 акаунта са скрити. Съвпаденията са по публични идентификатори; непълните нишки и различните връзки към един акаунт ограничават извадката. Съвпадението не установява координация.</p>
 }

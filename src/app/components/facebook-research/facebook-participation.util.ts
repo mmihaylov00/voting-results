@@ -1,6 +1,19 @@
 import { FacebookCommentsReport, FacebookPost } from './facebook-research.models';
 
 export type FacebookAccountCell = number | null;
+export const FACEBOOK_COMMENT_BANDS = ['1', '2', '3-5', '6-10', '11-20', '21+'] as const;
+export const FACEBOOK_PAGE_BANDS = ['1', '2', '3', '4+'] as const;
+
+export interface FacebookActivityCell {
+  commentBand: typeof FACEBOOK_COMMENT_BANDS[number];
+  pageBand: typeof FACEBOOK_PAGE_BANDS[number];
+  accounts: FacebookAccountCell;
+}
+
+export interface FacebookParticipationActivity {
+  cells: FacebookActivityCell[];
+  pages: { pageId: string; cells: FacebookActivityCell[] }[];
+}
 
 export interface FacebookParticipationPost {
   postId: string;
@@ -47,6 +60,7 @@ export interface FacebookParticipationReport {
   pages: FacebookParticipationPage[];
   postOverlaps: FacebookPostOverlap[];
   pageOverlaps: FacebookPageOverlap[];
+  activity?: FacebookParticipationActivity;
 }
 
 const fields = (value: unknown, keys: readonly string[]): value is Record<string, unknown> => value !== null
@@ -93,11 +107,55 @@ function totalsRow(value: unknown): value is FacebookParticipationReport['totals
     && Object.values(value).every(cell);
 }
 
+function activityCells(value: unknown): value is FacebookActivityCell[] {
+  if (!Array.isArray(value) || value.length !== FACEBOOK_COMMENT_BANDS.length * FACEBOOK_PAGE_BANDS.length) return false;
+  const keys = new Set<string>();
+  for (const row of value) {
+    if (!fields(row, ['commentBand', 'pageBand', 'accounts'])
+      || !FACEBOOK_COMMENT_BANDS.some(band => band === row['commentBand'])
+      || !FACEBOOK_PAGE_BANDS.some(band => band === row['pageBand']) || !cell(row['accounts'])) return false;
+    const commentIndex = FACEBOOK_COMMENT_BANDS.findIndex(band => band === row['commentBand']);
+    const pageIndex = FACEBOOK_PAGE_BANDS.findIndex(band => band === row['pageBand']);
+    if (row['accounts'] !== null && pageIndex + 1 > [1, 2, 5, 10, 20, Infinity][commentIndex]) return false;
+    const key = `${row['commentBand']}|${row['pageBand']}`;
+    if (keys.has(key)) return false;
+    keys.add(key);
+  }
+  return true;
+}
+
+function activityTotal(cells: FacebookActivityCell[], total: FacebookAccountCell): boolean {
+  const visible = cells.reduce((sum, row) => sum + (row.accounts ?? 0), 0);
+  return cells.every(row => subset(row.accounts, total)) && (total === null || visible <= total
+    && total - visible <= cells.filter(row => row.accounts === null).length * 4);
+}
+
+function activityRow(value: unknown, pages: Map<string, FacebookParticipationPage>,
+  totals: FacebookParticipationReport['totals'], matched: number): value is FacebookParticipationActivity {
+  if (!fields(value, ['cells', 'pages']) || !activityCells(value['cells']) || !Array.isArray(value['pages'])
+    || value['pages'].length !== pages.size || !activityTotal(value['cells'], totals.accounts)
+    || !activityTotal(value['cells'].filter(row => row.pageBand !== '1'), totals.accountsOnMultiplePages)) return false;
+  const minimumComments = value['cells'].reduce((sum, row) => sum + (row.accounts ?? 0)
+    * [1, 2, 3, 6, 11, 21][FACEBOOK_COMMENT_BANDS.indexOf(row.commentBand)], 0);
+  if (minimumComments > matched) return false;
+  const global = new Map(value['cells'].map(row => [`${row.commentBand}|${row.pageBand}`, row.accounts]));
+  const checked = new Set<string>();
+  for (const row of value['pages']) {
+    if (!fields(row, ['pageId', 'cells']) || !id(row['pageId']) || !activityCells(row['cells'])) return false;
+    const page = pages.get(row['pageId']);
+    if (!page || checked.has(page.pageId) || !activityTotal(row['cells'], page.accounts)
+      || !row['cells'].every(cell => subset(cell.accounts, global.get(`${cell.commentBand}|${cell.pageBand}`)!))) return false;
+    checked.add(page.pageId);
+  }
+  return true;
+}
+
 /** Accept aggregate fields only and bind every count to the same captured comment snapshot. */
 export function validFacebookParticipationReport(value: unknown, posts: readonly FacebookPost[],
   comments: FacebookCommentsReport): value is FacebookParticipationReport {
+  const hasActivity = value !== null && typeof value === 'object' && Object.hasOwn(value, 'activity');
   if (!fields(value, ['version', 'runId', 'capturedAt', 'minimumCellCount', 'unit', 'collectionSha256',
-    'coverage', 'totals', 'posts', 'pages', 'postOverlaps', 'pageOverlaps']) || value['version'] !== 1
+    'coverage', 'totals', 'posts', 'pages', 'postOverlaps', 'pageOverlaps', ...(hasActivity ? ['activity'] : [])]) || value['version'] !== 1
     || !id(value['runId']) || typeof value['capturedAt'] !== 'string' || !Number.isFinite(Date.parse(value['capturedAt']))
     || value['minimumCellCount'] !== 5 || value['unit'] !== 'observed-accounts'
     || typeof value['collectionSha256'] !== 'string' || !/^[a-f0-9]{64}$/.test(value['collectionSha256'])
@@ -167,5 +225,5 @@ export function validFacebookParticipationReport(value: unknown, posts: readonly
       || !subset(overlap.sharedAccounts, totals['accountsOnMultiplePages'])) return false;
     pagePairs.add(key);
   }
-  return true;
+  return !hasActivity || activityRow(value['activity'], byPage, totals, matched);
 }

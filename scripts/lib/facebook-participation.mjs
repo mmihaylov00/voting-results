@@ -3,6 +3,8 @@ import { Buffer } from 'node:buffer';
 
 const TOKEN = /^[a-f0-9]{64}$/;
 const COMMENT_ID = /^\d{1,40}$/;
+const COMMENT_BANDS = ['1', '2', '3-5', '6-10', '11-20', '21+'];
+const PAGE_BANDS = ['1', '2', '3', '4+'];
 const RESERVED_HANDLES = new Set(['profile.php', 'photo.php', 'story.php', 'watch', 'reel', 'posts', 'groups',
   'pages', 'marketplace', 'gaming', 'help', 'login', 'share', 'hashtag', 'search']);
 const identity = value => typeof value === 'string' && (/^uid:[1-9]\d{0,39}$/.test(value)
@@ -162,6 +164,8 @@ export function participationExport(state, minimum = 5) {
   const postRepeaters = new Map();
   const postPairs = new Map();
   const pagePairs = new Map();
+  const activityCounts = new Map();
+  const pageActivityCounts = new Map();
   let multiplePosts = 0;
   let multiplePages = 0;
   const increment = (map, id) => map.set(id, (map.get(id) ?? 0) + 1);
@@ -174,6 +178,15 @@ export function participationExport(state, minimum = 5) {
   for (const account of accountValues) {
     const posts = Object.keys(account);
     const pages = new Set(posts.map(id => state.posts[id].pageId));
+    const comments = posts.reduce((sum, id) => sum + account[id].comments, 0);
+    const commentBand = COMMENT_BANDS[[1, 2, 5, 10, 20, Infinity].findIndex(maximum => comments <= maximum)];
+    const activityKey = JSON.stringify([commentBand, PAGE_BANDS[Math.min(pages.size, 4) - 1]]);
+    increment(activityCounts, activityKey);
+    for (const pageId of pages) {
+      const counts = pageActivityCounts.get(pageId) ?? new Map();
+      increment(counts, activityKey);
+      pageActivityCounts.set(pageId, counts);
+    }
     if (posts.length > 1) multiplePosts++;
     if (pages.size > 1) multiplePages++;
     for (const id of posts) {
@@ -195,6 +208,9 @@ export function participationExport(state, minimum = 5) {
   }
   const overlaps = (map, leftName, rightName) => Array.from(map).filter(([, value]) => value >= minimum)
     .map(([pair, sharedAccounts]) => ({ [leftName]: JSON.parse(pair)[0], [rightName]: JSON.parse(pair)[1], sharedAccounts }));
+  const activityCells = counts => COMMENT_BANDS.flatMap(commentBand => PAGE_BANDS.map(pageBand => ({
+    commentBand, pageBand, accounts: cell(counts?.get(JSON.stringify([commentBand, pageBand])) ?? 0),
+  })));
   return {
     version: 1, runId: state.runId, capturedAt: state.capturedAt, minimumCellCount: minimum, unit: 'observed-accounts',
     coverage: { capturedComments: state.observedComments.length, matchedIdentityComments: state.identifiedComments.length,
@@ -205,5 +221,7 @@ export function participationExport(state, minimum = 5) {
       accountsWithMultipleComments: cell(postRepeaters.get(postId) ?? 0) })),
     pages: Array.from(pageTotals, ([pageId, totals]) => ({ pageId, ...totals, accounts: cell(pageAccounts.get(pageId) ?? 0) })),
     postOverlaps: overlaps(postPairs, 'leftPostId', 'rightPostId'), pageOverlaps: overlaps(pagePairs, 'leftPageId', 'rightPageId'),
+    activity: { cells: activityCells(activityCounts),
+      pages: Array.from(pageTotals.keys(), pageId => ({ pageId, cells: activityCells(pageActivityCounts.get(pageId)) })) },
   };
 }
