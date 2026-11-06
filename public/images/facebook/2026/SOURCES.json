@@ -2777,6 +2777,78 @@
           "kind": "image"
         }
       ]
+    },
+    "316cddf6feb2b9472e01d8607d0903c61d8d5f4e4afdcfc8a58576e2b833dad7.jpg": {
+      "sha256": "316cddf6feb2b9472e01d8607d0903c61d8d5f4e4afdcfc8a58576e2b833dad7",
+      "width": 480,
+      "height": 479,
+      "uses": [
+        {
+          "id": "page:100064864205365",
+          "sourceUrl": "https://www.facebook.com/people/I-Burgas/100064864205365",
+          "kind": "image"
+        }
+      ]
+    },
+    "04a610df32d4b3c22d47c2a52b56f834c91a894c60c5314fc408aecd41769e4f.jpg": {
+      "sha256": "04a610df32d4b3c22d47c2a52b56f834c91a894c60c5314fc408aecd41769e4f",
+      "width": 1200,
+      "height": 844,
+      "uses": [
+        {
+          "id": "post:pfbid029EMD6dutwoFjab4KVnM535zdSH6Ln2bmSsmAQMoog6kPMyti8rfNt2VjSsMwPQZol",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid029EMD6dutwoFjab4KVnM535zdSH6Ln2bmSsmAQMoog6kPMyti8rfNt2VjSsMwPQZol&id=100064864205365",
+          "kind": "image"
+        }
+      ]
+    },
+    "6e5bd2511d461d5ce4253b6f190b503ce537307c63d2d5bb50471cbb278095ac.jpg": {
+      "sha256": "6e5bd2511d461d5ce4253b6f190b503ce537307c63d2d5bb50471cbb278095ac",
+      "width": 1200,
+      "height": 844,
+      "uses": [
+        {
+          "id": "post:pfbid02bgCrb7AXtv4T8jW1jysQ2wuVkmevoEjmpPA4KD6nPNNFrN8hM7rhu2TwHEnw7kXXl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02bgCrb7AXtv4T8jW1jysQ2wuVkmevoEjmpPA4KD6nPNNFrN8hM7rhu2TwHEnw7kXXl&id=100064864205365",
+          "kind": "image"
+        }
+      ]
+    },
+    "92f8792e8395714317c3f6b44ec70f93f298b583f814200e06859c1f0da6696d.jpg": {
+      "sha256": "92f8792e8395714317c3f6b44ec70f93f298b583f814200e06859c1f0da6696d",
+      "width": 1280,
+      "height": 900,
+      "uses": [
+        {
+          "id": "post:pfbid0EdTP4udv1eBQ8WL8UQJ9sWFKeKx3ErqPHR47h6Rxa59CKfczygo59yKG58QMGKwRl",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0EdTP4udv1eBQ8WL8UQJ9sWFKeKx3ErqPHR47h6Rxa59CKfczygo59yKG58QMGKwRl&id=100064864205365",
+          "kind": "image"
+        }
+      ]
+    },
+    "77a2ae06256e71e633bbe445e73ecadd11e69733807d0e8b2a661a527623f3e6.jpg": {
+      "sha256": "77a2ae06256e71e633bbe445e73ecadd11e69733807d0e8b2a661a527623f3e6",
+      "width": 1500,
+      "height": 850,
+      "uses": [
+        {
+          "id": "post:pfbid029zMrw5RyEnqHHasCmFwmQdecwcbu8BfyvmTdFFFDERGEasBL3CWNWiYp973EsUB7l",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid029zMrw5RyEnqHHasCmFwmQdecwcbu8BfyvmTdFFFDERGEasBL3CWNWiYp973EsUB7l&id=100064864205365",
+          "kind": "image"
+        }
+      ]
+    },
+    "64d219c2d38f9eee4cbb087007d8d2cd80b7bd066b8be3c389b697207ca916c1.jpg": {
+      "sha256": "64d219c2d38f9eee4cbb087007d8d2cd80b7bd066b8be3c389b697207ca916c1",
+      "width": 1250,
+      "height": 992,
+      "uses": [
+        {
+          "id": "post:pfbid0erLMU2YiZWFmwBnqFPbZKnnncpTS7s8Ytd45FYC3uZNyKWbMFQ19HQEDJuYK6hA6l",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0erLMU2YiZWFmwBnqFPbZKnnncpTS7s8Ytd45FYC3uZNyKWbMFQ19HQEDJuYK6hA6l&id=100064864205365",
+          "kind": "image"
+        }
+      ]
     }
   }
 }

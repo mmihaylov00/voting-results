@@ -1,8 +1,8 @@
 {
   "version": 1,
   "period": "2026-10",
-  "collectionDate": "2026-11-06T08:58:44.137Z",
-  "collectionPostCount": 422,
+  "collectionDate": "2026-11-06T10:02:50.660Z",
+  "collectionPostCount": 427,
   "titleSearchCount": 49,
   "keywordTarget": 100,
   "pages": [
@@ -1084,6 +1084,24 @@
         "kind": "image",
         "capturedAt": "2026-11-06T08:54:11.902Z",
         "sha256": "fb58eb6404d5f4fab29e867e68921ffb26c06e3f270347a0ef97d30e819fa7a3"
+      }
+    },
+    {
+      "id": "100064864205365",
+      "name": "I ♥ Burgas",
+      "url": "https://www.facebook.com/people/I-Burgas/100064864205365",
+      "followers": 50000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection",
+      "avatar": {
+        "src": "/images/facebook/2026/316cddf6feb2b9472e01d8607d0903c61d8d5f4e4afdcfc8a58576e2b833dad7.jpg",
+        "sourceUrl": "https://www.facebook.com/people/I-Burgas/100064864205365",
+        "width": 480,
+        "height": 479,
+        "kind": "image",
+        "capturedAt": "2026-11-06T09:59:40.092Z",
+        "sha256": "316cddf6feb2b9472e01d8607d0903c61d8d5f4e4afdcfc8a58576e2b833dad7"
       }
     }
   ],
@@ -25395,7 +25413,13 @@
           "sha256": "f470c433703e9d6f56ebbb2021429b173e46545b1377df919c93f6e093c03af8"
         }
       ],
-      "linkHeadline": "40,2% за Йотова и 25,3% за Гюров на изборите в Кюстендилска област"
+      "linkHeadline": "40,2% за Йотова и 25,3% за Гюров на изборите в Кюстендилска област",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Заглавието съобщава процентни изборни резултати за двамата кандидати без оценка.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "photo:122201088032908065",
@@ -25445,7 +25469,13 @@
           "capturedAt": "2026-11-06T08:35:31.126Z",
           "sha256": "2b906d246860aabe6211bddc01f91d3cb3084abc0a24ad1ad54d7810279107bb"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Сатиричното изображение и репликата за спиране на войната осмиват Йотова.",
+        "sourceTextSha256": "ab1adcdb10c43ac618aad2498c5ae645629ef60eb7c24d436b8cfca1d21dff8b"
+      }
     },
     {
       "id": "post:pfbid0QdguugYWScY4Z3Qq6AJc8wtg3X4jGmRPvsiC4k9wckQoGZ9o7CBrhUuS9ua4Eh9fl",
@@ -25500,7 +25530,13 @@
           "capturedAt": "2026-11-06T08:36:16.990Z",
           "sha256": "8b0d31651d205e0344846d2ad42290da80d07e138fcaafb3877deb1c11a2da5f"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Публикацията предупреждава за твърдяна платена медийна манипулация в полза на кампанията на Йотова.",
+        "sourceTextSha256": "7026278d27957fcdc8625192bc04f1092d5875fbe120629bf1c67c7f6747bf9f"
+      }
     },
     {
       "id": "post:pfbid0ztsmRRhd49H1dpPuqfhZ14aYdGPVRNqwKDJRbWnXjN1epu1M3EdgUoUU1SbqfcYCl",
@@ -25547,7 +25583,13 @@
       ],
       "platformLabels": [
         "AI content"
-      ]
+      ],
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": "critical",
+        "reason": "Визуалната съпоставка представя Гюров като положителен избор, а Йотова е свързана с война и разрушение.",
+        "sourceTextSha256": "336fc8051133a879dc3fb1a6239aa0b1e0a9ed6261d625f41e153fccdec5a9cf"
+      }
     },
     {
       "id": "post:pfbid0k2Z1Mvg4oo4ySqBu4iU5DYPnggxvrd6dg6xdLrukzi4ckDA9sws5CqSRpVvoJHqsl",
@@ -25587,7 +25629,13 @@
         }
       },
       "sourceTextSha256": "27fa8b285fc408527e0efdedb14374fa679d84f4297c70fc9ced0b099a753230",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Съобщава се преднината на Йотова в Монтана без положителна или отрицателна оценка.",
+        "sourceTextSha256": "27fa8b285fc408527e0efdedb14374fa679d84f4297c70fc9ced0b099a753230"
+      }
     },
     {
       "id": "post:pfbid02hMFkykBV5JhsN3jJ1erXnWu8QkAgmtNQPz93M28Lj64sPWjwQaLAs21A2y9dDzB7l",
@@ -25622,7 +25670,13 @@
       },
       "sourceTextSha256": "6a4f1211cb923d8b9de1f7780185994a91021452bfc144fd00015b64a3701929",
       "images": [],
-      "linkHeadline": "МАЛКО ИЗБИРАТЕЛИ СТИГНАХА ДО УРНИТЕ | НОВИНИТЕ ОТ МОНТАНА"
+      "linkHeadline": "МАЛКО ИЗБИРАТЕЛИ СТИГНАХА ДО УРНИТЕ | НОВИНИТЕ ОТ МОНТАНА",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Заглавието описва ниска избирателна активност без оценка на конкретен кандидат.",
+        "sourceTextSha256": "6a4f1211cb923d8b9de1f7780185994a91021452bfc144fd00015b64a3701929"
+      }
     },
     {
       "id": "post:pfbid0E7kUwnMDVrpWRKbGCUBWaVQDKokH5aZsJtLaTCTEYVcVHxSvfxuZTEjv5siTjiDBl",
@@ -25657,7 +25711,13 @@
       },
       "sourceTextSha256": "ef96276b9eda3d120babb7c3dbacadd70a4f6ca6d8f071e7bbbef28cdcef3ee5",
       "images": [],
-      "linkHeadline": "СМЕНИХА 40 ЧЛЕНОВЕ НА СИК В РЕГИОНА | НОВИНИТЕ ОТ МОНТАНА"
+      "linkHeadline": "СМЕНИХА 40 ЧЛЕНОВЕ НА СИК В РЕГИОНА | НОВИНИТЕ ОТ МОНТАНА",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Материалът е за промени в състава на секционни комисии и не оценява кандидатите.",
+        "sourceTextSha256": "ef96276b9eda3d120babb7c3dbacadd70a4f6ca6d8f071e7bbbef28cdcef3ee5"
+      }
     },
     {
       "id": "post:pfbid021Xa43XHtzEKVpcPvtoxuhhQ6afqV65ZbsZYnxetrdo24YxtzWuKTpzsHifkzhBVLl",
@@ -25697,7 +25757,13 @@
         }
       },
       "sourceTextSha256": "309ca2069a3ec0301eb54687e97db023bb55e011fbb78e0c303676f753b44750",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Общата тема за кандидатските медийни разходи не съдържа конкретна оценка за Гюров или Йотова.",
+        "sourceTextSha256": "309ca2069a3ec0301eb54687e97db023bb55e011fbb78e0c303676f753b44750"
+      }
     },
     {
       "id": "post:pfbid0wdBHVPj6Ucwz3vFrvy8Mq6w5rgZ1fzZgMCXaiGTarkNfgQCCkAscvc5ZdG4t1fWJl",
@@ -25747,7 +25813,13 @@
         }
       },
       "sourceTextSha256": "988644fd30a83bc05ec009091f9d0552b348ec8a628e4af366d1fdd5e5c00d4e",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Сензационният анонс назовава двамата като възможни избори на Костадинов, без да разкрива подкрепа или критика към тях.",
+        "sourceTextSha256": "988644fd30a83bc05ec009091f9d0552b348ec8a628e4af366d1fdd5e5c00d4e"
+      }
     },
     {
       "id": "post:pfbid0LeP5hCNkKHeqGoxtEJW6Zsh9VC3v7g3bo8St9Wud2SwZpr1yvTYBMeG3ACkBj4fnl",
@@ -25792,7 +25864,13 @@
         }
       },
       "sourceTextSha256": "2dc431f55ed6cb1878527ea0975fc8a7bf446b567c37f41795d568878df519dd",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Съобщението за промяна в преднината между кандидатите не изразява подкрепа или отхвърляне.",
+        "sourceTextSha256": "2dc431f55ed6cb1878527ea0975fc8a7bf446b567c37f41795d568878df519dd"
+      }
     },
     {
       "id": "post:pfbid0L79WDEXCoSt8bFxrAAGNPEk2AW6e3in9upwe5h6BvhMT5o4beTAJFxBbYsF5dxMMl",
@@ -25837,7 +25915,13 @@
         }
       },
       "sourceTextSha256": "cda951682e3323b1f569be479238fa4a98837b4dffb4903967bae47d02ea3ae7",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Подчертава се малка разлика в изборните данни без оценка за някой от кандидатите.",
+        "sourceTextSha256": "cda951682e3323b1f569be479238fa4a98837b4dffb4903967bae47d02ea3ae7"
+      }
     },
     {
       "id": "post:pfbid0C8yFcn85nB7a1KWbEsBJ1zwtvF4YRRd3CUa9WkfzKv4nXQRSsHYVY7Zft1bjLT42l",
@@ -25887,7 +25971,13 @@
         }
       },
       "sourceTextSha256": "1abc99933ceeba62ddc8ba5715477c6f9f569b3ce300f37baf18c79b75233838",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Анонсира се решение на Борисов между кандидатите без посочена посока на подкрепа.",
+        "sourceTextSha256": "1abc99933ceeba62ddc8ba5715477c6f9f569b3ce300f37baf18c79b75233838"
+      }
     },
     {
       "id": "post:pfbid02ySEgquF2J8B6Gxvj3W8WkxreuGGdiyU45N3diEQKGMUtdbAxaVQ3jj3BAN1xFWhCl",
@@ -25932,7 +26022,13 @@
         }
       },
       "sourceTextSha256": "c2b02ab9a37e5a896379ccf4cad1f21866a03c81d046e2f4d0e3197e80c3dd07",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Негативният сценарий е за Борисов, а победата на Гюров е условие в прогнозата, без пряка оценка на кандидата.",
+        "sourceTextSha256": "c2b02ab9a37e5a896379ccf4cad1f21866a03c81d046e2f4d0e3197e80c3dd07"
+      }
     },
     {
       "id": "post:pfbid0UDjWiXg59Kz5eCPNpN6HYx3ERZmiAVGxfrMFnZbyJC6WgxhhyqevtuB65CkTiZUrl",
@@ -25966,7 +26062,13 @@
         }
       },
       "sourceTextSha256": "d3906bbdef774f850bef7433e5ea0cdd0a9e44dc9a66983bde048b59ab99ae79",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Описва се началото на изборния ден в три области без конкретна кандидатска оценка.",
+        "sourceTextSha256": "d3906bbdef774f850bef7433e5ea0cdd0a9e44dc9a66983bde048b59ab99ae79"
+      }
     },
     {
       "id": "post:pfbid0uDcAq9Y2BU5nyXjLwkyEtcaGMJ1mhP7GADfLzBmHMk2BEj8SxSAScHNp5MJs97jWl",
@@ -26021,7 +26123,13 @@
           "capturedAt": "2026-11-06T08:44:54.558Z",
           "sha256": "83aadf77ca91a837ee4d7969bdbd6092300f10587a2e9a7079742426024e4991"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Съобщава се спор за подкрепата на Радев за Йотова, като въпросът за агитацията засяга действията на Радев.",
+        "sourceTextSha256": "36bb80c3d034515b51593a25d0a9194e95908487fa9b648f4f71f20a285195a0"
+      }
     },
     {
       "id": "post:pfbid0TSXAEdDNoKqFBhhnqYW4Ta7eRHz5nU7pRbRPpPyS71JSwxcRmEaKiTzZw4LwnEuHl",
@@ -26121,7 +26229,13 @@
           "capturedAt": "2026-11-06T08:54:11.902Z",
           "sha256": "1455144fc6ed438bd96ccc2c7928b77c0f8a2c33923080e5265fdbd7bf3dbec7"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Сравняват се заявени позиции на двамата кандидати и се задава въпрос към читателите без предпочитание.",
+        "sourceTextSha256": "216ebc327a72aefb9ae9f55e201c89593c86ab18435b97138e25fe10d5c19d41"
+      }
     },
     {
       "id": "post:pfbid0YsbK4ZGGzFPj78kxP1xK4Gx6yRA2Hn6h1ZbFhWZfkU2mLzcBUeiKMmxQ8k3cJJvzl",
@@ -26182,7 +26296,13 @@
           "sha256": "104daff52a32355a27fd42594b3d90c3406716538853e1f9953bc09c372ab196"
         }
       ],
-      "linkHeadline": "ИК на Гюров и Кандев сезира ЦИК за предизборна агитация на премиера Радев чрез каналите на Министерски съвет"
+      "linkHeadline": "ИК на Гюров и Кандев сезира ЦИК за предизборна агитация на премиера Радев чрез каналите на Министерски съвет",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Сигналът на комитета на Гюров се съобщава като изборно събитие, а упрекът е към действията на премиера.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0m9rrH81HyPUQH9rNhcT9fiZs3TfeVApWH6dwMNXHmApmuZsw49a3e9YpbgA3GLgRl",
@@ -26238,7 +26358,323 @@
           "sha256": "a5468b822ce247bd613252d1f5b95e03aeb69a899854d5b1ed5b37548c3ca238"
         }
       ],
-      "linkHeadline": "Кандидатът за президент Гюров гласува в Благоевград заедно със съпругата си и двамата си синове"
+      "linkHeadline": "Кандидатът за президент Гюров гласува в Благоевград заедно със съпругата си и двамата си синове",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Заглавието описва гласуването на Гюров със семейството му без оценъчна позиция.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "post:pfbid029EMD6dutwoFjab4KVnM535zdSH6Ln2bmSsmAQMoog6kPMyti8rfNt2VjSsMwPQZol",
+      "pageId": "100064864205365",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid029EMD6dutwoFjab4KVnM535zdSH6Ln2bmSsmAQMoog6kPMyti8rfNt2VjSsMwPQZol&id=100064864205365",
+      "date": "2026-10-26",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T09:59:40.092Z",
+      "excerpt": "Илияна Йотова с най-висока подкрепа и в Софийския затвор",
+      "summary": "Резултат за Йотова в Софийския затвор.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 10,
+          "approximate": false,
+          "raw": "10"
+        },
+        "comments": {
+          "value": 2,
+          "approximate": false,
+          "raw": "2"
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "99f9d41823805e4b796e99c9e98a8642a91d7907c14d085b04411d5e7c3e3c97",
+      "images": [
+        {
+          "src": "/images/facebook/2026/04a610df32d4b3c22d47c2a52b56f834c91a894c60c5314fc408aecd41769e4f.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid029EMD6dutwoFjab4KVnM535zdSH6Ln2bmSsmAQMoog6kPMyti8rfNt2VjSsMwPQZol&id=100064864205365",
+          "width": 1200,
+          "height": 844,
+          "kind": "image",
+          "capturedAt": "2026-11-06T09:59:40.092Z",
+          "sha256": "04a610df32d4b3c22d47c2a52b56f834c91a894c60c5314fc408aecd41769e4f"
+        }
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Съобщава се изборен резултат за Йотова без оценъчна позиция.",
+        "sourceTextSha256": "99f9d41823805e4b796e99c9e98a8642a91d7907c14d085b04411d5e7c3e3c97"
+      }
+    },
+    {
+      "id": "post:pfbid02bgCrb7AXtv4T8jW1jysQ2wuVkmevoEjmpPA4KD6nPNNFrN8hM7rhu2TwHEnw7kXXl",
+      "pageId": "100064864205365",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02bgCrb7AXtv4T8jW1jysQ2wuVkmevoEjmpPA4KD6nPNNFrN8hM7rhu2TwHEnw7kXXl&id=100064864205365",
+      "date": "2026-10-26",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T10:00:02.443Z",
+      "excerpt": "Илияна Йотова с 10 000 гласа повече от Гюров в Бургас",
+      "summary": "Разликата между Йотова и Гюров в Бургас след първия тур.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 34,
+          "approximate": false,
+          "raw": "34"
+        },
+        "comments": {
+          "value": 26,
+          "approximate": false,
+          "raw": "26"
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "632dd778dbdfb01567ba013143c78f2cea521a6452cf522fdc542a040e026ae1",
+      "images": [
+        {
+          "src": "/images/facebook/2026/6e5bd2511d461d5ce4253b6f190b503ce537307c63d2d5bb50471cbb278095ac.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid02bgCrb7AXtv4T8jW1jysQ2wuVkmevoEjmpPA4KD6nPNNFrN8hM7rhu2TwHEnw7kXXl&id=100064864205365",
+          "width": 1200,
+          "height": 844,
+          "kind": "image",
+          "capturedAt": "2026-11-06T10:00:02.443Z",
+          "sha256": "6e5bd2511d461d5ce4253b6f190b503ce537307c63d2d5bb50471cbb278095ac"
+        }
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Съпоставят се изборните гласове за двамата кандидати без предпочитание.",
+        "sourceTextSha256": "632dd778dbdfb01567ba013143c78f2cea521a6452cf522fdc542a040e026ae1"
+      }
+    },
+    {
+      "id": "post:pfbid0EdTP4udv1eBQ8WL8UQJ9sWFKeKx3ErqPHR47h6Rxa59CKfczygo59yKG58QMGKwRl",
+      "pageId": "100064864205365",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0EdTP4udv1eBQ8WL8UQJ9sWFKeKx3ErqPHR47h6Rxa59CKfczygo59yKG58QMGKwRl&id=100064864205365",
+      "date": "2026-10-28",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T10:00:12.604Z",
+      "excerpt": "Станаха ясни часът и датата на дебата между Гюров и Йотова",
+      "summary": "Обявени са датата и часът на дебата преди балотажа.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "дебат",
+          "source": "text",
+          "evidence": "дебат"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 6,
+          "approximate": false,
+          "raw": "6"
+        },
+        "comments": {
+          "value": 3,
+          "approximate": false,
+          "raw": "3"
+        },
+        "shares": {
+          "value": 2,
+          "approximate": false,
+          "raw": "2"
+        }
+      },
+      "sourceTextSha256": "c9c14686718424b6beb7c328e08ac4e0395d43cc968703f318c213e47e4725ff",
+      "images": [
+        {
+          "src": "/images/facebook/2026/92f8792e8395714317c3f6b44ec70f93f298b583f814200e06859c1f0da6696d.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0EdTP4udv1eBQ8WL8UQJ9sWFKeKx3ErqPHR47h6Rxa59CKfczygo59yKG58QMGKwRl&id=100064864205365",
+          "width": 1280,
+          "height": 900,
+          "kind": "image",
+          "capturedAt": "2026-11-06T10:00:12.604Z",
+          "sha256": "92f8792e8395714317c3f6b44ec70f93f298b583f814200e06859c1f0da6696d"
+        }
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Обявяват се дата и час на дебат между кандидатите.",
+        "sourceTextSha256": "c9c14686718424b6beb7c328e08ac4e0395d43cc968703f318c213e47e4725ff"
+      }
+    },
+    {
+      "id": "post:pfbid029zMrw5RyEnqHHasCmFwmQdecwcbu8BfyvmTdFFFDERGEasBL3CWNWiYp973EsUB7l",
+      "pageId": "100064864205365",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid029zMrw5RyEnqHHasCmFwmQdecwcbu8BfyvmTdFFFDERGEasBL3CWNWiYp973EsUB7l&id=100064864205365",
+      "date": "2026-10-05",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T10:00:42.153Z",
+      "excerpt": "Три седмици преди изборите: Йотова и Вълчев водят с 44,%, Гюров и Кандев са втори с 26,1%",
+      "summary": "Сондаж три седмици преди президентските избори.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Кандев",
+          "source": "text",
+          "evidence": "Кандев"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "избори"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 124,
+          "approximate": false,
+          "raw": "124"
+        },
+        "comments": {
+          "value": 61,
+          "approximate": false,
+          "raw": "61"
+        },
+        "shares": {
+          "value": 2,
+          "approximate": false,
+          "raw": "2"
+        }
+      },
+      "sourceTextSha256": "30863a2662348b2becf5508b87d5f57e61d186291794f40a488a2dc16a11eed6",
+      "images": [
+        {
+          "src": "/images/facebook/2026/77a2ae06256e71e633bbe445e73ecadd11e69733807d0e8b2a661a527623f3e6.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid029zMrw5RyEnqHHasCmFwmQdecwcbu8BfyvmTdFFFDERGEasBL3CWNWiYp973EsUB7l&id=100064864205365",
+          "width": 1500,
+          "height": 850,
+          "kind": "image",
+          "capturedAt": "2026-11-06T10:00:42.153Z",
+          "sha256": "77a2ae06256e71e633bbe445e73ecadd11e69733807d0e8b2a661a527623f3e6"
+        }
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Представят се данни от социологически сондаж без подкрепа или критика.",
+        "sourceTextSha256": "30863a2662348b2becf5508b87d5f57e61d186291794f40a488a2dc16a11eed6"
+      }
+    },
+    {
+      "id": "post:pfbid0erLMU2YiZWFmwBnqFPbZKnnncpTS7s8Ytd45FYC3uZNyKWbMFQ19HQEDJuYK6hA6l",
+      "pageId": "100064864205365",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0erLMU2YiZWFmwBnqFPbZKnnncpTS7s8Ytd45FYC3uZNyKWbMFQ19HQEDJuYK6hA6l&id=100064864205365",
+      "date": "2026-10-25",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T10:02:50.660Z",
+      "excerpt": "Гюров: Следващата седмица България трябва да избира между две посоки",
+      "summary": "Изявление на Гюров за избора на балотажа.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 11,
+          "approximate": false,
+          "raw": "11"
+        },
+        "comments": {
+          "value": 4,
+          "approximate": false,
+          "raw": "4"
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "e3dc3aa61f4f2b1806b1ff043900b42d11d58a6295d90a2b6a4d2830750e70f6",
+      "images": [
+        {
+          "src": "/images/facebook/2026/64d219c2d38f9eee4cbb087007d8d2cd80b7bd066b8be3c389b697207ca916c1.jpg",
+          "sourceUrl": "https://www.facebook.com/permalink.php?story_fbid=pfbid0erLMU2YiZWFmwBnqFPbZKnnncpTS7s8Ytd45FYC3uZNyKWbMFQ19HQEDJuYK6hA6l&id=100064864205365",
+          "width": 1250,
+          "height": 992,
+          "kind": "image",
+          "capturedAt": "2026-11-06T10:02:50.660Z",
+          "sha256": "64d219c2d38f9eee4cbb087007d8d2cd80b7bd066b8be3c389b697207ca916c1"
+        }
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Цитира се изявление на Гюров след първия тур без собствена оценка.",
+        "sourceTextSha256": "e3dc3aa61f4f2b1806b1ff043900b42d11d58a6295d90a2b6a4d2830750e70f6"
+      }
     }
   ],
   "matches": [
@@ -26330,19 +26766,19 @@
   "coverage": [
     {
       "keyword": "Гюров",
-      "count": 152
+      "count": 156
     },
     {
       "keyword": "Кандев",
-      "count": 32
+      "count": 33
     },
     {
       "keyword": "Йотова",
-      "count": 133
+      "count": 137
     },
     {
       "keyword": "избори",
-      "count": 125
+      "count": 126
     },
     {
       "keyword": "украйна",
@@ -26475,7 +26911,7 @@
     },
     {
       "keyword": "дебат",
-      "count": 17,
+      "count": 18,
       "fromCaptions": true
     },
     {
@@ -26670,7 +27106,7 @@
   "sharedArticleUrl": "https://www.faktibg.com/moshtna-valna-s-avtobusi-s-izbirateli-ot-turcija-zalja-balgarija-za-utreshnite-izbori/",
   "collectionSha256": "9a00ddcf145c80e73d9936d7531f5f1033a745054d3dcf86523f8004e6ef21b1",
   "directory": {
-    "checkedAt": "2026-11-06T09:04:30.454Z",
+    "checkedAt": "2026-11-06T10:03:53.109Z",
     "entries": [
       {
         "id": "sample-05b3288156ff",
@@ -27341,7 +27777,7 @@
         "aliases": [
           "Българска Независима Медия"
         ],
-        "status": "ambiguous",
+        "status": "page-verified",
         "facebookUrl": "https://www.facebook.com/profile.php?id=61557935279182",
         "websiteUrl": null,
         "regional": null,
@@ -27363,10 +27799,15 @@
           {
             "url": "https://www.facebook.com/profile.php?id=61557935279182",
             "note": "Преглед във Facebook на 2026-11-05: Зарежда се публична идентичност БНМ - Българска Независима Медия, категория Digital creator, 33 followers. About показва Category/Details/Contact info, без видима Page transparency. Не са събирани постове, тъй като Page спрямо професионален профил не е еднозначно потвърдено."
+          },
+          {
+            "url": "https://www.facebook.com/profile.php?id=61557935279182",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдено собствено меню Report Page за БНМ - Българска Независима Медия; категория Digital creator, 33 followers."
           }
         ],
         "notes": [
-          "Зарежда се публична идентичност БНМ - Българска Независима Медия, категория Digital creator, 33 followers. About показва Category/Details/Contact info, без видима Page transparency. Не са събирани постове, тъй като Page спрямо професионален профил не е еднозначно потвърдено."
+          "Потвърдено собствено меню Report Page за БНМ - Българска Независима Медия; категория Digital creator, 33 followers.",
+          "Нативен Go to 2026 / October показва собствени публикации от юни и април 2024. Те са изключени по дата; в прегледаната част не е намерена подходяща октомврийска публикация от 2026 г. Частична проверка."
         ],
         "samplePageId": null
       },
@@ -27810,12 +28251,13 @@
       },
       {
         "id": "publisher-burgas24",
-        "name": "Burgas24.bg",
+        "name": "I ♥ Burgas",
         "aliases": [
           "Bourgas24",
-          "Бургас24"
+          "Бургас24",
+          "Burgas24.bg"
         ],
-        "status": "ambiguous",
+        "status": "in-sample",
         "facebookUrl": "https://www.facebook.com/people/I-Burgas/100064864205365",
         "websiteUrl": "https://www.burgas24.bg/",
         "regional": true,
@@ -27831,12 +28273,21 @@
           {
             "url": "https://www.facebook.com/people/I-Burgas/100064864205365",
             "note": "Преглед във Facebook на 2026-11-05: Предоставеният URL за Burgas24.bg зарежда „I ♥ Burgas“, категория Nonprofit organization, 50K followers. Не е потвърдена връзка с Burgas24.bg и не са приписани публикации на издателя."
+          },
+          {
+            "url": "https://www.burgas24.bg/",
+            "note": "Footer link “Burgas24.bg във Facebook” points to this Page; checked 2026-11-06."
+          },
+          {
+            "url": "https://www.facebook.com/people/I-Burgas/100064864205365",
+            "note": "Native Report Page menu; Page contact and website links point back to burgas24.bg. Display name I ♥ Burgas retained."
           }
         ],
         "notes": [
-          "Предоставеният URL за Burgas24.bg зарежда „I ♥ Burgas“, категория Nonprofit organization, 50K followers. Не е потвърдена връзка с Burgas24.bg и не са приписани публикации на издателя."
+          "Връзката с Burgas24.bg е потвърдена чрез Facebook препратката в сайта и обратната връзка от страницата. Показваното име е I ♥ Burgas.",
+          "Октомврийският архив е прегледан частично; запазени са пет изборни публикации."
         ],
-        "samplePageId": null
+        "samplePageId": "100064864205365"
       },
       {
         "id": "publisher-dir",

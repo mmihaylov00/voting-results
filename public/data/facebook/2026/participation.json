@@ -1,18 +1,18 @@
 {
   "version": 1,
   "runId": "e5252990-38a7-4fb2-a70e-1e55019a76a6",
-  "capturedAt": "2026-11-05T20:42:18.674Z",
+  "capturedAt": "2026-11-06T10:06:34.910Z",
   "minimumCellCount": 5,
   "unit": "observed-accounts",
   "coverage": {
-    "capturedComments": 6692,
-    "matchedIdentityComments": 6692,
+    "capturedComments": 6897,
+    "matchedIdentityComments": 6897,
     "unknownIdentityComments": 0
   },
   "totals": {
-    "accounts": 4303,
-    "accountsOnMultiplePosts": 563,
-    "accountsOnMultiplePages": 223
+    "accounts": 4445,
+    "accountsOnMultiplePosts": 579,
+    "accountsOnMultiplePages": 243
   },
   "posts": [
     {
@@ -1839,6 +1839,204 @@
       "matchedIdentityComments": 11,
       "accounts": 11,
       "accountsStartingThreads": 11,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "photo:122201088032908065",
+      "pageId": "https://www.facebook.com/ElvesBG.EU",
+      "capturedComments": 7,
+      "topLevelComments": 7,
+      "replyComments": 0,
+      "matchedIdentityComments": 7,
+      "accounts": 7,
+      "accountsStartingThreads": 7,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0QdguugYWScY4Z3Qq6AJc8wtg3X4jGmRPvsiC4k9wckQoGZ9o7CBrhUuS9ua4Eh9fl",
+      "pageId": "https://www.facebook.com/ElvesBG.EU",
+      "capturedComments": 49,
+      "topLevelComments": 43,
+      "replyComments": 6,
+      "matchedIdentityComments": 49,
+      "accounts": 47,
+      "accountsStartingThreads": 43,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0ztsmRRhd49H1dpPuqfhZ14aYdGPVRNqwKDJRbWnXjN1epu1M3EdgUoUU1SbqfcYCl",
+      "pageId": "https://www.facebook.com/ElvesBG.EU",
+      "capturedComments": 55,
+      "topLevelComments": 36,
+      "replyComments": 19,
+      "matchedIdentityComments": 55,
+      "accounts": 42,
+      "accountsStartingThreads": 36,
+      "accountsWithMultipleComments": 9
+    },
+    {
+      "postId": "post:pfbid0uDcAq9Y2BU5nyXjLwkyEtcaGMJ1mhP7GADfLzBmHMk2BEj8SxSAScHNp5MJs97jWl",
+      "pageId": "https://www.facebook.com/vidinvest",
+      "capturedComments": 1,
+      "topLevelComments": 1,
+      "replyComments": 0,
+      "matchedIdentityComments": 1,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0DoqgAYaBF8R7ZX5xGtd6FtKNk2hVGpxuQhf7xJ1pUKSCKpwxVMYtYHNKJjCupGTel",
+      "pageId": "https://www.facebook.com/Dupnicanews.EU",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0k2Z1Mvg4oo4ySqBu4iU5DYPnggxvrd6dg6xdLrukzi4ckDA9sws5CqSRpVvoJHqsl",
+      "pageId": "https://www.facebook.com/novinitem",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02hMFkykBV5JhsN3jJ1erXnWu8QkAgmtNQPz93M28Lj64sPWjwQaLAs21A2y9dDzB7l",
+      "pageId": "https://www.facebook.com/novinitem",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0E7kUwnMDVrpWRKbGCUBWaVQDKokH5aZsJtLaTCTEYVcVHxSvfxuZTEjv5siTjiDBl",
+      "pageId": "https://www.facebook.com/novinitem",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid021Xa43XHtzEKVpcPvtoxuhhQ6afqV65ZbsZYnxetrdo24YxtzWuKTpzsHifkzhBVLl",
+      "pageId": "https://www.facebook.com/novinitem",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0UDjWiXg59Kz5eCPNpN6HYx3ERZmiAVGxfrMFnZbyJC6WgxhhyqevtuB65CkTiZUrl",
+      "pageId": "https://www.facebook.com/vidinvest",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0TSXAEdDNoKqFBhhnqYW4Ta7eRHz5nU7pRbRPpPyS71JSwxcRmEaKiTzZw4LwnEuHl",
+      "pageId": "100063613176240",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0YsbK4ZGGzFPj78kxP1xK4Gx6yRA2Hn6h1ZbFhWZfkU2mLzcBUeiKMmxQ8k3cJJvzl",
+      "pageId": "100063613176240",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0m9rrH81HyPUQH9rNhcT9fiZs3TfeVApWH6dwMNXHmApmuZsw49a3e9YpbgA3GLgRl",
+      "pageId": "100063613176240",
+      "capturedComments": 0,
+      "topLevelComments": 0,
+      "replyComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid029EMD6dutwoFjab4KVnM535zdSH6Ln2bmSsmAQMoog6kPMyti8rfNt2VjSsMwPQZol",
+      "pageId": "100064864205365",
+      "capturedComments": 2,
+      "topLevelComments": 2,
+      "replyComments": 0,
+      "matchedIdentityComments": 2,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid02bgCrb7AXtv4T8jW1jysQ2wuVkmevoEjmpPA4KD6nPNNFrN8hM7rhu2TwHEnw7kXXl",
+      "pageId": "100064864205365",
+      "capturedComments": 26,
+      "topLevelComments": 12,
+      "replyComments": 14,
+      "matchedIdentityComments": 26,
+      "accounts": 14,
+      "accountsStartingThreads": 11,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid0EdTP4udv1eBQ8WL8UQJ9sWFKeKx3ErqPHR47h6Rxa59CKfczygo59yKG58QMGKwRl",
+      "pageId": "100064864205365",
+      "capturedComments": 3,
+      "topLevelComments": 3,
+      "replyComments": 0,
+      "matchedIdentityComments": 3,
+      "accounts": null,
+      "accountsStartingThreads": null,
+      "accountsWithMultipleComments": null
+    },
+    {
+      "postId": "post:pfbid029zMrw5RyEnqHHasCmFwmQdecwcbu8BfyvmTdFFFDERGEasBL3CWNWiYp973EsUB7l",
+      "pageId": "100064864205365",
+      "capturedComments": 58,
+      "topLevelComments": 46,
+      "replyComments": 12,
+      "matchedIdentityComments": 58,
+      "accounts": 47,
+      "accountsStartingThreads": 39,
+      "accountsWithMultipleComments": 8
+    },
+    {
+      "postId": "post:pfbid0erLMU2YiZWFmwBnqFPbZKnnncpTS7s8Ytd45FYC3uZNyKWbMFQ19HQEDJuYK6hA6l",
+      "pageId": "100064864205365",
+      "capturedComments": 4,
+      "topLevelComments": 4,
+      "replyComments": 0,
+      "matchedIdentityComments": 4,
+      "accounts": null,
+      "accountsStartingThreads": null,
       "accountsWithMultipleComments": null
     },
     {
@@ -4614,94 +4812,6 @@
       "accountsWithMultipleComments": null
     },
     {
-      "postId": "post:pfbid0DoqgAYaBF8R7ZX5xGtd6FtKNk2hVGpxuQhf7xJ1pUKSCKpwxVMYtYHNKJjCupGTel",
-      "pageId": "https://www.facebook.com/Dupnicanews.EU",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
-    },
-    {
-      "postId": "photo:122201088032908065",
-      "pageId": "https://www.facebook.com/ElvesBG.EU",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
-    },
-    {
-      "postId": "post:pfbid0QdguugYWScY4Z3Qq6AJc8wtg3X4jGmRPvsiC4k9wckQoGZ9o7CBrhUuS9ua4Eh9fl",
-      "pageId": "https://www.facebook.com/ElvesBG.EU",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
-    },
-    {
-      "postId": "post:pfbid0ztsmRRhd49H1dpPuqfhZ14aYdGPVRNqwKDJRbWnXjN1epu1M3EdgUoUU1SbqfcYCl",
-      "pageId": "https://www.facebook.com/ElvesBG.EU",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
-    },
-    {
-      "postId": "post:pfbid0k2Z1Mvg4oo4ySqBu4iU5DYPnggxvrd6dg6xdLrukzi4ckDA9sws5CqSRpVvoJHqsl",
-      "pageId": "https://www.facebook.com/novinitem",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
-    },
-    {
-      "postId": "post:pfbid02hMFkykBV5JhsN3jJ1erXnWu8QkAgmtNQPz93M28Lj64sPWjwQaLAs21A2y9dDzB7l",
-      "pageId": "https://www.facebook.com/novinitem",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
-    },
-    {
-      "postId": "post:pfbid0E7kUwnMDVrpWRKbGCUBWaVQDKokH5aZsJtLaTCTEYVcVHxSvfxuZTEjv5siTjiDBl",
-      "pageId": "https://www.facebook.com/novinitem",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
-    },
-    {
-      "postId": "post:pfbid021Xa43XHtzEKVpcPvtoxuhhQ6afqV65ZbsZYnxetrdo24YxtzWuKTpzsHifkzhBVLl",
-      "pageId": "https://www.facebook.com/novinitem",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
-    },
-    {
       "postId": "post:pfbid0wdBHVPj6Ucwz3vFrvy8Mq6w5rgZ1fzZgMCXaiGTarkNfgQCCkAscvc5ZdG4t1fWJl",
       "pageId": "https://www.facebook.com/petel.bg",
       "capturedComments": 0,
@@ -4748,61 +4858,6 @@
     {
       "postId": "post:pfbid02ySEgquF2J8B6Gxvj3W8WkxreuGGdiyU45N3diEQKGMUtdbAxaVQ3jj3BAN1xFWhCl",
       "pageId": "https://www.facebook.com/petel.bg",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
-    },
-    {
-      "postId": "post:pfbid0UDjWiXg59Kz5eCPNpN6HYx3ERZmiAVGxfrMFnZbyJC6WgxhhyqevtuB65CkTiZUrl",
-      "pageId": "https://www.facebook.com/vidinvest",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
-    },
-    {
-      "postId": "post:pfbid0uDcAq9Y2BU5nyXjLwkyEtcaGMJ1mhP7GADfLzBmHMk2BEj8SxSAScHNp5MJs97jWl",
-      "pageId": "https://www.facebook.com/vidinvest",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
-    },
-    {
-      "postId": "post:pfbid0TSXAEdDNoKqFBhhnqYW4Ta7eRHz5nU7pRbRPpPyS71JSwxcRmEaKiTzZw4LwnEuHl",
-      "pageId": "100063613176240",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
-    },
-    {
-      "postId": "post:pfbid0YsbK4ZGGzFPj78kxP1xK4Gx6yRA2Hn6h1ZbFhWZfkU2mLzcBUeiKMmxQ8k3cJJvzl",
-      "pageId": "100063613176240",
-      "capturedComments": 0,
-      "topLevelComments": 0,
-      "replyComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null,
-      "accountsStartingThreads": null,
-      "accountsWithMultipleComments": null
-    },
-    {
-      "postId": "post:pfbid0m9rrH81HyPUQH9rNhcT9fiZs3TfeVApWH6dwMNXHmApmuZsw49a3e9YpbgA3GLgRl",
-      "pageId": "100063613176240",
       "capturedComments": 0,
       "topLevelComments": 0,
       "replyComments": 0,
@@ -4973,6 +5028,48 @@
       "capturedComments": 180,
       "matchedIdentityComments": 180,
       "accounts": 138
+    },
+    {
+      "pageId": "https://www.facebook.com/ElvesBG.EU",
+      "postCount": 3,
+      "capturedComments": 111,
+      "matchedIdentityComments": 111,
+      "accounts": 95
+    },
+    {
+      "pageId": "https://www.facebook.com/vidinvest",
+      "postCount": 2,
+      "capturedComments": 1,
+      "matchedIdentityComments": 1,
+      "accounts": null
+    },
+    {
+      "pageId": "https://www.facebook.com/Dupnicanews.EU",
+      "postCount": 1,
+      "capturedComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null
+    },
+    {
+      "pageId": "https://www.facebook.com/novinitem",
+      "postCount": 4,
+      "capturedComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null
+    },
+    {
+      "pageId": "100063613176240",
+      "postCount": 3,
+      "capturedComments": 0,
+      "matchedIdentityComments": 0,
+      "accounts": null
+    },
+    {
+      "pageId": "100064864205365",
+      "postCount": 5,
+      "capturedComments": 93,
+      "matchedIdentityComments": 93,
+      "accounts": 69
     },
     {
       "pageId": "100064668132568",
@@ -5409,43 +5506,8 @@
       "accounts": null
     },
     {
-      "pageId": "https://www.facebook.com/Dupnicanews.EU",
-      "postCount": 1,
-      "capturedComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null
-    },
-    {
-      "pageId": "https://www.facebook.com/ElvesBG.EU",
-      "postCount": 3,
-      "capturedComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null
-    },
-    {
-      "pageId": "https://www.facebook.com/novinitem",
-      "postCount": 4,
-      "capturedComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null
-    },
-    {
       "pageId": "https://www.facebook.com/petel.bg",
       "postCount": 5,
-      "capturedComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null
-    },
-    {
-      "pageId": "https://www.facebook.com/vidinvest",
-      "postCount": 2,
-      "capturedComments": 0,
-      "matchedIdentityComments": 0,
-      "accounts": null
-    },
-    {
-      "pageId": "100063613176240",
-      "postCount": 3,
       "capturedComments": 0,
       "matchedIdentityComments": 0,
       "accounts": null
@@ -5840,6 +5902,11 @@
       "sharedAccounts": 25
     },
     {
+      "leftPageId": "61577398061794",
+      "rightPageId": "https://www.facebook.com/ElvesBG.EU",
+      "sharedAccounts": 5
+    },
+    {
       "leftPageId": "61557189262331",
       "rightPageId": "61577398061794",
       "sharedAccounts": 8
@@ -5850,7 +5917,7 @@
       {
         "commentBand": "1",
         "pageBand": "1",
-        "accounts": 3274
+        "accounts": 3382
       },
       {
         "commentBand": "1",
@@ -5870,12 +5937,12 @@
       {
         "commentBand": "2",
         "pageBand": "1",
-        "accounts": 479
+        "accounts": 488
       },
       {
         "commentBand": "2",
         "pageBand": "2",
-        "accounts": 107
+        "accounts": 117
       },
       {
         "commentBand": "2",
@@ -5890,17 +5957,17 @@
       {
         "commentBand": "3-5",
         "pageBand": "1",
-        "accounts": 256
+        "accounts": 261
       },
       {
         "commentBand": "3-5",
         "pageBand": "2",
-        "accounts": 72
+        "accounts": 78
       },
       {
         "commentBand": "3-5",
         "pageBand": "3",
-        "accounts": 12
+        "accounts": 13
       },
       {
         "commentBand": "3-5",
@@ -5910,12 +5977,12 @@
       {
         "commentBand": "6-10",
         "pageBand": "1",
-        "accounts": 54
+        "accounts": 55
       },
       {
         "commentBand": "6-10",
         "pageBand": "2",
-        "accounts": 9
+        "accounts": 10
       },
       {
         "commentBand": "6-10",
@@ -5950,7 +6017,7 @@
       {
         "commentBand": "21+",
         "pageBand": "1",
-        "accounts": 5
+        "accounts": null
       },
       {
         "commentBand": "21+",
@@ -5975,7 +6042,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 406
+            "accounts": 405
           },
           {
             "commentBand": "1",
@@ -6350,7 +6417,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 337
+            "accounts": 335
           },
           {
             "commentBand": "1",
@@ -6390,17 +6457,17 @@
           {
             "commentBand": "3-5",
             "pageBand": "1",
-            "accounts": 32
+            "accounts": 31
           },
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 27
+            "accounts": 29
           },
           {
             "commentBand": "3-5",
             "pageBand": "3",
-            "accounts": null
+            "accounts": 5
           },
           {
             "commentBand": "3-5",
@@ -6475,7 +6542,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 722
+            "accounts": 717
           },
           {
             "commentBand": "1",
@@ -6495,12 +6562,12 @@
           {
             "commentBand": "2",
             "pageBand": "1",
-            "accounts": 169
+            "accounts": 168
           },
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 41
+            "accounts": 46
           },
           {
             "commentBand": "2",
@@ -6515,12 +6582,12 @@
           {
             "commentBand": "3-5",
             "pageBand": "1",
-            "accounts": 96
+            "accounts": 95
           },
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 27
+            "accounts": 28
           },
           {
             "commentBand": "3-5",
@@ -6540,7 +6607,7 @@
           {
             "commentBand": "6-10",
             "pageBand": "2",
-            "accounts": 6
+            "accounts": 7
           },
           {
             "commentBand": "6-10",
@@ -6725,7 +6792,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 20
+            "accounts": 19
           },
           {
             "commentBand": "1",
@@ -6890,12 +6957,12 @@
           {
             "commentBand": "3-5",
             "pageBand": "1",
-            "accounts": 20
+            "accounts": 19
           },
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 18
+            "accounts": 19
           },
           {
             "commentBand": "3-5",
@@ -6975,7 +7042,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 58
+            "accounts": 57
           },
           {
             "commentBand": "1",
@@ -7100,7 +7167,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 173
+            "accounts": 172
           },
           {
             "commentBand": "1",
@@ -8350,7 +8417,7 @@
           {
             "commentBand": "1",
             "pageBand": "1",
-            "accounts": 72
+            "accounts": 70
           },
           {
             "commentBand": "1",
@@ -8375,7 +8442,7 @@
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 14
+            "accounts": 16
           },
           {
             "commentBand": "2",
@@ -8395,7 +8462,7 @@
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 7
+            "accounts": 8
           },
           {
             "commentBand": "3-5",
@@ -8745,12 +8812,12 @@
           {
             "commentBand": "2",
             "pageBand": "1",
-            "accounts": 9
+            "accounts": 8
           },
           {
             "commentBand": "2",
             "pageBand": "2",
-            "accounts": 11
+            "accounts": 10
           },
           {
             "commentBand": "2",
@@ -8770,7 +8837,757 @@
           {
             "commentBand": "3-5",
             "pageBand": "2",
-            "accounts": 8
+            "accounts": 9
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "4+",
+            "accounts": null
+          }
+        ]
+      },
+      {
+        "pageId": "https://www.facebook.com/ElvesBG.EU",
+        "cells": [
+          {
+            "commentBand": "1",
+            "pageBand": "1",
+            "accounts": 74
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "1",
+            "accounts": 5
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "2",
+            "accounts": 5
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "2",
+            "accounts": 5
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "4+",
+            "accounts": null
+          }
+        ]
+      },
+      {
+        "pageId": "https://www.facebook.com/vidinvest",
+        "cells": [
+          {
+            "commentBand": "1",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "4+",
+            "accounts": null
+          }
+        ]
+      },
+      {
+        "pageId": "https://www.facebook.com/Dupnicanews.EU",
+        "cells": [
+          {
+            "commentBand": "1",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "4+",
+            "accounts": null
+          }
+        ]
+      },
+      {
+        "pageId": "https://www.facebook.com/novinitem",
+        "cells": [
+          {
+            "commentBand": "1",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "4+",
+            "accounts": null
+          }
+        ]
+      },
+      {
+        "pageId": "100063613176240",
+        "cells": [
+          {
+            "commentBand": "1",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "6-10",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "11-20",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "21+",
+            "pageBand": "4+",
+            "accounts": null
+          }
+        ]
+      },
+      {
+        "pageId": "100064864205365",
+        "cells": [
+          {
+            "commentBand": "1",
+            "pageBand": "1",
+            "accounts": 46
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "2",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "1",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "1",
+            "accounts": 7
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "2",
+            "accounts": 7
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "3",
+            "accounts": null
+          },
+          {
+            "commentBand": "2",
+            "pageBand": "4+",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "1",
+            "accounts": null
+          },
+          {
+            "commentBand": "3-5",
+            "pageBand": "2",
+            "accounts": null
           },
           {
             "commentBand": "3-5",
@@ -16595,632 +17412,7 @@
         ]
       },
       {
-        "pageId": "https://www.facebook.com/Dupnicanews.EU",
-        "cells": [
-          {
-            "commentBand": "1",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "4+",
-            "accounts": null
-          }
-        ]
-      },
-      {
-        "pageId": "https://www.facebook.com/ElvesBG.EU",
-        "cells": [
-          {
-            "commentBand": "1",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "4+",
-            "accounts": null
-          }
-        ]
-      },
-      {
-        "pageId": "https://www.facebook.com/novinitem",
-        "cells": [
-          {
-            "commentBand": "1",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "4+",
-            "accounts": null
-          }
-        ]
-      },
-      {
         "pageId": "https://www.facebook.com/petel.bg",
-        "cells": [
-          {
-            "commentBand": "1",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "4+",
-            "accounts": null
-          }
-        ]
-      },
-      {
-        "pageId": "https://www.facebook.com/vidinvest",
-        "cells": [
-          {
-            "commentBand": "1",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "1",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "2",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "3-5",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "6-10",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "11-20",
-            "pageBand": "4+",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "1",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "2",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "3",
-            "accounts": null
-          },
-          {
-            "commentBand": "21+",
-            "pageBand": "4+",
-            "accounts": null
-          }
-        ]
-      },
-      {
-        "pageId": "100063613176240",
         "cells": [
           {
             "commentBand": "1",
@@ -17346,5 +17538,5 @@
       }
     ]
   },
-  "collectionSha256": "d46d0c538375d98f3652626c8bb4389128a07c50a674d11fff526e8c4cb749c4"
+  "collectionSha256": "ab3e4396191538847e3d1c3e11fa882385b2aa6c71e9f5649777ef44ff53fb9c"
 }

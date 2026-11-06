@@ -97,7 +97,7 @@ describe('Facebook research data', () => {
         expect(Object.values(page.stance[candidate].counts).reduce((sum, count) => sum + count, 0)).toBe(page.postCount);
       }
     }
-    expect(report.posts.filter(post => post.stance)).toHaveLength(418);
+    expect(report.posts.filter(post => post.stance)).toHaveLength(report.posts.length);
     const bnews = pages.find(page => page.name === 'BNews Bg')!;
     expect(bnews.stance.gyurov.label).toBe('critical');
     expect(bnews.stance.gyurov.counts.critical).toBe(19);

@@ -56,7 +56,11 @@ export function createCollector(env) {
                 scroller = scroller.parentElement;
             scroller = scroller || scope;
             const r = scroller.getBoundingClientRect();
-            const buttons = [...scope.querySelectorAll("[role=\"button\"],button")].filter(rectVisible).map(e => {
+            const buttons = [...scope.querySelectorAll("[role=\"button\"],button")].filter(e => {
+                const text = e.textContent?.trim() || "";
+                return (/^View.*(?:repl|comments)/i.test(text) || text === "See more"
+                    || /^(Most relevant|All comments|Newest)/.test(text)) && rectVisible(e);
+            }).map(e => {
                 const range = document.createRange();
                 range.selectNodeContents(e);
                 const textRects = [...range.getClientRects()].filter(r => r.width > 0 && r.height > 0);
@@ -87,7 +91,7 @@ export function createCollector(env) {
                 buttonPath.unshift(element.tagName.toLowerCase() + ':nth-of-type(' + (siblings.indexOf(element) + 1) + ')');
             }
             const ordering = buttons.find(b => /^(Most relevant|All comments|Newest)/.test(b.text));
-            const allCounterButtons = [...(modal ? modal : document).querySelectorAll("[role=\"button\"],button")].filter(e => rectVisible(e) && (modal || e.getBoundingClientRect().y >= 0 && e.getBoundingClientRect().bottom <= innerHeight));
+            const allCounterButtons = [...(modal ? modal : document).querySelectorAll("[role=\"button\"],button")].filter(e => (e.getAttribute("aria-label") || "").startsWith("Comment") && rectVisible(e) && (modal || e.getBoundingClientRect().y >= 0 && e.getBoundingClientRect().bottom <= innerHeight));
             const label = allCounterButtons.map(e => e.getAttribute("aria-label") || "").find(s => /^Comment on .*post,\s*\d[\d,\s]* comments$/.test(s) || /^Comment,\s*\d[\d,\s]* comments$/.test(s));
             const m = label?.match(/,\s*(\d[\d,\s]*) comments$/);
             return {
@@ -127,9 +131,11 @@ export function createCollector(env) {
                 const h = [...document.querySelectorAll("h2")].find(e => visible(e) && e.textContent?.trim() === "Comments");
                 const modal = [...document.querySelectorAll("[role=\"dialog\"]")].find(e => visible(e) && [...e.querySelectorAll("h2")].some(h => /['’]s Post$/.test(h.textContent?.trim() || "")));
                 const scope = h?.parentElement || modal;
-                const headings = [...document.querySelectorAll("h1,h2,h3,[role=\"alert\"]")].filter(visible).map(e => e.textContent?.trim() || "");
+                const headings = [...document.querySelectorAll("h1,h2,h3,[role=\"alert\"]")]
+                    .filter(e => e.getAttribute("role") === "alert" || !e.closest('[role="article"][aria-label^="Comment by"],[role="article"][aria-label^="Reply by"]'))
+                    .filter(visible).map(e => e.textContent?.trim() || "");
                 const disabled = scope ? [...scope.querySelectorAll("[role=\"button\"][aria-disabled=\"true\"],button:disabled")].filter(visible).map(e => "button \"" + (e.getAttribute("aria-label") || e.textContent?.trim() || "") + "\" [disabled]") : [];
-                const ordering = scope ? [...scope.querySelectorAll("[role=\"button\"],button")].filter(visible).map(e => e.textContent?.trim()).find(t => /^(All comments|Most relevant|Newest)/.test(t || "")) : null;
+                const ordering = scope ? [...scope.querySelectorAll("[role=\"button\"],button")].find(e => /^(All comments|Most relevant|Newest)/.test(e.textContent?.trim() || "") && visible(e))?.textContent?.trim() : null;
                 return JSON.stringify({
                     url: location.href,
                     title: document.title,
@@ -230,20 +236,16 @@ export function createCollector(env) {
             if (ui.button) {
                 action = ui.button.text;
                 const text = ui.button.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                const targets = controls.locator(ui.button.selector || '[role="button"],button').filter({
-                    hasText: new RegExp('^\\s*' + text + '\\s*$')
-                }).filter({
-                    visible: true
-                });
+                const targets = controls.locator('[role="button"],button')
+                    .filter({ hasText: new RegExp('^\\s*' + text + '\\s*$'), visible: true });
                 const count = await targets.count();
-                const expected = ui.button.selector ? 1 : ui.button.sameNameCount;
+                const expected = ui.button.sameNameCount;
                 if (count !== expected)
-                    return {
-                        error: "DOM expansion list changed; refresh before expanding",
-                        expected,
-                        observed: count
-                    };
-                await targets.nth(ui.button.selector ? 0 : ui.button.sameNameIndex).click({ timeoutMs: 10000 });
+                    return { error: "DOM expansion list changed; refresh before expanding", expected, observed: count };
+                const target = targets.nth(ui.button.sameNameIndex);
+                if (!await target.isEnabled())
+                    return { error: "DOM expansion list changed; refresh before expanding", expected, observed: count };
+                await target.press('Enter', { timeoutMs: 10000 });
             }
             else if (s.comments.length) {
                 action = "focus final comment link and End";
@@ -299,10 +301,10 @@ export function ccInstallSnapshotFix(tools) {
             const modal = [...document.querySelectorAll("[role=\"dialog\"]")].find(e => e.getBoundingClientRect().width > 0);
             const h = (location.pathname.startsWith("/reel/") || location.pathname.startsWith("/photo")) ? [...document.querySelectorAll("h2")].find(e => e.textContent?.trim() === "Comments") : null;
             const scope = modal || h?.parentElement;
-            const els = [...(modal || document).querySelectorAll("[role=\"button\"],button")].filter(e => e.getClientRects().length && (modal || (e.getBoundingClientRect().y >= 0 && e.getBoundingClientRect().bottom <= innerHeight)));
+            const els = [...(modal || document).querySelectorAll("[role=\"button\"],button")].filter(e => (e.getAttribute("aria-label") || "").startsWith("Comment") && e.getClientRects().length && (modal || (e.getBoundingClientRect().y >= 0 && e.getBoundingClientRect().bottom <= innerHeight)));
             const label = els.map(e => e.getAttribute("aria-label") || "").find(t => /^Comment(?: on .*post)?,\s*\d[\d,\s]* comments?$/.test(t));
             const m = label?.match(/,\s*(\d[\d,\s]*) comments?$/);
-            const pending = scope ? [...scope.querySelectorAll("[role=\"button\"],button,[role=\"progressbar\"],[role=\"status\"],[aria-label=\"Loading...\"],[aria-label=\"Loading\"]")].filter(e => e.getClientRects().length && ((e.getAttribute("aria-disabled") === "true" || e.disabled) && /^View.*(?:comments|repl)/i.test(e.textContent || "") || e.getAttribute("role") === "progressbar" || (e.getAttribute("role") === "status" && /^Loading/.test(e.textContent?.trim() || "")) || /^Loading/.test(e.getAttribute("aria-label") || ""))).length : 0;
+            const pending = scope ? [...scope.querySelectorAll("[role=\"button\"],button,[role=\"progressbar\"],[role=\"status\"],[aria-label=\"Loading...\"],[aria-label=\"Loading\"]")].filter(e => ((e.getAttribute("aria-disabled") === "true" || e.disabled) && /^View.*(?:comments|repl)/i.test(e.textContent || "") || e.getAttribute("role") === "progressbar" || (e.getAttribute("role") === "status" && /^Loading/.test(e.textContent?.trim() || "")) || /^Loading/.test(e.getAttribute("aria-label") || "")) && e.getClientRects().length).length : 0;
             return {
                 reported: m ? Number(m[1].replace(/[,\s]/g, "")) : null,
                 pending

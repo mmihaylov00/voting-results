@@ -98,6 +98,45 @@ test('ignores fake external comment IDs and Facebook comment links inside the bo
   dom.window.close();
 });
 
+test('measures expansion and ordering controls without hit-testing unrelated comment actions', async () => {
+  const actions = '<h3 data-ordinary-action>Comment author</h3><button data-ordinary-action>Like</button><button data-ordinary-action>Reply</button>'.repeat(500);
+  const dom = documentFor(card('1', 'Example Author', '/profile.php?id=123456', 'Comment text', { extra: actions })
+    + '<button>All comments</button><button>View 2 replies</button><button hidden>View 8 replies</button>'
+    + '<button aria-disabled="true">View 4 replies</button><div role="status">Loading...</div>'
+    + '<button aria-label="Comment on Example\'s post, 1 comment">1</button>'
+    + '<h2>Security check</h2><div role="alert">Try again later</div>');
+  const measured = [];
+  let unrelatedVisibilityReads = 0;
+  const clientRects = dom.window.Element.prototype.getClientRects;
+  dom.window.Element.prototype.getClientRects = function () {
+    if (this.hasAttribute('data-ordinary-action')) unrelatedVisibilityReads++;
+    return clientRects.call(this);
+  };
+  dom.window.document.createRange = () => ({
+    selectNodeContents: element => measured.push(element.textContent.trim()),
+    getClientRects: () => [{ x: 0, y: 0, width: 100, height: 20 }],
+  });
+  dom.window.document.elementFromPoint = () => null;
+  const collector = browser.ccInstallSnapshotFix(browser.createCollector({}));
+  const snapshot = await collector.snapshot({ playwright: {
+    evaluate: async callback => dom.window.eval(`(${callback.toString()})()`),
+  } });
+  assert.deepEqual(measured, ['All comments', 'View 2 replies', 'View 4 replies']);
+  assert.equal(unrelatedVisibilityReads, 0);
+  assert.equal(snapshot.comments[0].text, 'Comment text');
+  assert.equal(snapshot.reportedCount, 1);
+  assert.equal(snapshot.ordering.text, 'All comments');
+  assert.equal(snapshot.ui.pending, 3);
+  assert.equal(snapshot.ui.button.text, 'View 2 replies');
+  const observation = await collector.observe({ playwright: {
+    evaluate: async callback => dom.window.eval(`(${callback.toString()})()`),
+  } });
+  assert.equal(JSON.parse(observation.split('\n')[0]).ordering, 'All comments');
+  assert.deepEqual(JSON.parse(observation.split('\n')[0]).headings, ["Example's Post", 'Security check', 'Try again later']);
+  assert.equal(unrelatedVisibilityReads, 0);
+  dom.window.close();
+});
+
 test('merges snapshots before virtualization drops rows and protects fully expanded text', async () => {
   const persisted = [];
   const hooks = [];
@@ -167,25 +206,47 @@ test('scrolls through a focusable comment link and captures on both sides of the
   assert.deepEqual(events, ['capture-existing-frame', 'link:End', 'observe', 'capture-new-frame']);
 });
 
-test('expands the exact freshly observed button and refuses a changed target', async () => {
+test('expands the observed duplicate by its checked name, count and index', async () => {
   const events = [];
   const collector = browser.createCollector({});
   collector.merge = async () => ({});
   collector.observe = async () => '';
-  let found = 1;
+  let found = 40;
   const target = { filter() { return this; }, count: async () => found,
-    nth: index => ({ click: async () => events.push([index, 'click']) }) };
+    nth: index => ({ isEnabled: async () => true, press: async key => events.push([index, key]) }) };
   collector.controls = async () => ({ locator: selector => {
-    assert.equal(selector, 'div:nth-of-type(2) > div:nth-of-type(1)');
+    assert.equal(selector, '[role="button"],button');
     return target;
   } });
   const snapshot = { comments: [], ui: { button: { text: 'View 2 replies',
     selector: 'div:nth-of-type(2) > div:nth-of-type(1)', sameNameCount: 40, sameNameIndex: 20 } } };
   await collector.step({}, {}, 'down', snapshot);
-  assert.deepEqual(events, [[0, 'click']]);
+  assert.deepEqual(events, [[20, 'Enter']]);
   found = 0;
   assert.match((await collector.step({}, {}, 'down', snapshot)).error, /refresh before expanding/);
   assert.equal(events.length, 1);
+});
+
+test('activates a unique named expansion with the keyboard and rejects changed or disabled targets', async () => {
+  const collector = browser.createCollector({});
+  const events = [];
+  collector.merge = async () => ({});
+  collector.observe = async () => '';
+  let count = 1, enabled = true;
+  const target = { filter() { return this; }, count: async () => count, isEnabled: async () => enabled,
+    nth() { return this; }, press: async key => events.push(key) };
+  collector.controls = async () => ({ locator: selector => {
+    assert.equal(selector, '[role="button"],button');
+    return target;
+  } });
+  const snapshot = { comments: [], ui: { button: { text: 'View 65 replies', sameNameCount: 1, sameNameIndex: 0 } } };
+  await collector.step({}, {}, 'down', snapshot);
+  assert.deepEqual(events, ['Enter']);
+  count = 2;
+  assert.match((await collector.step({}, {}, 'down', snapshot)).error, /refresh before expanding/);
+  count = 1; enabled = false;
+  assert.match((await collector.step({}, {}, 'down', snapshot)).error, /refresh before expanding/);
+  assert.deepEqual(events, ['Enter']);
 });
 
 test('filters byline reads to unresolved comment IDs and can recover an unknown author later', async () => {

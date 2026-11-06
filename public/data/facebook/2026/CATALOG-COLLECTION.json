@@ -42,6 +42,10 @@
     {
       "sha256": "8aecb730daa6866f7b79b1bc1d24d8781dd06ea20a007c54720c1a36893617e5",
       "captures": 18
+    },
+    {
+      "sha256": "d359f70435548515c7b29d9b37121a02fc9224f4875df07c4f33bfe6b96810e9",
+      "captures": 5
     }
   ],
   "pages": [
@@ -1162,6 +1166,22 @@
         {
           "url": "https://www.facebook.com/pirinpress.bg",
           "note": "Потвърдена Page PirinPress, Media/news company, 6.7K followers, pirinpress.com, Югозападна България; собственото меню показва Report Page на 6 ноември 2026."
+        }
+      ]
+    },
+    {
+      "id": "100064864205365",
+      "name": "I ♥ Burgas",
+      "url": "https://www.facebook.com/people/I-Burgas/100064864205365",
+      "category": "Nonprofit organization",
+      "identityEvidence": [
+        {
+          "url": "https://www.burgas24.bg/",
+          "note": "Footer link “Burgas24.bg във Facebook” points to this Page; checked 2026-11-06."
+        },
+        {
+          "url": "https://www.facebook.com/people/I-Burgas/100064864205365",
+          "note": "Native Report Page menu; Page contact and website links point back to burgas24.bg. Display name I ♥ Burgas retained."
         }
       ]
     }
@@ -6929,6 +6949,91 @@
       "directoryEntryIds": [
         "publisher-pirin-press"
       ]
+    },
+    {
+      "id": "post:pfbid029EMD6dutwoFjab4KVnM535zdSH6Ln2bmSsmAQMoog6kPMyti8rfNt2VjSsMwPQZol",
+      "pageId": "100064864205365",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid029EMD6dutwoFjab4KVnM535zdSH6Ln2bmSsmAQMoog6kPMyti8rfNt2VjSsMwPQZol&id=100064864205365",
+      "date": "2026-10-26",
+      "targetKey": "id:100064864205365",
+      "publishedAt": null,
+      "interval": null,
+      "dateEvidence": "Native Page search Date posted 2026, timestamp October 26 at 1:39 PM.",
+      "capturedAt": "2026-11-06T09:59:40.092Z",
+      "sourceTextSha256": "99f9d41823805e4b796e99c9e98a8642a91d7907c14d085b04411d5e7c3e3c97",
+      "captionComplete": true,
+      "politicalReason": "Публикация за резултат от първия президентски тур.",
+      "directoryEntryIds": [
+        "publisher-burgas24"
+      ]
+    },
+    {
+      "id": "post:pfbid02bgCrb7AXtv4T8jW1jysQ2wuVkmevoEjmpPA4KD6nPNNFrN8hM7rhu2TwHEnw7kXXl",
+      "pageId": "100064864205365",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02bgCrb7AXtv4T8jW1jysQ2wuVkmevoEjmpPA4KD6nPNNFrN8hM7rhu2TwHEnw7kXXl&id=100064864205365",
+      "date": "2026-10-26",
+      "targetKey": "id:100064864205365",
+      "publishedAt": null,
+      "interval": null,
+      "dateEvidence": "Native Page search Date posted 2026, timestamp October 26 at 11:22 AM.",
+      "capturedAt": "2026-11-06T10:00:02.443Z",
+      "sourceTextSha256": "632dd778dbdfb01567ba013143c78f2cea521a6452cf522fdc542a040e026ae1",
+      "captionComplete": true,
+      "politicalReason": "Публикация за резултат от първия президентски тур.",
+      "directoryEntryIds": [
+        "publisher-burgas24"
+      ]
+    },
+    {
+      "id": "post:pfbid0EdTP4udv1eBQ8WL8UQJ9sWFKeKx3ErqPHR47h6Rxa59CKfczygo59yKG58QMGKwRl",
+      "pageId": "100064864205365",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0EdTP4udv1eBQ8WL8UQJ9sWFKeKx3ErqPHR47h6Rxa59CKfczygo59yKG58QMGKwRl&id=100064864205365",
+      "date": "2026-10-28",
+      "targetKey": "id:100064864205365",
+      "publishedAt": null,
+      "interval": null,
+      "dateEvidence": "Native Page search Date posted 2026, timestamp October 28 at 3:26 PM.",
+      "capturedAt": "2026-11-06T10:00:12.604Z",
+      "sourceTextSha256": "c9c14686718424b6beb7c328e08ac4e0395d43cc968703f318c213e47e4725ff",
+      "captionComplete": true,
+      "politicalReason": "Дебат между двамата кандидати за президент.",
+      "directoryEntryIds": [
+        "publisher-burgas24"
+      ]
+    },
+    {
+      "id": "post:pfbid029zMrw5RyEnqHHasCmFwmQdecwcbu8BfyvmTdFFFDERGEasBL3CWNWiYp973EsUB7l",
+      "pageId": "100064864205365",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid029zMrw5RyEnqHHasCmFwmQdecwcbu8BfyvmTdFFFDERGEasBL3CWNWiYp973EsUB7l&id=100064864205365",
+      "date": "2026-10-05",
+      "targetKey": "id:100064864205365",
+      "publishedAt": null,
+      "interval": null,
+      "dateEvidence": "Native Page search Date posted 2026, timestamp October 5.",
+      "capturedAt": "2026-11-06T10:00:42.153Z",
+      "sourceTextSha256": "30863a2662348b2becf5508b87d5f57e61d186291794f40a488a2dc16a11eed6",
+      "captionComplete": true,
+      "politicalReason": "Предизборен сондаж с резултати за кандидатските двойки.",
+      "directoryEntryIds": [
+        "publisher-burgas24"
+      ]
+    },
+    {
+      "id": "post:pfbid0erLMU2YiZWFmwBnqFPbZKnnncpTS7s8Ytd45FYC3uZNyKWbMFQ19HQEDJuYK6hA6l",
+      "pageId": "100064864205365",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0erLMU2YiZWFmwBnqFPbZKnnncpTS7s8Ytd45FYC3uZNyKWbMFQ19HQEDJuYK6hA6l&id=100064864205365",
+      "date": "2026-10-25",
+      "targetKey": "id:100064864205365",
+      "publishedAt": null,
+      "interval": null,
+      "dateEvidence": "Native Page search Date posted 2026, timestamp October 25 at 10:59 PM.",
+      "capturedAt": "2026-11-06T10:02:50.660Z",
+      "sourceTextSha256": "e3dc3aa61f4f2b1806b1ff043900b42d11d58a6295d90a2b6a4d2830750e70f6",
+      "captionComplete": true,
+      "politicalReason": "Кандидатска позиция след първия президентски тур.",
+      "directoryEntryIds": [
+        "publisher-burgas24"
+      ]
     }
   ],
   "coverage": [
@@ -7497,13 +7602,13 @@
     {
       "targetKey": "id:100064864205365",
       "url": "https://www.facebook.com/people/I-Burgas/100064864205365",
-      "checkedAt": "2026-11-05T21:35:42.900Z",
-      "status": "excluded",
+      "checkedAt": "2026-11-06T10:03:53.109Z",
+      "status": "partial",
       "monthComplete": false,
-      "postsCaptured": 0,
-      "postsAdded": 0,
+      "postsCaptured": 5,
+      "postsAdded": 5,
       "notes": [
-        "Предоставеният URL за Burgas24.bg зарежда „I ♥ Burgas“, категория Nonprofit organization, 50K followers. Не е потвърдена връзка с Burgas24.bg и не са приписани публикации на издателя."
+        "Потвърдена е двупосочна връзка между burgas24.bg и I ♥ Burgas. Прегледани са резултати от търсене за Йотова и Гюров с Date posted 2026; запазени са пет собствени публикации от октомври, без претенция за пълен архив."
       ]
     },
     {
@@ -8161,13 +8266,14 @@
     {
       "targetKey": "id:61557935279182",
       "url": "https://www.facebook.com/profile.php?id=61557935279182",
-      "checkedAt": "2026-11-05T21:27:47.063Z",
+      "checkedAt": "2026-11-06T09:48:54.321Z",
       "status": "partial",
       "monthComplete": false,
       "postsCaptured": 0,
       "postsAdded": 0,
       "notes": [
-        "Зарежда се публична идентичност БНМ - Българска Независима Медия, категория Digital creator, 33 followers. About показва Category/Details/Contact info, без видима Page transparency. Не са събирани постове, тъй като Page спрямо професионален профил не е еднозначно потвърдено."
+        "Потвърдено собствено меню Report Page за БНМ - Българска Независима Медия; категория Digital creator, 33 followers.",
+        "Нативен Go to 2026 / October показва собствени публикации от юни и април 2024. Те са изключени по дата; в прегледаната част не е намерена подходяща октомврийска публикация от 2026 г. Частична проверка."
       ]
     },
     {
