@@ -1,8 +1,8 @@
 {
   "version": 1,
   "period": "2026-10",
-  "collectionDate": "2026-11-05T22:03:41.531Z",
-  "collectionPostCount": 404,
+  "collectionDate": "2026-11-06T08:58:44.137Z",
+  "collectionPostCount": 422,
   "titleSearchCount": 49,
   "keywordTarget": 100,
   "pages": [
@@ -977,6 +977,114 @@
       "followersApproximate": true,
       "satire": false,
       "origin": "collection"
+    },
+    {
+      "id": "https://www.facebook.com/Dupnicanews.EU",
+      "name": "Dupnica.EU",
+      "url": "https://www.facebook.com/Dupnicanews.EU",
+      "followers": 7000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection",
+      "avatar": {
+        "src": "/images/facebook/2026/0ecc5f3d3fb0491d7da68531c129ee4950ac854222e387e9ef7b33395747eafe.jpg",
+        "sourceUrl": "https://www.facebook.com/Dupnicanews.EU",
+        "width": 480,
+        "height": 480,
+        "kind": "image",
+        "capturedAt": "2026-11-06T08:44:10.542Z",
+        "sha256": "0ecc5f3d3fb0491d7da68531c129ee4950ac854222e387e9ef7b33395747eafe"
+      }
+    },
+    {
+      "id": "https://www.facebook.com/ElvesBG.EU",
+      "name": "BG Elves",
+      "url": "https://www.facebook.com/ElvesBG.EU",
+      "followers": 53000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection",
+      "avatar": {
+        "src": "/images/facebook/2026/5ab05e94a3b3fa78f989febff2cc1c4e20fd69fb774726029bee5bf931d5056b.jpg",
+        "sourceUrl": "https://www.facebook.com/ElvesBG.EU",
+        "width": 480,
+        "height": 480,
+        "kind": "image",
+        "capturedAt": "2026-11-06T08:35:31.126Z",
+        "sha256": "5ab05e94a3b3fa78f989febff2cc1c4e20fd69fb774726029bee5bf931d5056b"
+      }
+    },
+    {
+      "id": "https://www.facebook.com/novinitem",
+      "name": "Новините от Монтана",
+      "url": "https://www.facebook.com/novinitem",
+      "followers": 14000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection",
+      "avatar": {
+        "src": "/images/facebook/2026/9835d0df12b34133074eab3e3364c3159af6c927b788832eb3a7ba653d2d7dce.jpg",
+        "sourceUrl": "https://www.facebook.com/novinitem",
+        "width": 244,
+        "height": 244,
+        "kind": "image",
+        "capturedAt": "2026-11-06T08:41:26.222Z",
+        "sha256": "9835d0df12b34133074eab3e3364c3159af6c927b788832eb3a7ba653d2d7dce"
+      }
+    },
+    {
+      "id": "https://www.facebook.com/petel.bg",
+      "name": "Petel.bg",
+      "url": "https://www.facebook.com/petel.bg",
+      "followers": 987000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection",
+      "avatar": {
+        "src": "/images/facebook/2026/267f94c52bd2fa9f5f45dbd1a9b6523f9c7e1e7438e125ae41a718fe5654fbb3.jpg",
+        "sourceUrl": "https://www.facebook.com/petel.bg",
+        "width": 410,
+        "height": 410,
+        "kind": "image",
+        "capturedAt": "2026-11-06T08:37:41.110Z",
+        "sha256": "267f94c52bd2fa9f5f45dbd1a9b6523f9c7e1e7438e125ae41a718fe5654fbb3"
+      }
+    },
+    {
+      "id": "https://www.facebook.com/vidinvest",
+      "name": "Видин Вест",
+      "url": "https://www.facebook.com/vidinvest",
+      "followers": 16000,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection",
+      "avatar": {
+        "src": "/images/facebook/2026/7d45c168198642cf92004bcb40e28244865d2bcbee2d1fe071149519a3af9749.jpg",
+        "sourceUrl": "https://www.facebook.com/vidinvest",
+        "width": 480,
+        "height": 480,
+        "kind": "image",
+        "capturedAt": "2026-11-06T08:42:33.183Z",
+        "sha256": "7d45c168198642cf92004bcb40e28244865d2bcbee2d1fe071149519a3af9749"
+      }
+    },
+    {
+      "id": "100063613176240",
+      "name": "PirinPress",
+      "url": "https://www.facebook.com/pirinpress.bg",
+      "followers": 6700,
+      "followersApproximate": true,
+      "satire": false,
+      "origin": "collection",
+      "avatar": {
+        "src": "/images/facebook/2026/fb58eb6404d5f4fab29e867e68921ffb26c06e3f270347a0ef97d30e819fa7a3.jpg",
+        "sourceUrl": "https://www.facebook.com/pirinpress.bg",
+        "width": 80,
+        "height": 80,
+        "kind": "image",
+        "capturedAt": "2026-11-06T08:54:11.902Z",
+        "sha256": "fb58eb6404d5f4fab29e867e68921ffb26c06e3f270347a0ef97d30e819fa7a3"
+      }
     }
   ],
   "posts": [
@@ -25227,6 +25335,910 @@
         "reason": "Анонсирано е отразяване на изборния ден без подкрепа или критика към кандидат.",
         "sourceTextSha256": "1510aafd3cf5906876746f2f837854349126491d932235fb7012079d023f7dc8"
       }
+    },
+    {
+      "id": "post:pfbid0DoqgAYaBF8R7ZX5xGtd6FtKNk2hVGpxuQhf7xJ1pUKSCKpwxVMYtYHNKJjCupGTel",
+      "pageId": "https://www.facebook.com/Dupnicanews.EU",
+      "url": "https://www.facebook.com/Dupnicanews.EU/posts/pfbid0DoqgAYaBF8R7ZX5xGtd6FtKNk2hVGpxuQhf7xJ1pUKSCKpwxVMYtYHNKJjCupGTel",
+      "date": "2026-10-26",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:44:10.542Z",
+      "excerpt": "",
+      "summary": "Dupnica.EU публикува резултати за Йотова и Гюров от първия тур в Кюстендилска област.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "link-title",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "link-title",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "избори",
+          "source": "link-title",
+          "evidence": "избори"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 2,
+          "approximate": false,
+          "raw": "2"
+        },
+        "comments": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "shares": {
+          "value": 1,
+          "approximate": false,
+          "raw": "1"
+        }
+      },
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "images": [
+        {
+          "src": "/images/facebook/2026/f470c433703e9d6f56ebbb2021429b173e46545b1377df919c93f6e093c03af8.jpg",
+          "sourceUrl": "https://www.facebook.com/Dupnicanews.EU/posts/pfbid0DoqgAYaBF8R7ZX5xGtd6FtKNk2hVGpxuQhf7xJ1pUKSCKpwxVMYtYHNKJjCupGTel",
+          "width": 640,
+          "height": 334,
+          "kind": "image",
+          "capturedAt": "2026-11-06T08:44:10.542Z",
+          "sha256": "f470c433703e9d6f56ebbb2021429b173e46545b1377df919c93f6e093c03af8"
+        }
+      ],
+      "linkHeadline": "40,2% за Йотова и 25,3% за Гюров на изборите в Кюстендилска област"
+    },
+    {
+      "id": "photo:122201088032908065",
+      "pageId": "https://www.facebook.com/ElvesBG.EU",
+      "url": "https://www.facebook.com/photo/?fbid=122201088032908065",
+      "date": "2026-10-31",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:35:31.126Z",
+      "excerpt": "Ще спра войната за 10 дни",
+      "summary": "BG Elves публикува сатиричен монтаж с образа на Йотова и прическа, наподобяваща тази на Тръмп, с реплика за спиране на войната.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "война",
+          "source": "text",
+          "evidence": "война"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 749,
+          "approximate": false,
+          "raw": "749"
+        },
+        "comments": {
+          "value": 7,
+          "approximate": false,
+          "raw": "7"
+        },
+        "shares": {
+          "value": 25,
+          "approximate": false,
+          "raw": "25"
+        }
+      },
+      "sourceTextSha256": "ab1adcdb10c43ac618aad2498c5ae645629ef60eb7c24d436b8cfca1d21dff8b",
+      "images": [
+        {
+          "src": "/images/facebook/2026/2b906d246860aabe6211bddc01f91d3cb3084abc0a24ad1ad54d7810279107bb.jpg",
+          "sourceUrl": "https://www.facebook.com/photo/?fbid=122201088032908065",
+          "width": 694,
+          "height": 695,
+          "kind": "image",
+          "capturedAt": "2026-11-06T08:35:31.126Z",
+          "sha256": "2b906d246860aabe6211bddc01f91d3cb3084abc0a24ad1ad54d7810279107bb"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0QdguugYWScY4Z3Qq6AJc8wtg3X4jGmRPvsiC4k9wckQoGZ9o7CBrhUuS9ua4Eh9fl",
+      "pageId": "https://www.facebook.com/ElvesBG.EU",
+      "url": "https://www.facebook.com/ElvesBG.EU/posts/pfbid0QdguugYWScY4Z3Qq6AJc8wtg3X4jGmRPvsiC4k9wckQoGZ9o7CBrhUuS9ua4Eh9fl",
+      "date": "2026-10-29",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:36:16.990Z",
+      "excerpt": "При акция на МВРЕлфи в София бе намерен списък с купените медии за вота в неделя. Бъдете нащрек. Очаквайте масова информационна манипулация в полза…",
+      "summary": "BG Elves публикува твърдение за платени медии и очаквана информационна манипулация в полза на Йотова, без тук твърдението да е потвърдено.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "МВР",
+          "source": "text",
+          "evidence": "МВР"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 1200,
+          "approximate": true,
+          "raw": "1.2K"
+        },
+        "comments": {
+          "value": 65,
+          "approximate": false,
+          "raw": "65"
+        },
+        "shares": {
+          "value": 130,
+          "approximate": false,
+          "raw": "130"
+        }
+      },
+      "sourceTextSha256": "7026278d27957fcdc8625192bc04f1092d5875fbe120629bf1c67c7f6747bf9f",
+      "images": [
+        {
+          "src": "/images/facebook/2026/8b0d31651d205e0344846d2ad42290da80d07e138fcaafb3877deb1c11a2da5f.jpg",
+          "sourceUrl": "https://www.facebook.com/ElvesBG.EU/posts/pfbid0QdguugYWScY4Z3Qq6AJc8wtg3X4jGmRPvsiC4k9wckQoGZ9o7CBrhUuS9ua4Eh9fl",
+          "width": 1080,
+          "height": 1920,
+          "kind": "image",
+          "capturedAt": "2026-11-06T08:36:16.990Z",
+          "sha256": "8b0d31651d205e0344846d2ad42290da80d07e138fcaafb3877deb1c11a2da5f"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0ztsmRRhd49H1dpPuqfhZ14aYdGPVRNqwKDJRbWnXjN1epu1M3EdgUoUU1SbqfcYCl",
+      "pageId": "https://www.facebook.com/ElvesBG.EU",
+      "url": "https://www.facebook.com/ElvesBG.EU/posts/pfbid0ztsmRRhd49H1dpPuqfhZ14aYdGPVRNqwKDJRbWnXjN1epu1M3EdgUoUU1SbqfcYCl",
+      "date": "2026-10-29",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:36:49.128Z",
+      "excerpt": "В неделя изборът е само един - за България!",
+      "summary": "BG Elves съпоставя Йотова на фон с руски флаг и война с Гюров на фон с български флаг и индустрия; Facebook показва AI content.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 839,
+          "approximate": false,
+          "raw": "839"
+        },
+        "comments": {
+          "value": 61,
+          "approximate": false,
+          "raw": "61"
+        },
+        "shares": {
+          "value": 28,
+          "approximate": false,
+          "raw": "28"
+        }
+      },
+      "sourceTextSha256": "336fc8051133a879dc3fb1a6239aa0b1e0a9ed6261d625f41e153fccdec5a9cf",
+      "images": [
+        {
+          "src": "/images/facebook/2026/b9c9274e88aa24ff46624c1761eb6453af2d89c7a8a2625d836907692605abb3.jpg",
+          "sourceUrl": "https://www.facebook.com/ElvesBG.EU/posts/pfbid0ztsmRRhd49H1dpPuqfhZ14aYdGPVRNqwKDJRbWnXjN1epu1M3EdgUoUU1SbqfcYCl",
+          "width": 1024,
+          "height": 1024,
+          "kind": "image",
+          "capturedAt": "2026-11-06T08:36:49.128Z",
+          "sha256": "b9c9274e88aa24ff46624c1761eb6453af2d89c7a8a2625d836907692605abb3"
+        }
+      ],
+      "platformLabels": [
+        "AI content"
+      ]
+    },
+    {
+      "id": "post:pfbid0k2Z1Mvg4oo4ySqBu4iU5DYPnggxvrd6dg6xdLrukzi4ckDA9sws5CqSRpVvoJHqsl",
+      "pageId": "https://www.facebook.com/novinitem",
+      "url": "https://www.facebook.com/novinitem/posts/pfbid0k2Z1Mvg4oo4ySqBu4iU5DYPnggxvrd6dg6xdLrukzi4ckDA9sws5CqSRpVvoJHqsl",
+      "date": "2026-10-26",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:41:26.222Z",
+      "excerpt": "ИЛИЯНА ЙОТОВА ВОДИ В МОНТАНА",
+      "summary": "Новините от Монтана съобщава, че Йотова води в областта след първия президентски тур.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "ЙОТОВА"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 5,
+          "approximate": false,
+          "raw": "5"
+        },
+        "comments": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "27fa8b285fc408527e0efdedb14374fa679d84f4297c70fc9ced0b099a753230",
+      "images": []
+    },
+    {
+      "id": "post:pfbid02hMFkykBV5JhsN3jJ1erXnWu8QkAgmtNQPz93M28Lj64sPWjwQaLAs21A2y9dDzB7l",
+      "pageId": "https://www.facebook.com/novinitem",
+      "url": "https://www.facebook.com/novinitem/posts/pfbid02hMFkykBV5JhsN3jJ1erXnWu8QkAgmtNQPz93M28Lj64sPWjwQaLAs21A2y9dDzB7l",
+      "date": "2026-10-25",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:43:38.389Z",
+      "excerpt": "МАЛКО ИЗБИРАТЕЛИ СТИГНАХА ДО УРНИТЕ",
+      "summary": "Новините от Монтана съобщава за ниска избирателна активност в деня на първия президентски тур.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "comments": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "6a4f1211cb923d8b9de1f7780185994a91021452bfc144fd00015b64a3701929",
+      "images": [],
+      "linkHeadline": "МАЛКО ИЗБИРАТЕЛИ СТИГНАХА ДО УРНИТЕ | НОВИНИТЕ ОТ МОНТАНА"
+    },
+    {
+      "id": "post:pfbid0E7kUwnMDVrpWRKbGCUBWaVQDKokH5aZsJtLaTCTEYVcVHxSvfxuZTEjv5siTjiDBl",
+      "pageId": "https://www.facebook.com/novinitem",
+      "url": "https://www.facebook.com/novinitem/posts/pfbid0E7kUwnMDVrpWRKbGCUBWaVQDKokH5aZsJtLaTCTEYVcVHxSvfxuZTEjv5siTjiDBl",
+      "date": "2026-10-20",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:45:10.254Z",
+      "excerpt": "СМЕНИХА 40 ЧЛЕНОВЕ НА СИК В РЕГИОНА",
+      "summary": "Новините от Монтана съобщава за смяна на 40 членове на секционни избирателни комисии в региона.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 1,
+          "approximate": false,
+          "raw": "1"
+        },
+        "comments": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "ef96276b9eda3d120babb7c3dbacadd70a4f6ca6d8f071e7bbbef28cdcef3ee5",
+      "images": [],
+      "linkHeadline": "СМЕНИХА 40 ЧЛЕНОВЕ НА СИК В РЕГИОНА | НОВИНИТЕ ОТ МОНТАНА"
+    },
+    {
+      "id": "post:pfbid021Xa43XHtzEKVpcPvtoxuhhQ6afqV65ZbsZYnxetrdo24YxtzWuKTpzsHifkzhBVLl",
+      "pageId": "https://www.facebook.com/novinitem",
+      "url": "https://www.facebook.com/novinitem/posts/pfbid021Xa43XHtzEKVpcPvtoxuhhQ6afqV65ZbsZYnxetrdo24YxtzWuKTpzsHifkzhBVLl",
+      "date": "2026-10-20",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:45:35.676Z",
+      "excerpt": "КАК КАНДИТИТЕ ЗА ПРЕЗИДЕНТ ХАРЧАТ ПАРИТЕ ЗА МЕДИИ",
+      "summary": "Новините от Монтана публикува материал за разходите на президентските кандидати за медии.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "ПРЕЗИДЕНТ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "comments": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "309ca2069a3ec0301eb54687e97db023bb55e011fbb78e0c303676f753b44750",
+      "images": []
+    },
+    {
+      "id": "post:pfbid0wdBHVPj6Ucwz3vFrvy8Mq6w5rgZ1fzZgMCXaiGTarkNfgQCCkAscvc5ZdG4t1fWJl",
+      "pageId": "https://www.facebook.com/petel.bg",
+      "url": "https://www.facebook.com/petel.bg/posts/pfbid0wdBHVPj6Ucwz3vFrvy8Mq6w5rgZ1fzZgMCXaiGTarkNfgQCCkAscvc5ZdG4t1fWJl",
+      "date": "2026-10-27",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:37:41.110Z",
+      "excerpt": "Току що Голям обрат: Костадинов обяви съдбовно решение за България 😱 Посочи Гюров или Йотова",
+      "summary": "Petel.bg анонсира решение на Костадинов за подкрепа на Гюров или Йотова на балотажа.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "костадинов",
+          "source": "text",
+          "evidence": "Костадинов"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 2900,
+          "approximate": true,
+          "raw": "2.9K"
+        },
+        "comments": {
+          "value": 2100,
+          "approximate": true,
+          "raw": "2.1K"
+        },
+        "shares": {
+          "value": 78,
+          "approximate": false,
+          "raw": "78"
+        }
+      },
+      "sourceTextSha256": "988644fd30a83bc05ec009091f9d0552b348ec8a628e4af366d1fdd5e5c00d4e",
+      "images": []
+    },
+    {
+      "id": "post:pfbid0LeP5hCNkKHeqGoxtEJW6Zsh9VC3v7g3bo8St9Wud2SwZpr1yvTYBMeG3ACkBj4fnl",
+      "pageId": "https://www.facebook.com/petel.bg",
+      "url": "https://www.facebook.com/petel.bg/posts/pfbid0LeP5hCNkKHeqGoxtEJW6Zsh9VC3v7g3bo8St9Wud2SwZpr1yvTYBMeG3ACkBj4fnl",
+      "date": "2026-10-25",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:39:02.016Z",
+      "excerpt": "Последни данни обръщат всичко: Гюров изпреварва Йотова 😲",
+      "summary": "Petel.bg публикува твърдение, че Гюров изпреварва Йотова според последни данни.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 2700,
+          "approximate": true,
+          "raw": "2.7K"
+        },
+        "comments": {
+          "value": 1200,
+          "approximate": true,
+          "raw": "1.2K"
+        },
+        "shares": {
+          "value": 54,
+          "approximate": false,
+          "raw": "54"
+        }
+      },
+      "sourceTextSha256": "2dc431f55ed6cb1878527ea0975fc8a7bf446b567c37f41795d568878df519dd",
+      "images": []
+    },
+    {
+      "id": "post:pfbid0L79WDEXCoSt8bFxrAAGNPEk2AW6e3in9upwe5h6BvhMT5o4beTAJFxBbYsF5dxMMl",
+      "pageId": "https://www.facebook.com/petel.bg",
+      "url": "https://www.facebook.com/petel.bg/posts/pfbid0L79WDEXCoSt8bFxrAAGNPEk2AW6e3in9upwe5h6BvhMT5o4beTAJFxBbYsF5dxMMl",
+      "date": "2026-10-25",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:39:16.146Z",
+      "excerpt": "Огромна изненада! Нищожна разлика между Йотова и Гюров! 😱",
+      "summary": "Petel.bg описва малка разлика между Йотова и Гюров в първия изборен ден.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 612,
+          "approximate": false,
+          "raw": "612"
+        },
+        "comments": {
+          "value": 339,
+          "approximate": false,
+          "raw": "339"
+        },
+        "shares": {
+          "value": 4,
+          "approximate": false,
+          "raw": "4"
+        }
+      },
+      "sourceTextSha256": "cda951682e3323b1f569be479238fa4a98837b4dffb4903967bae47d02ea3ae7",
+      "images": []
+    },
+    {
+      "id": "post:pfbid0C8yFcn85nB7a1KWbEsBJ1zwtvF4YRRd3CUa9WkfzKv4nXQRSsHYVY7Zft1bjLT42l",
+      "pageId": "https://www.facebook.com/petel.bg",
+      "url": "https://www.facebook.com/petel.bg/posts/pfbid0C8yFcn85nB7a1KWbEsBJ1zwtvF4YRRd3CUa9WkfzKv4nXQRSsHYVY7Zft1bjLT42l",
+      "date": "2026-10-30",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:39:50.835Z",
+      "excerpt": "Тотален обрат от последната секунда! Борисов взе решение! Гюров или Йотова 😱",
+      "summary": "Petel.bg анонсира решение на Борисов за избора между Гюров и Йотова преди балотажа.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 1600,
+          "approximate": true,
+          "raw": "1.6K"
+        },
+        "comments": {
+          "value": 1200,
+          "approximate": true,
+          "raw": "1.2K"
+        },
+        "shares": {
+          "value": 58,
+          "approximate": false,
+          "raw": "58"
+        }
+      },
+      "sourceTextSha256": "1abc99933ceeba62ddc8ba5715477c6f9f569b3ce300f37baf18c79b75233838",
+      "images": []
+    },
+    {
+      "id": "post:pfbid02ySEgquF2J8B6Gxvj3W8WkxreuGGdiyU45N3diEQKGMUtdbAxaVQ3jj3BAN1xFWhCl",
+      "pageId": "https://www.facebook.com/petel.bg",
+      "url": "https://www.facebook.com/petel.bg/posts/pfbid02ySEgquF2J8B6Gxvj3W8WkxreuGGdiyU45N3diEQKGMUtdbAxaVQ3jj3BAN1xFWhCl",
+      "date": "2026-10-26",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:40:15.800Z",
+      "excerpt": "Ужасен сценарий за Борисов при победа на Гюров: Всичко свършва! 😱",
+      "summary": "Petel.bg публикува негативен сценарий за Борисов при евентуална победа на Гюров.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "борисов",
+          "source": "text",
+          "evidence": "Борисов"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 969,
+          "approximate": false,
+          "raw": "969"
+        },
+        "comments": {
+          "value": 778,
+          "approximate": false,
+          "raw": "778"
+        },
+        "shares": {
+          "value": 28,
+          "approximate": false,
+          "raw": "28"
+        }
+      },
+      "sourceTextSha256": "c2b02ab9a37e5a896379ccf4cad1f21866a03c81d046e2f4d0e3197e80c3dd07",
+      "images": []
+    },
+    {
+      "id": "post:pfbid0UDjWiXg59Kz5eCPNpN6HYx3ERZmiAVGxfrMFnZbyJC6WgxhhyqevtuB65CkTiZUrl",
+      "pageId": "https://www.facebook.com/vidinvest",
+      "url": "https://www.facebook.com/vidinvest/posts/pfbid0UDjWiXg59Kz5eCPNpN6HYx3ERZmiAVGxfrMFnZbyJC6WgxhhyqevtuB65CkTiZUrl",
+      "date": "2026-10-25",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:42:33.183Z",
+      "excerpt": "Спокойно започна изборният ден в областите Видин, Враца и Монтана",
+      "summary": "Видин Вест съобщава за спокойно начало на изборния ден във Видин, Враца и Монтана.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [],
+      "metrics": {
+        "reactions": {
+          "value": 3,
+          "approximate": false,
+          "raw": "3"
+        },
+        "comments": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "shares": {
+          "value": 2,
+          "approximate": false,
+          "raw": "2"
+        }
+      },
+      "sourceTextSha256": "d3906bbdef774f850bef7433e5ea0cdd0a9e44dc9a66983bde048b59ab99ae79",
+      "images": []
+    },
+    {
+      "id": "post:pfbid0uDcAq9Y2BU5nyXjLwkyEtcaGMJ1mhP7GADfLzBmHMk2BEj8SxSAScHNp5MJs97jWl",
+      "pageId": "https://www.facebook.com/vidinvest",
+      "url": "https://www.facebook.com/vidinvest/posts/pfbid0uDcAq9Y2BU5nyXjLwkyEtcaGMJ1mhP7GADfLzBmHMk2BEj8SxSAScHNp5MJs97jWl",
+      "date": "2026-10-27",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:44:54.558Z",
+      "excerpt": "Информация или агитация? Подкрепата на Радев за Йотова разпали спор",
+      "summary": "Видин Вест съобщава за спор дали подкрепата на Радев за Йотова е информация или агитация.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "Йотова"
+        },
+        {
+          "keyword": "радев",
+          "source": "text",
+          "evidence": "Радев"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "comments": {
+          "value": 1,
+          "approximate": false,
+          "raw": "1"
+        },
+        "shares": {
+          "value": 2,
+          "approximate": false,
+          "raw": "2"
+        }
+      },
+      "sourceTextSha256": "36bb80c3d034515b51593a25d0a9194e95908487fa9b648f4f71f20a285195a0",
+      "images": [
+        {
+          "src": "/images/facebook/2026/83aadf77ca91a837ee4d7969bdbd6092300f10587a2e9a7079742426024e4991.jpg",
+          "sourceUrl": "https://www.facebook.com/vidinvest/posts/pfbid0uDcAq9Y2BU5nyXjLwkyEtcaGMJ1mhP7GADfLzBmHMk2BEj8SxSAScHNp5MJs97jWl",
+          "width": 510,
+          "height": 533,
+          "kind": "image",
+          "capturedAt": "2026-11-06T08:44:54.558Z",
+          "sha256": "83aadf77ca91a837ee4d7969bdbd6092300f10587a2e9a7079742426024e4991"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0TSXAEdDNoKqFBhhnqYW4Ta7eRHz5nU7pRbRPpPyS71JSwxcRmEaKiTzZw4LwnEuHl",
+      "pageId": "100063613176240",
+      "url": "https://www.facebook.com/pirinpress.bg/posts/pfbid0TSXAEdDNoKqFBhhnqYW4Ta7eRHz5nU7pRbRPpPyS71JSwxcRmEaKiTzZw4LwnEuHl",
+      "date": "2026-10-30",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:54:11.902Z",
+      "excerpt": "🇧🇬 ЙОТОВА – ГЮРОВ: КОЙ КАКВО КАЗА В ПРЕЗИДЕНТСКИЯ ДЕБАТ? 🔹 Украйна Йотова: Мир чрез преговори. Гюров: Край на руската агресия. 🔹 Черно море…",
+      "summary": "PirinPress сравнява заявени позиции на Йотова и Гюров в президентския дебат и пита читателите кого подкрепят на балотажа.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "text",
+          "evidence": "ГЮРОВ"
+        },
+        {
+          "keyword": "Йотова",
+          "source": "text",
+          "evidence": "ЙОТОВА"
+        },
+        {
+          "keyword": "избори",
+          "source": "text",
+          "evidence": "Избори"
+        },
+        {
+          "keyword": "украйна",
+          "source": "text",
+          "evidence": "Украйна"
+        },
+        {
+          "keyword": "президент",
+          "source": "text",
+          "evidence": "ПРЕЗИДЕНТ"
+        },
+        {
+          "keyword": "боташ",
+          "source": "text",
+          "evidence": "Боташ"
+        },
+        {
+          "keyword": "нсо",
+          "source": "text",
+          "evidence": "нсо"
+        },
+        {
+          "keyword": "балотаж",
+          "source": "text",
+          "evidence": "Балотаж"
+        },
+        {
+          "keyword": "дебат",
+          "source": "text",
+          "evidence": "ДЕБАТ"
+        },
+        {
+          "keyword": "МВР",
+          "source": "text",
+          "evidence": "мвр"
+        },
+        {
+          "keyword": "БНТ",
+          "source": "text",
+          "evidence": "БНТ"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 1,
+          "approximate": false,
+          "raw": "1"
+        },
+        "comments": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "216ebc327a72aefb9ae9f55e201c89593c86ab18435b97138e25fe10d5c19d41",
+      "images": [
+        {
+          "src": "/images/facebook/2026/1455144fc6ed438bd96ccc2c7928b77c0f8a2c33923080e5265fdbd7bf3dbec7.jpg",
+          "sourceUrl": "https://www.facebook.com/pirinpress.bg/posts/pfbid0TSXAEdDNoKqFBhhnqYW4Ta7eRHz5nU7pRbRPpPyS71JSwxcRmEaKiTzZw4LwnEuHl",
+          "width": 840,
+          "height": 531,
+          "kind": "image",
+          "capturedAt": "2026-11-06T08:54:11.902Z",
+          "sha256": "1455144fc6ed438bd96ccc2c7928b77c0f8a2c33923080e5265fdbd7bf3dbec7"
+        }
+      ]
+    },
+    {
+      "id": "post:pfbid0YsbK4ZGGzFPj78kxP1xK4Gx6yRA2Hn6h1ZbFhWZfkU2mLzcBUeiKMmxQ8k3cJJvzl",
+      "pageId": "100063613176240",
+      "url": "https://www.facebook.com/pirinpress.bg/posts/pfbid0YsbK4ZGGzFPj78kxP1xK4Gx6yRA2Hn6h1ZbFhWZfkU2mLzcBUeiKMmxQ8k3cJJvzl",
+      "date": "2026-10-26",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:57:23.561Z",
+      "excerpt": "",
+      "summary": "PirinPress споделя съобщение за сигнал на инициативния комитет на Гюров и Кандев до ЦИК за предизборна агитация чрез правителствените канали.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "link-title",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "Кандев",
+          "source": "link-title",
+          "evidence": "Кандев"
+        },
+        {
+          "keyword": "радев",
+          "source": "link-title",
+          "evidence": "Радев"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 4,
+          "approximate": false,
+          "raw": "4"
+        },
+        "comments": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "images": [
+        {
+          "src": "/images/facebook/2026/104daff52a32355a27fd42594b3d90c3406716538853e1f9953bc09c372ab196.jpg",
+          "sourceUrl": "https://www.facebook.com/pirinpress.bg/posts/pfbid0YsbK4ZGGzFPj78kxP1xK4Gx6yRA2Hn6h1ZbFhWZfkU2mLzcBUeiKMmxQ8k3cJJvzl",
+          "width": 933,
+          "height": 487,
+          "kind": "image",
+          "capturedAt": "2026-11-06T08:57:23.561Z",
+          "sha256": "104daff52a32355a27fd42594b3d90c3406716538853e1f9953bc09c372ab196"
+        }
+      ],
+      "linkHeadline": "ИК на Гюров и Кандев сезира ЦИК за предизборна агитация на премиера Радев чрез каналите на Министерски съвет"
+    },
+    {
+      "id": "post:pfbid0m9rrH81HyPUQH9rNhcT9fiZs3TfeVApWH6dwMNXHmApmuZsw49a3e9YpbgA3GLgRl",
+      "pageId": "100063613176240",
+      "url": "https://www.facebook.com/pirinpress.bg/posts/pfbid0m9rrH81HyPUQH9rNhcT9fiZs3TfeVApWH6dwMNXHmApmuZsw49a3e9YpbgA3GLgRl",
+      "date": "2026-10-25",
+      "publishedAt": null,
+      "interval": null,
+      "datePrecision": "day",
+      "collectedAt": "2026-11-06T08:58:44.137Z",
+      "excerpt": "",
+      "summary": "PirinPress съобщава, че кандидатът за президент Гюров е гласувал в Благоевград със семейството си.",
+      "captionComplete": true,
+      "origin": "collection",
+      "keywords": [
+        {
+          "keyword": "Гюров",
+          "source": "link-title",
+          "evidence": "Гюров"
+        },
+        {
+          "keyword": "президент",
+          "source": "link-title",
+          "evidence": "президент"
+        }
+      ],
+      "metrics": {
+        "reactions": {
+          "value": 1,
+          "approximate": false,
+          "raw": "1"
+        },
+        "comments": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        },
+        "shares": {
+          "value": null,
+          "approximate": null,
+          "raw": null
+        }
+      },
+      "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "images": [
+        {
+          "src": "/images/facebook/2026/a5468b822ce247bd613252d1f5b95e03aeb69a899854d5b1ed5b37548c3ca238.jpg",
+          "sourceUrl": "https://www.facebook.com/pirinpress.bg/posts/pfbid0m9rrH81HyPUQH9rNhcT9fiZs3TfeVApWH6dwMNXHmApmuZsw49a3e9YpbgA3GLgRl",
+          "width": 1000,
+          "height": 522,
+          "kind": "image",
+          "capturedAt": "2026-11-06T08:58:44.137Z",
+          "sha256": "a5468b822ce247bd613252d1f5b95e03aeb69a899854d5b1ed5b37548c3ca238"
+        }
+      ],
+      "linkHeadline": "Кандидатът за президент Гюров гласува в Благоевград заедно със съпругата си и двамата си синове"
     }
   ],
   "matches": [
@@ -25318,31 +26330,31 @@
   "coverage": [
     {
       "keyword": "Гюров",
-      "count": 143
+      "count": 152
     },
     {
       "keyword": "Кандев",
-      "count": 31
+      "count": 32
     },
     {
       "keyword": "Йотова",
-      "count": 124
+      "count": 133
     },
     {
       "keyword": "избори",
-      "count": 123
+      "count": 125
     },
     {
       "keyword": "украйна",
-      "count": 22
+      "count": 23
     },
     {
       "keyword": "война",
-      "count": 20
+      "count": 21
     },
     {
       "keyword": "президент",
-      "count": 130
+      "count": 133
     },
     {
       "keyword": "изпращане на войници",
@@ -25374,7 +26386,7 @@
     },
     {
       "keyword": "боташ",
-      "count": 1
+      "count": 2
     },
     {
       "keyword": "помилване",
@@ -25386,11 +26398,11 @@
     },
     {
       "keyword": "борисов",
-      "count": 24
+      "count": 26
     },
     {
       "keyword": "радев",
-      "count": 25
+      "count": 27
     },
     {
       "keyword": "лева",
@@ -25410,7 +26422,7 @@
     },
     {
       "keyword": "костадинов",
-      "count": 8
+      "count": 9
     },
     {
       "keyword": "кирил петков",
@@ -25442,7 +26454,7 @@
     },
     {
       "keyword": "нсо",
-      "count": 6
+      "count": 7
     },
     {
       "keyword": "Жълтопаветни",
@@ -25458,12 +26470,12 @@
     },
     {
       "keyword": "балотаж",
-      "count": 48,
+      "count": 49,
       "fromCaptions": true
     },
     {
       "keyword": "дебат",
-      "count": 16,
+      "count": 17,
       "fromCaptions": true
     },
     {
@@ -25508,12 +26520,12 @@
     },
     {
       "keyword": "МВР",
-      "count": 35,
+      "count": 37,
       "fromCaptions": true
     },
     {
       "keyword": "БНТ",
-      "count": 13,
+      "count": 14,
       "fromCaptions": true
     },
     {
@@ -25658,7 +26670,7 @@
   "sharedArticleUrl": "https://www.faktibg.com/moshtna-valna-s-avtobusi-s-izbirateli-ot-turcija-zalja-balgarija-za-utreshnite-izbori/",
   "collectionSha256": "9a00ddcf145c80e73d9936d7531f5f1033a745054d3dcf86523f8004e6ef21b1",
   "directory": {
-    "checkedAt": "2026-11-05T22:04:03.134Z",
+    "checkedAt": "2026-11-06T09:04:30.454Z",
     "entries": [
       {
         "id": "sample-05b3288156ff",
@@ -26312,11 +27324,14 @@
           {
             "url": "https://www.facebook.com/novinibezcenzura",
             "note": "Преглед във Facebook на 2026-11-05: Публична Page Community, 3.6K последователи. Нативно търсене за избори и Гюров с 2026/наблюдаван октомврийски диапазон не върна резултати. Това не доказва липса на всички октомврийски политически публикации."
+          },
+          {
+            "url": "https://www.facebook.com/novinibezcenzura",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена Page Community с 3.6K последователи и собствено меню Report Page. Приложен е нативен Go to 2026/October; първите наблюдавани публикации са от 2019 г. Нативното търсене Йотова във всички дати показва изрично We didn’t find any results. Няма запазени октомврийски записи от частичната проверка."
           }
         ],
         "notes": [
-          "Публична Page Community, 3.6K последователи. Нативно търсене за избори и Гюров с 2026/наблюдаван октомврийски диапазон не върна резултати. Това не доказва липса на всички октомврийски политически публикации.",
-          "В нативното меню „Profile settings see more options“ е видима опцията „Report Page“, потвърждаваща тип Facebook Page."
+          "Потвърдена Page Community с 3.6K последователи и собствено меню Report Page. Приложен е нативен Go to 2026/October; първите наблюдавани публикации са от 2019 г. Нативното търсене Йотова във всички дати показва изрично We didn’t find any results. Няма запазени октомврийски записи от частичната проверка."
         ],
         "samplePageId": null
       },
@@ -26460,11 +27475,14 @@
           {
             "url": "https://www.facebook.com/profile.php?id=100067931502956",
             "note": "Преглед във Facebook на 2026-11-05: Публична Page Community, 240 последователи. Търсене „избори“ с 2026 и наблюдаван октомврийски диапазон не върна резултати; не е проверен пълен архив."
+          },
+          {
+            "url": "https://www.facebook.com/profile.php?id=100067931502956",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена публична Page Любопитни Новини, Community, 240 последователи; текущото меню показва Report Page. Търсения Йотова и Гюров с нативен филтър Date posted2026 показват изрично We didn’t find any results. Частична проверка; не доказва липса на всички октомврийски политически публикации."
           }
         ],
         "notes": [
-          "Публична Page Community, 240 последователи. Търсене „избори“ с 2026 и наблюдаван октомврийски диапазон не върна резултати; не е проверен пълен архив.",
-          "В нативното меню „Profile settings see more options“ е видима опцията „Report Page“, потвърждаваща тип Facebook Page."
+          "Потвърдена публична Page Любопитни Новини, Community, 240 последователи; текущото меню показва Report Page. Търсения Йотова и Гюров с нативен филтър Date posted2026 показват изрично We didn’t find any results. Частична проверка; не доказва липса на всички октомврийски политически публикации."
         ],
         "samplePageId": null
       },
@@ -26526,11 +27544,14 @@
           {
             "url": "https://www.facebook.com/profile.php?id=100082964949545",
             "note": "Преглед във Facebook на 2026-11-05: Потвърдена Page идентичност. Октомврийски търсения избори и Йотова върнаха изрично We didn’t find any results. Това не установява липса на всички месечни публикации."
+          },
+          {
+            "url": "https://www.facebook.com/profile.php?id=100082964949545",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена публична Page Обществена критика, Media/news company, 798 последователи и меню Report Page. Нативно търсене Гюров във всички дати не върна резултати; търсене президент с Date posted2026 също показва изрично We didn’t find any results. Резултати за президент извън 2026 включваха групово съдържание и са изключени. Частична проверка."
           }
         ],
         "notes": [
-          "Потвърдена Page идентичност. Октомврийски търсения избори и Йотова върнаха изрично We didn’t find any results. Това не установява липса на всички месечни публикации.",
-          "Собственото меню е проверено и показва Report Page."
+          "Потвърдена публична Page Обществена критика, Media/news company, 798 последователи и меню Report Page. Нативно търсене Гюров във всички дати не върна резултати; търсене президент с Date posted2026 също показва изрично We didn’t find any results. Резултати за президент извън 2026 включваха групово съдържание и са изключени. Частична проверка."
         ],
         "samplePageId": null
       },
@@ -26678,13 +27699,14 @@
       },
       {
         "id": "publisher-elves",
-        "name": "BG Elves / Българските елфи",
+        "name": "BG Elves",
         "aliases": [
           "BG Elves",
           "BG Elves / Българските Елфи",
-          "Българските Елфи"
+          "Българските Елфи",
+          "BG Elves / Българските елфи"
         ],
-        "status": "page-verified",
+        "status": "in-sample",
         "facebookUrl": "https://www.facebook.com/ElvesBG.EU",
         "websiteUrl": "https://www.elves.bg/",
         "regional": false,
@@ -26702,14 +27724,19 @@
           {
             "url": "https://www.facebook.com/ElvesBG.EU",
             "note": "Преглед във Facebook на 2026-11-05: Потвърдена публична Page BG Elves, Intergovernmental Organization, 53K followers, меню Report Page."
+          },
+          {
+            "url": "https://www.facebook.com/ElvesBG.EU",
+            "note": "Публична Page BG Elves с категория Intergovernmental Organization, 53K followers и връзка elves.bg; текущото собствено меню показва Report Page."
           }
         ],
         "notes": [
           "Потвърдена публична Page BG Elves, Intergovernmental Organization, 53K followers, меню Report Page.",
           "Нативно Page търсене „избори“ и „Йотова“ с Date posted 2026 и Recent posts. Проверените видими собствени дати са април/септември. Няма добавени октомврийски записи от тази частична проверка; това не доказва липса на октомврийски постове.",
-          "Допълнителна нативна проверка на 2026-11-05T22:10:04.626Z: менюто на тази Page показва Report Page."
+          "Допълнителна нативна проверка на 2026-11-05T22:10:04.626Z: менюто на тази Page показва Report Page.",
+          "Потвърдени са датите на добавените октомврийски публикации. Месечният архив е прегледан частично."
         ],
-        "samplePageId": null
+        "samplePageId": "https://www.facebook.com/ElvesBG.EU"
       },
       {
         "id": "publisher-blagoevgrad-eu",
@@ -26735,11 +27762,15 @@
           {
             "url": "https://www.facebook.com/blgrad",
             "note": "Преглед във Facebook на 2026-11-05: Потвърдена Facebook Page Благоевград с връзка blagoevgrad.eu. Октомврийско търсене избори върна групово съдържание, изключено от Page извадката; Йотова изрично без резултати. Частична проверка."
+          },
+          {
+            "url": "https://www.facebook.com/blgrad",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена публична Page Благоевград: Media/news company, 83K followers, връзка blagoevgrad.eu и собствено меню Report Page."
           }
         ],
         "notes": [
-          "Потвърдена Facebook Page Благоевград с връзка blagoevgrad.eu. Октомврийско търсене избори върна групово съдържание, изключено от Page извадката; Йотова изрично без резултати. Частична проверка.",
-          "Собственото меню е проверено и показва Report Page."
+          "Потвърдена публична Page Благоевград: Media/news company, 83K followers, връзка blagoevgrad.eu и собствено меню Report Page.",
+          "Нативен Go to: 2026 / October / 27 зареди собствени градски и културни публикации. Допълнителни собствени търсения Йотова, Гюров и балотаж върнаха ноемврийски, по-стари или групови резултати; те са изключени. Частичен преглед, без извод за липса на всички октомврийски политически публикации."
         ],
         "samplePageId": null
       },
@@ -26882,13 +27913,14 @@
       },
       {
         "id": "publisher-dupnica-news",
-        "name": "DupnicaNews.eu",
+        "name": "Dupnica.EU",
         "aliases": [
           "Dupnicanews.EU",
           "Дупница нюз",
-          "Дупница нюз / Dupnicanews.EU"
+          "Дупница нюз / Dupnicanews.EU",
+          "DupnicaNews.eu"
         ],
-        "status": "unresolved",
+        "status": "in-sample",
         "facebookUrl": "https://www.facebook.com/Dupnicanews.EU",
         "websiteUrl": "https://dupnicanews.eu/",
         "regional": true,
@@ -26905,13 +27937,22 @@
           {
             "url": "https://www.facebook.com/Dupnicanews.EU",
             "note": "Преглед във Facebook на 2026-11-05: URL Dupnicanews.EU зарежда публична Page с име Dupnica.EU, категория News & media website, 7K followers."
+          },
+          {
+            "url": "https://www.facebook.com/Dupnicanews.EU",
+            "note": "Публична Page Dupnica.EU, категория News & media website, 7K followers; показана връзка dupnicanews.eu."
+          },
+          {
+            "url": "https://www.facebook.com/Dupnicanews.EU",
+            "note": "Собственото меню на страницата е проверено и показва Report Page на 2026-11-06."
           }
         ],
         "notes": [
           "URL Dupnicanews.EU зарежда публична Page с име Dupnica.EU, категория News & media website, 7K followers.",
-          "Нативно Page търсене „избори“, Date posted 2026, Recent posts. Един върнат собствен пост е от 6 март. Не са добавени октомврийски записи; проверката е частична и не доказва липса на активност."
+          "Нативно Page търсене „избори“, Date posted 2026, Recent posts. Един върнат собствен пост е от 6 март. Не са добавени октомврийски записи; проверката е частична и не доказва липса на активност.",
+          "Потвърдени са датите на добавените октомврийски публикации. Месечният архив е прегледан частично."
         ],
-        "samplePageId": null
+        "samplePageId": "https://www.facebook.com/Dupnicanews.EU"
       },
       {
         "id": "publisher-marica",
@@ -27105,11 +28146,15 @@
           {
             "url": "https://www.facebook.com/profile.php?id=61560232252077",
             "note": "Преглед във Facebook на 2026-11-05: Публична Page P-news България, Media/news company, 784 последователи; собствен byline pnewseu. Нативно търсене „избори“ с октомврийски диапазон не върна резултати. Частично покритие."
+          },
+          {
+            "url": "https://www.facebook.com/profile.php?id=61560232252077",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена Page P-news България, Media/news company, 781 followers, p-news.eu; собственото меню показва Report Page."
           }
         ],
         "notes": [
-          "Публична Page P-news България, Media/news company, 784 последователи; собствен byline pnewseu. Нативно търсене „избори“ с октомврийски диапазон не върна резултати. Частично покритие.",
-          "В нативното меню „Profile settings see more options“ е видима опцията „Report Page“, потвърждаваща тип Facebook Page."
+          "Потвърдена Page P-news България, Media/news company, 781 followers, p-news.eu; собственото меню показва Report Page.",
+          "Нативен Go to: 2026 / October / 27 показва лайфстайл и обслужващи публикации, след които се виждат септемврийски материали. Търсения Гюров и Йотова връщат по-стари или неполитически резултати; балотаж показва We didn't find any results. Няма добавени допустими записи от този частичен обход."
         ],
         "samplePageId": null
       },
@@ -27170,11 +28215,14 @@
           {
             "url": "https://www.facebook.com/PlovdivTowncom",
             "note": "Преглед във Facebook на 2026-11-05: Публична Page Community за Пловдив, 14K последователи. Нативно търсене „избори“ с наблюдаван октомврийски диапазон не върна резултати; частично покритие."
+          },
+          {
+            "url": "https://www.facebook.com/PlovdivTowncom",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена Page Community, 14K последователи и нативно меню Report Page. Прегледан е филтърът 31.10.2026: видимата собствена лента започва от 23 септември. Нативните заявки Йотова и Гюров върнаха резултат от „Групата на Пловдив“, изключен от Page извадката. Частична проверка, без допустими октомврийски публикации в наблюдаваните резултати."
           }
         ],
         "notes": [
-          "Публична Page Community за Пловдив, 14K последователи. Нативно търсене „избори“ с наблюдаван октомврийски диапазон не върна резултати; частично покритие.",
-          "В нативното меню „Profile settings see more options“ е видима опцията „Report Page“, потвърждаваща тип Facebook Page."
+          "Потвърдена Page Community, 14K последователи и нативно меню Report Page. Прегледан е филтърът 31.10.2026: видимата собствена лента започва от 23 септември. Нативните заявки Йотова и Гюров върнаха резултат от „Групата на Пловдив“, изключен от Page извадката. Частична проверка, без допустими октомврийски публикации в наблюдаваните резултати."
         ],
         "samplePageId": null
       },
@@ -27234,11 +28282,14 @@
           {
             "url": "https://www.facebook.com/portal12bg",
             "note": "Преглед във Facebook на 2026-11-06: Потвърдена Page Будни БГ / Budni.bg на стария адрес Portal12. Октомврийско търсене избори върна неполитически житейски избори, изключени; Йотова изрично без резултати. Частична проверка."
+          },
+          {
+            "url": "https://www.facebook.com/portal12bg",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена Page Будни БГ / Budni.bg, Community, Verified account, 90K followers и Report Page. Нативният филтър 26.10.2026 и последващо прелистване показаха духовни и културни материали от 14, 9 и 1 октомври; „ежедневните избори“ в заглавието е неизборна житейска тема. Не е включена публикация без български политически или изборен контекст. Частична проверка."
           }
         ],
         "notes": [
-          "Потвърдена Page Будни БГ / Budni.bg на стария адрес Portal12. Октомврийско търсене избори върна неполитически житейски избори, изключени; Йотова изрично без резултати. Частична проверка.",
-          "Собственото меню по-рано беше проверено и показва Report Page."
+          "Потвърдена Page Будни БГ / Budni.bg, Community, Verified account, 90K followers и Report Page. Нативният филтър 26.10.2026 и последващо прелистване показаха духовни и културни материали от 14, 9 и 1 октомври; „ежедневните избори“ в заглавието е неизборна житейска тема. Не е включена публикация без български политически или изборен контекст. Частична проверка."
         ],
         "samplePageId": null
       },
@@ -27431,10 +28482,14 @@
           {
             "url": "https://www.facebook.com/slinfo",
             "note": "Преглед във Facebook на 2026-11-05: Предоставеният URL /slinfo зарежда лична/професионална идентичност „Georgi Manginov (sliveninfo)“, Digital creator, 8.3K followers. Изключена е от събирането само на Facebook Pages; не са запазвани публикации или потребителски данни."
+          },
+          {
+            "url": "https://www.facebook.com/slinfo",
+            "note": "Преглед във Facebook на 2026-11-06: Подаденият адрес зарежда личен профил с Add friend, Friends и Personal details. Не е потвърдена Facebook Page на издателя; профилни публикации не са включени."
           }
         ],
         "notes": [
-          "Предоставеният URL /slinfo зарежда лична/професионална идентичност „Georgi Manginov (sliveninfo)“, Digital creator, 8.3K followers. Изключена е от събирането само на Facebook Pages; не са запазвани публикации или потребителски данни."
+          "Подаденият адрес зарежда личен профил с Add friend, Friends и Personal details. Не е потвърдена Facebook Page на издателя; профилни публикации не са включени."
         ],
         "samplePageId": null
       },
@@ -27496,11 +28551,14 @@
           {
             "url": "https://www.facebook.com/svilengrad24",
             "note": "Преглед във Facebook на 2026-11-05: Публична News & media website за Свиленград, 5.3K последователи. Нативно търсене „избори“ с наблюдаван октомврийски диапазон не върна резултати; частично покритие."
+          },
+          {
+            "url": "https://www.facebook.com/svilengrad24",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена Page News & media website, 5.3K followers и Report Page. Нативен филтър 26.10.2026 показа стари неотносимо търговски публикации, включително изрично видима дата 12.09.2025. Не са включени стари публикации; няма допустим октомврийски резултат в наблюдаваната част. Това не е доказателство за липса на целия месечен архив."
           }
         ],
         "notes": [
-          "Публична News & media website за Свиленград, 5.3K последователи. Нативно търсене „избори“ с наблюдаван октомврийски диапазон не върна резултати; частично покритие.",
-          "В нативното меню „Profile settings see more options“ е видима опцията „Report Page“, потвърждаваща тип Facebook Page."
+          "Потвърдена Page News & media website, 5.3K followers и Report Page. Нативен филтър 26.10.2026 показа стари неотносимо търговски публикации, включително изрично видима дата 12.09.2025. Не са включени стари публикации; няма допустим октомврийски резултат в наблюдаваната част. Това не е доказателство за липса на целия месечен архив."
         ],
         "samplePageId": null
       },
@@ -27788,7 +28846,7 @@
         "aliases": [
           "vidinvest.com"
         ],
-        "status": "page-verified",
+        "status": "in-sample",
         "facebookUrl": "https://www.facebook.com/vidinvest",
         "websiteUrl": "https://vidinvest.com/",
         "regional": true,
@@ -27804,13 +28862,18 @@
           {
             "url": "https://www.facebook.com/vidinvest",
             "note": "Преглед във Facebook на 2026-11-05: Публична Media Page, 16K последователи. Нативно търсене „избори“ с наблюдаван октомврийски диапазон не върна резултати; частично покритие."
+          },
+          {
+            "url": "https://www.facebook.com/vidinvest",
+            "note": "Показани категория Media, 16K followers и описание „Гледната точка на северозапада“. Собственото меню показва Report Page."
           }
         ],
         "notes": [
           "Публична Media Page, 16K последователи. Нативно търсене „избори“ с наблюдаван октомврийски диапазон не върна резултати; частично покритие.",
-          "В нативното меню „Profile settings see more options“ е видима опцията „Report Page“, потвърждаваща тип Facebook Page."
+          "В нативното меню „Profile settings see more options“ е видима опцията „Report Page“, потвърждаваща тип Facebook Page.",
+          "Потвърдени са датите на добавените октомврийски публикации. Месечният архив е прегледан частично."
         ],
-        "samplePageId": null
+        "samplePageId": "https://www.facebook.com/vidinvest"
       },
       {
         "id": "publisher-gabrovo-daily",
@@ -27838,12 +28901,14 @@
           {
             "url": "https://www.facebook.com/gabrovodaily.info",
             "note": "Преглед във Facebook на 2026-11-05: Публична Page Габрово Daily, Media/news company, 11K followers."
+          },
+          {
+            "url": "https://www.facebook.com/gabrovodaily.info",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена Page Media/news company, 11K последователи и Report Page. Филтърът 31.10.2026 показа местни исторически и културни публикации без допустим изборен пост в наблюдаваната част. Нативната заявка Гюров изрично не върна резултати; Йотова беше въведена, но новият отговор не е потвърден отделно след зареждането. Частична проверка, не месечен архив."
           }
         ],
         "notes": [
-          "Публична Page Габрово Daily, Media/news company, 11K followers.",
-          "Нативно Page търсене „избори“ с October 1-31 2026 диапазон показва We didn’t find any results. Това е частично търсене, не доказва липса на октомврийска активност.",
-          "Допълнителна нативна проверка на 2026-11-05T22:10:06.033Z: менюто на тази Page показва Report Page."
+          "Потвърдена Page Media/news company, 11K последователи и Report Page. Филтърът 31.10.2026 показа местни исторически и културни публикации без допустим изборен пост в наблюдаваната част. Нативната заявка Гюров изрично не върна резултати; Йотова беше въведена, но новият отговор не е потвърден отделно след зареждането. Частична проверка, не месечен архив."
         ],
         "samplePageId": null
       },
@@ -27902,11 +28967,14 @@
           {
             "url": "https://www.facebook.com/Gramofonacom",
             "note": "Преглед във Facebook на 2026-11-05: Публична Regional Website Page, 15K последователи. Нативно търсене „избори“ с наблюдаван октомврийски диапазон не върна резултати; частично покритие."
+          },
+          {
+            "url": "https://www.facebook.com/Gramofonacom",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена Page Regional Website, 15K followers и Report Page. Нативният филтър 26.10.2026 показва начална публикация с дата 8 юни и културни/образователни/спортни материали в наблюдаваната част. Не са включени неизборни или неоктомврийски публикации. Частична проверка, не пълен архив."
           }
         ],
         "notes": [
-          "Публична Regional Website Page, 15K последователи. Нативно търсене „избори“ с наблюдаван октомврийски диапазон не върна резултати; частично покритие.",
-          "В нативното меню „Profile settings see more options“ е видима опцията „Report Page“, потвърждаваща тип Facebook Page."
+          "Потвърдена Page Regional Website, 15K followers и Report Page. Нативният филтър 26.10.2026 показва начална публикация с дата 8 юни и културни/образователни/спортни материали в наблюдаваната част. Не са включени неизборни или неоктомврийски публикации. Частична проверка, не пълен архив."
         ],
         "samplePageId": null
       },
@@ -28267,22 +29335,26 @@
           {
             "url": "https://www.facebook.com/PirinNewscom",
             "note": "Преглед във Facebook на 2026-11-05: Потвърдена публична Page „Пирин News.com“: News & media website, pirinnews.com, 11K последователи и Report Page; регионален фокус Югозападна България."
+          },
+          {
+            "url": "https://www.facebook.com/PirinNewscom",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена Page Пирин News.com, News & media website, 11K followers, югозападен регионален фокус; собственото меню показва Report Page."
           }
         ],
         "notes": [
-          "Потвърдена публична Page „Пирин News.com“: News & media website, pirinnews.com, 11K последователи и Report Page; регионален фокус Югозападна България.",
-          "Свежото нативно Page Search за избори с Recent posts и наблюдавания публичен URL диапазон 1-31 октомври 2026 г. показа „We didn’t find any results“.",
-          "Не са добавени публикации. Проверена е една заявка; това не означава липса на политически публикации през месеца. Кандидатските заявки и пълният архив остават за следващ обход."
+          "Потвърдена Page Пирин News.com, News & media website, 11K followers, югозападен регионален фокус; собственото меню показва Report Page.",
+          "Нативен Go to: 2026 / October / 27 започва с публикации от март. Допълнителни търсения Йотова, Гюров и балотаж връщат по-стари фестивални, кабинетни и местни изборни материали (вкл. 2023 и 2025 г.), които са изключени. Частичен обход; няма добавени октомврийски президентски записи."
         ],
         "samplePageId": null
       },
       {
         "id": "publisher-pirin-press",
-        "name": "Пирин Прес",
+        "name": "PirinPress",
         "aliases": [
-          "Pirin Press"
+          "Pirin Press",
+          "Пирин Прес"
         ],
-        "status": "page-verified",
+        "status": "in-sample",
         "facebookUrl": "https://www.facebook.com/pirinpress.bg",
         "websiteUrl": "https://pirinpress.com/",
         "regional": true,
@@ -28298,13 +29370,18 @@
           {
             "url": "https://www.facebook.com/pirinpress.bg",
             "note": "Преглед във Facebook на 2026-11-05: Публична Media/news company, 6.7K последователи. След нативно търсене „избори“ и наблюдавания октомврийски диапазон не са извлечени потвърдени собствени Page публикации. Резултатите не са пълен архив; частично покритие."
+          },
+          {
+            "url": "https://www.facebook.com/pirinpress.bg",
+            "note": "Потвърдена Page PirinPress, Media/news company, 6.7K followers, pirinpress.com, Югозападна България; собственото меню показва Report Page на 6 ноември 2026."
           }
         ],
         "notes": [
           "Публична Media/news company, 6.7K последователи. След нативно търсене „избори“ и наблюдавания октомврийски диапазон не са извлечени потвърдени собствени Page публикации. Резултатите не са пълен архив; частично покритие.",
-          "В нативното меню „Profile settings see more options“ е видима опцията „Report Page“, потвърждаваща тип Facebook Page."
+          "В нативното меню „Profile settings see more options“ е видима опцията „Report Page“, потвърждаваща тип Facebook Page.",
+          "Потвърдени са датите на добавените октомврийски публикации. Месечният архив е прегледан частично."
         ],
-        "samplePageId": null
+        "samplePageId": "100063613176240"
       },
       {
         "id": "publisher-pleven-za-pleven",
@@ -28433,12 +29510,16 @@
           {
             "url": "https://www.facebook.com/samokov365",
             "note": "Преглед във Facebook на 2026-11-05: Публична Page Самоков 365, News & media website, 21K followers."
+          },
+          {
+            "url": "https://www.facebook.com/samokov365",
+            "note": "Преглед във Facebook на 2026-11-06: Проверено собствено меню Report Page, категория News & media website и 21K followers."
           }
         ],
         "notes": [
-          "Публична Page Самоков 365, News & media website, 21K followers.",
-          "Нативно Page търсене „избори“ и „Йотова“, October 1-31 2026 диапазон. Първото върна само неполитически театрален пост; второто показва We didn’t find any results. Няма добавени октомврийски политически записи от тази частична проверка.",
-          "Допълнителна нативна проверка на 2026-11-05T22:10:07.754Z: менюто на тази Page показва Report Page."
+          "Проверено собствено меню Report Page, категория News & media website и 21K followers.",
+          "Проверени са допълнителни собствени търсения за Гюров, президент и балотаж. Наблюдаваните резултати са без подходяща октомврийска публикация за изборите; стари изборни публикации и неполитически срещи са изключени.",
+          "Нативният поток е прегледан от Go to 2026 / October / 27 назад през местни спортни, културни и общински новини. Не е установена подходяща изборна публикация в прегледаната част. Това е частична проверка, не доказателство за липса на всички месечни публикации."
         ],
         "samplePageId": null
       },
@@ -28495,11 +29576,15 @@
           {
             "url": "https://www.facebook.com/stmost",
             "note": "Преглед във Facebook на 2026-11-05: Публична регионална News & media website Page за Свиленград и Любимец, 6.2K последователи. Нативно търсене „избори“ с наблюдавания октомврийски диапазон не върна резултати; частично покритие."
+          },
+          {
+            "url": "https://www.facebook.com/stmost",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена публична Page Вестник Старият мост, News & media website, 6.2K followers, stmost.info, Свиленград и Любимец; собственото меню показва Report Page."
           }
         ],
         "notes": [
-          "Публична регионална News & media website Page за Свиленград и Любимец, 6.2K последователи. Нативно търсене „избори“ с наблюдавания октомврийски диапазон не върна резултати; частично покритие.",
-          "В нативното меню „Profile settings see more options“ е видима опцията „Report Page“, потвърждаваща тип Facebook Page."
+          "Потвърдена публична Page Вестник Старият мост, News & media website, 6.2K followers, stmost.info, Свиленград и Любимец; собственото меню показва Report Page.",
+          "Нативен Go to: 2026 / October / 31 показва местни обслужващи и редакционни публикации. Йотова с Date posted 2026 / Recent posts дава собствен резултат от 1 ноември в 23:05, изключен като извън октомври. Гюров и избори (2026) показват We didn't find any results. Частичен обход, без извод за липса на всички октомврийски изборни публикации."
         ],
         "samplePageId": null
       },
@@ -28561,12 +29646,16 @@
           {
             "url": "https://www.facebook.com/strumapress",
             "note": "Преглед във Facebook на 2026-11-05: Потвърдена публична Page „Струма прес - Информационна агенция“: Media/news company, strumapress.com, Благоевград и региона, 22K последователи и Report Page."
+          },
+          {
+            "url": "https://www.facebook.com/strumapress",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена публична Page „Струма прес - Информационна агенция“: Media/news company, 22K последователи, strumapress.com, Благоевград и региона. Текущото собствено меню показва Report Page."
           }
         ],
         "notes": [
-          "Потвърдена публична Page „Струма прес - Информационна агенция“: Media/news company, strumapress.com, Благоевград и региона, 22K последователи и Report Page.",
-          "Прегледан е текущият начален набор от нативно Page Search за избори, Recent posts, с наблюдавания публичен URL диапазон 1-31 октомври 2026 г.",
-          "Върнатият видим резултат е коледна публикация в групов контекст без политически или изборен текст. Не е включен. Проверена е една заявка; това не означава липса на политически публикации през месеца."
+          "Потвърдена публична Page „Струма прес - Информационна агенция“: Media/news company, 22K последователи, strumapress.com, Благоевград и региона. Текущото собствено меню показва Report Page.",
+          "Проверени са нативни търсения Йотова и Гюров с видим филтър Date posted 2026 след приключване на зареждането. Видимите резултати за Йотова са от 18 февруари, 20 септември и 23 януари; тези за Гюров са от 28 юли, 27 април и 5 май. Изключени са като извън октомври.",
+          "Допълнителен Go to 2026 / October / 26 показва първи собствен запис от 20 октомври; прегледани са няколко начални публикации за местни неполитически теми. От тази частична проверка няма нови допустими изборни публикации. Това не доказва липса на всички октомврийски политически постове."
         ],
         "samplePageId": null
       },
@@ -29611,12 +30700,14 @@
           {
             "url": "https://www.facebook.com/PernikToday.net",
             "note": "Преглед във Facebook на 2026-11-05: Публична Page PernikToday.net, News & media website, 15K followers."
+          },
+          {
+            "url": "https://www.facebook.com/PernikToday.net",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена Page News & media website, 15K followers и Report Page. Нативният филтър 26.10.2026 показва като първи резултат публикация за водната криза с изрична дата 26.11.2019. Старите публикации са изключени; не е наблюдавана допустима октомврийска публикация от 2026 г.. Частична проверка, не доказателство за липсващ месечен архив."
           }
         ],
         "notes": [
-          "Публична Page PernikToday.net, News & media website, 15K followers.",
-          "Нативно Page търсене „избори“ и „Йотова“ с October 1-31 2026 диапазон показва We didn’t find any results. Частично търсене, не доказва липса на политическа активност.",
-          "Допълнителна нативна проверка на 2026-11-05T22:10:18.964Z: менюто на тази Page показва Report Page."
+          "Потвърдена Page News & media website, 15K followers и Report Page. Нативният филтър 26.10.2026 показва като първи резултат публикация за водната криза с изрична дата 26.11.2019. Старите публикации са изключени; не е наблюдавана допустима октомврийска публикация от 2026 г.. Частична проверка, не доказателство за липсващ месечен архив."
         ],
         "samplePageId": null
       },
@@ -29624,7 +30715,7 @@
         "id": "publisher-petel",
         "name": "Petel.bg",
         "aliases": [],
-        "status": "page-verified",
+        "status": "in-sample",
         "facebookUrl": "https://www.facebook.com/petel.bg",
         "websiteUrl": "https://petel.bg/",
         "regional": true,
@@ -29652,14 +30743,19 @@
           {
             "url": "https://www.facebook.com/petel.bg",
             "note": "Преглед във Facebook на 2026-11-06: Потвърдена публична Page Petel.bg: Media/news company, Verified account, Petel.bg, 987K последователи и Report Page."
+          },
+          {
+            "url": "https://www.facebook.com/petel.bg",
+            "note": "Показани Verified account, категория Media/news company и 987K followers. Собственото меню е проверено: Report Page."
           }
         ],
         "notes": [
           "Потвърдена публична Page Petel.bg: Media/news company, Verified account, Petel.bg, 987K последователи и Report Page.",
           "Прегледан е текущият набор от свежо нативно Page Search за избори, Recent posts, с наблюдавания публичен URL диапазон 1-31 октомври 2026 г.",
-          "Показан е групов резултат „Димча БЕЗ ЦЕНЗУРА“, без допустима публикация от проверената Page. Не са включени групови публикации. Проверена е една заявка, не целият месечен архив; кандидатските заявки предстоят."
+          "Показан е групов резултат „Димча БЕЗ ЦЕНЗУРА“, без допустима публикация от проверената Page. Не са включени групови публикации. Проверена е една заявка, не целият месечен архив; кандидатските заявки предстоят.",
+          "Потвърдени са датите на добавените октомврийски публикации. Месечният архив е прегледан частично."
         ],
-        "samplePageId": null
+        "samplePageId": "https://www.facebook.com/petel.bg"
       },
       {
         "id": "publisher-pz-news",
@@ -30755,11 +31851,14 @@
           {
             "url": "https://www.facebook.com/ZOVZAISTINA",
             "note": "Преглед във Facebook на 2026-11-06: Потвърдена медийна Page във Враца. Октомврийско търсене избори показва изрично We didn’t find any results. Едно търсене, частична проверка."
+          },
+          {
+            "url": "https://www.facebook.com/ZOVZAISTINA",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена медийна Page във Враца,1.2Kпоследователи, собствено меню Report Page и връзка zovzaistina.com. Нативни търсения президент и Гюров с видим Date posted2026 върнаха групови/чужди публикации, а не собствени записи на Page; тези резултати са изключени. Частична проверка без нови допустими октомврийски постове."
           }
         ],
         "notes": [
-          "Потвърдена медийна Page във Враца. Октомврийско търсене избори показва изрично We didn’t find any results. Едно търсене, частична проверка.",
-          "Собственото меню е проверено и показва Report Page."
+          "Потвърдена медийна Page във Враца,1.2Kпоследователи, собствено меню Report Page и връзка zovzaistina.com. Нативни търсения президент и Гюров с видим Date posted2026 върнаха групови/чужди публикации, а не собствени записи на Page; тези резултати са изключени. Частична проверка без нови допустими октомврийски постове."
         ],
         "samplePageId": null
       },
@@ -31341,12 +32440,14 @@
           {
             "url": "https://www.facebook.com/p/%D0%9C%D0%BE%D0%BD%D1%82%D0%B0%D0%BD%D0%B0-%D0%B4%D0%BD%D0%B5%D1%81-100066476265264",
             "note": "Преглед във Facebook на 2026-11-06: Публична Page Монтана днес, Just for fun, 399 followers; меню Report Page. Категорията не доказва регионален новинарски издател."
+          },
+          {
+            "url": "https://www.facebook.com/p/%D0%9C%D0%BE%D0%BD%D1%82%D0%B0%D0%BD%D0%B0-%D0%B4%D0%BD%D0%B5%D1%81-100066476265264",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена Facebook Page „Монтана днес“, категория Just for fun, 399 followers и нативно Report Page. Идентичността на новинарския издател montana-dnes.com не е потвърдена от тази проверка. Нативно търсене „Гюров“ с видим филтър Date posted 2026 завърши без резултати. Филтърът на собствената лента 26.10.2026 показа публикация с изрична стара дата 30.10.2017; тя е изключена. Частична проверка, без допустим октомврийски изборен пост в наблюдаваните резултати."
           }
         ],
         "notes": [
-          "Публична Page Монтана днес, Just for fun, 399 followers; меню Report Page. Категорията не доказва регионален новинарски издател.",
-          "Нативно Page търсене „избори“ с October 1-31 2026 диапазон показва We didn’t find any results. Частично покритие.",
-          "Допълнителна нативна проверка на 2026-11-05T22:10:21.363Z: менюто на тази Page показва Report Page."
+          "Потвърдена Facebook Page „Монтана днес“, категория Just for fun, 399 followers и нативно Report Page. Идентичността на новинарския издател montana-dnes.com не е потвърдена от тази проверка. Нативно търсене „Гюров“ с видим филтър Date posted 2026 завърши без резултати. Филтърът на собствената лента 26.10.2026 показа публикация с изрична стара дата 30.10.2017; тя е изключена. Частична проверка, без допустим октомврийски изборен пост в наблюдаваните резултати."
         ],
         "samplePageId": null
       },
@@ -32711,11 +33812,12 @@
       },
       {
         "id": "publisher-novinite-ot-montana",
-        "name": "Новините от Монтана (подадено име)",
+        "name": "Новините от Монтана",
         "aliases": [
-          "Novinite ot Montana"
+          "Novinite ot Montana",
+          "Новините от Монтана (подадено име)"
         ],
-        "status": "page-verified",
+        "status": "in-sample",
         "facebookUrl": "https://www.facebook.com/novinitem",
         "websiteUrl": "https://novinitem.com/",
         "regional": null,
@@ -32741,13 +33843,18 @@
           {
             "url": "https://www.facebook.com/novinitem",
             "note": "Преглед във Facebook на 2026-11-05: Публична Media/news company Page за Монтана, 14K последователи. Нативно търсене „Гюров“ с наблюдавания октомврийски диапазон не върна резултати; частично покритие."
+          },
+          {
+            "url": "https://www.facebook.com/novinitem",
+            "note": "Публична Page Новините от Монтана, Media/news company,14K followers, официална връзка novinitem.com и собствено меню Report Page."
           }
         ],
         "notes": [
           "Публична Media/news company Page за Монтана, 14K последователи. Нативно търсене „Гюров“ с наблюдавания октомврийски диапазон не върна резултати; частично покритие.",
-          "В нативното меню „Profile settings see more options“ е видима опцията „Report Page“, потвърждаваща тип Facebook Page."
+          "В нативното меню „Profile settings see more options“ е видима опцията „Report Page“, потвърждаваща тип Facebook Page.",
+          "Потвърдени са датите на добавените октомврийски публикации. Месечният архив е прегледан частично."
         ],
-        "samplePageId": null
+        "samplePageId": "https://www.facebook.com/novinitem"
       },
       {
         "id": "lead-9191f2c3a4c3",
@@ -34442,10 +35549,15 @@
           {
             "url": "https://www.facebook.com/fakti.bg",
             "note": "Преглед във Facebook на 2026-11-06: За каталожния URL Facebook показва This content isn’t available right now. Няма извлечени публикации; това не доказва липса на активност на издателя."
+          },
+          {
+            "url": "https://www.facebook.com/fakti.bg",
+            "note": "Преглед във Facebook на 2026-11-06: Подаденият адрес показва This content isn’t available right now. Не са извлечени публикации и не е потвърдена Page идентичност."
           }
         ],
         "notes": [
-          "За каталожния URL Facebook показва This content isn’t available right now. Няма извлечени публикации; това не доказва липса на активност на издателя."
+          "Подаденият адрес показва This content isn’t available right now. Не са извлечени публикации и не е потвърдена Page идентичност.",
+          "Допълнително нативно Pages търсене намери едноименна Community Page на друг адрес, без установена връзка с издателя fakti.bg. Тя не е приета за официалната страница и не е смесена с този запис."
         ],
         "samplePageId": null
       },
@@ -34768,11 +35880,14 @@
           {
             "url": "https://www.facebook.com/61560116524008",
             "note": "Преглед във Facebook на 2026-11-05: Публична Social Media Agency Page за Шумен, 438 последователи. Нативно търсене „избори“ с наблюдавания октомврийски диапазон не върна резултати; частично покритие."
+          },
+          {
+            "url": "https://www.facebook.com/61560116524008",
+            "note": "Преглед във Facebook на 2026-11-06: Потвърдена публична Page Шумен без цензура, Social Media Agency,438 последователи и собствено меню Report Page. Нативният Go to2026/October показа първи наблюдаван запис с дата17септември2025, а следващите записи са по-стари. Търсене Йотова във всички дати показва изрично We didn’t find any results. Не са запазени октомврийски записи от тази частична проверка."
           }
         ],
         "notes": [
-          "Публична Social Media Agency Page за Шумен, 438 последователи. Нативно търсене „избори“ с наблюдавания октомврийски диапазон не върна резултати; частично покритие.",
-          "В нативното меню „Profile settings see more options“ е видима опцията „Report Page“, потвърждаваща тип Facebook Page."
+          "Потвърдена публична Page Шумен без цензура, Social Media Agency,438 последователи и собствено меню Report Page. Нативният Go to2026/October показа първи наблюдаван запис с дата17септември2025, а следващите записи са по-стари. Търсене Йотова във всички дати показва изрично We didn’t find any results. Не са запазени октомврийски записи от тази частична проверка."
         ],
         "samplePageId": null
       },

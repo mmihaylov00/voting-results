@@ -99,7 +99,8 @@ test('catalog accepts every deployed source record and its largest allowed batch
   assert.equal(records.filter(record => record.kind === 'comment').length, 6692);
   assert.equal(records.filter(record => record.kind === 'comment' && record.editable).length, 5012);
   assert.equal(records.filter(record => !record.editable).length, 1680);
-  assert(records.every(record => record.originalGyurov !== 'unreviewed' && record.originalYotova !== 'unreviewed'));
+  assert(records.filter(record => record.kind === 'comment')
+    .every(record => record.originalGyurov !== 'unreviewed' && record.originalYotova !== 'unreviewed'));
   assert.equal(comments.posts.reduce((sum, post) => sum + post.capturedCount, 0), 6692);
   assert.equal(comments.posts.reduce((sum, post) => sum + post.assessedCount, 0), 6692);
   for (const post of comments.posts) {

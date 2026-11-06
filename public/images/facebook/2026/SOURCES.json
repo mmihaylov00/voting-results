@@ -2609,6 +2609,174 @@
           "kind": "image"
         }
       ]
+    },
+    "0ecc5f3d3fb0491d7da68531c129ee4950ac854222e387e9ef7b33395747eafe.jpg": {
+      "sha256": "0ecc5f3d3fb0491d7da68531c129ee4950ac854222e387e9ef7b33395747eafe",
+      "width": 480,
+      "height": 480,
+      "uses": [
+        {
+          "id": "page:https://www.facebook.com/Dupnicanews.EU",
+          "sourceUrl": "https://www.facebook.com/Dupnicanews.EU",
+          "kind": "image"
+        }
+      ]
+    },
+    "f470c433703e9d6f56ebbb2021429b173e46545b1377df919c93f6e093c03af8.jpg": {
+      "sha256": "f470c433703e9d6f56ebbb2021429b173e46545b1377df919c93f6e093c03af8",
+      "width": 640,
+      "height": 334,
+      "uses": [
+        {
+          "id": "post:pfbid0DoqgAYaBF8R7ZX5xGtd6FtKNk2hVGpxuQhf7xJ1pUKSCKpwxVMYtYHNKJjCupGTel",
+          "sourceUrl": "https://www.facebook.com/Dupnicanews.EU/posts/pfbid0DoqgAYaBF8R7ZX5xGtd6FtKNk2hVGpxuQhf7xJ1pUKSCKpwxVMYtYHNKJjCupGTel",
+          "kind": "image"
+        }
+      ]
+    },
+    "5ab05e94a3b3fa78f989febff2cc1c4e20fd69fb774726029bee5bf931d5056b.jpg": {
+      "sha256": "5ab05e94a3b3fa78f989febff2cc1c4e20fd69fb774726029bee5bf931d5056b",
+      "width": 480,
+      "height": 480,
+      "uses": [
+        {
+          "id": "page:https://www.facebook.com/ElvesBG.EU",
+          "sourceUrl": "https://www.facebook.com/ElvesBG.EU",
+          "kind": "image"
+        }
+      ]
+    },
+    "2b906d246860aabe6211bddc01f91d3cb3084abc0a24ad1ad54d7810279107bb.jpg": {
+      "sha256": "2b906d246860aabe6211bddc01f91d3cb3084abc0a24ad1ad54d7810279107bb",
+      "width": 694,
+      "height": 695,
+      "uses": [
+        {
+          "id": "photo:122201088032908065",
+          "sourceUrl": "https://www.facebook.com/photo/?fbid=122201088032908065",
+          "kind": "image"
+        }
+      ]
+    },
+    "8b0d31651d205e0344846d2ad42290da80d07e138fcaafb3877deb1c11a2da5f.jpg": {
+      "sha256": "8b0d31651d205e0344846d2ad42290da80d07e138fcaafb3877deb1c11a2da5f",
+      "width": 1080,
+      "height": 1920,
+      "uses": [
+        {
+          "id": "post:pfbid0QdguugYWScY4Z3Qq6AJc8wtg3X4jGmRPvsiC4k9wckQoGZ9o7CBrhUuS9ua4Eh9fl",
+          "sourceUrl": "https://www.facebook.com/ElvesBG.EU/posts/pfbid0QdguugYWScY4Z3Qq6AJc8wtg3X4jGmRPvsiC4k9wckQoGZ9o7CBrhUuS9ua4Eh9fl",
+          "kind": "image"
+        }
+      ]
+    },
+    "b9c9274e88aa24ff46624c1761eb6453af2d89c7a8a2625d836907692605abb3.jpg": {
+      "sha256": "b9c9274e88aa24ff46624c1761eb6453af2d89c7a8a2625d836907692605abb3",
+      "width": 1024,
+      "height": 1024,
+      "uses": [
+        {
+          "id": "post:pfbid0ztsmRRhd49H1dpPuqfhZ14aYdGPVRNqwKDJRbWnXjN1epu1M3EdgUoUU1SbqfcYCl",
+          "sourceUrl": "https://www.facebook.com/ElvesBG.EU/posts/pfbid0ztsmRRhd49H1dpPuqfhZ14aYdGPVRNqwKDJRbWnXjN1epu1M3EdgUoUU1SbqfcYCl",
+          "kind": "image"
+        }
+      ]
+    },
+    "9835d0df12b34133074eab3e3364c3159af6c927b788832eb3a7ba653d2d7dce.jpg": {
+      "sha256": "9835d0df12b34133074eab3e3364c3159af6c927b788832eb3a7ba653d2d7dce",
+      "width": 244,
+      "height": 244,
+      "uses": [
+        {
+          "id": "page:https://www.facebook.com/novinitem",
+          "sourceUrl": "https://www.facebook.com/novinitem",
+          "kind": "image"
+        }
+      ]
+    },
+    "267f94c52bd2fa9f5f45dbd1a9b6523f9c7e1e7438e125ae41a718fe5654fbb3.jpg": {
+      "sha256": "267f94c52bd2fa9f5f45dbd1a9b6523f9c7e1e7438e125ae41a718fe5654fbb3",
+      "width": 410,
+      "height": 410,
+      "uses": [
+        {
+          "id": "page:https://www.facebook.com/petel.bg",
+          "sourceUrl": "https://www.facebook.com/petel.bg",
+          "kind": "image"
+        }
+      ]
+    },
+    "7d45c168198642cf92004bcb40e28244865d2bcbee2d1fe071149519a3af9749.jpg": {
+      "sha256": "7d45c168198642cf92004bcb40e28244865d2bcbee2d1fe071149519a3af9749",
+      "width": 480,
+      "height": 480,
+      "uses": [
+        {
+          "id": "page:https://www.facebook.com/vidinvest",
+          "sourceUrl": "https://www.facebook.com/vidinvest",
+          "kind": "image"
+        }
+      ]
+    },
+    "83aadf77ca91a837ee4d7969bdbd6092300f10587a2e9a7079742426024e4991.jpg": {
+      "sha256": "83aadf77ca91a837ee4d7969bdbd6092300f10587a2e9a7079742426024e4991",
+      "width": 510,
+      "height": 533,
+      "uses": [
+        {
+          "id": "post:pfbid0uDcAq9Y2BU5nyXjLwkyEtcaGMJ1mhP7GADfLzBmHMk2BEj8SxSAScHNp5MJs97jWl",
+          "sourceUrl": "https://www.facebook.com/vidinvest/posts/pfbid0uDcAq9Y2BU5nyXjLwkyEtcaGMJ1mhP7GADfLzBmHMk2BEj8SxSAScHNp5MJs97jWl",
+          "kind": "image"
+        }
+      ]
+    },
+    "fb58eb6404d5f4fab29e867e68921ffb26c06e3f270347a0ef97d30e819fa7a3.jpg": {
+      "sha256": "fb58eb6404d5f4fab29e867e68921ffb26c06e3f270347a0ef97d30e819fa7a3",
+      "width": 80,
+      "height": 80,
+      "uses": [
+        {
+          "id": "page:100063613176240",
+          "sourceUrl": "https://www.facebook.com/pirinpress.bg",
+          "kind": "image"
+        }
+      ]
+    },
+    "1455144fc6ed438bd96ccc2c7928b77c0f8a2c33923080e5265fdbd7bf3dbec7.jpg": {
+      "sha256": "1455144fc6ed438bd96ccc2c7928b77c0f8a2c33923080e5265fdbd7bf3dbec7",
+      "width": 840,
+      "height": 531,
+      "uses": [
+        {
+          "id": "post:pfbid0TSXAEdDNoKqFBhhnqYW4Ta7eRHz5nU7pRbRPpPyS71JSwxcRmEaKiTzZw4LwnEuHl",
+          "sourceUrl": "https://www.facebook.com/pirinpress.bg/posts/pfbid0TSXAEdDNoKqFBhhnqYW4Ta7eRHz5nU7pRbRPpPyS71JSwxcRmEaKiTzZw4LwnEuHl",
+          "kind": "image"
+        }
+      ]
+    },
+    "104daff52a32355a27fd42594b3d90c3406716538853e1f9953bc09c372ab196.jpg": {
+      "sha256": "104daff52a32355a27fd42594b3d90c3406716538853e1f9953bc09c372ab196",
+      "width": 933,
+      "height": 487,
+      "uses": [
+        {
+          "id": "post:pfbid0YsbK4ZGGzFPj78kxP1xK4Gx6yRA2Hn6h1ZbFhWZfkU2mLzcBUeiKMmxQ8k3cJJvzl",
+          "sourceUrl": "https://www.facebook.com/pirinpress.bg/posts/pfbid0YsbK4ZGGzFPj78kxP1xK4Gx6yRA2Hn6h1ZbFhWZfkU2mLzcBUeiKMmxQ8k3cJJvzl",
+          "kind": "image"
+        }
+      ]
+    },
+    "a5468b822ce247bd613252d1f5b95e03aeb69a899854d5b1ed5b37548c3ca238.jpg": {
+      "sha256": "a5468b822ce247bd613252d1f5b95e03aeb69a899854d5b1ed5b37548c3ca238",
+      "width": 1000,
+      "height": 522,
+      "uses": [
+        {
+          "id": "post:pfbid0m9rrH81HyPUQH9rNhcT9fiZs3TfeVApWH6dwMNXHmApmuZsw49a3e9YpbgA3GLgRl",
+          "sourceUrl": "https://www.facebook.com/pirinpress.bg/posts/pfbid0m9rrH81HyPUQH9rNhcT9fiZs3TfeVApWH6dwMNXHmApmuZsw49a3e9YpbgA3GLgRl",
+          "kind": "image"
+        }
+      ]
     }
   }
 }
