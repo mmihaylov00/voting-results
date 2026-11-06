@@ -11598,7 +11598,13 @@
           "sha256": "75264493f698dfa5d6364377ed67de6256bcb4d88b042cc038811a6551c3d042"
         }
       ],
-      "linkHeadline": "Няма шаблони за слепите в изборните секции и на втори тур — OFFNews"
+      "linkHeadline": "Няма шаблони за слепите в изборните секции и на втори тур — OFFNews",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Критиката е към организацията на ЦИК, без съдържание за двамата кандидати.",
+        "sourceTextSha256": "f569165c58afba3d922421f6b865d67860bc6d5a82c2b6deedbdeef6ecc5e841"
+      }
     },
     {
       "id": "post:pfbid022FWLAsq9oTykCU6G6Q2Abc4K382BTYy6N6Be8E9mFQ3nGVR1KdUciBQQ3YKdY1zVl",
@@ -11659,7 +11665,13 @@
           "sha256": "26e1ce44deb64cf7d3744cdea164da9f0a52c92a9acbfeca10d18c6172850ebe"
         }
       ],
-      "linkHeadline": "Галъп: Скучна кампания, ниска активност за вота, 13,5% разлика между водещите кандидати — OFFNews"
+      "linkHeadline": "Галъп: Скучна кампания, ниска активност за вота, 13,5% разлика между водещите кандидати — OFFNews",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Проучването представя разликата между водещите двойки и активността без подкрепа за кандидат.",
+        "sourceTextSha256": "1c45c9a09905b76b0131e8594eeb264081e491761dbdb144bfcf1f05e152fa06"
+      }
     },
     {
       "id": "post:pfbid021gk5L5QmHiHqiGDP4PJMdyn58RAVVSrZagne8kHeMZj71BCVfy5yGqGfU68jUAoBl",
@@ -11715,7 +11727,13 @@
           "sha256": "38ff185f3053ff35f908b4a4db9ac50bc087326a5f9d247e871243524c53cc2f"
         }
       ],
-      "linkHeadline": "Корнелия Нинова: Няма да гласувам за Йотова. В неделя гласувайте за алтернативата — OFFNews"
+      "linkHeadline": "Корнелия Нинова: Няма да гласувам за Йотова. В неделя гласувайте за алтернативата — OFFNews",
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": "critical",
+        "reason": "Цитираният призив отхвърля Йотова и насочва към единствената алтернатива на балотажа.",
+        "sourceTextSha256": "3269a39d7ba5adbfd89c485c7af62fcc0e0a32aa34e1911092894b65a3eeda35"
+      }
     },
     {
       "id": "post:pfbid0iR4vFCytHWSgP1tS3yVnqLWxm1USrfWsi6avRRhLrLzwhfYGyyGTVuheZU7jU4TPl",
@@ -11765,7 +11783,13 @@
         }
       },
       "sourceTextSha256": "301e5a668dc53f2e773eab3284a665b32b52ddf1b47ea788193e6f6506fc80fe",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Негативното определение е за дебата като събитие, без отделна оценка за някой от двамата кандидати.",
+        "sourceTextSha256": "301e5a668dc53f2e773eab3284a665b32b52ddf1b47ea788193e6f6506fc80fe"
+      }
     },
     {
       "id": "post:pfbid02uaMc6S3395XQsteBtoHdwMHHdJpU4kQRLx3D9uknXGWQXf1BXWgVqVMkkVFBTAq5l",
@@ -11805,7 +11829,13 @@
         }
       },
       "sourceTextSha256": "9f08f9aed175a3b4dd92eb08447af0a70bdd7bb6b5c77ab2d9efed010839c1a1",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Посочен е изборен резултат на Йотова в конкретна секция без отделна оценка.",
+        "sourceTextSha256": "9f08f9aed175a3b4dd92eb08447af0a70bdd7bb6b5c77ab2d9efed010839c1a1"
+      }
     },
     {
       "id": "post:pfbid0fxDoY7nfyWoiLhUPNhd7dKUQMk6bvMdo6ax3ZQoqbRZWqsCjPRtDn5Z917VSzfhKl",
@@ -11856,7 +11886,13 @@
           "sha256": "dd4629a1dfbf28bab753b7f06895fa659be19a66f62e6ce451777472ebd097db"
         }
       ],
-      "linkHeadline": "За чия кирилица милее Йотова? Сайтът на президентството е с руски вариант — OFFNews"
+      "linkHeadline": "За чия кирилица милее Йотова? Сайтът на президентството е с руски вариант — OFFNews",
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Риторичните въпроси внушават зависимост на Йотова от Русия.",
+        "sourceTextSha256": "3960f088bf754b9af0ebb7d4940b3067d41b95f8fad92c5c2657060fb92a8447"
+      }
     },
     {
       "id": "video:1074077158773742",
@@ -11896,7 +11932,13 @@
         }
       },
       "sourceTextSha256": "189ce0173829ea48d2887694064fbceaadc56ebfb40bf2ed288132b486f7c999",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "unclear",
+        "reason": "Йотова е спомената в сравнение за Вълчев, но липсва съдържанието на видеото.",
+        "sourceTextSha256": "189ce0173829ea48d2887694064fbceaadc56ebfb40bf2ed288132b486f7c999"
+      }
     },
     {
       "id": "post:pfbid0pbVicN2DCA7heszqhPT7XXhMbrxESPgeMUjMJAbQ47kKFubWG5Xf5MYE3AkScCV2l",
@@ -11941,7 +11983,13 @@
         }
       },
       "sourceTextSha256": "81cf8cc4e93059327a5f6ca6bfcc2ad2f7184c52ed08f688fe4975d5383cc250",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Изведена е пряка отрицателна оценка за пригодността на Йотова за президент.",
+        "sourceTextSha256": "81cf8cc4e93059327a5f6ca6bfcc2ad2f7184c52ed08f688fe4975d5383cc250"
+      }
     },
     {
       "id": "post:pfbid07gMshdGfZSHe3ajU4TN4DJD7V68E8HU3zS3CC8CkLLqSBoygDXfuNUT94vTiqhGbl",
@@ -11981,7 +12029,13 @@
         }
       },
       "sourceTextSha256": "8d7bedbe39210a065ac4c47a919c9f61223d062c478d70513f8dd0c6f202d231",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Цитираният призив е за противопоставяне на избора на Йотова.",
+        "sourceTextSha256": "8d7bedbe39210a065ac4c47a919c9f61223d062c478d70513f8dd0c6f202d231"
+      }
     },
     {
       "id": "post:pfbid0xKhDe7THDw16rdNGn76S9C9DqWA5ALYrJcJ8QjepVSYs9w16Z1DBL73SHV9sCnpHl",
@@ -12037,7 +12091,13 @@
           "sha256": "04954c1ce9f14c9000dd42709f9c603bdd36257bf3e2f556375da48fb9dcae3f"
         }
       ],
-      "linkHeadline": "Йотова осъди новите атаки в Черно море, но отново спести името на Русия — OFFNews"
+      "linkHeadline": "Йотова осъди новите атаки в Черно море, но отново спести името на Русия — OFFNews",
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Акцентът упреква Йотова, че отново избягва да назове Русия.",
+        "sourceTextSha256": "c494652758f375c464a59197a1613ed825c3f4d4824c93a6b1edeba424d58920"
+      }
     },
     {
       "id": "post:pfbid0LFLZvS8JRu1SajNUtM93zFsUrnAmYgxU2mS5SKB2aGeqv29qCzm9y5qWUEAepbpFl",
@@ -12088,7 +12148,13 @@
           "sha256": "b72b701af05ce7bafa84dbcd72ad220a2d207e6379335fbf3d5b0be712179dbd"
         }
       ],
-      "linkHeadline": "Йотова и Вълчев в Сандански: Ще работим за силна България със самочувствие, чийто глас се чува в Европа — OFFNews"
+      "linkHeadline": "Йотова и Вълчев в Сандански: Ще работим за силна България със самочувствие, чийто глас се чува в Европа — OFFNews",
+      "stance": {
+        "gyurov": null,
+        "yotova": "supportive",
+        "reason": "Изведени са опитът на Йотова и благоприятни обещания за силна България.",
+        "sourceTextSha256": "dc1b9042bac698e6ba90daa2f9429f868d37bf4c229640a9ab7f808694a86219"
+      }
     },
     {
       "id": "post:pfbid0rdSe3F8oqGwe6XF7WKPr62Wa22piHqdTa1n2ozT7ndmHairCvTrbWGKRfkRSatTwl",
@@ -12139,7 +12205,13 @@
           "sha256": "958deee978b927fc2d2d30c3e4a15e6b930879ecdd7e104dcdaedb7331997a78"
         }
       ],
-      "linkHeadline": "ПБ за трети път провалиха извънредното заседание на НС за Петричкия Ескобар — OFFNews"
+      "linkHeadline": "ПБ за трети път провалиха извънредното заседание на НС за Петричкия Ескобар — OFFNews",
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Текстът описва възможен изборен ефект за Йотова, а упрекът е към управляващите.",
+        "sourceTextSha256": "333fd301de57dfda951f26de2622d04c188390f7b7f97a89387760c6ed3b0d9c"
+      }
     },
     {
       "id": "post:pfbid02Y9esj3GTP2Zxvfnj4vVPz3QJZGyPmfkBStCkZPtZ3TFCcLtbeUz7jK5PF7E2VPkil",
@@ -12195,7 +12267,13 @@
           "sha256": "c365c3b3bedd4af3caa720b22f092e2e688c3953c1e0bcb02c0e6d3d7c34a1da"
         }
       ],
-      "linkHeadline": "Дори Нешка Робева не е подкрепила Йотова: Не гласувах, и няма да се оправдавам — OFFNews"
+      "linkHeadline": "Дори Нешка Робева не е подкрепила Йотова: Не гласувах, и няма да се оправдавам — OFFNews",
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Цитираната позиция приписва слабия резултат на самата Йотова и отказва подкрепа.",
+        "sourceTextSha256": "7e95f1a4b68cabf75fc01623eee9785c9584ab2ef6b5db35484fed1ede311a53"
+      }
     },
     {
       "id": "post:pfbid0U3MmMGyUxBce415t7GYJEuq5sZc4T824phUpWyks5F1bF5cxjXM56i9KqxWe4sfkl",
@@ -12240,7 +12318,13 @@
         }
       },
       "sourceTextSha256": "d06f8945347086dd82a93db82153f562e7e4f6a7ec5a64f15d73d05669bd98e4",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Йотова е посочена като получател на агитация, а обвинението за нарушение е към Радев.",
+        "sourceTextSha256": "d06f8945347086dd82a93db82153f562e7e4f6a7ec5a64f15d73d05669bd98e4"
+      }
     },
     {
       "id": "post:pfbid034SJHaBpS3W4cqDNymSCwVf8jXpeinADcLfYxVgtBawMY8V1Fw2hqNGtoQ8dQ7gZVl",
@@ -12285,7 +12369,13 @@
         }
       },
       "sourceTextSha256": "96b588d4ac0626121543eb91f5c78ca3a1cb44a344f4f9d01e1f9a5e454d59b3",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Съдържанието засяга ЦИК, доставчика и адвокат, без позиция към двамата кандидати.",
+        "sourceTextSha256": "96b588d4ac0626121543eb91f5c78ca3a1cb44a344f4f9d01e1f9a5e454d59b3"
+      }
     },
     {
       "id": "post:pfbid02vdBkKKRWEztNvPzzWSFozA8VCQ3doxZBGK4ekVi5mP4BqDnEpQmk6vVNedC4VBCBl",
@@ -12340,7 +12430,13 @@
         }
       },
       "sourceTextSha256": "d3b250175571540babad9927acbf33fa79b907da5e33b8849c27696df9a2c421",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Критиката е към кандидатури за ВСС, а не към президентските кандидати.",
+        "sourceTextSha256": "d3b250175571540babad9927acbf33fa79b907da5e33b8849c27696df9a2c421"
+      }
     },
     {
       "id": "post:pfbid0avQt7pmyDR2pcho9aNk2GdxJKrgjABoCZko8SYr43ZparQ3Tr7ywEt7i7VdmbYHBl",
@@ -12425,7 +12521,13 @@
         }
       },
       "sourceTextSha256": "fda6ef8f54dc47d82991d9ec3367a020d4ac2f085f6064d816b01e42767d2a62",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Двамата са посочени като търсещи гласове на ГЕРБ без ясна оценка за тях.",
+        "sourceTextSha256": "fda6ef8f54dc47d82991d9ec3367a020d4ac2f085f6064d816b01e42767d2a62"
+      }
     },
     {
       "id": "post:pfbid0uyBV8n2zm7n63VtEAC5YYenMu1QVNzK3qrBhi4CDfKQM5cegwHTXpUeAJUonQLMGl",
@@ -12475,7 +12577,13 @@
         }
       },
       "sourceTextSha256": "8df1ea3a5e19aba9b6959bdb2d7138d961b8e0bd9a6b3e254a1bb32084d86641",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Помилването от Йотова е поставено в негативния контекст на освобождаване на осъден убиец.",
+        "sourceTextSha256": "8df1ea3a5e19aba9b6959bdb2d7138d961b8e0bd9a6b3e254a1bb32084d86641"
+      }
     },
     {
       "id": "post:pfbid02bPVg9dQpBA4QJ19L4XaC7Bo4UJrKWSzuB9TxoiSKixJLNRJ1EEDBwMUmuuy2HjWrl",
@@ -12535,7 +12643,13 @@
         }
       },
       "sourceTextSha256": "b9c20cffe7e381773d95465f9fe1ae600f5618f8331e378e1d5e037793d92199",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Йотова е свързана фактологично с подкрепящ комитет, а обвиненията са към негов участник.",
+        "sourceTextSha256": "b9c20cffe7e381773d95465f9fe1ae600f5618f8331e378e1d5e037793d92199"
+      }
     },
     {
       "id": "post:pfbid02G2pGMSNkNrHLfp8sGP8PxdUS4akzcMHmoe4zaU8QajLZ7YxaHHRcPyFzV3xvrcdgl",
@@ -12581,7 +12695,13 @@
       },
       "sourceTextSha256": "825257ed460e2ee30f6e776b9292b1d57e263f64ea2c990e5a4733184c837c7e",
       "images": [],
-      "linkHeadline": "„Случайностите“ около Гюров: Въпросите, на които бе длъжен, но не отговори кандидатът за президент - NBOX - Всички новини"
+      "linkHeadline": "„Случайностите“ около Гюров: Въпросите, на които бе длъжен, но не отговори кандидатът за президент - NBOX - Всички новини",
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Заглавието упреква Гюров за неизпълнено задължение да отговори на въпроси.",
+        "sourceTextSha256": "825257ed460e2ee30f6e776b9292b1d57e263f64ea2c990e5a4733184c837c7e"
+      }
     },
     {
       "id": "post:pfbid02nWP3cP7zCU3XtV4FrLShkhKihnjq3xxE8X7QDWZGJyqN1AX7miD3BC1RKLmsSgF4l",
@@ -12627,7 +12747,13 @@
       },
       "sourceTextSha256": "fce453e2089f16ce58211a6d72f86991fb5d95833deaad637311ee4c223f26f4",
       "images": [],
-      "linkHeadline": "Световните медии за изборите в България: Ниска активност и оспорван балотаж - NBOX - Всички новини"
+      "linkHeadline": "Световните медии за изборите в България: Ниска активност и оспорван балотаж - NBOX - Всички новини",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Обобщението за активността и балотажа не съдържа конкретна позиция към кандидат.",
+        "sourceTextSha256": "fce453e2089f16ce58211a6d72f86991fb5d95833deaad637311ee4c223f26f4"
+      }
     },
     {
       "id": "post:pfbid0r57kAVNcsiijreGLBUjbYgVoV3YppuuqAEVPjY1am9wtgtH2V5RsAN9tWVp1skSJl",
@@ -12682,7 +12808,13 @@
         }
       },
       "sourceTextSha256": "4f8d0c7bfd300b50e168e696b27f5da8d86be4532bd113e3bd8c7bc98e475c41",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Призивът за партийно стратегическо гласуване не назовава или оценява конкретен кандидат.",
+        "sourceTextSha256": "4f8d0c7bfd300b50e168e696b27f5da8d86be4532bd113e3bd8c7bc98e475c41"
+      }
     },
     {
       "id": "post:pfbid024Wn3jifMYG7cR5NdMTVNGVJLMiayWMvyY85PzbHf3o22aKYpDhLSydX72dCfB2tvl",
@@ -12737,7 +12869,13 @@
         }
       },
       "sourceTextSha256": "11ad3b3bf45db2782a0efb8aab292a8571066dd53a320fd95a97781bcd23a469",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "critical",
+        "reason": "Цитираната критика представя двамата като крила на едно и също статукво.",
+        "sourceTextSha256": "11ad3b3bf45db2782a0efb8aab292a8571066dd53a320fd95a97781bcd23a469"
+      }
     },
     {
       "id": "post:pfbid0mnLShaSvD8JdFiPiSrEhv29k43pWA1o4FxcfPcVtzzM8ijvM2uQ3nQU9DPsPZhqyl",
@@ -12777,7 +12915,13 @@
         }
       },
       "sourceTextSha256": "af7f27e26d0896b1ce3455002f75a7c0fff9904090962dbcabcbcf889730453b",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Описана е предполагаема кампания на Гюров без еднозначна положителна или отрицателна оценка.",
+        "sourceTextSha256": "af7f27e26d0896b1ce3455002f75a7c0fff9904090962dbcabcbcf889730453b"
+      }
     },
     {
       "id": "post:pfbid0oSLDcxVv5xXCwteyUjaT4pqXnzBKy222gvj4Lnib6pRX77UdTF2Jfg9h7z36HL8fl",
@@ -12822,7 +12966,13 @@
         }
       },
       "sourceTextSha256": "4c7580b5d82569d40bd750ff67ba0c152b5a5ec0af883d86ecd9942e80185123",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Цитираното обяснение за изборните номера и разликата между двамата е фактологично.",
+        "sourceTextSha256": "4c7580b5d82569d40bd750ff67ba0c152b5a5ec0af883d86ecd9942e80185123"
+      }
     },
     {
       "id": "post:pfbid028Fn5NRKYDHdrN9pTf7iRGMqdxVafaKKeWQMsNzKuCC4Qz2YoXcwQvqb5mhmo8SLKl",
@@ -12882,7 +13032,13 @@
         }
       },
       "sourceTextSha256": "2e6b298c8419d27a015becfef9008780ea5e888d9dcdc50246e6e375ddce984c",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "critical",
+        "reason": "И двете двойки са иронично представени като притежавани от Борисов.",
+        "sourceTextSha256": "2e6b298c8419d27a015becfef9008780ea5e888d9dcdc50246e6e375ddce984c"
+      }
     },
     {
       "id": "post:pfbid02s5yp2WGyqKZjLAr3q7jFMmbav3Gvv5nNV3a1QxzKjw9wEq5MhKbBGWcfRvbjVJsJl",
@@ -12942,7 +13098,13 @@
         }
       },
       "sourceTextSha256": "6bcd839fac97e3b786f08308fc0f0346de4cc93edb5423140f10d21c0277d27b",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Описанието на позициите на Гюров е придружено от подигравателни политически хаштагове.",
+        "sourceTextSha256": "6bcd839fac97e3b786f08308fc0f0346de4cc93edb5423140f10d21c0277d27b"
+      }
     },
     {
       "id": "post:pfbid0w3uwrBQLYae6wEDk9xTBwBBFPGrWgJ5NPiaB8pwMwUCjftzXYabtfT929uz4Essl",
@@ -12993,7 +13155,13 @@
       },
       "sourceTextSha256": "d731aa1c98f9272a88b76f07d4482cb0a6cccc3340d6931ac5522e1d86981ee1",
       "images": [],
-      "linkHeadline": "Петър Витанов: Някои от ПБ подцениха тези избори"
+      "linkHeadline": "Петър Витанов: Някои от ПБ подцениха тези избори",
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Посочена е оценка за кампанията на подкрепящата партия, без лична оценка на Йотова.",
+        "sourceTextSha256": "d731aa1c98f9272a88b76f07d4482cb0a6cccc3340d6931ac5522e1d86981ee1"
+      }
     },
     {
       "id": "post:pfbid02fh3KHxcwLeF87rKhsmnw7pvsTDY8BxiUzgtsqyBjLbF8MVcYK2D5bx5MsKmMLQYKl",
@@ -13039,7 +13207,13 @@
       },
       "sourceTextSha256": "00ffed8001ae011f2c596de0f5ff5a11d62af34ee24b151ea091d2f6d39e7314",
       "images": [],
-      "linkHeadline": "\"Маркет линкс\" три дни преди вота: Балотаж между Йотова и Гюров - 47,3% срещу 30,6%"
+      "linkHeadline": "\"Маркет линкс\" три дни преди вота: Балотаж между Йотова и Гюров - 47,3% срещу 30,6%",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Заглавието представя социологически проценти за двамата без оценъчна позиция.",
+        "sourceTextSha256": "00ffed8001ae011f2c596de0f5ff5a11d62af34ee24b151ea091d2f6d39e7314"
+      }
     },
     {
       "id": "post:pfbid02fuP5YruUFDksRSyw1qUJp2naok1pKpth4c66qRLSs9Ro9xcqyoCtQxVn1YMns5Lol",
@@ -13085,7 +13259,13 @@
       },
       "sourceTextSha256": "f982a0b8253811c058e9c0ac51a2f28c2b7c6b0ca7359720b6ce25bfc1d3a9ba",
       "images": [],
-      "linkHeadline": "Наруши ли Радев Изборния кодекс? Експерти с различни тълкува..."
+      "linkHeadline": "Наруши ли Радев Изборния кодекс? Експерти с различни тълкува...",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Предмет е евентуално нарушение на Радев без кандидатска оценка в наличния текст.",
+        "sourceTextSha256": "f982a0b8253811c058e9c0ac51a2f28c2b7c6b0ca7359720b6ce25bfc1d3a9ba"
+      }
     },
     {
       "id": "post:pfbid0YfMrkd6RAiMhEWYsaDisVSRxhg6YRBSXcc4vSyTaSvhLAQsXT5Eom6EnSoGM35fGl",
@@ -13146,7 +13326,13 @@
       },
       "sourceTextSha256": "89754be4986ea0d6aad86766acf85ac8f59a9dfa40bcf9215537d0f98ca15cba",
       "images": [],
-      "linkHeadline": "Харалан Александров: Йотова стана жертва на срива в довериет..."
+      "linkHeadline": "Харалан Александров: Йотова стана жертва на срива в довериет...",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "critical",
+        "reason": "Гюров е само в хаштаг, а Йотова е описана и с унизителна метафора за положението си.",
+        "sourceTextSha256": "89754be4986ea0d6aad86766acf85ac8f59a9dfa40bcf9215537d0f98ca15cba"
+      }
     },
     {
       "id": "post:pfbid0211s8VAN6dYytvzUA4S51RNHPewNXHVNudhg8kbaULk3R8uoy5Hb25HqN63a746zWl",
@@ -13191,7 +13377,13 @@
         }
       },
       "sourceTextSha256": "425173aacb281bebc734996a8dd32ae5637ec9753783c37c6ce60996931bab79",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Текстът съобщава за провалено заседание по помилване, без да назовава двамата кандидати.",
+        "sourceTextSha256": "425173aacb281bebc734996a8dd32ae5637ec9753783c37c6ce60996931bab79"
+      }
     },
     {
       "id": "post:pfbid035k6DEqc2LLdAs31JzJrxaYcagHXqBw3F463j1yicnXT5SCFmPjZFi1Yq3ktNifVFl",
@@ -13237,7 +13429,13 @@
       },
       "sourceTextSha256": "9ce5dd80ebaf31362aa159edd377e18572ec8a44f4d6736bb474f5d29134fbef",
       "images": [],
-      "linkHeadline": "Бабикян: Предпочитам избори като тези в САЩ, а не Путин и Медведев да се сменят, както се опитва да се направи при нас |…"
+      "linkHeadline": "Бабикян: Предпочитам избори като тези в САЩ, а не Путин и Медведев да се сменят, както се опитва да се направи при нас |…",
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "critical",
+        "reason": "Цитатът критикува неподготвеността на Гюров и арогантното излъчване на Йотова.",
+        "sourceTextSha256": "9ce5dd80ebaf31362aa159edd377e18572ec8a44f4d6736bb474f5d29134fbef"
+      }
     },
     {
       "id": "post:pfbid026wYpAxWrD6TdegYqUARmVUyXpWe68PYStcZFQqimEFiSedTcHmCghfxHVDSHkDM9l",
@@ -13272,7 +13470,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "„Избори 360°“: ЦИК създаде мобилно приложение за по-лесно гласуване"
+      "linkHeadline": "„Избори 360°“: ЦИК създаде мобилно приложение за по-лесно гласуване",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Новината е за приложение на ЦИК без съдържание за конкретните кандидати.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0HrkV9FNJKv6WjAKZK5hgvdSv2nihM38pqm5ywZck3AKLxn4bvsXXRFHkLCKgRDaql",
@@ -13307,7 +13511,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "Каква избирателна активност предвиждат социолозите за днешните избори"
+      "linkHeadline": "Каква избирателна активност предвиждат социолозите за днешните избори",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Заглавието е за прогнозна активност без оценка или споменаване на конкретен кандидат.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0KAKk3VeLkxwSBPfKxPuWuzxY52SXdiq4qFTGYvDr9NY6MW4FetCM6NPkfcFroQc7l",
@@ -13342,7 +13552,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "Днес е ден за размисъл преди утрешните избори за президент"
+      "linkHeadline": "Днес е ден за размисъл преди утрешните избори за президент",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Съобщението за деня за размисъл не съдържа кандидатска позиция.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0MBqJWL6jquqYLmNb7omTvFLqCWnVwvJCEGfTw58WRKVzZkmQY9nDevCL5bN38gbXl",
@@ -13387,7 +13603,13 @@
         }
       },
       "sourceTextSha256": "4dcb9e63448c35904ab927ed622a145b013c424670067042caa819e0a3a9a0ac",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Подкрепата е за друга кандидатска двойка и не се пренася към Гюров или Йотова.",
+        "sourceTextSha256": "4dcb9e63448c35904ab927ed622a145b013c424670067042caa819e0a3a9a0ac"
+      }
     },
     {
       "id": "post:pfbid0UtPno3DBwvRB9gtkn7VDyb8tYu4NE9ewtPp3oUfvq5Wf7Yd5uQkPXMJbkvrsvcxUl",
@@ -13432,7 +13654,13 @@
         }
       },
       "sourceTextSha256": "71b4154677827747267ff3a9df53a08be61b60382eb81d3be03d5bf722283f5d",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Похвалите и подкрепата са изцяло за друга кандидатка.",
+        "sourceTextSha256": "71b4154677827747267ff3a9df53a08be61b60382eb81d3be03d5bf722283f5d"
+      }
     },
     {
       "id": "post:pfbid0qKsQaEVsEnLH5Niae1S8o5E71N2iuZEkfFpnh6eWgTdZ3kNMHSBv6xysrQ8RCUzAl",
@@ -13467,7 +13695,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "В Шумен пристигнаха хартиените бюлетини за балотажа за президентските избори - ШУМ.БГ"
+      "linkHeadline": "В Шумен пристигнаха хартиените бюлетини за балотажа за президентските избори - ШУМ.БГ",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Новината е за доставка на бюлетини без кандидатска позиция.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0W6qN8zevavuFisx7Y7atjm2YSHp2Xy4TKqSDAgTKKLgm6H53wYHrh5Cy9gMqPaqbl",
@@ -13502,7 +13736,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "5,52% е избирателната активност в Шуменско към 11,00 часа - ШУМ.БГ"
+      "linkHeadline": "5,52% е избирателната активност в Шуменско към 11,00 часа - ШУМ.БГ",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Представена е регионална активност без съдържание за двамата кандидати.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid034MnJH9jLufyipuo2jH22SEnJjEcuBHZcK6W2CpWxbcSrHsYW1NQaLfaaBqYCvyNl",
@@ -13537,7 +13777,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "РИК определи 17 подвижни секции в Шуменско за президентските избори, 11 са във Върбица - ШУМ.БГ"
+      "linkHeadline": "РИК определи 17 подвижни секции в Шуменско за президентските избори, 11 са във Върбица - ШУМ.БГ",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Съобщението е за организация на подвижни секции без кандидатска оценка.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0F7daPxifhEcxBkSHUVAHHTfDFdAFZcUyBWFT7FpwbzpM4u2cYVQnHMPRxiWvdbsRl",
@@ -13572,7 +13818,13 @@
       },
       "sourceTextSha256": "a20f4cc60db896ea7bd7b225c0b3753ae39699017fd04ecc55eba3f2e9829436",
       "images": [],
-      "linkHeadline": "Надпреварата за „Дондуков“ 2 на финалната права: Ивайло Симеонов с амбиция за пробив, четвърта позиция в социологическо проучване и ост"
+      "linkHeadline": "Надпреварата за „Дондуков“ 2 на финалната права: Ивайло Симеонов с амбиция за пробив, четвърта позиция в социологическо проучване и ост",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Заглавието представя кампанията на друг кандидат.",
+        "sourceTextSha256": "a20f4cc60db896ea7bd7b225c0b3753ae39699017fd04ecc55eba3f2e9829436"
+      }
     },
     {
       "id": "post:pfbid0261GivEQropq1soVRqv8vsXCiTnDbrcYpLLZpYAiWP1K1fPCy8bppLBKvsMkGuvykl",
@@ -13607,7 +13859,13 @@
       },
       "sourceTextSha256": "6757990c532c9af34084336b7b08eb2adf5d3ffc7ac4a1a6595971ad5ff9b2f5",
       "images": [],
-      "linkHeadline": "Андрей Гюров в Шумен: Нужен е баланс в държавата, а не двойни стандарти и безконтролна власт - ШУМ.БГ"
+      "linkHeadline": "Андрей Гюров в Шумен: Нужен е баланс в държавата, а не двойни стандарти и безконтролна власт - ШУМ.БГ",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Изведена е политическа позиция на Гюров без пряка оценка на качествата му.",
+        "sourceTextSha256": "6757990c532c9af34084336b7b08eb2adf5d3ffc7ac4a1a6595971ad5ff9b2f5"
+      }
     },
     {
       "id": "post:pfbid02m11ioUyPLmy18qkgnDEqwqYyhJkkpBLjeweRTyG7DbRiepbrdnf4WYhadVhDqiiEl",
@@ -13653,7 +13911,13 @@
       },
       "sourceTextSha256": "c108b01045332e7184667e55a56d499c3da278dc4883c0026ef8d034d71e8fc9",
       "images": [],
-      "linkHeadline": "Окончателни резултати от вота за президент в Шуменско: Йотова с 39,44%, Гюров с 24,29 - ШУМ.БГ"
+      "linkHeadline": "Окончателни резултати от вота за президент в Шуменско: Йотова с 39,44%, Гюров с 24,29 - ШУМ.БГ",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Представени са междинни и окончателни изборни резултати за двамата.",
+        "sourceTextSha256": "c108b01045332e7184667e55a56d499c3da278dc4883c0026ef8d034d71e8fc9"
+      }
     },
     {
       "id": "post:pfbid02dysshwKaPA2NtuGtG9pUFpeyhkDScHfguqQndiFuwPTsMfWE4S9gReG1zJnG5tbPl",
@@ -13713,7 +13977,13 @@
         }
       },
       "sourceTextSha256": "aed613df1b22332a3662a33e9b6c2b2508324bf054572b7eb85a6cd616060358",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Социологическата преднина на Йотова е съобщена без одобрение.",
+        "sourceTextSha256": "aed613df1b22332a3662a33e9b6c2b2508324bf054572b7eb85a6cd616060358"
+      }
     },
     {
       "id": "post:pfbid0LFLYVCVCb2LG85ZPC4CzqLx1CY7PxpMyYs3t5P5ef3cnmedAfnRtMMTGnHxwr27tl",
@@ -13758,7 +14028,13 @@
         }
       },
       "sourceTextSha256": "93d0fe428aa8b59622f29a936456cb60ee35694a4f67d41c60a1284ce11bdb76",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Коментарът е за активността и исторически избори без конкретна оценка за двамата.",
+        "sourceTextSha256": "93d0fe428aa8b59622f29a936456cb60ee35694a4f67d41c60a1284ce11bdb76"
+      }
     },
     {
       "id": "post:pfbid0oUBu8QL5sBfmb4bKeEnUDjnPfUmrkBPTPQc4HKPsWPhSEMjphJVGQBy7AuLd5Ggal",
@@ -13833,7 +14109,13 @@
         }
       },
       "sourceTextSha256": "87a571081aa06de6c18744246662ac0e7aa244da268ed3454e3a8d1ee16527eb",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "supportive",
+        "reason": "Цитирана е ясна подкрепа за Йотова като избор за сигурност и мир.",
+        "sourceTextSha256": "87a571081aa06de6c18744246662ac0e7aa244da268ed3454e3a8d1ee16527eb"
+      }
     },
     {
       "id": "post:pfbid02FdZ4P2yeo3AimzCsRSZ58HeGaUQABpinMxdAAPSvKW5MZ3faNu8xcJkmthfnAyPTl",
@@ -13888,7 +14170,13 @@
         }
       },
       "sourceTextSha256": "74a61a930c6075f1f1d5f90bdbcfe0be8099476c42e3959f9695be77df32e31f",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Двамата са представени чрез резултатите от екзитполовете без одобрение или критика.",
+        "sourceTextSha256": "74a61a930c6075f1f1d5f90bdbcfe0be8099476c42e3959f9695be77df32e31f"
+      }
     },
     {
       "id": "post:pfbid0UTGxBfG8GDNoKpWs37PVSu5wrSRoCMxzWeYRDfwfq1YikSCV6QhEAtnGohJsuBrkl",
@@ -13943,7 +14231,13 @@
         }
       },
       "sourceTextSha256": "db75022951eaa2a4808e234784597055a1b58ff7348931695e04e84cae5d02e1",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Представени са изказвания и обещание на Гюров без ясна външна оценка за него.",
+        "sourceTextSha256": "db75022951eaa2a4808e234784597055a1b58ff7348931695e04e84cae5d02e1"
+      }
     },
     {
       "id": "post:pfbid02mciyYX8b5bNujMk2zodwDZwJ5mKUYnXsbd7vCgHsK6v8mXa4CwYTDNQLuArkpGvQl",
@@ -13993,7 +14287,13 @@
         }
       },
       "sourceTextSha256": "62c8bed5bb5f2a7ab291146cd37c2d77e903339318b679bacf7f18f9e74bc548",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Съобщена е позицията на Гюров за съюзниците и Черно море без оценка.",
+        "sourceTextSha256": "62c8bed5bb5f2a7ab291146cd37c2d77e903339318b679bacf7f18f9e74bc548"
+      }
     },
     {
       "id": "post:pfbid06ejPFjYcq9qfFj7kZEXzng5gVTZFYEXdzKP6nQFHtU6MtzBEU2mjeUszEbt3aQiql",
@@ -14078,7 +14378,13 @@
         }
       },
       "sourceTextSha256": "fa8918edc96e5757fdce918a795fc92f8767f52ea4fb861e98aa341b92b4e863",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "neutral",
+        "reason": "За Гюров се внушават зависимости от военен бизнес, а Йотова е представена като източник на критиката.",
+        "sourceTextSha256": "fa8918edc96e5757fdce918a795fc92f8767f52ea4fb861e98aa341b92b4e863"
+      }
     },
     {
       "id": "post:pfbid02QLehHcGQLzguJqcpVqeDUA8oAXqmNvtN5Y1oKBNecqjx8Sr84kvWuGgUGdMJEAB9l",
@@ -14138,7 +14444,13 @@
         }
       },
       "sourceTextSha256": "bb751839efb3ff338806ab7932657beb5f8690d4a654558961af9279eb8e0a4b",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Резултатите и предстоящият балотаж са съобщени без оценка за кандидатите.",
+        "sourceTextSha256": "bb751839efb3ff338806ab7932657beb5f8690d4a654558961af9279eb8e0a4b"
+      }
     },
     {
       "id": "post:pfbid08wK7R1S7iD1M6xCa9QqQSMK4jCTiTFaXpHDp7XeRWsduwAdYazbnQNpU8xfpKoQjl",
@@ -14208,7 +14520,13 @@
         }
       },
       "sourceTextSha256": "05a6994f88cf6d8175cd2f9678fef497f12288f02673e30f05301142d5327c16",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "supportive",
+        "reason": "Призивът подкрепя Йотова и представя противоположния избор на балотажа като корупционен модел.",
+        "sourceTextSha256": "05a6994f88cf6d8175cd2f9678fef497f12288f02673e30f05301142d5327c16"
+      }
     },
     {
       "id": "post:pfbid02hPL5pMt6sd5C4J6KXtqHEcmv7MgTa6EFaxGXeiBg9hYhmm2wnpMCwGur1KBUng3ql",
@@ -14283,7 +14601,13 @@
         }
       },
       "sourceTextSha256": "b86c412603fa37ef06ce1f258cd13611c750f8d863e5b69a2e970b8246bf076d",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Представени са резултати и външнополитически различия без ясна оценъчна позиция.",
+        "sourceTextSha256": "b86c412603fa37ef06ce1f258cd13611c750f8d863e5b69a2e970b8246bf076d"
+      }
     },
     {
       "id": "post:pfbid0VJe1DGQFtRa8rVfjKYRnCvkYTA1PwmoooE2f2zLy9FoQxDudt3aouw6UtWVyFT8Al",
@@ -14333,7 +14657,13 @@
         }
       },
       "sourceTextSha256": "5f7aab2414898a34b806ac55e604a8490c1473f93bec4602f9386d37ba066736",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": "critical",
+        "reason": "Цитираният отговор отхвърля Йотова и изрично насочва към обратния извод за Гюров.",
+        "sourceTextSha256": "5f7aab2414898a34b806ac55e604a8490c1473f93bec4602f9386d37ba066736"
+      }
     },
     {
       "id": "video:4622098934734708",
@@ -14378,7 +14708,13 @@
         }
       },
       "sourceTextSha256": "79cefe18e9a462c195a2c45792c355b8713caedc46a9c2e61985248306d77667",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Изведена е позиция на Йотова за Русия и сигурността без оценка на самата нея.",
+        "sourceTextSha256": "79cefe18e9a462c195a2c45792c355b8713caedc46a9c2e61985248306d77667"
+      }
     },
     {
       "id": "post:pfbid0Mh6s6eNLeYj5iDwFnMKFLJ38NkUqxzc64U7GsTuRJoeEDKQpTeRjmDBa1etyw2tkl",
@@ -14443,7 +14779,13 @@
         }
       },
       "sourceTextSha256": "6663e2928217803b98bd85975c43c45f32c9294d769ecff26bcdae91094f468b",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "supportive",
+        "reason": "Текстът защитава кандидатурата на Йотова и завършва с призив да бъде избрана.",
+        "sourceTextSha256": "6663e2928217803b98bd85975c43c45f32c9294d769ecff26bcdae91094f468b"
+      }
     },
     {
       "id": "post:pfbid02pNys6uUfqt2Y19ym1dyF7cVeyyH8W1Zz7zSWX9xTNBj2NAdD7CVbmAbscFLJyMbl",
@@ -14518,7 +14860,13 @@
         }
       },
       "sourceTextSha256": "0d4382b1a444ae3f3039fe89a9c049e6626a1a425a2b31d83435a61d3784880a",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "supportive",
+        "reason": "Гюров е унижаван за резултата си, а победата на двойката на Йотова е представена триумфално.",
+        "sourceTextSha256": "0d4382b1a444ae3f3039fe89a9c049e6626a1a425a2b31d83435a61d3784880a"
+      }
     },
     {
       "id": "post:pfbid0JVfSXkU87fSJWBkTcBmpbaGJYErRJ8w1UtPPYWCXnq4sX9LqBP24UDEjysCXqe5Bl",
@@ -14553,7 +14901,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "24rodopi.com: Избори?! Една обикновена неделя…"
+      "linkHeadline": "24rodopi.com: Избори?! Една обикновена неделя…",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Наличното заглавие за изборната неделя не съдържа конкретна кандидатска оценка.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0D4vKHfKeZDh9iBGBDj4S5Kji1U4WReyoTo42rfUSJBvHiekhfzvKZvXcks1sBLzsl",
@@ -14588,7 +14942,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "24rodopi.com: В неделя - избори, но с час назад! Преминаваме към зимно часово време"
+      "linkHeadline": "24rodopi.com: В неделя - избори, но с час назад! Преминаваме към зимно часово време",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Информацията е за часовата промяна и изборния ден без кандидатска позиция.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0QZeVsiLeQx5QH6WFHeNhu8MqTyMs6Cat31bjF1RzVASZD2RWyvztoNXcakKHjTzLl",
@@ -14623,7 +14983,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "24rodopi.com: Избори без ГЕРБ и ДПС или Радевият вариант на „По-добре танковете да дойдат!“"
+      "linkHeadline": "24rodopi.com: Избори без ГЕРБ и ДПС или Радевият вариант на „По-добре танковете да дойдат!“",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Критиката е към Радев и партийното участие, без конкретна оценка за двамата кандидати.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid02gpZpyZTiMvqCvnB8c2ypphZAyDdXQ8BbfPgk7WLZC1qDc6UXmyD1LsXoLqr4WcjEl",
@@ -14658,7 +15024,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "Нарасна броят на избирателите в община Дупница"
+      "linkHeadline": "Нарасна броят на избирателите в община Дупница",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Съобщението е за броя избиратели в община Дупница без кандидатско съдържание.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0HsQU1EFr4SayskoAndWE7Ne1trWEyBzHfe1bZgwNXVN1uURcSqFkGUNuXurrHydhl",
@@ -14709,7 +15081,13 @@
       },
       "sourceTextSha256": "89b7711327f6d3c140507691a16fd19213beb3521dcdc1121b7cc8c322f74ee8",
       "images": [],
-      "linkHeadline": "Румяна Коларова: Балотажът на президентските избори е без интрига"
+      "linkHeadline": "Румяна Коларова: Балотажът на президентските избори е без интрига",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Оценката за интригата на балотажа не назовава или оценява конкретен кандидат.",
+        "sourceTextSha256": "89b7711327f6d3c140507691a16fd19213beb3521dcdc1121b7cc8c322f74ee8"
+      }
     },
     {
       "id": "post:pfbid02tG1z5XqUNRv13nviq1MQGB9JZYtnFPmwnsV8rY97X4H5xa7vM2oicN2MyXTTfwnsl",
@@ -14744,7 +15122,13 @@
       },
       "sourceTextSha256": "a61fecf088b744aa7ae84d3eb55982166fa4e6971bde6d4a0c2b7ec6517da8e9",
       "images": [],
-      "linkHeadline": "Нямаме право на повторното гласуване при липса на разписка от машината"
+      "linkHeadline": "Нямаме право на повторното гласуване при липса на разписка от машината",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Разяснено е машинното гласуване без съдържание за кандидатите.",
+        "sourceTextSha256": "a61fecf088b744aa7ae84d3eb55982166fa4e6971bde6d4a0c2b7ec6517da8e9"
+      }
     },
     {
       "id": "post:pfbid026X5xRZTLFnfFzMcS67rDsV4vL4LyfkiPWL7wLDZTRL6UYeNT3knqjVYskJ1e4V2Hl",
@@ -14795,7 +15179,13 @@
       },
       "sourceTextSha256": "efc6a3cbf42ccddb6b81c97d6668464ae318d38db1ed61b4b6a2a7090c514c35",
       "images": [],
-      "linkHeadline": "„Алфа Рисърч“: Йотова и Вълчев водят убедително преди президентските избори"
+      "linkHeadline": "„Алфа Рисърч“: Йотова и Вълчев водят убедително преди президентските избори",
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Посочена е социологическа преднина на Йотова без изразена подкрепа.",
+        "sourceTextSha256": "efc6a3cbf42ccddb6b81c97d6668464ae318d38db1ed61b4b6a2a7090c514c35"
+      }
     },
     {
       "id": "post:pfbid02iCj7xKSHnWrQwUpUnuahddeqbcHuikYmLc8JBWLamW5MDDvDwg48S8PuGTtUs1WBl",
@@ -14836,7 +15226,13 @@
       },
       "sourceTextSha256": "e3e733852ee8ea59f50f9c5e38b8ca5f50655ddb41439de5fe3cf1e814ad49c1",
       "images": [],
-      "linkHeadline": "Румен Радев: Кабинетът води тежки преговори с Брюксел за пенсиите и доходите"
+      "linkHeadline": "Румен Радев: Кабинетът води тежки преговори с Брюксел за пенсиите и доходите",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Изказването е за кабинета и доходите без съдържание за двамата кандидати.",
+        "sourceTextSha256": "e3e733852ee8ea59f50f9c5e38b8ca5f50655ddb41439de5fe3cf1e814ad49c1"
+      }
     },
     {
       "id": "post:pfbid0dyDuSi3zQNDrsmrcKPoppCrFDt7AjNvNJd9EwoqzN1EUg99xQRhMyVqcAMSVRaVBl",
@@ -14882,7 +15278,13 @@
       },
       "sourceTextSha256": "5c99c5e0277317f85ede6cb169065f8dbc733f102f0deea9f5b5a3de25259429",
       "images": [],
-      "linkHeadline": "Искрен Веселинов: Президентските избори ще бетонират статуквото на червената буржоазия"
+      "linkHeadline": "Искрен Веселинов: Президентските избори ще бетонират статуквото на червената буржоазия",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Критиката е общо към статуквото и изборите, без определен кандидатски адресат.",
+        "sourceTextSha256": "5c99c5e0277317f85ede6cb169065f8dbc733f102f0deea9f5b5a3de25259429"
+      }
     },
     {
       "id": "post:pfbid0jqjvTrxNu7To8YJLBrBJjxpoSg7TZCwcqq1RrHsNqrZ2Rj9zJD1647F9F49Pwyb9l",
@@ -14928,7 +15330,13 @@
       },
       "sourceTextSha256": "c5e19132318004fec207da41366ba2a68cce9dae6a31ef3706bebb15f362329f",
       "images": [],
-      "linkHeadline": "Румен Радев: Не купувайте гласове, МВР ще действа безкомпромисно"
+      "linkHeadline": "Румен Радев: Не купувайте гласове, МВР ще действа безкомпромисно",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Призивът срещу купуването на гласове не съдържа позиция към кандидатите.",
+        "sourceTextSha256": "c5e19132318004fec207da41366ba2a68cce9dae6a31ef3706bebb15f362329f"
+      }
     },
     {
       "id": "post:pfbid02EEjm74URoWk8G3opJTpGAjHDVj6cfoFeGNsg9fgYnDEgMewQi6AhCBaK7zv5186Xl",
@@ -14974,7 +15382,13 @@
       },
       "sourceTextSha256": "7f4682a8ca21368d6a9301334c0afd11cdafebfc526ee7bb579aa453ed110b15",
       "images": [],
-      "linkHeadline": "Михаил Константинов: На президентски избори гласове не се купуват"
+      "linkHeadline": "Михаил Константинов: На президентски избори гласове не се купуват",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Общият коментар за купуване на гласове не оценява двамата кандидати.",
+        "sourceTextSha256": "7f4682a8ca21368d6a9301334c0afd11cdafebfc526ee7bb579aa453ed110b15"
+      }
     },
     {
       "id": "post:pfbid033T5AyzLXaaQ6Umjiwak1PFozTuMeVEDYHUmq8Zih6f2iGFhuuEZDiRP1oapLasjGl",
@@ -15020,7 +15434,13 @@
       },
       "sourceTextSha256": "330729d5212845f57e6833fd315f0de2055f1999f4e7b25590868ee3172afb20",
       "images": [],
-      "linkHeadline": "Безплатно паркиране в „Синя зона“ във Варна на 31 октомври и 1 ноември"
+      "linkHeadline": "Безплатно паркиране в „Синя зона“ във Варна на 31 октомври и 1 ноември",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Мярката за паркиране е организационна информация без кандидатска позиция.",
+        "sourceTextSha256": "330729d5212845f57e6833fd315f0de2055f1999f4e7b25590868ee3172afb20"
+      }
     },
     {
       "id": "post:pfbid0Q7SJ15Cjbw585tuRsrvFrJRWAifZNNdkiPngz9hnhoFEEoXAfreuwi8PHQGgGQJ5l",
@@ -15066,7 +15486,13 @@
       },
       "sourceTextSha256": "a1b9b39dc0587e59e098d170bcd07719d5e377785a21c2dc4d4b0f9f87add760",
       "images": [],
-      "linkHeadline": "При 99,94% обработени протоколи: Йотова - 34,76%, Гюров - 31,95%"
+      "linkHeadline": "При 99,94% обработени протоколи: Йотова - 34,76%, Гюров - 31,95%",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Заглавието съобщава националните проценти за двамата без оценка.",
+        "sourceTextSha256": "a1b9b39dc0587e59e098d170bcd07719d5e377785a21c2dc4d4b0f9f87add760"
+      }
     },
     {
       "id": "post:pfbid02m8z6K3RqGqVch4bhQbm9Nc3XF9k6Ny4Sq1yj3jwDmFXpBWqqv4NKyYwHXaZfyPjnl",
@@ -15117,7 +15543,13 @@
       },
       "sourceTextSha256": "70f81b80d4093363097dce2396571d6113013f09d2d0d50960becb41d35a1f61",
       "images": [],
-      "linkHeadline": "Йотова печели във Варненска област с 32,1%, Гюров е втори с 30,4%"
+      "linkHeadline": "Йотова печели във Варненска област с 32,1%, Гюров е втори с 30,4%",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Представени са регионални резултати и разлика в гласовете без оценъчна позиция.",
+        "sourceTextSha256": "70f81b80d4093363097dce2396571d6113013f09d2d0d50960becb41d35a1f61"
+      }
     },
     {
       "id": "video:1598703424613933",
@@ -15157,7 +15589,13 @@
         }
       },
       "sourceTextSha256": "6f72da4315207e1d544545b9d8fa39456f42d73dd15f164bf4ca63662e9f1383",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Поставена е под въпрос квалификацията на председател на РИК, а не на кандидатите.",
+        "sourceTextSha256": "6f72da4315207e1d544545b9d8fa39456f42d73dd15f164bf4ca63662e9f1383"
+      }
     },
     {
       "id": "video:1143215588364756",
@@ -15197,7 +15635,13 @@
         }
       },
       "sourceTextSha256": "d92671dd7fe1c2a64aa87a5b6927d52f5f1b4674b5d1c9c752e71c39b15f7632",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Съобщението е за частични местни избори без съдържание за двамата кандидати.",
+        "sourceTextSha256": "d92671dd7fe1c2a64aa87a5b6927d52f5f1b4674b5d1c9c752e71c39b15f7632"
+      }
     },
     {
       "id": "post:pfbid0GCRjWVh5WGAN4hQ1j5mXRAiyrt3FBGV71iiiViH34Nc8jgZGdojSqUpoREGVVE3ol",
@@ -15237,7 +15681,13 @@
         }
       },
       "sourceTextSha256": "30fd0a8b8e96fbdf1150e0d641f00d8a6e129df79aa3aafbeb9d451d716d91ed",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Информацията е за местни кандидати и организацията на изборния ден.",
+        "sourceTextSha256": "30fd0a8b8e96fbdf1150e0d641f00d8a6e129df79aa3aafbeb9d451d716d91ed"
+      }
     },
     {
       "id": "post:pfbid02TtcyFqhMFMWug82YojpyNG4RshrtRNeAPF1rEY4kmGGRhiMHgK7waYVhLsZ3mgbNl",
@@ -15282,7 +15732,13 @@
         }
       },
       "sourceTextSha256": "ed6807b42fcf392da84c08cd54d3fd91b7abf98175f9acd08306185cc78693fb",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Посочен е броят граждани с право на глас без кандидатска оценка.",
+        "sourceTextSha256": "ed6807b42fcf392da84c08cd54d3fd91b7abf98175f9acd08306185cc78693fb"
+      }
     },
     {
       "id": "post:pfbid0AF735fDi12gwVC3ggpyqRjnSBLghknYPGzoZD1sQw6gGH46QhNd4y3sRjfwTpS3sl",
@@ -15317,7 +15773,13 @@
       },
       "sourceTextSha256": "4443c351648652410175ae7a2adccc3f1fb833d73be01921f3f06008d8585251",
       "images": [],
-      "linkHeadline": "Доставиха бюлетините за втория тур на изборите за президент и вицепрезидент в 5 МИР – Видин - НИЕ"
+      "linkHeadline": "Доставиха бюлетините за втория тур на изборите за президент и вицепрезидент в 5 МИР – Видин - НИЕ",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Информацията е за доставени бюлетини без съдържание за конкретни кандидати.",
+        "sourceTextSha256": "4443c351648652410175ae7a2adccc3f1fb833d73be01921f3f06008d8585251"
+      }
     },
     {
       "id": "post:pfbid02p2BkpZZtSuEpAEbHtM9K3LZfDXymp96kWMreutHQMr1s12xxw76woLKRGDutMiCfl",
@@ -15372,7 +15834,13 @@
         }
       },
       "sourceTextSha256": "46ba0304e2ddda010432e4517a093d5f16773eb67b710f4b79ab48f6e6668f6f",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Посочени са регионални проценти за двете двойки без оценка.",
+        "sourceTextSha256": "46ba0304e2ddda010432e4517a093d5f16773eb67b710f4b79ab48f6e6668f6f"
+      }
     },
     {
       "id": "post:pfbid02BqAhKHZZBjapATLNk3wHk4g7VR3yMjdchTBRqaunkm2TjbeBy4t3QLZuPTrQ6UGhl",
@@ -15437,7 +15905,13 @@
         }
       },
       "sourceTextSha256": "97afcfd42a632a59b51d87a0007df9d0a00b15b5238e7f7e815e9eda9471bf69",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Представени са официални местни резултати за двете двойки без оценка.",
+        "sourceTextSha256": "97afcfd42a632a59b51d87a0007df9d0a00b15b5238e7f7e815e9eda9471bf69"
+      }
     },
     {
       "id": "post:pfbid02dq995iwc7RedWaNSUA58KSJ4ZnpGzQHW8Ghd2jSNzq8YVYZ3WNe4Xwps9gz1Ade6l",
@@ -15472,7 +15946,13 @@
       },
       "sourceTextSha256": "65c2bc602636c76bf0e7416ce8dad895dcf98c6fe556144ac103bf165e04408e",
       "images": [],
-      "linkHeadline": "Йотова и Гюров на балотаж, разликата между тях малка след първия тур"
+      "linkHeadline": "Йотова и Гюров на балотаж, разликата между тях малка след първия тур",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Заглавието съобщава класирането на балотаж и малката разлика между двамата.",
+        "sourceTextSha256": "65c2bc602636c76bf0e7416ce8dad895dcf98c6fe556144ac103bf165e04408e"
+      }
     },
     {
       "id": "post:pfbid0qesXkGBYwNBsTbfxKkXpgpwQ227djZxKofrhqR6NCriWPjumyanMRKqpLf6oRmnel",
@@ -15507,7 +15987,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "Само победата на Гюров, ще отрезви Радев за да предприеме рокада в партията си"
+      "linkHeadline": "Само победата на Гюров, ще отрезви Радев за да предприеме рокада в партията си",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Победа на Гюров е разгледана като възможен фактор за партийни промени при Радев.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0zoXLo2STtBpcFp6S6JVutLWzZ6RsFv2Qi7zyLGGo8TDHQxhcjB2ZtVaFWxkaRrBRl",
@@ -15542,7 +16028,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "Йотова призна: Правителството пада, ако не спечеля изборите"
+      "linkHeadline": "Йотова призна: Правителството пада, ако не спечеля изборите",
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Съобщено е твърдение на Йотова за връзката между изборите и правителството без пряка оценка.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid02EKmA9cqAM1TePZonUtFocXsHUFd9urB4zuLpUvBxiPryFVEGttpqvjC4Nm5B5Hwvl",
@@ -15597,7 +16089,13 @@
         }
       },
       "sourceTextSha256": "015c48866b928c5584c55135c21d681a7b0810a21510b6a44f20b34359d74614",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": null,
+        "reason": "Изведена е подкрепа за двойката на Гюров, придружена с одобрителен знак.",
+        "sourceTextSha256": "015c48866b928c5584c55135c21d681a7b0810a21510b6a44f20b34359d74614"
+      }
     },
     {
       "id": "post:pfbid02ndG8APJtXUpRgqHzmZmhqs5dvCZCXh9WVYQJ1EQ67f9AnEB6VMrscRPNAEfiPfyhl",
@@ -15658,7 +16156,13 @@
       },
       "sourceTextSha256": "0c330c735ee78905e0666b3add892d1c2897871ca1cfcd7f767ab5f975c44407",
       "images": [],
-      "linkHeadline": "Алфа Рисърч: Костадинов праща Йотова и Гюров на балотаж"
+      "linkHeadline": "Алфа Рисърч: Костадинов праща Йотова и Гюров на балотаж",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Проучването описва очакван балотаж без предпочитание към кандидат.",
+        "sourceTextSha256": "0c330c735ee78905e0666b3add892d1c2897871ca1cfcd7f767ab5f975c44407"
+      }
     },
     {
       "id": "post:pfbid0epFykwZu5kRZs2PVno7QcFgwMKuVmTQzkNe5Jxrcn1DNgLpUJrosPa1auP7sX11ol",
@@ -15703,7 +16207,13 @@
         }
       },
       "sourceTextSha256": "e63d1a7dd833c8a6475a1fcc1767c1d92be71c4dadda0808f3aad3ffa2c79fc0",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Новината е за окончателни резултати и разликата между двамата.",
+        "sourceTextSha256": "e63d1a7dd833c8a6475a1fcc1767c1d92be71c4dadda0808f3aad3ffa2c79fc0"
+      }
     },
     {
       "id": "post:pfbid02P3J79mVumfLtqV5NeZ5e2hwt39GnY9S8wX8vRQuEMQ5mPCt38RvaH1BDRwkWw7vUl",
@@ -15738,7 +16248,13 @@
       },
       "sourceTextSha256": "979b614a620be48e0e9348af25795e95605318d838308e1b4815560823b3062f",
       "images": [],
-      "linkHeadline": "Йотова победи Гюров с по-малко от 2000 гласа във Варна"
+      "linkHeadline": "Йотова победи Гюров с по-малко от 2000 гласа във Варна",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Посочени са местният резултат и вотът без подкрепа за кандидат без оценяване.",
+        "sourceTextSha256": "979b614a620be48e0e9348af25795e95605318d838308e1b4815560823b3062f"
+      }
     },
     {
       "id": "post:pfbid0SP31iXJG8QCB1VoVcT4E9LXDFRhYcmAbkR6S1Fb6ZBJ4qH2wdg5V2eCF9XrdZh8ml",
@@ -15788,7 +16304,13 @@
         }
       },
       "sourceTextSha256": "6d530088b1185193db4c62a03c922c6da0c3355a640b07507f02b867f75ef979",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Гюров е представен като източник на критика към управляващите, без оценка на самия него.",
+        "sourceTextSha256": "6d530088b1185193db4c62a03c922c6da0c3355a640b07507f02b867f75ef979"
+      }
     },
     {
       "id": "post:pfbid02a6FRPzQ6XqKz5Bd1WkQ2ZZwVXxZSncif3aDrQa5LDm4AxJWLCaN7FVNv8AjzTTpLl",
@@ -15848,7 +16370,13 @@
         }
       },
       "sourceTextSha256": "814ec39891d84d53614c5bee62dfc63a91feb7792657b7452d0f38d270e32e80",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "critical",
+        "reason": "Йотова е обект на обвинение в лъжи, а Гюров е само споменат като участник в дебата.",
+        "sourceTextSha256": "814ec39891d84d53614c5bee62dfc63a91feb7792657b7452d0f38d270e32e80"
+      }
     },
     {
       "id": "post:pfbid0Nwj86euZrXEbZvry7RUU4zjdVzBgKhBgweHTabFi8j8HG3tnzoLcikxecxWxUKsql",
@@ -15898,7 +16426,13 @@
         }
       },
       "sourceTextSha256": "656692c914333f7c5a0caaa602484dc8625c1614328b277c982ec64b8086ad54",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Съобщени са очаквания за дебата, без конкретна оценка на двамата участници.",
+        "sourceTextSha256": "656692c914333f7c5a0caaa602484dc8625c1614328b277c982ec64b8086ad54"
+      }
     },
     {
       "id": "post:pfbid02qcaUg25Dr9YZh4iYze3FTgRDPDrh28bX5yBa4xv38AJhREweojJG7ytVBX9xZU8dl",
@@ -15953,7 +16487,13 @@
         }
       },
       "sourceTextSha256": "9a475c8624602d95c2d5203f8fcfb3ddffe330593741cd0ba7dd7da566d6862a",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Публикувани са социологически проценти за двете двойки без подкрепяща оценка.",
+        "sourceTextSha256": "9a475c8624602d95c2d5203f8fcfb3ddffe330593741cd0ba7dd7da566d6862a"
+      }
     },
     {
       "id": "post:pfbid02n5zG5hK1rzfdon5u4rnRqjHWUrydDexa93zA6abqBbxFDv7fAAAkgTag6ZPVMFil",
@@ -15994,7 +16534,13 @@
       },
       "sourceTextSha256": "d0b9ef8324812ccb3866f79d29b84ddfe76157af3f97efb028ed2b1e688394b4",
       "images": [],
-      "linkHeadline": "Дебатът: Илияна Йотова срещу Андрей Гюров в битката за президентството (ВИДЕО) - Новини от Dnes.bg"
+      "linkHeadline": "Дебатът: Илияна Йотова срещу Андрей Гюров в битката за президентството (ВИДЕО) - Новини от Dnes.bg",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Текстът анонсира дебата и значението му без оценка за кандидатите.",
+        "sourceTextSha256": "d0b9ef8324812ccb3866f79d29b84ddfe76157af3f97efb028ed2b1e688394b4"
+      }
     },
     {
       "id": "post:pfbid02mNrZN1vK21xjLwCfjnUWHPxAWaRk7MEAwLDsxPiGwPxBaDxvjvzFg3d9rxzyf4fLl",
@@ -16039,7 +16585,13 @@
         }
       },
       "sourceTextSha256": "c4d4b666c59be1af6eb34eae0c2e9ddd0f66be90ee9607248c8ed5d8bbe37188",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Съобщена е победа според паралелно преброяване без отделна похвала или призив за подкрепа.",
+        "sourceTextSha256": "c4d4b666c59be1af6eb34eae0c2e9ddd0f66be90ee9607248c8ed5d8bbe37188"
+      }
     },
     {
       "id": "post:pfbid036LvpMVN8V2LuFtfVL5Du3KxbGNDPmqK9f6caFvuHYcWnKmdLfdb42CCdyFLupC8rl",
@@ -16084,7 +16636,13 @@
         }
       },
       "sourceTextSha256": "72c05c230f84f642e5edfceb0a4ca5b3f6e36defcb2fc2ffb32248126fb6011b",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Описано е гласуването на Гюров и мотивацията му без ясна оценка.",
+        "sourceTextSha256": "72c05c230f84f642e5edfceb0a4ca5b3f6e36defcb2fc2ffb32248126fb6011b"
+      }
     },
     {
       "id": "post:pfbid035NaMPgHKc9APxK3QjHSCVCekXPJS4Tp1q8GHLhh4ZeXMTtUthBUz9uqR4xdTJHGRl",
@@ -16134,7 +16692,13 @@
         }
       },
       "sourceTextSha256": "3c355bb5d16a83a274862a8299f222e93d231c7494cdda2729c149b9c1acd3ae",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Представени са междинни резултати за двете двойки без оценъчна позиция.",
+        "sourceTextSha256": "3c355bb5d16a83a274862a8299f222e93d231c7494cdda2729c149b9c1acd3ae"
+      }
     },
     {
       "id": "post:pfbid0vWR63yXe7UjSaJKy6H54ua9i7cyTe2JHZuEeyGsiWnXWdZVZv7Ps3Ha38eAAFR59l",
@@ -16184,7 +16748,13 @@
         }
       },
       "sourceTextSha256": "e675f2466671dfcf917f48c71490646db0201b57131566336a8e7f6f4d205de1",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Посочена е подредбата на двете двойки след първия тур без оценяване.",
+        "sourceTextSha256": "e675f2466671dfcf917f48c71490646db0201b57131566336a8e7f6f4d205de1"
+      }
     },
     {
       "id": "post:pfbid02KmbdDjXPC2q3FSEKMb1pLMgeghDLKPW6VzLj2Z9G5PRUvZcJNjsHSCYdsSe1Ki3sl",
@@ -16224,7 +16794,13 @@
         }
       },
       "sourceTextSha256": "0ad73dcaba17147465f5a2da335d8d2303e9ab08dc5f054f9f97659bfdde3820",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Предаден е призив на Гюров за единство без оценка на кандидата.",
+        "sourceTextSha256": "0ad73dcaba17147465f5a2da335d8d2303e9ab08dc5f054f9f97659bfdde3820"
+      }
     },
     {
       "id": "post:pfbid02AQH2LE5WiEpBfkQxFHZq7wk5eGz3NoteQSbYw22vgNN3oi8YUMGtN1uqwLyLJTTyl",
@@ -16274,7 +16850,13 @@
         }
       },
       "sourceTextSha256": "b0626a1eec43aa86f389b79e3d2c3ad45f6c71f9f23e2929215caba9eacea203",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Съобщени са обработените протоколи и разликата преди балотажа.",
+        "sourceTextSha256": "b0626a1eec43aa86f389b79e3d2c3ad45f6c71f9f23e2929215caba9eacea203"
+      }
     },
     {
       "id": "post:pfbid02x8Z6ZTDCwAo4LH48SyNga7DNezkVM2vrfAmDkK1cXyZcb6swjFh6Z9XEriXcDJ3fl",
@@ -16309,7 +16891,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "Кирил Петков коментира дебата между Гюров и Йотова"
+      "linkHeadline": "Кирил Петков коментира дебата между Гюров и Йотова",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Заглавието съобщава за коментар на дебата без да разкрива оценката за участниците.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid02h7pdTai73g7zixAZXWW2P54REGKvKpjUUA9SBtB17p5UYkuZipj17ySUHHrQqBCSl",
@@ -16344,7 +16932,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "От 170 000 избиратели в Сливенско, едва около 10000 гласуваха за Йотова и под 6000 за Гюров - SlivenPress"
+      "linkHeadline": "От 170 000 избиратели в Сливенско, едва около 10000 гласуваха за Йотова и под 6000 за Гюров - SlivenPress",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Заглавието сравнява получени гласове с броя избиратели без лична оценка на кандидатите.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0rzxUTApQikH9tj2WyqV69srZ2CHNsBTwjfekWXeYESormroQjAS5Lj1kAqznF9iHl",
@@ -16394,7 +16988,13 @@
         }
       },
       "sourceTextSha256": "d03688f86099a88f9f66f1b18f25b9a12037e64db074ac33219a7558c8050a77",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": null,
+        "reason": "Представена е декларация в подкрепа на Гюров с участие на публични фигури.",
+        "sourceTextSha256": "d03688f86099a88f9f66f1b18f25b9a12037e64db074ac33219a7558c8050a77"
+      }
     },
     {
       "id": "post:pfbid02SSxz2bZz7qbt2mG44ywRqdis77EMcLHUNmtVqFrHrTHfFvG9dz8cewgGQNMyosdhl",
@@ -16444,7 +17044,13 @@
         }
       },
       "sourceTextSha256": "d3d329aee9a52655b63c6855fd10c821c9c91e88a5e7c3bfa04fbe6a6499e990",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Съобщена е преднина на Йотова по първите резултати без оценъчна позиция.",
+        "sourceTextSha256": "d3d329aee9a52655b63c6855fd10c821c9c91e88a5e7c3bfa04fbe6a6499e990"
+      }
     },
     {
       "id": "post:pfbid02Ak3Y49KpazbXG2NXNgELbbsDv8wRE4gMMtnvJiB3oM3u8iZbujdBkzTBncMUJbtQl",
@@ -16479,7 +17085,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "Илияна Йотова събра 39,63% доверие във великотърновско, Андрей Гюров е с 22,92%, 2000 гласуваха с „Не подкрепям никого“"
+      "linkHeadline": "Илияна Йотова събра 39,63% доверие във великотърновско, Андрей Гюров е с 22,92%, 2000 гласуваха с „Не подкрепям никого“",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Посочени са регионални проценти и вотът без подкрепа за кандидат.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0CWNjDGQouBTDuFidXCUXgqt1KZtsgcm8XNiiwi7vTE3SR7jozHiuRjrmyoNZqwCyl",
@@ -16525,7 +17137,13 @@
       },
       "sourceTextSha256": "addf3658a71f4c31beecf15dff8a23e9641483f4889512927991fc640327ee14",
       "images": [],
-      "linkHeadline": "При 100% обработени протоколи извън страната кандидатпрезидентската двойка Гюров - Кандев има 45,79%, а Йотова - Вълчев – 22,79% от вота"
+      "linkHeadline": "При 100% обработени протоколи извън страната кандидатпрезидентската двойка Гюров - Кандев има 45,79%, а Йотова - Вълчев – 22,79% от вота",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Съобщени са резултатите извън страната и класирането на балотаж.",
+        "sourceTextSha256": "addf3658a71f4c31beecf15dff8a23e9641483f4889512927991fc640327ee14"
+      }
     },
     {
       "id": "post:pfbid02VLiJ1tqp6M7GPUYgKtWCZLtRQVHBJo8TSVo6LJKx2eG16LBNpckq4WDWB2ft5bizl",
@@ -16560,7 +17178,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "Merhaba, петроханци! Андрей Гюров и емисари на ПП-ДБ правят теманета на турски език в Истанбул - Говори открито: мнения, без цензура, корупция"
+      "linkHeadline": "Merhaba, петроханци! Андрей Гюров и емисари на ПП-ДБ правят теманета на турски език в Истанбул - Говори открито: мнения, без цензура, корупция",
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Заглавието осмива Гюров с обиден етикет и внушение за сервилност.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0gdeUAWtQxZfbiCXCkH4J3usneF7FbxnLepeqbshUmKWnQyiQpS6xRQ3dnPhJwxW5l",
@@ -16610,7 +17234,13 @@
         }
       },
       "sourceTextSha256": "ccc68fdbecb8fd4fd2c6f3af7dcecf2708b81aaa8e2db29322ba91b506f09969",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Текстът изрично настоява Гюров да загуби и представя победата му като вредна.",
+        "sourceTextSha256": "ccc68fdbecb8fd4fd2c6f3af7dcecf2708b81aaa8e2db29322ba91b506f09969"
+      }
     },
     {
       "id": "post:pfbid0ipSTbp8ko7UKK2jw6Ae6jUWNhMiSeSv3PwgimzPrvrTqskt2iSZZgfFaS2FEfqLSl",
@@ -16673,7 +17303,13 @@
       "images": [],
       "platformLabels": [
         "AI content"
-      ]
+      ],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Гюров е представен подигравателно и се омаловажава реалната му подкрепа.",
+        "sourceTextSha256": "5a7d6c74d8e0d48de63c2a2cae02b5869c28a73c219ec52c29673ba95343e9a8"
+      }
     },
     {
       "id": "post:pfbid0E6SSv7epWt4zgEGz16ESm4ESAgf7Ngch9dpGJM4e4zmZ94EK5Rau89JdCQHCUEGHl",
@@ -16713,7 +17349,13 @@
         }
       },
       "sourceTextSha256": "09edf110a5bf09e0bbbb8660fc6c58fbe4f6ade2459db334804ca151feed1072",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Запазен е само общ въпрос за президентския избор без кандидатски имена или варианти.",
+        "sourceTextSha256": "09edf110a5bf09e0bbbb8660fc6c58fbe4f6ade2459db334804ca151feed1072"
+      }
     },
     {
       "id": "video:950886681045351",
@@ -16773,7 +17415,13 @@
         }
       },
       "sourceTextSha256": "9ce9bfda6e8779c4d840a3f8d8c8faa104569c3e55a784a40205a655db513e1a",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": null,
+        "reason": "Срещата на кампанията на Гюров е рамкирана като необявена и пораждаща съмнение за прозрачност.",
+        "sourceTextSha256": "9ce9bfda6e8779c4d840a3f8d8c8faa104569c3e55a784a40205a655db513e1a"
+      }
     },
     {
       "id": "post:pfbid02jbm4ZToxo9KoqgsWxnZNw8tbwe8kFdkevbxBAXhFRzwLKJzNNhvcv4h9vZSDqQSbl",
@@ -16818,7 +17466,13 @@
         }
       },
       "sourceTextSha256": "3c026c27f8973111cd6441b7caab05bf7064ecf0f69e556426d0acf9b6efcb15",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Представен е резултатът на друга кандидатска двойка.",
+        "sourceTextSha256": "3c026c27f8973111cd6441b7caab05bf7064ecf0f69e556426d0acf9b6efcb15"
+      }
     },
     {
       "id": "post:pfbid02jaT3y2kfey4aos7oR8M6QG5P78pF73WRp4s93rLDi2y72BFPxNhipyscRGRov7bjl",
@@ -16863,7 +17517,13 @@
         }
       },
       "sourceTextSha256": "b4de8a43f6d04debe1be26da13afd7dcc964c8e8414504b7c49da10edcd27cd0",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Представен е резултатът на друга кандидатска двойка.",
+        "sourceTextSha256": "b4de8a43f6d04debe1be26da13afd7dcc964c8e8414504b7c49da10edcd27cd0"
+      }
     },
     {
       "id": "post:pfbid0KXjF5DaAihGsbEZY2wSERsQwY6vFX2VsuhpQzc9WGFxhS1FrUNkj2XLQ5nzTZLeZl",
@@ -16908,7 +17568,13 @@
         }
       },
       "sourceTextSha256": "102c805e7a21d925f2f7ebfafd556fedd574115d317f5623c5c004255b721397",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Представен е резултатът на друга кандидатска двойка.",
+        "sourceTextSha256": "102c805e7a21d925f2f7ebfafd556fedd574115d317f5623c5c004255b721397"
+      }
     },
     {
       "id": "post:pfbid02PbqhEAQkRUiGKPGPE47vidid7fgwj7Dg1PmsnE7v4GAoZgVbziXexpUvz2CVpaUsl",
@@ -16979,7 +17645,13 @@
       },
       "sourceTextSha256": "b80d231812dc03a5732a64acac32c5a7f462efa82b4f2e34d6c0443c5e10a85e",
       "images": [],
-      "linkHeadline": "Бойко Борисов подкрепя Андрей Гюров за балотажа"
+      "linkHeadline": "Бойко Борисов подкрепя Андрей Гюров за балотажа",
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": null,
+        "reason": "Изведен е общ призив на публични фигури за подкрепа на Гюров.",
+        "sourceTextSha256": "b80d231812dc03a5732a64acac32c5a7f462efa82b4f2e34d6c0443c5e10a85e"
+      }
     },
     {
       "id": "post:pfbid02vjjmrF4t6wrLgBKQvwvvoXL2YdYgFRgULpJFoi78xGQ6o2bERZNDfWRTTuH3oD1el",
@@ -17024,7 +17696,13 @@
         }
       },
       "sourceTextSha256": "519250c890f9f3ec6333f81cb6a44ccd70df95d51c4016a83c42b91475061660",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Текстът представя резултата и участието на друга кандидатска двойка.",
+        "sourceTextSha256": "519250c890f9f3ec6333f81cb6a44ccd70df95d51c4016a83c42b91475061660"
+      }
     },
     {
       "id": "post:pfbid0wvDNLYBjd2VVsbYYfSsAJJ95jqekJGFHz9F6g3i38xmnCusLnCLoqfuHkTB5465xl",
@@ -17104,7 +17782,13 @@
         }
       },
       "sourceTextSha256": "a8477cac30d3d639156c26384abbd3165105c3e87b061d7507f8d4ae9f8c263c",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "critical",
+        "reason": "Всички сегашни кандидати са отхвърлени като посредствени, а Йотова е спомената и в партийния сблъсък.",
+        "sourceTextSha256": "a8477cac30d3d639156c26384abbd3165105c3e87b061d7507f8d4ae9f8c263c"
+      }
     },
     {
       "id": "post:pfbid0DhqGgARUM17w9yH2rsKGHLm1QbkcZRpYxypksu8q1KQgpQdq316g4h2hTMUC13F8l",
@@ -17169,7 +17853,13 @@
         }
       },
       "sourceTextSha256": "b14a4e3637a7c89670d98d709370dc16ffca8188ad07d1fafdb837b73d4dbc25",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Обсъдено е неуспешно обединение на други политически сили без позиция към двамата.",
+        "sourceTextSha256": "b14a4e3637a7c89670d98d709370dc16ffca8188ad07d1fafdb837b73d4dbc25"
+      }
     },
     {
       "id": "post:pfbid02AV5jB9HbZYuCGRdV4n1cj5os915pUQZCPz862pkesKXmHe2GeT6Lu9er4Uy4W3j4l",
@@ -17224,7 +17914,13 @@
         }
       },
       "sourceTextSha256": "509e0cb1c4133833f7322507f9fe22a468511752a82076ac535beeb90715c793",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Посочени са резултатът и сравнението на друга кандидатска двойка.",
+        "sourceTextSha256": "509e0cb1c4133833f7322507f9fe22a468511752a82076ac535beeb90715c793"
+      }
     },
     {
       "id": "post:pfbid021zDa1joofiFQF22LXd7p7xHbh4XkwDV7NDEnGfy1tAmMMEPETN58LNM3DrktoJxjl",
@@ -17284,7 +17980,13 @@
         }
       },
       "sourceTextSha256": "661a97530a9fb9c609e4847c9e4efd373b4d7a71801ba38104d484ef67670cc6",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Позицията за поведението на ГЕРБ не назовава или оценява двамата кандидати.",
+        "sourceTextSha256": "661a97530a9fb9c609e4847c9e4efd373b4d7a71801ba38104d484ef67670cc6"
+      }
     },
     {
       "id": "post:pfbid02huoKcuTDtYb4hHcXwTN5W5VgtagVrnugzmZyhxbrA8kzmzqzvuQXTfwSUupMuL4nl",
@@ -17329,7 +18031,13 @@
         }
       },
       "sourceTextSha256": "7bb1923af61e44518b2f5c7457598288bf71b437b935ba6b94c6eab3bfeec2d8",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Отправени са общи въпроси за свободния избор без посочен кандидатски адресат.",
+        "sourceTextSha256": "7bb1923af61e44518b2f5c7457598288bf71b437b935ba6b94c6eab3bfeec2d8"
+      }
     },
     {
       "id": "post:pfbid02LrB7ZrzF9PiHBNj17iGiU3H5gXtGKS6AyjRc3SWEQn13HjDk4jupSyL8qeYJqdQ9l",
@@ -17404,7 +18112,13 @@
         }
       },
       "sourceTextSha256": "776dea43e926874acbbb582ce7fb83cd4dd3fe83a61da2c900ae53ff68e704ad",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Националните резултати и разликата за балотажа са представени фактологично.",
+        "sourceTextSha256": "776dea43e926874acbbb582ce7fb83cd4dd3fe83a61da2c900ae53ff68e704ad"
+      }
     },
     {
       "id": "post:pfbid0CRnfhX5B58gQPCLADFMUo36JFzHyAk7wEcSee2jqZvbsGsXjhutAubLfhfVoHsTil",
@@ -17454,7 +18168,13 @@
         }
       },
       "sourceTextSha256": "bc4d237f64a7102421e7d84870c76d8e3539023c516f77a089ec13210b65b997",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": "critical",
+        "reason": "Резултатът на Гюров е приветстван, а Йотова и намалялата ѝ преднина са осмивани.",
+        "sourceTextSha256": "bc4d237f64a7102421e7d84870c76d8e3539023c516f77a089ec13210b65b997"
+      }
     },
     {
       "id": "post:pfbid02erfFGwdgETeZNJz7CPVDk3yVqkgUkvWtnHEv4fKzwGKTGzaWS4zyz1143zMYb3Gnl",
@@ -17509,7 +18229,13 @@
         }
       },
       "sourceTextSha256": "321c6b7511daf826dedccbc1810f9898f2b83051e8546b57776bf284c367c8dc",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Изявлението е за държавни политики и честно гласуване без конкретна кандидатска позиция.",
+        "sourceTextSha256": "321c6b7511daf826dedccbc1810f9898f2b83051e8546b57776bf284c367c8dc"
+      }
     },
     {
       "id": "post:pfbid05T4CTffWNW13MFVCeojqcy77hAQaBqcSU4TeeBeNFWEXpksaRQGnndXpudNaRVwFl",
@@ -17554,7 +18280,13 @@
         }
       },
       "sourceTextSha256": "11bbab63e134c636b59edabd0c7a6dedf55eab6d4e3b9c517637f275d8d52ec7",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Представен е резултатът на друга кандидатска двойка.",
+        "sourceTextSha256": "11bbab63e134c636b59edabd0c7a6dedf55eab6d4e3b9c517637f275d8d52ec7"
+      }
     },
     {
       "id": "post:pfbid02UAZjiCFLx9u7pvZCTtxwCLpuyeBVLDrKxor37csf7tyk2v2L1AjopZ7NjtP6Q1z7l",
@@ -17614,7 +18346,13 @@
         }
       },
       "sourceTextSha256": "9fab08bb56d1039978130d5568b9ded97de561cc75043d6b89ca4d5d9aed7bd7",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Йотова е обвинена в арогантност, неравнопоставена кампания и използване на обществени ресурси.",
+        "sourceTextSha256": "9fab08bb56d1039978130d5568b9ded97de561cc75043d6b89ca4d5d9aed7bd7"
+      }
     },
     {
       "id": "post:pfbid02kYarASKvgP473UnwCN8VPMWXHRmF73qm3hpU9PwupgXG53urrUFZydsur3uh6uWGl",
@@ -17699,7 +18437,13 @@
         }
       },
       "sourceTextSha256": "a13c81025219184cc9c9acacf822b215cc0d1b4ed501e1b3dc8ef36acfcbd414",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "critical",
+        "reason": "Двамата са изрично включени сред отхвърления елит и представени като избор между злини.",
+        "sourceTextSha256": "a13c81025219184cc9c9acacf822b215cc0d1b4ed501e1b3dc8ef36acfcbd414"
+      }
     },
     {
       "id": "post:pfbid031REawJyhsHUYFTXAgxyD8nDYk733jZ5Mvo6qYiLbuVMfryNi6WWaYaXXie4Q1zHvl",
@@ -17759,7 +18503,13 @@
         }
       },
       "sourceTextSha256": "00723d828e29233c2dd5f632cd0d861444849fe2819f77342fee8fcc31c4728c",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Обсъжда се тежестта на избирателите на друга партия без конкретна оценка за двамата.",
+        "sourceTextSha256": "00723d828e29233c2dd5f632cd0d861444849fe2819f77342fee8fcc31c4728c"
+      }
     },
     {
       "id": "post:pfbid07MgjEyDCp2LfPotVLq3AgkNXrdPVDTHqogJEkEuvtpVPfCFc4mMC8emD1wJ8XEjsl",
@@ -17814,7 +18564,13 @@
         }
       },
       "sourceTextSha256": "94700fdca21b0546fc12761f79e00a420a622f25b86dc38d5b11d7b2e8332d7a",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Съобщена е активността в Турция без съдържание за кандидатите.",
+        "sourceTextSha256": "94700fdca21b0546fc12761f79e00a420a622f25b86dc38d5b11d7b2e8332d7a"
+      }
     },
     {
       "id": "post:pfbid02A8fG2UnqoAkR5qJVj2Qpd9xF2CNLiEpyYqPFKHXmgK5DUKLmaXkPt7YibzkUDBg2l",
@@ -17869,7 +18625,13 @@
         }
       },
       "sourceTextSha256": "8532058360cb51762288a83c7aa0f4b98ff45c6742e12175d87b8e735c8094f5",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Общият призив за мобилизация не назовава подкрепената кандидатура в наличния текст.",
+        "sourceTextSha256": "8532058360cb51762288a83c7aa0f4b98ff45c6742e12175d87b8e735c8094f5"
+      }
     },
     {
       "id": "post:pfbid02CzfDtXzGv6BWFPVPbYj9Qt6q6rM1K7MWypy71WT2uG1AdobxoCUteRCQL8igBE1Nl",
@@ -17934,7 +18696,13 @@
         }
       },
       "sourceTextSha256": "bed792a52e426cfd2a8b0dc99874569dc1515302864d3020d5606b0173f3c546",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Описани са близки резултати от преброяването и предстоящият балотаж.",
+        "sourceTextSha256": "bed792a52e426cfd2a8b0dc99874569dc1515302864d3020d5606b0173f3c546"
+      }
     },
     {
       "id": "post:pfbid0jxwyjEmWAtFJ26i2Hrb8JFxF32heBLHa7RtXwGT7V4fCvroXHHwnGhsYqDsWwGiMl",
@@ -17984,7 +18752,13 @@
         }
       },
       "sourceTextSha256": "1022c1b7e18b6fa483da762606b046138135884cc1f7e2f27364394f1b3090bf",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Предадено е обяснение на Йотова за бюджетно решение без външна оценка.",
+        "sourceTextSha256": "1022c1b7e18b6fa483da762606b046138135884cc1f7e2f27364394f1b3090bf"
+      }
     },
     {
       "id": "post:pfbid0XnFSAYEnrLJ4bn6Hwc5zVeh1QtTRoBqyoXJxkcP7sG9gci86UNXze1qrq4wMDEnql",
@@ -18034,7 +18808,13 @@
         }
       },
       "sourceTextSha256": "5d8065ddacb897b83a44e07d737c5187e25bfd851337d8bd6c7d1f13af3adc84",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Коментарът оценява несигурността на изборния резултат без лична критика или подкрепа.",
+        "sourceTextSha256": "5d8065ddacb897b83a44e07d737c5187e25bfd851337d8bd6c7d1f13af3adc84"
+      }
     },
     {
       "id": "post:pfbid0pFwvXKZerb879453SUuzsnAqJUELUDVSawqJ3wDnvQr27XXBqBgZjYyMUGNYvUZAl",
@@ -18079,7 +18859,13 @@
         }
       },
       "sourceTextSha256": "714001dba2a0aaa62ca7dff97d84e1668d81f25a4d214a002392457bbc35a86f",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Изразени са предпочитания за качества на президент без назован кандидат.",
+        "sourceTextSha256": "714001dba2a0aaa62ca7dff97d84e1668d81f25a4d214a002392457bbc35a86f"
+      }
     },
     {
       "id": "post:pfbid0UfQ3gA37K2rYtYC4EvdCXs2PVXNezf5NAkPmnz6unmQy1QArAnPeTMu6ZKJnpGjYl",
@@ -18114,7 +18900,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "При 15% от протоколите: Илияна Йотова води пред Андрей Гюров в Пазарджишко | PZdnes | Днес новината си ти"
+      "linkHeadline": "При 15% от протоколите: Илияна Йотова води пред Андрей Гюров в Пазарджишко | PZdnes | Днес новината си ти",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Заглавието съобщава междинни регионални резултати без оценка.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0id5hnjeCFDhV8LxmyS9nLgJ4wQWmWZgGCcTmCXhBoM1n8zWt7wWGNKdg7gRtGaXql",
@@ -18149,7 +18941,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "Хартиените бюлетини за президентските избори бяха доставени днес в Пазарджик | PZdnes | Днес новината си ти"
+      "linkHeadline": "Хартиените бюлетини за президентските избори бяха доставени днес в Пазарджик | PZdnes | Днес новината си ти",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Новината е за доставени бюлетини без кандидатско съдържание.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0N7nPcSwQTdC9Bh2NQ3yqXsRDDfyB3ujaFvgk18Pb66oxhxHMA1DRjiHVtvJ1Ks7Hl",
@@ -18184,7 +18982,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "593 155 избиратели, 1032 секции и 655 800 бюлетини: Пловдивско гласува за президент"
+      "linkHeadline": "593 155 избиратели, 1032 секции и 655 800 бюлетини: Пловдивско гласува за президент",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Посочени са избиратели, секции и бюлетини без оценка на кандидатите.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0jsAF1G8M8VeNED2m6k49ZNTUyvTJztaqgFjNAmaPAtjWm6engXjbYYtrwy4mUodsl",
@@ -18219,7 +19023,13 @@
       },
       "sourceTextSha256": "7a3fc39a9a623fc13aabc60cbf463392b9892d4b29c2b094e176fd4342bb85cd",
       "images": [],
-      "linkHeadline": "Мъж от \"Столипиново\": Преди минаваха с колите и казваха да гласуваме, сега никой не знаеше за изборите"
+      "linkHeadline": "Мъж от \"Столипиново\": Преди минаваха с колите и казваха да гласуваме, сега никой не знаеше за изборите",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Недоволството е общо към политиците без определен кандидатски адресат.",
+        "sourceTextSha256": "7a3fc39a9a623fc13aabc60cbf463392b9892d4b29c2b094e176fd4342bb85cd"
+      }
     },
     {
       "id": "post:pfbid0SZJRhaF5PyXr2ZgQhezHieQ6N4iwsJit2vESy1GqhvwrPn4UHGKBh5sQB4rdbFvRl",
@@ -18269,7 +19079,13 @@
         }
       },
       "sourceTextSha256": "55937cbea41f77dc5a410a516c47b56806d1cfce06fb69c38b025d8a0d887919",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Съобщени са мерки за полицейска охрана на вота без кандидатска позиция.",
+        "sourceTextSha256": "55937cbea41f77dc5a410a516c47b56806d1cfce06fb69c38b025d8a0d887919"
+      }
     },
     {
       "id": "post:pfbid02ppASytK1HoZxrhmcJJ5UUuh2QQyNQNJcVTJ5Zqafox9pYovmTeGuy7bUNoFmraAXl",
@@ -18329,7 +19145,13 @@
         }
       },
       "sourceTextSha256": "57fe8a410e5ea9723a9bb72ea03fff785bb73fe566704874c9d0e9a0c98e8da5",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Представена е кампанията на друг кандидат и обща критика към държавата.",
+        "sourceTextSha256": "57fe8a410e5ea9723a9bb72ea03fff785bb73fe566704874c9d0e9a0c98e8da5"
+      }
     },
     {
       "id": "post:pfbid02JVLNuvJdu8dYs3gpvh5S2mC3EVV83aMsCvakCUNxyim3DXgLtUQ28mwaQhWNrfsTl",
@@ -18399,7 +19221,13 @@
         }
       },
       "sourceTextSha256": "1773ba527d80664e4028edbd587cdb8f04742707b9645367678b19b626a4b15d",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": "critical",
+        "reason": "Гюров е пряко подкрепен и похвален, а алтернативата му е представена като път към автокрация.",
+        "sourceTextSha256": "1773ba527d80664e4028edbd587cdb8f04742707b9645367678b19b626a4b15d"
+      }
     },
     {
       "id": "post:pfbid02iKHAvUimVBoqTZhv7KzV9L25SB517uvKbJRvhemPtRH41jAA99j7XqQYy2rhimRAl",
@@ -18444,7 +19272,13 @@
         }
       },
       "sourceTextSha256": "c456ef085a861724e03c6e28ca7d1770a549243fda2311243940ff8c9a859502",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Прогнозата е за общата активност без кандидатска оценка.",
+        "sourceTextSha256": "c456ef085a861724e03c6e28ca7d1770a549243fda2311243940ff8c9a859502"
+      }
     },
     {
       "id": "post:pfbid02m3XQc9LChGMWD3WKqhGthjwUn36cnrikxmeTcRoq8Mhmty36QERiwm7EPVMKe75rl",
@@ -18489,7 +19323,13 @@
         }
       },
       "sourceTextSha256": "211ba8cead31d32f62dd2d84342e349773cc495ca71003a9ecf6693495df3e7a",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Въпросът е за възможностите на друг кандидат.",
+        "sourceTextSha256": "211ba8cead31d32f62dd2d84342e349773cc495ca71003a9ecf6693495df3e7a"
+      }
     },
     {
       "id": "post:pfbid0dAUu3CfYuG7dbE3uhTDeFBPFgMzGYHgB21s2tQPmLxHE73ZbSDTAjSeB94gfrppGl",
@@ -18529,7 +19369,13 @@
         }
       },
       "sourceTextSha256": "132b8465b0a53d2bec0e1bf9e19c7a32380bb42a93c5876d887f7943497da929",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Репортажът е за осведомеността и празните секции без оценка на кандидатите.",
+        "sourceTextSha256": "132b8465b0a53d2bec0e1bf9e19c7a32380bb42a93c5876d887f7943497da929"
+      }
     },
     {
       "id": "post:pfbid0iMgZNvasWD2YQDo7R4okueX7gwQsuW5HTnk6oQ2LaA6znpjAu9cfu757sZR9dcezl",
@@ -18575,7 +19421,13 @@
       },
       "sourceTextSha256": "a908b6c6dd6bfe5547a0a45ab9c0c1d97428b27802fa4b75e4d1da05c4ffd973",
       "images": [],
-      "linkHeadline": "В свогенското село Искрец избират кмет преди президент (Своге, Новини)"
+      "linkHeadline": "В свогенското село Искрец избират кмет преди президент (Своге, Новини)",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Новината е за частични местни избори и други кандидати.",
+        "sourceTextSha256": "a908b6c6dd6bfe5547a0a45ab9c0c1d97428b27802fa4b75e4d1da05c4ffd973"
+      }
     },
     {
       "id": "post:pfbid0JGfeYQ1qoL34SQbBXf5s1BW82h99Pg38K33kLtLW1eQmqSbFfK8xbmgAFdvSaKLrl",
@@ -18625,7 +19477,13 @@
         }
       },
       "sourceTextSha256": "b7415695ad5e07c3164a7adcc64a8f7517f694c4a9998b95b037de821d6b7ab0",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Посочени са междинни национални проценти за двете двойки без оценяване.",
+        "sourceTextSha256": "b7415695ad5e07c3164a7adcc64a8f7517f694c4a9998b95b037de821d6b7ab0"
+      }
     },
     {
       "id": "post:pfbid02pgjix6zLASbGociVdJ1kDjGtk5yu2BPPFdmPUwP4P7vnzmNeUj3EfyqNzP4g5p6Yl",
@@ -18671,7 +19529,13 @@
       },
       "sourceTextSha256": "cd7b19bea3bb21b2ffb6ccfb08935c5e16d802cf94168d867873a0bb269a6ee2",
       "images": [],
-      "linkHeadline": "2 ноември ще бъде неприсъствен ден за децата в осем детски заведения в Добрич"
+      "linkHeadline": "2 ноември ще бъде неприсъствен ден за децата в осем детски заведения в Добрич",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Информацията е за детски заведения, използвани като секции, без кандидатска позиция.",
+        "sourceTextSha256": "cd7b19bea3bb21b2ffb6ccfb08935c5e16d802cf94168d867873a0bb269a6ee2"
+      }
     },
     {
       "id": "post:pfbid0DzeiC91fUUCmjveMDQTqEBQeRUWyANMJcgStWQDmGm3bcaQgSZnqxSfVWVz2ejcfl",
@@ -18721,7 +19585,13 @@
         }
       },
       "sourceTextSha256": "a7c8bc0cf89c717e0af312247998fd8acb411ac5638ef9dfc81326f671d3a9c5",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Представена е обща прогноза за активност и балотаж без конкретно кандидатско съдържание.",
+        "sourceTextSha256": "a7c8bc0cf89c717e0af312247998fd8acb411ac5638ef9dfc81326f671d3a9c5"
+      }
     },
     {
       "id": "post:pfbid0gUUNaFrF8tjUy3q2bzMVp5AyHW3N1uUtuzn52Bgey6iZeaffubxEzqdCUf2t8Yo1l",
@@ -18766,7 +19636,13 @@
         }
       },
       "sourceTextSha256": "2cdff6107326156f8db8cfb055e848283adeae54b711f67943fd058813c1ac75",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Информацията е за началото и охраната на вота без кандидатско съдържание.",
+        "sourceTextSha256": "2cdff6107326156f8db8cfb055e848283adeae54b711f67943fd058813c1ac75"
+      }
     },
     {
       "id": "post:pfbid0EwFq2i25VsX9jVkfu1vu7kzYiCWgvgubmPf6pW4bvs2cRipARBo413ep4s2HxM5Nl",
@@ -18821,7 +19697,13 @@
         }
       },
       "sourceTextSha256": "fbdb1db058a8986b156de234125b92ed992b5bcdb996ebd4145b1f7093fa2368",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Обсъдени са ниската активност, арест и бойкот без оценка на двамата кандидати.",
+        "sourceTextSha256": "fbdb1db058a8986b156de234125b92ed992b5bcdb996ebd4145b1f7093fa2368"
+      }
     },
     {
       "id": "post:pfbid02xBHT8X5a9UwsiBXchT12pnznMzrN459aapd6pvnuJQdDDK5bLNKoLF8yq45TtPwXl",
@@ -18866,7 +19748,13 @@
         }
       },
       "sourceTextSha256": "1fcf951b73750efba88824e2fd59378f8293cfaea7bb4b5b62d2573bb16edcd4",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Сравнена е активността по общини без конкретна кандидатска позиция.",
+        "sourceTextSha256": "1fcf951b73750efba88824e2fd59378f8293cfaea7bb4b5b62d2573bb16edcd4"
+      }
     },
     {
       "id": "post:pfbid02dF4seVTvTfpN8UYH8TSHEN5YDMgW2BmvTcEkkouPYP6coydEPqu5WcoYuKaeoLhkl",
@@ -18936,7 +19824,13 @@
         }
       },
       "sourceTextSha256": "fe4ed3ce33e3fbc407535b78a953f89e985bc154e273570b01fff4ea29fe81e8",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Съобщени са проценти и участието на двете двойки в балотажа.",
+        "sourceTextSha256": "fe4ed3ce33e3fbc407535b78a953f89e985bc154e273570b01fff4ea29fe81e8"
+      }
     },
     {
       "id": "post:pfbid02GFp1UKYq1fQkxSCQ97pSXbHM27Y63Z7gcaHrZ1LZAx6LUEyTRDhTVtWDChoQ8GRLl",
@@ -19007,7 +19901,13 @@
       },
       "sourceTextSha256": "090ba04ea1bed44049b2f9f9de9046f8711655e5b5380529645cfe48a1798fe8",
       "images": [],
-      "linkHeadline": "Президентски избори 2026: Резултати за област Ловеч при 100%"
+      "linkHeadline": "Президентски избори 2026: Резултати за област Ловеч при 100%",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Представени са окончателни областни резултати за двете двойки без оценка.",
+        "sourceTextSha256": "090ba04ea1bed44049b2f9f9de9046f8711655e5b5380529645cfe48a1798fe8"
+      }
     },
     {
       "id": "post:pfbid02jRVg1eWFNUHfa287AbMd1qoZguT7XTBzGjepkEtvx77wq2yNtfhSmeCFrZL7iVNJl",
@@ -19078,7 +19978,13 @@
       },
       "sourceTextSha256": "9ab8795a00062614a016e8fbce3a4aac55ea14cd985121834052f294333aa6c6",
       "images": [],
-      "linkHeadline": "Йотова–Вълчев водят във всичките осем общини в област Ловеч: как гласуваха градовете и селата - Ловеч днес - новини и коментари"
+      "linkHeadline": "Йотова–Вълчев водят във всичките осем общини в област Ловеч: как гласуваха градовете и селата - Ловеч днес - новини и коментари",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Сравнени са местните резултати и класирането на двойките без оценяване.",
+        "sourceTextSha256": "9ab8795a00062614a016e8fbce3a4aac55ea14cd985121834052f294333aa6c6"
+      }
     },
     {
       "id": "post:pfbid025pgJnaCikwnPPDeG8rAbVg3Zf5N78fjSxWFx1tWT2nywxD3wY4Q2DQSUzLboagGql",
@@ -19129,7 +20035,13 @@
       },
       "sourceTextSha256": "cc902eb9fc54a46d0a97ba57c46ce911460c3a379917df5dcf06f8414a47e608",
       "images": [],
-      "linkHeadline": "Бюлетините пристигнаха в Ловеч, 245 секции за изборите"
+      "linkHeadline": "Бюлетините пристигнаха в Ловеч, 245 секции за изборите",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Новината е за бюлетини, секции и оборудване без кандидатска оценка.",
+        "sourceTextSha256": "cc902eb9fc54a46d0a97ba57c46ce911460c3a379917df5dcf06f8414a47e608"
+      }
     },
     {
       "id": "post:pfbid0PjbUsmtumeqyo39povShSz9GHJjiMW3kXQrds85n16TVas3mvCzeqXxYerYdQK1al",
@@ -19180,7 +20092,13 @@
       },
       "sourceTextSha256": "daf790eb2e06c204a470e15130f8f7a3cbca4ad334dfb0e6d315f77634eea9b9",
       "images": [],
-      "linkHeadline": "Ловешка област е в организационна готовност за президентските избори на 25 октомври - Ловеч днес - новини и коментари"
+      "linkHeadline": "Ловешка област е в организационна готовност за президентските избори на 25 октомври - Ловеч днес - новини и коментари",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Представена е институционалната подготовка на вота без кандидатска позиция.",
+        "sourceTextSha256": "daf790eb2e06c204a470e15130f8f7a3cbca4ad334dfb0e6d315f77634eea9b9"
+      }
     },
     {
       "id": "post:pfbid02GW1UfuJdYLKmqECoCSCndU9F1h47uv9qZW9LNT9DfrfSuaMyca8CjH5i6FjiXMcZl",
@@ -19231,7 +20149,13 @@
       },
       "sourceTextSha256": "29a66c76f19d62bc2e9bb200d05bd87e31497cc008a7fe5e802ef53f1d180da4",
       "images": [],
-      "linkHeadline": "Подготовката за президентските избори в област Ловеч върви по график - Ловеч днес - новини и коментари"
+      "linkHeadline": "Подготовката за президентските избори в област Ловеч върви по график - Ловеч днес - новини и коментари",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Информацията е за графика и организацията на изборите без оценка на кандидати.",
+        "sourceTextSha256": "29a66c76f19d62bc2e9bb200d05bd87e31497cc008a7fe5e802ef53f1d180da4"
+      }
     },
     {
       "id": "post:pfbid0H7wV5oWeQZ7vkifgC81fTYaEYxKHNsGf5tcyCLfCPWzweNCDVrsQYpoq8hZQz7L7l",
@@ -19282,7 +20206,13 @@
       },
       "sourceTextSha256": "e8bf213f856772f98ba57fb2e59ba9effa6432e0467dc04253a18ff322b8949f",
       "images": [],
-      "linkHeadline": "Община Ловеч осигурява специализиран транспорт за избиратели със затруднения в придвижването на 25 октомври - Ловеч днес - новини и комен"
+      "linkHeadline": "Община Ловеч осигурява специализиран транспорт за избиратели със затруднения в придвижването на 25 октомври - Ловеч днес - новини и комен",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Съобщена е услуга за достъпно гласуване без кандидатско съдържание.",
+        "sourceTextSha256": "e8bf213f856772f98ba57fb2e59ba9effa6432e0467dc04253a18ff322b8949f"
+      }
     },
     {
       "id": "post:pfbid0aPPyQGRyZ7VY6oTekZqoPJx8eE2cca7RQr44vBCepXEAYejmCuGKbPNUR4V3Y7Zxl",
@@ -19317,7 +20247,13 @@
       },
       "sourceTextSha256": "aa4ea4a740a701d6af5a0643b07fd9ec80fcbce19a991756dbe3641f364710a5",
       "images": [],
-      "linkHeadline": "Президентски избори 2026 - Балотаж (Предварително по минути™)"
+      "linkHeadline": "Президентски избори 2026 - Балотаж (Предварително по минути™)",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Сатиричната сценка за избирател без документ не засяга конкретен кандидат.",
+        "sourceTextSha256": "aa4ea4a740a701d6af5a0643b07fd9ec80fcbce19a991756dbe3641f364710a5"
+      }
     },
     {
       "id": "post:pfbid0FmkCzh81h8SsoxNxZzTciVGeNfXJdXH2umVm18vdPRfNQQpzYav8XGtNBi2KqKT9l",
@@ -19352,7 +20288,13 @@
       },
       "sourceTextSha256": "490b7bec356f3f56eefc7a52c9dc80c01667e8f4e04c2dbad461e2ff55f3c6ba",
       "images": [],
-      "linkHeadline": "Президентски избори 2026 - Балотаж (Предварително по минути™)"
+      "linkHeadline": "Президентски избори 2026 - Балотаж (Предварително по минути™)",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Сатирата е към политологическите прогнози без конкретен кандидатски адресат.",
+        "sourceTextSha256": "490b7bec356f3f56eefc7a52c9dc80c01667e8f4e04c2dbad461e2ff55f3c6ba"
+      }
     },
     {
       "id": "post:pfbid0358AGJAJAuJTekR9PkPpgejzUusgEQ8BmFmaXGw6S9XzXqu617gF8A5VYo2Ngcu6Zl",
@@ -19392,7 +20334,13 @@
         }
       },
       "sourceTextSha256": "3996a36cca39559bdcf4f1e5ffb79d73842bac064b033d80a5f056cad5153abc",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Поканата към сатиричен гид не съдържа запазена оценка на двамата кандидати.",
+        "sourceTextSha256": "3996a36cca39559bdcf4f1e5ffb79d73842bac064b033d80a5f056cad5153abc"
+      }
     },
     {
       "id": "post:pfbid0qzChwNQm6f5FezKsPYpz8UKuMT29PNAXYFkBKHzEKjNHEmHoywttWmhN3NpsYXiel",
@@ -19427,7 +20375,13 @@
       },
       "sourceTextSha256": "e02b5298a8068bd11f7184b68095ec1d7e89ec7c0a3040db1a23584048bc423f",
       "images": [],
-      "linkHeadline": "Президентски избори 2026 - Първи тур (Предварително по минути™)"
+      "linkHeadline": "Президентски избори 2026 - Първи тур (Предварително по минути™)",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Сатирата е за агитация в социалните мрежи без посочен кандидат.",
+        "sourceTextSha256": "e02b5298a8068bd11f7184b68095ec1d7e89ec7c0a3040db1a23584048bc423f"
+      }
     },
     {
       "id": "post:pfbid02atfUXMoQvfWMsZLcLxZrhjh53WSpY3a3dQXSq9mXR2zD1ZhFgfqD9XTUMNsJWswTl",
@@ -19462,7 +20416,13 @@
       },
       "sourceTextSha256": "1341977bba07bc15261fd85a334f0ead6a71e263f3421404a24a8086cd5a7faa",
       "images": [],
-      "linkHeadline": "Президентски избори 2026 - Първи тур (Предварително по минути™)"
+      "linkHeadline": "Президентски избори 2026 - Първи тур (Предварително по минути™)",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Сатиричната прогноза за разочарование от институцията не определя конкретен кандидатски адресат.",
+        "sourceTextSha256": "1341977bba07bc15261fd85a334f0ead6a71e263f3421404a24a8086cd5a7faa"
+      }
     },
     {
       "id": "post:pfbid0tBsNSHhJMxrA2GYDcqb6oFuUvwM29ecrEFZg8RYQJ9iZMsZjYKTeogE3rnWXpEswl",
@@ -19497,7 +20457,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "Днес е ден за размисъл преди изборите за президент и вицепрезидент"
+      "linkHeadline": "Днес е ден за размисъл преди изборите за президент и вицепрезидент",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Съобщението за деня за размисъл няма кандидатска позиция.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid02NAmzTmZs1u9yBk95KUoGHQQdQerTbZHT9CUKFMy6y1SEN9sHj1U27AA9yRrQnfQl",
@@ -19532,7 +20498,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "Петър Волгин: Залогът на тези избори е България да има независим президент | Старозагорски новини"
+      "linkHeadline": "Петър Волгин: Залогът на тези избори е България да има независим президент | Старозагорски новини",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Изразено е общо изискване за независим президент без оценка на двамата кандидати.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0ZdPGhMdhapXybjjcKALWs3bJazniwdDKv12CjyH2Crbz28zGXcDXGgAuineLM6MCl",
@@ -19567,7 +20539,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "От ЦИК проведоха обучителна среща в Областна администрация Стара Загора за предстоящите избори | Старозагорски новини"
+      "linkHeadline": "От ЦИК проведоха обучителна среща в Областна администрация Стара Загора за предстоящите избори | Старозагорски новини",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Новината е за обучение на изборната администрация без кандидатско съдържание.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0ndhXARE9fvVsTrMgDeCrpmQKK4FF8oBZiwEFDGztphU4KMB75j8WpYA8SKvhTceMl",
@@ -19632,7 +20610,13 @@
         }
       },
       "sourceTextSha256": "c2627c283bf91641661231b3c030b6686955ba35ffe424869adffe6d8a181342",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "critical",
+        "reason": "Гюров е посочен като опозиционен участник, а двойката на Йотова е рамкирана като статукво със срив.",
+        "sourceTextSha256": "c2627c283bf91641661231b3c030b6686955ba35ffe424869adffe6d8a181342"
+      }
     },
     {
       "id": "post:pfbid0WMMnciPrDnStaqqHWuipNmjQMJ4eBLQhP94PzMzfVa2UfyShC4fzn9c2rhTML8Pnl",
@@ -19667,7 +20651,13 @@
       },
       "sourceTextSha256": "ec89b8e094fa26df758b0920593e5dd4c6d9fe0813306c343b883577c8151125",
       "images": [],
-      "linkHeadline": "Представители на ЦИК обучаваха изборната администрация"
+      "linkHeadline": "Представители на ЦИК обучаваха изборната администрация",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Информацията е за обучение от ЦИК без кандидатска оценка.",
+        "sourceTextSha256": "ec89b8e094fa26df758b0920593e5dd4c6d9fe0813306c343b883577c8151125"
+      }
     },
     {
       "id": "post:pfbid02uNTBNLmbwmeqehozrkrY3PFTYkCgBJbmQqVg4nDcTTddPP5XosrALtohGzTz3YAMl",
@@ -19708,7 +20698,13 @@
       },
       "sourceTextSha256": "a9ecd4098703176ad7d8b29e4fa134dc8b4e9c6793c19401941cd66c265ebc20",
       "images": [],
-      "linkHeadline": "Росен Русанов е новият кмет на Полски Тръмбеш, Петранка Георгиева спечели изборите в Масларево"
+      "linkHeadline": "Росен Русанов е новият кмет на Полски Тръмбеш, Петранка Георгиева спечели изборите в Масларево",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Представени са резултати от местни избори за други лица.",
+        "sourceTextSha256": "a9ecd4098703176ad7d8b29e4fa134dc8b4e9c6793c19401941cd66c265ebc20"
+      }
     },
     {
       "id": "post:pfbid0PUdhS1VnanJUDfTQnq8NzSg7FXurM2qeXmApgAvyWdvZMWV1W467VgRw8iHkJiZfl",
@@ -19743,7 +20739,13 @@
       },
       "sourceTextSha256": "12fecb1e64b1b1df15cc374badd139157a3d0e130bd1540ec43a7b74937995db",
       "images": [],
-      "linkHeadline": "В 304 секции в областта ще се гласува с машини, в 102 – с хартиени бюлетини"
+      "linkHeadline": "В 304 секции в областта ще се гласува с машини, в 102 – с хартиени бюлетини",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Посочено е разпределението на машинни и хартиени секции без кандидатска позиция.",
+        "sourceTextSha256": "12fecb1e64b1b1df15cc374badd139157a3d0e130bd1540ec43a7b74937995db"
+      }
     },
     {
       "id": "post:pfbid0KZavafQLWBxxNWwg2SoQc7YXoUxG8H7M6QA4pKZHqxBT4HVbK6nnjafHfdnguC9Rl",
@@ -19813,7 +20815,13 @@
         }
       },
       "sourceTextSha256": "4823acc47c5435cf9174aad38eb93edcc4fcc1b19704e1a4dc07c3d56e789ca7",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "supportive",
+        "reason": "Йотова е системно хвалена като уверена защитничка на интереса, а Гюров е представен като колеблив и неподготвен.",
+        "sourceTextSha256": "4823acc47c5435cf9174aad38eb93edcc4fcc1b19704e1a4dc07c3d56e789ca7"
+      }
     },
     {
       "id": "post:pfbid06ASrYUi6E48HEGbwbNy1NS8zj9NJkXCm4PGCLdP5tKm7SUEP8sytCJxTjk2nVP8Zl",
@@ -19858,7 +20866,13 @@
         }
       },
       "sourceTextSha256": "1f9fd7d6fc0cbf52a1699a69a333334387b6706955cefb376737bcde1b5e058f",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Динамичното заглавие описва близкото преброяване без ясна подкрепа или критика.",
+        "sourceTextSha256": "1f9fd7d6fc0cbf52a1699a69a333334387b6706955cefb376737bcde1b5e058f"
+      }
     },
     {
       "id": "post:pfbid02Y1aAqH4EXCi7cGegmSuYexcowegaDhXQyqfDePoWUC8zk5ykCJ3GtJvmvBqBuFEol",
@@ -19898,7 +20912,13 @@
         }
       },
       "sourceTextSha256": "e8f55b63126187f75f1e472a1b89e6679c35d53d51d50f0718deb0142c7e51e8",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Биографичният анонс за семейството на Гюров не съдържа оценъчна позиция към него.",
+        "sourceTextSha256": "e8f55b63126187f75f1e472a1b89e6679c35d53d51d50f0718deb0142c7e51e8"
+      }
     },
     {
       "id": "post:pfbid0KCWQGK6jVGGeQ8JHzUpcd1TtdVo6yECcCm9tVsfFScoECEDaGfqxR1VMocmkY62sl",
@@ -19938,7 +20958,13 @@
         }
       },
       "sourceTextSha256": "19c9082df2ee8ff2fb25769eafaf775b0a389287ec63807f558d0292c9cee076",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "unclear",
+        "yotova": null,
+        "reason": "Интервюто намеква за неосъзнато и неспряно действие на Гюров, но не разкрива какво е то.",
+        "sourceTextSha256": "19c9082df2ee8ff2fb25769eafaf775b0a389287ec63807f558d0292c9cee076"
+      }
     },
     {
       "id": "post:pfbid02TEcg3K3nB6JLwAdaMNp3mBHPNt141yxTcXWRZKPCn6YM2wo94JWhrnwzy2hvuFFil",
@@ -19983,7 +21009,13 @@
         }
       },
       "sourceTextSha256": "df66554d87052a1afd8c6132a56759d25b0241ceca2039bd00343ab64111c3fd",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Анонсиран е анализ на факторите за балотажа без оценка на двамата.",
+        "sourceTextSha256": "df66554d87052a1afd8c6132a56759d25b0241ceca2039bd00343ab64111c3fd"
+      }
     },
     {
       "id": "post:pfbid0pchRFpxqFD8VBmVUyAwFuNvtxTH719VYPfQZbmXkZ1VT1wGbx9S3WexbpcMYrTPnl",
@@ -20033,7 +21065,13 @@
         }
       },
       "sourceTextSha256": "9b1b3ab2d9cce407d507dde244d07cd46f34c69517f9d4407c321debe5cb28ab",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Сензационният анонс е за изборен резултат без предпочитание към кандидат.",
+        "sourceTextSha256": "9b1b3ab2d9cce407d507dde244d07cd46f34c69517f9d4407c321debe5cb28ab"
+      }
     },
     {
       "id": "post:pfbid0tLc74W5GdbsGNME7Fbe3mo9i34g4XXFfPdMtQFtwpKXSYS1f4ek8aeyDM4QbY9rFl",
@@ -20083,7 +21121,13 @@
         }
       },
       "sourceTextSha256": "325c897a73f587599de7b8d9cc5e19e6d0b1d03653ead0b38e5b14aed9a3cb26",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Анонсирано е проучване за разликата между двамата без оценка.",
+        "sourceTextSha256": "325c897a73f587599de7b8d9cc5e19e6d0b1d03653ead0b38e5b14aed9a3cb26"
+      }
     },
     {
       "id": "post:pfbid02PHbtJKNPPPiMLr2kQGUSmyC9eHNHybHhD6XYrAsGWRo157pZ3N2X9F3memfNWox8l",
@@ -20128,7 +21172,13 @@
         }
       },
       "sourceTextSha256": "6badf8600e84cb2a32ea4e9cc3a75d575a37e3ec911a7e2dbbfabd3e1cda707d",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Сравнени са социологически данни за близък резултат без кандидатска оценка.",
+        "sourceTextSha256": "6badf8600e84cb2a32ea4e9cc3a75d575a37e3ec911a7e2dbbfabd3e1cda707d"
+      }
     },
     {
       "id": "post:pfbid0JpZFkp38iwFQWPQCzm2VdyQK5NTnZBhTiZzrWKba1UUqanKpjFvCpBmJdJZbRQ1Bl",
@@ -20173,7 +21223,13 @@
         }
       },
       "sourceTextSha256": "0ed1b3065aaa3470055deb2ce98f9565f0aa36834abc81ffed162ffab7f7fd8f",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Критиката е към темпа на ЦИК, а двамата са споменати чрез резултатите.",
+        "sourceTextSha256": "0ed1b3065aaa3470055deb2ce98f9565f0aa36834abc81ffed162ffab7f7fd8f"
+      }
     },
     {
       "id": "post:pfbid02uE3RTW1rcwp8rNzLKLHg6bRWGxB9Lngk9CNTXv2MDpAZyzSeGtKw4QVpwunriLCdl",
@@ -20218,7 +21274,13 @@
         }
       },
       "sourceTextSha256": "de3a466b7895f1e4cd7834ee39afdb33885deb00f0a1a8b9d090fe468316d084",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Съобщена е преднина по данни на ЦИК без оценяване на кандидатите.",
+        "sourceTextSha256": "de3a466b7895f1e4cd7834ee39afdb33885deb00f0a1a8b9d090fe468316d084"
+      }
     },
     {
       "id": "post:pfbid029888qrFeBxxZ3mvn2kqboggmPWRzSkENR44murXTU4AhHsPefoR56ZciP6FVdmbwl",
@@ -20268,7 +21330,13 @@
         }
       },
       "sourceTextSha256": "10c739c906f2cc8ea989409ebc18edfb1c10f1cf6521fb13901be45a08d5c077",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Анонсирано е начало на спор в дебата без оценка на участниците.",
+        "sourceTextSha256": "10c739c906f2cc8ea989409ebc18edfb1c10f1cf6521fb13901be45a08d5c077"
+      }
     },
     {
       "id": "post:pfbid02Bm8L9ndtqVd6LrVDjomHDM3ivekTRikk1ea3nqTBJRHXTobHbMVPNRnnQAigXifzl",
@@ -20313,7 +21381,13 @@
         }
       },
       "sourceTextSha256": "3c13b6ee84e3b577bf363377ab6f4eb64a8a4bdf4be5cdd89b2b2f988156bced",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Промяната в подреждането при преброяването е съобщена без оценъчна позиция.",
+        "sourceTextSha256": "3c13b6ee84e3b577bf363377ab6f4eb64a8a4bdf4be5cdd89b2b2f988156bced"
+      }
     },
     {
       "id": "post:pfbid02BoCezQLWdoWgBhafdeWT4E97oG1JTZDpSV3qEt11YgqZcDE79kLGUWbQDbFx6mb6l",
@@ -20363,7 +21437,13 @@
         }
       },
       "sourceTextSha256": "27d12226342b08f50a19e32463250cb5482b19dffbec38e68aaacf0c97f0e261",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Победа на Гюров е разгледана като условие за партийна последица без пряка оценка за него.",
+        "sourceTextSha256": "27d12226342b08f50a19e32463250cb5482b19dffbec38e68aaacf0c97f0e261"
+      }
     },
     {
       "id": "post:pfbid02mQPEirVA1mkS3gQKHSfcdmdqYFWH7MvkmaErBVzB2eBFvQwj9nHruwNeHNEpi4qdl",
@@ -20418,7 +21498,13 @@
         }
       },
       "sourceTextSha256": "1487ee7b2971ac9b99520561c70994eb869652e86e518e3c9cc42cd75fa58506",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Съобщено е за спор по теми от дебата без ясно оценяване на участниците.",
+        "sourceTextSha256": "1487ee7b2971ac9b99520561c70994eb869652e86e518e3c9cc42cd75fa58506"
+      }
     },
     {
       "id": "post:pfbid02TmQtZEF88yLMAwH9tGEtkBb9K74bKUgSKLMXVAk9cJxzPj3pfgFo8vkMBRiLXXNXl",
@@ -20468,7 +21554,13 @@
         }
       },
       "sourceTextSha256": "7b86a72dad2666ecd46020101e6bfec296c83837c01f88426abdb154ec6b2d94",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "critical",
+        "yotova": "critical",
+        "reason": "И двамата са негативно свързани с огромен скандал в изведеното твърдение.",
+        "sourceTextSha256": "7b86a72dad2666ecd46020101e6bfec296c83837c01f88426abdb154ec6b2d94"
+      }
     },
     {
       "id": "post:pfbid02hh2DqC9bGgVQDSrGeckabWyT6NhgysqqhwrWNen4my1koy6Kda6bczPKRJSVE8rel",
@@ -20534,7 +21626,13 @@
       },
       "sourceTextSha256": "118e304cdbdf85467ac37018c68e94386b4c73ae420dd2588d4a41614b88cde7",
       "images": [],
-      "linkHeadline": "Илиана Йотова и Кирил Вълчев печелят първия тур на президентския вот в Ямболска област"
+      "linkHeadline": "Илиана Йотова и Кирил Вълчев печелят първия тур на президентския вот в Ямболска област",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Представени са окончателните областни резултати за двете двойки без оценка.",
+        "sourceTextSha256": "118e304cdbdf85467ac37018c68e94386b4c73ae420dd2588d4a41614b88cde7"
+      }
     },
     {
       "id": "post:pfbid0NDno6q67MqnqsJcBRQA5jajgjyZf9nHbWSW3tjvPWgc47AtMrZ3yZPeMPVqhEAUel",
@@ -20584,7 +21682,13 @@
         }
       },
       "sourceTextSha256": "7b3891282a6512bbc5bffd1c4888780b748dcb4763935cb5ec2e54121269cc8e",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Критиката е към организацията на училищата след изборите без кандидатски адресат.",
+        "sourceTextSha256": "7b3891282a6512bbc5bffd1c4888780b748dcb4763935cb5ec2e54121269cc8e"
+      }
     },
     {
       "id": "post:pfbid0eLxS4GtEzHfq3zieB12gdqRe9CsAzyk8mRfaNENiGfqNWsCCC7oT6FBeTmpEAMk8l",
@@ -20644,7 +21748,13 @@
           "capturedAt": "2026-11-05T21:22:42.383Z",
           "sha256": "7728a42fb06bcc349431427a11b88a637667192dc17084d40e9c028bb5c81c02"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Новината е за доставка на хартия за гласуване без кандидатска позиция.",
+        "sourceTextSha256": "15abd65c49c6d0b1fbf340980f60ab3567d17e8450d303b4fd96c21511dd51a1"
+      }
     },
     {
       "id": "post:pfbid0KBk628TQq6GVRLSDLGzJNfaEuz8ys5ZUg3wkrPUgnnJZok7HJdsHksyWxt3SuGc1l",
@@ -20699,7 +21809,13 @@
           "capturedAt": "2026-11-05T21:23:40.471Z",
           "sha256": "274e456083bc8cf5f7de26bf73efd7f9fa97d044beaaf5b16edf922cdeb30228"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Съобщено е приемане на бюлетини и изборни книжа без кандидатско съдържание.",
+        "sourceTextSha256": "aefa7d8c4f6b74cb025b161fcd6615d91895244561896b951719914f66f947da"
+      }
     },
     {
       "id": "post:pfbid02wFLLbAboh4g2X7a2p7RPc5TFtioft1F2kWTQTjjC3UpMwacobScfmEyrT2VvR8J5l",
@@ -20754,7 +21870,13 @@
           "capturedAt": "2026-11-05T21:23:53.108Z",
           "sha256": "4aba174e8fc827c23dfdf4c2f1275fd4403789406616ce3915acc9007dd9f7cb"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Представено е обучение за изборната подготовка без оценка за кандидати.",
+        "sourceTextSha256": "af07f71b94d132b3da27e7691238a1d9b324e74aa1e8a071958f9694dc70753a"
+      }
     },
     {
       "id": "post:pfbid02j7UXrCySBzPFAEwBd22toHinK6op1aj1qTLd9tsUVAUoPCCpfxQeqfBe7cg3AMcwl",
@@ -20798,7 +21920,13 @@
           "capturedAt": "2026-11-05T21:24:41.505Z",
           "sha256": "3017c63432fad0eaa55bfa47a4b612e4a0c7abe8fc8c121f57a31c27057a53af"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Посочена е областната избирателна активност без кандидатска позиция.",
+        "sourceTextSha256": "1a94e651396eb6dc37401489edd40ab28fbceb449a6bf272c433c721f056e735"
+      }
     },
     {
       "id": "post:pfbid0SgBUpLnstEhC1jL4pX4b5XS1JeXww4WUyvGUBvuwRkk1tRgvrQX9uP3A9jeGEvWel",
@@ -20849,7 +21977,13 @@
           "sha256": "b400f97b0378cd2e9a1fb6759ac14fad123b0342a05f85ff4bd4dfa9984eafee"
         }
       ],
-      "linkHeadline": "Кой има право да гласува"
+      "linkHeadline": "Кой има право да гласува",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Указанията за правото на глас не засягат конкретна кандидатура.",
+        "sourceTextSha256": "19d6c0a301dbd68b534d03d438b6be8e12bcf5796a00e095be793c8b031e5ca9"
+      }
     },
     {
       "id": "post:pfbid02GdKsKUsXjxtY2LbgBcKQsD7YqmnTJA3mRKmp28cdnF8sipB5VYiWn8ALfLJ4CARDl",
@@ -20894,7 +22028,13 @@
           "sha256": "8de980e018925f8b2482db69dead819849285f1417a22c234ac90a248da7b7b3"
         }
       ],
-      "linkHeadline": "Българо-мохамеданската общност в Благоевградско с призив: Не гласувайте!"
+      "linkHeadline": "Българо-мохамеданската общност в Благоевградско с призив: Не гласувайте!",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Призивът за бойкот и изображението са свързани с арест на друг политик, без кандидатска оценка.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0YjqZSw3BEPU9eLmoeVxJT1TujYV1ZvbdgEv17Fx9Q9yUEkLs2bHBz3sJzRXxSDGUl",
@@ -20959,7 +22099,13 @@
           "capturedAt": "2026-11-05T21:29:12.449Z",
           "sha256": "6ff1c15e1a400241b14b9dead741c8fa0beea21c5200e7d51f8827d15079039a"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Текстът и изображението представят проценти от паралелно преброяване без кандидатска оценка.",
+        "sourceTextSha256": "712ccb129d2722ae5e9ac8fd6df20950ff684a5dea68283cc88c48cf9d7bedcd"
+      }
     },
     {
       "id": "post:pfbid0vce8sXYo2noYUH2TEYLrHLckeE64kQ7ZV8r6aVkZ3mdVc8Zoo1a7fiiAnf21w59Ql",
@@ -21014,7 +22160,13 @@
           "capturedAt": "2026-11-05T21:29:32.608Z",
           "sha256": "7c9b017966511e019312726960d2f3ce570d75361e14ff2399cfa92279264258"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Новината е за изработването на бюлетини и ролки без кандидатска позиция.",
+        "sourceTextSha256": "17f371f2134c1eb638d8552530f67da7625142f5cca3aa826d3da1ef68706c02"
+      }
     },
     {
       "id": "post:pfbid0u1V5Lem38eB7Kfk537hBenZ8Bvux6AY1BzCYEET71ocsrsoXrqQEDMg5CnfUuHM2l",
@@ -21074,7 +22226,13 @@
           "capturedAt": "2026-11-05T21:29:51.929Z",
           "sha256": "b57c6db44b75bec5be409325d1d5ee73fd785d6ef2eef203a0791834889a8fe1"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Прогнозата за активност и общото изборно изображение не съдържат конкретен кандидатски адресат.",
+        "sourceTextSha256": "e10f1855a626fe319565c1857aa8d5f858c013e976fcadd68d65957d884fba56"
+      }
     },
     {
       "id": "post:pfbid0PukZUd5x7Cfj1GSsGcbgFUiySFasfhgDzh47ZHBxABKCC2zcvFrYVuBNHe23o2b9l",
@@ -21118,7 +22276,13 @@
           "capturedAt": "2026-11-05T21:30:16.246Z",
           "sha256": "32a87b6e5ca708ff1ca9fde97b7dca8c783b8e2dd13969a2bd65b9ceb741d477"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Съобщено е приключване на изборния процес без кандидатско съдържание.",
+        "sourceTextSha256": "07e752247723401ea86f2644ece4797cfa5bd262fb2279c96402df13fd30415e"
+      }
     },
     {
       "id": "post:pfbid03AhAW2vfBpLCjzDqf8uhnLcsWHUz9JvnkqSHFrBphAc4vGxeKeGbmGUYiFiUgDf4l",
@@ -21158,7 +22322,13 @@
         }
       },
       "sourceTextSha256": "b89cdd22445fcc44174104b939e3d0618b0a0b7929d702f609aac320c447e662",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Публикацията е за местни ремонти и отговорност без позиция към двамата кандидати.",
+        "sourceTextSha256": "b89cdd22445fcc44174104b939e3d0618b0a0b7929d702f609aac320c447e662"
+      }
     },
     {
       "id": "post:pfbid0e2VvvnhEFoC4vM41S5Z6HKhdgEDB8ZFXSTjc5tX3QjyoAdCUNqCT2fVde4NG21gbl",
@@ -21203,7 +22373,13 @@
           "sha256": "c2b624f16b1505643db3d9fbf8744e3339c5e2a7a227e279dca8359806678866"
         }
       ],
-      "linkHeadline": "Ден за размисъл преди втория тур на президентските избори"
+      "linkHeadline": "Ден за размисъл преди втория тур на президентските избори",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Съобщението за деня за размисъл не оценява конкретни кандидати.",
+        "sourceTextSha256": "590e8551370825bd9bbf974e280c94a97813b355f4c37dddcfc9a7380399c9e4"
+      }
     },
     {
       "id": "post:pfbid06pzpg28XwJX8B5JiVUoSLkFzwPvgRFo9QKxbi5wBctUKpXqch9yLohvmtguKX2ZHl",
@@ -21248,7 +22424,13 @@
           "sha256": "64cc2023688f63425d7ca8652a630a1a2f41687c92e7fed294d8a72a5cd96187"
         }
       ],
-      "linkHeadline": "Двойката Йотова-Вълчев печелят пред Гюров-Кандев в Благоевградска област"
+      "linkHeadline": "Двойката Йотова-Вълчев печелят пред Гюров-Кандев в Благоевградска област",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Заглавието съобщава областния резултат за двете двойки без оценъчна позиция.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid01LYLR3Kip1gSPHoogbZm67giF5ea4KAPGYD1r3ZTo31CNcJ6Vk5PXjHTVcNYhLtml",
@@ -21293,7 +22475,13 @@
           "sha256": "f22680f946183edea94cc7cd00fb5d3dfcf83e525a62ad15998cfd69a9bf3236"
         }
       ],
-      "linkHeadline": "Специализирана полицейска операция, свързана с предстоящите избори, се провежда на територията на Благоевградска област"
+      "linkHeadline": "Специализирана полицейска операция, свързана с предстоящите избори, се провежда на територията на Благоевградска област",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Информацията е за полицейска операция преди вота без кандидатска оценка.",
+        "sourceTextSha256": "919406037c87ea3bc45a1f501601d6f9cbcb3dd3c3f6f64bc2f22f7befd304e2"
+      }
     },
     {
       "id": "post:pfbid0JkWtbK7UNdbokCnpTR4MzA2yG42Zvy4SfXAcQeTR8RCSXjQcJyuwociN5vcv6VTWl",
@@ -21358,7 +22546,13 @@
         }
       },
       "sourceTextSha256": "a08d387aa5584ebf3e711f19d6b3601a03ae665da6be1d5ebd104f0e872e7a33",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Представени са прогнозни резултати и класирането на балотаж без оценяване.",
+        "sourceTextSha256": "a08d387aa5584ebf3e711f19d6b3601a03ae665da6be1d5ebd104f0e872e7a33"
+      }
     },
     {
       "id": "post:pfbid0f1BNbyQG5XHbyQFnf5DZ2g2zkP95rTNU2No3SgBpqXWpjuK943KhkFSh64PHxCqyl",
@@ -21403,7 +22597,13 @@
           "sha256": "6660982ffb326d281fec985c2d7272cd48c0e0a6a767d689901f4ed37a556fc5"
         }
       ],
-      "linkHeadline": "Нови смени в СИК в Благоевградско, най-много са в Петрич"
+      "linkHeadline": "Нови смени в СИК в Благоевградско, най-много са в Петрич",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Новината е за смени в секционни комисии без кандидатско съдържание.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid02jMLyTwpp6CHXLYywZ5feGLYq6cmAeCRDQUDCp6nVPpZrRvgvwX4WucaT7R3mhmATl",
@@ -21453,7 +22653,13 @@
           "capturedAt": "2026-11-05T21:34:26.246Z",
           "sha256": "d1576e31e871f266580a711f3a87efb81018497373916c844d288c10ecb1043b"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Гюров е посочен като подател на сигнал, без оценка на кандидата.",
+        "sourceTextSha256": "ccbb7bf3697f658a46e51b1b5c24c4e41e05e6e27a07a207a37787ea1c27b431"
+      }
     },
     {
       "id": "post:pfbid02pWgyjTZ4kcjevu6aRcnNCjniGTqEDQ9Vp3PGCArM37eGarqGqV5cTMKdrtYGhr6hl",
@@ -21508,7 +22714,13 @@
           "capturedAt": "2026-11-05T21:35:11.640Z",
           "sha256": "db53271b27de75d6dfd53ec908bba5f97a05a100775d0a838c0daa1de6a7ac19"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Съобщена е междинна разлика в резултатите по данни на ЦИК.",
+        "sourceTextSha256": "c27d3fa99e7489899724b13f081581cfc004d67aa0fef34718eb13eef9c9406c"
+      }
     },
     {
       "id": "post:pfbid0CJadsNu9dvxkPpppqVHn6dJckRii9zLmxDMCtJpf8emEMbdnQbeVeMMPuzxKHc1Cl",
@@ -21553,7 +22765,13 @@
           "sha256": "5d91f4faf2271fd3c6cbdb51acf800a201927fc65ef71d19a6b21b7eab7daee8"
         }
       ],
-      "linkHeadline": "Андрей Гюров гласува със семейството си в Благоевград: Уверен съм в победата!"
+      "linkHeadline": "Андрей Гюров гласува със семейството си в Благоевград: Уверен съм в победата!",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Предадено е гласуването на Гюров и собствената му увереност в победа без отделна похвала.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0x2sn88s66FVpE8Q2iqW1J21VaxjkjzwWbWT7GjdPNdWRrZNyx3ssre6yXZsaMZNSl",
@@ -21598,7 +22816,13 @@
           "sha256": "8c7c722ee79fa4db0e8a30d666f4f1f78dcc6acd4c8afc0b6d77b6840e9e1ec8"
         }
       ],
-      "linkHeadline": "Правителствената пресслужба оказва подкрепа на Комитета на Гюров и Кандев, премахват съобщението на Радев"
+      "linkHeadline": "Правителствената пресслужба оказва подкрепа на Комитета на Гюров и Кандев, премахват съобщението на Радев",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Гюров е споменат чрез комитета при премахване на правителствено съобщение без изборен призив.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid02z7zLBfxzDx3P2yWLti4iCCSFefMW7nTxxawFeGE6FHYxSL91btDeX6xUFyJ8g16Kl",
@@ -21643,7 +22867,13 @@
           "sha256": "6b5fe4a964b32ce56517b03102fb451af012e5343f2b54e5e563ff603a7a9a1b"
         }
       ],
-      "linkHeadline": "Бойко Борисов призова за подкрепа на Андрей Гюров на балотажа"
+      "linkHeadline": "Бойко Борисов призова за подкрепа на Андрей Гюров на балотажа",
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": null,
+        "reason": "Изведен е пряк призив на Борисов за подкрепа на Гюров на балотажа.",
+        "sourceTextSha256": "c662fa47d5106f149f11d75dc6be67801181b21f83967f99c8d751d364556057"
+      }
     },
     {
       "id": "post:pfbid0ngyXDGEHgdqRUB3nyJVAxtJdnNQ8vytZsadZLw12TAj27GLnq3uTH7izQEPvyVaRl",
@@ -21708,7 +22938,13 @@
           "capturedAt": "2026-11-05T21:38:45.804Z",
           "sha256": "db245a5f09b78c4f0852719ff26ea4f90f6493b721405d2665b6333adfbd9869"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Представени са окончателните участници в балотажа по данни на ЦИК.",
+        "sourceTextSha256": "ccc36a33cf50e1c0a642846fa56153223d310df82a9960eedae7e096277551e1"
+      }
     },
     {
       "id": "post:pfbid07RWRe4dKJW7gZQ8oVnYajhw4wWs4GAeRPbt9jTrsNedtbj6nNs9umUz71Nkc4hzil",
@@ -21753,7 +22989,13 @@
         }
       },
       "sourceTextSha256": "7aaff961afa85ea4ea1da920281e14642a562d5aea3109d1b184b7b760a6fb74",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": null,
+        "reason": "Текстът само анонсира изявление на щаба на Гюров без оценъчно съдържание.",
+        "sourceTextSha256": "7aaff961afa85ea4ea1da920281e14642a562d5aea3109d1b184b7b760a6fb74"
+      }
     },
     {
       "id": "post:pfbid0if3igPE8xNuf9py5xp7LouHMW8oqH4Ug3asstEw8TRFFzgUFXtzvKxvqH5CsFt2Hl",
@@ -21798,7 +23040,13 @@
           "sha256": "ad0c64596ed29c0ceb4d65a28dd684a52fa663ee6f00900587b01b48103eb68d"
         }
       ],
-      "linkHeadline": "При обработени 95.29% от ЦИК към 6:00 часа: Разликата между Йотова и Гюров се стопи до 2,56%"
+      "linkHeadline": "При обработени 95.29% от ЦИК към 6:00 часа: Разликата между Йотова и Гюров се стопи до 2,56%",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Съобщена е междинната разлика при преброяване без кандидатска оценка.",
+        "sourceTextSha256": "5f820af7eb4db6a513fe01c5e0aacc3be64997261945b9892e4fa1cc96c9c6b7"
+      }
     },
     {
       "id": "post:pfbid0AcHsLydz77WF7sfhhdQXy67XSEw52KAhZ2jp4JEwRJecrMfKMnV2ZAVuCW8rNB4Bl",
@@ -21843,7 +23091,13 @@
           "sha256": "707bc1570174b1ccb66708c716c30d5aa59c8732aa3fdabf143912bdebcfd0e6"
         }
       ],
-      "linkHeadline": "Екзит пол на „Мяра“: Сгъстена е дистанцията – Йотова и Гюров са на балотаж"
+      "linkHeadline": "Екзит пол на „Мяра“: Сгъстена е дистанцията – Йотова и Гюров са на балотаж",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Заглавието представя екзитпол и близкия резултат без оценяване.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid02CV4f9cTML6NrEQJcRk7hyCeRG3sQNGsBSuUXxpMGDYdGN6sxqj4FW6baErq4PYjil",
@@ -21898,7 +23152,13 @@
           "capturedAt": "2026-11-05T21:40:19.317Z",
           "sha256": "465257cd0a6b08895f93106a6088a2950b91ed0d72f8f9790d079e427d7251cd"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Предадена е позиция на Йотова за обединителната роля на президента без оценка.",
+        "sourceTextSha256": "74e56d968167e5694e0f76e934e98f8dc1ef012d0364f1ddf6da8ea3706ec4ad"
+      }
     },
     {
       "id": "post:pfbid02iUzuzWti7RMhPjAAw37kgQRDHaE2NadDmVuScCrt8V3NqR7SKphFu1CSUee6Emawl",
@@ -21963,7 +23223,13 @@
           "capturedAt": "2026-11-05T21:40:42.958Z",
           "sha256": "860aad383600e5c07d62b7564f8167f13a1f47722b48d77ce2d2b77bd88210bf"
         }
-      ]
+      ],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Йотова е посочена като връчваща отличия на церемония без оценка на самата нея.",
+        "sourceTextSha256": "845dad401f9191f17771dfd5952aaca6a1767b178f3b0dbdaa987f3575036f73"
+      }
     },
     {
       "id": "post:pfbid0KEun81Lskap5WXxJnSgxLH5ULfvn6rAgt2oEdPr9DEijDL4wVSsvBHh9bLykdRCbl",
@@ -22008,7 +23274,13 @@
         }
       },
       "sourceTextSha256": "2ce8c10fa1bdb31de36b299ad2623f55d305b0e1b3a96c1fff09fe21632a19ea",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Текстът анонсира изявление на щаба на Йотова без оценъчно съдържание.",
+        "sourceTextSha256": "2ce8c10fa1bdb31de36b299ad2623f55d305b0e1b3a96c1fff09fe21632a19ea"
+      }
     },
     {
       "id": "post:pfbid02Csn9LXoNb9tcN3AKmvXVGapu68vb1Vkp562nvvcKuMMmVoQngGdX7wPJVxgB1mNBl",
@@ -22053,7 +23325,13 @@
           "sha256": "aa4d81b97c89c15b72feaf574c360dd2a210a478ddbdeebe7f56d33d3640e8b1"
         }
       ],
-      "linkHeadline": "Андрей Гюров призова Илияна Йотова на „открит, честен и цивилизован дебат“"
+      "linkHeadline": "Андрей Гюров призова Илияна Йотова на „открит, честен и цивилизован дебат“",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Съобщена е покана от Гюров към Йотова за дебат без оценка на кандидатите.",
+        "sourceTextSha256": "6f47316c5437458e475b8eb2fd920c04bc6144018740db5b31a71f92ddf806a2"
+      }
     },
     {
       "id": "post:pfbid02VpnBPyotgaafvyhiCYPcf9m5fyL2ZytkyaeWK5z2BVGm2kjmEtuFg1b32nQSwjhel",
@@ -22098,7 +23376,13 @@
           "sha256": "415ca50bafaaabe951ed73eaf2cb7e6687eb4c76ea7a28381f0935692c1563b8"
         }
       ],
-      "linkHeadline": "Кметът на Община Благоевград Методи Байкушев и президентът на Република България Илияна Йотова поведоха Шествие на паметта в навечерие"
+      "linkHeadline": "Кметът на Община Благоевград Методи Байкушев и президентът на Република България Илияна Йотова поведоха Шествие на паметта в навечерие",
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Посочено е участие на Йотова в възпоменателно шествие без оценъчна позиция.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid028UmqvY8igqbCpKx5YKKb5LvG8ueDEiLwsJp5zRYZqvcJ9JkC5k423BsuBjFNDMANl",
@@ -22153,7 +23437,13 @@
         }
       },
       "sourceTextSha256": "cc1ac4a966091781d721860b2a853c278daa25e2bc39731cbe070eec0d3356f0",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Анонсирано е изявление на Йотова след заседание по сигурността без оценяване.",
+        "sourceTextSha256": "cc1ac4a966091781d721860b2a853c278daa25e2bc39731cbe070eec0d3356f0"
+      }
     },
     {
       "id": "post:pfbid0TQSoxmsfAKacFYUrSVZZ74QrDJ8nrPvSKMzZkx2LVVNmCxtaRdDur9zrXntoNPEgl",
@@ -22198,7 +23488,13 @@
           "sha256": "d8f1f5f73d05897aa47ff62857eb92d3a0eb9ccc7563850e06dc70c5f8d302e9"
         }
       ],
-      "linkHeadline": "Правителствената пресслужба премахва публикацията за изказването на Радев в подкрепа на Йотова"
+      "linkHeadline": "Правителствената пресслужба премахва публикацията за изказването на Радев в подкрепа на Йотова",
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Съобщено е премахване на публикация за подкрепа, без да се възпроизвежда подкрепящ призив.",
+        "sourceTextSha256": "76114e112b6eb7ea9ccafbc4c34ad87d68bc32b43f4e32104f4c3de0c8577959"
+      }
     },
     {
       "id": "post:pfbid02N7M23efFA1GRNrFFBfYDavwEY9sr6CckAXkiKboE27JMPnzY32cvMAWuzwqLxQ3Cl",
@@ -22233,7 +23529,13 @@
       },
       "sourceTextSha256": "414453125494829f3e3c999757dc28b2cf11f8531921dbde1ac89c54de405146",
       "images": [],
-      "linkHeadline": "Йотова свиква КСНС за морската сигурност след атаките срещу два кораба в Черно море"
+      "linkHeadline": "Йотова свиква КСНС за морската сигурност след атаките срещу два кораба в Черно море",
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Новината представя свикано от Йотова заседание без оценка на действието.",
+        "sourceTextSha256": "414453125494829f3e3c999757dc28b2cf11f8531921dbde1ac89c54de405146"
+      }
     },
     {
       "id": "post:pfbid01EyHthqDU2dtHCYdptUjvXB29X6Q7bXLLXP5MoKhboGdayqJBV1ATFrL7SMCW5vrl",
@@ -22268,7 +23570,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "В Областна администрация Стара Загора пристигнаха бюлетините за втория тур на президентските избори / Новини от Казанлък"
+      "linkHeadline": "В Областна администрация Стара Загора пристигнаха бюлетините за втория тур на президентските избори / Новини от Казанлък",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Информацията е за доставка на бюлетини без кандидатска позиция.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0tNnniZAmCajDbSyvLqdKU4Fv7Q432tbjpztbfv9NndQio6FnB7iX53schyVZoHHil",
@@ -22303,7 +23611,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "Над 60 дежурни екипа на Eлектроразпределение Юг са в готовност да реагират при необходимост в изборния ден / Новини от Казанлък"
+      "linkHeadline": "Над 60 дежурни екипа на Eлектроразпределение Юг са в готовност да реагират при необходимост в изборния ден / Новини от Казанлък",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Съобщени са дежурни енергийни екипи за изборния ден без кандидатско съдържание.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid02yaeRKWMfnFYXh4fvLLeLWGP7TYe3bcdb45odEQo76yazniWgMmUHffqkM69wqjWHl",
@@ -22338,7 +23652,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "В Областна администрация Стара Загора пристигнаха бюлетините за президентските избори / Новини от Казанлък"
+      "linkHeadline": "В Областна администрация Стара Загора пристигнаха бюлетините за президентските избори / Новини от Казанлък",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Информацията е за доставка на бюлетини без кандидатска оценка.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0HG2ByZisGVz7y9zvnyhLZxXokX3Qu3qYZki61Hw6sNmj5cKtZ4qKKMg6rGn1i7J9l",
@@ -22373,7 +23693,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "Предстои обучение за членовете на секционните избирателни комисии / Новини от Казанлък"
+      "linkHeadline": "Предстои обучение за членовете на секционните избирателни комисии / Новини от Казанлък",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Анонсирано е обучение на секционни комисии без кандидатска позиция.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0cvW83G4Q552dJ9E87h5WDyyXRTd7Br6QjysfbTfu8qCEpjnVyoHG5iRenyezEw9Ul",
@@ -22408,7 +23734,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "2696 ролки за машинно гласуване пристигнаха в Стара Загора / Новини от Казанлък"
+      "linkHeadline": "2696 ролки за машинно гласуване пристигнаха в Стара Загора / Новини от Казанлък",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Новината е за доставка на машинни ролки без съдържание за кандидатите.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid0AyhLwTviE8S5cBeYB85HviGudEJMwHuqihLsXqjifVCjWA9tLF6neUjbfH7HTkual",
@@ -22443,7 +23775,13 @@
       },
       "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "images": [],
-      "linkHeadline": "Йотова и Вълчев печелят 39,9% от гласовете в Старозагорско / Новини от Казанлък"
+      "linkHeadline": "Йотова и Вълчев печелят 39,9% от гласовете в Старозагорско / Новини от Казанлък",
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Представен е областният процент на Йотова и Вълчев без оценяване.",
+        "sourceTextSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     },
     {
       "id": "post:pfbid02PZmLxK52nSsgpYnHPkEDkbJBX4bJnFevjL3zG5XbWvebmue8W27KxpvNiJez5ULdl",
@@ -22494,7 +23832,13 @@
       },
       "sourceTextSha256": "5d699469948101f044ae2bc1319d96e9e72db699ce37cc0ba82f9ba250dc3ba9",
       "images": [],
-      "linkHeadline": "ГЕРБ и ДПС злорадстват: Радев, уволнен си! - МИГNews - Новините без цензура"
+      "linkHeadline": "ГЕРБ и ДПС злорадстват: Радев, уволнен си! - МИГNews - Новините без цензура",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Негативното политическо рамкиране е насочено към Радев, а не към двамата кандидати.",
+        "sourceTextSha256": "5d699469948101f044ae2bc1319d96e9e72db699ce37cc0ba82f9ba250dc3ba9"
+      }
     },
     {
       "id": "post:pfbid0Q8rdyi1ofvniGbuBTA4BDCLVYmb39Vpir2N1An34M8zdPX1pcKeqohH8R1mL8poRl",
@@ -22529,7 +23873,13 @@
       },
       "sourceTextSha256": "6e5b621f5589af8a438bce376ee723c81b4a28ca0d06724db782be50a18a67f5",
       "images": [],
-      "linkHeadline": "Слави Василев: Хората не гласуваха, защото настоящият премиер е бившият президент. Държавата е в сигурни ръце - МИГNews - Новините без цензу"
+      "linkHeadline": "Слави Василев: Хората не гласуваха, защото настоящият премиер е бившият президент. Държавата е в сигурни ръце - МИГNews - Новините без цензу",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Изведената оценка е за премиера и управлението без конкретен кандидатски адресат.",
+        "sourceTextSha256": "6e5b621f5589af8a438bce376ee723c81b4a28ca0d06724db782be50a18a67f5"
+      }
     },
     {
       "id": "post:pfbid0WGzRJcCs5vqbsCXb8jz1wKjB2SzYn5mbAW8895fvK5CajZxMbRWwH2WT8EqA5AdEl",
@@ -22585,7 +23935,13 @@
       },
       "sourceTextSha256": "1a7da01d026a5cda3d35c820d80126dcf9cd377379796aa2c0da057e7939d056",
       "images": [],
-      "linkHeadline": "Циганите избраха Радостин Василев - МИГNews - Новините без цензура"
+      "linkHeadline": "Циганите избраха Радостин Василев - МИГNews - Новините без цензура",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Двамата са сравнени с резултата на друг кандидат в определени секции без лична оценка.",
+        "sourceTextSha256": "1a7da01d026a5cda3d35c820d80126dcf9cd377379796aa2c0da057e7939d056"
+      }
     },
     {
       "id": "post:pfbid02PvjWTDym2mtqAfxPAbpnWUDux8gsCCJdWBboNkzzd6DqBCuqaHZZuXgxSB61P8JHl",
@@ -22619,7 +23975,13 @@
         }
       },
       "sourceTextSha256": "000ae8c29fe6cd8dcf12a007a921252757a8071799a52cd526fc00fe86ec4eb0",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Посочена е обща прогнозна активност без кандидатска оценка.",
+        "sourceTextSha256": "000ae8c29fe6cd8dcf12a007a921252757a8071799a52cd526fc00fe86ec4eb0"
+      }
     },
     {
       "id": "post:pfbid02jeGmoMoszQmxbU5a1HoC5oiuop9PvheYAbDXJDUEKGjKzrkJAajtHPHVisLfDhDil",
@@ -22660,7 +24022,13 @@
       },
       "sourceTextSha256": "2f8df4945cd0c2041ce2ec802750477026ed192394e84cffa94205520adbf2d9",
       "images": [],
-      "linkHeadline": "Първи резултати от първия тур на президентските избори: Йотова е с най-висока подкрепа, втори е Гюров - МИГNews - Новините без цензура"
+      "linkHeadline": "Първи резултати от първия тур на президентските избори: Йотова е с най-висока подкрепа, втори е Гюров - МИГNews - Новините без цензура",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Представени са първотурната подредба и необходимостта от балотаж без оценяване.",
+        "sourceTextSha256": "2f8df4945cd0c2041ce2ec802750477026ed192394e84cffa94205520adbf2d9"
+      }
     },
     {
       "id": "post:pfbid0hsHhHTzZy8rZuCdESHnrkA5d6ejvqvjffAz1HM3DXxEsw955AQq3sBGvXVyYJ8Bgl",
@@ -22701,7 +24069,13 @@
       },
       "sourceTextSha256": "313762346782b85927d4607bd0a5c51e0cc75f2ad6082597008ec73b50b0688f",
       "images": [],
-      "linkHeadline": "Новото начало свърши: Кметът на Горна Оряховица подаде оставка - МИГNews - Новините без цензура"
+      "linkHeadline": "Новото начало свърши: Кметът на Горна Оряховица подаде оставка - МИГNews - Новините без цензура",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Новината е за оставка и бъдеща местна кандидатура на друго лице.",
+        "sourceTextSha256": "313762346782b85927d4607bd0a5c51e0cc75f2ad6082597008ec73b50b0688f"
+      }
     },
     {
       "id": "post:pfbid0zQhXDuLfhMWjv1wM6EdpzmetAivRj3nGCnvVWAbSa1ccSnWPXRgR1nUK6NPYoQg3l",
@@ -22736,7 +24110,13 @@
       },
       "sourceTextSha256": "152db84c97ced4f1b8e319e2fa11b98d05993eeb20578b32921097c25e037562",
       "images": [],
-      "linkHeadline": "Партията на Румен Радев призна, че са подценила изборите - МИГNews - Новините без цензура"
+      "linkHeadline": "Партията на Румен Радев призна, че са подценила изборите - МИГNews - Новините без цензура",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Критиката е към партийна мобилизация и подценяване на изборите без оценка на кандидатите.",
+        "sourceTextSha256": "152db84c97ced4f1b8e319e2fa11b98d05993eeb20578b32921097c25e037562"
+      }
     },
     {
       "id": "post:pfbid02YYb47bm8Lc2a3sxcqhmDGupi9GCMe8x7gVkn1n1ffEZV9NMSEUinSRaBhP6xBg7Gl",
@@ -22771,7 +24151,13 @@
       },
       "sourceTextSha256": "e37b507d96bcb8584343154e0e9653bfc6536d77ba7539b8ca633507b4665c3d",
       "images": [],
-      "linkHeadline": "Борисов демонстративно бойкотира вота за президент - МИГNews - Новините без цензура"
+      "linkHeadline": "Борисов демонстративно бойкотира вота за президент - МИГNews - Новините без цензура",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Негативното описание засяга поведението на Борисов без оценка на двамата кандидати.",
+        "sourceTextSha256": "e37b507d96bcb8584343154e0e9653bfc6536d77ba7539b8ca633507b4665c3d"
+      }
     },
     {
       "id": "post:pfbid02o6nLdTW6UTHzbGNZa7BiV3bXkk9wqNQbHwkjUaqdKEWoYb9xL9pU7cdEqgz2mZEQl",
@@ -22817,7 +24203,13 @@
       },
       "sourceTextSha256": "4cfbfb2119b2b086a9da527a54f128302c2253aff59fe36c0da08bc36b74338b",
       "images": [],
-      "linkHeadline": "Слави злорадства: Радев и неговата насипна партия изядоха чудовищен бой от хората - МИГNews - Новините без цензура"
+      "linkHeadline": "Слави злорадства: Радев и неговата насипна партия изядоха чудовищен бой от хората - МИГNews - Новините без цензура",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Критиката е към Радев и партии без изрична оценка на конкретните кандидати.",
+        "sourceTextSha256": "4cfbfb2119b2b086a9da527a54f128302c2253aff59fe36c0da08bc36b74338b"
+      }
     },
     {
       "id": "post:pfbid02UP8CAjgXZ96StQ4dopwgPmHAdj63pq1UVgnZMtXe9ETtJ1ZLsB2nvNEmUsPAyxdyl",
@@ -22863,7 +24255,13 @@
       },
       "sourceTextSha256": "b8361b8f6151eef8eb9cf0658c614a3085c4de2ebafe9e5ad4773f958e3ea563",
       "images": [],
-      "linkHeadline": "В неделя връщаме часовника с час назад - МИГNews - Новините без цензура"
+      "linkHeadline": "В неделя връщаме часовника с час назад - МИГNews - Новините без цензура",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Информацията е за смяна на часа в изборния ден без кандидатска позиция.",
+        "sourceTextSha256": "b8361b8f6151eef8eb9cf0658c614a3085c4de2ebafe9e5ad4773f958e3ea563"
+      }
     },
     {
       "id": "post:pfbid0pj98qnVY262CBhPjJgduDA7xGbopMFWSt7xJLXLH39Z6EzvKviV4NL4GJJpHf8N9l",
@@ -22908,7 +24306,13 @@
         }
       },
       "sourceTextSha256": "a8e115e85643198d3151287f3d30f5dd6d55259743d241c5cc04bdf043244ccb",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Посочени са политически определения за кандидатите без ясна подкрепа или критика към тях.",
+        "sourceTextSha256": "a8e115e85643198d3151287f3d30f5dd6d55259743d241c5cc04bdf043244ccb"
+      }
     },
     {
       "id": "post:pfbid0S9GuUzCf9rSUqSmwteASL9S31w2x8YrfPpXiha4sEHC2dkySC6CamQbujnYwYTA4l",
@@ -22959,7 +24363,13 @@
       },
       "sourceTextSha256": "55482fe2e48fd34ed34f22891dfc9302ab4cc8cfc41806185f4805b135462901",
       "images": [],
-      "linkHeadline": "Йотова вече хвали най-скандалните кметове на Пеевски - МИГNews - Новините без цензура"
+      "linkHeadline": "Йотова вече хвали най-скандалните кметове на Пеевски - МИГNews - Новините без цензура",
+      "stance": {
+        "gyurov": null,
+        "yotova": "critical",
+        "reason": "Йотова е свързана негативно със скандални кметове и предполагаема сделка с ДПС.",
+        "sourceTextSha256": "55482fe2e48fd34ed34f22891dfc9302ab4cc8cfc41806185f4805b135462901"
+      }
     },
     {
       "id": "post:pfbid02M54XJYQYrW5cuy4FUJX24qbxbWtRCKi6S7FYqRfQ57E48ftdUYU5d2DfmxXVkpi6l",
@@ -23000,7 +24410,13 @@
       },
       "sourceTextSha256": "0579ad8d9646b81c02e8be70ca70cf85df7a82bbaad8e0ee9021d10e15e5afed",
       "images": [],
-      "linkHeadline": "Дъждове ще удавят България в деня на балотажа - МИГNews - Новините без цензура"
+      "linkHeadline": "Дъждове ще удавят България в деня на балотажа - МИГNews - Новините без цензура",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Прогнозата за времето в деня на балотажа няма кандидатски адресат.",
+        "sourceTextSha256": "0579ad8d9646b81c02e8be70ca70cf85df7a82bbaad8e0ee9021d10e15e5afed"
+      }
     },
     {
       "id": "post:pfbid02qsybebVSkJPut9rBfYwk8AiNZYBUqpQ5z6YA2NZSGLcEEiUJ6APssuAjmq7h6Vuol",
@@ -23035,7 +24451,13 @@
       },
       "sourceTextSha256": "16726551091a8ba3accc7d6b203e6f654d71781b3a95c567cd378ed9cd8ed516",
       "images": [],
-      "linkHeadline": "Разбулена е модната мистерия на Велислава Петрова - МИГNews - Новините без цензура"
+      "linkHeadline": "Разбулена е модната мистерия на Велислава Петрова - МИГNews - Новините без цензура",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Коментарът засяга публичното облекло на друг политик.",
+        "sourceTextSha256": "16726551091a8ba3accc7d6b203e6f654d71781b3a95c567cd378ed9cd8ed516"
+      }
     },
     {
       "id": "post:pfbid02Cf14z48qp19rGLcvc23Usc4XDiotfFXAvetdKqLamLsFkg4sWepMFyQG6UASBjUal",
@@ -23076,7 +24498,13 @@
       },
       "sourceTextSha256": "0b03370db99ef28d4e23020cacd23485a5472450928a62fa2407f89ba3b19371",
       "images": [],
-      "linkHeadline": "Мижав интерес към изборите за президент - МИГNews - Новините без цензура"
+      "linkHeadline": "Мижав интерес към изборите за президент - МИГNews - Новините без цензура",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Оценката е за слабия интерес към изборите без конкретна кандидатска позиция.",
+        "sourceTextSha256": "0b03370db99ef28d4e23020cacd23485a5472450928a62fa2407f89ba3b19371"
+      }
     },
     {
       "id": "post:pfbid09jwosYht8LzJ3YdLSC3t3ymuTWnTMkmUj6JMK8BsB2RLXPQAXZ4xdEAb5ARsVUbYl",
@@ -23132,7 +24560,13 @@
       },
       "sourceTextSha256": "a51fbb8626e69a248219f04a5613c2bab1733464d5b8544dc8c5211d53f59238",
       "images": [],
-      "linkHeadline": "Илияна Йотова отказа дебат с Андрей Гюров преди първия тур. А обеща: \"Никога няма да се откажа\" - МИГNews - Новините без цензура"
+      "linkHeadline": "Илияна Йотова отказа дебат с Андрей Гюров преди първия тур. А обеща: \"Никога няма да се откажа\" - МИГNews - Новините без цензура",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "critical",
+        "reason": "Йотова е упрекната за отказ въпреки обещание, а Гюров е посочен като приел поканата.",
+        "sourceTextSha256": "a51fbb8626e69a248219f04a5613c2bab1733464d5b8544dc8c5211d53f59238"
+      }
     },
     {
       "id": "post:pfbid03jM5xdbGmmQffpmZxesHWX9DiJkWrBxYNsgAGxVWhpskSeSedhHRhYLQJdhGLDKyl",
@@ -23173,7 +24607,13 @@
       },
       "sourceTextSha256": "c8eb60c93e223b043c1863ef75d9aaf123f0241a1b4bcc8f1a613c4493652610",
       "images": [],
-      "linkHeadline": "Застъпници на Гюров атакуваха Йотова, че злоупотребява с държавни ресурси и пари - МИГNews - Новините без цензура"
+      "linkHeadline": "Застъпници на Гюров атакуваха Йотова, че злоупотребява с държавни ресурси и пари - МИГNews - Новините без цензура",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "critical",
+        "reason": "Йотова е обект на обвинение в злоупотреба с ресурси, а Гюров е споменат чрез застъпниците си.",
+        "sourceTextSha256": "c8eb60c93e223b043c1863ef75d9aaf123f0241a1b4bcc8f1a613c4493652610"
+      }
     },
     {
       "id": "post:pfbid0AVdTZNxddt3aibjFeJVvMCYdgp89AZQf1wf1p8tepupaGdXw1JmGQ4JW8fLrAuE1l",
@@ -23219,7 +24659,13 @@
       },
       "sourceTextSha256": "86e6c97988fe9e7636a622d7b276c91b9d67c97082c127e481613ac111da03e8",
       "images": [],
-      "linkHeadline": "„Галъп“: Йотова и Вълчев водят с 43,2%, Гюров и Кандев са втори с 29,7%"
+      "linkHeadline": "„Галъп“: Йотова и Вълчев водят с 43,2%, Гюров и Кандев са втори с 29,7%",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Представени са социологически проценти и очаквана активност без оценяване.",
+        "sourceTextSha256": "86e6c97988fe9e7636a622d7b276c91b9d67c97082c127e481613ac111da03e8"
+      }
     },
     {
       "id": "post:pfbid02H1H3GDaELyuxUJkT4L2VxErsEURVmqQ4weDXxPRVkXmP5ETnzoMVg8MLPh2ojtUwl",
@@ -23254,7 +24700,13 @@
       },
       "sourceTextSha256": "82995db4e507d3d2c953d491d9ad6304e8345ee9a3e858e21896e530774019ef",
       "images": [],
-      "linkHeadline": "Областна администрация Пловдив е в пълна готовност за президентските избори"
+      "linkHeadline": "Областна администрация Пловдив е в пълна готовност за президентските избори",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Съобщена е изборната готовност и достъпност без кандидатска оценка.",
+        "sourceTextSha256": "82995db4e507d3d2c953d491d9ad6304e8345ee9a3e858e21896e530774019ef"
+      }
     },
     {
       "id": "post:pfbid02VF2v7MbXpXefYzvJ943eJurfkF6tGvZYRq1iLYki9CJUkKDBbnLSNHTFBozJJruXl",
@@ -23300,7 +24752,13 @@
       },
       "sourceTextSha256": "fae6dc59dc0125115f64e57553af145c203db80373d5c7799c0714edf3f4f36d",
       "images": [],
-      "linkHeadline": "26 октомври ще е неучебен, но присъствен ден за учениците"
+      "linkHeadline": "26 октомври ще е неучебен, но присъствен ден за учениците",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Информацията е за учебната организация след изборите без кандидатски адресат.",
+        "sourceTextSha256": "fae6dc59dc0125115f64e57553af145c203db80373d5c7799c0714edf3f4f36d"
+      }
     },
     {
       "id": "post:pfbid02bjornZRzhCRZrjddB45HvTUSNy1g2FUTEDWVXnnwaYvKjbybCj7JGr2RSeBWPPjrl",
@@ -23341,7 +24799,13 @@
       },
       "sourceTextSha256": "2f8ce09089d4119fde7bd23be1b1aafa54289212c6306a8be345279cb4a3a113",
       "images": [],
-      "linkHeadline": "Йотова и Вълчев печелят Севлиево с 51%, но подкрепящата ги \"Прогресивна България\" губи 4000 гласа за шест месеца"
+      "linkHeadline": "Йотова и Вълчев печелят Севлиево с 51%, но подкрепящата ги \"Прогресивна България\" губи 4000 гласа за шест месеца",
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Сравнени са резултатът на Йотова и загубени гласове на подкрепящата партия без лична оценка.",
+        "sourceTextSha256": "2f8ce09089d4119fde7bd23be1b1aafa54289212c6306a8be345279cb4a3a113"
+      }
     },
     {
       "id": "post:pfbid02kdwCV8fnKycRJJ4xmZJt4mKr8sqkcRNr7jZNfqVn8WbEE5W7JbUk5uSticjPeegkl",
@@ -23402,7 +24866,13 @@
       },
       "sourceTextSha256": "bed86efc31ca6fb73bdff55cdf9af9fafb99d249af36d4a66bca82579ce49aef",
       "images": [],
-      "linkHeadline": "В Габрово разликата между резултата на партията на Радев през април и вота за Йотова-Вълчев е над 14 хил. гласа"
+      "linkHeadline": "В Габрово разликата между резултата на партията на Радев през април и вота за Йотова-Вълчев е над 14 хил. гласа",
+      "stance": {
+        "gyurov": null,
+        "yotova": "neutral",
+        "reason": "Представено е числово сравнение между партийния и президентския вот без оценка на Йотова.",
+        "sourceTextSha256": "bed86efc31ca6fb73bdff55cdf9af9fafb99d249af36d4a66bca82579ce49aef"
+      }
     },
     {
       "id": "post:pfbid02NeMvmD1Ep325FctzSFa2u5U9zufEUkaT73TEyHwgAicGMgWapEHmUsjao74cECF5l",
@@ -23443,7 +24913,13 @@
       },
       "sourceTextSha256": "22871f0462139f5e2337ad4fef8f33db729ef6e340c55383a334023ff6f35d7f",
       "images": [],
-      "linkHeadline": "ЦИК създаде мобилно приложение „Избори 360°“, което да предостави полезна информация и практически инструменти, свързани с предстоящит"
+      "linkHeadline": "ЦИК създаде мобилно приложение „Избори 360°“, което да предостави полезна информация и практически инструменти, свързани с предстоящит",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Новината е за информационно приложение на ЦИК без кандидатска позиция.",
+        "sourceTextSha256": "22871f0462139f5e2337ad4fef8f33db729ef6e340c55383a334023ff6f35d7f"
+      }
     },
     {
       "id": "post:pfbid0AiqvK8vToiiLRCkMYq9m4wGc6jXqGtkfLK7a4HNDaXTX8v7FiwGrv2gV47YFEVjal",
@@ -23489,7 +24965,13 @@
       },
       "sourceTextSha256": "8ab18106b7f69f7c262506dc7d8d3de42e877c76c0b30c7e9790b2a1602addb7",
       "images": [],
-      "linkHeadline": "Италиански медии за първия тур на президентските избори в България"
+      "linkHeadline": "Италиански медии за първия тур на президентските избори в България",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Общият анонс за италиански медии не разкрива съдържание за конкретен кандидат.",
+        "sourceTextSha256": "8ab18106b7f69f7c262506dc7d8d3de42e877c76c0b30c7e9790b2a1602addb7"
+      }
     },
     {
       "id": "post:pfbid0tpTKgBXoNAjwsQ82ytKh7WWGJi4oD8YBzxoL4RxYkyZDyxgzFhQVdkaafHM6cShFl",
@@ -23524,7 +25006,13 @@
       },
       "sourceTextSha256": "566b73d3a0a4526bd73b8baef43d52fa270101c626920ca02996197cfcefff53",
       "images": [],
-      "linkHeadline": "Според финалните резултати от екзитпола на \"Маркет линкс\" към 20:40 ч. за президентските избори: Йотова - Вълчев са с 32,6%, Гюров - Кандев -…"
+      "linkHeadline": "Според финалните резултати от екзитпола на \"Маркет линкс\" към 20:40 ч. за президентските избори: Йотова - Вълчев са с 32,6%, Гюров - Кандев -…",
+      "stance": {
+        "gyurov": "neutral",
+        "yotova": "neutral",
+        "reason": "Посочени са проценти от екзитпол за двете двойки без оценка.",
+        "sourceTextSha256": "566b73d3a0a4526bd73b8baef43d52fa270101c626920ca02996197cfcefff53"
+      }
     },
     {
       "id": "post:pfbid035sWuqPHbd5UxHZ6rnw5hd6ML5ofTNRb3SVfEZg87dzCBDfxzKozN1GStmoG2toobl",
@@ -23589,7 +25077,13 @@
         }
       },
       "sourceTextSha256": "cb6832d849a98a1bc91847d306ccd5474a1eee5d37e225ed4b44efd59dd97fe6",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": "supportive",
+        "yotova": null,
+        "reason": "Изведен е ясен призив избирателите да гласуват за Гюров.",
+        "sourceTextSha256": "cb6832d849a98a1bc91847d306ccd5474a1eee5d37e225ed4b44efd59dd97fe6"
+      }
     },
     {
       "id": "video:961272680371549",
@@ -23639,7 +25133,13 @@
         }
       },
       "sourceTextSha256": "ec81b8b9573e41c4090f7ba0ef859689fae74cad449f6b91de0f0de40fe0b6bd",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Интервюто е за структури и бъдещето на ГЕРБ без кандидатска позиция.",
+        "sourceTextSha256": "ec81b8b9573e41c4090f7ba0ef859689fae74cad449f6b91de0f0de40fe0b6bd"
+      }
     },
     {
       "id": "post:pfbid02Ja2iwQ7qyrW84V5ai7fSUQZ5KkaYdyvemkzLvi2773ZfFf7vvgBVS2pQF1NhjjVXl",
@@ -23674,7 +25174,13 @@
       },
       "sourceTextSha256": "868219015735a0958a081e664cf1d35e4a24a84c6bf0644c291450074f27060e",
       "images": [],
-      "linkHeadline": "Бургас е в най-велите си избори, най-много 20 % ще гласуват днес"
+      "linkHeadline": "Бургас е в най-велите си избори, най-много 20 % ще гласуват днес",
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Негативната оценка е за ниската активност без конкретен кандидатски адресат.",
+        "sourceTextSha256": "868219015735a0958a081e664cf1d35e4a24a84c6bf0644c291450074f27060e"
+      }
     },
     {
       "id": "video:2347057689394384",
@@ -23714,7 +25220,13 @@
         }
       },
       "sourceTextSha256": "1510aafd3cf5906876746f2f837854349126491d932235fb7012079d023f7dc8",
-      "images": []
+      "images": [],
+      "stance": {
+        "gyurov": null,
+        "yotova": null,
+        "reason": "Анонсирано е отразяване на изборния ден без подкрепа или критика към кандидат.",
+        "sourceTextSha256": "1510aafd3cf5906876746f2f837854349126491d932235fb7012079d023f7dc8"
+      }
     }
   ],
   "matches": [
@@ -23722,19 +25234,19 @@
       "sourceId": "post:pfbid0KisFpBdsttQ3mTPPqpPgaxPDyddQ5s6EuS3aFRAVTwBDYGCNnGDY8LDpYNn5ZkBZl",
       "targetId": "post:pfbid06fPN7iSAZg1NDCkj4vUhLbHSK9D9FNTo21sBWewezxQiGAWuh89CdrfMVvSY4wR7l",
       "kind": "body",
-      "delayMinutes": 26.0
+      "delayMinutes": 26
     },
     {
       "sourceId": "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl",
       "targetId": "post:pfbid02tLVduNW2khzhW98qhibyp3ypkXkbKrEwvFFZSsjruPoGFgXFQ3k747dimeRm6V8zl",
       "kind": "headline",
-      "delayMinutes": 83.0
+      "delayMinutes": 83
     },
     {
       "sourceId": "post:pfbid0asTout7rU8CsiiZzWDUs3c36GDppPeRdsdTKH75kKpyAEPgXXZGzEa5X7eFgJLpHl",
       "targetId": "post:pfbid0eboqFNFPZpCoHNvPWGXJeF3nuNhR1UbVNd1zK9GSFWYPCWKLqVWokZiYG8oq9XHbl",
       "kind": "headline",
-      "delayMinutes": 83.0
+      "delayMinutes": 83
     },
     {
       "sourceId": "post:pfbid032257kFpWVw9H3xfrZnwCgVFGDo8J72jGTsLpViBujApt8kz4aZsEbnbv9AtUWksgl",
@@ -23788,19 +25300,19 @@
       "sourceId": "post:pfbid0JjkW3RYrCMWhcqKpw2Wq2CxxqYQY8sWwJLEwZy9GF8BeczyNGJtBM8iC92L8oWEZl",
       "targetId": "post:pfbid031Set3UWaG5qXsXkbh5hvgPfzqfgmaLuFKfHEbYDUeVTwkK95BZ3SpBR6J1zXw2EMl",
       "kind": "headline",
-      "delayMinutes": 1146.0
+      "delayMinutes": 1146
     },
     {
       "sourceId": "post:pfbid0JjkW3RYrCMWhcqKpw2Wq2CxxqYQY8sWwJLEwZy9GF8BeczyNGJtBM8iC92L8oWEZl",
       "targetId": "post:1582826077192767",
       "kind": "headline",
-      "delayMinutes": 1146.0
+      "delayMinutes": 1146
     },
     {
       "sourceId": "post:pfbid0JjkW3RYrCMWhcqKpw2Wq2CxxqYQY8sWwJLEwZy9GF8BeczyNGJtBM8iC92L8oWEZl",
       "targetId": "post:1156013503438401",
       "kind": "headline",
-      "delayMinutes": 1146.0
+      "delayMinutes": 1146
     }
   ],
   "coverage": [

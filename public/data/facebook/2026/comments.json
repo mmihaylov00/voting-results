@@ -10,7 +10,7 @@
       "ordering": "newest",
       "reportedCount": 20,
       "capturedCount": 18,
-      "assessedCount": 15,
+      "assessedCount": 18,
       "topLevelCount": 6,
       "replyCount": 12,
       "counts": {
@@ -19,18 +19,18 @@
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 15,
-          "unreviewed": 3
+          "unclear": 1,
+          "not-mentioned": 17,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 1,
           "mixed": 0,
           "neutral": 4,
-          "unclear": 0,
-          "not-mentioned": 10,
-          "unreviewed": 3
+          "unclear": 1,
+          "not-mentioned": 12,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -44,7 +44,7 @@
       "ordering": "all",
       "reportedCount": 23,
       "capturedCount": 23,
-      "assessedCount": 21,
+      "assessedCount": 23,
       "topLevelCount": 14,
       "replyCount": 9,
       "counts": {
@@ -53,18 +53,18 @@
           "critical": 1,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 20,
-          "unreviewed": 2
+          "unclear": 1,
+          "not-mentioned": 21,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 1,
           "mixed": 0,
           "neutral": 1,
-          "unclear": 0,
-          "not-mentioned": 19,
-          "unreviewed": 2
+          "unclear": 1,
+          "not-mentioned": 20,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -76,7 +76,7 @@
       "ordering": "newest",
       "reportedCount": 7,
       "capturedCount": 6,
-      "assessedCount": 5,
+      "assessedCount": 6,
       "topLevelCount": 6,
       "replyCount": 0,
       "counts": {
@@ -85,9 +85,9 @@
           "critical": 4,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 1,
+          "unclear": 2,
           "not-mentioned": 0,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -95,8 +95,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 5,
-          "unreviewed": 1
+          "not-mentioned": 6,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -110,7 +110,7 @@
       "ordering": "all",
       "reportedCount": 11,
       "capturedCount": 11,
-      "assessedCount": 8,
+      "assessedCount": 11,
       "topLevelCount": 11,
       "replyCount": 0,
       "counts": {
@@ -120,8 +120,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 8,
-          "unreviewed": 3
+          "not-mentioned": 11,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -129,8 +129,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 8,
-          "unreviewed": 3
+          "not-mentioned": 11,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -142,7 +142,7 @@
       "ordering": "newest",
       "reportedCount": 39,
       "capturedCount": 36,
-      "assessedCount": 35,
+      "assessedCount": 36,
       "topLevelCount": 35,
       "replyCount": 1,
       "counts": {
@@ -152,17 +152,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 35,
-          "unreviewed": 1
+          "not-mentioned": 36,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 5,
           "mixed": 0,
           "neutral": 2,
-          "unclear": 4,
+          "unclear": 5,
           "not-mentioned": 24,
-          "unreviewed": 1
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -208,7 +208,7 @@
       "ordering": "newest",
       "reportedCount": 19,
       "capturedCount": 19,
-      "assessedCount": 18,
+      "assessedCount": 19,
       "topLevelCount": 15,
       "replyCount": 4,
       "counts": {
@@ -217,9 +217,9 @@
           "critical": 2,
           "mixed": 0,
           "neutral": 5,
-          "unclear": 1,
+          "unclear": 2,
           "not-mentioned": 10,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -227,8 +227,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 17,
-          "unreviewed": 1
+          "not-mentioned": 18,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -242,7 +242,7 @@
       "ordering": "all",
       "reportedCount": 3,
       "capturedCount": 3,
-      "assessedCount": 2,
+      "assessedCount": 3,
       "topLevelCount": 3,
       "replyCount": 0,
       "counts": {
@@ -252,17 +252,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
-          "unreviewed": 1
+          "not-mentioned": 3,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 1,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 1,
+          "unclear": 2,
           "not-mentioned": 0,
-          "unreviewed": 1
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -370,7 +370,7 @@
       "ordering": "newest",
       "reportedCount": 209,
       "capturedCount": 207,
-      "assessedCount": 195,
+      "assessedCount": 207,
       "topLevelCount": 175,
       "replyCount": 32,
       "counts": {
@@ -379,9 +379,9 @@
           "critical": 3,
           "mixed": 0,
           "neutral": 10,
-          "unclear": 4,
-          "not-mentioned": 178,
-          "unreviewed": 12
+          "unclear": 11,
+          "not-mentioned": 183,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -389,8 +389,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 192,
-          "unreviewed": 12
+          "not-mentioned": 204,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -436,18 +436,18 @@
       "ordering": "newest",
       "reportedCount": 42,
       "capturedCount": 42,
-      "assessedCount": 40,
+      "assessedCount": 42,
       "topLevelCount": 24,
       "replyCount": 18,
       "counts": {
         "gyurov": {
           "supportive": 5,
-          "critical": 11,
+          "critical": 12,
           "mixed": 0,
           "neutral": 2,
-          "unclear": 4,
+          "unclear": 5,
           "not-mentioned": 18,
-          "unreviewed": 2
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -455,8 +455,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 36,
-          "unreviewed": 2
+          "not-mentioned": 38,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -470,7 +470,7 @@
       "ordering": "newest",
       "reportedCount": 31,
       "capturedCount": 30,
-      "assessedCount": 28,
+      "assessedCount": 30,
       "topLevelCount": 27,
       "replyCount": 3,
       "counts": {
@@ -480,17 +480,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 27,
-          "unreviewed": 2
+          "not-mentioned": 29,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 15,
           "mixed": 0,
           "neutral": 2,
-          "unclear": 3,
+          "unclear": 5,
           "not-mentioned": 8,
-          "unreviewed": 2
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -504,18 +504,18 @@
       "ordering": "newest",
       "reportedCount": 73,
       "capturedCount": 73,
-      "assessedCount": 71,
+      "assessedCount": 73,
       "topLevelCount": 52,
       "replyCount": 21,
       "counts": {
         "gyurov": {
           "supportive": 1,
-          "critical": 9,
+          "critical": 10,
           "mixed": 0,
           "neutral": 8,
-          "unclear": 11,
+          "unclear": 12,
           "not-mentioned": 42,
-          "unreviewed": 2
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 1,
@@ -523,8 +523,8 @@
           "mixed": 1,
           "neutral": 1,
           "unclear": 1,
-          "not-mentioned": 66,
-          "unreviewed": 2
+          "not-mentioned": 68,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -602,7 +602,7 @@
       "ordering": "newest",
       "reportedCount": 65,
       "capturedCount": 65,
-      "assessedCount": 64,
+      "assessedCount": 65,
       "topLevelCount": 32,
       "replyCount": 33,
       "counts": {
@@ -611,9 +611,9 @@
           "critical": 4,
           "mixed": 0,
           "neutral": 9,
-          "unclear": 1,
+          "unclear": 2,
           "not-mentioned": 50,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -621,8 +621,8 @@
           "mixed": 0,
           "neutral": 3,
           "unclear": 0,
-          "not-mentioned": 59,
-          "unreviewed": 1
+          "not-mentioned": 60,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -668,18 +668,18 @@
       "ordering": "all",
       "reportedCount": 5,
       "capturedCount": 5,
-      "assessedCount": 4,
+      "assessedCount": 5,
       "topLevelCount": 5,
       "replyCount": 0,
       "counts": {
         "gyurov": {
           "supportive": 0,
-          "critical": 0,
+          "critical": 1,
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
           "not-mentioned": 4,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -687,8 +687,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 4,
-          "unreviewed": 1
+          "not-mentioned": 5,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -700,27 +700,27 @@
       "ordering": "newest",
       "reportedCount": 49,
       "capturedCount": 49,
-      "assessedCount": 47,
+      "assessedCount": 49,
       "topLevelCount": 31,
       "replyCount": 18,
       "counts": {
         "gyurov": {
           "supportive": 1,
-          "critical": 24,
+          "critical": 26,
           "mixed": 0,
           "neutral": 4,
           "unclear": 1,
           "not-mentioned": 17,
-          "unreviewed": 2
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 9,
           "critical": 0,
           "mixed": 0,
-          "neutral": 1,
+          "neutral": 2,
           "unclear": 2,
-          "not-mentioned": 35,
-          "unreviewed": 2
+          "not-mentioned": 36,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -734,27 +734,27 @@
       "ordering": "newest",
       "reportedCount": 648,
       "capturedCount": 647,
-      "assessedCount": 613,
+      "assessedCount": 647,
       "topLevelCount": 401,
       "replyCount": 246,
       "counts": {
         "gyurov": {
           "supportive": 13,
-          "critical": 179,
+          "critical": 180,
           "mixed": 4,
-          "neutral": 18,
-          "unclear": 91,
-          "not-mentioned": 308,
-          "unreviewed": 34
+          "neutral": 19,
+          "unclear": 118,
+          "not-mentioned": 313,
+          "unreviewed": 0
         },
         "yotova": {
-          "supportive": 137,
+          "supportive": 139,
           "critical": 121,
           "mixed": 0,
-          "neutral": 33,
-          "unclear": 80,
-          "not-mentioned": 242,
-          "unreviewed": 34
+          "neutral": 35,
+          "unclear": 108,
+          "not-mentioned": 244,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -768,7 +768,7 @@
       "ordering": "all",
       "reportedCount": 29,
       "capturedCount": 29,
-      "assessedCount": 28,
+      "assessedCount": 29,
       "topLevelCount": 18,
       "replyCount": 11,
       "counts": {
@@ -778,8 +778,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 26,
-          "unreviewed": 1
+          "not-mentioned": 27,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 1,
@@ -787,8 +787,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 27,
-          "unreviewed": 1
+          "not-mentioned": 28,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -800,7 +800,7 @@
       "ordering": "all",
       "reportedCount": 6,
       "capturedCount": 6,
-      "assessedCount": 5,
+      "assessedCount": 6,
       "topLevelCount": 6,
       "replyCount": 0,
       "counts": {
@@ -810,8 +810,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 5,
-          "unreviewed": 1
+          "not-mentioned": 6,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -819,8 +819,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 5,
-          "unreviewed": 1
+          "not-mentioned": 6,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -866,7 +866,7 @@
       "ordering": "newest",
       "reportedCount": 61,
       "capturedCount": 59,
-      "assessedCount": 56,
+      "assessedCount": 59,
       "topLevelCount": 40,
       "replyCount": 19,
       "counts": {
@@ -876,17 +876,17 @@
           "mixed": 1,
           "neutral": 4,
           "unclear": 1,
-          "not-mentioned": 42,
-          "unreviewed": 3
+          "not-mentioned": 45,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 2,
-          "critical": 24,
+          "critical": 25,
           "mixed": 0,
           "neutral": 4,
-          "unclear": 4,
-          "not-mentioned": 22,
-          "unreviewed": 3
+          "unclear": 5,
+          "not-mentioned": 23,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -932,7 +932,7 @@
       "ordering": "newest",
       "reportedCount": 20,
       "capturedCount": 20,
-      "assessedCount": 16,
+      "assessedCount": 20,
       "topLevelCount": 15,
       "replyCount": 5,
       "counts": {
@@ -942,17 +942,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 13,
-          "unreviewed": 4
+          "not-mentioned": 17,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 1,
           "critical": 9,
           "mixed": 0,
           "neutral": 1,
-          "unclear": 0,
+          "unclear": 4,
           "not-mentioned": 5,
-          "unreviewed": 4
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -966,7 +966,7 @@
       "ordering": "all",
       "reportedCount": 6,
       "capturedCount": 6,
-      "assessedCount": 5,
+      "assessedCount": 6,
       "topLevelCount": 6,
       "replyCount": 0,
       "counts": {
@@ -974,10 +974,10 @@
           "supportive": 0,
           "critical": 0,
           "mixed": 0,
-          "neutral": 0,
+          "neutral": 1,
           "unclear": 1,
           "not-mentioned": 4,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -985,8 +985,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 2,
-          "not-mentioned": 2,
-          "unreviewed": 1
+          "not-mentioned": 3,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -998,7 +998,7 @@
       "ordering": "all",
       "reportedCount": 11,
       "capturedCount": 11,
-      "assessedCount": 5,
+      "assessedCount": 11,
       "topLevelCount": 10,
       "replyCount": 1,
       "counts": {
@@ -1007,18 +1007,18 @@
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
+          "unclear": 6,
           "not-mentioned": 5,
-          "unreviewed": 6
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 0,
           "mixed": 0,
           "neutral": 1,
-          "unclear": 0,
-          "not-mentioned": 4,
-          "unreviewed": 6
+          "unclear": 3,
+          "not-mentioned": 7,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -1030,7 +1030,7 @@
       "ordering": "all",
       "reportedCount": 8,
       "capturedCount": 8,
-      "assessedCount": 5,
+      "assessedCount": 8,
       "topLevelCount": 7,
       "replyCount": 1,
       "counts": {
@@ -1039,9 +1039,9 @@
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 2,
-          "not-mentioned": 3,
-          "unreviewed": 3
+          "unclear": 4,
+          "not-mentioned": 4,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -1049,8 +1049,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 5,
-          "unreviewed": 3
+          "not-mentioned": 8,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -1062,7 +1062,7 @@
       "ordering": "all",
       "reportedCount": 11,
       "capturedCount": 11,
-      "assessedCount": 10,
+      "assessedCount": 11,
       "topLevelCount": 10,
       "replyCount": 1,
       "counts": {
@@ -1072,8 +1072,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 7,
-          "unreviewed": 1
+          "not-mentioned": 8,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 1,
@@ -1081,8 +1081,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 8,
-          "unreviewed": 1
+          "not-mentioned": 9,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -1094,7 +1094,7 @@
       "ordering": "newest",
       "reportedCount": 8,
       "capturedCount": 5,
-      "assessedCount": 2,
+      "assessedCount": 5,
       "topLevelCount": 5,
       "replyCount": 0,
       "counts": {
@@ -1104,17 +1104,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
-          "unreviewed": 3
+          "not-mentioned": 5,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
-          "critical": 2,
+          "critical": 3,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
+          "unclear": 2,
           "not-mentioned": 0,
-          "unreviewed": 3
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -1128,7 +1128,7 @@
       "ordering": "all",
       "reportedCount": 3,
       "capturedCount": 3,
-      "assessedCount": 2,
+      "assessedCount": 3,
       "topLevelCount": 3,
       "replyCount": 0,
       "counts": {
@@ -1136,19 +1136,19 @@
           "supportive": 0,
           "critical": 0,
           "mixed": 0,
-          "neutral": 0,
+          "neutral": 1,
           "unclear": 0,
           "not-mentioned": 2,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 0,
           "mixed": 0,
-          "neutral": 0,
+          "neutral": 1,
           "unclear": 0,
           "not-mentioned": 2,
-          "unreviewed": 1
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -1160,7 +1160,7 @@
       "ordering": "newest",
       "reportedCount": 35,
       "capturedCount": 32,
-      "assessedCount": 29,
+      "assessedCount": 32,
       "topLevelCount": 27,
       "replyCount": 5,
       "counts": {
@@ -1170,17 +1170,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 28,
-          "unreviewed": 3
+          "not-mentioned": 31,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 18,
           "mixed": 0,
           "neutral": 1,
-          "unclear": 4,
+          "unclear": 7,
           "not-mentioned": 6,
-          "unreviewed": 3
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -1194,7 +1194,7 @@
       "ordering": "all",
       "reportedCount": 6,
       "capturedCount": 6,
-      "assessedCount": 5,
+      "assessedCount": 6,
       "topLevelCount": 5,
       "replyCount": 1,
       "counts": {
@@ -1204,8 +1204,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 4,
-          "unreviewed": 1
+          "not-mentioned": 5,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -1213,8 +1213,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 5,
-          "unreviewed": 1
+          "not-mentioned": 6,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -1226,18 +1226,18 @@
       "ordering": "all",
       "reportedCount": 110,
       "capturedCount": 110,
-      "assessedCount": 104,
+      "assessedCount": 110,
       "topLevelCount": 38,
       "replyCount": 72,
       "counts": {
         "gyurov": {
-          "supportive": 1,
+          "supportive": 3,
           "critical": 4,
           "mixed": 0,
           "neutral": 3,
-          "unclear": 4,
-          "not-mentioned": 92,
-          "unreviewed": 6
+          "unclear": 7,
+          "not-mentioned": 93,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 2,
@@ -1245,8 +1245,8 @@
           "mixed": 0,
           "neutral": 2,
           "unclear": 0,
-          "not-mentioned": 99,
-          "unreviewed": 6
+          "not-mentioned": 105,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -1258,7 +1258,7 @@
       "ordering": "newest",
       "reportedCount": 17,
       "capturedCount": 15,
-      "assessedCount": 13,
+      "assessedCount": 15,
       "topLevelCount": 15,
       "replyCount": 0,
       "counts": {
@@ -1267,9 +1267,9 @@
           "critical": 9,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 2,
+          "unclear": 4,
           "not-mentioned": 2,
-          "unreviewed": 2
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 1,
@@ -1277,8 +1277,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 12,
-          "unreviewed": 2
+          "not-mentioned": 14,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -1292,27 +1292,27 @@
       "ordering": "newest",
       "reportedCount": 66,
       "capturedCount": 63,
-      "assessedCount": 49,
+      "assessedCount": 63,
       "topLevelCount": 44,
       "replyCount": 19,
       "counts": {
         "gyurov": {
-          "supportive": 1,
+          "supportive": 3,
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
           "unclear": 2,
-          "not-mentioned": 46,
-          "unreviewed": 14
+          "not-mentioned": 58,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
-          "critical": 18,
+          "critical": 21,
           "mixed": 0,
           "neutral": 9,
-          "unclear": 5,
-          "not-mentioned": 17,
-          "unreviewed": 14
+          "unclear": 14,
+          "not-mentioned": 19,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -1358,7 +1358,7 @@
       "ordering": "newest",
       "reportedCount": 69,
       "capturedCount": 44,
-      "assessedCount": 42,
+      "assessedCount": 44,
       "topLevelCount": 28,
       "replyCount": 16,
       "counts": {
@@ -1368,17 +1368,17 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 39,
-          "unreviewed": 2
+          "not-mentioned": 41,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 5,
           "mixed": 0,
           "neutral": 2,
-          "unclear": 0,
-          "not-mentioned": 35,
-          "unreviewed": 2
+          "unclear": 1,
+          "not-mentioned": 36,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -1426,7 +1426,7 @@
       "ordering": "all",
       "reportedCount": 13,
       "capturedCount": 13,
-      "assessedCount": 11,
+      "assessedCount": 13,
       "topLevelCount": 10,
       "replyCount": 3,
       "counts": {
@@ -1436,17 +1436,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 11,
-          "unreviewed": 2
+          "not-mentioned": 13,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 8,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
+          "neutral": 1,
+          "unclear": 1,
           "not-mentioned": 3,
-          "unreviewed": 2
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -1458,27 +1458,27 @@
       "ordering": "newest",
       "reportedCount": 103,
       "capturedCount": 100,
-      "assessedCount": 86,
+      "assessedCount": 100,
       "topLevelCount": 45,
       "replyCount": 55,
       "counts": {
         "gyurov": {
-          "supportive": 14,
+          "supportive": 15,
           "critical": 29,
           "mixed": 2,
           "neutral": 10,
-          "unclear": 2,
-          "not-mentioned": 29,
-          "unreviewed": 14
+          "unclear": 11,
+          "not-mentioned": 33,
+          "unreviewed": 0
         },
         "yotova": {
-          "supportive": 5,
+          "supportive": 6,
           "critical": 23,
           "mixed": 0,
           "neutral": 6,
           "unclear": 4,
-          "not-mentioned": 48,
-          "unreviewed": 14
+          "not-mentioned": 61,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -1492,7 +1492,7 @@
       "ordering": "newest",
       "reportedCount": 243,
       "capturedCount": 242,
-      "assessedCount": 233,
+      "assessedCount": 242,
       "topLevelCount": 157,
       "replyCount": 85,
       "counts": {
@@ -1501,9 +1501,9 @@
           "critical": 11,
           "mixed": 0,
           "neutral": 33,
-          "unclear": 5,
-          "not-mentioned": 183,
-          "unreviewed": 9
+          "unclear": 7,
+          "not-mentioned": 190,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 9,
@@ -1511,8 +1511,8 @@
           "mixed": 0,
           "neutral": 4,
           "unclear": 3,
-          "not-mentioned": 214,
-          "unreviewed": 9
+          "not-mentioned": 223,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -1526,7 +1526,7 @@
       "ordering": "newest",
       "reportedCount": 165,
       "capturedCount": 165,
-      "assessedCount": 159,
+      "assessedCount": 165,
       "topLevelCount": 100,
       "replyCount": 65,
       "counts": {
@@ -1534,19 +1534,19 @@
           "supportive": 7,
           "critical": 19,
           "mixed": 0,
-          "neutral": 16,
-          "unclear": 5,
-          "not-mentioned": 112,
-          "unreviewed": 6
+          "neutral": 17,
+          "unclear": 6,
+          "not-mentioned": 116,
+          "unreviewed": 0
         },
         "yotova": {
-          "supportive": 39,
+          "supportive": 41,
           "critical": 13,
           "mixed": 0,
-          "neutral": 19,
-          "unclear": 5,
+          "neutral": 22,
+          "unclear": 6,
           "not-mentioned": 83,
-          "unreviewed": 6
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -1560,7 +1560,7 @@
       "ordering": "all",
       "reportedCount": 17,
       "capturedCount": 17,
-      "assessedCount": 16,
+      "assessedCount": 17,
       "topLevelCount": 12,
       "replyCount": 5,
       "counts": {
@@ -1570,17 +1570,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 16,
-          "unreviewed": 1
+          "not-mentioned": 17,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 9,
           "mixed": 0,
           "neutral": 1,
-          "unclear": 0,
+          "unclear": 1,
           "not-mentioned": 6,
-          "unreviewed": 1
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -1592,7 +1592,7 @@
       "ordering": "newest",
       "reportedCount": 61,
       "capturedCount": 59,
-      "assessedCount": 55,
+      "assessedCount": 59,
       "topLevelCount": 51,
       "replyCount": 8,
       "counts": {
@@ -1602,17 +1602,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 1,
-          "not-mentioned": 52,
-          "unreviewed": 4
+          "not-mentioned": 56,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
-          "critical": 3,
+          "critical": 4,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 3,
-          "not-mentioned": 49,
-          "unreviewed": 4
+          "unclear": 5,
+          "not-mentioned": 50,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -1626,7 +1626,7 @@
       "ordering": "all",
       "reportedCount": 13,
       "capturedCount": 13,
-      "assessedCount": 12,
+      "assessedCount": 13,
       "topLevelCount": 10,
       "replyCount": 3,
       "counts": {
@@ -1636,8 +1636,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 12,
-          "unreviewed": 1
+          "not-mentioned": 13,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 1,
@@ -1645,8 +1645,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 10,
-          "unreviewed": 1
+          "not-mentioned": 11,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -1658,7 +1658,7 @@
       "ordering": "all",
       "reportedCount": 1,
       "capturedCount": 1,
-      "assessedCount": 0,
+      "assessedCount": 1,
       "topLevelCount": 1,
       "replyCount": 0,
       "counts": {
@@ -1668,8 +1668,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 1
+          "not-mentioned": 1,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -1677,8 +1677,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 1
+          "not-mentioned": 1,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -1690,7 +1690,7 @@
       "ordering": "all",
       "reportedCount": 5,
       "capturedCount": 5,
-      "assessedCount": 3,
+      "assessedCount": 5,
       "topLevelCount": 5,
       "replyCount": 0,
       "counts": {
@@ -1700,8 +1700,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 3,
-          "unreviewed": 2
+          "not-mentioned": 5,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -1709,8 +1709,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 3,
-          "unreviewed": 2
+          "not-mentioned": 5,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -1722,7 +1722,7 @@
       "ordering": "all",
       "reportedCount": 22,
       "capturedCount": 22,
-      "assessedCount": 20,
+      "assessedCount": 22,
       "topLevelCount": 20,
       "replyCount": 2,
       "counts": {
@@ -1730,10 +1730,10 @@
           "supportive": 0,
           "critical": 15,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 1,
+          "neutral": 1,
+          "unclear": 2,
           "not-mentioned": 4,
-          "unreviewed": 2
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 1,
@@ -1741,8 +1741,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 18,
-          "unreviewed": 2
+          "not-mentioned": 20,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -1754,7 +1754,7 @@
       "ordering": "all",
       "reportedCount": 7,
       "capturedCount": 7,
-      "assessedCount": 4,
+      "assessedCount": 7,
       "topLevelCount": 6,
       "replyCount": 1,
       "counts": {
@@ -1762,10 +1762,10 @@
           "supportive": 1,
           "critical": 0,
           "mixed": 0,
-          "neutral": 1,
-          "unclear": 0,
+          "neutral": 2,
+          "unclear": 2,
           "not-mentioned": 2,
-          "unreviewed": 3
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -1773,8 +1773,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 2,
-          "unreviewed": 3
+          "not-mentioned": 5,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -1786,7 +1786,7 @@
       "ordering": "all",
       "reportedCount": 7,
       "capturedCount": 7,
-      "assessedCount": 2,
+      "assessedCount": 7,
       "topLevelCount": 7,
       "replyCount": 0,
       "counts": {
@@ -1796,8 +1796,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
-          "unreviewed": 5
+          "not-mentioned": 7,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -1805,8 +1805,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
-          "unreviewed": 5
+          "not-mentioned": 7,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -1818,18 +1818,18 @@
       "ordering": "newest",
       "reportedCount": 37,
       "capturedCount": 37,
-      "assessedCount": 32,
+      "assessedCount": 37,
       "topLevelCount": 35,
       "replyCount": 2,
       "counts": {
         "gyurov": {
-          "supportive": 0,
+          "supportive": 1,
           "critical": 1,
           "mixed": 0,
           "neutral": 1,
-          "unclear": 0,
+          "unclear": 4,
           "not-mentioned": 30,
-          "unreviewed": 5
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 1,
@@ -1837,8 +1837,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 30,
-          "unreviewed": 5
+          "not-mentioned": 35,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -1852,7 +1852,7 @@
       "ordering": "newest",
       "reportedCount": 74,
       "capturedCount": 74,
-      "assessedCount": 67,
+      "assessedCount": 74,
       "topLevelCount": 44,
       "replyCount": 30,
       "counts": {
@@ -1861,18 +1861,18 @@
           "critical": 4,
           "mixed": 0,
           "neutral": 3,
-          "unclear": 2,
-          "not-mentioned": 58,
-          "unreviewed": 7
+          "unclear": 3,
+          "not-mentioned": 64,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 3,
           "critical": 4,
           "mixed": 0,
           "neutral": 2,
-          "unclear": 1,
-          "not-mentioned": 57,
-          "unreviewed": 7
+          "unclear": 2,
+          "not-mentioned": 63,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -1886,7 +1886,7 @@
       "ordering": "all",
       "reportedCount": 8,
       "capturedCount": 8,
-      "assessedCount": 6,
+      "assessedCount": 8,
       "topLevelCount": 6,
       "replyCount": 2,
       "counts": {
@@ -1894,19 +1894,19 @@
           "supportive": 1,
           "critical": 0,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 1,
+          "neutral": 1,
+          "unclear": 2,
           "not-mentioned": 4,
-          "unreviewed": 2
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 1,
           "critical": 2,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
+          "neutral": 1,
+          "unclear": 1,
           "not-mentioned": 3,
-          "unreviewed": 2
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -1918,7 +1918,7 @@
       "ordering": "newest",
       "reportedCount": 29,
       "capturedCount": 29,
-      "assessedCount": 23,
+      "assessedCount": 29,
       "topLevelCount": 23,
       "replyCount": 6,
       "counts": {
@@ -1928,17 +1928,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 23,
-          "unreviewed": 6
+          "not-mentioned": 29,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 10,
           "critical": 8,
           "mixed": 0,
-          "neutral": 1,
-          "unclear": 1,
-          "not-mentioned": 3,
-          "unreviewed": 6
+          "neutral": 2,
+          "unclear": 4,
+          "not-mentioned": 5,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -1952,7 +1952,7 @@
       "ordering": "newest",
       "reportedCount": 47,
       "capturedCount": 47,
-      "assessedCount": 44,
+      "assessedCount": 47,
       "topLevelCount": 34,
       "replyCount": 13,
       "counts": {
@@ -1962,8 +1962,8 @@
           "mixed": 1,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 41,
-          "unreviewed": 3
+          "not-mentioned": 44,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -1971,8 +1971,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 41,
-          "unreviewed": 3
+          "not-mentioned": 44,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -1986,7 +1986,7 @@
       "ordering": "all",
       "reportedCount": 13,
       "capturedCount": 13,
-      "assessedCount": 8,
+      "assessedCount": 13,
       "topLevelCount": 13,
       "replyCount": 0,
       "counts": {
@@ -1994,10 +1994,10 @@
           "supportive": 0,
           "critical": 2,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 6,
-          "unreviewed": 5
+          "neutral": 1,
+          "unclear": 3,
+          "not-mentioned": 7,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 2,
@@ -2005,8 +2005,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 4,
-          "unreviewed": 5
+          "not-mentioned": 9,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -2018,18 +2018,18 @@
       "ordering": "all",
       "reportedCount": 13,
       "capturedCount": 13,
-      "assessedCount": 11,
+      "assessedCount": 13,
       "topLevelCount": 13,
       "replyCount": 0,
       "counts": {
         "gyurov": {
           "supportive": 0,
-          "critical": 1,
+          "critical": 2,
           "mixed": 0,
           "neutral": 2,
-          "unclear": 5,
+          "unclear": 6,
           "not-mentioned": 3,
-          "unreviewed": 2
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -2037,8 +2037,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 10,
-          "unreviewed": 2
+          "not-mentioned": 12,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -2050,18 +2050,18 @@
       "ordering": "newest",
       "reportedCount": 11,
       "capturedCount": 11,
-      "assessedCount": 9,
+      "assessedCount": 11,
       "topLevelCount": 11,
       "replyCount": 0,
       "counts": {
         "gyurov": {
           "supportive": 0,
-          "critical": 2,
+          "critical": 3,
           "mixed": 0,
           "neutral": 1,
-          "unclear": 0,
+          "unclear": 1,
           "not-mentioned": 6,
-          "unreviewed": 2
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -2069,8 +2069,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 7,
-          "unreviewed": 2
+          "not-mentioned": 9,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -2084,18 +2084,18 @@
       "ordering": "all",
       "reportedCount": 29,
       "capturedCount": 29,
-      "assessedCount": 25,
+      "assessedCount": 29,
       "topLevelCount": 18,
       "replyCount": 11,
       "counts": {
         "gyurov": {
           "supportive": 4,
-          "critical": 2,
+          "critical": 3,
           "mixed": 0,
           "neutral": 1,
-          "unclear": 2,
-          "not-mentioned": 16,
-          "unreviewed": 4
+          "unclear": 3,
+          "not-mentioned": 18,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 1,
@@ -2103,8 +2103,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 1,
-          "not-mentioned": 17,
-          "unreviewed": 4
+          "not-mentioned": 21,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -2116,7 +2116,7 @@
       "ordering": "all",
       "reportedCount": 25,
       "capturedCount": 25,
-      "assessedCount": 18,
+      "assessedCount": 25,
       "topLevelCount": 17,
       "replyCount": 8,
       "counts": {
@@ -2125,18 +2125,18 @@
           "critical": 8,
           "mixed": 0,
           "neutral": 1,
-          "unclear": 0,
-          "not-mentioned": 8,
-          "unreviewed": 7
+          "unclear": 5,
+          "not-mentioned": 10,
+          "unreviewed": 0
         },
         "yotova": {
-          "supportive": 5,
+          "supportive": 6,
           "critical": 3,
           "mixed": 0,
           "neutral": 1,
-          "unclear": 0,
-          "not-mentioned": 9,
-          "unreviewed": 7
+          "unclear": 1,
+          "not-mentioned": 14,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -2148,27 +2148,27 @@
       "ordering": "newest",
       "reportedCount": 44,
       "capturedCount": 44,
-      "assessedCount": 37,
+      "assessedCount": 44,
       "topLevelCount": 33,
       "replyCount": 11,
       "counts": {
         "gyurov": {
           "supportive": 2,
-          "critical": 9,
+          "critical": 10,
           "mixed": 0,
           "neutral": 3,
-          "unclear": 1,
-          "not-mentioned": 22,
-          "unreviewed": 7
+          "unclear": 6,
+          "not-mentioned": 23,
+          "unreviewed": 0
         },
         "yotova": {
-          "supportive": 5,
+          "supportive": 6,
           "critical": 8,
           "mixed": 0,
           "neutral": 5,
-          "unclear": 2,
-          "not-mentioned": 17,
-          "unreviewed": 7
+          "unclear": 7,
+          "not-mentioned": 18,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -2182,7 +2182,7 @@
       "ordering": "all",
       "reportedCount": 16,
       "capturedCount": 16,
-      "assessedCount": 15,
+      "assessedCount": 16,
       "topLevelCount": 11,
       "replyCount": 5,
       "counts": {
@@ -2190,19 +2190,19 @@
           "supportive": 1,
           "critical": 3,
           "mixed": 0,
-          "neutral": 1,
+          "neutral": 2,
           "unclear": 1,
           "not-mentioned": 9,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 2,
           "mixed": 0,
-          "neutral": 2,
+          "neutral": 3,
           "unclear": 1,
           "not-mentioned": 10,
-          "unreviewed": 1
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -2214,7 +2214,7 @@
       "ordering": "newest",
       "reportedCount": 21,
       "capturedCount": 20,
-      "assessedCount": 16,
+      "assessedCount": 20,
       "topLevelCount": 14,
       "replyCount": 6,
       "counts": {
@@ -2222,10 +2222,10 @@
           "supportive": 0,
           "critical": 0,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 1,
+          "neutral": 1,
+          "unclear": 4,
           "not-mentioned": 15,
-          "unreviewed": 4
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -2233,8 +2233,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 16,
-          "unreviewed": 4
+          "not-mentioned": 20,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -2248,7 +2248,7 @@
       "ordering": "all",
       "reportedCount": 10,
       "capturedCount": 10,
-      "assessedCount": 7,
+      "assessedCount": 10,
       "topLevelCount": 10,
       "replyCount": 0,
       "counts": {
@@ -2258,8 +2258,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 6,
-          "unreviewed": 3
+          "not-mentioned": 9,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -2267,8 +2267,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 7,
-          "unreviewed": 3
+          "not-mentioned": 10,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -2280,7 +2280,7 @@
       "ordering": "all",
       "reportedCount": 9,
       "capturedCount": 9,
-      "assessedCount": 8,
+      "assessedCount": 9,
       "topLevelCount": 9,
       "replyCount": 0,
       "counts": {
@@ -2290,8 +2290,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 7,
-          "unreviewed": 1
+          "not-mentioned": 8,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -2299,8 +2299,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 7,
-          "unreviewed": 1
+          "not-mentioned": 8,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -2312,7 +2312,7 @@
       "ordering": "all",
       "reportedCount": 5,
       "capturedCount": 5,
-      "assessedCount": 3,
+      "assessedCount": 5,
       "topLevelCount": 5,
       "replyCount": 0,
       "counts": {
@@ -2321,9 +2321,9 @@
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 3,
-          "unreviewed": 2
+          "unclear": 1,
+          "not-mentioned": 4,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -2331,8 +2331,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 3,
-          "unreviewed": 2
+          "not-mentioned": 5,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -2344,7 +2344,7 @@
       "ordering": "all",
       "reportedCount": 3,
       "capturedCount": 3,
-      "assessedCount": 2,
+      "assessedCount": 3,
       "topLevelCount": 3,
       "replyCount": 0,
       "counts": {
@@ -2354,8 +2354,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
-          "unreviewed": 1
+          "not-mentioned": 3,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -2363,8 +2363,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
-          "unreviewed": 1
+          "not-mentioned": 3,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -2376,7 +2376,7 @@
       "ordering": "newest",
       "reportedCount": 2,
       "capturedCount": 3,
-      "assessedCount": 2,
+      "assessedCount": 3,
       "topLevelCount": 3,
       "replyCount": 0,
       "counts": {
@@ -2385,9 +2385,9 @@
           "critical": 1,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
+          "unclear": 1,
           "not-mentioned": 1,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -2395,8 +2395,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
-          "unreviewed": 1
+          "not-mentioned": 3,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -2474,7 +2474,7 @@
       "ordering": "all",
       "reportedCount": 3,
       "capturedCount": 3,
-      "assessedCount": 2,
+      "assessedCount": 3,
       "topLevelCount": 3,
       "replyCount": 0,
       "counts": {
@@ -2483,18 +2483,18 @@
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
+          "unclear": 1,
           "not-mentioned": 2,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
+          "unclear": 1,
           "not-mentioned": 2,
-          "unreviewed": 1
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -2602,7 +2602,7 @@
       "ordering": "all",
       "reportedCount": 2,
       "capturedCount": 2,
-      "assessedCount": 1,
+      "assessedCount": 2,
       "topLevelCount": 2,
       "replyCount": 0,
       "counts": {
@@ -2610,10 +2610,10 @@
           "supportive": 0,
           "critical": 1,
           "mixed": 0,
-          "neutral": 0,
+          "neutral": 1,
           "unclear": 0,
           "not-mentioned": 0,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -2621,8 +2621,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 1,
-          "unreviewed": 1
+          "not-mentioned": 2,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -2634,27 +2634,27 @@
       "ordering": "all",
       "reportedCount": 3,
       "capturedCount": 3,
-      "assessedCount": 2,
+      "assessedCount": 3,
       "topLevelCount": 3,
       "replyCount": 0,
       "counts": {
         "gyurov": {
-          "supportive": 1,
+          "supportive": 2,
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
           "not-mentioned": 1,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 1,
-          "critical": 0,
+          "critical": 1,
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
           "not-mentioned": 1,
-          "unreviewed": 1
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -2666,7 +2666,7 @@
       "ordering": "all",
       "reportedCount": 1,
       "capturedCount": 1,
-      "assessedCount": 0,
+      "assessedCount": 1,
       "topLevelCount": 1,
       "replyCount": 0,
       "counts": {
@@ -2675,18 +2675,18 @@
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
+          "unclear": 1,
           "not-mentioned": 0,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
+          "unclear": 1,
           "not-mentioned": 0,
-          "unreviewed": 1
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -2826,7 +2826,7 @@
       "ordering": "newest",
       "reportedCount": 277,
       "capturedCount": 275,
-      "assessedCount": 235,
+      "assessedCount": 275,
       "topLevelCount": 153,
       "replyCount": 122,
       "counts": {
@@ -2835,18 +2835,18 @@
           "critical": 61,
           "mixed": 0,
           "neutral": 13,
-          "unclear": 14,
-          "not-mentioned": 142,
-          "unreviewed": 40
+          "unclear": 42,
+          "not-mentioned": 154,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 19,
-          "critical": 41,
+          "critical": 43,
           "mixed": 0,
           "neutral": 16,
-          "unclear": 19,
-          "not-mentioned": 140,
-          "unreviewed": 40
+          "unclear": 47,
+          "not-mentioned": 150,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -2860,7 +2860,7 @@
       "ordering": "all",
       "reportedCount": 14,
       "capturedCount": 14,
-      "assessedCount": 10,
+      "assessedCount": 14,
       "topLevelCount": 10,
       "replyCount": 4,
       "counts": {
@@ -2869,18 +2869,18 @@
           "critical": 7,
           "mixed": 0,
           "neutral": 1,
-          "unclear": 1,
-          "not-mentioned": 1,
-          "unreviewed": 4
+          "unclear": 4,
+          "not-mentioned": 2,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 1,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
-          "not-mentioned": 9,
-          "unreviewed": 4
+          "unclear": 3,
+          "not-mentioned": 10,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -2892,7 +2892,7 @@
       "ordering": "all",
       "reportedCount": 10,
       "capturedCount": 10,
-      "assessedCount": 8,
+      "assessedCount": 10,
       "topLevelCount": 5,
       "replyCount": 5,
       "counts": {
@@ -2901,18 +2901,18 @@
           "critical": 3,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 1,
+          "unclear": 3,
           "not-mentioned": 4,
-          "unreviewed": 2
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 1,
           "critical": 0,
           "mixed": 0,
           "neutral": 1,
-          "unclear": 0,
+          "unclear": 2,
           "not-mentioned": 6,
-          "unreviewed": 2
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -2956,7 +2956,7 @@
       "ordering": "newest",
       "reportedCount": 56,
       "capturedCount": 56,
-      "assessedCount": 48,
+      "assessedCount": 56,
       "topLevelCount": 32,
       "replyCount": 24,
       "counts": {
@@ -2964,10 +2964,10 @@
           "supportive": 0,
           "critical": 5,
           "mixed": 0,
-          "neutral": 8,
-          "unclear": 7,
+          "neutral": 9,
+          "unclear": 14,
           "not-mentioned": 28,
-          "unreviewed": 8
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -2975,8 +2975,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 46,
-          "unreviewed": 8
+          "not-mentioned": 54,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -2990,27 +2990,27 @@
       "ordering": "newest",
       "reportedCount": 32,
       "capturedCount": 32,
-      "assessedCount": 26,
+      "assessedCount": 32,
       "topLevelCount": 31,
       "replyCount": 1,
       "counts": {
         "gyurov": {
           "supportive": 0,
-          "critical": 17,
+          "critical": 18,
           "mixed": 0,
-          "neutral": 0,
-          "unclear": 5,
-          "not-mentioned": 4,
-          "unreviewed": 6
+          "neutral": 1,
+          "unclear": 8,
+          "not-mentioned": 5,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 3,
           "critical": 0,
           "mixed": 0,
-          "neutral": 4,
-          "unclear": 2,
-          "not-mentioned": 17,
-          "unreviewed": 6
+          "neutral": 5,
+          "unclear": 5,
+          "not-mentioned": 19,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -3024,7 +3024,7 @@
       "ordering": "newest",
       "reportedCount": 119,
       "capturedCount": 112,
-      "assessedCount": 98,
+      "assessedCount": 112,
       "topLevelCount": 101,
       "replyCount": 11,
       "counts": {
@@ -3034,17 +3034,17 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 97,
-          "unreviewed": 14
+          "not-mentioned": 111,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
-          "critical": 43,
+          "critical": 45,
           "mixed": 0,
           "neutral": 17,
-          "unclear": 25,
+          "unclear": 37,
           "not-mentioned": 13,
-          "unreviewed": 14
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -3090,27 +3090,27 @@
       "ordering": "newest",
       "reportedCount": 182,
       "capturedCount": 180,
-      "assessedCount": 164,
+      "assessedCount": 180,
       "topLevelCount": 129,
       "replyCount": 51,
       "counts": {
         "gyurov": {
-          "supportive": 1,
+          "supportive": 2,
           "critical": 2,
           "mixed": 0,
           "neutral": 6,
           "unclear": 3,
-          "not-mentioned": 152,
-          "unreviewed": 16
+          "not-mentioned": 167,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 86,
           "mixed": 0,
           "neutral": 8,
-          "unclear": 16,
-          "not-mentioned": 54,
-          "unreviewed": 16
+          "unclear": 31,
+          "not-mentioned": 55,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -3124,7 +3124,7 @@
       "ordering": "all",
       "reportedCount": 9,
       "capturedCount": 9,
-      "assessedCount": 6,
+      "assessedCount": 9,
       "topLevelCount": 8,
       "replyCount": 1,
       "counts": {
@@ -3133,18 +3133,18 @@
           "critical": 4,
           "mixed": 0,
           "neutral": 1,
-          "unclear": 1,
+          "unclear": 4,
           "not-mentioned": 0,
-          "unreviewed": 3
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 1,
+          "unclear": 4,
           "not-mentioned": 5,
-          "unreviewed": 3
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -3220,7 +3220,7 @@
       "ordering": "newest",
       "reportedCount": 80,
       "capturedCount": 78,
-      "assessedCount": 64,
+      "assessedCount": 78,
       "topLevelCount": 33,
       "replyCount": 45,
       "counts": {
@@ -3230,8 +3230,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 62,
-          "unreviewed": 14
+          "not-mentioned": 76,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -3239,8 +3239,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 64,
-          "unreviewed": 14
+          "not-mentioned": 78,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -3288,7 +3288,7 @@
       "ordering": "newest",
       "reportedCount": 28,
       "capturedCount": 28,
-      "assessedCount": 24,
+      "assessedCount": 28,
       "topLevelCount": 26,
       "replyCount": 2,
       "counts": {
@@ -3298,8 +3298,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 24,
-          "unreviewed": 4
+          "not-mentioned": 28,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -3307,8 +3307,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 24,
-          "unreviewed": 4
+          "not-mentioned": 28,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -3356,7 +3356,7 @@
       "ordering": "all",
       "reportedCount": 3,
       "capturedCount": 3,
-      "assessedCount": 2,
+      "assessedCount": 3,
       "topLevelCount": 3,
       "replyCount": 0,
       "counts": {
@@ -3365,9 +3365,9 @@
           "critical": 1,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 1,
+          "unclear": 2,
           "not-mentioned": 0,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -3375,8 +3375,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
-          "unreviewed": 1
+          "not-mentioned": 3,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -3422,7 +3422,7 @@
       "ordering": "newest",
       "reportedCount": 1,
       "capturedCount": 3,
-      "assessedCount": 1,
+      "assessedCount": 3,
       "topLevelCount": 3,
       "replyCount": 0,
       "counts": {
@@ -3431,9 +3431,9 @@
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
+          "unclear": 2,
           "not-mentioned": 1,
-          "unreviewed": 2
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -3441,8 +3441,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 1,
-          "unreviewed": 2
+          "not-mentioned": 3,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -3456,7 +3456,7 @@
       "ordering": "all",
       "reportedCount": 2,
       "capturedCount": 2,
-      "assessedCount": 1,
+      "assessedCount": 2,
       "topLevelCount": 2,
       "replyCount": 0,
       "counts": {
@@ -3465,9 +3465,9 @@
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
+          "unclear": 1,
           "not-mentioned": 1,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -3475,8 +3475,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 1,
-          "unreviewed": 1
+          "not-mentioned": 2,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -3488,7 +3488,7 @@
       "ordering": "all",
       "reportedCount": 6,
       "capturedCount": 6,
-      "assessedCount": 4,
+      "assessedCount": 6,
       "topLevelCount": 4,
       "replyCount": 2,
       "counts": {
@@ -3497,9 +3497,9 @@
           "critical": 1,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 1,
+          "unclear": 3,
           "not-mentioned": 2,
-          "unreviewed": 2
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -3507,8 +3507,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 1,
-          "not-mentioned": 3,
-          "unreviewed": 2
+          "not-mentioned": 5,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -3520,7 +3520,7 @@
       "ordering": "newest",
       "reportedCount": 8,
       "capturedCount": 6,
-      "assessedCount": 1,
+      "assessedCount": 6,
       "topLevelCount": 6,
       "replyCount": 0,
       "counts": {
@@ -3529,9 +3529,9 @@
           "critical": 1,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
+          "unclear": 5,
           "not-mentioned": 0,
-          "unreviewed": 5
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -3539,8 +3539,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 1,
-          "unreviewed": 5
+          "not-mentioned": 6,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -3554,7 +3554,7 @@
       "ordering": "all",
       "reportedCount": 4,
       "capturedCount": 4,
-      "assessedCount": 3,
+      "assessedCount": 4,
       "topLevelCount": 4,
       "replyCount": 0,
       "counts": {
@@ -3564,8 +3564,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 3,
-          "unreviewed": 1
+          "not-mentioned": 4,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -3573,8 +3573,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 3,
-          "unreviewed": 1
+          "not-mentioned": 4,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -3586,7 +3586,7 @@
       "ordering": "newest",
       "reportedCount": 40,
       "capturedCount": 39,
-      "assessedCount": 3,
+      "assessedCount": 39,
       "topLevelCount": 39,
       "replyCount": 0,
       "counts": {
@@ -3595,9 +3595,9 @@
           "critical": 1,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 1,
+          "unclear": 37,
           "not-mentioned": 1,
-          "unreviewed": 36
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -3605,8 +3605,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 3,
-          "unreviewed": 36
+          "not-mentioned": 39,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -3620,7 +3620,7 @@
       "ordering": "all",
       "reportedCount": 8,
       "capturedCount": 8,
-      "assessedCount": 6,
+      "assessedCount": 8,
       "topLevelCount": 8,
       "replyCount": 0,
       "counts": {
@@ -3629,9 +3629,9 @@
           "critical": 1,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 3,
+          "unclear": 5,
           "not-mentioned": 2,
-          "unreviewed": 2
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -3639,8 +3639,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 6,
-          "unreviewed": 2
+          "not-mentioned": 8,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -3652,7 +3652,7 @@
       "ordering": "newest",
       "reportedCount": 49,
       "capturedCount": 45,
-      "assessedCount": 31,
+      "assessedCount": 45,
       "topLevelCount": 40,
       "replyCount": 5,
       "counts": {
@@ -3661,9 +3661,9 @@
           "critical": 0,
           "mixed": 0,
           "neutral": 2,
-          "unclear": 0,
-          "not-mentioned": 29,
-          "unreviewed": 14
+          "unclear": 13,
+          "not-mentioned": 30,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -3671,8 +3671,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 1,
-          "not-mentioned": 29,
-          "unreviewed": 14
+          "not-mentioned": 43,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -3686,7 +3686,7 @@
       "ordering": "newest",
       "reportedCount": 17,
       "capturedCount": 14,
-      "assessedCount": 11,
+      "assessedCount": 14,
       "topLevelCount": 12,
       "replyCount": 2,
       "counts": {
@@ -3695,9 +3695,9 @@
           "critical": 3,
           "mixed": 0,
           "neutral": 1,
-          "unclear": 0,
+          "unclear": 3,
           "not-mentioned": 5,
-          "unreviewed": 3
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -3705,8 +3705,8 @@
           "mixed": 0,
           "neutral": 2,
           "unclear": 0,
-          "not-mentioned": 5,
-          "unreviewed": 3
+          "not-mentioned": 8,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -3720,7 +3720,7 @@
       "ordering": "all",
       "reportedCount": 10,
       "capturedCount": 10,
-      "assessedCount": 7,
+      "assessedCount": 10,
       "topLevelCount": 5,
       "replyCount": 5,
       "counts": {
@@ -3729,9 +3729,9 @@
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 1,
-          "not-mentioned": 6,
-          "unreviewed": 3
+          "unclear": 3,
+          "not-mentioned": 7,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -3739,8 +3739,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 7,
-          "unreviewed": 3
+          "not-mentioned": 10,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -3752,7 +3752,7 @@
       "ordering": "newest",
       "reportedCount": 196,
       "capturedCount": 194,
-      "assessedCount": 166,
+      "assessedCount": 194,
       "topLevelCount": 177,
       "replyCount": 17,
       "counts": {
@@ -3761,9 +3761,9 @@
           "critical": 11,
           "mixed": 0,
           "neutral": 2,
-          "unclear": 142,
+          "unclear": 170,
           "not-mentioned": 11,
-          "unreviewed": 28
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 1,
@@ -3771,8 +3771,8 @@
           "mixed": 1,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 163,
-          "unreviewed": 28
+          "not-mentioned": 191,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -3852,7 +3852,7 @@
       "ordering": "newest",
       "reportedCount": 58,
       "capturedCount": 57,
-      "assessedCount": 52,
+      "assessedCount": 57,
       "topLevelCount": 44,
       "replyCount": 13,
       "counts": {
@@ -3862,17 +3862,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 1,
-          "not-mentioned": 50,
-          "unreviewed": 5
+          "not-mentioned": 55,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 13,
           "mixed": 0,
           "neutral": 8,
-          "unclear": 9,
-          "not-mentioned": 22,
-          "unreviewed": 5
+          "unclear": 13,
+          "not-mentioned": 23,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -3918,7 +3918,7 @@
       "ordering": "newest",
       "reportedCount": 58,
       "capturedCount": 56,
-      "assessedCount": 50,
+      "assessedCount": 56,
       "topLevelCount": 44,
       "replyCount": 12,
       "counts": {
@@ -3928,8 +3928,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 49,
-          "unreviewed": 6
+          "not-mentioned": 55,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -3937,8 +3937,8 @@
           "mixed": 0,
           "neutral": 2,
           "unclear": 1,
-          "not-mentioned": 46,
-          "unreviewed": 6
+          "not-mentioned": 52,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -3952,7 +3952,7 @@
       "ordering": "all",
       "reportedCount": 6,
       "capturedCount": 6,
-      "assessedCount": 4,
+      "assessedCount": 6,
       "topLevelCount": 6,
       "replyCount": 0,
       "counts": {
@@ -3962,17 +3962,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 4,
-          "unreviewed": 2
+          "not-mentioned": 6,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 1,
+          "unclear": 3,
           "not-mentioned": 3,
-          "unreviewed": 2
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -3984,7 +3984,7 @@
       "ordering": "all",
       "reportedCount": 3,
       "capturedCount": 3,
-      "assessedCount": 2,
+      "assessedCount": 3,
       "topLevelCount": 3,
       "replyCount": 0,
       "counts": {
@@ -3993,9 +3993,9 @@
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 1,
+          "unclear": 2,
           "not-mentioned": 1,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4003,8 +4003,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
-          "unreviewed": 1
+          "not-mentioned": 3,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -4048,7 +4048,7 @@
       "ordering": "newest",
       "reportedCount": 161,
       "capturedCount": 155,
-      "assessedCount": 137,
+      "assessedCount": 155,
       "topLevelCount": 121,
       "replyCount": 34,
       "counts": {
@@ -4058,8 +4058,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 1,
-          "not-mentioned": 133,
-          "unreviewed": 18
+          "not-mentioned": 151,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4067,8 +4067,8 @@
           "mixed": 0,
           "neutral": 4,
           "unclear": 1,
-          "not-mentioned": 106,
-          "unreviewed": 18
+          "not-mentioned": 124,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4114,7 +4114,7 @@
       "ordering": "newest",
       "reportedCount": 22,
       "capturedCount": 21,
-      "assessedCount": 19,
+      "assessedCount": 21,
       "topLevelCount": 13,
       "replyCount": 8,
       "counts": {
@@ -4124,8 +4124,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 18,
-          "unreviewed": 2
+          "not-mentioned": 20,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4133,8 +4133,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 19,
-          "unreviewed": 2
+          "not-mentioned": 21,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4148,7 +4148,7 @@
       "ordering": "newest",
       "reportedCount": 62,
       "capturedCount": 60,
-      "assessedCount": 54,
+      "assessedCount": 60,
       "topLevelCount": 54,
       "replyCount": 6,
       "counts": {
@@ -4158,17 +4158,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 1,
-          "not-mentioned": 50,
-          "unreviewed": 6
+          "not-mentioned": 56,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 1,
           "critical": 41,
           "mixed": 0,
           "neutral": 2,
-          "unclear": 3,
+          "unclear": 9,
           "not-mentioned": 7,
-          "unreviewed": 6
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4182,7 +4182,7 @@
       "ordering": "newest",
       "reportedCount": 1,
       "capturedCount": 5,
-      "assessedCount": 2,
+      "assessedCount": 5,
       "topLevelCount": 3,
       "replyCount": 2,
       "counts": {
@@ -4192,8 +4192,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
-          "unreviewed": 3
+          "not-mentioned": 5,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4201,8 +4201,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 2,
-          "unreviewed": 3
+          "not-mentioned": 5,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4216,7 +4216,7 @@
       "ordering": "newest",
       "reportedCount": 19,
       "capturedCount": 18,
-      "assessedCount": 17,
+      "assessedCount": 18,
       "topLevelCount": 12,
       "replyCount": 6,
       "counts": {
@@ -4226,8 +4226,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 17,
-          "unreviewed": 1
+          "not-mentioned": 18,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4235,8 +4235,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 16,
-          "unreviewed": 1
+          "not-mentioned": 17,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4250,7 +4250,7 @@
       "ordering": "newest",
       "reportedCount": 154,
       "capturedCount": 151,
-      "assessedCount": 126,
+      "assessedCount": 151,
       "topLevelCount": 127,
       "replyCount": 24,
       "counts": {
@@ -4260,17 +4260,17 @@
           "mixed": 0,
           "neutral": 3,
           "unclear": 1,
-          "not-mentioned": 112,
-          "unreviewed": 25
+          "not-mentioned": 137,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 3,
-          "critical": 94,
+          "critical": 99,
           "mixed": 3,
           "neutral": 6,
-          "unclear": 7,
-          "not-mentioned": 13,
-          "unreviewed": 25
+          "unclear": 26,
+          "not-mentioned": 14,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4284,7 +4284,7 @@
       "ordering": "all",
       "reportedCount": 70,
       "capturedCount": 70,
-      "assessedCount": 69,
+      "assessedCount": 70,
       "topLevelCount": 51,
       "replyCount": 19,
       "counts": {
@@ -4294,17 +4294,17 @@
           "mixed": 1,
           "neutral": 3,
           "unclear": 1,
-          "not-mentioned": 60,
-          "unreviewed": 1
+          "not-mentioned": 61,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 40,
           "mixed": 0,
           "neutral": 18,
-          "unclear": 4,
+          "unclear": 5,
           "not-mentioned": 7,
-          "unreviewed": 1
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -4316,7 +4316,7 @@
       "ordering": "newest",
       "reportedCount": 56,
       "capturedCount": 52,
-      "assessedCount": 42,
+      "assessedCount": 52,
       "topLevelCount": 32,
       "replyCount": 20,
       "counts": {
@@ -4326,8 +4326,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 2,
-          "not-mentioned": 35,
-          "unreviewed": 10
+          "not-mentioned": 45,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 4,
@@ -4335,8 +4335,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 7,
-          "not-mentioned": 26,
-          "unreviewed": 10
+          "not-mentioned": 36,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4350,7 +4350,7 @@
       "ordering": "newest",
       "reportedCount": 75,
       "capturedCount": 74,
-      "assessedCount": 67,
+      "assessedCount": 74,
       "topLevelCount": 68,
       "replyCount": 6,
       "counts": {
@@ -4360,8 +4360,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 66,
-          "unreviewed": 7
+          "not-mentioned": 73,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4369,8 +4369,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 1,
-          "not-mentioned": 65,
-          "unreviewed": 7
+          "not-mentioned": 72,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4384,7 +4384,7 @@
       "ordering": "newest",
       "reportedCount": 124,
       "capturedCount": 122,
-      "assessedCount": 110,
+      "assessedCount": 122,
       "topLevelCount": 99,
       "replyCount": 23,
       "counts": {
@@ -4394,17 +4394,17 @@
           "mixed": 0,
           "neutral": 5,
           "unclear": 2,
-          "not-mentioned": 91,
-          "unreviewed": 12
+          "not-mentioned": 103,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 3,
           "critical": 67,
           "mixed": 0,
           "neutral": 10,
-          "unclear": 8,
-          "not-mentioned": 22,
-          "unreviewed": 12
+          "unclear": 18,
+          "not-mentioned": 24,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4418,7 +4418,7 @@
       "ordering": "newest",
       "reportedCount": 21,
       "capturedCount": 21,
-      "assessedCount": 20,
+      "assessedCount": 21,
       "topLevelCount": 18,
       "replyCount": 3,
       "counts": {
@@ -4428,17 +4428,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 20,
-          "unreviewed": 1
+          "not-mentioned": 21,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
           "critical": 1,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 13,
+          "unclear": 14,
           "not-mentioned": 6,
-          "unreviewed": 1
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4484,7 +4484,7 @@
       "ordering": "all",
       "reportedCount": 19,
       "capturedCount": 19,
-      "assessedCount": 18,
+      "assessedCount": 19,
       "topLevelCount": 16,
       "replyCount": 3,
       "counts": {
@@ -4494,8 +4494,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 18,
-          "unreviewed": 1
+          "not-mentioned": 19,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4503,8 +4503,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 18,
-          "unreviewed": 1
+          "not-mentioned": 19,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -4516,7 +4516,7 @@
       "ordering": "all",
       "reportedCount": 47,
       "capturedCount": 47,
-      "assessedCount": 45,
+      "assessedCount": 47,
       "topLevelCount": 46,
       "replyCount": 1,
       "counts": {
@@ -4526,8 +4526,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 43,
-          "unreviewed": 2
+          "not-mentioned": 45,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4535,8 +4535,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 45,
-          "unreviewed": 2
+          "not-mentioned": 47,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -4548,7 +4548,7 @@
       "ordering": "all",
       "reportedCount": 4,
       "capturedCount": 4,
-      "assessedCount": 3,
+      "assessedCount": 4,
       "topLevelCount": 3,
       "replyCount": 1,
       "counts": {
@@ -4558,8 +4558,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 3,
-          "unreviewed": 1
+          "not-mentioned": 4,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4567,8 +4567,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 3,
-          "unreviewed": 1
+          "not-mentioned": 4,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -4580,7 +4580,7 @@
       "ordering": "newest",
       "reportedCount": 109,
       "capturedCount": 107,
-      "assessedCount": 101,
+      "assessedCount": 107,
       "topLevelCount": 84,
       "replyCount": 23,
       "counts": {
@@ -4590,8 +4590,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 99,
-          "unreviewed": 6
+          "not-mentioned": 105,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4599,8 +4599,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 101,
-          "unreviewed": 6
+          "not-mentioned": 107,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4646,7 +4646,7 @@
       "ordering": "newest",
       "reportedCount": 26,
       "capturedCount": 25,
-      "assessedCount": 20,
+      "assessedCount": 25,
       "topLevelCount": 21,
       "replyCount": 4,
       "counts": {
@@ -4656,17 +4656,17 @@
           "mixed": 0,
           "neutral": 2,
           "unclear": 1,
-          "not-mentioned": 15,
-          "unreviewed": 5
+          "not-mentioned": 20,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
-          "critical": 9,
+          "critical": 10,
           "mixed": 0,
           "neutral": 3,
-          "unclear": 0,
+          "unclear": 4,
           "not-mentioned": 8,
-          "unreviewed": 5
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4680,7 +4680,7 @@
       "ordering": "newest",
       "reportedCount": 86,
       "capturedCount": 85,
-      "assessedCount": 78,
+      "assessedCount": 85,
       "topLevelCount": 68,
       "replyCount": 17,
       "counts": {
@@ -4690,8 +4690,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 2,
-          "not-mentioned": 75,
-          "unreviewed": 7
+          "not-mentioned": 82,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4699,8 +4699,8 @@
           "mixed": 0,
           "neutral": 4,
           "unclear": 1,
-          "not-mentioned": 71,
-          "unreviewed": 7
+          "not-mentioned": 78,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4714,7 +4714,7 @@
       "ordering": "all",
       "reportedCount": 34,
       "capturedCount": 34,
-      "assessedCount": 32,
+      "assessedCount": 34,
       "topLevelCount": 23,
       "replyCount": 11,
       "counts": {
@@ -4723,9 +4723,9 @@
           "critical": 14,
           "mixed": 0,
           "neutral": 4,
-          "unclear": 3,
+          "unclear": 5,
           "not-mentioned": 10,
-          "unreviewed": 2
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4733,8 +4733,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 1,
-          "not-mentioned": 28,
-          "unreviewed": 2
+          "not-mentioned": 30,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -4746,7 +4746,7 @@
       "ordering": "newest",
       "reportedCount": 11,
       "capturedCount": 10,
-      "assessedCount": 8,
+      "assessedCount": 10,
       "topLevelCount": 9,
       "replyCount": 1,
       "counts": {
@@ -4756,8 +4756,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 7,
-          "unreviewed": 2
+          "not-mentioned": 9,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4765,8 +4765,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 1,
-          "not-mentioned": 7,
-          "unreviewed": 2
+          "not-mentioned": 9,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4780,7 +4780,7 @@
       "ordering": "newest",
       "reportedCount": 46,
       "capturedCount": 45,
-      "assessedCount": 40,
+      "assessedCount": 45,
       "topLevelCount": 37,
       "replyCount": 8,
       "counts": {
@@ -4790,8 +4790,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 40,
-          "unreviewed": 5
+          "not-mentioned": 45,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4799,8 +4799,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 2,
-          "not-mentioned": 33,
-          "unreviewed": 5
+          "not-mentioned": 38,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4814,7 +4814,7 @@
       "ordering": "all",
       "reportedCount": 6,
       "capturedCount": 6,
-      "assessedCount": 5,
+      "assessedCount": 6,
       "topLevelCount": 6,
       "replyCount": 0,
       "counts": {
@@ -4824,8 +4824,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 5,
-          "unreviewed": 1
+          "not-mentioned": 6,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4833,8 +4833,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 5,
-          "unreviewed": 1
+          "not-mentioned": 6,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -4846,7 +4846,7 @@
       "ordering": "newest",
       "reportedCount": 29,
       "capturedCount": 28,
-      "assessedCount": 26,
+      "assessedCount": 28,
       "topLevelCount": 25,
       "replyCount": 3,
       "counts": {
@@ -4856,8 +4856,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 24,
-          "unreviewed": 2
+          "not-mentioned": 26,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4865,8 +4865,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 1,
-          "not-mentioned": 25,
-          "unreviewed": 2
+          "not-mentioned": 27,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4880,7 +4880,7 @@
       "ordering": "newest",
       "reportedCount": 44,
       "capturedCount": 43,
-      "assessedCount": 39,
+      "assessedCount": 43,
       "topLevelCount": 39,
       "replyCount": 4,
       "counts": {
@@ -4890,8 +4890,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 38,
-          "unreviewed": 4
+          "not-mentioned": 42,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4899,8 +4899,8 @@
           "mixed": 0,
           "neutral": 1,
           "unclear": 0,
-          "not-mentioned": 38,
-          "unreviewed": 4
+          "not-mentioned": 42,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4914,7 +4914,7 @@
       "ordering": "newest",
       "reportedCount": 2,
       "capturedCount": 1,
-      "assessedCount": 0,
+      "assessedCount": 1,
       "topLevelCount": 1,
       "replyCount": 0,
       "counts": {
@@ -4923,9 +4923,9 @@
           "critical": 0,
           "mixed": 0,
           "neutral": 0,
-          "unclear": 0,
+          "unclear": 1,
           "not-mentioned": 0,
-          "unreviewed": 1
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -4933,8 +4933,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 0,
-          "unreviewed": 1
+          "not-mentioned": 1,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -4982,7 +4982,7 @@
       "ordering": "newest",
       "reportedCount": 14,
       "capturedCount": 12,
-      "assessedCount": 10,
+      "assessedCount": 12,
       "topLevelCount": 10,
       "replyCount": 2,
       "counts": {
@@ -4992,8 +4992,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 10,
-          "unreviewed": 2
+          "not-mentioned": 12,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -5001,8 +5001,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 10,
-          "unreviewed": 2
+          "not-mentioned": 12,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -5016,27 +5016,27 @@
       "ordering": "newest",
       "reportedCount": 118,
       "capturedCount": 116,
-      "assessedCount": 99,
+      "assessedCount": 116,
       "topLevelCount": 73,
       "replyCount": 43,
       "counts": {
         "gyurov": {
           "supportive": 1,
-          "critical": 63,
+          "critical": 64,
           "mixed": 0,
           "neutral": 3,
-          "unclear": 2,
+          "unclear": 18,
           "not-mentioned": 30,
-          "unreviewed": 17
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 4,
           "critical": 9,
           "mixed": 0,
           "neutral": 10,
-          "unclear": 4,
-          "not-mentioned": 72,
-          "unreviewed": 17
+          "unclear": 20,
+          "not-mentioned": 73,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -5050,7 +5050,7 @@
       "ordering": "newest",
       "reportedCount": 177,
       "capturedCount": 173,
-      "assessedCount": 131,
+      "assessedCount": 173,
       "topLevelCount": 133,
       "replyCount": 40,
       "counts": {
@@ -5059,18 +5059,18 @@
           "critical": 77,
           "mixed": 0,
           "neutral": 11,
-          "unclear": 13,
-          "not-mentioned": 28,
-          "unreviewed": 42
+          "unclear": 50,
+          "not-mentioned": 33,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 4,
           "critical": 6,
           "mixed": 0,
           "neutral": 2,
-          "unclear": 4,
-          "not-mentioned": 115,
-          "unreviewed": 42
+          "unclear": 41,
+          "not-mentioned": 120,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -5084,7 +5084,7 @@
       "ordering": "newest",
       "reportedCount": 37,
       "capturedCount": 36,
-      "assessedCount": 27,
+      "assessedCount": 36,
       "topLevelCount": 31,
       "replyCount": 5,
       "counts": {
@@ -5094,17 +5094,17 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 27,
-          "unreviewed": 9
+          "not-mentioned": 36,
+          "unreviewed": 0
         },
         "yotova": {
-          "supportive": 2,
+          "supportive": 3,
           "critical": 0,
           "mixed": 0,
           "neutral": 2,
           "unclear": 0,
-          "not-mentioned": 23,
-          "unreviewed": 9
+          "not-mentioned": 31,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -5118,7 +5118,7 @@
       "ordering": "newest",
       "reportedCount": 110,
       "capturedCount": 108,
-      "assessedCount": 85,
+      "assessedCount": 108,
       "topLevelCount": 92,
       "replyCount": 16,
       "counts": {
@@ -5128,8 +5128,8 @@
           "mixed": 0,
           "neutral": 11,
           "unclear": 14,
-          "not-mentioned": 16,
-          "unreviewed": 23
+          "not-mentioned": 39,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 1,
@@ -5137,8 +5137,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 1,
-          "not-mentioned": 81,
-          "unreviewed": 23
+          "not-mentioned": 104,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -5152,7 +5152,7 @@
       "ordering": "newest",
       "reportedCount": 618,
       "capturedCount": 608,
-      "assessedCount": 323,
+      "assessedCount": 608,
       "topLevelCount": 586,
       "replyCount": 22,
       "counts": {
@@ -5162,8 +5162,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 323,
-          "unreviewed": 285
+          "not-mentioned": 608,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -5171,8 +5171,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 323,
-          "unreviewed": 285
+          "not-mentioned": 608,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -5186,7 +5186,7 @@
       "ordering": "newest",
       "reportedCount": 130,
       "capturedCount": 95,
-      "assessedCount": 85,
+      "assessedCount": 95,
       "topLevelCount": 53,
       "replyCount": 42,
       "counts": {
@@ -5196,8 +5196,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 1,
-          "not-mentioned": 84,
-          "unreviewed": 10
+          "not-mentioned": 94,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -5205,8 +5205,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 85,
-          "unreviewed": 10
+          "not-mentioned": 95,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -5220,7 +5220,7 @@
       "ordering": "newest",
       "reportedCount": 36,
       "capturedCount": 33,
-      "assessedCount": 27,
+      "assessedCount": 33,
       "topLevelCount": 13,
       "replyCount": 20,
       "counts": {
@@ -5230,8 +5230,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 27,
-          "unreviewed": 6
+          "not-mentioned": 33,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -5239,8 +5239,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 27,
-          "unreviewed": 6
+          "not-mentioned": 33,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -5254,7 +5254,7 @@
       "ordering": "all",
       "reportedCount": 12,
       "capturedCount": 12,
-      "assessedCount": 9,
+      "assessedCount": 12,
       "topLevelCount": 10,
       "replyCount": 2,
       "counts": {
@@ -5264,8 +5264,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 9,
-          "unreviewed": 3
+          "not-mentioned": 12,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -5273,8 +5273,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 9,
-          "unreviewed": 3
+          "not-mentioned": 12,
+          "unreviewed": 0
         }
       },
       "notes": []
@@ -5286,7 +5286,7 @@
       "ordering": "newest",
       "reportedCount": 72,
       "capturedCount": 68,
-      "assessedCount": 44,
+      "assessedCount": 68,
       "topLevelCount": 58,
       "replyCount": 10,
       "counts": {
@@ -5296,8 +5296,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 44,
-          "unreviewed": 24
+          "not-mentioned": 68,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -5305,8 +5305,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 44,
-          "unreviewed": 24
+          "not-mentioned": 68,
+          "unreviewed": 0
         }
       },
       "notes": [
@@ -5384,7 +5384,7 @@
       "ordering": "newest",
       "reportedCount": 78,
       "capturedCount": 78,
-      "assessedCount": 69,
+      "assessedCount": 78,
       "topLevelCount": 57,
       "replyCount": 21,
       "counts": {
@@ -5394,8 +5394,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 69,
-          "unreviewed": 9
+          "not-mentioned": 78,
+          "unreviewed": 0
         },
         "yotova": {
           "supportive": 0,
@@ -5403,8 +5403,8 @@
           "mixed": 0,
           "neutral": 0,
           "unclear": 0,
-          "not-mentioned": 69,
-          "unreviewed": 9
+          "not-mentioned": 78,
+          "unreviewed": 0
         }
       },
       "notes": [

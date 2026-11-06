@@ -91,6 +91,7 @@ test('catalog accepts every deployed source record and its largest allowed batch
   const directory = resolve(__dirname, '../public/data/facebook/2026');
   const catalog = loadToneReviewCatalog(directory);
   const report = JSON.parse(readFileSync(join(directory, 'report.json'), 'utf8'));
+  const comments = JSON.parse(readFileSync(join(directory, 'comments.json'), 'utf8'));
   const manifest = JSON.parse(readFileSync(join(directory, 'comments/manifest.json'), 'utf8'));
   assert.equal(catalog.size, report.posts.length + manifest.posts.reduce((sum, post) => sum + post.count, 0));
   const records = [...catalog.values()];
@@ -98,6 +99,13 @@ test('catalog accepts every deployed source record and its largest allowed batch
   assert.equal(records.filter(record => record.kind === 'comment').length, 6692);
   assert.equal(records.filter(record => record.kind === 'comment' && record.editable).length, 5012);
   assert.equal(records.filter(record => !record.editable).length, 1680);
+  assert(records.every(record => record.originalGyurov !== 'unreviewed' && record.originalYotova !== 'unreviewed'));
+  assert.equal(comments.posts.reduce((sum, post) => sum + post.capturedCount, 0), 6692);
+  assert.equal(comments.posts.reduce((sum, post) => sum + post.assessedCount, 0), 6692);
+  for (const post of comments.posts) {
+    assert.equal(post.assessedCount, post.capturedCount);
+    for (const candidate of ['gyurov', 'yotova']) assert.equal(post.counts[candidate].unreviewed, 0);
+  }
   const largest = records.filter(record => record.editable)
     .map(record => draft(record, { gyurov: record.originalGyurov === 'supportive' ? 'critical' : 'supportive' }))
     .sort((a, b) => JSON.stringify(b).length - JSON.stringify(a).length).slice(0, 100);
